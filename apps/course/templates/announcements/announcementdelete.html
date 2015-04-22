@@ -1,0 +1,21 @@
+{% extends "base_course/base.html" %}
+{% load crispy_forms_tags %}
+{% block header %}
+        Kursereignis {{ courseevent.title }}
+{% endblock %}
+{% block header_controls %}
+    {% include 'base_course/_helpcheckbox.html' %}
+{% endblock %}
+{% block help %}
+    {% include 'base_course/_help_announcements.html' %}
+{% endblock %}
+{% block controls %}
+{% endblock %}
+{% block page_content %}
+    <div class="ui segment">
+        <h1 class="ui header">Ankündigungen löschen</h1>
+        <h3 class="ui header">{{ announcement.title }}</h3>
+        <p>{{ announcement.text | safe }}</p>
+        {% include 'base_course/_course_delete_form.html' %}
+    </div>
+{% endblock %}

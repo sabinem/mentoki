@@ -1,0 +1,35 @@
+{% extends "base_course/base.html" %}
+{% block header %}
+       Vorlage {{ course.title }} / Unterricht
+{% endblock %}
+
+{% block header_controls %}
+    {% include 'base_course/_helpcheckbox.html' %}
+{% endblock %}
+{% block help %}
+    {% include 'base_course/_help_units.html' %}
+{% endblock %}
+{% block breadcrumb %}
+    <div class="ui breadcrumb">
+        <a class="section" href="{% url 'course:lessons' slug=match.kwargs.slug %}">
+            {{ course.title }}
+        </a>
+        <i class="right chevron icon divider"></i>
+        <a class="section"><i class="cube icon"></i>{{ courseblock.title }}</a>
+        <i class="right chevron icon divider"></i>
+        <div class="active section">
+                      {% if courseblock.is_numbered %}
+                         <i class="top aligned icon">{{ unit.display_nr }}</i>
+                      {% endif %}
+            {{ unit.title }}
+        </div>
+    </div>
+{% endblock %}
+{% block page_content %}
+    {% include 'base_course/_course_form.html' %}
+{% endblock %}
+                      {% if courseblock.is_numbered %}
+                         <i class="top aligned icon">{{ item.unit.display_nr }}.{{ material.display_nr }}</i>
+                      {% else %}
+                         <i class="top aligned icon triangle right"></i>
+                      {% endif %}

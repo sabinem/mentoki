@@ -1,0 +1,13 @@
+{% extends "classroombackend/base.html" %}
+{% load crispy_forms_tags %}
+{% block whereami %}
+    {% include 'classroombackend/announcements/_breadcrumb_announcements.html' %}
+{% endblock %}
+{% block class_content %}
+    <form id="announcement_update_form" method="post" action="">
+        {% crispy form %}
+        <button type="submit" value="update" class="btn btn-default" >
+            Speichern
+        </button>
+    </form>
+{% endblock %}

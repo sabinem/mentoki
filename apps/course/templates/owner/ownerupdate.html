@@ -1,0 +1,25 @@
+{% extends "base_course/base.html" %}
+{% block header %}
+    Vorlage {{ course.title }}
+{% endblock %}
+{% block header_controls %}
+    {% include 'base_course/_helpcheckbox.html' %}
+{% endblock %}
+{% block help %}
+{% include 'base_course/_help_courseowner.html' %}
+{% endblock %}
+{% block page_content %}
+<div class="ui piled segment">
+<h2 class="ui header">Kursleitung: {{ owner.user.first_name }} {{ owner.user.last_name }}</h2>
+<div class="ui tabular menu">
+  <a class="item" href="{% url 'course:ownerslist' slug=match.kwargs.slug %}">
+    Verwerfen
+  </a>
+  <a class="item active blue">
+    Bearbeiten
+  </a>
+</div>
+{% include 'base_course/_course_form.html' %}
+</div>
+{% endblock %}
+

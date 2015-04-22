@@ -1,0 +1,23 @@
+{% extends "base_course/base.html" %}
+{% block header %}
+    Vorlage {{ course.title }}
+{% endblock %}
+{% block header_controls %}
+    {% include 'base_course/_helpcheckbox.html' %}
+{% endblock %}
+{% block help %}
+    {% include 'base_course/_help_course.html' %}
+{% endblock %}
+{% block page_content %}
+    <div class="ui piled segment">
+    <div class="ui tabular menu">
+      <a class="item" href="{% url 'course:start' slug=match.kwargs.slug %}">
+        Abbrechen
+      </a>
+      <a class="active blue item">
+        {{ tab }}
+      </a>
+    </div>
+    {% include 'base_course/_course_form.html' %}
+    </div>
+{% endblock %}

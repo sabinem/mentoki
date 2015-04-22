@@ -1,0 +1,42 @@
+<ul class="breadcrumb">
+{% if match.url_name == 'listrules' %}
+
+        <a href="{% url 'classroom:listrules' slug=match.kwargs.slug %}">
+             <span class="glyphicon glyphicon-eye-open" id="classroomeye"></span>
+        </a>
+{% endif %}
+    <span class="glyphicon glyphicon-pushpin"></span>
+{% if match.url_name == 'listrules' %}
+    <li>
+        Regeln
+        <a href="{% url 'buildclassroom:createrule' slug=match.kwargs.slug %}">
+            <span class="glyphicon glyphicon-plus"></span>
+        </a>
+    </li>
+{% else %}
+    <li>
+    <a href="{% url 'buildclassroom:listrules' slug=match.kwargs.slug %}">
+            Regel
+        </a>
+    </li>
+    {% if match.url_name == "deleterule" %}
+        <li>
+
+        löschen
+    </li>
+    {% endif %}
+        {% if match.url_name == "updaterule" %}
+        <li>
+
+        ändern
+    </li>
+    {% endif %}
+         {% if match.url_name == "createrule" %}
+        <li>
+
+        anlegen
+    </li>
+    {% endif %}
+
+{% endif %}
+</ul>

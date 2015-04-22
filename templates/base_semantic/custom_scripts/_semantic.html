@@ -1,0 +1,160 @@
+<script type="text/javascript">
+$(document).ready(function(){
+
+// This first part is for all pages in the Courses Section of the site
+// checkboxes are special in Semantic UI
+    $('.ui.checkbox')
+      .checkbox()
+    ;
+
+// dropdown menu
+    $('.ui.dropdown')
+      .dropdown()
+    ;
+
+// tabs
+    $('.menu .item')
+      .tab()
+    ;
+
+// accordion
+    $('.ui.accordion')
+       .accordion()
+    ;
+
+
+// This section is only for course-work
+
+// this checkbox can be turned on and off and shows the status of the parts of the course
+    if ($('#status').checkbox('is unchecked')){
+       $('.accomplishment').hide();
+    }
+    $('#status').change(function(){
+       if ($('#status').checkbox('is checked')){
+           $('.accomplishment').fadeIn();
+       }
+    });
+    $('#status').change(function(){
+       if ($('#status').checkbox('is unchecked')){
+           $('.accomplishment').fadeOut();
+       }
+    });
+
+// this checkbox displays the links to work on the courseparts
+    if ($('#worklinks').checkbox('is unchecked')){
+       $('.worklink').hide();
+    }
+    $('#worklinks').change(function(){
+       if ($('#worklinks').checkbox('is unchecked')){
+           $('.worklink').fadeOut();
+       }
+    });
+    $('#worklinks').change(function(){
+       if ($('#worklinks').checkbox('is checked')){
+           $('.worklink').fadeIn();
+       }
+    });
+
+// Thsi section is only for work on the course lessons
+
+// This part is for the block section
+// this checkbox shows the short contentdescriptions beneath the titles of the course parts
+    if ($('#showdescriptions').checkbox('is unchecked')){
+       $('.contentdescription').hide();
+    }
+    $('#showdescriptions').change(function(){
+       if ($('#showdescriptions').checkbox('is unchecked')){
+           $('.contentdescription').fadeOut();
+       }
+    });
+    $('#showdescriptions').change(function(){
+       if ($('#showdescriptions').checkbox('is checked')){
+           $('.contentdescription').fadeIn();
+       }
+    });
+
+
+// This part is for the block section
+// this checkbox shows the full content
+    if ($('#expandcontent').checkbox('is unchecked')){
+       $('.fullcontent').hide();
+    }
+    $('#expandcontent').change(function(){
+       if ($('#expandcontent').checkbox('is unchecked')){
+           $('.fullcontent').fadeOut();
+           $('.halfcontent').fadeIn();
+       }
+    });
+    $('#expandcontent').change(function(){
+       if ($('#expandcontent').checkbox('is checked')){
+           $('.fullcontent').fadeIn();
+           $('.halfcontent').fadeOut();
+       }
+    });
+
+
+// This part is for the block section
+// this checkbox shows the full content
+    if ($('#expandpage').checkbox('is unchecked')){
+       $('.widepage').hide();
+    }
+    $('#expandpage').change(function(){
+       if ($('#expandcontent').checkbox('is unchecked')){
+           $('.widepage').fadeOut();
+           $('.regularpage').fadeIn();
+       }
+    });
+    $('#expandpage').change(function(){
+       if ($('#expandcontent').checkbox('is checked')){
+           $('.widepage').fadeIn();
+           $('.regularpage').fadeOut();
+       }
+    });
+
+
+// This part is for the block section
+// this checkbox shows the links to work on the lesson parts
+    if ($('#workonlessons').checkbox('is unchecked')){
+       $('.lessonlinks').hide();
+    }
+    $('#workonlessons').change(function(){
+       if ($('#workonlessons').checkbox('is unchecked')){
+           $('.lessonlinks').fadeOut();
+       }
+    });
+    $('#workonlessons').change(function(){
+       if ($('#workonlessons').checkbox('is checked')){
+           $('.lessonlinks').fadeIn();
+       }
+    });
+
+// This part is for the help
+// this checkbox shows the links to get help
+    if ($('#ineedhelp').checkbox('is unchecked')){
+       $('#helpinstructions').hide();
+    }
+    $('#ineedhelp').change(function(){
+       if ($('#ineedhelp').checkbox('is unchecked')){
+           $('#helpinstructions').fadeOut();
+           $('#coursemenu').fadeIn();
+       }
+    });
+    $('#ineedhelp').change(function(){
+       if ($('#ineedhelp').checkbox('is checked')){
+           $('#helpinstructions').fadeIn();
+           $('#coursemenu').fadeOut();
+       }
+    });
+
+
+// Mobile button for sidebar
+   $('#mobile_button').on('click', function(){
+       $('#mobile_menu').sidebar('toggle', 'overlay');
+   });
+
+});
+
+
+
+
+</script>

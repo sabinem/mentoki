@@ -1,0 +1,88 @@
+{% extends "base_semantic/base.html" %}
+{% block title %}
+    {{ courseevent.title }}
+{% endblock %}
+{% block body %}
+   <body id="public" >
+{% endblock %}
+{% block main %}
+    <main class="ui grid">
+        <div class="row">
+            <div class="five wide column">
+                {% for courseowner in courseowners %}
+                    <div class="ui card">
+                        <div class="image">
+                            <img src="{{ courseowner.foto.url }}">
+                        </div>
+                        <div class="content">
+                            <a class="header">
+                                {{ courseowner.user.first_name }} {{ courseowner.user.last_name }}
+                            </a>
+                            <div class="description">
+                                {{ courseowner.text | safe }}
+                            </div>
+                        </div>
+                        <div class="extra content">
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="eleven wide column">
+                <div class="ui piled segment">
+                    <h2 class="ui header">
+                        {{ courseevent.title }} von  {{ course.teachers_display }}
+                    </h2>
+                    <div class="ui card fluid">
+                        <div class="content">
+                            <div class="description">
+                                <p>{{ courseevent.get_event_type_display }} /
+                                   jetzt {{ courseevent.get_status_external_display }}
+                                </p>
+                            </div>
+                        </div>
+                        {% if user_is_participant %}
+                            <a class="ui bottom attached white button"
+                               href="{% url 'classroom:start' slug=courseevent.slug %}">
+                                 Gehe ins Klassenzimmer
+                            </a>
+                        {% elif user_is_teacher %}
+                            <a class="ui bottom attached white button"
+                               href="{% url 'course:start' slug=courseevent.slug %}">
+                               Gehe zur Unterichtsvorbereitung
+                            </a>
+                        {% else %}
+                            <a class="ui bottom attached white button"
+                               href="{% url 'courseevent:bookcourse' slug=courseevent.slug %}">
+                                 Schreibe Dich als Teilnehmer ein
+                            </a>
+                        {% endif %}
+                    </div>
+                    <h3 class="ui header">
+                        Zielgruppe
+                    </h3>
+                    {{ course.target_group | safe }}
+                    <h3 class="ui header">
+                        Voraussetzungen
+                    </h3>
+                    {{ course.prerequisites | safe }}
+                    <h3 class="ui header">
+                        Was Sie aus diesem Kurs mitnehmen
+                    </h3>
+                    {{course.takeaway | safe }}
+                    <h3 class="ui header">
+                        Kursformat
+                    </h3>
+                    {{ courseevent.format | safe}}
+                   <h3 class="ui header">
+                        Arbeitsbelastung
+                    </h3>
+                    {{ courseevent.workload | safe}}
+                    <h3 class="ui header">
+                        Kursbeschreibung
+                    </h3>
+                    {{course.text | safe }}
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

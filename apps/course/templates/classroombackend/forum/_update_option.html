@@ -1,0 +1,5 @@
+{% if match.url_name == "buildforum" %}
+    <a href="{% url 'buildclassroom:updatesubforum' slug=match.kwargs.slug subforum=item.id %}">
+        <span class="glyphicon glyphicon-pencil"></span>
+    </a>
+{% endif %}

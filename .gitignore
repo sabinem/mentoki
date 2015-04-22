@@ -1,0 +1,21 @@
+tmp/**
+
+master.sql
+.idea
+*.pyc
+**/*.pyc
+*.pyc
+
+# extra files for the project
+projectdocs/**
+
+# all tmp files
+tmp/**
+
+# media files
+media/**
+
+# some hidden toplevel files
+.idea
+.DS_Store
+

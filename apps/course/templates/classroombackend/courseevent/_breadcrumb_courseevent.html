@@ -1,0 +1,24 @@
+<ul class="breadcrumb">
+    <span class="glyphicon glyphicon-pushpin"></span>
+    {% if match.url_name != "detailcourseevent" %}
+    <li>
+        Kursereignis
+         <a href="{% url 'buildclassroom:updatecourseevent' slug=match.kwargs.slug %}">
+           <span class="glyphicon glyphicon-pencil"></span>
+        </a>
+
+    </li>
+    {% else %}
+    <li>
+        <a href="{% url 'buildclassroom:detailcourseevent' slug=match.kwargs.slug %}">
+        Kursereignis
+        </a>
+
+    </li>
+    {% endif %}
+    {% if match.url_name == "updatecourseevent" %}
+    <li>
+          bearbeiten
+    </li>
+    {% endif %}
+</ul>

@@ -1,0 +1,30 @@
+{% extends "base_semantic/base.html" %}
+{% block main %}
+    <h2 class="ui block blue header">
+        {% block header %}
+        {% endblock %}
+        {% block header_controls %}
+        {% endblock %}
+        {% block controls %}
+        {% endblock %}
+    </h2>
+    <div class="ui grid">
+    <div class="five wide column">
+        <div id="helpinstructions">
+            <div class="ui segment info message">
+            {% block help %}
+            {% endblock %}
+            </div>
+        </div>
+        <div id="coursemenu">
+            {% include 'base_course/_course_menu.html' %}
+        </div>
+    </div>
+    <div class="eleven wide column">
+        {% block breadcrumb %}
+        {% endblock %}
+        {% block page_content %}
+        {% endblock %}
+    </div>
+    </div>
+{% endblock %}

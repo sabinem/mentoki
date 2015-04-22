@@ -1,0 +1,140 @@
+/* Custom Styles */
+/* Background pattern from subtlepatterns.com */
+
+/* Select radio boxes on the top of the page */
+#pageselects {
+   float:right
+}
+
+/* Prevent images from being too large */
+.img {
+    max-width: 600px;
+}
+
+
+/* embeding pdf files */
+object.htmlembed {
+    max-width: 600px;
+    height: 900px;
+}
+
+
+/* For mobile devices */
+@media only screen and (max-width: 767px) {
+  body {
+    /* The file size of this background image is 93% smaller
+     * to improve page load speed on mobile internet connections */
+    /* background-image: url('/static/img/background3.jpg'); */
+  }
+}
+
+/* Semantic UI Tutorial */
+/* Header */
+
+/* when not mobile menu button is hidden */
+#mobile_button {
+    display:none;
+}
+
+/* when mobile: do not show navbar */
+@media all and (max-width:630px){
+    #mainNavbar{display:none;}
+    /* show menu button instead */
+    #mobile_button {
+        display:inline-block;
+    }
+    /* Header in die Mitte rücken, damit der Menu-Button in der Mitte ist*/
+    #mainHeader {
+        text-align: center;
+    }
+}
+
+/* content must be below navbar */
+#main {
+    margin-top:60px;
+}
+
+/* makes background of blocks white */
+#mainheader {
+    background:white;
+}
+
+
+/* Background Images
+ * Tutorial URL: http://sixrevisions.com/css/responsive-background-image/
+*/
+
+/* homepage */
+#home {
+  /* Location of the image */
+  background-image: url('/static/img/background3.jpg');
+}
+
+#home2 {
+  /* Location of the image */
+  background-image: url('/static/img/12052071_l.jpg');
+}
+
+/* starterkurspage */
+#starterkurs {
+  background-image: url('/static/img/background_yellow.jpg');
+}
+
+/* course list */
+#publiclist {
+  background-image: url('/static/img/12052071_ml.jpg');
+}
+
+/* course list */
+#public {
+  background-image: url('/static/img/12052071_ml.jpg');
+  /* background-color: #98bcd4; */
+}
+
+
+/* contact */
+#contact {
+  background-color:#b0d6d7;
+}
+
+/* application */
+#application {
+  background-color:#a5bacb;
+}
+
+
+/* prebook */
+#prebook {
+  background-color:#98bcd4;
+}
+
+
+/* desk */
+#desk {
+  background-image: url('/static/img/29411385_ml.jpg');
+}
+
+#teamcard {
+    background:#d3e5e5;
+}
+
+
+/* Work on lessons: make title input field longer */
+input#id_title {
+    width:500px;
+}
+
+/* Work on lessons: make title input field longer */
+input#id_description {
+    width:700px;
+}
+
+
+/* Handwriting for the contact page answer */
+#handwriting h2 {
+    font: 400 2.5em/125% 'Petit Formal Script', Helvetica, Sans-serif;
+}
+
+#handwriting p {
+    font: 400 1.5em/125% 'Petit Formal Script', Helvetica, Sans-serif;
+}

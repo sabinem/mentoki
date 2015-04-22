@@ -1,0 +1,56 @@
+
+<div class="table-responsive">
+    <table id="buildrules" class="table table-bordered table-hover">
+        <tbody>
+             <tr>
+            <th>Betreff</th>
+
+            <th>Status</th>
+            </tr>
+
+
+         {% for rule in rules_valid %}
+         <tr >
+                <td style="width:250px">
+                    {{ rule.title }}
+               <a href="{% url 'buildclassroom:updaterule' slug=match.kwargs.slug rule=rule.id %}">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                    </a>
+                    <a href="{% url 'buildclassroom:deleterule' slug=match.kwargs.slug rule=rule.id %}">
+                        <span class="glyphicon glyphicon-trash"></span>
+
+                    </a>
+                </td>
+                <td style="width:250px">
+                     <span class="glyphicon glyphicon-ok"> veröffentlicht</span>
+
+                </td>
+
+
+         </tr>
+
+        {% endfor %}
+       {% for rule in rules_draft %}
+              <tr>
+ <td style="width:250px">
+                   <span class="text-muted"> {{ rule.title }}</span>
+  <a href="{% url 'buildclassroom:updaterule' slug=match.kwargs.slug rule=rule.id %}">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                    </a>
+                    <a href="{% url 'buildclassroom:deleterule' slug=match.kwargs.slug rule=rule.id %}">
+                        <span class="glyphicon glyphicon-trash"></span>
+
+                    </a>
+                </td>
+                <td style="width:250px">
+           <span class="text-muted">         {{ rule.get_status_display }}</span>
+
+                </td>
+
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+

@@ -1,0 +1,10 @@
+{% extends "classroombackend/base.html" %}
+{% block whereami %}
+    {% include 'classroombackend/rules/_breadcrumb_rules.html' %}
+{% endblock %}
+{% block class_content %}
+   <h3>Regeln</h3>
+
+  {% include 'classroombackend/rules/_rules.html' %}
+
+{% endblock %}

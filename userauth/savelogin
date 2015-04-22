@@ -1,0 +1,17 @@
+def login_view_old(request, template_name='userauth/login.html'):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(username=username, password=password)
+    next_page = '/admin'
+    if user is not None:
+        if user.is_active:
+            login(request, user)
+        else:
+            # Return a 'disabled account' error message
+            next_page = request.META['HTTP_REFERER']
+            messages.error(request, "Ihr Account wurde deaktiviert. Bitte nehmen Sie Kontakt zu uns auf, wenn Sie Ihnen wieder aktivieren wollen.")
+    else:
+        next_page = request.META['HTTP_REFERER']
+        messages.error(request, u'Ung\u00FCltiges Login')
+
+    return HttpResponseRedirect(next_page)

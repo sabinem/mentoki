@@ -1,0 +1,44 @@
+{% extends "base_course/base.html" %}
+{% block header %}
+   Vorlage {{ course.title }}
+{% endblock %}
+{% block header_controls %}
+    {% include 'base_course/_helpcheckbox.html' %}
+{% endblock %}
+{% block help %}
+{% include 'base_course/_help_courseowner.html' %}
+{% endblock %}
+{% block page_content %}
+    <div class="ui piled segment">
+        <h2 class="ui header">Kursleitung</h2>
+        {% for owner in owners %}
+            <div class="ui tabular menu">
+              <a class="active blue item">
+                Ansehen
+              </a>
+              <a class="item" href="{% url 'course:ownerupdate' slug=match.kwargs.slug user=owner.user_id %}">
+                Bearbeiten
+              </a>
+            </div>
+            <div class="ui card">
+                <div class="image">
+                    {% if owner.foto %}
+                        <img src="{{ owner.foto.url }}">
+                    {% endif %}
+                </div>
+                <div class="content">
+                    <a class="header">{{ owner.user.first_name }}{{ owner.user.last_name }}</a>
+                    <div class="meta">
+                        <span class="date">Joined in 2014</span>
+                    </div>
+                    <div class="description">
+                        {{ owner.text | safe }}
+                    </div>
+                </div>
+                <div class="extra content">
+                    Information aus dem Benutzerprofil?
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
