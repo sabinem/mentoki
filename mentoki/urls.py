@@ -29,7 +29,7 @@ urlpatterns = patterns('',
     # contact
     url(r'^kontakt/', include('apps.contact.urls', namespace='contact')),
 
-    # file upload
+    # file upload ...
     url(r'^upload/', include('apps.upload.urls', namespace='upload')),
 
     # user handling urls
