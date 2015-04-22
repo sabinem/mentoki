@@ -1,0 +1,31 @@
+{% extends "base_course/base.html" %}
+{% block header %}
+    Kurseereignis {{ courseevent.title }}
+{% endblock %}
+{% block header_controls %}
+    {% include 'base_course/_helpcheckbox.html' %}
+    <div class="ui checkbox" id="showdescriptions">
+        <input type="checkbox">
+        <label>Vorlage anzeigen</label>
+    </div>
+{% endblock %}
+{% block help %}
+    {% include 'base_course/_help_courseevent.html' %}
+{% endblock %}
+{% block page_content %}
+    <div class="ui piled segment">
+    <div class="ui tabular menu">
+      <a class="item" href="{% url 'course:start' slug=match.kwargs.slug %}">
+        Abbrechen
+      </a>
+      <a class="active blue item">
+        {{ tab }}
+      </a>
+    </div>
+    <div class="contentdescription">
+        <div class="ui header">Aus der Kursvorlage:</div>
+        {{ exampletext | safe }}
+    </div>
+    {% include 'base_course/_course_form.html' %}
+    </div>
+{% endblock %}

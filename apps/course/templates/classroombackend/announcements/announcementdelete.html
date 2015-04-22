@@ -1,0 +1,18 @@
+{% extends "classroombackend/base.html" %}
+{% block whereami %}
+    {% include 'classroombackend/announcements/_breadcrumb_announcements.html' %}
+{% endblock %}
+{% block class_content %}
+
+        <h4>{{ announcement.title }}</h4>
+        <p>
+            (Entwurf)
+        </p>
+        <p>{{ announcement.text | safe }}</p>
+       <form id="announcement_delete_form" method="post" action="">
+       {% csrf_token %}
+    <button type="submit" value="post" class="btn btn-default" >
+        Wollen Sie diese Ankündigung löschen?
+      </button>
+    </form>
+{% endblock %}

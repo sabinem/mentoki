@@ -1,0 +1,93 @@
+{% extends "base_course/base.html" %}
+{% load activelink %}
+{% block header %}
+    Kursereignis {{ courseevent.title }}
+{% endblock %}
+{% block header_controls %}
+    {% include 'base_course/_worklinkscheckbox.html' %}
+    {% include 'base_course/_helpcheckbox.html' %}
+{% endblock %}
+{% block help %}
+    {% include 'base_course/_help_courseevent.html' %}
+{% endblock %}
+{% block page_content %}
+    <div class="ui piled segment">
+        <div class="ui tabular menu">
+            <a class="item" href="{% url 'course:start' slug=match.kwargs.slug %}">
+            Kursvorlage
+            </a>
+            {% for courseevent in courseevents %}
+              <a class="item
+                     {% ifactive 'course:courseevent' slug=match.kwargs.slug ce_slug=courseevent.slug %}
+                      active green
+                     {% endifactive %}
+                 " href="{% url 'course:courseevent' slug=match.kwargs.slug ce_slug=courseevent.slug %}">
+                  Kursereignis {{ courseevent.title }}
+              </a>
+            {% endfor %}
+        </div>
+        <h3 class="ui header">
+             Abstrakt
+            <a class= "worklink item" href="{% url 'course:courseeventexcerptupdate' slug=match.kwargs.slug ce_slug=match.kwargs.ce_slug %}">
+                <i class="write blue icon"></i>
+            </a>
+        </h3>
+        {{ courseevent.excerpt |safe  }}
+        <div class="ui fitted divider"></div>
+        <h3 class="ui header">
+            Zielgruppe:
+            <a class= "worklink item" href="{% url 'course:courseeventtargetgroupupdate' slug=match.kwargs.slug ce_slug=match.kwargs.ce_slug %}">
+                <i class="write blue icon"></i>
+            </a>
+        </h3>
+        {{ courseevent.target_group  |safe }}
+        <div class="ui fitted divider"></div>
+        <h3 class="ui header">
+            Voraussetzungen:
+            <a class= "worklink item" href="{% url 'course:courseeventprerequisitesupdate' slug=match.kwargs.slug ce_slug=match.kwargs.ce_slug %}">
+                <i class="write blue icon"></i>
+            </a>
+        </h3>
+        {{ courseevent.prerequisites |safe }}
+        <div class="ui fitted divider"></div>
+        <h3 class="ui header">
+            Was nimmt der Teilnehmer aus dem Kurs mit:
+            <a class= "worklink item" href="{% url 'course:courseeventprojectupdate' slug=match.kwargs.slug ce_slug=match.kwargs.ce_slug %}">
+                <i class="write blue icon"></i>
+            </a>
+        </h3>
+        {{ courseevent.project  |safe  }}
+        <div class="ui fitted divider"></div>
+        <h3 class="ui header">
+            Gliederung:
+            <a class= "worklink item" href="{% url 'course:courseeventstructureupdate' slug=match.kwargs.slug ce_slug=match.kwargs.ce_slug %}">
+                <i class="write blue icon"></i>
+            </a>
+        </h3>
+        {{ courseevent.structure  |safe  }}
+        <div class="ui fitted divider"></div>
+        <h3 class="ui header">
+            Freie Kursbeschreibung:
+            <a class= "worklink item" href="{% url 'course:courseeventtextupdate' slug=match.kwargs.slug ce_slug=match.kwargs.ce_slug %}">
+                <i class="write blue icon"></i>
+            </a>
+        </h3>
+        {{ courseevent.text | safe }}
+        <div class="ui fitted divider"></div>
+        <h3 class="ui header">
+            Kursformat:
+            <a class= "worklink item" href="{% url 'course:courseeventformatupdate' slug=match.kwargs.slug ce_slug=match.kwargs.ce_slug %}">
+                <i class="write blue icon"></i>
+            </a>
+        </h3>
+        {{ courseevent.format | safe }}
+        <div class="ui fitted divider"></div>
+        <h3 class="ui header">
+            Arbeitsbelastung:
+            <a class= "worklink item" href="{% url 'course:courseeventworkloadupdate' slug=match.kwargs.slug ce_slug=match.kwargs.ce_slug %}">
+                <i class="write blue icon"></i>
+            </a>
+        </h3>
+        {{ courseevent.workload | safe }}
+    </div>
+{% endblock %}

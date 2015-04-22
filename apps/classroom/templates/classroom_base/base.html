@@ -1,0 +1,29 @@
+{% extends "base_semantic/base.html" %}
+{% if user.is_superuser or participant.is_owner %}
+   {% block custom_menu_item %}
+      <a  href="{% url 'course:start' slug=courseevent.course_slug %}" class="item">
+          Unterrichtsvorbereitung
+      </a>
+   {% endblock %}
+{% endif %}
+{% block main %}
+    {% block classroom_header %}
+        <h2 class="ui block header">Klassenzimmer {{ courseevent.title }}</h2>
+    {% endblock %}
+    <div class="ui grid regularpage" >
+        <div class="five wide column">
+            {% include 'classroom_base/_menu.html' %}
+        </div>
+        <div class="eleven wide column">
+            {% block regular_page_content %}
+            {% endblock %}
+        </div>
+    </div>
+    <div class="ui grid widepage" >
+    <div class="column">
+        {% block wide_page_content %}
+        {% endblock %}
+    </div>
+    </div>
+{% endblock %}
+

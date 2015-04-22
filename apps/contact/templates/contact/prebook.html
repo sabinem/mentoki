@@ -1,0 +1,30 @@
+{% extends "base_semantic/base.html" %}
+ {% load crispy_forms_tags %}
+{% block title %}
+   Mentoki: Kursvoranmeldung
+{% endblock %}
+{% block body %}
+   <body id="prebook" >
+{% endblock %}
+{% block main %}
+    <h2 class="ui block header" id="mainheader">Voranmeldung für unsere
+        Kurse im Herbst
+        </a>
+        <div class="sub header">Wenn Du Dich voranmeldest werden wir Dich benachrichtigen,
+            sobald die Anmeldung freigeschaltet ist</div>
+    </h2>
+    <div class="ui two column grid">
+        <div class="eight wide column">
+            <div class="ui piled segment">
+                <form class="ui form" action="" method="post">{% csrf_token %}
+                    {{ form.as_p }}
+                    <input class="ui button green" type="submit" value="Send message" />
+                </form>
+            </div>
+        </div>
+        <div class="eight wide column">
+             <img src="/static/img/netteachersbrand.jpg">
+        </div>
+    </div>
+{% endblock %}
+

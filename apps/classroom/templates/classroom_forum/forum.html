@@ -1,0 +1,49 @@
+{% extends "classroom_base/base.html" %}
+{% block classroom_header %}
+   <h2 class="ui block header">
+       {{ courseevent.courseevent_title }} : Forum
+   </h2>
+{% endblock %}
+{% block regular_page_content %}
+    <div class="ui segment">
+        <h2 class="ui title">
+            {{ forum.title }}
+        </h2>
+        <div class="ui list divided">
+            {% for item in output_list %}
+                <div class="item">
+                    <div class="content">
+                        <div class="ui big header">
+                            <a class="header" href="{% url 'classroom:subforum' slug=match.kwargs.slug subforum=item.subforum_id %}">
+                                {{ item.subforum_title }}
+                                {% if item.subforum_threadcount > 0 %}
+                                    <div class="ui circular label">
+                                        {{ item.subforum_threadcount }}
+                                    </div>
+                                {% endif %}
+                            </a>
+                        </div>
+                        <div class="list">
+                            {% for item in item.level_2_output_list %}
+                                <div class="item">
+                                    <i class="right triangle icon"></i>
+                                    <div class="content">
+                                        <a class="header"
+                                            href="{% url 'classroom:subforum' slug=match.kwargs.slug subforum=item.subforum_id %}">
+                                            {{ item.subforum_title }}
+                                            {% if item.subforum_threadcount > 0 %}
+                                                <div class="ui circular label">
+                                                    {{ item.subforum_threadcount }}
+                                                </div>
+                                            {% endif %}
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

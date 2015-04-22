@@ -1,0 +1,13 @@
+{% extends "classroombackend/base.html" %}
+{% load crispy_forms_tags %}
+{% block whereami %}
+   {%  include 'classroombackend/forum/_menutree_buildforum.html' %}
+{% endblock %}
+{% block class_content %}
+    <form id="subforum_update_form" method="post" action="">
+        {% crispy form %}
+        <button type="submit" value="update" class="btn btn-default btn-classroom" >
+            Speichern
+        </button>
+    </form>
+{% endblock %}

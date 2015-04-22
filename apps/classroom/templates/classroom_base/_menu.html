@@ -1,0 +1,51 @@
+{% load activelink %}
+<div class="ui fluid vertical menu">
+      <div class="header item">
+          Klassenzimmer
+      </div>
+      <div class="item">
+          <div class="menu">
+              <a class="item
+                  {% ifstartswith "classroom:start" slug=match.kwargs.slug %}active green{% endifstartswith %}
+                  "href="{% url 'classroom:start' slug=match.kwargs.slug %}">Ankündigungen
+              </a>
+          </div>
+      </div>
+      <div class="header item">
+          Forum
+      </div>
+<div class="item">
+          <div class="menu">
+          <a class="item
+            {% ifstartswith "classroom:forum" slug=match.kwargs.slug %}active green{% endifstartswith %}
+          " href="{% url 'classroom:forum' slug=match.kwargs.slug %}">
+              Forum
+          </a>
+          <a class="item
+            {% ifstartswith "classroom:recent" slug=match.kwargs.slug %}active green{% endifstartswith %}
+          " href="{% url 'classroom:recent' slug=match.kwargs.slug %}">
+              letzte Beiträge
+          </a>
+      </div></div>
+      <div class="header item">
+          Blöcke
+      </div>
+      {% for blockitem in published_block_list %}
+          <div class="item">
+              {{ blockitem.block.title }}
+              <div class="menu">
+                 {% for unit in blockitem.unit_list %}
+                  <a class="item
+                    {% ifstartswith "classroom:lesson" slug=match.kwargs.slug unit=unit.id %}
+                    active green
+                    {% endifstartswith %}
+                    " href="{% url 'classroom:lesson' slug=match.kwargs.slug unit=unit.id %}">
+                      {% if blockitem.block.is_numbered %}
+                          {{ unit.display_nr }}.
+                      {% endif %}
+                      {{ unit.title }}</a>
+                 {% endfor %}
+              </div>
+          </div>
+      {% endfor %}
+</div>

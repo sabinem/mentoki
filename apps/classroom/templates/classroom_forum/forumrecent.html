@@ -1,0 +1,41 @@
+{% extends "classroom_base/base.html" %}
+{% block classroom_header %}
+   <h2 class="ui block header">
+       {{ courseevent.courseevent_title }} : Forum
+   </h2>
+{% endblock %}
+{% block regular_page_content %}
+    <div class="ui segment">
+        <h2 class="ui title">
+            Letzte Beiträge
+        </h2>
+        <table class="ui compact table">
+            <thead>
+                <tr>
+                    <th>Autor</th>
+                    <th>zu Beitragsthema</th>
+                    <th class="right aligned">Zeit</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in result_list %}
+                    <tr>
+                        <td>{{ item.author }}</td>
+                        <td>
+                            <a
+                                {% if item.thread_id %}
+                                    href="{% url 'classroom:thread' slug=match.kwargs.slug subforum=item.thread.subforum_id thread=item.thread.id %}"
+                                {% else %}
+                                    href="{% url 'classroom:thread' slug=match.kwargs.slug subforum=item.subforum_id thread=item.id %}"
+                                {% endif %}
+                                >
+                                {{ item.title }}{{ item.thread.title }}
+                            </a>
+                        </td>
+                        <td class="right aligned">vor {{ item.modified | timesince }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

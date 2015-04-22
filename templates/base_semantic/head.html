@@ -1,0 +1,32 @@
+{% load static %}
+<!-- Meta information -->
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Teachers Net - Learning Platform">
+<meta name="author" content="Sabine Maennel">
+<title>{% block title %}{% endblock %}</title>
+<!-- CSS -->
+<link href="{% static "semantic/semantic.css" %}" rel="stylesheet">
+<link href="{% static "redactor/redactor.css" %}" rel="stylesheet">
+<link href="{% static "css/customstyles.css" %}" rel="stylesheet" >
+<link href="{% static "css/normalize.css" %}" rel="stylesheet" >
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Petit+Formal+Script" />
+<!-- Jquery -->
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<!-- Semantic JS -->
+<script src="{% static "semantic/semantic.js" %}"></script>
+<!-- Braintree JS -->
+<script src="https://js.braintreegateway.com/v2/braintree.js"></script>
+<!-- Redactor JS -->
+<script src="/static/redactor/redactor.js"></script>
+<script src="/static/redactor/plugins/table.js"></script>
+<script src="/static/redactor/plugins/video.js"></script>
+<script src="/static/redactor/plugins/fullscreen.js"></script>
+<script src="/static/redactor/plugins/fontsize.js"></script>
+<script src="/static/redactor/plugins/fontcolor.js"></script>
+<script src="/static/redactor/plugins/imagemanager.js"></script>
+<!-- custom JS -->
+{% include 'base_semantic/custom_scripts/_redactor.html' %}
+{% include 'base_semantic/custom_scripts/_semantic.html' %}
+<script src="/static/js/customjs.js"></script>

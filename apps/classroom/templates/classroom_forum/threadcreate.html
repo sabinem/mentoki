@@ -1,0 +1,15 @@
+{% extends "classroom_base/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block classroom_header %}
+    <h2 class="ui block header">
+        {{ courseevent.courseevent_title }} :
+        <a class="active" href="{% url 'classroom:subforum' slug=match.kwargs.slug subforum=match.kwargs.subforum %}" >
+            {{ subforum.title }}
+        </a>
+        / Beitrag  schreiben
+    </h2>
+{% endblock %}
+{% block regular_page_content %}
+    {% include 'classroom_forum/_form.html' %}
+{% endblock %}

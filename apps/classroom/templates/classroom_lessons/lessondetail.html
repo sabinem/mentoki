@@ -1,0 +1,39 @@
+{% extends "classroom_base/base.html" %}
+{% block classroom_header %}
+    <h2 class="ui block header">
+        {{ courseevent.courseevent_title }}
+        : {{ courseblock.title }}
+    </h2>
+{% endblock %}
+{% block regular_page_content %}
+    <div class="ui segment piled">
+        <h1 class="ui h1 header">
+            {% if courseblock.is_numbered %}
+                {{ unit.display_nr }}.
+            {% endif %}
+            {{ unit.title }}
+        </h1>
+        {{ unit.text | safe }}
+        <div class="ui list divided">
+            {% for material in materials %}
+                <div class="item">
+                    {% if courseblock.is_numbered %}
+                        <i class="top aligned icon">{{ unit.display_nr }}.{{ material.display_nr }}</i>
+                    {% else %}
+                        <i class="top aligned icon triangle right"></i>
+                    {% endif %}
+                    <div class="content">
+                        <div class="header">
+                            <a href="{% url 'classroom:lessonmaterial' slug=match.kwargs.slug unit=unit.id material=material.id %}">
+                                  {{ material.title }}
+                            </a>
+                        </div>
+                        <div>
+                            {{ material.description }}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

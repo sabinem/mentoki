@@ -1,0 +1,46 @@
+<div class="table-responsive">
+    <table id="buildannouncements" class="table table-bordered table-hover">
+        <tbody>
+            <tr>
+            <th>veröffentlicht?</th>
+            <th>wann?</th>
+            <th>Titel</th>
+            </tr>
+            {% for announcement in announcements_unpublished %}
+            <tr>
+                <td style="width:100px">
+                         <a href="{% url 'buildclassroom:updateannouncement' slug=match.kwargs.slug announcement=announcement.id %}">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                    </a>
+                    <a href="{% url 'buildclassroom:deleteannouncement' slug=match.kwargs.slug announcement=announcement.id %}">
+                        <span class="glyphicon glyphicon-trash"></span>
+
+                    </a>
+                </td>
+                <td style="width:250px">
+                        -
+                </td>
+                <td>
+                        <span class="text-muted">{{ announcement.title }}</span>
+
+                </td>
+
+            </tr>
+        {% endfor %}
+            {% for announcement in announcements_published %}
+            <tr>
+                <td style="width:100px">
+                    <span class="glyphicon glyphicon-ok"></span>
+                </td>
+                <td style="width:250px">
+                   {{ announcement.published_at_date |date:'d.m.Y'  }} </span>
+                </td>
+                <td>
+                           {{ announcement.title }}
+                </td>
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

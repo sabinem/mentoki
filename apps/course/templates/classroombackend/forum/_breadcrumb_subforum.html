@@ -1,0 +1,11 @@
+<h4>Forenstrukur:</h4>
+
+        <a href="{% url 'buildclassroom:buildforum' slug=match.kwargs.slug %}">
+           Forum /
+        </a>
+    {% for item in ancestors %}
+
+     {{ item.title }} /
+
+    {% endfor %}
+

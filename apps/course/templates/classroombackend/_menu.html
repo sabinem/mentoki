@@ -1,0 +1,51 @@
+                <ul class="nav-pills nav nav-stacked">
+                    <li role="presentation"
+                       {% if match.url_name == 'start' or match.url_name == "updatecourseevent" %}
+                            class="active"
+                        {% endif %}
+                    >
+                        <a href="{% url 'buildclassroom:start' slug=match.kwargs.slug %}">
+                            Kursereignis bearbeiten
+                        </a>
+                    </li>
+                    <li role="presentation"
+                       {% if match.url_name == 'deleteannouncement' or match.url_name == 'createannouncement' or match.url_name == 'listannouncements' or match.url_name == "updateannouncement" %}
+                            class="active"
+                        {% endif %}
+                    >
+                        <a href="{% url 'buildclassroom:listannouncements' slug=match.kwargs.slug %}">
+                            Ankündigungen bearbeiten
+                        </a>
+                    </li>
+                {% comment %}
+                   <li role="presentation"
+                       {% if match.url_name == 'listrules' or match.url_name == 'updaterule' or match.url_name == 'deleterule'  or match.url_name == 'createrule'  %}
+                            class="active"
+                        {% endif %}
+                    >
+                        <a href="{% url 'buildclassroom:listrules' slug=match.kwargs.slug %}">
+                            Regeln bearbeiten
+                        </a>
+                    </li>
+                    {% endcomment %}
+                    <li role="presentation"
+                      {% if match.url_name == 'listlessons'  %}
+                            class="active"
+                        {% endif %}
+                    >
+                        <a href="{% url 'buildclassroom:listlessons' slug=match.kwargs.slug %}">
+                            Unterricht freischalten
+                        </a>
+                    </li>
+
+                    {%  include 'classroom/_base_menu_list.html' %}
+                    <li role="presentation"
+                       {% if match.url_name == "buildforum" %}
+                            class="active"
+                        {% endif %}
+                    >
+                        <a href="{% url 'buildclassroom:buildforum' slug=match.kwargs.slug %}">
+                            Forum einrichten
+                        </a>
+                    </li>
+                </ul>

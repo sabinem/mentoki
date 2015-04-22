@@ -1,0 +1,41 @@
+{% extends "base_semantic/base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}
+    {{ courseevent.title }}
+{% endblock %}
+{% block body %}
+   <body id="public" >
+{% endblock %}
+{% block main %}
+    <div id="heading" class="jumbotron">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-lg-6 col-sm-6">
+                    <h2>Nehmen Sie Kontakt zu uns auf!</h2>
+                </div>
+                <div class="col-md-6 col-lg-6 col-sm-6">
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-lg-4 col-sm-4">
+                {% include 'media/_homepage_img_contactus.html' %}
+            </div>
+            {% block contact_form %}
+            {% endblock %}
+            <div class="col-md-8 col-lg-8 col-sm-8">
+                <form id="application_form" method="post" action="">
+                    {% crispy form %}
+                    {% csrf_token %}
+                    <button type="submit"  value="Create" class="btn btn-success  active" >
+                        Abschicken
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

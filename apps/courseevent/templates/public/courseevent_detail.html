@@ -1,0 +1,131 @@
+{% extends "base_semantic/base_public.html" %}
+{% block title %}
+    {{ courseevent.title }}
+{% endblock %}
+{% block body %}
+   <body id="public" >
+{% endblock %}
+{% block main %}
+    <main class="ui grid">
+        <div class="row">
+            <div class="five wide column">
+                {% for courseowner in courseowners %}
+                    <div class="ui card">
+                        <div class="image">
+                            {% if courseowner.foto %}
+                                <img src="{{ courseowner.foto.url }}">
+                            {% endif %}
+                        </div>
+                        <div class="content">
+                            <a class="header">
+                                {{ courseowner.user.first_name }} {{ courseowner.user.last_name }}
+                            </a>
+                            <div class="description">
+                                {{ courseowner.text | safe }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="eleven wide column">
+                <div class="ui piled segment">
+                    <h2 class="ui aligned center header">
+                        {{ courseevent.title }} von  {{ course.teachers_display }}
+                    </h2>
+                    <div class="ui card fluid">
+                        <div class="content">
+                            <div class="description">
+                            <div class="ui grid two columns">
+                            <div class="column">
+                            <div class="ui divided list">
+                                <div class="item">
+                                    <i class="ticket icon"></i>
+                                    <div class="content">
+                                        <div class="header">Kursformat:
+                                        {{ courseevent.get_event_type_display }}</div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <i class="map marker icon"></i>
+                                    <div class="content">
+                                      <a class="header">Dauer: {{ courseevent.nr_weeks }} Wochen</a>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <i class="calendar icon"></i>
+                                    <div class="content">
+                                      <div class="header">Startdatum:
+                                      {{ courseevent.start_date | date:"d.M.Y" }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                            <div class="column">
+                            <div class="ui divided list">
+                                <div class="item">
+                                    <i class="users icon"></i>
+                                    <div class="content">
+                                      <div class="header">maximale Teilnehmeranzahl:
+                                      15</div>
+                                    </div>
+                                </div>
+                                {% if courseevent.status_external == courseevent.EXTEVENT_OPEN_FOR_BOOKING %}
+                                <div class="item">
+                                    <i class="tag icon"></i>
+                                    <div class="content">
+                                      <div class="header">Preis
+                                      1480 €</div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div style="height:5px;"></div>
+                        {% if courseevent.status_external == courseevent.EXTEVENT_OPEN_FOR_BOOKING %}
+                            <a class="ui bottom teal attached button"
+                               href="{% url 'contact:application' %}">
+                                 jetzt buchen
+                            </a>
+                        {% else %}
+                            <a class="ui bottom blue attached button"
+                               href="{% url 'contact:prebook' %}">
+                                 jetzt vormerken lassen
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+                    <h3 class="ui aligned center header">
+                        Abstrakt
+                    </h3>
+                    {{ courseevent_info.excerpt | safe }}
+                    <h3 class="ui header">
+                        Zielgruppe
+                    </h3>
+                    {{ courseevent_info.target_group | safe }}
+                    <h3 class="ui header">
+                        Voraussetzungen
+                    </h3>
+                    {{ courseevent_info.prerequisites | safe }}
+                    <h3 class="ui header">
+                        Was Du aus diesem Kurs mit nimmst
+                    </h3>
+                    {{courseevent_info.project | safe }}
+                    <h3 class="ui header">
+                        Kursformat
+                    </h3>
+                    {{ courseevent_info.format | safe}}
+                    <h3 class="ui header">
+                        Gliederung
+                    </h3>
+                    {{courseevent_info.structure | safe }}
+                    <h3 class="ui header">
+                        Kursbeschreibung
+                    </h3>
+                    {{courseevent_info.text | safe }}
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

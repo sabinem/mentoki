@@ -1,0 +1,31 @@
+{% extends "base_semantic/base.html" %}
+ {% load crispy_forms_tags %}
+{% block title %}
+   Mentoki: Anfrage für den Starterkurs
+{% endblock %}
+{% block body %}
+   <body id="application" >
+{% endblock %}
+{% block main %}
+   <h1 class="ui header block">Bewerbung für den
+       Mentoki Starterkurs
+       </a>
+        <div class="sub header">
+            Kommen mit uns ins Gespräch über Deine Chance in den Online-Unterricht einzusteigen.
+        </div>
+    </h1>
+    <div class="ui two column grid">
+        <div class="eight wide column">
+            <div class="ui piled segment">
+                <form class="ui form" action="" method="post">{% csrf_token %}
+                    {{ form.as_p }}
+                    <input class="ui button blue" type="submit" value="Anfrage abschicken" />
+                </form>
+            </div>
+        </div>
+        <div class="eight wide column">
+             <img src="/static/img/pilotkurs.jpg">
+        </div>
+    </div>
+{% endblock %}
+

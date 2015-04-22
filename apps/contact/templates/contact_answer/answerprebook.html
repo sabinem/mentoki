@@ -1,0 +1,22 @@
+{% extends "base_semantic/base.html" %}
+{% block title %}
+   Mentoki Kontaktseite
+{% endblock %}
+{% block body %}
+   <body id="prebook" >
+{% endblock %}
+{% block main %}
+    <div class="ui two column grid">
+        <div class="eight wide column">
+            <div class="ui segment piled" id="handwriting">
+                <h2>Danke für Dein Interesse am Kurs "{{ courseevent.title }}"</h2>
+                <p>Wir haben Dich als Interessenten vorgemerkt und werden
+                    Dich benachrichtigen sobald die Anmeldung für diesen Kurs offen ist.</p>
+                <p>Sabine Maennel und Anette Pekrul</p>
+            </div>
+        </div>
+        <div class="eight wide column">
+             <img src="/static/img/netteachersbrand.jpg">
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "base_course/base.html" %}
+{% load crispy_forms_tags %}
+{% block header %}
+        Kursereignis {{ courseevent.title }}
+{% endblock %}
+{% block header_controls %}
+    {% include 'base_course/_helpcheckbox.html' %}
+{% endblock %}
+{% block help %}
+    {% include 'base_course/_help_announcements.html' %}
+{% endblock %}
+{% block controls %}
+{% endblock %}
+{% block page_content %}
+    <div class="ui segment">
+        <h1 class="ui header">Ankündigungen anlegen</h1>
+        {% include 'base_course/_course_form.html' %}
+    </div>
+{% endblock %}

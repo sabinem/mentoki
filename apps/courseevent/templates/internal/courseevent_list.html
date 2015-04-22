@@ -1,0 +1,41 @@
+{% extends "base_semantic/base.html" %}
+{% block title %}Kursliste{% endblock %}
+{% block body %}
+<body id="publiclist" >
+{% endblock %}
+{% block main %}
+    <h2 class="ui block header" id="mainheader">Kursübersicht
+        <div class="sub header">Hier könnt ihr gegenseitig Eure Kurse buchen.</div>
+    </h2>
+    <main class="ui grid">
+        <div class="row">
+            <div class="five wide column">
+                <div class="ui vertical menu">
+                  <div class="item">
+                      Unsere Themen:
+                      <div class="menu">
+                         {% for item in courseevent_list %}
+                             <a class="item" href="{% url 'courseevent:internaldetail' slug=item.courseevent.slug %}">{{ item.courseevent.title }}</a>
+                         {% endfor %}
+                      </div>
+                  </div>
+                </div>
+            </div>
+            <div class="eleven wide column">
+                    {% for item in courseevent_list %}
+                         <div class="ui piled segment">
+                        <h3 class="ui header">
+                            <a class="ui header" href="{% url 'courseevent:internaldetail' slug=item.courseevent.slug %}">
+                                {{ item.courseevent.title }} von {{ item.courseevent_teachers }}
+                            </a>
+                            <a href="{% url 'courseevent:internaldetail' slug=item.courseevent.slug %}"
+                               class="ui tag green label">jetzt intern buchen
+                            </a>
+                        </h3>
+                           {{ item.courseevent.course.excerpt |safe}}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+    </main>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends "base_semantic/base_public.html" %}
+{% block title %}Kursliste{% endblock %}
+{% block body %}
+<body id="publiclist" >
+{% endblock %}
+{% block main %}
+    <h2 class="ui block header" id="mainheader">Kursübersicht
+        <div class="sub header">Jetzt buchbar: Der Mentoki Starterkurs</div>
+    </h2>
+    <main class="ui grid">
+        <div class="row">
+            <div class="five wide column">
+                <div class="ui fluid vertical menu">
+                    <div class="header item">
+                        Jetzt buchen
+                    </div>
+                    <div class="item">
+                        <div class="menu">
+                              {% for item in courseevent_list_now %}
+                              <a class="item" href="{% url 'courseevent:publicdetail' slug=item.courseevent.slug %}">
+                                  {{ item.courseevent.title }}
+                              </a>
+                              {% endfor %}
+                        </div>
+                    </div>
+                    <div class="header item">
+                        Vorschau auf den Herbst
+                    </div>
+                    <div class="item">
+                        <div class="menu">
+                            {% for item in courseevent_list_preview %}
+                            <a class="item" href="{% url 'courseevent:publicdetail' slug=item.courseevent.slug %}">
+                                {{ item.courseevent.title }}
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="eleven wide column">
+
+                    {% for item in courseevent_list_now %}
+
+                        <div class="ui piled segment">
+                        <h3 class="ui header">
+                            <a class="ui header" href="{% url 'courseevent:publicdetail' slug=item.courseevent.slug %}">
+                                {{ item.courseevent.title }} von {{ item.courseevent_teachers }}
+                            </a>
+                            <a class="ui tag green label" href="{% url 'courseevent:publicdetail' slug=item.courseevent.slug %}">
+                                jetzt buchen
+                            </a>
+                        </h3>
+                        {{ item.courseevent.course.excerpt |safe}}
+                        </div>
+                    {% endfor %}
+                    {% for item in courseevent_list_preview %}
+                        <div class="ui piled segment">
+                        <h3 class="ui header">
+                            <a class="ui header"
+                               href="{% url 'courseevent:publicdetail' slug=item.courseevent.slug %}">
+                               {{ item.courseevent.title }} von {{ item.courseevent_teachers }}
+                            </a>
+                            <a class="ui tag blue label" href="{% url 'courseevent:publicdetail' slug=item.courseevent.slug %}">
+                                Vorankündigung
+                            </a>
+                        </h3>
+                        {{ item.courseevent.course.excerpt |safe}}
+                        </div>
+                    {% endfor %}
+
+            </div>
+        </div>
+    </main>
+{% endblock %}
