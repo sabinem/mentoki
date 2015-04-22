@@ -12,7 +12,9 @@
                 {% for courseowner in courseowners %}
                     <div class="ui card">
                         <div class="image">
-                            <img src="{{ courseowner.foto.url }}">
+                            {% if courseowner.foto %}
+                                <img src="{{ courseowner.foto.url }}">
+                            {% endif %}
                         </div>
                         <div class="content">
                             <a class="header">
@@ -21,8 +23,6 @@
                             <div class="description">
                                 {{ courseowner.text | safe }}
                             </div>
-                        </div>
-                        <div class="extra content">
                         </div>
                     </div>
                 {% endfor %}

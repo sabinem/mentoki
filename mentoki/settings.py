@@ -19,7 +19,7 @@ BASE_DIR_PROJECT = os.path.abspath(os.path.join(BASE_DIR, os.pardir))
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 LOCAL_ENVIRONMENT = os.environ.get('LOCAL_ENVIROMENT')
-DEBUG = os.environ.get('DEBUG')
+DEBUG = False
 
 if DEBUG:
     TEMPLATE_DEBUG = True
@@ -88,16 +88,10 @@ WSGI_APPLICATION = 'mentoki.wsgi.application'
 
 # Database
 
-if LOCAL_ENVIRONMENT:
-    #master branch local databasex
-    DATABASE_NAME = 'netteachers_de'
-else:
-    DATABASE_NAME = os.environ.get('DATABASE_NAME')
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': DATABASE_NAME,
+        'NAME': os.environ.get('DATABASE_NAME'),
         'USER': os.environ.get('DATABASE_USER'),
 	    'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
 	    'HOST': os.environ.get('DATABASE_HOST'),

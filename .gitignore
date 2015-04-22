@@ -19,3 +19,5 @@ media/**
 .idea
 .DS_Store
 
+mentoki/settings_production.py
+mentoki/settings_test.py

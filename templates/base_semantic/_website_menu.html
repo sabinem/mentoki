@@ -1,55 +1,63 @@
 {% load activelink %}
-<div class="ui menu fixed center aligned top inverted" id="mainNavbar">
-  <a class="item
-      {% ifactive "home:home" %}
-          active
-      {% endifactive %}
-      " href="{% url 'home:home' %}">
-      <img  id="logo" src="/static/img/mentoki-logo.png">
-  </a>
-  {% if user.is_authenticated %}
-      <a class="item
-          {% ifactive "courseevent:internallist" %}
-              active
-          {% endifactive %}
-        " href="{% url 'courseevent:internallist' %}">Kurse</a>
-        Kurse
-      </a>
-      <a  href="{% url 'desk:start' %}" class="item
-          {% ifactive "desk:start" %}
-              active
-          {% endifactive %}          ">
-          Schreibtisch
-      </a>
-{% block custom_menu_item %}
-
-{% endblock %}
-      <div class="right menu">
-          <a class="item">{{ user.username }}</a>
-          <a href="{% url "userauth:logout" %}" class="item">
-            Logout
-          </a>
-      </div>
-  {% else %}
-      <a class="item
-          {% ifactive "courseevent:publiclist" %}
-              active
-          {% endifactive %}
-          " href="{% url 'courseevent:publiclist' %}">
-          Vorschau auf unsere Kurse im Herbst
-      </a>
-      <a class="item
-          {% ifactive "courseevent:publiclist" %}
-              active
-          {% endifactive %}
-          " href="{% url 'home:starterkurs' %}">
-          Starterkurs
-      </a>
-      <div class="right menu">
-          <a class="item" href="{% url 'userauth:login' %}" >Login</a>
-            Login
-          </a>
-      </div>
-  {% endif %}
+<div class="ui menu fixed center aligned top inverted">
+    <a class="item"
+        style="padding:0; margin:0; padding-left:30px;"
+        href="{% url 'home:home' %}">
+        <img  id="logo" src="/static/img/mentoki-logo.png"
+              style="height:30px; padding:0; margin:0;">
+    </a>
+    {% if user.is_authenticated %}
+        <a class="item
+            {% ifactive "courseevent:internallist" %}
+                active
+            {% endifactive %}
+            " href="{% url 'courseevent:internallist' %}">
+            Kurse
+        </a>
+        <a  href="{% url 'desk:start' %}" class="item
+            {% ifactive "desk:start" %}
+                  active
+            {% endifactive %}
+            ">
+            Schreibtisch
+        </a>
+        {% block custom_menu_item %}
+        {% endblock %}
+        <div class="right menu">
+            <a class="item">
+                {{ user.username }}
+            </a>
+            <a href="{% url "userauth:logout" %}" class="item">
+                Logout
+            </a>
+        </div>
+    {% else %}
+        <a class="item
+            {% ifactive "courseevent:publiclist" %}
+                active
+            {% endifactive %}
+            " href="{% url 'courseevent:publiclist' %}">
+            Kurse
+        </a>
+        <a class="item
+            {% ifactive "home:starterkurs" %}
+                active
+            {% endifactive %}
+            " href="{% url 'home:starterkurs' tab="video" %}">
+            Starterkurs
+        </a>
+        <a class="item
+            {% ifactive "contact:contact" %}
+                active
+            {% endifactive %}
+            " href="{% url 'contact:contact' %}">
+            Kontakt
+        </a>
+        <div class="right menu">
+            <a class="item" href="{% url 'userauth:login' %}" >
+                Login
+            </a>
+        </div>
+    {% endif %}
 </div>
 
