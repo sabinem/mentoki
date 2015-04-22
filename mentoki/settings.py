@@ -89,7 +89,7 @@ WSGI_APPLICATION = 'mentoki.wsgi.application'
 # Database
 
 if LOCAL_ENVIRONMENT:
-    #master branch local database
+    #master branch local databasex
     DATABASE_NAME = 'netteachers_de'
 else:
     DATABASE_NAME = os.environ.get('DATABASE_NAME')
