@@ -99,9 +99,9 @@ urlpatterns = patterns('',
     # urls for update lessons view
     url(r'^(?P<slug>[a-z0-9_-]{3,50})/unterricht/bearbeiten/block/(?P<block>\d{1,4})/aendern$',
         BlockUpdateView.as_view(), name='blockupdate'),
-    url(r'^(?P<slug>[a-z0-9_-]{3,50})/unterricht//bearbeiten/lektion/(?P<unit>\d{1,4})/aendern$',
+    url(r'^(?P<slug>[a-z0-9_-]{3,50})/unterricht/bearbeiten/lektion/(?P<unit>\d{1,4})/aendern$',
         UnitUpdateView.as_view(), name='unitupdate'),
-    url(r'^(?P<slug>[a-z0-9_-]{3,50})/unterricht//bearbeiten/material/(?P<material>\d{1,4})/aendern$',
+    url(r'^(?P<slug>[a-z0-9_-]{3,50})/unterricht/bearbeiten/material/(?P<material>\d{1,4})/aendern$',
         MaterialUpdateView.as_view(), name='materialupdate'),
 
 
