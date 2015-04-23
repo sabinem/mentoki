@@ -34,21 +34,21 @@
                       active green
                   {% endifstartswith %}
                   " href="{% url 'course:blockcreate' slug=match.kwargs.slug %}">
-                  <i class="plus icon"></i>Block anlegen / bearbeiten
+                  <i class="plus icon"></i>Block anlegen
               </a>
               <a class="item
                   {% ifstartswith "course:unitcreate" slug=match.kwargs.slug %}
                       active green
                   {% endifstartswith %}
                   " href="{% url 'course:unitcreate' slug=match.kwargs.slug %}">
-                  <i class="plus icon"></i>Lektion anlegen / bearbeiten
+                  <i class="plus icon"></i>Lektion anlegen
               </a>
               <a class="item
                   {% ifstartswith "course:materialcreate" slug=match.kwargs.slug %}
                       active green
                   {% endifstartswith %}
                   " href="{% url 'course:materialcreate' slug=match.kwargs.slug %}">
-                  <i class="plus icon"></i>Material anlegen / bearbeiten
+                  <i class="plus icon"></i>Material anlegen
               </a>
           </div>
       </div>
@@ -57,7 +57,7 @@
           Kursereignis {{ courseevent }}
       </div>
           <div class="item">
-              Arbeit im KLassenzimmer
+              Arbeit im Klassenzimmer
               <div class="menu">
                   <a class="item"
                      href="{% url 'classroom:start' slug=courseevent.slug  %}">

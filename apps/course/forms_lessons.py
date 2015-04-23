@@ -8,7 +8,7 @@ class BlockForm(forms.ModelForm):
 
     class Meta:
         model = CourseBlock
-        fields = ('title', 'status', 'is_numbered', 'show_full', 'display_nr', 'text')
+        fields = ('title', 'status', 'is_numbered', 'display_nr', 'text')
 
     def __init__(self, *args, **kwargs):
         super(BlockForm, self).__init__(*args, **kwargs)
