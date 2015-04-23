@@ -19,7 +19,7 @@ BASE_DIR_PROJECT = os.path.abspath(os.path.join(BASE_DIR, os.pardir))
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 LOCAL_ENVIRONMENT = os.environ.get('LOCAL_ENVIROMENT')
-DEBUG = True
+DEBUG = False
 
 if DEBUG:
     TEMPLATE_DEBUG = True
