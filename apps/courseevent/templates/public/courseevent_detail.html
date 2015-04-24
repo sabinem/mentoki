@@ -48,13 +48,14 @@
                                         {{ courseevent.get_event_type_display }}</div>
                                     </div>
                                 </div>
-                                {% if courseevent.status_external == courseevent.EXTEVENT_OPEN_FOR_BOOKING  %}
+                                {% if courseevent.event_type == courseevent.EVENTTYPE_TIMED_COURSE  %}
                                 <div class="item">
                                     <i class="map marker icon"></i>
                                     <div class="content">
                                       <a class="header">Dauer: {{ courseevent.nr_weeks }} Wochen</a>
                                     </div>
                                 </div>
+                                {% if courseevent.status_external == courseevent.EXTEVENT_OPEN_FOR_BOOKING  %}
                                 <div class="item">
                                     <i class="calendar icon"></i>
                                     <div class="content">
@@ -62,6 +63,7 @@
                                       {{ courseevent.start_date | date:"d.M.Y" }}</div>
                                     </div>
                                 </div>
+                                {% endif %}
                                 {% endif %}
                             </div>
                             </div>
@@ -72,7 +74,7 @@
                                     <i class="users icon"></i>
                                     <div class="content">
                                       <div class="header">maximale Teilnehmeranzahl:
-                                      {{ courseevent.max_nr_participants }}</div>
+                                      {{ courseevent.max_participants }}</div>
                                     </div>
                                 </div>
 
