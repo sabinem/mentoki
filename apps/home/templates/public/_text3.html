@@ -226,7 +226,7 @@
              <div class="column">
         <div class="ui divided list">
           <div class="item">
-            <i class="aligned top question icon"></i>
+            <i class="checkmark icon"></i>
             <div class="content">
               <a class="header">Bleibe ich unabhängig?</a>
               <div class="description">Dazu gibt es ein klares Ja.
@@ -235,7 +235,7 @@
             </div>
           </div>
           <div class="item">
-            <i class="aligned top question icon"></i>
+            <i class="calendar icon"></i>
             <div class="content">
               <a class="header">Wan entscheidet sich, ob wir zusammenpassen?</a>
               <div class="description">Das entscheidet sich nach dem Starterkurs. Es gibt Kriterien, die über
@@ -247,7 +247,7 @@
             </div>
           </div>
           <div class="item">
-            <i class="aligned top question icon"></i>
+            <i class="pin icon"></i>
             <div class="content">
               <a class="header">Welche Kursformate unterstützt ihr?</a>
               <div class="description">Unser Lieblingsformat ist die geführte Kleingruppe, aber wir unterstützen auch
@@ -258,7 +258,7 @@
             </div>
           </div>
           <div class="item">
-            <i class="aligned top question icon"></i>
+            <i class="pin icon"></i>
             <div class="content">
               <a class="header">Was verlangt ihr als Gegenleistung?</a>
               <div class="description">Der Starterkurs kostet derzeit 1480 €. Beim Unterrichten auf der Plattform
@@ -269,19 +269,25 @@
             </div>
           </div>
           <div class="item">
-            <i class="aligned top question icon"></i>
+            <i class="shopping cart icon"></i>
             <div class="content">
               <div class="header">Wie buche ich den Starterkurs?</div>
-              <div class="description">Du füllst dieses Formular aus und beschreibst Deinen Kurs. Anschliessend
+              <div class="description">Du füllst <a href="{% url 'contact:application' %}">dieses Formular</a> aus und beschreibst Deinen Kurs. Anschliessend
                   skypen wir mit Dir, um herauszufinden, ob unser Angebot etwas für Dich ist. Wir
                   beantworten dabei auch gerne andere Fragen, die Du zum Online Unterrichten hast.</div>
             </div>
           </div>
         </div>
+
     </div>
         <div class="column">
             <div class="column"><img src="/static/img/15743592_s.jpg"></div>
         </div>
 </div>
         </div>
+
     </div>
+<p></p>
+            <a class="ui button fluid" href="{% url 'contact:application' %}">
+            Anmeldung zum Vorgespräch
+        </a>

@@ -82,7 +82,14 @@
                           active
                           {% endifactive %}
                           " href="{% url 'courseevent:publicdetail' slug="starterkurs2" %}">
-                              Anmeldung
+                              Kurs-Ausschreibung
+                      </a>
+                      <a class="item
+                          {% ifactive 'contact:application' %}
+                          active
+                          {% endifactive %}
+                          " href="{% url 'contact:application' %}">
+                              Anmeldung zum Vorgespräch
                       </a>
                 </div>
 
@@ -100,13 +107,7 @@
 
 
 
-        <a class="item
-            {% ifactive "contact:contact" %}
-                active
-            {% endifactive %}
-            " href="{% url 'contact:contact' %}">
-            Kontakt
-        </a>
+
         <div class="right menu">
             <a class="item" href="{% url 'userauth:login' %}" >
                 Login
