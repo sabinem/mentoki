@@ -58,7 +58,7 @@ INSTALLED_APPS = (
     'apps.forum',
     'apps.classroom',
     # other
-    'apps.upload', 
+    'apps.upload',
     #'apps.email',
     # delete pdf app soon
     'apps.pdf',
@@ -171,7 +171,7 @@ IGNORABLE_404_URLS = (
     re.compile(r'^/apple-touch-icon.*\.png$'),
     re.compile(r'^/favicon\.ico$'),
     re.compile(r'^/robots\.txt$'),
-)    
+)
 
 # Email
 if LOCAL_ENVIRONMENT:
@@ -259,3 +259,4 @@ if LOCAL_ENVIRONMENT:
     # make all loggers use the console.
     for logger in LOGGING['loggers']:
         LOGGING['loggers'][logger]['handlers'] = ['console']
+
