@@ -68,6 +68,8 @@ class Course(CourseBasicModel):
         teachers = self.teachers
         namesstring = ""
         for teacher in teachers:
+            if namesstring != "":
+                namesstring += " und "
             namesstring += u"%s %s " % (teacher.first_name, teacher.last_name)
         return namesstring
 
@@ -194,6 +196,8 @@ class CourseOwner(CourseBasicModel):
     course = models.ForeignKey(Course)
     user = models.ForeignKey(User)
     foto = models.ImageField(upload_to=course_name, blank=True)
+    display = models.BooleanField(default=True)
+    display_nr = models.IntegerField(default=1)
 
     def __unicode__(self):
         # the courseownership is represented by the combination of course and user

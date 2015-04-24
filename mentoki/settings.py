@@ -58,7 +58,7 @@ INSTALLED_APPS = (
     'apps.forum',
     'apps.classroom',
     # other
-    'apps.upload', 
+    'apps.upload',
     #'apps.email',
     # delete pdf app soon
     'apps.pdf',
@@ -171,7 +171,7 @@ IGNORABLE_404_URLS = (
     re.compile(r'^/apple-touch-icon.*\.png$'),
     re.compile(r'^/favicon\.ico$'),
     re.compile(r'^/robots\.txt$'),
-)    
+)
 
 # Email
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

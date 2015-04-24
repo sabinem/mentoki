@@ -59,9 +59,11 @@ def calc_courseeventdata(slug):
             courseevent = CourseEvent.objects.get(slug=slug)
             course = Course.objects.get(id=courseevent.course_id)
             # the teacher for the courseevent are fetched
-            teachers = CourseOwner.objects.select_related('user').filter(course_id=course.id)
+            teachers = CourseOwner.objects.select_related('user').filter(course_id=course.id).order_by('display_nr')
             namesstring = ""
             for teacher in teachers:
+                if namesstring != "":
+                    namesstring += " und "
                 namesstring += u'%s %s ' % (teacher.user.first_name, teacher.user.last_name)
 
             courseevent_teachers = namesstring

@@ -107,9 +107,7 @@ def calc_subforum_change(forum_id):
             'last_author_id': None,
             'thread_count': 0
         }
-    print "******************** in calc_subforum ***************"
-    print "subforums"
-    print subforumchange_dict
+
     thread_dict = get_thread_data(forum_id)
     for key in thread_dict:
         thread_subforum_id = thread_dict[key]['subforum_id']

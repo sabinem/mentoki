@@ -75,7 +75,7 @@ class CourseEventDetailView(TemplateView):
             context['course'] = course
             # get teachers
             courseowners = CourseOwner.objects.filter(course_id=courseevent.course_id)
-            context['courseowners'] = courseowners
+            context['courseowners'] = courseowners.order_by('display_nr')
         except:
             # fail silently
             pass

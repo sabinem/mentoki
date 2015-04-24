@@ -95,7 +95,7 @@ class CourseEventInternalDetailView(InternalCourseEventBookingMixin, TemplateVie
             course = Course.objects.get(id=courseevent.course_id)
             context['course'] = course
             # get teachers
-            courseowners = CourseOwner.objects.filter(course_id=courseevent.course_id)
+            courseowners = CourseOwner.objects.filter(course_id=courseevent.course_id).order_by('display_nr')
             context['courseowners'] = courseowners
         except:
             # fail silently
