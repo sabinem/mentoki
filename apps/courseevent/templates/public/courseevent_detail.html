@@ -99,19 +99,17 @@
                     <h3 class="ui aligned center header">
                         Abstrakt
                     </h3>
-                    {{ courseevent_info.excerpt | safe }}
+                    {{ courseevent.excerpt | safe }}
                     <h3 class="ui header">
                         Zielgruppe
                     </h3>
                     {{ courseevent_info.target_group | safe }}
-                    <h3 class="ui header">
-                        Voraussetzungen
-                    </h3>
-                    {{ courseevent_info.prerequisites | safe }}
+
                     <h3 class="ui header">
                         Was Du aus diesem Kurs mit nimmst
                     </h3>
                     {{courseevent_info.project | safe }}
+
                     <h3 class="ui header">
                         Kursformat
                     </h3>
@@ -120,6 +118,14 @@
                         Gliederung
                     </h3>
                     {{courseevent_info.structure | safe }}
+                    <h3 class="ui header">
+                        Voraussetzungen
+                    </h3>
+                    {{ courseevent_info.prerequisites | safe }}
+                    <h3 class="ui header">
+                        Arbeitsaufwand
+                    </h3>
+                    {{ courseevent_info.workload | safe }}
                     <h3 class="ui header">
                         Kursbeschreibung
                     </h3>

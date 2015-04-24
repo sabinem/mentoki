@@ -40,7 +40,7 @@
                 <i class="write blue icon"></i>
             </a>
         </h3>
-        {{ courseevent.target_group  |safe }}
+        {{ courseeventinfo.target_group  |safe }}
         <div class="ui fitted divider"></div>
         <h3 class="ui header">
             Voraussetzungen:
@@ -48,7 +48,7 @@
                 <i class="write blue icon"></i>
             </a>
         </h3>
-        {{ courseevent.prerequisites |safe }}
+        {{ courseeventinfo.prerequisites |safe }}
         <div class="ui fitted divider"></div>
         <h3 class="ui header">
             Was nimmt der Teilnehmer aus dem Kurs mit:
@@ -56,7 +56,7 @@
                 <i class="write blue icon"></i>
             </a>
         </h3>
-        {{ courseevent.project  |safe  }}
+        {{ courseeventinfo.project  |safe  }}
         <div class="ui fitted divider"></div>
         <h3 class="ui header">
             Gliederung:
@@ -64,7 +64,7 @@
                 <i class="write blue icon"></i>
             </a>
         </h3>
-        {{ courseevent.structure  |safe  }}
+        {{ courseeventinfo.structure  |safe  }}
         <div class="ui fitted divider"></div>
         <h3 class="ui header">
             Freie Kursbeschreibung:
@@ -72,7 +72,7 @@
                 <i class="write blue icon"></i>
             </a>
         </h3>
-        {{ courseevent.text | safe }}
+        {{ courseeventinfo.text | safe }}
         <div class="ui fitted divider"></div>
         <h3 class="ui header">
             Kursformat:
@@ -80,7 +80,7 @@
                 <i class="write blue icon"></i>
             </a>
         </h3>
-        {{ courseevent.format | safe }}
+        {{ courseeventinfo.format | safe }}
         <div class="ui fitted divider"></div>
         <h3 class="ui header">
             Arbeitsbelastung:
@@ -88,6 +88,6 @@
                 <i class="write blue icon"></i>
             </a>
         </h3>
-        {{ courseevent.workload | safe }}
+        {{ courseeventinfo.workload | safe }}
     </div>
 {% endblock %}

@@ -112,6 +112,7 @@ class CourseEventBuildMixin(CourseBaseMixin):
         context = super(CourseEventBuildMixin, self).get_context_data(**kwargs)
         try:
             context['courseevent'] = CourseEvent.objects.get(slug=self.kwargs['ce_slug'])
+            context['courseeventinfo'] = CourseEventPubicInformation.objects.get(courseevent_id=context['courseevent'].id)
         except:
             pass
         return context
@@ -136,10 +137,8 @@ class CourseEventBuildMixin(CourseBaseMixin):
             pass
         return super(CourseEventBuildMixin, self).form_valid(form)
 
+
     def get_object(self, queryset=None):
-        """
-        Course and Course owner are fetched along with the user information.
-        """
         courseevent = CourseEvent.objects.get(slug=self.kwargs['ce_slug'])
         courseeventinfo = CourseEventPubicInformation.objects.get(courseevent_id=courseevent.id)
-        return courseevent
+        return courseeventinfo

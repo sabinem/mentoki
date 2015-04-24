@@ -45,20 +45,61 @@
             </a>
         </div>
     {% else %}
-        <a class="item
+          <div class="ui dropdown link item
+          ">
+              Starterkurs
+              <i class="dropdown icon"></i>
+              <div class="menu">
+                <div class="item">Videoeinführung</div>
+                <div class="item">Deine Perspektive</div>
+                <div class="item">Testimonials</div>
+                <div class="item">Anmeldung</div>
+              </div>
+                  <div class="menu">
+                      <a class="item
+                          {% ifactive 'home:starterkurs' tab="video" %}
+                          active
+                          {% endifactive %}
+                          " href="{% url 'home:starterkurs' tab="video" %}">
+                              Videoeinführung
+                      </a>
+                      <a class="item
+                          {% ifactive 'home:starterkurs' tab="detail" %}
+                          active
+                          {% endifactive %}
+                          " href="{% url 'home:starterkurs' tab="detail" %}">
+                              Deine Perspektive
+                      </a>
+                      <a class="item
+                          {% ifactive 'home:starterkurs' tab="testimonials" %}
+                          active
+                          {% endifactive %}
+                          " href="{% url 'home:starterkurs' tab="testimonials" %}">
+                              Testimonials
+                      </a>
+                      <a class="item
+                          {% ifactive 'courseevent:publicdetail' slug="starterkurs2" %}
+                          active
+                          {% endifactive %}
+                          " href="{% url 'courseevent:publicdetail' slug="starterkurs2" %}">
+                              Anmeldung
+                      </a>
+                </div>
+
+          </div>
+
+                <a class="item
             {% ifactive "courseevent:publiclist" %}
                 active
             {% endifactive %}
             " href="{% url 'courseevent:publiclist' %}">
             Kurse
         </a>
-        <a class="item
-            {% ifactive "home:starterkurs" %}
-                active
-            {% endifactive %}
-            " href="{% url 'home:starterkurs' tab="video" %}">
-            Starterkurs
-        </a>
+
+
+
+
+
         <a class="item
             {% ifactive "contact:contact" %}
                 active

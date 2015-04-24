@@ -65,19 +65,6 @@ class CourseEventDetailView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(CourseEventDetailView, self).get_context_data()
         # the coursevent is determind by the given url
-        courseevent = CourseEvent.objects.get(slug=kwargs['slug'])
-        courseevent_info = CourseEventPubicInformation.objects.get(courseevent_id=courseevent.id)
-        print "**************"
-        print courseevent_info.id
-
-        context['courseevent_info'] = courseevent_info
-        context['courseevent'] = courseevent
-        # get course
-        course = Course.objects.get(id=courseevent.course_id)
-        context['course'] = course
-        # get teachers
-        courseowners = CourseOwner.objects.filter(course_id=courseevent.course_id)
-        context['courseowners'] = courseowners
         try:
             courseevent = CourseEvent.objects.get(slug=kwargs['slug'])
             courseevent_info = CourseEventPubicInformation.objects.get(courseevent_id=courseevent.id)

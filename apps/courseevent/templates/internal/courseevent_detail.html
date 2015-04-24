@@ -57,30 +57,40 @@
                             </a>
                         {% endif %}
                     </div>
+                    <h3 class="ui aligned center header">
+                        Abstrakt
+                    </h3>
+                    {{ courseevent.excerpt | safe }}
                     <h3 class="ui header">
                         Zielgruppe
                     </h3>
-                    {{ course.target_group | safe }}
+                    {{ courseevent_info.target_group | safe }}
+
                     <h3 class="ui header">
-                        Voraussetzungen
+                        Was Du aus diesem Kurs mit nimmst
                     </h3>
-                    {{ course.prerequisites | safe }}
-                    <h3 class="ui header">
-                        Was Sie aus diesem Kurs mitnehmen
-                    </h3>
-                    {{course.takeaway | safe }}
+                    {{courseevent_info.project | safe }}
+
                     <h3 class="ui header">
                         Kursformat
                     </h3>
-                    {{ courseevent.format | safe}}
-                   <h3 class="ui header">
-                        Arbeitsbelastung
+                    {{ courseevent_info.format | safe}}
+                    <h3 class="ui header">
+                        Gliederung
                     </h3>
-                    {{ courseevent.workload | safe}}
+                    {{courseevent_info.structure | safe }}
+                    <h3 class="ui header">
+                        Voraussetzungen
+                    </h3>
+                    {{ courseevent_info.prerequisites | safe }}
+                    <h3 class="ui header">
+                        Arbeitsaufwand
+                    </h3>
+                    {{ courseevent_info.workload | safe }}
                     <h3 class="ui header">
                         Kursbeschreibung
                     </h3>
-                    {{course.text | safe }}
+                    {{courseevent_info.text | safe }}
                 </div>
             </div>
         </div>

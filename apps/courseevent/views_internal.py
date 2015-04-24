@@ -10,7 +10,7 @@ from braces.views import LoginRequiredMixin, UserPassesTestMixin
 from apps.classroom.cache import get_courseeventdata
 from apps.course.models import Course, CourseOwner
 # import from this app
-from .models import CourseEvent, CourseEventParticipation
+from .models import CourseEvent, CourseEventParticipation, CourseEventPubicInformation
 
 
 # logging
@@ -89,6 +89,8 @@ class CourseEventInternalDetailView(InternalCourseEventBookingMixin, TemplateVie
         try:
             courseevent = CourseEvent.objects.get(slug=kwargs['slug'])
             context['courseevent'] = courseevent
+            courseevent_info = CourseEventPubicInformation.objects.get(courseevent_id=courseevent.id)
+            context['courseevent_info'] = courseevent_info
             # get course
             course = Course.objects.get(id=courseevent.course_id)
             context['course'] = course

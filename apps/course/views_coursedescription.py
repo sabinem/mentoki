@@ -206,6 +206,10 @@ class CourseEventUpdateExcerptView(CourseEventBuildMixin, UpdateView):
         context['tab'] = "Abstrakt"
         return context
 
+    def get_object(self, queryset=None):
+        courseevent = CourseEvent.objects.get(slug=self.kwargs['ce_slug'])
+        return courseevent
+
 
 class CourseEventUpdateFormatView(CourseEventBuildMixin, UpdateView):
     """

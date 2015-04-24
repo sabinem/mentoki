@@ -87,17 +87,6 @@
         });
 </script>
 <script type="text/javascript">
-        $(function()
-        {
-            $('#id_project').redactor({
-                focus: true,
-                plugins: ['html','table','video', 'fullscreen', 'fontsize', 'fontcolor', 'file', 'image', 'imagemanager'],
-                imageUpload: '{% url 'upload:upload_photos' %}',
-                imageManagerJson: '{% url 'upload:recent_photos' %}'
-            });
-        });
-</script>
-<script type="text/javascript">
        $(function()
        {
            $('#id_text').redactor({

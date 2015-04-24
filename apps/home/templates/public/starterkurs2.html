@@ -29,13 +29,9 @@
                 {% if match.kwargs.tab == "testimonials" %}
                    active
                 {% endif %}
-                " data-tab="third">Was die ersten Teilnehmer sagen</a>
+                " data-tab="third">Was die ersten Teilnehmer sagen x{{ match.kwargs }}x</a>
             </div>
-            <div class="ui bottom attached tab segment
-                {% if match.kwargs.tab == "video" %}
-                   active
-                {% endif %}
-            " data-tab="first">
+            <div class="ui bottom attached tab segment" data-tab="first">
                 <div class="ui segment">
                     <style>
                         .embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
@@ -46,20 +42,12 @@
                     </div>
                 </div>
             </div>
-            <div class="ui bottom attached tab segment
-            {% if match.kwargs.tab == "detail" %}
-                 active
-            {% endif %}
-            " data-tab="second">
+            <div class="ui bottom attached tab segment" data-tab="second">
                 <div class="ui segment">
                     {% include 'public/_text3.html' %}
                 </div>
             </div>
-            <div class="ui bottom attached tab segment
-                {% if match.kwargs.tab == "testimonials" %}
-                   active
-                {% endif %}
-            " data-tab="third">
+            <div class="ui bottom attached active tab segment" data-tab="third">
                 <div class="ui grid two columns">
                     <div class="column">
                         <h4 class="ui horizontal header divider">
