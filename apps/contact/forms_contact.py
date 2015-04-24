@@ -85,7 +85,7 @@ class ContactForm(forms.ModelForm):
         # this method is called with cleaned from data
         subject = "Ihre Nachricht an Mentoki"
         to = [self.cleaned_data['email']]
-        from_mail = 'info@netteachers.de'
+        from_mail = 'info@mentoki.com'
         context = {
             'name': self.cleaned_data['name'],
             'email': self.cleaned_data['email'],
@@ -100,7 +100,7 @@ class ContactForm(forms.ModelForm):
     def send_email_self(self):
         # send email to self
         subject = "Beantworten: Nachricht an Mentoki"
-        to = ['info@netteachers.de']
+        to = ['info@mentoki.com']
         from_mail = self.cleaned_data['email']
         context = {
             'name': self.cleaned_data['name'],
@@ -139,7 +139,7 @@ class PrebookForm(forms.ModelForm):
         # this method is called with cleaned from data
         subject = "Ihre Nachricht an Mentoki"
         to = [self.cleaned_data['email']]
-        from_mail = 'info@netteachers.de'
+        from_mail = 'info@mentoki.com'
         context = {
             'name': self.cleaned_data['name'],
             'email': self.cleaned_data['email'],
@@ -154,7 +154,7 @@ class PrebookForm(forms.ModelForm):
     def send_email_self(self):
         # send email to self
         subject = "Beantworten: Nachricht an Mentoki"
-        to = ['info@netteachers.de']
+        to = ['info@mentoki.com']
         from_mail = self.cleaned_data['email']
         context = {
             'name': self.cleaned_data['name'],
