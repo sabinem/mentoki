@@ -19,7 +19,7 @@ BASE_DIR_PROJECT = os.path.abspath(os.path.join(BASE_DIR, os.pardir))
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 LOCAL_ENVIRONMENT = os.environ.get('LOCAL_ENVIROMENT')
-DEBUG = os.environ.get('DEBUG')
+DEBUG = False
 
 if DEBUG:
     TEMPLATE_DEBUG = True
@@ -88,17 +88,11 @@ WSGI_APPLICATION = 'mentoki.wsgi.application'
 
 # Database
 
-if LOCAL_ENVIRONMENT:
-    #master branch local database
-    DATABASE_NAME = 'netteachers_de'
-else:
-    DATABASE_NAME = os.environ.get('DATABASE_NAME')
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'netteachers_dev',
-        'USER': 'sabinemaennel',
+        'NAME': os.environ.get('DATABASE_NAME'),
+        'USER': os.environ.get('DATABASE_USER'),
 	    'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
 	    'HOST': os.environ.get('DATABASE_HOST'),
     }
@@ -180,16 +174,18 @@ IGNORABLE_404_URLS = (
 )    
 
 # Email
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-if not LOCAL_ENVIRONMENT:
-    EMAIL_HOST = os.environ.get('EMAIL_HOST')
-    EMAIL_PORT = os.environ.get('EMAIL_PORT')
-    EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-    EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-    EMAIL_SUBJECT_PREFIX = os.environ.get('EMAIL_SUBJECT_PREFIX')
-    EMAIL_USE_TLS = True
-    DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-    SERVER_EMAIL = EMAIL_HOST_USER
+if LOCAL_ENVIRONMENT:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_PORT = os.environ.get('EMAIL_PORT')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_SUBJECT_PREFIX = os.environ.get('EMAIL_SUBJECT_PREFIX')
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER
+
 
 
 CACHES = {
