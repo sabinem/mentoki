@@ -1,4 +1,4 @@
-{% extends "base/base.html" %}
+{% extends "base_semantic/base.html" %}
 {% block head_content %}
  {% include 'home/_homepage_header.html' %}
 {% endblock %}
@@ -8,4 +8,21 @@
         Die angeforderte Seite wurde nicht gefunden.
     </div>
 </div>
+{% endblock %}
+{% extends "base_semantic/base_public.html" %}
+{% block body %}
+<body id="public" >
+{% endblock %}
+{% block main %}
+    <main class="ui grid">
+        <div class="row">
+                <h1 class="ui header block">Mentoki
+                </h1>
+            <div class="column">
+                 <div class="ui piled segment">
+                     Die angeforderte Seite wurde nicht gefunden.
+                 </div>
+            </div>
+        </div>
+    </main>
 {% endblock %}

@@ -1,11 +1,19 @@
-{% extends "base.html" %}
-
-{% block title %}Forbidden{% endblock title %}
-
-{% block content %}
- <div class="scratch-metal">
-    <h1>403</h1>
-    <h2>Forbidden</h2>
- </div><br/>
- <button onclick="window.history.back();">Back</button>
-{% endblock content %}
+{% extends "base_semantic/base_public.html" %}
+{% block body %}
+<body id="public" >
+{% endblock %}
+{% block main %}
+    <main class="ui grid">
+        <div class="row">
+                <h1 class="ui header block">Mentoki
+                </h1>
+            <div class="column">
+                 <div class="ui piled segment">
+                     <p>403</p>
+                     <p>Forbidden</p>
+                     <button onclick="window.history.back();">Back</button>
+                 </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

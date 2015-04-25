@@ -61,11 +61,8 @@ class UnitUpdateView(LessonUpdateMixin):
     def get_context_data(self, **kwargs):
         logger.debug("---------- in MaterialUpdateView")
         context = super(UnitUpdateView, self).get_context_data(**kwargs)
-        print "*********"
-        print context['unit']
         block = CourseBlock.objects.get(id=context['unit'].block_id)
         context['courseblock'] = block
-        print context['courseblock']
         return context
 
     def get_success_url(self):
