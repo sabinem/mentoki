@@ -19,7 +19,7 @@ BASE_DIR_PROJECT = os.path.abspath(os.path.join(BASE_DIR, os.pardir))
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 LOCAL_ENVIRONMENT = os.environ.get('LOCAL_ENVIROMENT')
-DEBUG = False
+DEBUG = os.environ.get('DEBUG')
 
 if DEBUG:
     TEMPLATE_DEBUG = True
@@ -58,7 +58,7 @@ INSTALLED_APPS = (
     'apps.forum',
     'apps.classroom',
     # other
-    'apps.upload',
+    'apps.upload', 
     #'apps.email',
     # delete pdf app soon
     'apps.pdf',
@@ -88,11 +88,17 @@ WSGI_APPLICATION = 'mentoki.wsgi.application'
 
 # Database
 
+if LOCAL_ENVIRONMENT:
+    #master branch local database
+    DATABASE_NAME = 'netteachers_de'
+else:
+    DATABASE_NAME = os.environ.get('DATABASE_NAME')
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('DATABASE_NAME'),
-        'USER': os.environ.get('DATABASE_USER'),
+        'NAME': 'netteachers_dev',
+        'USER': 'sabinemaennel',
 	    'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
 	    'HOST': os.environ.get('DATABASE_HOST'),
     }
@@ -171,21 +177,19 @@ IGNORABLE_404_URLS = (
     re.compile(r'^/apple-touch-icon.*\.png$'),
     re.compile(r'^/favicon\.ico$'),
     re.compile(r'^/robots\.txt$'),
-)
+)    
 
 # Email
-if LOCAL_ENVIRONMENT:
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-EMAIL_HOST = os.environ.get('EMAIL_HOST')
-EMAIL_PORT = os.environ.get('EMAIL_PORT')
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-EMAIL_SUBJECT_PREFIX = os.environ.get('EMAIL_SUBJECT_PREFIX')
-EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-SERVER_EMAIL = EMAIL_HOST_USER
-
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+if not LOCAL_ENVIRONMENT:
+    EMAIL_HOST = os.environ.get('EMAIL_HOST')
+    EMAIL_PORT = os.environ.get('EMAIL_PORT')
+    EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+    EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+    EMAIL_SUBJECT_PREFIX = os.environ.get('EMAIL_SUBJECT_PREFIX')
+    EMAIL_USE_TLS = True
+    DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+    SERVER_EMAIL = EMAIL_HOST_USER
 
 
 CACHES = {
@@ -259,4 +263,3 @@ if LOCAL_ENVIRONMENT:
     # make all loggers use the console.
     for logger in LOGGING['loggers']:
         LOGGING['loggers'][logger]['handlers'] = ['console']
-

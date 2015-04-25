@@ -75,7 +75,7 @@ class CourseBuildMixin(CourseBaseMixin):
 
     def get_success_url(self):
         logger.debug("---------- in CourseBuildMixin get_success_url")
-        self.messages.success("Die Kursvorlage wurde geaendert.")
+        #self.messages.success("Die Kursvorlage wurde geaendert.")
         return reverse('course:start', kwargs={"slug": self.kwargs['slug'],})
 
     def get_initial(self):
@@ -119,7 +119,7 @@ class CourseEventBuildMixin(CourseBaseMixin):
 
     def get_success_url(self):
         logger.debug("---------- in CourseBuildMixin get_success_url")
-        self.messages.success("Die Kursvorlage wurde geaendert.")
+        #self.messages.success("Die Kursvorlage wurde geaendert.")
         return reverse('course:courseevent', kwargs={
             "slug": self.kwargs['slug'],
             "ce_slug": self.kwargs['ce_slug']
