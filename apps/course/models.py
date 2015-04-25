@@ -56,7 +56,7 @@ class Course(CourseBasicModel):
     @property
     def teachers(self):
         # a course may have more then one teacher
-        course_owners = CourseOwner.objects.filter(course=self.id)
+        course_owners = CourseOwner.objects.filter(course=self.id).order_by('display_nr')
         teacher_list = []
         for teacher in course_owners:
             teacher_list.append(teacher.user)

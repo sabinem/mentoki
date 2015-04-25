@@ -26,7 +26,7 @@
                          <div class="ui piled segment">
                         <h3 class="ui header">
                             <a class="ui header" href="{% url 'courseevent:internaldetail' slug=item.courseevent.slug %}">
-                                {{ item.courseevent.title }} von {{ item.courseevent_teachers }}
+                                {{ item.courseevent.title }} mit {{ item.courseevent_teachers }}
                             </a>
                             <a href="{% url 'courseevent:internaldetail' slug=item.courseevent.slug %}"
                                class="ui tag green label">jetzt intern buchen

@@ -44,7 +44,7 @@
                         <div class="ui piled segment">
                         <h3 class="ui header">
                             <a class="ui header" href="{% url 'courseevent:publicdetail' slug=item.courseevent.slug %}">
-                                {{ item.courseevent.title }} von {{ item.courseevent_teachers }}
+                                {{ item.courseevent.title }} mit {{ item.courseevent_teachers }}
                             </a>
                             <a class="ui tag green label" href="{% url 'courseevent:publicdetail' slug=item.courseevent.slug %}">
                                 jetzt buchen
@@ -58,7 +58,7 @@
                         <h3 class="ui header">
                             <a class="ui header"
                                href="{% url 'courseevent:publicdetail' slug=item.courseevent.slug %}">
-                               {{ item.courseevent.title }} von {{ item.courseevent_teachers }}
+                               {{ item.courseevent.title }} mit {{ item.courseevent_teachers }}
                             </a>
                             <a class="ui tag blue label" href="{% url 'courseevent:publicdetail' slug=item.courseevent.slug %}">
                                 Vorankündigung
