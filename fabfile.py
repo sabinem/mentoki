@@ -37,19 +37,16 @@ def stage():
 
 
 def deploy():
-    local('cp metoki/settings_production.py mentoki/settings.py')
-    local('git push origin master')
-    local('cp metoki/settings_test.py mentoki/settings.py')
     code_dir = '/srv/http/web0263/mentoki_live/mentoki'
     with cd(code_dir):
         run("git pull")
         run("touch app.wsgi")
 
+def prepare_commit():
+    local('cp mentoki/settings_production.py mentoki/settings.py')
 
-def test_deploy():
-    local('cp metoki/settings_production.py mentoki/settings.py')
-    local('git push origin master')
-    local('cp metoki/settings_test.py mentoki/settings.py')
+def prepare_dev():
+    local('cp mentoki/settings_test.py mentoki/settings.py')
 
 
 def hello(name="world"):
