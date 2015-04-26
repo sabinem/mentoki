@@ -932,7 +932,9 @@ body,.wrapper,.emb-editor-canvas{background-color:#fbfbfb}.border{background-col
                           <tr>
                             <td class="padded">
                               <h1>{% if name %} Danke {{ name }} für {% endif %} {{ betreff }}.</h1>
-                                                                                <p>This is just sample content. You can add your content when you create a campaign using this template. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.</p><div class="btn"><a href='#' cs-button>Sample button</a></div><p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+
+                                    {% block email_content %}
+                                    {% endblock %}
                             </td>
                           </tr>
                         </table>
