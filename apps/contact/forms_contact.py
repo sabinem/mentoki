@@ -93,6 +93,7 @@ class ContactForm(forms.ModelForm):
             'betreff': "Ihre Nachricht",
         }
         message = get_template('email/message_outgoing.html').render(Context(context))
+        print "hallo i am here in this email program"
         msg = EmailMessage(subject, message, to=to, from_email=from_mail)
         msg.content_subtype = 'html'
         msg.send()

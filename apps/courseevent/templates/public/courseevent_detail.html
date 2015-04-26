@@ -49,12 +49,14 @@
                                     </div>
                                 </div>
                                 {% if courseevent.event_type == courseevent.EVENTTYPE_TIMED_COURSE  %}
+                                 {% if courseevent.nr_weeks %}
                                 <div class="item">
                                     <i class="map marker icon"></i>
                                     <div class="content">
                                       <a class="header">Dauer: {{ courseevent.nr_weeks }} Wochen</a>
                                     </div>
                                 </div>
+                                 {% endif %}
                                 {% if courseevent.status_external == courseevent.EXTEVENT_OPEN_FOR_BOOKING  %}
                                 <div class="item">
                                     <i class="calendar icon"></i>
@@ -70,6 +72,7 @@
                             <div class="column">
                             <div class="ui divided list">
                                 {% if courseevent.event_type == courseevent.EVENTTYPE_TIMED_COURSE  %}
+                                {% if courseevent.max_participants %}
                                 <div class="item">
                                     <i class="users icon"></i>
                                     <div class="content">
@@ -77,6 +80,7 @@
                                       {{ courseevent.max_participants }}</div>
                                     </div>
                                 </div>
+                                {% endif %}
                                 {% endif %}
                                  {% if courseevent.status_external == courseevent.EXTEVENT_OPEN_FOR_BOOKING %}
                                 <div class="item">
