@@ -83,14 +83,14 @@ class ContactForm(forms.ModelForm):
     def send_email_visitor(self):
         # send email to requesting email
         # this method is called with cleaned from data
-        subject = "Ihre Nachricht an Mentoki"
+        subject = "Deine Nachricht an Mentoki"
         to = [self.cleaned_data['email']]
         from_mail = 'info@mentoki.com'
         context = {
             'name': self.cleaned_data['name'],
             'email': self.cleaned_data['email'],
             'message': self.cleaned_data['message'],
-            'betreff': "Ihre Nachricht",
+            'betreff': "Deine Nachricht",
         }
         message = get_template('email/message_outgoing.html').render(Context(context))
         print "hallo i am here in this email program"
