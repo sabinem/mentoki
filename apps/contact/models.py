@@ -23,7 +23,7 @@ class Contact(TimeStampedModel):
     projecttype = models.CharField(max_length=100, verbose_name='Titel für Dein Kursprojekt', blank=True)
     projectdescription = models.TextField(verbose_name='Beschreibe Dein Kursprojekt', blank=True)
     qualification = models.TextField(verbose_name='Was qualifiziert Dich dafür?', blank=True)
-    courseevent = models.ForeignKey(CourseEvent, blank=True, null=True)
+    courseevent = models.ForeignKey(CourseEvent, blank=True, null=True, verbose_name='Welcher Kurs interessiert Dich?')
     contactinfo = models.TextField(verbose_name='Wie können wir Dich erreichen?', blank=True)
     motivation = models.TextField(verbose_name='Warum brennst Du für dieses Thema?', blank=True)
     priorexperience = models.TextField(verbose_name='Hast Du schon Unterrichtserfahrungen online oder im Präsenzunterricht?', blank=True)
