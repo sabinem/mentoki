@@ -138,3 +138,13 @@ input#id_description {
 #handwriting p {
     font: 400 1.5em/125% 'Petit Formal Script', Helvetica, Sans-serif;
 }
+
+#logo {
+    height:50px; width:auto;
+}
+
+#quote {
+    background-image: url('/static/img/quote.jpg');
+    background-repeat: no-repeat;
+    height:100px;
+}
