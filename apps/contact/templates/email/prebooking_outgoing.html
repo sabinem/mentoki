@@ -1,126 +1,19 @@
-{% extends "email/base.html" %}
-             {% block email_content %}
-
-<p>Hallo {{ name }},</p>
+{% extends "email/mentoki.html" %}
+{% block email_content %}
 <p>
-Danke für Ihre Bewerbung bei netTeachers. Sie werden in den nächsten 48 Stunden
-von uns hören, ob Sie für den Pilotkurs angenommen wurden. Im Anhang finden Sie für Ihre Unterlagen
-die von Ihnen angegebenen Daten.    
+    Hallo {{ name }},
 </p>
-<p style="padding-left: 30px;">Mit freundlichen Grüssen</p>
+<p>
+    Danke für Dein Interesse für den Kurs {{ courseevent }}. Wir habe Deine Email notiert und
+    kontaktieren Dich sobald der Kurs für die ANmeldung geöffnet ist.
+</p>
+<p style="padding-left: 30px;">
+    Mit freundlichen Grüssen und wir freuen uns auf ein Gespräch mit Dir
+</p>
 <p  style="padding-left: 50px;">
-Ihr netTeachers Team
+   Dein Mentoki Team
 </p>
-             <p  style="padding-left: 70px; font-family:monospace">
+<p  style="padding-left: 70px; font-family:monospace">
 Sabine Maennel und Anette Pekrul
 </p>
-      </td>
-     </tr> 
-<tr>
-    <td>
-        <hr>
-<h3>Ihre Bewerbung bei netTeachers</h3>
-<table>
-    <tr>
-    <td><h4>Kontaktdaten</h4>
-    </td>
-    <td></td>    
-    </tr>
-    <tr>
-    <td>Name
-    </td>
-    <td>{{name}}
-    </td>
-    </tr>
-        <tr>
-   
-    <td>Email
-    </td>
-    <td>{{email}}
-    </td>
-    </tr>
-
-       <tr>
-    <td><h4>Ihr Kursprojekt</h4>
-    </td><td></td> </tr><tr>
-    <td>Arbeitstitel
-    </td>
-    <td>{{projecttitle}}
-    </td>
-    </tr>
-        <tr>
-   
-    <td>Beschreibung
-    </td>
-    <td>{{ projectdescription}}
-    </td>
-    </tr>
-        <tr>
-  
-    <td>Warum wollen Sie den Kurs halten?
-    </td>
-    <td>{{projectmotivation}}
-    </td>
-    </tr>
-        <tr>
-
-    <td>Was qualifiziert Sie für diesen Kurs?
-    </td>
-    <td>{{ projectqualification}}
-    </td>
-    </tr>  
-<tr>
-    <td><h4>Unterrichtserfahrungen</h4>
-    </td><td></td> </tr> 
-            <tr>
-
-    <td>Offline- oder Seminar-Unterricht
-    </td>
-    <td>{{experienceoffline}}
-    </td>
-    </tr>  
-            <tr>
-
-    <td>Online-Unterricht
-    </td>
-    <td>{{experienceonline}}
-    </td>
-    </tr>  
-            <tr>
-
-    <td>Technischen Werkzeuge 
-    </td>
-    <td>{{experiencetechnical}}
-    </td>
-    </tr>  
-  <tr>
-    <td><h4>Anmerkungen</h4>
-    </td><td>{{comment}}</td> </tr> 
-
-        </table>        
-
-
-<hr>
-
-
-
-             {% endblock %}
- </td>
-     </tr>
-    </table>
-     <tr>
-      <td style="padding: 10px 30px 10px 30px;background:#E3EEDF;">
-<a href="http://netteachers.de/">netteachers.de</a><br>
-info@netteachers.de<br>
-Telefon (Schweiz) +41 43 53 778 74<br>
-Telefon (Deutschland)  <a href="#" style="color:black; text-decoration:none">
-+49 176 323 51 792</a>
-   </td>
-  </tr>
- </table>
-        </tr>
-       </td>
-        </table>
-
-</body>
-</html>
+{% endblock %}
