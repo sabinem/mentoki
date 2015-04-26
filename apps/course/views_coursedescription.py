@@ -15,7 +15,8 @@ from django.views.generic import TemplateView, UpdateView
 # import from this app
 from .forms_courseevents import CourseEventUpdateExcerptForm, CourseEventUpdateWorkloadForm, \
     CourseEventUpdateFormatForm, CourseEventUpdateProjectForm, CourseEventUpdateTextForm, \
-    CourseEventUpdatePrerequisitesForm, CourseEventUpdateStructureForm, CourseEventUpdateTargetgroupForm
+    CourseEventUpdatePrerequisitesForm, CourseEventUpdateStructureForm, CourseEventUpdateTargetgroupForm, \
+    CourseEventUpdateVideoForm
 from apps.courseevent.models import CourseEvent, CourseEventPubicInformation
 from .mixins import CourseEventBuildMixin
 from . models import Course
@@ -275,6 +276,19 @@ class CourseEventUpdatePrerequisitesView(CourseEventBuildMixin, UpdateView):
         context = super(CourseEventUpdatePrerequisitesView, self).get_context_data(**kwargs)
         # the tab in the page is set to the course part that the user is changing
         context['exampletext'] = context['course'].prerequisites
-        context['tab'] = "Vorasusetzungen"
+        context['tab'] = "Voraussetzungen"
         return context
 
+class CourseEventUpdateVideoView(CourseEventBuildMixin, UpdateView):
+
+    model = CourseEventPubicInformation
+    template_name = 'courseevent/courseeventupdate.html'
+    form_class= CourseEventUpdateVideoForm
+
+    def get_context_data(self, **kwargs):
+        logger.debug("---------- in CourseEventUpdateVideoView")
+        context = super(CourseEventUpdateVideoView, self).get_context_data(**kwargs)
+        # the tab in the page is set to the course part that the user is changing
+        context['exampletext'] = "Es gibt keine Vorlage dafür."
+        context['tab'] = "Video"
+        return context

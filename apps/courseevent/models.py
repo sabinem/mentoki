@@ -126,6 +126,7 @@ class CourseEventPubicInformation(TimeStampedModel):
     """
     courseevent = models.ForeignKey(CourseEvent)
     excerpt = models.TextField(blank=True)
+    video_url = models.CharField(max_length=100, blank=True, verbose_name="Kürzel des Videos bei You Tube ")
     text = models.TextField(blank=True, verbose_name="freie Kursbeschreibung, überschreibt die allgemeine "
                                                      "Kursbeschreibung, wenn ausgefüllt")
     format = models.TextField(blank=True, verbose_name="Kursformat")

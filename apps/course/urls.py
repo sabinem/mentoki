@@ -11,7 +11,8 @@ from .views_owners import CourseOwnersListView, CourseOwnerUpdateView
 from .views_coursedescription import CourseEventDetailView, CourseEventUpdateWorkloadView, \
     CourseEventUpdateTextView, CourseEventUpdateProjectView, CourseEventUpdateExcerptView, \
     CourseEventUpdateFormatView, CourseEventUpdateStructureView, \
-    CourseEventUpdateTargetgroupView, CourseEventUpdatePrerequisitesView
+    CourseEventUpdateTargetgroupView, CourseEventUpdatePrerequisitesView, \
+    CourseEventUpdateVideoView
 
 from .views_participants import CourseParticipantsListView
 from .views_lessonsview import LessonsView, BlockDetailView, UnitDetailView, MaterialDetailView
@@ -76,7 +77,8 @@ urlpatterns = patterns('',
         CourseEventUpdateTargetgroupView.as_view(), name='courseeventtargetgroupupdate'),
     url(r'^(?P<slug>[a-z0-9_-]{3,50})/beschreibung/(?P<ce_slug>[a-z0-9_-]{3,50})/voraussetzungen/bearbeiten$',
         CourseEventUpdatePrerequisitesView.as_view(), name='courseeventprerequisitesupdate'),
-
+    url(r'^(?P<slug>[a-z0-9_-]{3,50})/beschreibung/(?P<ce_slug>[a-z0-9_-]{3,50})/videourl/bearbeiten$',
+        CourseEventUpdateVideoView.as_view(), name='courseeventvideoupdate'),
 
     # urls for viewing lessons
     url(r'^(?P<slug>[a-z0-9_-]{3,50})/unterricht/ansicht$',

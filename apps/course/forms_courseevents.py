@@ -63,3 +63,9 @@ class CourseEventUpdateTargetgroupForm(CourseEventUpdateFormMixin, forms.ModelFo
     class Meta:
         model = CourseEventPubicInformation
         fields = ('target_group',)
+
+
+class CourseEventUpdateVideoForm(CourseEventUpdateFormMixin, forms.ModelForm):
+    class Meta:
+        model = CourseEventPubicInformation
+        fields = ('video_url',)
