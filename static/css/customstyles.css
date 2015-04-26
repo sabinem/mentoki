@@ -143,6 +143,10 @@ input#id_description {
     height:50px; width:auto;
 }
 
+#logo_big {
+    height:100px; width:auto;
+}
+
 #quote {
     background-image: url('/static/img/quote.jpg');
     background-repeat: no-repeat;
