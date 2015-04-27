@@ -11,8 +11,6 @@ class ContactView(CreateView):
     def form_valid(self, form):
         # This method is called when valid form data has been POSTed.
         # It should return an HttpResponse.
-        print "**************************************"
-        print "i am in the contact view"
         form.send_email_visitor()
         form.send_email_self()
         return super(ContactView, self).form_valid(form)
