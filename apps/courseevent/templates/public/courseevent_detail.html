@@ -6,12 +6,12 @@
    <body id="public" >
 {% endblock %}
 {% block main %}
-    <main class="ui grid">
+    <main class="ui two column doubling grid">
         <div class="row">
             <div class="five wide column">
                 {% for courseowner in courseowners %}
                     {% if courseowner.display %}
-                    <div class="ui card">
+                    <div class="ui card fluid">
                         <div class="ui image">
                             {% if courseowner.foto %}
                                 <img src="{{ courseowner.foto.url }}">

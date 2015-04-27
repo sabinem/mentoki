@@ -6,7 +6,7 @@
    <body id="prebook" >
 {% endblock %}
 {% block main %}
-    <div class="ui two column grid">
+    <div class="ui two column doubling grid">
         <div class="eight wide column">
             <div class="ui segment piled" id="handwriting">
                 <h2>Danke für Dein Interesse am Kurs "{{ courseevent.title }}"</h2>
@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="eight wide column">
-              <img src="/static/img/3l.jpg">
+              <img id="pageImage" src="/static/img/3l.jpg">
         </div>
     </div>
 {% endblock %}

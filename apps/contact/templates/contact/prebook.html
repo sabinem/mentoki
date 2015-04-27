@@ -13,7 +13,7 @@
         <div class="sub header">Wenn Du Dich voranmeldest, werden wir Dich benachrichtigen,
             sobald die Anmeldung freigeschaltet ist</div>
     </h2>
-    <div class="ui two column grid">
+<div class="ui two column doubling grid">
         <div class="eight wide column">
             <div class="ui piled segment">
                 <form class="ui form" action="" method="post">{% csrf_token %}
@@ -23,7 +23,7 @@
             </div>
         </div>
         <div class="eight wide column">
-             <img src="/static/img/3l.jpg">
+             <img id="pageImage" src="/static/img/3l.jpg">
         </div>
     </div>
 {% endblock %}

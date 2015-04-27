@@ -1,120 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-{% include 'base_semantic/head.html' %}
+   {% include 'base_semantic/head.html' %}
 </head>
 {% block body %}
 <body>
 {% endblock %}
 <div class="mobile only narrow row">
-    {% include 'base_semantic/_mobile_menu.html' %}
+   {% include 'base_semantic/_mobile_menu.html' %}
 </div>
 {% load activelink %}
 <div class="computer tablet only row">
-{% load activelink %}
-<div class="ui menu fixed center aligned top inverted">
-    <a class="item"
-        style="padding:0; margin:0; padding-left:30px;"
-        href="{% url 'home:home' %}">
-        <img  id="logo" src="/static/img/mentoki_logo_inverted.jpg"
-              style="height:30px; padding:0; margin:0;">
-    </a>
-    {% if user.is_authenticated %}
-        <a class="item
-            {% ifactive "courseevent:internallist" %}
-                active
-            {% endifactive %}
-            " href="{% url 'courseevent:internallist' %}">
-            Kurse
-        </a>
-        <a  href="{% url 'desk:start' %}" class="item
-            {% ifactive "desk:start" %}
-                  active
-            {% endifactive %}
-            ">
-            Schreibtisch
-        </a>
-        {% block custom_menu_item %}
-        {% endblock %}
-        <div class="right menu">
-            <a class="item">
-                {{ user.username }}
-            </a>
-            <a href="{% url "userauth:logout" %}" class="item">
-                Logout
-            </a>
-        </div>
-    {% else %}
-          <div class="ui dropdown link item
-          ">
-              Starterkurs
-              <i class="dropdown icon"></i>
-              <div class="menu">
-                <div class="item">Videoeinführung</div>
-                <div class="item">Deine Perspektive</div>
-                <div class="item">Testimonials</div>
-                <div class="item">Anmeldung</div>
-              </div>
-                  <div class="menu">
-                      <a class="item
-                          {% ifactive 'home:starterkurs' tab="video" %}
-                          active
-                          {% endifactive %}
-                          " href="{% url 'home:starterkurs' tab="video" %}">
-                              Videoeinführung
-                      </a>
-                      <a class="item
-                          {% ifactive 'home:starterkurs' tab="detail" %}
-                          active
-                          {% endifactive %}
-                          " href="{% url 'home:starterkurs' tab="detail" %}">
-                              Deine Perspektive
-                      </a>
-                      <a class="item
-                          {% ifactive 'home:starterkurs' tab="testimonials" %}
-                          active
-                          {% endifactive %}
-                          " href="{% url 'home:starterkurs' tab="testimonials" %}">
-                              Testimonials
-                      </a>
-                      <a class="item
-                          {% ifactive 'courseevent:publicdetail' slug="starterkurs2" %}
-                          active
-                          {% endifactive %}
-                          " href="{% url 'courseevent:publicdetail' slug="starterkurs2" %}">
-                              Kurs-Ausschreibung
-                      </a>
-                      <a class="item
-                          {% ifactive 'contact:application' %}
-                          active
-                          {% endifactive %}
-                          " href="{% url 'contact:application' %}">
-                              Anmeldung zum Vorgespräch
-                      </a>
-                </div>
-
-          </div>
-
-                <a class="item
-            {% ifactive "courseevent:publiclist" %}
-                active
-            {% endifactive %}
-            " href="{% url 'courseevent:publiclist' %}">
-            Kurse
-        </a>
-
-
-
-
-
-
-        <div class="right menu">
-            <a class="item" href="{% url 'userauth:login' %}" >
-                Login
-            </a>
-        </div>
-    {% endif %}
-</div>
+   {% include 'base_semantic/_web_menu.html' %}
 </div>
 <div class="ui page grid" >
     <div class="row" id="firstcontainer">

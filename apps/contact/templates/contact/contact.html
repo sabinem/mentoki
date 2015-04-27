@@ -10,7 +10,7 @@
     <h2 class="ui block header" id="mainheader">Kontaktiere uns!
         <div class="sub header">Wir freuen uns auf Deine Nachricht.</div>
     </h2>
-    <div class="ui two column grid">
+   <div class="ui two column doubling grid">
         <div class="eight wide column">
             <div class="ui piled segment">
                 <form class="ui form" action="" method="post">{% csrf_token %}
@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="eight wide column">
-             <img src="/static/img/contactus.jpg">
+             <img id="pageImage" src="/static/img/contactus.jpg">
         </div>
     </div>
 {% endblock %}

@@ -40,6 +40,7 @@ object.htmlembed {
 @media all and (max-width:630px){
     #mainNavbar{display:none;}
     /* show menu button instead */
+    #pageImage{display:none;}
     #mobile_button {
         display:inline-block;
     }
