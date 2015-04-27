@@ -48,6 +48,11 @@ object.htmlembed {
     #mainHeader {
         text-align: center;
     }
+    #homepage-web{display:none; }
+}
+
+@media all and (min-width:631px){
+   #homepage-mobile{display:none;}
 }
 
 /* content must be below navbar */
