@@ -27,7 +27,7 @@ from apps.courseevent.models import CourseEvent
 class ApplicationForm(forms.ModelForm):
 
     class Meta:
-        fields = ('name', 'email', 'projecttype',
+        fields = ('name', 'email', 'projecttitle',
                   'projectdescription', 'qualification', 'motivation',
                   'priorexperience', 'contactinfo', )
         model = Contact
@@ -39,32 +39,42 @@ class ApplicationForm(forms.ModelForm):
     def send_email_visitor(self):
         # send email to requesting email
         # this method is called with cleaned from data
-        subject = "Ihre Nachricht an Mentoki"
+        subject = "Deine Bewerbung für den Mentoki Starterkurs"
         to = [self.cleaned_data['email']]
         from_mail = 'info@mentoki.com'
         context = {
             'name': self.cleaned_data['name'],
             'email': self.cleaned_data['email'],
+            'projecttitle': self.cleaned_data['projecttitle'],
+            'projectdescription': self.cleaned_data['projectdescription'],
+            'qualification': self.cleaned_data['qualification'],
+            'motivation': self.cleaned_data['motivation'],
+            'priorexperience': self.cleaned_data['priorexperience'],
             'contactinfo': self.cleaned_data['contactinfo'],
-            'betreff': "Ihre Nachricht",
+            'betreff': "Deine Bewerbung",
         }
-        message = get_template('email/message_outgoing.html').render(Context(context))
+        message = get_template('email/application_outgoing.html').render(Context(context))
         msg = EmailMessage(subject, message, to=to, from_email=from_mail)
         msg.content_subtype = 'html'
         msg.send()
 
     def send_email_self(self):
         # send email to self
-        subject = "Beantworten: Nachricht an Mentoki"
+        subject = "Beantworten: Bewerbung Starterkurs"
         to = ['info@mentoki.com']
         from_mail = self.cleaned_data['email']
         context = {
             'name': self.cleaned_data['name'],
             'email': self.cleaned_data['email'],
+            'projecttitle': self.cleaned_data['projecttitle'],
+            'projectdescription': self.cleaned_data['projectdescription'],
+            'qualification': self.cleaned_data['qualification'],
+            'motivation': self.cleaned_data['motivation'],
+            'priorexperience': self.cleaned_data['priorexperience'],
             'contactinfo': self.cleaned_data['contactinfo'],
-            'betreff': "Nachricht an Mentoki",
+            'betreff': "Starterkurs-Bewerbung bei Mentoki",
         }
-        message = get_template('email/message_internal.html').render(Context(context))
+        message = get_template('email/application_internal.html').render(Context(context))
         msg = EmailMessage(subject, message, to=to, from_email=from_mail)
         msg.content_subtype = 'html'
         msg.send()
@@ -138,32 +148,34 @@ class PrebookForm(forms.ModelForm):
     def send_email_visitor(self):
         # send email to requesting email
         # this method is called with cleaned from data
-        subject = "Ihre Nachricht an Mentoki"
+        subject = "Deine Voranmeldung bei Mentoki"
         to = [self.cleaned_data['email']]
         from_mail = 'info@mentoki.com'
         context = {
             'name': self.cleaned_data['name'],
             'email': self.cleaned_data['email'],
             'message': self.cleaned_data['message'],
+            'courseevent': self.cleaned_data['courseevent'],
             'betreff': "Ihre Nachricht",
         }
-        message = get_template('email/message_outgoing.html').render(Context(context))
+        message = get_template('email/prebooking_outgoing.html').render(Context(context))
         msg = EmailMessage(subject, message, to=to, from_email=from_mail)
         msg.content_subtype = 'html'
         msg.send()
 
     def send_email_self(self):
         # send email to self
-        subject = "Beantworten: Nachricht an Mentoki"
+        subject = "Beantworten: Voranmeldung bei Mentoki"
         to = ['info@mentoki.com']
         from_mail = self.cleaned_data['email']
         context = {
             'name': self.cleaned_data['name'],
             'email': self.cleaned_data['email'],
             'message': self.cleaned_data['message'],
-            'betreff': "Nachricht an Mentoki",
+            'courseevent': self.cleaned_data['courseevent'],
+            'betreff': "Voranmeldung bei Mentoki",
         }
-        message = get_template('email/message_internal.html').render(Context(context))
+        message = get_template('email/prebooking_internal.html').render(Context(context))
         msg = EmailMessage(subject, message, to=to, from_email=from_mail)
         msg.content_subtype = 'html'
         msg.send()

@@ -20,7 +20,7 @@ class Contact(TimeStampedModel):
     email = models.EmailField()
     # these field sum up to the description of the course
     message = models.TextField(blank=True, verbose_name="Deine Nachricht")
-    projecttype = models.CharField(max_length=100, verbose_name='Titel für Dein Kursprojekt', blank=True)
+    projecttitle = models.CharField(max_length=100, verbose_name='Titel für Dein Kursprojekt', blank=True)
     projectdescription = models.TextField(verbose_name='Beschreibe Dein Kursprojekt', blank=True)
     qualification = models.TextField(verbose_name='Was qualifiziert Dich dafür?', blank=True)
     courseevent = models.ForeignKey(CourseEvent, blank=True, null=True, verbose_name='Welcher Kurs interessiert Dich?')
