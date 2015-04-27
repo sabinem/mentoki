@@ -72,7 +72,7 @@ class ApplicationForm(forms.ModelForm):
             'motivation': self.cleaned_data['motivation'],
             'priorexperience': self.cleaned_data['priorexperience'],
             'contactinfo': self.cleaned_data['contactinfo'],
-            'betreff': "Starterkurs-Bewerbung bei Mentoki",
+            'betreff': "Deine Starterkurs-Bewerbung",
         }
         message = get_template('email/application_internal.html').render(Context(context))
         msg = EmailMessage(subject, message, to=to, from_email=from_mail)
@@ -156,7 +156,7 @@ class PrebookForm(forms.ModelForm):
             'email': self.cleaned_data['email'],
             'message': self.cleaned_data['message'],
             'courseevent': self.cleaned_data['courseevent'],
-            'betreff': "Ihre Nachricht",
+            'betreff': "Deine Voranmeldung",
         }
         message = get_template('email/prebooking_outgoing.html').render(Context(context))
         msg = EmailMessage(subject, message, to=to, from_email=from_mail)
