@@ -13,6 +13,7 @@ class ContactView(CreateView):
         # It should return an HttpResponse.
         form.send_email_visitor()
         form.send_email_self()
+        form.instance.contacttype = Contact.CONTACT_GENERAL
         return super(ContactView, self).form_valid(form)
 
     def get_success_url(self):
@@ -30,6 +31,7 @@ class PrebookView(CreateView):
         # It should return an HttpResponse.
         form.send_email_visitor()
         form.send_email_self()
+        form.instance.contacttype = Contact.CONTACT_STUDENT
         return super(PrebookView, self).form_valid(form)
 
     def get_success_url(self):
@@ -47,6 +49,7 @@ class ApplicationView(CreateView):
         # It should return an HttpResponse.
         form.send_email_visitor()
         form.send_email_self()
+        form.instance.contacttype = Contact.CONTACT_TEACHER
         return super(ApplicationView, self).form_valid(form)
 
     def get_success_url(self):
