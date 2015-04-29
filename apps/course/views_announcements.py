@@ -46,7 +46,7 @@ class AnnouncementMixin(CourseEventBuildMixin):
             owners = CourseOwner.objects.filter(course=context['course'].id).select_related('user')
 
             # send email to requesting email
-            subject = "Neue Nachricht vom netTeachers %s" % context['courseevent'].title
+            subject = "Neue Nachricht von Mentoki %s" % context['courseevent'].title
             to_list = []
             for participant in participants:
                 to_list.append(participant.user.email)
