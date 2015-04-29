@@ -164,10 +164,10 @@ class CourseMaterialUnit(CoursePartModel):
     )
     document_type = models.CharField(choices=DOCTYPE,max_length=2, default=DOCTYPE_TEXT, verbose_name="Anzeigemodus")
     # this field can be deleted in the future
-    slug = models.SlugField()
+    slug = AutoSlugField(populate_from='get_file_slug', blank=True)
     # the file is downloaded at the fileslug
     file = models.FileField(upload_to=lesson_material_name, blank=True, verbose_name="Datei")
-    fileslug = AutoSlugField(populate_from='get_file_slug', blank=True)
+
     sub_unit_nr = models.IntegerField(blank=True, null=True)
 
     def __unicode__(self):
@@ -175,6 +175,7 @@ class CourseMaterialUnit(CoursePartModel):
 
     def get_file_slug(instance):
         # the fileslug is determined from the filepath
+        print "***********************************************FILESLUG"
         pathparts = instance.file.name.split('/')
         fileslug = '-'.join(pathparts)
         return fileslug
@@ -196,8 +197,8 @@ class CourseOwner(CourseBasicModel):
     course = models.ForeignKey(Course)
     user = models.ForeignKey(User)
     foto = models.ImageField(upload_to=course_name, blank=True)
-    display = models.BooleanField(default=True)
-    display_nr = models.IntegerField(default=1)
+    display = models.BooleanField(default=True, verbose_name='Anzeigen bei der Kursausschreibung?')
+    display_nr = models.IntegerField(default=1, verbose_name='Anzeigereihenfolge bei mehreren Kursleitern')
 
     def __unicode__(self):
         # the courseownership is represented by the combination of course and user

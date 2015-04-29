@@ -30,7 +30,7 @@ class CourseUnitAdmin(admin.ModelAdmin):
 
 @admin.register(CourseMaterialUnit)
 class CourseMaterialUnitAdmin(admin.ModelAdmin):
-    list_display = ('id', 'course', 'unit', 'title',  'file', 'slug', 'fileslug', 'document_type', 'status' )
+    list_display = ('file', 'slug', 'id', 'course', 'unit', 'title', 'document_type', 'status' )
     list_filter = ('course', 'document_type')
 
 

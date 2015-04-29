@@ -159,3 +159,11 @@ input#id_description {
     background-repeat: no-repeat;
     height:100px;
 }
+
+#helpinstructions, .displaynr, .publishinfo, .lessonlinks, .contentdescription {
+    display:none;
+}
+
+.accomplishment {
+    display:none;
+}

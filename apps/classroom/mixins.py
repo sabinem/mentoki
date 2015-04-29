@@ -28,7 +28,9 @@ class ClassroomMixin(LoginRequiredMixin, MessageMixin, MatchMixin):
                 courseevent_id=courseevent_id,
                 ).values_list('unit_id', flat=True)
             published_units = CourseUnit.objects.select_related('block').\
-                filter(id__in=published_unit_list).order_by('block__display_nr').order_by('display_nr')
+                filter(id__in=published_unit_list).order_by('display_nr').order_by('block__display_nr')
+            for unit in published_units:
+                print "%s %s %s" % (unit.block_id, unit.block.display_nr, unit.display_nr)
             published_blocks_list = []
             current_block_id = None
             for unit in published_units:

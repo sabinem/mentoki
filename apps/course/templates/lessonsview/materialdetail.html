@@ -49,8 +49,8 @@
 {% endblock %}
 {% block page_content %}
     <div class="ui segment">
-        <h1 class="header">
-             <a class="ui header small"
+        <h3 class="ui header">
+             <a class="ui header h3"
              href="">
             {% if courseblock.is_numbered %}
                 {{ unit.display_nr }}.{{ material.display_nr }}
@@ -71,7 +71,7 @@
                  href="{% url 'course:materialupdate' slug=match.kwargs.slug material=material.id %}">
                  <i class="write blue icon"></i>
             </a>
-        </h1>
+        </h3>
         <div class="contentdescription">
             {{ unit.description }}
         </div>

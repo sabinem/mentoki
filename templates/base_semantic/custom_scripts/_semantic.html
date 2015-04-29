@@ -119,12 +119,45 @@ $(document).ready(function(){
     }
     $('#workonlessons').change(function(){
        if ($('#workonlessons').checkbox('is unchecked')){
-           $('.lessonlinks').fadeOut();
+           $('.lessonlinks').hide();
        }
     });
     $('#workonlessons').change(function(){
        if ($('#workonlessons').checkbox('is checked')){
            $('.lessonlinks').fadeIn();
+       }
+    });
+
+
+// This part is for the block section
+// this checkbox shows the links to work on the lesson parts
+    if ($('#showdisplaynr').checkbox('is unchecked')){
+       $('.displaynr').hide();
+    }
+    $('#showdisplaynr').change(function(){
+       if ($('#showdisplaynr').checkbox('is unchecked')){
+           $('.displaynr').hide();
+       }
+    });
+    $('#showdisplaynr').change(function(){
+       if ($('#showdisplaynr').checkbox('is checked')){
+           $('.displaynr').fadeIn();
+       }
+    });
+
+// This part is for the block section
+// this checkbox shows the links to work on the lesson parts
+    if ($('#showpublished').checkbox('is unchecked')){
+       $('.publishinfo').hide();
+    }
+    $('#showpublished').change(function(){
+       if ($('#showpublished').checkbox('is unchecked')){
+           $('.publishinfo').fadeOut();
+       }
+    });
+    $('#showpublished').change(function(){
+       if ($('#showpublished').checkbox('is checked')){
+           $('.publishinfo').fadeIn();
        }
     });
 
@@ -135,7 +168,7 @@ $(document).ready(function(){
     }
     $('#ineedhelp').change(function(){
        if ($('#ineedhelp').checkbox('is unchecked')){
-           $('#helpinstructions').fadeOut();
+           $('#helpinstructions').hide();
            $('#coursemenu').fadeIn();
        }
     });

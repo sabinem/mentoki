@@ -11,7 +11,10 @@
 {% block page_content %}
     <div class="ui piled segment">
         <h2 class="ui header">Kursleitung</h2>
-        {% for owner in owners %}
+    <div class="ui grid">
+    <div class="doubling two column row">
+              {% for owner in owners %}
+<div class="column">
             <div class="ui tabular menu">
               <a class="active blue item">
                 Ansehen
@@ -33,6 +36,9 @@
                     </div>
                 </div>
             </div>
+    </div>
         {% endfor %}
+    </div>
+    </div>
     </div>
 {% endblock %}

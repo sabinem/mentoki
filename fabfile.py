@@ -30,7 +30,7 @@ def git_tryclean():
 
 
 def stage():
-    code_dir = '/srv/http/web0263/netteachers_test/netteachers'
+    code_dir = '/srv/http/web0263/mentoki_test/mentoki'
     with cd(code_dir):
         run("git pull")
         run("touch app.wsgi")
@@ -41,6 +41,14 @@ def deploy():
     with cd(code_dir):
         run("git pull")
         run("touch app.wsgi")
+
+def stage():
+    code_dir = '/srv/http/web0263/mentoki_test/mentoki'
+    with cd(code_dir):
+        run("git pull")
+        run("touch app.wsgi")
+
+
 
 def prepare_commit():
     local('cp mentoki/settings_production.py mentoki/settings.py')

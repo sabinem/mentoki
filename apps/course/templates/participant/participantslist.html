@@ -1,4 +1,10 @@
 {% extends "base_course/base.html" %}
+{% block header_controls %}
+    {% include 'base_course/_helpcheckbox.html' %}
+{% endblock %}
+{% block help %}
+    {% include 'base_course/_help_participantlist.html' %}
+{% endblock %}
 {% block header %}
     Kursereignis {{ courseevent.title }}
 {% endblock %}

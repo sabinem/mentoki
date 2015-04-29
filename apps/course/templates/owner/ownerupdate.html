@@ -6,7 +6,7 @@
     {% include 'base_course/_helpcheckbox.html' %}
 {% endblock %}
 {% block help %}
-{% include 'base_course/_help_courseowner.html' %}
+{% include 'base_course/_help_updatecourseowner.html' %}
 {% endblock %}
 {% block page_content %}
 <div class="ui piled segment">
@@ -19,7 +19,13 @@
     Bearbeiten
   </a>
 </div>
-{% include 'base_course/_course_form.html' %}
+    <form class="ui form" id="course_form" method="post" action="">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" value="post" class="ui primary button">
+            Speichern
+        </button>
+    </form>
 </div>
 {% endblock %}
 

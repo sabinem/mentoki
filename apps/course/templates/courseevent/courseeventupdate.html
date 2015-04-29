@@ -10,12 +10,12 @@
     </div>
 {% endblock %}
 {% block help %}
-    {% include 'base_course/_help_courseevent.html' %}
+    {% include 'base_course/_help_courseeventupdate.html' %}
 {% endblock %}
 {% block page_content %}
     <div class="ui piled segment">
     <div class="ui tabular menu">
-      <a class="item" href="{% url 'course:start' slug=match.kwargs.slug %}">
+      <a class="item" href="{% url 'course:courseevent' slug=match.kwargs.slug ce_slug=match.kwargs.ce_slug %}">
         Abbrechen
       </a>
       <a class="active blue item">

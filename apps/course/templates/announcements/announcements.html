@@ -13,13 +13,13 @@
 {% endblock %}
 {% block page_content %}
     <div class="ui segment">
-        <h1 class="ui header">Ankündigungen schreiben</h1>
+        <h1 class="ui header">Ankündigungen</h1>
         <div class="ui tabular menu">
             <a class="active blue item">
             Ansehen
             </a>
             <a class="item" href="{% url 'course:createannouncement' slug=match.kwargs.slug ce_slug=match.kwargs.ce_slug %}">
-            <i class="write blue icon"></i>Neue
+            <i class="write blue icon"></i>Neue Ankündigung verfassen
             </a>
         </div>
         <table class="ui table">
@@ -56,7 +56,18 @@
               </td>
               <td>{{ announcement.published_at_date |date:'d.m.Y'  }}</td>
               <td>
-                  {{ announcement.title }}
+
+                        <div class="ui accordion field">
+        <div class="title">
+          {{ announcement.title }}
+          <i class="icon dropdown"></i>
+        </div>
+
+        <div class="content field">
+            <hr class="divider fitted">
+          {{ announcement.text | safe }}
+        </div>
+                            </div>
               </td>
             </tr>
           {% endfor %}

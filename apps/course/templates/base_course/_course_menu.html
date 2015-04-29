@@ -75,14 +75,21 @@
                       active green
                      {% endifstartswith %}"
                      href="{% url 'course:buildforum' slug=match.kwargs.slug ce_slug=courseevent.slug  %}">
-                      <i class="list icon"></i>Forum einrichten
+                      <i class="list icon"></i>Forum
+                  </a>
+                  <a class="item
+                     {% ifstartswith 'course:createsubforum' slug=match.kwargs.slug ce_slug=courseevent.slug  %}
+                      active green
+                     {% endifstartswith %}"
+                     href="{% url 'course:createsubforum' slug=match.kwargs.slug ce_slug=courseevent.slug  %}">
+                      <i class="list icon"></i>Unterforum anlegen
                   </a>
                   <a class="item
                      {% ifstartswith 'course:listannouncements' slug=match.kwargs.slug ce_slug=courseevent.slug  %}
                       active green
                      {% endifstartswith %}"
                      href="{% url 'course:listannouncements' slug=match.kwargs.slug ce_slug=courseevent.slug  %}">
-                      <i class="list icon"></i>Ankündigungen
+                      <i class="list icon"></i>Ankündigungen schreiben
                   </a>
                   <a class="item
                      {% ifactive 'course:publishlessons' slug=match.kwargs.slug ce_slug=courseevent.slug  %}

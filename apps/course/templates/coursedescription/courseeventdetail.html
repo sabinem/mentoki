@@ -6,7 +6,12 @@
 {% block header_controls %}
     {% include 'base_course/_worklinkscheckbox.html' %}
     {% include 'base_course/_helpcheckbox.html' %}
+    <a class="ui header small" href="{% url 'courseevent:publicdetail' slug=ce_slug %}">
+        <i class="unhide icon"></i>
+    </a>
+
 {% endblock %}
+
 {% block help %}
     {% include 'base_course/_help_courseevent.html' %}
 {% endblock %}

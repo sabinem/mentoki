@@ -76,6 +76,13 @@ class CourseEventDetailView(TemplateView):
             # get teachers
             courseowners = CourseOwner.objects.filter(course_id=courseevent.course_id)
             context['courseowners'] = courseowners.order_by('display_nr')
+            context['is_owner']=False
+            for courseowner in courseowners:
+                print courseowner.user_id
+                print self.request.user.id
+                if courseowner.user_id == self.request.user.id:
+                    print "yes"
+                    context['is_owner']=True
         except:
             # fail silently
             pass

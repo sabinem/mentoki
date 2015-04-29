@@ -8,6 +8,7 @@ from django.core.urlresolvers import reverse
 # import from own app
 from .mixins import CourseBuildMixin
 from .models import CourseUnit, CourseMaterialUnit, CourseBlock
+from apps.courseevent.models import CourseeventUnitPublish
 
 
 #logging
@@ -23,12 +24,25 @@ class LessonsView(CourseBuildMixin, TemplateView):
         paired with their material
         """
         context = super(LessonsView, self).get_context_data(**kwargs)
+        courseevent_ids = []
+        for courseevent in context['courseevents']:
+            courseevent_ids.append(courseevent.id)
+        published_unit_list = CourseeventUnitPublish.objects.filter(
+                courseevent_id__in=courseevent_ids,
+                ).values_list('unit_id', flat=True)
         blocks = CourseBlock.objects.filter(course_id=context['course'].id).order_by('display_nr')
         block_list = []
         unit_dict = {}
         for block in blocks:
             units = CourseUnit.objects.filter(block_id=block.id).order_by('display_nr')
-            block_list.append({'block':block, 'units':units})
+            unit_list =[]
+            for unit in units:
+                if unit.id in published_unit_list:
+                    published = True
+                else:
+                    published = False
+                unit_list.append({'unit':unit, 'published': published})
+            block_list.append({'block':block, 'units':unit_list})
 
         context['block_list'] = block_list
         logger.debug("---------- in BlockDetailView")

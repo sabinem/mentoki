@@ -24,7 +24,7 @@ class CourseOwnersListView(CourseBuildMixin, TemplateView):
         logger.debug("---------- in CoursedOwnersListView")
         context = super(CourseOwnersListView, self).get_context_data(**kwargs)
         # course owners are selected together with their user data
-        owners = CourseOwner.objects.select_related('user').filter(course_id=context['course'].id)
+        owners = CourseOwner.objects.select_related('user').filter(course_id=context['course'].id).order_by('display_nr')
         # the context are the owners informations
         context['owners'] = owners
         return context
