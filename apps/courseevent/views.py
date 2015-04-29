@@ -32,7 +32,7 @@ class CourseEventListView(MatchMixin, TemplateView):
 
 class CourseEventDetailView(MatchMixin, TemplateView):
     """
-    This View shows the details for a courseevents.
+    This View shows the details for a courseevents
     """
 
     template_name = "public/courseevent_detail.html"
