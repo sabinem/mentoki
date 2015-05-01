@@ -21,6 +21,5 @@ media/**
 
 mentoki/settings_production.py
 mentoki/settings_test.py
-paramiko.log
 configuration
-paramiko.log
+paramiko*
