@@ -129,8 +129,8 @@ class CourseUnit(CoursePartModel):
     )
     # no longer needed
     unit_type = models.CharField(choices=UNIT_TYPE, default=UNIT_TYPE_LESSON, max_length=2)
-    block = models.ForeignKey(CourseBlock, blank=True, null=True, verbose_name='Unterrichtsblock',
-                              on_delete=models.SET_NULL)
+    block = models.ForeignKey(CourseBlock, verbose_name='Unterrichtsblock', default=1)
+
     # no longer needed
     unit_nr = models.IntegerField(blank=True, null=True, verbose_name='Lektionsnummer')
 
@@ -152,7 +152,7 @@ class CourseMaterialUnit(CoursePartModel):
     """
     material like pdf files, etc can only be defined on this sublevel to units.
     """
-    unit = models.ForeignKey(CourseUnit, blank=True, null=True, on_delete=models.SET_NULL, verbose_name="Lektion")
+    unit = models.ForeignKey(CourseUnit, verbose_name="Lektion", default=1)
     # the doc type decides how the document is displayed.
     DOCTYPE_PDFVIEWDOWNLOAD = 'g'
     DOCTYPE_PDFDOWNLOADONLY = '1'
