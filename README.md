@@ -5,7 +5,7 @@ Mentoki is a platform for teaching and learning. The platform provides infrastru
 for holding up online classes. There will be a payment system integrated in the near future. So far it is not.
 What is also still missing are extended user profiles.
 
-##Structure
+#Structure
 The platform splits up into a public part and a private part, that is only accessible by registered users, mostly
 teachers and their students.
 There are the following basic components that correspond to apps:
@@ -26,7 +26,7 @@ There are the following basic components that correspond to apps:
 * upload (app): for the upload of images
 * pdf (app): no longer in use, will be deleted as soon as I figure out how to do this in a safe way (it is part of some migrations)
 
-##The two Central Apps and their models:
+#The two Central Apps and their models:
 ### Course App
 The course is the central app for teachers. Teachers own courses. This is where all their material resides. 
 Their material is further structured into *blocks*, *lessons* and *materials*. This is a hierarchical structure with 
