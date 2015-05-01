@@ -3,8 +3,6 @@ from django.forms import ModelForm
 from crispy_forms.helper import FormHelper
 from apps.classroom.models import Announcement
 
-
-
 class AnnouncementCreateForm(forms.ModelForm):
     class Meta:
         model = Announcement
