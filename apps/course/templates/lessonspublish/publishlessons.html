@@ -40,10 +40,19 @@
                   {% endif %}
               </td>
               <td>
+                  {% if unit.published %}
+                  <a href="{% url 'classroom:lesson' slug=match.kwargs.ce_slug unit=unit.unit.id %}">
                   {% if item.block.is_numbered %}
                       {{ unit.unit.display_nr }}.
                   {% endif %}
                   {{ unit.unit.title }}
+                  </a>
+                  {% else %}
+                  {% if item.block.is_numbered %}
+                      {{ unit.unit.display_nr }}.
+                  {% endif %}
+                  {{ unit.unit.title }}                  {% endif %}
+
                   <a class="worklink"
                  href="{% url 'course:unitupdate' slug=match.kwargs.slug unit=unit.unit.id %}">
                  <i class="write blue icon"></i>

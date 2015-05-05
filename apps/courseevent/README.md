@@ -7,13 +7,14 @@ courseevents including the participation in them.
 + CourseEvent
 + CourseeventUnitPublish
 + CourseEventParticipation
++ CourseEventPublicINformation
 
 ##Views and Templates
 There are always public and internal views. Courseevents can be prebooked internaly by peers in
 order to test them out, before they go life.
 
 ## Status: 
-This app is being worked on.
+
 
 ##Questions:
 ### Are all of these attributes necessary?

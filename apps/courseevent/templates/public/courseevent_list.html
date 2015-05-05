@@ -38,36 +38,33 @@
                 </div>
             </div>
             <div class="eleven wide column">
-
-                    {% for item in courseevent_list_now %}
-
-                        <div class="ui piled segment">
-                        <h3 class="ui header">
-                            <a class="ui header" href="{% url 'courseevent:publicdetail' slug=item.courseevent.slug %}">
-                                {{ item.courseevent.title }} mit {{ item.courseevent_teachers }}
-                            </a>
-                            <a class="ui tag green label" href="{% url 'courseevent:publicdetail' slug=item.courseevent.slug %}">
-                                jetzt buchbar
-                            </a>
-                        </h3>
-                        {{ item.courseevent.excerpt |safe}}
-                        </div>
-                    {% endfor %}
-                    {% for item in courseevent_list_preview %}
-                        <div class="ui piled segment">
-                        <h3 class="ui header">
-                            <a class="ui header"
-                               href="{% url 'courseevent:publicdetail' slug=item.courseevent.slug %}">
-                               {{ item.courseevent.title }} mit {{ item.courseevent_teachers }}
-                            </a>
-                            <a class="ui tag blue label" href="{% url 'courseevent:publicdetail' slug=item.courseevent.slug %}">
-                                Vorankündigung
-                            </a>
-                        </h3>
-                        {{ item.courseevent.excerpt |safe}}
-                        </div>
-                    {% endfor %}
-
+                {% for item in courseevent_list_now %}
+                    <div class="ui piled segment">
+                    <h3 class="ui header">
+                        <a class="ui header" href="{% url 'courseevent:publicdetail' slug=item.courseevent.slug %}">
+                            {{ item.courseevent.title }} mit {{ item.courseevent_teachers }}
+                        </a>
+                        <a class="ui tag green label" href="{% url 'courseevent:publicdetail' slug=item.courseevent.slug %}">
+                            jetzt buchbar
+                        </a>
+                    </h3>
+                    {{ item.courseevent.excerpt |safe}}
+                    </div>
+                {% endfor %}
+                {% for item in courseevent_list_preview %}
+                    <div class="ui piled segment">
+                    <h3 class="ui header">
+                        <a class="ui header"
+                           href="{% url 'courseevent:publicdetail' slug=item.courseevent.slug %}">
+                           {{ item.courseevent.title }} mit {{ item.courseevent_teachers }}
+                        </a>
+                        <a class="ui tag blue label" href="{% url 'courseevent:publicdetail' slug=item.courseevent.slug %}">
+                            Vorankündigung
+                        </a>
+                    </h3>
+                    {{ item.courseevent.excerpt |safe}}
+                    </div>
+                {% endfor %}
             </div>
         </div>
     </main>

@@ -205,6 +205,13 @@
 
               </div>
             <a class="item
+                {% ifactive "home:news" %}
+                    active
+                {% endifactive %}
+                " href="{% url 'home:news' %}">
+                Aktuelles
+            </a>
+            <a class="item
                 {% ifactive "courseevent:publiclist" %}
                     active
                 {% endifactive %}

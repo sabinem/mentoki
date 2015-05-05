@@ -1,0 +1,73 @@
+# Logging
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    'formatters': {
+        'verbose': {
+            'format': '[%(asctime)s] %(levelname)s [%(name)s.%(funcName)s:%(lineno)d] %(message)s',
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
+        },
+        'simple': {
+            'format': '[%(asctime)s] %(levelname)s %(message)s',
+            'datefmt': '%Y-%m-%d %H:%M:%S'
+        },
+    },
+    'handlers': {
+        'sentry': {
+            'level': 'ERROR',
+            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+        },
+        'console':{
+            'level':'DEBUG',
+            'filters': ['require_debug_true'],
+            'class':'logging.StreamHandler',
+            'formatter': 'verbose'
+        },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'netteachers.log',
+            'formatter': 'verbose'
+        },
+        'handler_for_my_apps': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        },
+    },
+    'loggers': {
+        'apps.forum': {
+            'handlers': ['handler_for_my_apps'],
+            'propagate': True,
+            'level': 'DEBUG',
+        },
+        'apps.core': {
+            'handlers': ['handler_for_my_apps'],
+            'propagate': True,
+            'level': 'DEBUG',
+        },
+        'apps.course': {
+            'handlers': ['handler_for_my_apps'],
+            'propagate': True,
+            'level': 'DEBUG',
+        },
+        'apps.classroom': {
+            'handlers': ['handler_for_my_apps'],
+            'propagate': True,
+            'level': 'DEBUG',
+        },
+        'apps.desk': {
+            'handlers': ['handler_for_my_apps'],
+            'propagate': True,
+            'level': 'DEBUG',
+        },
+    }
+}

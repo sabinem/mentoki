@@ -16,7 +16,7 @@
     {% include 'base_course/_help_courseevent.html' %}
 {% endblock %}
 {% block page_content %}
-    <div class="ui piled segment">
+    <div class="ui piled segment" id="ui_textdisplay">
         <div class="ui tabular menu">
             <a class="item" href="{% url 'course:start' slug=match.kwargs.slug %}">
             Kursvorlage

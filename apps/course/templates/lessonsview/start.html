@@ -50,11 +50,13 @@
                                 {{ item.block.title }}
 
                             </a>
-
+                            <span class="accomplishment">
                             {% if item.block.status == item.block.STATUS_READY %}
-                                 <i class="checkmark icon green accomplishment"></i>
-                            {% endif %}
+                                 <i class="icon checkmark green "></i>
 
+                            {% endif %}
+                              <span class="last_modified"> (zuetzt geändert: {{ item.block.modified | date:'d.m' }})</span>
+                            </span>
                             <a class="worklink"
                                  href="{% url 'course:blockupdate' slug=match.kwargs.slug block=item.block.id %}">
                                  <i class="write blue icon"></i>
@@ -76,9 +78,13 @@
                                         <div class="header">
                                            <a href="{% url 'course:unitdetail' slug=match.kwargs.slug unit=unit_dict.unit.id %}"
                                                    >{{ unit_dict.unit.title }}</a>
+                                            <span class="accomplishment">
                                             {% if unit_dict.unit.status == unit_dict.unit.STATUS_READY %}
-                                                 <i class="checkmark icon green accomplishment"></i>
+                                                 <i class="icon checkmark green "></i>
+
                                             {% endif %}
+                                              <span class="last_modified"> (zuetzt geändert: {{ unit_dict.unit.modified | date:'d.m' }})</span>
+                                            </span>
                                             {% if unit_dict.published %}
                                                  <i class="publishinfo checkmark icon pink"></i>
                                             {% endif %}

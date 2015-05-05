@@ -16,3 +16,6 @@ class ImpressumPageView(PublicMixin, TemplateView):
 
 class TeamPageView(PublicMixin, TemplateView):
     template_name = "public/team.html"
+
+class NewsPageView(PublicMixin, TemplateView):
+    template_name = "public/news.html"

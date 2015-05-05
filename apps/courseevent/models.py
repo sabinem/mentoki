@@ -5,7 +5,7 @@ import datetime
 # import from django
 from django.db import models
 from django.contrib.auth.models import User
-# import from thrid party
+# import from third party
 from model_utils.models import TimeStampedModel
 # import from other apps
 from apps.course.models import Course, CourseUnit, CourseOwner
@@ -98,8 +98,9 @@ class CourseEvent(TimeStampedModel):
 
 class CourseeventUnitPublish(models.Model):
     """
-    Units are published one by one in a class. Publication is decided on the level of the
-    course unit. See app course for details.
+    Units (Lessons) are published in a class, when the instructor decides
+    students are ready for them. Publication is decided on the level of the
+    CourseUnit. See app course for details.
     """
     courseevent = models.ForeignKey(CourseEvent)
     unit = models.ForeignKey(CourseUnit)
@@ -111,7 +112,9 @@ class CourseeventUnitPublish(models.Model):
 
 class CourseEventParticipation(TimeStampedModel):
     """
-    Participation in courseevent means students study there.
+    This is the relationsship between users and classes: a record here means they are studying
+    in a courseevent.
+    The records will be added during the booking of the class.
     """
     courseevent = models.ForeignKey(CourseEvent)
     user = models.ForeignKey(User)
@@ -122,10 +125,12 @@ class CourseEventParticipation(TimeStampedModel):
 
 class CourseEventPubicInformation(TimeStampedModel):
     """
-    Participation in courseevent means students study there.
+    Decribing Attributes that are not necessary for processing them are gathered in this model
     """
+    # should I make tis a one-to-one field?
     courseevent = models.ForeignKey(CourseEvent)
     excerpt = models.TextField(blank=True)
+    # the video is shown in a certain way, therefor just the code of the video is needed here.
     video_url = models.CharField(max_length=100, blank=True, verbose_name="Kürzel des Videos bei You Tube ")
     text = models.TextField(blank=True, verbose_name="freie Kursbeschreibung, überschreibt die allgemeine "
                                                      "Kursbeschreibung, wenn ausgefüllt")

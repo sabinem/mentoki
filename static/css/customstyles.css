@@ -167,3 +167,7 @@ input#id_description {
 .accomplishment {
     display:none;
 }
+
+.last_modified {
+    color:grey;
+}
