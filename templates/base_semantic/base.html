@@ -86,6 +86,13 @@
               " href="{% url 'contact:application' %}">
                   Anmeldung zum Vorgespräch
             </a>
+            <a class="item
+                {% ifactive "home:news" %}
+                    active
+                {% endifactive %}
+                " href="{% url 'home:news' %}">
+                Gratis-Webinar
+            </a>
             <div class="header ui teal item">
                 Vorschau Herbst
             </div>
@@ -209,7 +216,7 @@
                     active
                 {% endifactive %}
                 " href="{% url 'home:news' %}">
-                Aktuelles
+                Gratis-Webinar
             </a>
             <a class="item
                 {% ifactive "courseevent:publiclist" %}
