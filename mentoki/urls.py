@@ -6,6 +6,7 @@ from django.views.generic.base import TemplateView
 from django.conf import settings
 
 
+
 urlpatterns = patterns('',
     # admin urls
     url(r'^admin/', include(admin.site.urls)),
@@ -52,7 +53,8 @@ urlpatterns = patterns('',
          'template_name': 'registration/password_reset_confirm.html'}),
     (r'^user/password/done/$',
         'django.contrib.auth.views.password_reset_complete'),
-    )
+    (r'^robots\.txt/$', TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),
+)
 
 if settings.DEBUG:
     urlpatterns += patterns('',
