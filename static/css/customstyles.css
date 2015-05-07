@@ -162,10 +162,18 @@ object.htmlembed {
   background-attachment: fixed; */
 
   background-color: #f4ffff;
+  background-color:#c3d4c9;
 }
+
+#webinar #mainheader {
+    opacity: 0.8;
+}
+
+
 /* contact */
 #contact {
   background-color:#b0d6d7;
+  background: #ede1dd;
 }
 
 /* application */
