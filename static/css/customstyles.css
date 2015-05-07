@@ -73,12 +73,31 @@ object.htmlembed {
 /* homepage */
 #home {
   /* Location of the image */
-  background-image: url('/static/img/background3.jpg');
+  background-image: url('/static/img/homepage.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+
 }
 
-#home2 {
+#home #mainheader {
+    opacity: 0.8;
+
+}
+
+#homesegment1, #homesegment2, #homesegment3, #homesegment4 {
+    background:#aeb3a4;
+    background:#e8c9bf;
+
+      opacity: 0.9;
+    /* background:#968D96; */
+}
+
+#footer {
   /* Location of the image */
-  background-image: url('/static/img/12052071_l.jpg');
+  /* background-image: url('/static/img/12052071_l.jpg'); */
+  background: #f4ffff;
+  background:white;
+  opacity:0.8;
 }
 
 /* starterkurspage */
@@ -88,17 +107,62 @@ object.htmlembed {
 
 /* course list */
 #publiclist {
-  background-image: url('/static/img/12052071_ml.jpg');
-  background-image: url('/static/img/background_courselist.jpg');
+  background-image: url('/static/img/21349832_ml.jpg');
+  background-image: url('/static/img/21349832_ml_lighter.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+#publiclist .segment, #courseheader a {
+    /* background: hsl(300,4%,57%);
+    border: 5px solid #968D96;
+    opacity: 0.9; /* CSS3 Standard */
+    /* background: rgba(150,141,150,0.2); */
+    color:#5d565d;
+}
+
+#courselist_menu .header {
+    background: #968D96;
+    color:white;
+    /* background: hsla(300,4%,2%,0.1); */
+    border: 5px solid #968D96;
+
+}
+
+#publiclist #mainheader, #publiclist #mainheader div {
+    color:white;
+    background:teal;
+    opacity: 0.8;
+}
+
+
+#courselist_menu  {
+    /* opacity: 0.9; /* CSS3 Standard */
+        opacity: 0.9;
+}
+
+#courselist_menu a div {
+    color:black;
 }
 
 /* course list */
 #public {
-  background-image: url('/static/img/12052071_ml.jpg');
+  /* background-image: url('/static/img/12052071_l.jpg');
+   background-image: url('/static/img/21349832_ml_lighter.jpg');
+  background-size: cover;
+  background-attachment: fixed; */
+   background-color:#a5bacb;
   /* background-color: #98bcd4; */
 }
 
+/* course list */
+#webinar {
+  /* background-image: url('/static/img/12052071_l.jpg');
+  background-size: cover;
+  background-attachment: fixed; */
 
+  background-color: #f4ffff;
+}
 /* contact */
 #contact {
   background-color:#b0d6d7;
@@ -107,6 +171,7 @@ object.htmlembed {
 /* application */
 #application {
   background-color:#a5bacb;
+    /* background-color:#f2e2d2; */
 }
 
 
@@ -118,13 +183,29 @@ object.htmlembed {
 
 /* desk */
 #desk {
-  background-image: url('/static/img/29411385_ml.jpg');
+  background-image: url('/static/img/normaldesk.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+#team {
+  background-image: url('/static/img/12052071_ml_brown.jpg');
+  background-size: cover;
+  background-attachment: fixed;
 }
 
 #teamcard {
     background:#d3e5e5;
+    background: #ede1dd;
 }
 
+#team #mainheader {
+      opacity:0.8;
+}
+
+a, a:hover {
+    color:teal;
+}
 
 /* Work on lessons: make title input field longer */
 input#id_title {
