@@ -10,8 +10,8 @@
  <div class="ui three column grid" >
                     <div class="column column-addon"></div>
                     <div class="column block column-addon">
-                        <div class="ui piled segment">
-                            <div class="ui raised blue segment">
+                        <div class="ui segment" id="homesegment2">
+                            <div class="ui raised segment">
                                 <h3 class="ui header">Willst Du etwas Spezielles lernen?</h3>
                                 <p>Dann bist Du bei Mentoki gut aufgehoben. Erste Kurse starten im September:</p>
                                 <a class="fluid blue ui button" href="{% url 'courseevent:publiclist' %}">
@@ -51,8 +51,8 @@
                         </div>
                     </div>
                     <div class="column column-addon">
-                        <div class="ui piled segment">
-                            <div class="ui raised green segment">
+                        <div class="ui segment" id="homesegment1">
+                            <div class="ui raised segment">
                                 <h3 class="ui header">Oder hast Du etwas zu unterrichten?</h3>
                                 <p>Bist Du ein Spezialist, der gerne sein Wissen teilt? Dann bietet Mentoki Dir eine
                                    Ausbildung zum Online-Mentor an:
@@ -60,7 +60,7 @@
                                 <p>Im Mai startet unser zweiter Starterkurs, der Dir als Spezialisten dabei
                                     hilft, Deinen Unterricht auch online an Mann oder Frau zu bringen.
                                 </p>
-                                <a class="fluid green ui button" href="{% url 'home:starterkurs' tab='video' %}">
+                                <a class="fluid teal ui button" href="{% url 'home:starterkurs' tab='video' %}">
                                     Hier erfährst Du mehr darüber.
                                 </a>
                                 <div class="ui cards">
@@ -70,7 +70,7 @@
                                             <div class="meta">Sabine Maennel</div>
                                             <div class="description">
                                                 <p>Ausbildung zum Online-Mentor bei Mentoki</p>
-                                                <a class="ui tag green label"
+                                                <a class="ui tag teal label"
                                                    href="{% url 'courseevent:publiclist' %}">jetzt buchbar
                                                 </a>
                                              </div>

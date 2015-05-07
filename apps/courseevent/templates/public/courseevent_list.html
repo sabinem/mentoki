@@ -10,12 +10,12 @@
     <main class="ui two column doubling grid">
         <div class="row">
             <div class="five wide column">
-                <div class="ui fluid vertical menu">
+                <div class="ui fluid vertical menu" id="courselist_menu">
                     <div class="header item">
                         Jetzt buchen
                     </div>
                     <div class="item">
-                        <div class="menu">
+                        <div class="menu" >
                               {% for item in courseevent_list_now %}
                               <a class="item" href="{% url 'courseevent:publicdetail' slug=item.courseevent.slug %}">
                                   {{ item.courseevent.title }}
@@ -39,12 +39,12 @@
             </div>
             <div class="eleven wide column">
                 {% for item in courseevent_list_now %}
-                    <div class="ui piled segment">
-                    <h3 class="ui header">
+                    <div class="ui  segment">
+                    <h3 class="ui header" id="courseheader">
                         <a class="ui header" href="{% url 'courseevent:publicdetail' slug=item.courseevent.slug %}">
                             {{ item.courseevent.title }} mit {{ item.courseevent_teachers }}
                         </a>
-                        <a class="ui tag green label" href="{% url 'courseevent:publicdetail' slug=item.courseevent.slug %}">
+                        <a class="ui tag teal label" href="{% url 'courseevent:publicdetail' slug=item.courseevent.slug %}">
                             jetzt buchbar
                         </a>
                     </h3>
@@ -58,7 +58,7 @@
                            href="{% url 'courseevent:publicdetail' slug=item.courseevent.slug %}">
                            {{ item.courseevent.title }} mit {{ item.courseevent_teachers }}
                         </a>
-                        <a class="ui tag blue label" href="{% url 'courseevent:publicdetail' slug=item.courseevent.slug %}">
+                        <a class="ui tag teal label" href="{% url 'courseevent:publicdetail' slug=item.courseevent.slug %}">
                             Vorankündigung
                         </a>
                     </h3>
