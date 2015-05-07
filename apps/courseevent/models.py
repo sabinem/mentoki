@@ -23,11 +23,6 @@ class CourseEvent(TimeStampedModel):
     title = models.CharField(max_length=100)
     # several describing attributes
     excerpt = models.TextField(blank=True)
-    text = models.TextField(blank=True)
-    format = models.TextField(blank=True, verbose_name="Kursformat")
-    workload = models.TextField(blank=True, verbose_name="Arbeitsbelastung")
-    structure = models.TextField(blank=True, verbose_name="Gliederung")
-    project = models.TextField(default="x",blank=True)
     # startdate and nr of weeks if this applies
     start_date = models.DateField(null=True, blank=True)
     nr_weeks = models.IntegerField(null=True, blank=True)
@@ -129,7 +124,6 @@ class CourseEventPubicInformation(TimeStampedModel):
     """
     # should I make tis a one-to-one field?
     courseevent = models.ForeignKey(CourseEvent)
-    excerpt = models.TextField(blank=True)
     # the video is shown in a certain way, therefor just the code of the video is needed here.
     video_url = models.CharField(max_length=100, blank=True, verbose_name="Kürzel des Videos bei You Tube ")
     text = models.TextField(blank=True, verbose_name="freie Kursbeschreibung, überschreibt die allgemeine "
