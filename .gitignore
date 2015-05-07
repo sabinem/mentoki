@@ -26,13 +26,5 @@ configuration
 paramiko*
 
 # static
-static/themes/**
-static/sites/**
-static/src/**
-static/components/**
-static/less/**
 static/img-reserve/**
-static/tasks/**
-static/themes/**
-static/semantic/**
-static/redactor/**
+tmp/**
