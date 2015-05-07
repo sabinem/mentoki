@@ -94,10 +94,13 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': os.environ.get('DATABASE_NAME'),
         'USER': os.environ.get('DATABASE_USER'),
+        #'NAME': 'netteachers_dev',
+        #'USER': 'sabinemaennel',
 	    'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
 	    'HOST': os.environ.get('DATABASE_HOST'),
     }
 }
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
@@ -263,5 +266,5 @@ if LOCAL_ENVIRONMENT:
 
 # Set your DSN value
 RAVEN_CONFIG = {
-    'dsn': 'https://a48062fe9d704e8dbb13d4a5308660f7:d700ee2d722d4c78b367e7ece511bda4@app.getsentry.com/42970',
+    'dsn': os.environ.get('SENTRY_DSN'),
 }
