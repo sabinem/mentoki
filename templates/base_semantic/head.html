@@ -6,12 +6,20 @@
 <meta name="description" content="Teachers Net - Learning Platform">
 <meta name="author" content="Sabine Maennel">
 <title>{% block title %}{% endblock %}</title>
+
+<!-- google site veification code -->
 <meta name="google-site-verification" content="mxd7wHh8P4QFFW-V0tYqmHAUB5Yz3MydQOpyiRiyGbg" />
+
 <!-- CSS -->
-<link href="{% static "semantic/semantic.css" %}" rel="stylesheet">
-<link href="{% static "redactor/redactor.css" %}" rel="stylesheet">
+<link href="{% static "js/semantic.min.css" %}" rel="stylesheet">
+<link href="{% static "js/redactor.min.css" %}" rel="stylesheet">
 <link href="{% static "css/customstyles.css" %}" rel="stylesheet" >
 <link href="{% static "css/normalize.css" %}" rel="stylesheet" >
+
+<!-- CSS as link: font for thank you pages -->
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Petit+Formal+Script" />
+
+<!-- favicon -->
 <link rel="apple-touch-icon" sizes="57x57" href="/static/favicon/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="/static/favicon//apple-icon-60x60.png">
 <link rel="apple-touch-icon" sizes="72x72" href="/static/favicon//apple-icon-72x72.png">
@@ -25,26 +33,27 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon//favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="96x96" href="/static/favicon//favicon-96x96.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon//favicon-16x16.png">
+
+<!-- manifest.json ??? -->
 <link rel="manifest" href="/manifest.json">
 <meta name="msapplication-TileColor" content="#ffffff">
 <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
 <meta name="theme-color" content="#ffffff">
-<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Petit+Formal+Script" />
+
 <!-- Jquery -->
 <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 <!-- Semantic JS -->
-<script src="{% static "semantic/semantic.js" %}"></script>
+<script src="/static/js/semantic/semantic.min.js"></script>
 <!-- Braintree JS -->
 <script src="https://js.braintreegateway.com/v2/braintree.js"></script>
 <!-- Redactor JS -->
-<script src="/static/redactor/redactor.js"></script>
-<script src="/static/redactor/plugins/table.js"></script>
-<script src="/static/redactor/plugins/video.js"></script>
-<script src="/static/redactor/plugins/fullscreen.js"></script>
-<script src="/static/redactor/plugins/fontsize.js"></script>
-<script src="/static/redactor/plugins/fontcolor.js"></script>
-<script src="/static/redactor/plugins/imagemanager.js"></script>
-<!-- custom JS -->
+<script src="/static/js/redactor.min.js"></script>
+<script src="/static/js/redactor/plugins/table.js"></script>
+<script src="/static/js/redactor/plugins/video.js"></script>
+<script src="/static/js/redactor/plugins/fullscreen.js"></script>
+<script src="/static/js/redactor/plugins/fontsize.js"></script>
+<script src="/static/js/redactor/plugins/fontcolor.js"></script>
+<script src="/static/js/redactor/plugins/imagemanager.js"></script>
+<!-- custom html -->
 {% include 'base_semantic/custom_scripts/_redactor.html' %}
 {% include 'base_semantic/custom_scripts/_semantic.html' %}
-<script src="/static/js/customjs.js"></script>

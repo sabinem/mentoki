@@ -24,3 +24,15 @@ mentoki/settings_production.py
 mentoki/settings_test.py
 configuration
 paramiko*
+
+# static
+static/themes/**
+static/sites/**
+static/src/**
+static/components/**
+static/less/**
+static/img-reserve/**
+static/tasks/**
+static/themes/**
+static/semantic/**
+static/redactor/**
