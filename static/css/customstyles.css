@@ -284,7 +284,7 @@ a, a:hover, #courselink, #courselink:hover  {
    background-color: #c8d0dd;
 }
 
-#public #buttonprebook {
+#public #buttonprebook, #public #buttonbook {
     background:#009b98;
     color:white;
 }
