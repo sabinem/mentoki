@@ -39,7 +39,7 @@
             </div>
             <div class="eleven wide column">
                 {% for item in courseevent_list_now %}
-                    <div class="ui  segment">
+                    <div class="ui fluid segment">
                     <h3 class="ui header" id="courseheader">
                         <a class="ui header" href="{% url 'courseevent:publicdetail' slug=item.courseevent.slug %}">
                             {{ item.courseevent.title }} mit {{ item.courseevent_teachers }}
@@ -52,7 +52,7 @@
                     </div>
                 {% endfor %}
                 {% for item in courseevent_list_preview %}
-                    <div class="ui piled segment">
+                    <div class="ui fluid segment">
                     <h3 class="ui header">
                         <a class="ui header"
                            href="{% url 'courseevent:publicdetail' slug=item.courseevent.slug %}">

@@ -12,13 +12,15 @@
                 {% for courseowner in courseowners %}
                     {% if courseowner.display %}
                     <div class="ui card fluid">
-                        <div class="ui image">
+                       <div id="courseowner_img">
+                        <div class="ui image aligned center" >
                             {% if courseowner.foto %}
                                 <img src="{{ courseowner.foto.url }}">
                             {% endif %}
                         </div>
+                       </div>
                         <div class="content">
-                            <a class="header">
+                            <a class="header aligned center">
                                 {{ courseowner.user.first_name }} {{ courseowner.user.last_name }}
                             </a>
 
