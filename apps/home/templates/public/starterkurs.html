@@ -2,7 +2,7 @@
 {% load activelink %}
 {% block title %}Mentoki Starterkurs{% endblock %}
 {% block body %}
-<body id="application" >
+<body id="starterkurs" >
 {% endblock %}
 {% block main %}
     <h2 class="ui block header" id="mainheader">Starterkurs, Start: 28.5.2015, Dauer: 8 Wochen
@@ -12,8 +12,8 @@
             </a>
         </div>
     </h2>
-    <div class="ui grid">
-        <div class="column">
+    <div class="ui grid" id="tabgrid">
+        <div class="column" id="tabgridcolumn">
             <div class="ui top attached tabular menu">
                 <a class="
                 {% if match.kwargs.tab == "video" %}

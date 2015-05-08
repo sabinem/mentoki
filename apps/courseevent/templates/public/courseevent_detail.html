@@ -6,7 +6,7 @@
    <body id="public" >
 {% endblock %}
 {% block main %}
-    <main class="ui two column doubling grid">
+    <main class="ui two column doubling grid" >
         <div class="row">
             <div class="five wide column">
                 {% for courseowner in courseowners %}
@@ -20,9 +20,9 @@
                         </div>
                        </div>
                         <div class="content">
-                            <a class="header aligned center">
+                            <div class="ui header aligned center">
                                 {{ courseowner.user.first_name }} {{ courseowner.user.last_name }}
-                            </a>
+                            </div>
 
                             <div class="description">
                                 {{ courseowner.text | safe }}
@@ -33,11 +33,11 @@
                 {% endfor %}
             </div>
             <div class="eleven wide column">
-                <div class="ui piled segment">
+                <div class="ui piled segment" >
                     <h2 class="ui aligned center header">
                         {{ courseevent.title }} mit  {{ course.teachers_display }}
                     </h2>
-                    <div class="ui card fluid">
+                    <div class="ui card fluid" id="coursedetail">
                         <div class="content">
                             <div class="description">
                             <div class="ui grid two columns">
@@ -55,7 +55,7 @@
                                 <div class="item">
                                     <i class="map marker icon"></i>
                                     <div class="content">
-                                      <a class="header">Dauer: {{ courseevent.nr_weeks }} Wochen</a>
+                                      <div class="header">Dauer: {{ courseevent.nr_weeks }} Wochen</div>
                                     </div>
                                 </div>
                                  {% endif %}
@@ -99,7 +99,7 @@
                         </div>
                         <div style="height:5px;"></div>
                         {% if courseevent.status_external == courseevent.EXTEVENT_OPEN_FOR_BOOKING %}
-                            <a class="ui bottom attached button"
+                            <a class="ui bottom attached button" id="buttonprebook"
                                href="{% url 'contact:application' %}">
                                  jetzt zum Vorgespäch anmelden
                             </a>
