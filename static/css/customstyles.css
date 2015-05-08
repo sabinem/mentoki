@@ -1,9 +1,11 @@
 /* Custom Styles */
-/* Background pattern from subtlepatterns.com */
 
+/* ------------------------- */
+/*         backend           */
+/* ------------------------- */
 /* Select radio boxes on the top of the page */
 #pageselects {
-   float:right
+    float:right
 }
 
 /* Prevent images from being too large */
@@ -19,17 +21,42 @@ object.htmlembed {
 }
 
 
-/* For mobile devices */
-@media only screen and (max-width: 767px) {
-  body {
-    /* The file size of this background image is 93% smaller
-     * to improve page load speed on mobile internet connections */
-    /* background-image: url('/static/img/background3.jpg'); */
-  }
+
+/* desk */
+#desk {
+  background-image: url('/static/img/normaldesk.jpg');
+  background-size: cover;
+  background-attachment: fixed;
 }
 
-/* Semantic UI Tutorial */
-/* Header */
+#helpinstructions, .displaynr, .publishinfo, .lessonlinks, .contentdescription {
+    display:none;
+}
+
+.accomplishment {
+    display:none;
+}
+
+.last_modified {
+    color:grey;
+}
+
+
+/* Work on lessons: make title input field longer */
+input#id_title {
+    width:500px;
+}
+
+/* Work on lessons: make title input field longer */
+input#id_description {
+    width:700px;
+}
+
+
+
+/* ------------------------- */
+/*      responsiveness       */
+/* ------------------------- */
 
 /* when not mobile menu button is hidden */
 #mobile_button {
@@ -40,7 +67,9 @@ object.htmlembed {
 @media all and (max-width:630px){
     #mainNavbar{display:none;}
     /* show menu button instead */
-    #pageImage{display:none;}
+    #pageImage{
+        display:none;
+    }
     #mobile_button {
         display:inline-block;
     }
@@ -48,29 +77,66 @@ object.htmlembed {
     #mainHeader {
         text-align: center;
     }
-    #homepage-web{display:none; }
+    #homepage-web{
+        display:none;
+    }
+    #main {
+        margin-top:0;
+    }
+    #newscolumn{
+        padding:0;
+    }
+    #public {
+        background:white;
+    }
+    #starterkurs {
+        background:white;
+    }
 }
 
+
+/* for webpages */
 @media all and (min-width:631px){
-   #homepage-mobile{display:none;}
-}
-
+    #homepage-mobile {
+        display:none;
+    }
 /* content must be below navbar */
-#main {
-    margin-top:60px;
+    #main {
+        margin-top:60px;
+    }
+    #public, #starterkurs {
+        background-image: url('/static/img/21349832_ml_lighter.jpg');
+        background-size: cover;
+        background-attachment: fixed;
+     }
 }
 
-/* makes background of blocks white */
+/* ------------------------- */
+/*      general              */
+/* ------------------------- */
+
+/* makes background of main block headers white */
 #mainheader {
     background:white;
 }
 
+a, a:hover, #courselink, #courselink:hover  {
+    color:teal;
+}
 
-/* Background Images
- * Tutorial URL: http://sixrevisions.com/css/responsive-background-image/
-*/
 
-/* homepage */
+#logo {
+    height:50px; width:auto;
+}
+
+#logo_big {
+    height:100px; width:auto;
+}
+
+
+/* ------------------------- */
+/*          homepage         */
+/* ------------------------- */
 #home {
   /* Location of the image */
   background-image: url('/static/img/homepage.jpg');
@@ -84,46 +150,104 @@ object.htmlembed {
 
 }
 
+
+#home .ui.grid>.row {
+    padding:0;
+}
+
+/* cards get a frame */
 #homesegment1, #homesegment2, #homesegment3, #homesegment4 {
     background:#aeb3a4;
-    background:#e8c9bf;
-    background:teal;
-    background:#aeb3a4;
+    opacity: 0.9;
+}
 
-      opacity: 0.9;
-    /* background:#968D96; */
+/* ------------------------- */
+/*          footer           */
+/* ------------------------- */
+
+#footer {
+  background:white;
+  position:static;
+}
+
+
+#footer .ui.segment  {
+    padding:0;
+    margin:0;
+}
+
+#footercolumn {
+    padding:0;
+    margin:0;
 }
 
 #footer {
-  /* Location of the image */
-  /* background-image: url('/static/img/12052071_l.jpg'); */
-  background: #f4ffff;
-  background:white;
-  opacity:0.8;
+    padding:0;
+    margin:0;
 }
 
+/* ------------------------- */
+/*      starterkurspage      */
+/* ------------------------- */
 /* starterkurspage */
-#starterkurs {
-  background-image: url('/static/img/background_yellow.jpg');
+#starterkurs #tabgrid, #public #tabgrid #tabgridcolumn {
+    padding:0;
+    margin:0;
 }
 
-/* course list */
+#starterkurs  .ui.tabular.menu .item {
+    background-color: white;
+    color:teal;
+    opacity:1;
+}
+
+#starterkurs  .ui.tabular.menu .item.active {
+    background:#c8d0dd;
+    opacity:1;
+    color:black;
+}
+
+#starterkurs .bottom.attached.tab.segment {
+    background-color: #c8d0dd;
+}
+
+#starterkurs .bottom.attached.tab.segment .testimonial {
+    background-color: white;
+    padding:5px;
+    margin-bottom: 10px;
+}
+
+
+#starterkurs blockquote {
+    background:white;
+    padding:10px;
+    color:teal;
+}
+
+
+#starterkurs #buttonbook {
+    background:#009b98;
+    color:white;
+}
+
+#starterkurs #buttonbook h3 {
+    color:white;
+}
+
+/* ------------------------- */
+/*     courselistpage        */
+/* ------------------------- */
 #publiclist {
-  background-image: url('/static/img/21349832_ml.jpg');
-  background-image: url('/static/img/21349832_ml_lighter.jpg');
-  background-size: cover;
-  background-attachment: fixed;
+    background-image: url('/static/img/21349832_ml_lighter.jpg');
+    background-size: cover;
+    background-attachment: fixed;
 }
 
-#publiclist .segment, #courseheader a {
-    /* background: hsl(300,4%,57%);
-    border: 5px solid #968D96;
-    opacity: 0.9; /* CSS3 Standard */
-    /* background: rgba(150,141,150,0.2); */
-    color:#5d565d;
+#publiclist .segment {
+    border: 2px solid #968D96;
 }
 
-#courselist_menu .header {
+#publiclist #courselist_menu .header {
     background: #968D96;
     color:white;
     /* background: hsla(300,4%,2%,0.1); */
@@ -138,38 +262,52 @@ object.htmlembed {
 }
 
 
-#courselist_menu  {
+#publiclist #courselist_menu  {
     /* opacity: 0.9; /* CSS3 Standard */
         opacity: 0.9;
 }
 
-#courselist_menu a div {
+#publiclist #courselist_menu a div {
     color:black;
 }
 
-/* course list */
-#public {
-  /* background-image: url('/static/img/12052071_l.jpg');
-   background-image: url('/static/img/21349832_ml_lighter.jpg');
-  background-size: cover;
-  background-attachment: fixed; */
-   background-color:#a5bacb;
-  /* background-color: #98bcd4; */
+/* ------------------------- */
+/*     coursedetailpage      */
+/* ------------------------- */
+
+#public #mainheader {
+    border:1px solid #c8d0dd;
+
+}
+
+#public #coursedetail {
+   background-color: #c8d0dd;
+}
+
+#public #buttonprebook {
+    background:#009b98;
+    color:white;
 }
 
 #courseowner_img {
     max-width:350px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto
 
 }
 
-/* course list */
-#webinar {
-  /* background-image: url('/static/img/12052071_l.jpg');
-  background-size: cover;
-  background-attachment: fixed; */
+/* ------------------------- */
+/*     webinar               */
+/* ------------------------- */
 
-  background-color: #f4ffff;
-  background-color:#c3d4c9;
+#webinar {
+    background:#c8d0dd;
+}
+
+#webinar .ui.button {
+    background:#009b98;
+    color:white;
 }
 
 #webinar #mainheader {
@@ -177,60 +315,26 @@ object.htmlembed {
 }
 
 
-/* contact */
+/* ------------------------- */
+/*     contact               */
+/* ------------------------- */
 #contact {
-  background-color:#b0d6d7;
-  background: #ede1dd;
+  background: #c8d0dd;
 }
 
-/* application */
 #application {
-  background-color:#a5bacb;
-    /* background-color:#f2e2d2; */
+  background-color:#c8d0dd;
 }
 
+#application #formsubmit {
+    background-color:#009b98;
+    color:white;
+}
 
-/* prebook */
 #prebook {
-  background-color:#bfd6c6;
+  background-color:#c8d0dd;
 }
 
-
-/* desk */
-#desk {
-  background-image: url('/static/img/normaldesk.jpg');
-  background-size: cover;
-  background-attachment: fixed;
-}
-
-#team {
-  background-image: url('/static/img/12052071_ml_brown.jpg');
-  background-size: cover;
-  background-attachment: fixed;
-}
-
-#teamcard {
-    background:#d3e5e5;
-    background: #ede1dd;
-}
-
-#team #mainheader {
-      opacity:0.8;
-}
-
-a, a:hover {
-    color:teal;
-}
-
-/* Work on lessons: make title input field longer */
-input#id_title {
-    width:500px;
-}
-
-/* Work on lessons: make title input field longer */
-input#id_description {
-    width:700px;
-}
 
 
 /* Handwriting for the contact page answer */
@@ -242,28 +346,26 @@ input#id_description {
     font: 400 1.5em/125% 'Petit Formal Script', Helvetica, Sans-serif;
 }
 
-#logo {
-    height:50px; width:auto;
+
+/* ------------------------- */
+/*     team and impressum    */
+/* ------------------------- */
+
+#team, #impressum {
+    background-image: url('/static/img/12052071_ml.jpg');
+    background-size: cover;
+    background-attachment: fixed;
 }
 
-#logo_big {
-    height:100px; width:auto;
+#teamcard {
+    background: #ede1dd;
 }
 
-#quote {
-    background-image: url('/static/img/quote.jpg');
-    background-repeat: no-repeat;
-    height:100px;
+#team #mainheader, #impressum #mainheader {
+    opacity:0.8;
 }
 
-#helpinstructions, .displaynr, .publishinfo, .lessonlinks, .contentdescription {
-    display:none;
-}
 
-.accomplishment {
-    display:none;
-}
 
-.last_modified {
-    color:grey;
-}
+
+

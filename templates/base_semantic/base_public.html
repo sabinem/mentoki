@@ -1,35 +1,15 @@
 {% extends 'base_semantic/base.html' %}
 {% block footer %}
-    <div id="footer" class="ui white vertical segment">
-    <div class="ui four column doubling grid">
-          <div class="four wide column">
-              <div class="ui header center aligned medium">
-                  <a href="{% url 'contact:contact' %}">Kontakt</a>
-              </div>
-          </div>
-          <div class="four wide column">
-              <div class="ui header center aligned medium">
-                  <a href="{% url 'home:team' %}">Team</a>
-              </div>
-          </div>
-          <div class="four wide column">
-              <div class="ui header center aligned medium">
-                  <a href="{% url 'home:impressum' %}">Impressum</a>
-              </div>
-          </div>
-          <div class="four wide column">
-              <div class="ui header center aligned medium">
-                <a href="https://twitter.com/Mentoki_com" rel="publisher">
-                <i class="icon twitter"></i>
-                </a>
-                <a href="https://www.facebook.com/internetteachers" rel="publisher">
-                <i class="icon facebook"></i>
-                </a>
-            <a href="https://plus.google.com/+Mentoki3l" rel="publisher">
-               <i class="icon google plus"></i>
-            </a>
-              </div>
-          </div>
+    <div id="footer" class="ui white segment">
+    <div class="ui  grid">
+           <div class="column" id="footercolumn">
+<div class="ui fluid three item menu">
+  <a class="item" href="{% url 'contact:contact' %}">Kontakt</a>
+  <a class="item"  href="{% url 'home:team' %}">Team</a>
+  <a class="item"  href="{% url 'home:impressum' %}">Impressum</a>
+</div>
+
+           </div>
         </div>
     </div>
     </div>
