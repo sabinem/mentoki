@@ -16,18 +16,18 @@ class CourseEvent(TimeStampedModel):
     The courseevent is the unit that can be booked by stundents
     """
     # every courseevent builds upon a course
-    course = models.ForeignKey(Course, verbose_name="Kursvorlage")
+    course = models.ForeignKey(Course)
     # the slug is used as url for the course
     slug = models.SlugField(unique=True)
     # the title of the course
-    title = models.CharField(max_length=100, verbose_name="Titel")
+    title = models.CharField(max_length=100)
     # several describing attributes
-    excerpt = models.TextField(blank=True, verbose_name="Abstrakt")
+    excerpt = models.TextField(blank=True)
     # startdate and nr of weeks if this applies
-    start_date = models.DateField(null=True, blank=True, verbose_name="Startdatum")
-    nr_weeks = models.IntegerField(null=True, blank=True, verbose_name="Länge in Wochen")
+    start_date = models.DateField(null=True, blank=True)
+    nr_weeks = models.IntegerField(null=True, blank=True)
     # maximal nr of participants if this applies
-    max_participants = models.IntegerField(null=True, blank=True , verbose_name="maximale Teilnehmeranzahl")
+    max_participants = models.IntegerField(null=True, blank=True)
     # type of the courseevent
     EVENTTYPE_TIMED_COURSE ='0'
     EVENTTYPE_FORUM = '1'
@@ -97,9 +97,9 @@ class CourseeventUnitPublish(models.Model):
     students are ready for them. Publication is decided on the level of the
     CourseUnit. See app course for details.
     """
-    courseevent = models.ForeignKey(CourseEvent, verbose_name="Kursereignis")
-    unit = models.ForeignKey(CourseUnit, verbose_name="Lektion")
-    published_at_date = models.DateTimeField(auto_now_add=True, verbose_name="veröffentlicht am")
+    courseevent = models.ForeignKey(CourseEvent)
+    unit = models.ForeignKey(CourseUnit)
+    published_at_date = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
         return u'%s / %s' % (self.courseevent, self.unit)

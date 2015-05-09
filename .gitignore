@@ -28,6 +28,3 @@ paramiko*
 # static
 static/img-reserve/**
 tmp/**
-
-apps/courseevent/migrationssave/**
-apps/courseevent/migrations2/**
