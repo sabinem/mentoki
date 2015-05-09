@@ -31,4 +31,3 @@ tmp/**
 
 apps/courseevent/migrationssave/**
 apps/courseevent/migrations2/**
-migrations/**
