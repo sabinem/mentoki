@@ -63,8 +63,9 @@
                                 <div class="item">
                                     <i class="calendar icon"></i>
                                     <div class="content">
-                                      <div class="header">Startdatum:
-                                      {{ courseevent.start_date | date:"d. M Y" }}</div>
+                                      <div class="header" >Start nach Absprache
+                                      </div>
+                                      <p></p>
                                     </div>
                                 </div>
                                 {% endif %}
@@ -97,7 +98,7 @@
                             </div>
                             </div>
                         </div>
-                        <div style="height:5px;"></div>
+                        <div style="height:20px;"></div>
                         {% if courseevent.status_external == courseevent.EXTEVENT_OPEN_FOR_BOOKING %}
                             <a class="ui bottom attached button" id="buttonbook"
                                href="{% url 'contact:application' %}">
