@@ -116,9 +116,7 @@ input#id_description {
 /* ------------------------- */
 
 /* makes background of main block headers white */
-#mainheader {
-    background:white;
-}
+
 
 a, a:hover, #courselink, #courselink:hover  {
     color:teal;
@@ -133,6 +131,29 @@ a, a:hover, #courselink, #courselink:hover  {
     height:100px; width:auto;
 }
 
+/*
+#home p,
+#publiclist p,
+#public p,
+#public li,
+#starterkurs p, #starterkurs .ui.list li
+#starterkurs div,
+#webinar p,
+#application p,
+#contact p, #home a, #home .meta
+{
+  /* font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif; */
+/*  font-size: 16px;
+  line-height: 1.6;
+} */
+
+
+/* body
+{
+  /* font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif; */
+/*  font-size: 16px;
+  line-height: 1.6;
+} */
 
 /* ------------------------- */
 /*          homepage         */
@@ -147,7 +168,7 @@ a, a:hover, #courselink, #courselink:hover  {
 
 #home #mainheader {
     opacity: 0.8;
-
+    background:white;
 }
 
 
@@ -193,6 +214,10 @@ a, a:hover, #courselink, #courselink:hover  {
 #starterkurs #tabgrid, #public #tabgrid #tabgridcolumn {
     padding:0;
     margin:0;
+}
+
+#starterkurs #mainheader {
+    background:white;
 }
 
 #starterkurs  .ui.tabular.menu .item {
@@ -302,17 +327,18 @@ a, a:hover, #courselink, #courselink:hover  {
 /* ------------------------- */
 
 #webinar {
-    background:#c8d0dd;
+    background:rgba(127, 195, 154, 0.2);
 }
 
 #webinar .ui.button {
-    background:#009b98;
+    background:#7fc39a;
     color:white;
 }
 
 #webinar #mainheader {
     opacity: 0.8;
 }
+
 
 
 /* ------------------------- */

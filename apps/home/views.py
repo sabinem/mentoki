@@ -18,4 +18,4 @@ class TeamPageView(PublicMixin, TemplateView):
     template_name = "public/team.html"
 
 class NewsPageView(PublicMixin, TemplateView):
-    template_name = "public/news.html"
+    template_name = "public/webinar.html"

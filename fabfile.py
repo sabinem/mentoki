@@ -47,17 +47,6 @@ def deploy():
         run("touch app.wsgi")
 
 
-def prepare_commit():
-    """
-    copies production settings onto settings
-    """
-    local('cp mentoki/settings_production.py mentoki/settings.py')
-
-def prepare_dev():
-    """
-    copies dev settings onto settings
-    """
-    local('cp mentoki/settings_test.py mentoki/settings.py')
 
 
 

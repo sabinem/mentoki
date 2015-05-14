@@ -1,0 +1,67 @@
+{% extends "base_semantic/base_public.html" %}
+{% block body %}
+<body id="webinar" >
+{% endblock %}
+{% block main %}
+     <div class="ui piled segment">
+    <main class="ui two column doubling grid" id="#newscolumn">
+        <div class="row">
+
+                <h1 class="ui header aligned center" id="mainheader">Gratis Webinar zum Einstieg in den Online-Unterricht"
+                    <div class="sub header">
+
+
+
+                        </div>
+                </h1>
+            <div class="eight wide column">
+                            <div class="ui segment">
+
+                       <img class="ui image" src="/static/img/post_mentoki_web.png">
+                                <p>Wir belohnen Vertrauen mit Gegen-Vertrauen, deshalb erhälst Du bei der
+                                Registrierung ein Geschenk von uns</p>
+                            <h4 class="ui header medium">Unser Geschenk für Dich</h4>
+                        <p>
+                            3 unserer besten Geheimtipps für freie Werkzeuge
+                            im Internet mit kompletten Video-Anleitungen,
+                            die auch für Computer-Laien verständlich sind.
+                        </p>
+                        <p>Die Links werden Dir nach dem Registrieren zugeschickt. </p>
+
+            </div>
+                </div>
+            <div class="eight wide column">
+
+                     <p>Registriere Dich als Interessent für unser Webinar:</p>
+                         <h3 class="ui header medium">
+                             Gratis Webinar: Warum Du jetzt mit Deinem Fachwissen online gehen solltest
+                         </h3>
+                          <a class="ui button fluid" id="buttonbook" href="{% url 'contact:application' %}">
+                             Jetzt als Interessent registrieren!
+                         </a>
+                         <p>Termine setzen wir immer dann an, wenn wir geügend Interessenten gesammelt haben.</p>
+
+
+
+                        <h4 class="ui header medium">Das Programm des Webinars</h4>
+                        <p>
+                        Wenn Du schon längere Zeit darüber nachgedacht hast, ob und wie Du mit Deinem Fachwissen online gehen kannst, dann bekommst Du in diesem Webinar Antworten und ein Angebot!
+                        </p>
+
+                        <p>Im Detail erwartet Dich folgendes Programm:</p>
+                                             <ul class="ui list">
+                        <li>Das Mentoki-Team Anette und Sabine stellt sich vor.</li>
+                        <li>Bewusstseinwandel in der Gesellschaft: Wir konzentrieren uns auf die Chancen.</li>
+                        <li>"I learn" oder warum Online-Unterricht perfekt zu unseren heutigen Lernbedürfnissen passt.</li>
+                        <li>Wie wäre es mit massgeschneiderter Online Unterricht für Dich und Dein Thema.</li>
+                         <li>Der Starterkurs: wie aus Deiner Kursidee ein vermarktbarer Online-Kurs reift</li>
+                        </ul>
+
+                    <p></p>
+                                            <h4>
+     </h4>
+                      </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

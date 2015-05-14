@@ -33,6 +33,9 @@ urlpatterns = patterns('',
     # file upload ...
     url(r'^upload/', include('apps.upload.urls', namespace='upload')),
 
+    # quiz
+    #url(r'^q/', include('quiz.urls')),
+
     # user handling urls
     url(r'^accounts/password/change/$', 'django.contrib.auth.views.password_change',
         {'template_name': 'userauth/password_change_form.html'},

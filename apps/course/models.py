@@ -7,7 +7,7 @@ from django.template.defaultfilters import slugify
 from model_utils.models import TimeStampedModel
 from autoslug import AutoSlugField
 # import from other apps
-from apps.core.helpers import timesince
+
 
 def validate_unique(value):
     return None
