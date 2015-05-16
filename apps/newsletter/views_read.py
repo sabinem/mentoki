@@ -15,6 +15,7 @@ class NewslettersListView(TemplateView):
         logger.debug("---------- in NewsletterListView get_context_data")
         newsletter_list = Newsletter.objects.filter(published=True).order_by('-published_at_date')
         context['newsletter_list'] = newsletter_list
+        print context['newsletter_list']
         return context
 
 
@@ -28,15 +29,4 @@ class NewsletterDetailView(TemplateView):
         context['newsletter'] = newsletter
         return context
 
-
-class NewsletterCreateView(CreateView):
-    model = Newsletter
-    form_class = NewsletterCreateForm
-    template_name = 'newslettercreate.html'
-
-
-class NewsletterUpdateView(UpdateView):
-    model = Newsletter
-    form_class = NewsletterUpdateForm
-    template_name = 'newsletterupdate.html'
 

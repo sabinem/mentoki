@@ -31,14 +31,15 @@
     </div>
 {% endblock %}
 {% block right_column %}
+    xxx
     {% for newsletter in newsletter_list %}
         <div class="ui segment raised">
             <h3 class="ui header">
                   <a href="{% url 'newsletters:single' id=newsletter.id %}" >
-                      {{ newsletter.title }}
+                      {{ newsletter.title }}x
                   </a>
             </h3>
-            <div>{{ newsletter.excerpt | safe }}</div>
+            <div>{{ newsletter.excerpt | safe }}x</div>
             <a href="{% url 'newsletters:single' id=newsletter.id %}">
                <i class="ui angle double right icon"></i> weiterlesen
             </a>
