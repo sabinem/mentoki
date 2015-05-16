@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, url
+from .feeds import LatestEntriesFeed
 from .views_read import NewslettersListView, NewsletterDetailView
 from .views_update import NewsletterCreateView, NewsletterUpdateView
 
@@ -7,6 +8,9 @@ urlpatterns = patterns("",
     url(r'^alle$', NewslettersListView.as_view(), name='list'),
     url(r'^einzeln/(?P<id>\d{1,4})/$',
         NewsletterDetailView.as_view(), name='single'),
+
+    # feed urls
+    url(r'^latest/feed/$', LatestEntriesFeed()),
 
     # urls for writing newsletters
     url(r'^schreiben$', NewsletterCreateView.as_view(), name='create'),
