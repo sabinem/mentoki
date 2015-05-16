@@ -115,13 +115,6 @@ input#id_description {
 /*      general              */
 /* ------------------------- */
 
-/* makes background of main block headers white */
-
-
-a, a:hover, #courselink, #courselink:hover  {
-    color:teal;
-}
-
 
 #logo {
     height:50px; width:auto;
@@ -131,29 +124,6 @@ a, a:hover, #courselink, #courselink:hover  {
     height:100px; width:auto;
 }
 
-/*
-#home p,
-#publiclist p,
-#public p,
-#public li,
-#starterkurs p, #starterkurs .ui.list li
-#starterkurs div,
-#webinar p,
-#application p,
-#contact p, #home a, #home .meta
-{
-  /* font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif; */
-/*  font-size: 16px;
-  line-height: 1.6;
-} */
-
-
-/* body
-{
-  /* font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif; */
-/*  font-size: 16px;
-  line-height: 1.6;
-} */
 
 /* ------------------------- */
 /*          homepage         */
@@ -349,19 +319,37 @@ a, a:hover, #courselink, #courselink:hover  {
 }
 
 #application {
-  background-color:#c8d0dd;
+  background-color:rgba(127, 195, 154, 0.2);
 }
 
 #application #formsubmit {
-    background-color:#009b98;
+    background-color:#7fc39a;
     color:white;
 }
 
 #prebook {
-  background-color:#c8d0dd;
+  background-color:#7fc39a;
 }
 
 
+/* ------------------------- */
+/*     thankyou page         */
+/* ------------------------- */
+
+#thankyou_letter {
+    padding-top:100px;
+    padding-bottom:100px;
+    margin-top:80px;
+    margin-bottom:80px;
+    padding-left:100px;
+    padding-right:100px;
+    text-align:center;
+}
+
+
+#signature {
+
+}
 
 /* Handwriting for the contact page answer */
 #handwriting h2 {

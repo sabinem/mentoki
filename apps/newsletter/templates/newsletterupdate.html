@@ -1,0 +1,10 @@
+{% extends "base_newsletteredit.html" %}
+{% block newsletter_form %}
+      <form class="ui form" id="course_form" method="post" action="">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" value="post" class="ui primary button">
+            Speichern
+        </button>
+    </form>
+{% endblock %}

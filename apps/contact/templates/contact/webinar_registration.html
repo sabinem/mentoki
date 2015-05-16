@@ -1,0 +1,27 @@
+{% extends "base_semantic/base.html" %}
+ {% load crispy_forms_tags %}
+{% block title %}
+   Mentoki: Kontaktseite
+{% endblock %}
+{% block body %}
+   <body id="contact" >
+{% endblock %}
+{% block main %}
+    <h2 class="ui block header" id="mainheader">Melde Dich hier als Interessent für unser Gratis Webinar an
+        <div class="sub header">Wir uns über Deine Anmeldung.</div>
+    </h2>
+   <div class="ui two column doubling grid">
+        <div class="eight wide column">
+            <div class="ui piled segment">
+                <form class="ui form" action="" method="post">{% csrf_token %}
+                    {{ form.as_p }}
+                    <input class="ui button fluid teal" id="formsubmit" type="submit" value="Nachricht abschicken" />
+                </form>
+            </div>
+        </div>
+        <div class="eight wide column">
+             <img id="pageImage" src="/static/img/contactus.jpg">
+        </div>
+    </div>
+{% endblock %}
+

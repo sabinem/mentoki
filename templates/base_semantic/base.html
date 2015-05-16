@@ -80,18 +80,28 @@
                   Kurs-Ausschreibung
             </a>
             <a class="item
-              {% ifactive 'contact:application' %}
+              {% ifactive 'home:home' %}
               active
               {% endifactive %}
-              " href="{% url 'contact:application' %}">
+              " href="">
                   Anmeldung zum Vorgespräch
             </a>
+            <div class="header ui teal item">
+                Andere Angebote
+            </div>
             <a class="item
-                {% ifactive "home:news" %}
-                    active
-                {% endifactive %}
-                " href="{% url 'home:news' %}">
-                Gratis-Webinar
+              {% ifactive 'newsletters:list'  %}
+              active
+              {% endifactive %}
+              " href="{% url 'newsletters:list'  %}">
+                  Newsletter
+            </a>
+            <a class="item
+              {% ifactive 'home:webinar' %}
+              active
+              {% endifactive %}
+              " href="{% url 'home:webinar' %}">
+                  Gratis-Webinar
             </a>
             <div class="header ui teal item">
                 Vorschau Herbst
@@ -123,15 +133,6 @@
                   style="height:30px; padding:0; margin:0;">
         </a>
         {% if user.is_authenticated %}
-             {% comment %}
-            <a class="item
-                {% ifactive "courseevent:internallist" %}
-                    active
-                {% endifactive %}
-                " href="{% url 'courseevent:internallist' %}">
-                Kurse
-            </a>
-            {% endcomment %}
             <a class="item
                 {% ifactive "courseevent:publiclist" %}
                     active
@@ -168,57 +169,74 @@
                   Starterkurs
                   <i class="dropdown icon"></i>
                   <div class="menu">
-                    <div class="item">Videoeinführung</div>
-                    <div class="item">Deine Perspektive</div>
-                    <div class="item">Testimonials</div>
-                    <div class="item">Anmeldung</div>
+                      <div class="item">Videoeinführung</div>
+                      <div class="item">Deine Perspektive</div>
+                      <div class="item">Testimonials</div>
+                      <div class="item">Anmeldung</div>
                   </div>
-                      <div class="menu">
-                          <a class="item
-                              {% ifactive 'home:starterkurs' tab="video" %}
-                              active
-                              {% endifactive %}
-                              " href="{% url 'home:starterkurs' tab="video" %}">
-                                  Videoeinführung
-                          </a>
-                          <a class="item
-                              {% ifactive 'home:starterkurs' tab="detail" %}
-                              active
-                              {% endifactive %}
-                              " href="{% url 'home:starterkurs' tab="detail" %}">
-                                  Deine Perspektive
-                          </a>
-                          <a class="item
-                              {% ifactive 'home:starterkurs' tab="testimonials" %}
-                              active
-                              {% endifactive %}
-                              " href="{% url 'home:starterkurs' tab="testimonials" %}">
-                                  Testimonials
-                          </a>
-                          <a class="item
-                              {% ifactive 'courseevent:publicdetail' slug="starterkurs2" %}
-                              active
-                              {% endifactive %}
-                              " href="{% url 'courseevent:publicdetail' slug="starterkurs2" %}">
-                                  Kurs-Ausschreibung
-                          </a>
-                          <a class="item
-                              {% ifactive 'contact:application' %}
-                              active
-                              {% endifactive %}
-                              " href="{% url 'contact:application' %}">
-                                  Anmeldung zum Vorgespräch
-                          </a>
-                    </div>
-
-              </div>
-            <a class="item
-                {% ifactive "home:news" %}
-                    active
-                {% endifactive %}
-                " href="{% url 'home:news' %}">
-                Gratis-Webinar
-            </a>
+                  <div class="menu">
+                      <a class="item
+                          {% ifactive 'home:starterkurs' tab="video" %}
+                          active
+                          {% endifactive %}
+                          " href="{% url 'home:starterkurs' tab="video" %}">
+                              Videoeinführung
+                      </a>
+                      <a class="item
+                          {% ifactive 'home:starterkurs' tab="detail" %}
+                          active
+                          {% endifactive %}
+                          " href="{% url 'home:starterkurs' tab="detail" %}">
+                              Deine Perspektive
+                      </a>
+                      <a class="item
+                          {% ifactive 'home:starterkurs' tab="testimonials" %}
+                          active
+                          {% endifactive %}
+                          " href="{% url 'home:starterkurs' tab="testimonials" %}">
+                              Testimonials
+                      </a>
+                      <a class="item
+                          {% ifactive 'courseevent:publicdetail' slug="starterkurs2" %}
+                          active
+                          {% endifactive %}
+                          " href="{% url 'courseevent:publicdetail' slug="starterkurs2" %}">
+                              Kurs-Ausschreibung
+                      </a>
+                      <a class="item
+                          {% ifactive 'home:home' %}
+                          active
+                          {% endifactive %}
+                          " href="">
+                              Anmeldung zum Vorgespräch
+                      </a>
+                  </div>
+            </div>
+            <div class="ui dropdown link item
+              ">
+                  Andere Angebote
+                  <i class="dropdown icon"></i>
+                  <div class="menu">
+                      <div class="item">Newsletter</div>
+                      <div class="item">Gratis-Webinar</div>
+                  </div>
+                  <div class="menu">
+                      <a class="item
+                          {% ifactive 'newsletters:list' %}
+                          active
+                          {% endifactive %}
+                          " href="{% url 'newsletters:list' %}">
+                              Newsletter
+                      </a>
+                      <a class="item
+                          {% ifactive 'home:webinar' %}
+                          active
+                          {% endifactive %}
+                          " href="{% url 'home:webinar' %}">
+                              Gratis-Webinar
+                      </a>
+                  </div>
+            </div>
             <a class="item
                 {% ifactive "courseevent:publiclist" %}
                     active

@@ -98,15 +98,15 @@
                             </div>
                             </div>
                         </div>
-                        <div style="height:20px;"></div>
+                        <div style="height:5px;"></div>
                         {% if courseevent.status_external == courseevent.EXTEVENT_OPEN_FOR_BOOKING %}
                             <a class="ui bottom attached button" id="buttonbook"
-                               href="{% url 'contact:application' %}">
+                               href="">
                                  jetzt zum Vorgespäch anmelden
                             </a>
                         {% else %}
                             <a class="ui bottom attached button" id="buttonprebook"
-                               href="{% url 'contact:prebook' %}">
+                               href="">
                                  jetzt vormerken lassen
                             </a>
                         {% endif %}

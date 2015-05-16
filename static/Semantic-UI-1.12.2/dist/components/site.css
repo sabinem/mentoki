@@ -103,11 +103,11 @@ p:last-child {
 --------------------*/
 
 a {
-  color: #009fda;
+  color: teal;
   text-decoration: none;
 }
 a:hover {
-  color: #00b2f3;
+  color: #00999a;
 }
 
 
@@ -166,5 +166,10 @@ input::selection {
 
 /*-------------------
       Base Sizes
+--------------------*/
+
+
+/*-------------------
+       Links
 --------------------*/
 

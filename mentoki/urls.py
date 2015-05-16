@@ -33,6 +33,9 @@ urlpatterns = patterns('',
     # file upload ...
     url(r'^upload/', include('apps.upload.urls', namespace='upload')),
 
+    # file newsletter ...
+    url(r'^newsletter/', include('apps.newsletter.urls', namespace='newsletters')),
+
     # quiz
     #url(r'^q/', include('quiz.urls')),
 

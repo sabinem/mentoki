@@ -611,12 +611,12 @@ p:last-child {
 --------------------*/
 
 a {
-  color: #009fda;
+  color: teal;
   text-decoration: none;
 }
 
 a:hover {
-  color: #00b2f3;
+  color: #00999a;
 }
 
 /*******************************
@@ -674,6 +674,10 @@ input::selection {
 
 /*-------------------
       Base Sizes
+--------------------*/
+
+/*-------------------
+       Links
 --------------------*/
 /*!
  * # Semantic UI 1.12.2 - Button
@@ -10807,7 +10811,7 @@ ol.ui.list ol,
 
 .ui.list .list > a.item:hover,
 .ui.list > a.item:hover {
-  color: #00b2f3;
+  color: #00999a;
 }
 
 /* Linked Item Icons */
@@ -10825,7 +10829,7 @@ ol.ui.list ol,
 }
 
 .ui.list .item a:hover {
-  color: #00b2f3 !important;
+  color: #00999a !important;
 }
 
 /* Header */
@@ -11001,7 +11005,7 @@ ol.ui.list ol,
 
 .ui.inverted.list .list > a.item:hover,
 .ui.inverted.list > a.item:hover {
-  color: #00b2f3;
+  color: #00999a;
 }
 
 /* Linking Content */
@@ -11012,7 +11016,7 @@ ol.ui.list ol,
 }
 
 .ui.inverted.list .item a:hover {
-  color: #00b2f3 !important;
+  color: #00999a !important;
 }
 
 /*-------------------
@@ -13314,7 +13318,7 @@ ol.ui.horizontal.list li:before,
 }
 
 .ui.steps .step.active .title {
-  color: #009fda;
+  color: teal;
 }
 
 .ui.ordered.steps .step.active:before,
@@ -13571,11 +13575,11 @@ ol.ui.horizontal.list li:before,
 /* Link */
 
 .ui.breadcrumb a {
-  color: #009fda;
+  color: teal;
 }
 
 .ui.breadcrumb a:hover {
-  color: #00b2f3;
+  color: #00999a;
 }
 
 /* Icon Divider */
@@ -20773,7 +20777,7 @@ ol.ui.horizontal.list li:before,
 
 .ui.cards > .card > .content > a.header:hover,
 .ui.card > .content > a.header:hover {
-  color: #00b2f3;
+  color: #00999a;
 }
 
 /* Meta */
@@ -20893,7 +20897,7 @@ ol.ui.horizontal.list li:before,
 
 .ui.cards > .card > .extra a:not(.ui):hover,
 .ui.card > .extra a:not(.ui):hover {
-  color: #00b2f3;
+  color: #00999a;
 }
 
 /*******************************
@@ -21583,7 +21587,7 @@ a.ui.card:hover,
 }
 
 .ui.comments .comment a.author:hover {
-  color: #00b2f3;
+  color: #00999a;
 }
 
 /*--------------
@@ -22276,7 +22280,7 @@ a.ui.card:hover,
 }
 
 .ui.items > .item > .content > a.header:hover {
-  color: #00b2f3;
+  color: #00999a;
 }
 
 /* Meta */
@@ -22499,7 +22503,7 @@ a.ui.card:hover,
 
 .ui.items a.item:hover .content .header,
 .ui.link.items > .item:hover .content .header {
-  color: #00b2f3;
+  color: #00999a;
 }
 
 /*--------------

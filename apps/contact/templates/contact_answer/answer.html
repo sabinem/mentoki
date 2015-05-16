@@ -1,21 +1,32 @@
-{% extends "base_semantic/base.html" %}
+{% extends "base_semantic/base_public.html" %}
 {% block title %}
    Mentoki Kontaktseite
 {% endblock %}
 {% block body %}
-   <body id="contact" >
+   <body id="application" >
 {% endblock %}
 {% block main %}
-    <div class="ui two column doubling grid" style="height:600px;">
-        <div class="eight wide column">
-            <div class="ui segment piled" id="handwriting" >
-                <h2>Danke für Dein Interesse!</h2>
-                <p>Du hörst von uns innerhalb der nächsten 48 Stunden.</p>
-                <p>Sabine Maennel und Anette Pekrul</p>
+    <main class="ui grid">
+    <div class="column">
+    <div class="ui piled segment" id="thankyou_letter">
+        <div class="ui row">
+            <div class="ui column">
+                <h1 class="ui header center aligned">
+               <img id="logo_big" src="/static/img/mentoki_logo_untertitel.jpg">
+                </h1>
+  {% if messages %}
+
+    {% for message in messages %}
+    <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message | safe }}</p>
+    {% endfor %}
+{% endif %}
+
+                <p>Mit lieben Grüssen</p>
+                <p id="signature">Sabine Maennel und Anette Pekrul</p>
             </div>
         </div>
-        <div class="eight wide column">
-             <img id="pageImage" src="/static/img/contactus.jpg">
-        </div>
     </div>
+    </div>
+    </div>
+    </main>
 {% endblock %}

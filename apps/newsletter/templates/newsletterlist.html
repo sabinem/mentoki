@@ -1,0 +1,47 @@
+{% extends "base_newsletter.html" %}
+{% block newsletter_header %}
+    <h1 class="ui header aligned center" id="mainheader">Newsletter
+        <div class="sub header">
+        </div>
+    </h1>
+{% endblock %}
+{% block left_column %}
+    <div class="ui segment">
+        <img class="ui image" src="/static/img/post_mentoki_newsletter.jpg">
+        <p>Registriere Dich für unseren Newsletter:</p>
+        <h3 class="ui header medium">
+        Start demnächst.
+        </h3>
+        {% include 'mailchimp/_mailchimp_newsletter.html' %}
+        <h3>Wir wollen die Beherrschung der Technik für Dich einfach machen:</h3>
+        <p>Du bekommst von uns jeden Monat die Besprechung eines Internet-Werkzeugs zum Unterrichten, das
+        wir für Dich erprobt haben inklusive einer Schritt für Schritt-Video-Anleitung, wie man
+        es benutzen kann.</p>
+        <h4 class="ui header medium">
+        Wir reagieren:
+        </h4>
+        <div class="ui list">
+            <a class="item" target=_blank
+            href="http://www.pcwelt.de/news/Studie-Moderne-Technik-frustriert-Anwender-176599.html">PC Welt: "Studie: Moderne Technik frustriert die Konsumenten"
+            </a>
+            <a class="item" target=_blank
+            href="https://www.ted.com/talks/david_pogue_10_top_time_saving_tech_tips?language=de#t-2551">TED-Talk: David Pogue "Die 10 zeitsparendsten Technik-Tipps"
+            </a>
+        </div>
+    </div>
+{% endblock %}
+{% block right_column %}
+    {% for newsletter in newsletter_list %}
+        <div class="ui segment raised">
+            <h3 class="ui header">
+                  <a href="{% url 'newsletters:single' id=newsletter.id %}" >
+                      {{ newsletter.title }}
+                  </a>
+            </h3>
+            <div>{{ newsletter.excerpt | safe }}</div>
+            <a href="{% url 'newsletters:single' id=newsletter.id %}">
+               <i class="ui angle double right icon"></i> weiterlesen
+            </a>
+        </div>
+    {% endfor %}
+{% endblock %}
