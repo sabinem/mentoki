@@ -136,9 +136,11 @@ input#id_description {
 
 }
 
-#home #mainheader {
+#home #frontheader {
     opacity: 0.8;
     background:white;
+    padding-top:50px;
+    border:5px solid #aeb3a4;
 }
 
 
@@ -152,11 +154,34 @@ input#id_description {
     opacity: 0.9;
 }
 
+.ui.page.grid.homepage {
+    padding-bottom:20px;
+    padding-top:30px;
+}
+
+#learn {
+    background:white;
+}
+
+#teach {
+    background:rgba(127, 195, 154, 0.2);
+}
+
+#newsletter_homepage {
+    background:white;
+}
+
+#toolbox {
+    background:#aeb3a4;
+    padding-bottom:60px;
+}
+
 /* ------------------------- */
 /*          footer           */
 /* ------------------------- */
 
 #footer {
+  margin-top:100px;
   background:white;
   position:static;
 }
@@ -309,7 +334,22 @@ input#id_description {
     opacity: 0.8;
 }
 
+/* ------------------------- */
+/*     newsletter            */
+/* ------------------------- */
 
+#newsletter {
+    background:rgba(127, 195, 154, 0.2);
+}
+
+#newsletter .ui.button {
+    background:#7fc39a;
+    color:white;
+}
+
+#newsletter #mainheader {
+    opacity: 0.8;
+}
 
 /* ------------------------- */
 /*     contact               */

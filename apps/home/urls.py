@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, url
 
 from .views import HomePageView, StarterkursPageView, TeamPageView, ImpressumPageView, \
-    NewsLetterView, WebinarView
+    NewsLetterView, WebinarView, TestView
 
 urlpatterns = patterns("",
     url(r'^$', HomePageView.as_view(), name='home'),
@@ -9,5 +9,6 @@ urlpatterns = patterns("",
     url(r'^team$', TeamPageView.as_view(), name='team'),
     url(r'^impressum$', ImpressumPageView.as_view(), name='impressum'),
     url(r'^webinar-online-unterrichten$', WebinarView.as_view(), name='webinar'),
-    url(r'^newsletter$', NewsLetterView.as_view(), name='newsletter'),
+    url(r'^newsletters$', NewsLetterView.as_view(), name='newsletter'),
+    url(r'^test$', TestView.as_view(), name='test'),
 )

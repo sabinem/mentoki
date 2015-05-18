@@ -6,7 +6,7 @@ from .models import Newsletter
 class NewsletterCreateForm(forms.ModelForm):
     class Meta:
         model = Newsletter
-        fields = ('title', 'excerpt', 'text_left', 'text_right', 'published')
+        fields = ('title', 'excerpt', 'content', 'published')
 
     helper = FormHelper()
     helper.form_tag = True
@@ -16,7 +16,7 @@ class NewsletterCreateForm(forms.ModelForm):
 class NewsletterUpdateForm(forms.ModelForm):
     class Meta:
         model = Newsletter
-        fields = ('title', 'excerpt', 'text_left', 'text_right', 'published')
+        fields = ('title', 'excerpt', 'content', 'published')
 
     helper = FormHelper()
     helper.form_tag = True

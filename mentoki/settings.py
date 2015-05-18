@@ -49,7 +49,7 @@ INSTALLED_APPS = (
     'model_utils',
     'autoslug',
     'activelink',
-    # netteachers apps
+    'django_markdown',
     # homepage
     'apps.home',
     # courses
@@ -269,3 +269,6 @@ if LOCAL_ENVIRONMENT:
 RAVEN_CONFIG = {
     'dsn': os.environ.get('SENTRY_DSN'),
 }
+
+# Markdown
+MARKDOWN_EDITOR_SKIN = 'simple'

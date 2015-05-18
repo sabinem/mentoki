@@ -1,5 +1,5 @@
-{% extends "base_newsletteredit.html" %}
-{% block newsletter_form %}
+{% extends "base_newsletter_1col.html" %}
+{% block content %}
       <form class="ui form" id="course_form" method="post" action="">
         {% csrf_token %}
         {{ form.as_p }}

@@ -1,12 +1,13 @@
-{% extends "base_newsletter.html" %}
-{% block newsletter_header %}
+{% extends "base_newsletter_1col.html" %}
+{% load django_markdown %}
+{% block content %}
     <h1 class="ui header aligned center" id="mainheader">
         {{ newsletter.title }}
         <div class="sub header">
 
         </div>
     </h1>
-    <p>
+
     <div class="ui segment">
     <div class="ui grid">
     <div class="column">
@@ -19,14 +20,16 @@
            <i class="ui pencil icon"></i> bearbeiten
         </a>
     </p>
+
+       {{ newsletter.published_at_date |date:'d.m.Y' }}
+
+    <div>
+        {{ newsletter.content | markdown }}
+    </div>
+{% endblock %}
     </div>
     </div>
     </div>
-   {{ newsletter.published_at_date |date:'d.m.Y' }}
-{% endblock %}
-{% block left_column %}
-    <div>{{ newsletter.text_left | safe }}</div>
-{% endblock %}
-{% block right_column %}
-    <div>{{ newsletter.text_right | safe }}</div>
-{% endblock %}
+
+
+

@@ -1,16 +1,16 @@
 from django.conf.urls import patterns, url
-from .feeds import LatestEntriesFeed
-from .views_read import NewslettersListView, NewsletterDetailView
-from .views_update import NewsletterCreateView, NewsletterUpdateView
+from .feeds import LatestNewsletterFeed
+from .views_public import NewslettersListView, NewsletterDetailView
+from .views_admin import NewsletterCreateView, NewsletterUpdateView
 
 urlpatterns = patterns("",
     # urls for reading newsletters
-    url(r'^alle$', NewslettersListView.as_view(), name='list'),
-    url(r'^einzeln/(?P<id>\d{1,4})/$',
+    url(r'^newsletter/alle$', NewslettersListView.as_view(), name='list'),
+    url(r'^newsletter/(?P<slug>\S+)/$',
         NewsletterDetailView.as_view(), name='single'),
 
     # feed urls
-    url(r'^latest/feed/$', LatestEntriesFeed()),
+    url(r'^feed/$', LatestNewsletterFeed(), name='feed'),
 
     # urls for writing newsletters
     url(r'^schreiben$', NewsletterCreateView.as_view(), name='create'),

@@ -33,8 +33,11 @@ urlpatterns = patterns('',
     # file upload ...
     url(r'^upload/', include('apps.upload.urls', namespace='upload')),
 
+    # file markdown ...
+    url(r'^markdown/', include('django_markdown.urls')),
+
     # file newsletter ...
-    url(r'^newsletter/', include('apps.newsletter.urls', namespace='newsletters')),
+    url(r'^', include('apps.newsletter.urls', namespace='newsletters')),
 
     # quiz
     #url(r'^q/', include('quiz.urls')),

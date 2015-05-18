@@ -23,3 +23,7 @@ class WebinarView(PublicMixin, TemplateView):
 
 class NewsLetterView(PublicMixin, TemplateView):
     template_name = "public/newsletter.html"
+
+
+class TestView(PublicMixin, TemplateView):
+    template_name = "test.html"

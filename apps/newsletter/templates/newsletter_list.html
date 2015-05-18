@@ -1,4 +1,5 @@
-{% extends "base_newsletter.html" %}
+{% extends "base_newsletter_2col.html" %}
+{% load django_markdown %}
 {% block newsletter_header %}
     <h1 class="ui header aligned center" id="mainheader">Newsletter
         <div class="sub header">
@@ -31,16 +32,24 @@
     </div>
 {% endblock %}
 {% block right_column %}
-    xxx {{ newsletter_list }}
-    {% for newsletter in newsletter_list %}
+    {% for newsletter in newsletters %}
         <div class="ui segment raised">
             <h3 class="ui header">
-                  <a href="{% url 'newsletters:single' id=newsletter.id %}" >
-                      {{ newsletter.title }}x
+                  <a href="{% url 'newsletters:single' slug=newsletter.slug %}" >
+                      {{ newsletter.title }}
                   </a>
             </h3>
-            <div>{{ newsletter.excerpt | safe }}x</div>
-            <a href="{% url 'newsletters:single' id=newsletter.id %}">
+            <p class="meta">
+                Erscheinungsdatum: {{ newsletter.published_at_date | date:'d.m.Y' }}
+            </p>
+            <p class="meta">
+                {{ newsletter.tags.all|join:", "}}
+            </p>
+            <div>
+                {{ newsletter.excerpt | safe }}
+
+            </div>
+            <a href="{% url 'newsletters:single' slug=newsletter.slug %}">
                <i class="ui angle double right icon"></i> weiterlesen
             </a>
         </div>
