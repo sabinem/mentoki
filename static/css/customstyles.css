@@ -167,13 +167,30 @@ input#id_description {
     background:rgba(127, 195, 154, 0.2);
 }
 
+
+#teach .ui.button {
+    background:#00a199;
+}
+
 #newsletter_homepage {
     background:white;
 }
 
+#newsletter_homepage .ui.button {
+    background:#00a199;
+}
+
+
+
 #toolbox {
-    background:#aeb3a4;
-    padding-bottom:60px;
+    background:rgba(127, 195, 154, 0.2);
+    background:#ece9e4;
+    padding-bottom:20px;
+}
+
+
+#toolbox .ui.image {
+    height:200px;
 }
 
 /* ------------------------- */
