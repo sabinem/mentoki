@@ -81,7 +81,7 @@
 /* ---------------------- */
 
 
-#userlogin_segment {
+#general_page_segment {
     margin-top:200px;
 }
 
@@ -374,7 +374,14 @@
 /*     contact               */
 /* ------------------------- */
 #contact {
-  background: #c8d0dd;
+    background-image: url('/static/img/contactus.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+#contactgrid {
+    min-height: 800px;
+    padding-top:200px;
 }
 
 #application {
@@ -498,7 +505,7 @@ input#id_description {
 }
 
 #classroombackend {
-    background-image: url('/static/img/39080274_l_lighter.jpg');
+    background-image: url('/static/img/normaldesk.jpg');
     background-size: cover;
     background-attachment: fixed;
 }
@@ -538,10 +545,18 @@ input#id_description {
 #classroomheader {
     padding-top:40px;
     padding-left:30px;
+    opacity:0.5;
+    background:white;
+}
+
+#classroommenu {
+    opacity:0.5;
 }
 
 #classroom {
         background-image: url('/static/img/38098805_l_lighter2.jpg');
+        background-image: url('/static/img/7989831_ml.jpg');
+
         background-size: cover;
         background-attachment: fixed;
 }

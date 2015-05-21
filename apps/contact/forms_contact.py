@@ -80,7 +80,7 @@ class ApplicationForm(forms.ModelForm):
         msg.send()
 
 
-class xContactForm(forms.ModelForm):
+class ContactForm(forms.ModelForm):
 
     class Meta:
         fields = ('name', 'email', 'message')
@@ -268,7 +268,7 @@ class WebinarForm(forms.ModelForm):
         msg.send()
 
 
-class ContactForm(forms.ModelForm):
+class xContactForm(forms.ModelForm):
     newsletter = forms.IntegerField(min_value=1,required=False)
     rearrange_lessons = forms.BooleanField(required=False)
 
