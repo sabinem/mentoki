@@ -374,14 +374,15 @@
 /*     contact               */
 /* ------------------------- */
 #contact {
-    background-image: url('/static/img/contactus.jpg');
+    background-image: url('/static/img/12052071_ml.jpg');
     background-size: cover;
     background-attachment: fixed;
 }
 
-#contactgrid {
+#contact_page_grid {
     min-height: 800px;
-    padding-top:200px;
+    padding-top:150px;
+    padding-bottom:100px;
 }
 
 #application {

@@ -1,24 +1,27 @@
 {% extends "base_semantic/base_page.html" %}
- {% load crispy_forms_tags %}
+{% load crispy_forms_tags %}
+{% block body %}
+   <body id="contact">
+{% endblock %}
 {% block title %}
    Mentoki: Kontaktseite
 {% endblock %}
-{% block body %}
-   <body id="contact" >
-{% endblock %}
 {% block main %}
-    <div class="ui page main grid centered" id="contactgrid">
+    <div class="ui page main grid centered" id="contact_page_grid">
+    <div class="column">
         <div class="ui piled segment">
             <h2 class="ui header ">Kontaktiere uns!
                 <div class="sub header">Wir freuen uns auf Deine Nachricht.</div>
             </h2>
-            <h1>{{ form }}</h1>
-            <form class="ui form" action="" method="post">
+            <form class="ui form" method="post" action="">
                 {% csrf_token %}
-                {{ form.as_p }}
-                <input class="ui button fluid teal" id="formsubmit" type="submit" value="Nachricht abschicken" />
+                {{ form }}
+                <button type="submit" value="post" class="ui yellow button">
+                    Speichern
+                </button>
             </form>
         </div>
+    </div>
     </div>
 {% endblock %}
 
