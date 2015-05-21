@@ -4,9 +4,10 @@ from .forms_contact import  ContactForm
 from django.views.generic import FormView, TemplateView
 from django.core.urlresolvers import reverse
 from django.utils.safestring import mark_safe
+from braces.views import MessageMixin
 
 
-class ContactView(FormView):
+class ContactView(MessageMixin, FormView):
     template_name = 'contact/contact.html'
     form_class = ContactForm
 
