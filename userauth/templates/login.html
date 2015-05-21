@@ -1,52 +1,9 @@
-{% extends "base_semantic/base.html" %}
-{% load crispy_forms_tags %}
-{% block body %}
-<body id="public" >
-{% endblock %}
+{% extends "base_semantic/base_page.html" %}
 {% block main %}
-    <h2 class="ui block header">Anmeldung</h2>
-    <div class="ui grid two column">
-    <div class="column">
-    <div class="ui segment raised">
-        {% if form.errors %}
-            <p>Ihr Passwort und Benutzername passen nicht zusammen..</p>
-        {% endif %}
-        <div class="eight wide column">
-            <form class="ui form" id="login_form" method="post" action="{% url 'userauth:login' %}">
-                <div class="two fields">
-                    <div class="required field">
-                        <label>Username</label>
-                        <div class="ui icon input">
-                            <input type="text" placeholder="Username" name="username">
-                            <i class="user icon"></i>
-                        </div>
-                    </div>
-                    <div class="required field">
-                        <label>Password</label>
-                        <div class="ui icon input">
-                            <input type="password" name="password">
-                            <i class="lock icon"></i>
-                        </div>
-                    </div>
-                </div>
-                {% csrf_token %}
-                <button type="submit" class="ui button green">Anmelden</button>
-                <a style="margin-left: 20px" href="{% url 'password_reset' %}">Ein neues Passwort anfordern?</a>
-            </form>
-        </div>
-        </div>
-        </div>
-        <div class="eight wide column">
-        <div class="ui segment raised">
-            <h4 class="header ui">Netteachers ist noch in der Aufbauphase</h4>
-            <p>
-                Derzeit werden nur Logins für die Teilnehmer des ersten und zweiten
-                Starterkurses vergeben, sowie an ausgewählte Interessenten an der Plattform.
-            </p>
-            <p>Wenn Sie bei uns lernen oder unterrichten wollen: nehmen Sie
-                <a href="{% url 'contact:contact' %}">Kontakt</a> zu uns auf.
-            </p>
-        </div>
-        </div>
-    </div>
+<div class="ui grid page tablet computer only two column centered" id="generalpage">
+    {% include '_login_form.html' %}
+</div>
+<div class="ui grid page mobile only column centered" id="generalpage">
+    {% include '_login_form.html' %}
+</div>
 {% endblock %}

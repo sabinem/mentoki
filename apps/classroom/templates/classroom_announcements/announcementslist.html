@@ -1,12 +1,13 @@
 {% extends "classroom_base/base.html" %}
 {% block classroom_header %}
-    <h2 class="ui block header">
+    <h2 class="ui header" id="classroomheader">
        {{ courseevent.courseevent_title }}
        : Ankündigungen
     </h2>
 {% endblock %}
 {% block regular_page_content %}
-            <h2 class="ui  header">
+            <div class="ui segment">
+            <h2 class="ui  header ">
             Ankündigungen
                 <div class="ui checkbox" id="expandcontent">
                     <input type="checkbox">
@@ -24,4 +25,5 @@
                     <div class="fullcontent">{{ announcement.text | safe }}</div>
                 </div>
             {% endfor %}
+            </div>
 {% endblock %}

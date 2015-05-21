@@ -240,7 +240,7 @@
   background: #f0f0f0;
 }
 .ui.steps .step.active .title {
-  color: teal;
+  color: #00a199;
 }
 .ui.ordered.steps .step.active:before,
 .ui.steps .active.step .icon {
@@ -260,7 +260,7 @@
 /* Completed */
 .ui.steps .step.completed > .icon:before,
 .ui.ordered.steps .step.completed:before {
-  color: #5bbd72;
+  color: #7fc39a;
 }
 
 /* Disabled */
@@ -397,7 +397,7 @@
 
 .ui.small.step,
 .ui.small.steps .step {
-  font-size: 0.95rem;
+  font-size: 0.94444444rem;
 }
 .ui.step,
 .ui.steps .step {
@@ -405,7 +405,7 @@
 }
 .ui.large.step,
 .ui.large.steps .step {
-  font-size: 1.15rem;
+  font-size: 1.16666667rem;
 }
 
 

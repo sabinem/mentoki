@@ -1,6 +1,12 @@
-{% extends "base_semantic/base.html" %}
+{% extends "base_semantic/base_page.html" %}
+{% block body %}
+    <body id="classroombackend" >
+{% endblock %}
+</body>
 {% block main %}
-    <h2 class="ui block blue header">
+    <div class="ui page grid">
+    <div class="ui column">
+    <h2 class="ui header" id="backendheader">
         {% block header %}
         {% endblock %}
         {% block header_controls %}
@@ -8,7 +14,7 @@
         {% block controls %}
         {% endblock %}
     </h2>
-    <div class="ui grid">
+    <div class="ui grid" style="border 5px solid red;">
     <div class="five wide column">
         <div id="helpinstructions">
             <div class="ui segment info message">
@@ -25,6 +31,8 @@
         {% endblock %}
         {% block page_content %}
         {% endblock %}
+    </div>
+    </div>
     </div>
     </div>
 {% endblock %}

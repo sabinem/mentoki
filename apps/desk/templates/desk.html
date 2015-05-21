@@ -1,57 +1,55 @@
-{% extends "base_semantic/base.html" %}
+{% extends "base_semantic/base_page.html" %}
 {% block body %}
 <body id="desk" >
 {% endblock %}
 {% block main %}
-<div class="ui padded grid">
-    <div class="two column row">
-      <div class="column ">
-        <h2 class="ui header"><a class="ui teal massive label">Dein Lernen</a></h2>
-        <div class="ui cards">
-               {% for courseevent in study_courseevents %}
-                   <div class="card">
-                       <div class="content">
-                           <div class="header">{{ courseevent.title }} von {{ courseevent.course.teachers_display }}</div>
-                           <div class="description">
-                               {% if courseevent.start_date %}
-                                   gestartet vor {{ courseevent.start_date | timesince }}
-                                   <p>{{ courseevent.start_date }} - {{ courseevent.end_date }}</p>
-                               {% endif %}
-                               {{ courseevent.get_status_external_display }}
-                           </div>
-                       </div>
-                       <a class="ui bottom attached button" href="{% url 'classroom:start' slug=courseevent.slug %}">
-                           <i class="arrow right icon"></i>
-                           Zum Klassenzimmer gehen
-                       </a>
-                   </div>
-               {% endfor %}
-            </div>
-      </div>
-      {% if teach_courses %}
-      <div class="column ">
-        <h2 class="ui header inverted">
-            <a class="ui blue massive label">
-            Dein Unterricht
-            </a>
+<div class="ui page grid doubling two column" id="desk_pagegrid">
+    <div class="column">
+        <h2 class="ui header inverted center aligned" id="desk_teach">
+            Dein Lernen
         </h2>
         <div class="ui cards">
-               {% for course in teach_courses %}
-                   <div class="card">
-                       <div class="content">
-                           <div class="header">{{ course.title }}</div>
-                       </div>
-                       <a class="ui bottom attached  button" href="{% url 'course:start' slug=course.slug %}">
-                           <i class="wrench icon"></i>
-                           Zur Unterrichtsvorbereitung gehen
-                       </a>
-                   </div>
-               {% endfor %}
-            </div>
-      </div>
-      {% endif %}
+            {% for courseevent in study_courseevents %}
+                <div class="ui card fluid">
+                    <div class="content">
+                        <div class="header">{{ courseevent.title }} von {{ courseevent.course.teachers_display }}</div>
+                        <div class="description">
+                            {% if courseevent.start_date %}
+                                gestartet vor {{ courseevent.start_date | timesince }}
+                                <p>{{ courseevent.start_date }} - {{ courseevent.end_date }}</p>
+                            {% endif %}
+                            {{ courseevent.get_status_external_display }}
+                        </div>
+                    </div>
+                    <a class="ui bottom attached button" href="{% url 'classroom:start' slug=courseevent.slug %}">
+                        <i class="arrow right icon"></i>
+                        Zum Klassenzimmer gehen
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
     </div>
-  </div>
+    {% if teach_courses %}
+        <div class="column">
+            <h2 class="ui header inverted center aligned" id="desk_teach">
+                Dein Unterricht
+            </h2>
+            <div class="ui cards">
+                {% for course in teach_courses %}
+                    <div class="ui card fluid">
+                        <div class="content">
+                            <div class="header">{{ course.title }}</div>
+                        </div>
+                        <a class="ui bottom attached  button" href="{% url 'course:start' slug=course.slug %}">
+                            <i class="wrench icon"></i>
+                            Zur Unterrichtsvorbereitung gehen
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+</div>
 {% endblock %}
 
 

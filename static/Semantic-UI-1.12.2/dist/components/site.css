@@ -20,7 +20,7 @@ body {
   height: 100%;
 }
 html {
-  font-size: 20px;
+  font-size: 18px;
 }
 body {
   margin: 0px;
@@ -28,7 +28,7 @@ body {
   min-width: 320px;
   background: #f7f7f7;
   font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif;
-  font-size: 20px;
+  font-size: 18px;
   line-height: 1.33;
   color: rgba(0, 0, 0, 0.8);
   font-smoothing: antialiased;
@@ -103,11 +103,11 @@ p:last-child {
 --------------------*/
 
 a {
-  color: teal;
+  color: #00a199;
   text-decoration: none;
 }
 a:hover {
-  color: #00999a;
+  color: #00bbb1;
 }
 
 
@@ -157,19 +157,4 @@ input::selection {
 /*******************************
          Site Overrides
 *******************************/
-
-
-/*-------------------
-       Fonts
---------------------*/
-
-
-/*-------------------
-      Base Sizes
---------------------*/
-
-
-/*-------------------
-       Links
---------------------*/
 

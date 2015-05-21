@@ -1,4 +1,4 @@
-{% extends "base_semantic/base_public.html" %}
+{% extends "base_semantic/base_page.html" %}
 {% block title %}
     {{ courseevent.title }}
 {% endblock %}
@@ -6,7 +6,7 @@
    <body id="public" >
 {% endblock %}
 {% block main %}
-    <main class="ui two column doubling grid" >
+    <main class="ui two column doubling page grid" id="courseevent_detail" >
         <div class="row">
             <div class="five wide column">
                 {% for courseowner in courseowners %}
@@ -100,7 +100,7 @@
                         </div>
                         <div style="height:5px;"></div>
                         {% if courseevent.status_external == courseevent.EXTEVENT_OPEN_FOR_BOOKING %}
-                            <a class="ui bottom attached button" id="buttonbook"
+                            <a class="ui bottom white attached button" id="buttonbook"
                                href="">
                                  jetzt zum Vorgespäch anmelden
                             </a>

@@ -44,15 +44,15 @@
 
 /* Link */
 .ui.breadcrumb a {
-  color: teal;
+  color: #00a199;
 }
 .ui.breadcrumb a:hover {
-  color: #00999a;
+  color: #00bbb1;
 }
 
 /* Icon Divider */
 .ui.breadcrumb .icon.divider {
-  font-size: 0.85em;
+  font-size: 0.83333333em;
   vertical-align: baseline;
 }
 

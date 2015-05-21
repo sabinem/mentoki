@@ -272,3 +272,8 @@ RAVEN_CONFIG = {
 
 # Markdown
 MARKDOWN_EDITOR_SKIN = 'simple'
+
+from django.core.urlresolvers import reverse_lazy
+LOGIN_URL = reverse_lazy("login")
+LOGIN_REDIRECT_URL = reverse_lazy("desk:start")
+LOGOUT_URL = reverse_lazy("home:home")

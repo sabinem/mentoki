@@ -47,3 +47,5 @@ Semantic-UI-1.12.2/.jshinrc
 Semantic-UI-1.12.2/*.swp
 Semantic-UI-1.12.2/*.gitignore
 
+
+steel*/**

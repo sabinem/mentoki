@@ -202,10 +202,10 @@ i.blue.icon {
   color: #3b83c0 !important;
 }
 i.green.icon {
-  color: #5bbd72 !important;
+  color: #7fc39a !important;
 }
 i.orange.icon {
-  color: #e07b53 !important;
+  color: #ed8967 !important;
 }
 i.pink.icon {
   color: #d9499a !important;
@@ -214,13 +214,13 @@ i.purple.icon {
   color: #564f8a !important;
 }
 i.red.icon {
-  color: #d95c5c !important;
+  color: #c71c0a !important;
 }
 i.teal.icon {
-  color: #00b5ad !important;
+  color: #00a199 !important;
 }
 i.yellow.icon {
-  color: #f2c61f !important;
+  color: #aeb3a4 !important;
 }
 
 /*-------------------
@@ -276,12 +276,12 @@ i.inverted.circular.blue.icon {
 }
 i.inverted.bordered.green.icon,
 i.inverted.circular.green.icon {
-  background-color: #5bbd72 !important;
+  background-color: #7fc39a !important;
   color: #FFFFFF !important;
 }
 i.inverted.bordered.orange.icon,
 i.inverted.circular.orange.icon {
-  background-color: #e07b53 !important;
+  background-color: #ed8967 !important;
   color: #FFFFFF !important;
 }
 i.inverted.bordered.pink.icon,
@@ -296,17 +296,17 @@ i.inverted.circular.purple.icon {
 }
 i.inverted.bordered.red.icon,
 i.inverted.circular.red.icon {
-  background-color: #d95c5c !important;
+  background-color: #c71c0a !important;
   color: #FFFFFF !important;
 }
 i.inverted.bordered.teal.icon,
 i.inverted.circular.teal.icon {
-  background-color: #00b5ad !important;
+  background-color: #00a199 !important;
   color: #FFFFFF !important;
 }
 i.inverted.bordered.yellow.icon,
 i.inverted.circular.yellow.icon {
-  background-color: #f2c61f !important;
+  background-color: #aeb3a4 !important;
   color: #FFFFFF !important;
 }
 

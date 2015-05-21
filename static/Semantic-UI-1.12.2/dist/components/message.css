@@ -347,10 +347,10 @@
 }
 .ui.orange.message {
   background-color: #ffedde;
-  color: #e07b53;
+  color: #ed8967;
 }
 .ui.orange.message .header {
-  color: #dc6a3d;
+  color: #ea7750;
 }
 .ui.pink.message {
   background-color: #ffe3fb;
@@ -368,10 +368,10 @@
 }
 .ui.red.message {
   background-color: #ffe8e6;
-  color: #d95c5c;
+  color: #c71c0a;
 }
 .ui.red.message .header {
-  color: #d44747;
+  color: #af1909;
 }
 .ui.teal.message {
   background-color: #e9ffff;
@@ -393,19 +393,19 @@
 ---------------*/
 
 .ui.small.message {
-  font-size: 0.95em;
+  font-size: 0.94444444em;
 }
 .ui.message {
   font-size: 1em;
 }
 .ui.large.message {
-  font-size: 1.15em;
+  font-size: 1.16666667em;
 }
 .ui.huge.message {
-  font-size: 1.45em;
+  font-size: 1.44444444em;
 }
 .ui.massive.message {
-  font-size: 1.7em;
+  font-size: 1.72222222em;
 }
 
 

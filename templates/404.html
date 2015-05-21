@@ -1,28 +1,9 @@
 {% extends "base_semantic/base_public.html" %}
-{% block body %}
-<body id="public" >
-{% endblock %}
 {% block main %}
-    <main class="ui grid">
-        <div class="row">
-            <div class="column">
-<h1 class="ui block header" id="mainheader">
-  <img id="logo_big" src="/static/img/mentoki_logo_with_subtitle.png">
-  <div class="content">
-    Die neue Lernplattform für Online-Mentoren<br> und ihre Schüler.
-  </div>
-18205150_s.jpg
-</h1>
-   </div>
-   </div>
-    <div class="row">
-        <div class="column">
-       <div class="ui piled segment" style="height:600px">
-           <div class="ui header medium">Die angeforderte Seite wurde nicht gefunden.</div>
-           <a href="{% url 'home:home' %}">Hier geht es zur Homepage von Mentoki</a>
-           <img src="/static/img/18205150_s.jpg">
-       </div>
-            </div>
-    </div>
-   </main>
+<div class="ui grid page tablet computer only two column centered" id="generalpage">
+    {% include '_404.html' %}
+</div>
+<div class="ui grid page mobile only column centered" id="generalpage">
+    {% include '_404' %}
+</div>
 {% endblock %}

@@ -1,19 +1,9 @@
 {% extends "base_semantic/base_public.html" %}
-{% block body %}
-<body id="public" >
-{% endblock %}
 {% block main %}
-    <main class="ui grid">
-        <div class="row">
-                <h1 class="ui header block">Mentoki
-                </h1>
-            <div class="column">
-                 <div class="ui piled segment">
-                     <p>403</p>
-                     <p>Forbidden</p>
-                     <button onclick="window.history.back();">Back</button>
-                 </div>
-            </div>
-        </div>
-    </main>
+<div class="ui grid page tablet computer only two column centered" id="generalpage">
+    {% include '_403.html' %}
+</div>
+<div class="ui grid page mobile only column centered" id="generalpage">
+    {% include '_403' %}
+</div>
 {% endblock %}

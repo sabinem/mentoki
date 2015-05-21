@@ -1,12 +1,12 @@
 {% load activelink %}
-<div class="ui fluid vertical menu">
+<div class="ui fluid vertical yellow menu">
       <div class="header item">
           Klassenzimmer
       </div>
       <div class="item">
           <div class="menu">
               <a class="item
-                  {% ifstartswith "classroom:start" slug=match.kwargs.slug %}active green{% endifstartswith %}
+                  {% ifstartswith "classroom:start" slug=match.kwargs.slug %}active black{% endifstartswith %}
                   "href="{% url 'classroom:start' slug=match.kwargs.slug %}">Ankündigungen
               </a>
           </div>
@@ -17,12 +17,12 @@
 <div class="item">
           <div class="menu">
           <a class="item
-            {% ifstartswith "classroom:forum" slug=match.kwargs.slug %}active green{% endifstartswith %}
+            {% ifstartswith "classroom:forum" slug=match.kwargs.slug %}active black{% endifstartswith %}
           " href="{% url 'classroom:forum' slug=match.kwargs.slug %}">
               Forum
           </a>
           <a class="item
-            {% ifstartswith "classroom:recent" slug=match.kwargs.slug %}active green{% endifstartswith %}
+            {% ifstartswith "classroom:recent" slug=match.kwargs.slug %}active black{% endifstartswith %}
           " href="{% url 'classroom:recent' slug=match.kwargs.slug %}">
               letzte Beiträge
           </a>
@@ -37,7 +37,7 @@
                  {% for unit in blockitem.unit_list %}
                   <a class="item
                     {% ifstartswith "classroom:lesson" slug=match.kwargs.slug unit=unit.id %}
-                    active green
+                    active black
                     {% endifstartswith %}
                     " href="{% url 'classroom:lesson' slug=match.kwargs.slug unit=unit.id %}">
                       {% if blockitem.block.is_numbered %}

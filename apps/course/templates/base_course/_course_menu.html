@@ -6,12 +6,12 @@
       <div class="item">
           <div class="menu">
               <a class="item
-                  {% ifstartswith "course:start" slug=match.kwargs.slug %}active green{% endifstartswith %}
+                  {% ifstartswith "course:start" slug=match.kwargs.slug %}active {% endifstartswith %}
                   "href="{% url 'course:start' slug=match.kwargs.slug %}">
                   Kursbeschreibung
               </a>
               <a class="item completed
-                  {% ifstartswith "course:ownerslist" slug=match.kwargs.slug %}active green{% endifstartswith %}
+                  {% ifstartswith "course:ownerslist" slug=match.kwargs.slug %}active {% endifstartswith %}
                   " href="{% url 'course:ownerslist' slug=match.kwargs.slug %}">
                   Kursleiterbeschreibung
               </a>

@@ -172,7 +172,7 @@ ol.ui.list ol,
 }
 .ui.list .list > a.item:hover,
 .ui.list > a.item:hover {
-  color: #00999a;
+  color: #00bbb1;
 }
 
 /* Linked Item Icons */
@@ -187,7 +187,7 @@ ol.ui.list ol,
   color: rgba(0, 0, 0, 0.8) !important;
 }
 .ui.list .item a:hover {
-  color: #00999a !important;
+  color: #00bbb1 !important;
 }
 
 /* Header */
@@ -352,7 +352,7 @@ ol.ui.list ol,
 }
 .ui.inverted.list .list > a.item:hover,
 .ui.inverted.list > a.item:hover {
-  color: #00999a;
+  color: #00bbb1;
 }
 
 /* Linking Content */
@@ -361,7 +361,7 @@ ol.ui.list ol,
   color: #ffffff !important;
 }
 .ui.inverted.list .item a:hover {
-  color: #00999a !important;
+  color: #00bbb1 !important;
 }
 
 /*-------------------
@@ -809,40 +809,40 @@ ol.ui.horizontal.list li:before,
 --------------------*/
 
 .ui.mini.list {
-  font-size: 0.7em;
+  font-size: 0.72222222em;
 }
 .ui.tiny.list {
-  font-size: 0.85em;
+  font-size: 0.83333333em;
 }
 .ui.small.list {
-  font-size: 0.95em;
+  font-size: 0.94444444em;
 }
 .ui.list {
   font-size: 1em;
 }
 .ui.large.list {
-  font-size: 1.15em;
+  font-size: 1.16666667em;
 }
 .ui.big.list {
-  font-size: 1.3em;
+  font-size: 1.27777778em;
 }
 .ui.huge.list {
-  font-size: 1.45em;
+  font-size: 1.44444444em;
 }
 .ui.massive.list {
-  font-size: 1.7em;
+  font-size: 1.72222222em;
 }
 .ui.mini.horizontal.list .list > .item,
 .ui.mini.horizontal.list > .item {
-  font-size: 0.7rem;
+  font-size: 0.72222222rem;
 }
 .ui.tiny.horizontal.list .list > .item,
 .ui.tiny.horizontal.list > .item {
-  font-size: 0.85rem;
+  font-size: 0.83333333rem;
 }
 .ui.small.horizontal.list .list > .item,
 .ui.small.horizontal.list > .item {
-  font-size: 0.95rem;
+  font-size: 0.94444444rem;
 }
 .ui.horizontal.list .list > .item,
 .ui.horizontal.list > .item {
@@ -850,19 +850,19 @@ ol.ui.horizontal.list li:before,
 }
 .ui.large.horizontal.list .list > .item,
 .ui.large.horizontal.list > .item {
-  font-size: 1.15rem;
+  font-size: 1.16666667rem;
 }
 .ui.big.horizontal.list .list > .item,
 .ui.big.horizontal.list > .item {
-  font-size: 1.3rem;
+  font-size: 1.27777778rem;
 }
 .ui.huge.horizontal.list .list > .item,
 .ui.huge.horizontal.list > .item {
-  font-size: 1.45rem;
+  font-size: 1.44444444rem;
 }
 .ui.massive.horizontal.list .list > .item,
 .ui.massive.horizontal.list > .item {
-  font-size: 1.7rem;
+  font-size: 1.72222222rem;
 }
 
 

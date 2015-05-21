@@ -1,0 +1,25 @@
+<div class="column center aligned">
+    <div class="segment ui" id="userlogin_segment">
+        <h2 class="ui header">Benutzer-Login</h2>
+        {% if form.errors %}
+            <p>Dein Benutzername und Passwort stimmen nicht überein. Versuche es noch einmal.</p>
+        {% endif %}
+        <form class="ui form fluid" method="post" action="{% url 'userauth:login' %}">
+            {% csrf_token %}
+            <div class="required field">
+                <label>{{ form.username.label_tag }}</label>
+                <div class="ui input">
+                    {{ form.username }}
+                </div>
+            </div>
+            <div class="required field">
+                <label>{{ form.password.label_tag }}</label>
+                <div class="ui input">
+                    {{ form.password }}
+                </div>
+            </div>
+              <input class="ui button teal" type="submit" value="Anmelden" />
+              <input type="hidden" name="next" value="{{ next }}" />
+        </form>
+    </div>
+</div>

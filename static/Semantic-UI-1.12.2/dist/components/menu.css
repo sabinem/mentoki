@@ -1084,13 +1084,13 @@
 }
 .ui.menu .green.active.item,
 .ui.green.menu .active.item {
-  border-color: #5bbd72 !important;
-  color: #5bbd72 !important;
+  border-color: #7fc39a !important;
+  color: #7fc39a !important;
 }
 .ui.menu .orange.active.item,
 .ui.orange.menu .active.item {
-  border-color: #e07b53 !important;
-  color: #e07b53 !important;
+  border-color: #ed8967 !important;
+  color: #ed8967 !important;
 }
 .ui.menu .pink.active.item,
 .ui.pink.menu .active.item {
@@ -1104,18 +1104,18 @@
 }
 .ui.menu .red.active.item,
 .ui.red.menu .active.item {
-  border-color: #d95c5c !important;
-  color: #d95c5c !important;
+  border-color: #c71c0a !important;
+  color: #c71c0a !important;
 }
 .ui.menu .teal.active.item,
 .ui.teal.menu .active.item {
-  border-color: #00b5ad !important;
-  color: #00b5ad !important;
+  border-color: #00a199 !important;
+  color: #00a199 !important;
 }
 .ui.menu .yellow.active.item,
 .ui.yellow.menu .active.item {
-  border-color: #f2c61f !important;
-  color: #f2c61f !important;
+  border-color: #aeb3a4 !important;
+  color: #aeb3a4 !important;
 }
 
 /*--------------
@@ -1274,18 +1274,18 @@
 
 /* Green */
 .ui.inverted.green.menu {
-  background-color: #5bbd72;
+  background-color: #7fc39a;
 }
 .ui.inverted.green.pointing.menu .active.item:after {
-  background-color: #5bbd72;
+  background-color: #7fc39a;
 }
 
 /* Orange */
 .ui.inverted.orange.menu {
-  background-color: #e07b53;
+  background-color: #ed8967;
 }
 .ui.inverted.orange.pointing.menu .active.item:after {
-  background-color: #e07b53;
+  background-color: #ed8967;
 }
 
 /* Pink */
@@ -1306,26 +1306,26 @@
 
 /* Red */
 .ui.inverted.red.menu {
-  background-color: #d95c5c;
+  background-color: #c71c0a;
 }
 .ui.inverted.red.pointing.menu .active.item:after {
-  background-color: #d95c5c;
+  background-color: #c71c0a;
 }
 
 /* Teal */
 .ui.inverted.teal.menu {
-  background-color: #00b5ad;
+  background-color: #00a199;
 }
 .ui.inverted.teal.pointing.menu .active.item:after {
-  background-color: #00b5ad;
+  background-color: #00a199;
 }
 
 /* Yellow */
 .ui.inverted.yellow.menu {
-  background-color: #f2c61f;
+  background-color: #aeb3a4;
 }
 .ui.inverted.yellow.pointing.menu .active.item:after {
-  background-color: #f2c61f;
+  background-color: #aeb3a4;
 }
 
 /*--------------

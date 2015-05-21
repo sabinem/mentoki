@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+   {% include 'base_semantic/head.html' %}
+</head>
+{% block body %}
+<body>
+{% endblock %}
+{% load activelink %}
+{% block menu %}
+    <div class="ui grid">
+        <!-- mobile version of the menu: in a sidebar -->
+        <div class="mobile only narrow row">
+            <div class="ui left vertical labeled icon sidebar menu" id="mobile_menu">
+                {% include 'base_semantic/_mobile_logo.html' %}
+                {% if user.is_authenticated %}
+                    {% include 'base_semantic/_main_menu_authenticated_left.html' %}
+                    {% include 'base_semantic/_header_user_nav.html' %}
+                    {% include 'base_semantic/_main_menu_authenticated_right.html' %}
+                {% else %}
+                    {% include 'base_semantic/_main_menu_public_left.html' %}
+                    {% include 'base_semantic/_header_user_nav.html' %}
+                    {% include 'base_semantic/_main_menu_public_right.html' %}
+                {% endif %}
+            </div>
+        </div>
+        <!-- pc and tablet version of the navbar -->
+        <div class="tablet computer only row" >
+            <div class="ui menu fixed center aligned top" id="tablet_menu">
+                {% include 'base_semantic/_pc_logo.html' %}
+                {% if user.is_authenticated %}
+                    {% include 'base_semantic/_main_menu_authenticated_left.html' %}
+                    {% if is_owner %}
+                       <a  href="{% url 'course:courseevent' ce_slug=courseevent.slug slug=course.slug %}" class="item
+                            ">
+                            Kursbearbeitung
+                        </a>
+                    {% endif %}
+                    {% block custom_menu_item %}
+                    {% endblock %}
+                    <div class="right menu">
+                        {% include 'base_semantic/_main_menu_authenticated_right.html' %}
+                    </div>
+                {% else %}
+                    {% include 'base_semantic/_main_menu_public_left.html' %}
+                    <div class="right menu">
+                        {% include 'base_semantic/_social_media_icons.html' %}
+                        {% include 'base_semantic/_main_menu_public_right.html' %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <!-- mobile version of the navbar -->
+        <div class="mobile only row" >
+            <div class="ui menu fixed center aligned top">
+                <div class="item ui labeled icon teal button" id="mobile_button">
+                    <i class="align justify icon"></i>
+                    Menu
+                </div>
+                <div class="right menu">
+                     {% include 'base_semantic/_social_media_icons.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block main %}
+{% endblock %}
+{% block footer %}
+    {% include 'base_semantic/_footer.html' %}
+{% endblock %}
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

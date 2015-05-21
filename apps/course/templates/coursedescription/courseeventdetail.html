@@ -24,7 +24,7 @@
             {% for courseevent in courseevents %}
               <a class="item
                      {% ifactive 'course:courseevent' slug=match.kwargs.slug ce_slug=courseevent.slug %}
-                      active green
+                      active
                      {% endifactive %}
                  " href="{% url 'course:courseevent' slug=match.kwargs.slug ce_slug=courseevent.slug %}">
                   Kursereignis {{ courseevent.title }}

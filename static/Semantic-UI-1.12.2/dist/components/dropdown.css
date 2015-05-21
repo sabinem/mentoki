@@ -108,7 +108,7 @@
   border-top: none;
   line-height: 1em;
   color: rgba(0, 0, 0, 0.8);
-  padding: 0.7em 1.15em !important;
+  padding: 0.72222222em 1.16666667em !important;
   font-size: 1rem;
   text-transform: none;
   font-weight: normal;
@@ -148,7 +148,7 @@
 
 .ui.dropdown .menu > .header {
   margin: 1rem 0rem 0.75rem;
-  padding: 0em 1.15em;
+  padding: 0em 1.16666667em;
   color: rgba(0, 0, 0, 0.85);
   font-size: 0.7857rem;
   font-weight: bold;
@@ -160,7 +160,7 @@
   margin: 0.5em 0em;
 }
 .ui.dropdown .menu > .input {
-  margin: 0.75rem 1.15em;
+  margin: 0.75rem 1.16666667em;
   min-width: 200px;
 }
 .ui.dropdown .menu > .header + .input {
@@ -392,29 +392,29 @@ select.ui.dropdown {
 }
 @media only screen and (max-width: 767px) {
   .ui.selection.dropdown .menu {
-    max-height: 7.4142em;
+    max-height: 7.54753333em;
   }
 }
 @media only screen and (min-width: 768px) {
   .ui.selection.dropdown .menu {
-    max-height: 9.8856em;
+    max-height: 10.06337778em;
   }
 }
 @media only screen and (min-width: 992px) {
   .ui.selection.dropdown .menu {
-    max-height: 14.8284em;
+    max-height: 15.09506667em;
   }
 }
 @media only screen and (min-width: 1920px) {
   .ui.selection.dropdown .menu {
-    max-height: 19.7712em;
+    max-height: 20.12675556em;
   }
 }
 
 /* Menu Item */
 .ui.selection.dropdown .menu > .item {
   border-top: 1px solid rgba(0, 0, 0, 0.05);
-  padding: 0.7em 1.15em !important;
+  padding: 0.72222222em 1.16666667em !important;
   white-space: normal;
   word-wrap: normal;
 }
@@ -541,22 +541,22 @@ select.ui.dropdown {
 }
 @media only screen and (max-width: 767px) {
   .ui.search.dropdown .menu {
-    max-height: 7.4142em;
+    max-height: 7.54753333em;
   }
 }
 @media only screen and (min-width: 768px) {
   .ui.search.dropdown .menu {
-    max-height: 9.8856em;
+    max-height: 10.06337778em;
   }
 }
 @media only screen and (min-width: 992px) {
   .ui.search.dropdown .menu {
-    max-height: 14.8284em;
+    max-height: 15.09506667em;
   }
 }
 @media only screen and (min-width: 1920px) {
   .ui.search.dropdown .menu {
-    max-height: 19.7712em;
+    max-height: 20.12675556em;
   }
 }
 

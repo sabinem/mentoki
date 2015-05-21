@@ -1356,7 +1356,7 @@
 }
 .ui.grid > .green.row,
 .ui.grid > .row > .green.column {
-  background-color: #5bbd72 !important;
+  background-color: #7fc39a !important;
   color: #ffffff;
 }
 .ui.grid > .row > .green.column {
@@ -1367,7 +1367,7 @@
 }
 .ui.grid > .orange.row,
 .ui.grid > .row > .orange.column {
-  background-color: #e07b53 !important;
+  background-color: #ed8967 !important;
   color: #ffffff;
 }
 .ui.grid > .row > .orange.column {
@@ -1400,7 +1400,7 @@
 }
 .ui.grid > .red.row,
 .ui.grid > .row > .red.column {
-  background-color: #d95c5c !important;
+  background-color: #c71c0a !important;
   color: #ffffff;
 }
 .ui.grid > .row > .red.column {
@@ -1411,7 +1411,7 @@
 }
 .ui.grid > .teal.row,
 .ui.grid > .row > .teal.column {
-  background-color: #00b5ad !important;
+  background-color: #00a199 !important;
   color: #ffffff;
 }
 .ui.grid > .row > .teal.column {
@@ -1422,7 +1422,7 @@
 }
 .ui.grid > .yellow.row,
 .ui.grid > .row > .yellow.column {
-  background-color: #f2c61f !important;
+  background-color: #aeb3a4 !important;
   color: #ffffff;
 }
 .ui.grid > .row > .yellow.column {

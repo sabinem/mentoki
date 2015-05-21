@@ -148,7 +148,7 @@
 .ui.input.error input {
   background-color: #fff0f0;
   border-color: #dbb1b1;
-  color: #d95c5c;
+  color: #c71c0a;
   box-shadow: none;
 }
 
@@ -418,25 +418,25 @@
 ---------------------*/
 
 .ui.mini.input {
-  font-size: 0.7em;
+  font-size: 0.72222222em;
 }
 .ui.small.input {
-  font-size: 0.95em;
+  font-size: 0.94444444em;
 }
 .ui.input {
   font-size: 1em;
 }
 .ui.large.input {
-  font-size: 1.15em;
+  font-size: 1.16666667em;
 }
 .ui.big.input {
-  font-size: 1.3em;
+  font-size: 1.27777778em;
 }
 .ui.huge.input {
-  font-size: 1.45em;
+  font-size: 1.44444444em;
 }
 .ui.massive.input {
-  font-size: 1.7em;
+  font-size: 1.72222222em;
 }
 
 

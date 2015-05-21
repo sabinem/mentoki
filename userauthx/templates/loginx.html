@@ -1,0 +1,9 @@
+{% extends "base_semantic/base_page.html" %}
+{% block main %}
+<div class="ui grid page computer tablet only two column centered" id="userlogin">
+    {% include '_login_form.html' %}
+</div>
+<div class="ui grid page mobile only centered" id="userlogin">
+    {% include '_login_form.html' %}
+</div>
+{% endblock %}

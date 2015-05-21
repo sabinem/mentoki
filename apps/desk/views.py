@@ -16,8 +16,7 @@ logger = logging.getLogger(__name__)
 
 class DeskStartView(LoginRequiredMixin, MatchMixin, TemplateView):
     """
-    This View is the desk. It is the main entry point for every user to the courses, that
-    he studies or teaches.
+    This View is the desk. It is the main entry point for every authenticated user.
     """
     template_name = 'desk.html'
 
@@ -28,7 +27,6 @@ class DeskStartView(LoginRequiredMixin, MatchMixin, TemplateView):
         3. superuser has access to everything
         """
         context = super(DeskStartView, self).get_context_data(**kwargs)
-        logger.debug("---------- in DeskStartView")
         current_user = self.request.user
 
         if current_user.is_superuser:

@@ -1,0 +1,62 @@
+{% extends "base_semantic/base_page.html" %}
+{% block title %}Mentoki Starterkurs{% endblock %}
+{% block description %}Ausbildung zum Online-Mentor{% endblock %}
+{% block main %}
+{% if gotodiv %}
+    <script> window.location.hash = '#{{gotodiv}}'; </script>
+{% endif %}
+<div class="ui grid page centered" id="page_grid_teach_video">
+    <div class="row">
+        <div class="column">
+            <div class="ui segment">
+                <style>.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+                </style>
+                <div class='embed-container'>
+                    <iframe src='http://www.youtube.com/embed/rOTccOtRsyw?rel=0&controls=0&showinfo=0' frameborder='0' allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="ui page grid main centered" id="starterkursdetails" >
+    <div class="row">
+        <div class="column sixteen wide">
+            {%  include 'public/teachpage/_accordion_teach_details.html' %}
+        </div>
+    </div>
+</div>
+<div class="ui vertical segment" id="testimonials">
+    {%  include 'public/teachpage/_starterkurs_testimonials.html' %}
+</div>
+<div class="ui two column doubling page grid" id="webinarinfo">
+    <div class="row">
+        <h1 class="ui header aligned center" id="mainheader">Gratis Webinar zum Einstieg in den Online-Unterricht"
+            <div class="sub header">
+                Termin nach Absprache
+            </div>
+        </h1>
+        <div class="eight wide column">
+            <a class="button ui green">Melde Dich jetzt als Interessent für das Webinar an!</a>
+            <img class="ui image" src="/static/img/post_mentoki_web.png">
+        </div>
+        <div class="eight wide column">
+            <h3 class="ui header medium">
+                Gratis Webinar: Warum Du jetzt mit Deinem Fachwissen online gehen solltest
+            </h3>
+            <p>
+                Wenn Du schon längere Zeit darüber nachgedacht hast, ob und wie Du mit Deinem Fachwissen online gehen kannst, dann bekommst Du in diesem Webinar Antworten und ein Angebot!
+            </p>
+            <p>Im Detail erwartet Dich folgendes Programm:</p>
+            <ul class="ui list">
+                <li>Das Mentoki-Team Anette und Sabine stellt sich vor.</li>
+                <li>Bewusstseinwandel in der Gesellschaft: Wir konzentrieren uns auf die Chancen.</li>
+                <li>"I learn" oder warum Online-Unterricht perfekt zu unseren heutigen Lernbedürfnissen passt.</li>
+                <li>Wie wäre es mit massgeschneiderter Online Unterricht für Dich und Dein Thema.</li>
+                <li>Der Starterkurs: wie aus Deiner Kursidee ein vermarktbarer Online-Kurs reift</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

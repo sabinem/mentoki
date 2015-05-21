@@ -1,196 +1,42 @@
-/* Custom Styles */
-
 /* ------------------------- */
-/*         backend           */
+/*       Custom Styles       */
 /* ------------------------- */
-/* Select radio boxes on the top of the page */
-#pageselects {
-    float:right
-}
-
-/* Prevent images from being too large */
-.img {
-    max-width: 600px;
-}
-
-
-/* embeding pdf files */
-object.htmlembed {
-    max-width: 600px;
-    height: 900px;
-}
-
-
-
-/* desk */
-#desk {
-  background-image: url('/static/img/normaldesk.jpg');
-  background-size: cover;
-  background-attachment: fixed;
-}
-
-#helpinstructions, .displaynr, .publishinfo, .lessonlinks, .contentdescription {
-    display:none;
-}
-
-.accomplishment {
-    display:none;
-}
-
-.last_modified {
-    color:grey;
-}
-
-
-/* Work on lessons: make title input field longer */
-input#id_title {
-    width:500px;
-}
-
-/* Work on lessons: make title input field longer */
-input#id_description {
-    width:700px;
-}
-
-
-
 /* ------------------------- */
 /*      responsiveness       */
 /* ------------------------- */
 
-/* when not mobile menu button is hidden */
-#mobile_button {
-    display:none;
-}
-
-/* when mobile: do not show navbar */
-@media all and (max-width:630px){
-    #mainNavbar{display:none;}
-    /* show menu button instead */
-    #pageImage{
-        display:none;
-    }
-    #mobile_button {
-        display:inline-block;
-    }
-    /* Header in die Mitte rücken, damit der Menu-Button in der Mitte ist*/
-    #mainHeader {
-        text-align: center;
-    }
-    #homepage-web{
-        display:none;
-    }
-    #main {
-        margin-top:0;
-    }
-    #newscolumn{
-        padding:0;
-    }
-    #public {
-        background:white;
-    }
-    #starterkurs {
-        background:white;
-    }
-}
-
-
-/* for webpages */
-@media all and (min-width:631px){
-    #homepage-mobile {
-        display:none;
-    }
-/* content must be below navbar */
-    #main {
-        margin-top:60px;
-    }
-    #public, #starterkurs {
-        background-image: url('/static/img/21349832_ml_lighter.jpg');
-        background-size: cover;
-        background-attachment: fixed;
-     }
-}
-
 /* ------------------------- */
-/*      general              */
+/*     base_page             */
 /* ------------------------- */
 
+/* logo on top of the mobile menu in the sidebar */
+#logo_mobile_menu {
+    padding:2px;
+    margin:0;
+    background:white;"
+    text-align: center;
+}
 
-#logo {
+/* size of logo img in the navbar */
+#logo_img_mobile {
     height:50px; width:auto;
 }
 
-#logo_big {
-    height:100px; width:auto;
-}
-
-
-/* ------------------------- */
-/*          homepage         */
-/* ------------------------- */
-#home {
-  /* Location of the image */
-  background-image: url('/static/img/homepage.jpg');
-  background-size: cover;
-  background-attachment: fixed;
-
-}
-
-#home #frontheader {
-    opacity: 0.8;
-    background:white;
-    padding-top:50px;
-    border:5px solid #aeb3a4;
-}
-
-
-#home .ui.grid>.row {
+/* logo in the navbar in the pc version: tablet and computer */
+#logo_navbar_pc {
     padding:0;
+    margin:0;
+    padding-left:30px;"
 }
 
-/* cards get a frame */
-#homesegment1, #homesegment2, #homesegment3, #homesegment4 {
-    background:#aeb3a4;
-    opacity: 0.9;
+/* size of logo img in the navbar */
+#logo_img_navbar {
+    height:50px; width:auto;
 }
 
-.ui.page.grid.homepage {
-    padding-bottom:20px;
-    padding-top:30px;
-}
-
-#learn {
-    background:white;
-}
-
-#teach {
-    background:rgba(127, 195, 154, 0.2);
-}
-
-
-#teach .ui.button {
-    background:#00a199;
-}
-
-#newsletter_homepage {
-    background:white;
-}
-
-#newsletter_homepage .ui.button {
-    background:#00a199;
-}
-
-
-
-#toolbox {
-    background:rgba(127, 195, 154, 0.2);
-    background:#ece9e4;
-    padding-bottom:20px;
-}
-
-
-#toolbox .ui.image {
-    height:200px;
+#mobile_button:hover {
+    background: white;
+    color:black
 }
 
 /* ------------------------- */
@@ -219,92 +65,247 @@ input#id_description {
     margin:0;
 }
 
+/* ---------------------- */
+/*        general page    */
+/* ---------------------- */
+
+#generalpage {
+    text-align: center;
+    background-image: url('/static/img/homepage.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    height:800px;
+}
+/* ---------------------- */
+/*        loginpage       */
+/* ---------------------- */
+
+
+#userlogin_segment {
+    margin-top:200px;
+}
+
+/* ---------------------- */
+/* password reset done    */
+/* ---------------------- */
+
+#password_reset_done p , #password_reset_done h2 {
+    text-align: center;
+}
+
 /* ------------------------- */
-/*      starterkurspage      */
+/*          homepage         */
 /* ------------------------- */
-/* starterkurspage */
-#starterkurs #tabgrid, #public #tabgrid #tabgridcolumn {
+
+/* logo as main header on the homepage */
+#logo_homepage_header {
+    height:100px; width:auto;
+}
+
+/* the computer and tablet version: background img */
+#page-grid-homepage-top-pc {
+    background-image: url('/static/img/homepage.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    height:800px;
+}
+
+/* the computer and tablet version: header */
+#page-grid-homepage-top-pc h1 {
+    opacity: 0.8;
+    background:white;
+    margin-top:50px;
+    padding-top:50px;
+    border:5px solid #aeb3a4;
+}
+
+/* the mobile version: upper grid with background image */
+#page-grid-homepage-top-mobile-1 {
+    background-image: url('/static/img/homepage.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    height:500px;
+}
+
+/* overwriting semantic css for mobiles: gets rid of some padding */
+.ui.grid+.grid {
+  margin-top: 0rem;
+}
+
+/* the mobile version: lower grid with logo */
+#page-grid-homepage-top-mobile-2 .column {
+    background: white;
+}
+
+#page-grid-homepage-top-mobile-2 h1 {
+    background:white;
+    margin:0;
     padding:0;
+}
+
+/* homepage part about learning */
+#vertical-segment-homepage-learn {
+    background:white;
+}
+
+/* homepage part about teaching */
+#vertical-segment-homepage-teach {
+    background:rgba(127, 195, 154, 0.2);
+}
+
+/* homepage part about newsletter */
+#vertical-segment-homepage-newsletter {
+    background:white;
+}
+
+/* homepage part about toolbox */
+#vertical-segment-homepage-toolbox {
+    background:#ece9e4;
+    padding-bottom:60px;
+}
+
+#vertical-segment-homepage-toolbox .ui.image {
+    height:300px;
+}
+
+/* ------------------------- */
+/*       teach-page          */
+/* ------------------------- */
+
+#page_grid_teach_video {
+    background:#b2becc;
+    background:#f1dfd1;
+    background:#ecdbcb;
+    background:#f9f4ee;
+    padding-top:60px;
+    padding-bottom:30px;
+}
+
+#starterkursdetails {
+    background:white;
+    padding-bottom:40px;
+    margin-bottom:1em;
+    padding-top:60px;
+}
+
+#starterkursdetails .row {
     margin:0;
 }
 
-#starterkurs #mainheader {
-    background:white;
+#testimonials {
+    background: rgba(127, 195, 154, 0.2);
+    padding-top:60px;
+    margin-top:0px;
+    padding-bottom:50px;
 }
 
-#starterkurs  .ui.tabular.menu .item {
-    background-color: white;
-    color:teal;
-    opacity:1;
+#testimonials blockquote h3 {
+    font-family: 'Helvetica Neue Light', 'HelveticaNeue-Light', 'Helvetica Neue', Calibri, Helvetica, Arial;
+    font-weight:normal;
 }
 
-#starterkurs  .ui.tabular.menu .item.active {
-    background:#c8d0dd;
-    opacity:1;
+#testimonials .accordion.field {
+    padding-left:40px;
+}
+
+#webinarinfo {
+    padding-top: 60px;
+    background: white;
+    padding-bottom: 60px;
+}
+
+/* ---------------------- */
+/* courseeventdetailpage  */
+/* ---------------------- */
+
+#courseevent_detail {
+    margin-top:80px;
+}
+
+/* ------------------------- */
+/*         desk          */
+/* ------------------------- */
+/* desk background image */
+
+#desk {
+  background-image: url('/static/img/normaldesk.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+#desk_pagegrid {
+    padding-top:100px;
+}
+
+#desk_pagegrid {
+    min-height:800px;
+}
+/* ------------------------- */
+/*         classroom         */
+/* ------------------------- */
+
+#classroom_page_grid {
+    padding-top:20px;
+    padding-bottom: 60px;
+}
+
+#classroomheader, #classroomheader a {
     color:black;
 }
 
-#starterkurs .bottom.attached.tab.segment {
-    background-color: #c8d0dd;
+/* -------------------- */
+/* until here  checked  */
+/* -------------------- */
+
+#pagestart {
+    padding-top:100px;
 }
 
-#starterkurs .bottom.attached.tab.segment .testimonial {
-    background-color: white;
-    padding:5px;
-    margin-bottom: 10px;
-}
-
-
-#starterkurs blockquote {
-    background:white;
-    padding:10px;
-    color:teal;
-}
-
-
-#starterkurs #buttonbook {
-    background:#009b98;
-    color:white;
-}
-
-#starterkurs #buttonbook h3 {
-    color:white;
+#pagetop {
+    background:#aeb3a4;
 }
 
 /* ------------------------- */
 /*     courselistpage        */
 /* ------------------------- */
 #publiclist {
-    background-image: url('/static/img/21349832_ml_lighter.jpg');
+    background-image: url('/static/img/30019719_l.jpg');
     background-size: cover;
     background-attachment: fixed;
 }
 
 #publiclist .segment {
-    border: 2px solid #968D96;
+
 }
 
 #publiclist #courselist_menu .header {
-    background: #968D96;
+    background:  #aeb3a4;
     color:white;
     /* background: hsla(300,4%,2%,0.1); */
-    border: 5px solid #968D96;
 
 }
 
-#publiclist #mainheader, #publiclist #mainheader div {
+#publiclist #mainheader {
+    padding-top:20px;
     color:white;
-    background:teal;
-    opacity: 0.8;
+    background: #aeb3a4;
+    opacity: 0.9;
 }
 
+ #publiclist #mainheader div {
+
+ }
+
+#publiclist #mainheader, #publiclist #mainheader a {
+    color:white;
+}
 
 #publiclist #courselist_menu  {
     /* opacity: 0.9; /* CSS3 Standard */
-        opacity: 0.9;
+        opacity: 1;
 }
 
-#publiclist #courselist_menu a div {
+#publiclist #courselist_menu a  {
     color:black;
 }
 
@@ -312,18 +313,34 @@ input#id_description {
 /*     coursedetailpage      */
 /* ------------------------- */
 
+#public {
+    background-image: url('/static/img/30019719_l.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+
 #public #mainheader {
     border:1px solid #c8d0dd;
 
 }
 
 #public #coursedetail {
-   background-color: #c8d0dd;
+   background-color:  #aeb3a4;
+   color:white;
 }
 
+#public #coursedetail .item {
+   color:white;
+}
+
+#public #coursedetail div.header {
+   color:white;
+}
+
+
 #public #buttonprebook, #public #buttonbook {
-    background:#009b98;
-    color:white;
+    background:white;
 }
 
 #courseowner_img {
@@ -334,22 +351,6 @@ input#id_description {
 
 }
 
-/* ------------------------- */
-/*     webinar               */
-/* ------------------------- */
-
-#webinar {
-    background:rgba(127, 195, 154, 0.2);
-}
-
-#webinar .ui.button {
-    background:#7fc39a;
-    color:white;
-}
-
-#webinar #mainheader {
-    opacity: 0.8;
-}
 
 /* ------------------------- */
 /*     newsletter            */
@@ -437,6 +438,114 @@ input#id_description {
 }
 
 
+#desk_teach {
+    background: #aeb3a4;
+}
+
+
+#team #mainheader {
+    padding-top:60px;
+}
+
+#impressum #maingrid{
+    padding-top:100px;
+    padding-bottom: 100px;
+}
+
+
+/* ------------------------- */
+/*         backend           */
+/* ------------------------- */
+/* Select radio boxes on the top of the page */
+#pageselects {
+    float:right
+}
+
+/* Prevent images from being too large */
+.img {
+    max-width: 600px;
+}
+
+
+/* embeding pdf files */
+object.htmlembed {
+    max-width: 600px;
+    height: 900px;
+}
+
+#helpinstructions, .displaynr, .publishinfo, .lessonlinks, .contentdescription {
+    display:none;
+}
+
+.accomplishment {
+    display:none;
+}
+
+.last_modified {
+    color:grey;
+}
+
+
+/* Work on lessons: make title input field longer */
+input#id_title {
+    width:500px;
+}
+
+/* Work on lessons: make title input field longer */
+input#id_description {
+    width:700px;
+}
+
+#classroombackend {
+    background-image: url('/static/img/39080274_l_lighter.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+#backendheader {
+    padding-top:40px;
+    padding-left:20px;
+}
+
+#classroombackend .active {
+    background:#f6d9c1;
+    color:black;
+}
 
 
 
+
+/* ------------------------- */
+/*         desk          */
+/* ------------------------- */
+/* desk background image */
+#desk {
+  background-image: url('/static/img/normaldesk.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+#desk_pagegrid {
+    padding-top:100px;
+}
+
+
+/* ------------------------- */
+/*         classroom         */
+/* ------------------------- */
+
+#classroomheader {
+    padding-top:40px;
+    padding-left:30px;
+}
+
+#classroom {
+        background-image: url('/static/img/38098805_l_lighter2.jpg');
+        background-size: cover;
+        background-attachment: fixed;
+}
+
+#classroom .active {
+    background:#dde6e8;
+    color:black;
+}

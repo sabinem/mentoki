@@ -1,7 +1,7 @@
 {% extends "classroom_base/base.html" %}
 {% load crispy_forms_tags %}
 {% block classroom_header %}
-    <h2 class="ui block header">
+    <h2 class="ui inverted header"  id="classroomheader">
         {{ courseevent.courseevent_title }} :
         <a href="{% url 'classroom:subforum' subforum=match.kwargs.subforum slug=match.kwargs.slug %} ">
             {{ thread.subforum_title }}

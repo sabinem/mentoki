@@ -43,25 +43,8 @@ urlpatterns = patterns('',
     #url(r'^q/', include('quiz.urls')),
 
     # user handling urls
-    url(r'^accounts/password/change/$', 'django.contrib.auth.views.password_change',
-        {'template_name': 'userauth/password_change_form.html'},
-        name='password_change'),
-    url(r'^accounts/password/changed/$', 'django.contrib.auth.views.password_change_done',
-        {'template_name': 'userauth/password_change_done.html'},
-        name='password_change_done'),
-    url(r'^accounts/', include('userauth.urls', namespace='userauth')),
-    url(r'^user/password/reset/$',
-        'django.contrib.auth.views.password_reset',
-        {'post_reset_redirect' : '/user/password/reset/done/'},
-        name="password_reset"),
-    (r'^user/password/reset/done/$',
-        'django.contrib.auth.views.password_reset_done'),
-    (r'^user/password/reset/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
-        'django.contrib.auth.views.password_reset_confirm',
-        {'post_reset_redirect' : '/user/password/done/',
-         'template_name': 'registration/password_reset_confirm.html'}),
-    (r'^user/password/done/$',
-        'django.contrib.auth.views.password_reset_complete'),
+    url(r'^accounts/', include('userauth.urls')),
+
     (r'^robots\.txt/$', TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),
 )
 
