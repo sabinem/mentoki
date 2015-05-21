@@ -6,7 +6,7 @@
    <body id="application" >
 {% endblock %}
 {% block main %}
-    <main class="ui grid">
+    <main class="ui page centered grid">
     <div class="column">
     <div class="ui piled segment" id="thankyou_letter">
         <div class="ui row">
@@ -14,12 +14,12 @@
                 <h1 class="ui header center aligned">
                <img id="logo_big" src="/static/img/mentoki_logo_untertitel.jpg">
                 </h1>
-  {% if messages %}
+                  {% if messages %}
 
-    {% for message in messages %}
-    <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message | safe }}</p>
-    {% endfor %}
-{% endif %}
+                    {% for message in messages %}
+                    <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message | safe }}</p>
+                    {% endfor %}
+                {% endif %}
 
                 <p>Mit lieben Grüssen</p>
                 <p id="signature">Sabine Maennel und Anette Pekrul</p>

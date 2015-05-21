@@ -403,6 +403,11 @@
 /*     thankyou page         */
 /* ------------------------- */
 
+#logo_big {
+    height:100px;
+    width:auto;
+}
+
 #thankyou_letter {
     padding-top:100px;
     padding-bottom:100px;
