@@ -1,6 +1,6 @@
 # coding: utf-8
 from __future__ import unicode_literals
-from .forms_contact import  ContactForm
+from .forms import  ContactForm
 from django.views.generic import FormView, TemplateView
 from django.core.urlresolvers import reverse
 from django.utils.safestring import mark_safe

@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, url
-from .views_contact import  ContactView, AnswerView
+from .views import  ContactView, AnswerView
 
 urlpatterns = patterns("",
     url(r'^$', ContactView.as_view(), name='contact'),

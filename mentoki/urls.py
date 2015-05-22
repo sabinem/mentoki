@@ -37,7 +37,7 @@ urlpatterns = patterns('',
     url(r'^markdown/', include('django_markdown.urls')),
 
     # file newsletter ...
-    url(r'^', include('apps.newsletter.urls', namespace='newsletters')),
+    url(r'^', include('apps.newsletter.urls', namespace='newsletter')),
 
     # quiz
     #url(r'^q/', include('quiz.urls')),

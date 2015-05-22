@@ -457,6 +457,12 @@
 }
 
 
+#desk_admin {
+    background:  #aeb3a4;
+    color:white;
+}
+
+
 #team #mainheader {
     padding-top:60px;
 }
@@ -549,25 +555,48 @@ input#id_description {
 /* ------------------------- */
 
 #classroomheader {
-    padding-top:40px;
-    padding-left:30px;
     opacity:0.5;
     background:white;
 }
 
-#classroommenu {
-    opacity:0.5;
+#classroommenu a.item {
+    color:black;
+
 }
 
 #classroom {
         background-image: url('/static/img/38098805_l_lighter2.jpg');
         background-image: url('/static/img/7989831_ml.jpg');
-
+        background-image: url('/static/img/30520566_l_lighter.jpg');
         background-size: cover;
         background-attachment: fixed;
 }
 
+#classroom_page_grid {
+    margin-top:60px;
+    margin-bottom:60px;
+}
+
 #classroom .active {
-    background:#dde6e8;
+    background:#c0a999;
+    background:#f6d9c1;
+    background:#d3bba5;
+    color:black!important;
+}
+
+#newsletter_admin_main_grid {
+    margin-top:60px;
+    margin-bottom:60px;
+}
+
+#newsletter_admin_main_segment {
+    min-height: 700px;
+}
+
+#classroom .ui.button a, #classroom .ui.button a:hover,  #classroom .ui.button {
     color:black;
+}
+
+#classroom  .header.item {
+    background:#edf5fb;
 }

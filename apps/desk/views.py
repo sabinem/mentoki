@@ -34,6 +34,7 @@ class DeskStartView(LoginRequiredMixin, MatchMixin, TemplateView):
             context['study_courseevents'] = CourseEvent.objects.select_related('course').\
                 all().order_by('start_date')
             context['teach_courses'] = Course.objects.all()
+            context['user_is_editor'] = True
         else:
             # getting the ids of the courseevent that the user paricipates in
             study_courseevent_ids = \
@@ -52,4 +53,9 @@ class DeskStartView(LoginRequiredMixin, MatchMixin, TemplateView):
             #getting the courses
             courses = Course.objects.filter(id__in=teach_course_ids)
             context['teach_courses'] = courses
+
+            if self.request.user.id in [1,2,4]:
+                context['user_is_editor'] = True
+            else:
+                context['user_is_editor'] = False
         return context

@@ -47,6 +47,22 @@
                     </div>
                 {% endfor %}
             </div>
+            {% if user_is_editor %}
+            <h2 class="ui header center aligned" id="desk_admin">
+                Verwaltung
+            </h2>
+            <div class="ui cards">
+                <div class="ui card fluid">
+                    <div class="content">
+                        <div class="header">Newsletter</div>
+                    </div>
+                    <a class="ui bottom attached  button" href="{% url 'newsletter:adminlist' %}">
+                        <i class="wrench icon"></i>
+                        Zur Newsletter-Verwaltung gehen
+                    </a>
+                </div>
+            </div>
+            {% endif %}
         </div>
     {% endif %}
 </div>

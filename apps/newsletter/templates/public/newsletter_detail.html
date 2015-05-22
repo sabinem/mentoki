@@ -1,4 +1,4 @@
-{% extends "base_newsletter_1col.html" %}
+{% extends "base/base_newsletter_1col.html" %}
 {% load django_markdown %}
 {% block content %}
     <h1 class="ui header aligned center" id="mainheader">
@@ -13,10 +13,10 @@
     <div class="column">
 
     <p>
-        <a href="{% url 'newsletters:list' %}">
+        <a href="{% url 'newsletter:list' %}">
             <i class="ui angle double left icon"></i> zurück
         </a>
-        <a href="{% url 'newsletters:update' pk=newsletter.id %}">
+        <a href="{% url 'newsletter:update' pk=newsletter.id %}">
            <i class="ui pencil icon"></i> bearbeiten
         </a>
     </p>

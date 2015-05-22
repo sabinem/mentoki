@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, url
 from .feeds import LatestNewsletterFeed
 from .views_public import NewslettersListView, NewsletterDetailView
-from .views_admin import NewsletterCreateView, NewsletterUpdateView
+from .views_admin import NewsletterCreateView, NewsletterUpdateView, NewsletterAdminListView
 
 urlpatterns = patterns("",
     # urls for reading newsletters
@@ -13,6 +13,7 @@ urlpatterns = patterns("",
     url(r'^feed/$', LatestNewsletterFeed(), name='feed'),
 
     # urls for writing newsletters
+    url(r'^newsletter/verwalten$', NewsletterAdminListView.as_view(), name='adminlist'),
     url(r'^schreiben$', NewsletterCreateView.as_view(), name='create'),
     url(r'^bearbeiten/(?P<pk>\d{1,4})/$', NewsletterUpdateView.as_view(), name='update'),
 )
