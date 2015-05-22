@@ -9,7 +9,7 @@ from django.template import Context
 
 
 class ContactForm(forms.Form):
-    # Formular, um eine Frage zu stellen.
+    # Kontaktformular
 
     name = forms.CharField(required=True, max_length=100, label='Name')
     email = forms.EmailField(required=True)
