@@ -505,33 +505,33 @@ a.ui.black.label:hover:before {
 
 .ui.blue.labels .label,
 .ui.blue.label {
-  background-color: #edf5fb !important;
-  border-color: #edf5fb !important;
+  background-color: #1a4d75 !important;
+  border-color: #1a4d75 !important;
   color: #ffffff !important;
 }
 .ui.labels .blue.label:before,
 .ui.blue.labels .label:before,
 .ui.blue.label:before {
-  background-color: #edf5fb !important;
+  background-color: #1a4d75 !important;
 }
 a.ui.blue.labels .label:hover,
 .ui.blue.labels a.label:hover,
 a.ui.blue.label:hover {
-  background-color: #fafcfe !important;
-  border-color: #fafcfe !important;
+  background-color: #1d5582 !important;
+  border-color: #1d5582 !important;
   color: #ffffff !important;
 }
 .ui.labels a.blue.label:hover:before,
 .ui.blue.labels a.label:hover:before,
 a.ui.blue.label:hover:before {
-  background-color: #fafcfe !important;
+  background-color: #1d5582 !important;
 }
 .ui.blue.corner.label,
 .ui.blue.corner.label:hover {
   background-color: transparent !important;
 }
 .ui.blue.ribbon.label {
-  border-color: #c3def2 !important;
+  border-color: #11324b !important;
 }
 
 /*--- Green ---*/

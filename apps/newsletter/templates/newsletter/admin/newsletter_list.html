@@ -1,4 +1,4 @@
-{% extends "base_semantic/base_page.html" %}
+{% extends "newsletter/base_admin.html" %}
 {% load django_markdown %}
 {% block main %}
 <main class="ui page grid centered main" id="newsletter_admin_main_grid">
@@ -19,15 +19,28 @@
                                 Erscheinungsdatum: {{ newsletter.published_at_date | date:'d.m.Y' }}
                             </p>
                             <p class="meta">
-                                {{ newsletter.tags.all|join:", "}}
+                                Status: {{ newsletter.published |yesno:"veröffentlicht, Entwurf"  }}
+                            </p>
+                            <p class="meta">
+                                Schlagworte: {{ newsletter.tags.all|join:", "}}
                             </p>
                             <div>
+                                <h3 class="ui header">Abstrakt</h3>
                                 {{ newsletter.excerpt | safe }}
 
                             </div>
-                            <a href="{% url 'newsletter:single' slug=newsletter.slug %}">
-                               <i class="ui angle double right icon"></i> weiterlesen
+                            <a href="{% url 'newsletter:update' pk=newsletter.id %}">
+                               <i class="ui wrench icon"></i> bearbeiten
                             </a>
+                            <div class="ui accordion field">
+                            <div class="title">
+                              <i class="icon dropdown"></i>
+                              ansehen
+                            </div>
+                            <div class="content field">
+                               {{ newsletter.content | markdown }}
+                            </div>
+                          </div>
                         </div>
                     {% endfor %}
                 </div>

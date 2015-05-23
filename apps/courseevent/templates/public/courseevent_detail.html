@@ -3,10 +3,10 @@
     {{ courseevent.title }}
 {% endblock %}
 {% block body %}
-   <body id="public" >
+   <body id="courseevent_public" >
 {% endblock %}
 {% block main %}
-    <main class="ui two column doubling page grid" id="courseevent_detail" >
+    <main class="ui two column doubling page grid">
         <div class="row">
             <div class="five wide column">
                 {% for courseowner in courseowners %}
@@ -37,7 +37,7 @@
                     <h2 class="ui aligned center header">
                         {{ courseevent.title }} mit  {{ course.teachers_display }}
                     </h2>
-                    <div class="ui card fluid" id="coursedetail">
+                    <div class="ui card fluid">
                         <div class="content">
                             <div class="description">
                             <div class="ui grid two columns">

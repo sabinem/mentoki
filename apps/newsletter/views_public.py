@@ -9,14 +9,14 @@ logger = logging.getLogger(__name__)
 
 class NewslettersListView(ListView):
     queryset = Newsletter.objects.published()
-    template_name = 'public/newsletter_list.html'
+    template_name = 'newsletter/public/newsletter_list.html'
     context_object_name = 'newsletters'
     paginate_by = 2
 
 
 class NewsletterDetailView(DetailView):
     model = Newsletter
-    template_name = 'public/newsletter_detail.html'
+    template_name = 'newsletter/public/newsletter_detail.html'
 
 
 

@@ -199,7 +199,7 @@ i.black.icon {
   color: #1b1c1d !important;
 }
 i.blue.icon {
-  color: #edf5fb !important;
+  color: #1a4d75 !important;
 }
 i.green.icon {
   color: #7fc39a !important;
@@ -271,7 +271,7 @@ i.inverted.circular.black.icon {
 }
 i.inverted.bordered.blue.icon,
 i.inverted.circular.blue.icon {
-  background-color: #edf5fb !important;
+  background-color: #1a4d75 !important;
   color: #FFFFFF !important;
 }
 i.inverted.bordered.green.icon,

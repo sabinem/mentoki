@@ -1,97 +1,3 @@
-/* ------------------------- */
-/*       Custom Styles       */
-/* ------------------------- */
-/* ------------------------- */
-/*      responsiveness       */
-/* ------------------------- */
-
-/* ------------------------- */
-/*     base_page             */
-/* ------------------------- */
-
-/* logo on top of the mobile menu in the sidebar */
-#logo_mobile_menu {
-    padding:2px;
-    margin:0;
-    background:white;"
-    text-align: center;
-}
-
-/* size of logo img in the navbar */
-#logo_img_mobile {
-    height:50px; width:auto;
-}
-
-/* logo in the navbar in the pc version: tablet and computer */
-#logo_navbar_pc {
-    padding:0;
-    margin:0;
-    padding-left:30px;"
-}
-
-/* size of logo img in the navbar */
-#logo_img_navbar {
-    height:50px; width:auto;
-}
-
-#mobile_button:hover {
-    background: white;
-    color:black
-}
-
-/* ------------------------- */
-/*          footer           */
-/* ------------------------- */
-
-#footer {
-  margin-top:100px;
-  background:white;
-  position:static;
-}
-
-
-#footer .ui.segment  {
-    padding:0;
-    margin:0;
-}
-
-#footercolumn {
-    padding:0;
-    margin:0;
-}
-
-#footer {
-    padding:0;
-    margin:0;
-}
-
-/* ---------------------- */
-/*        general page    */
-/* ---------------------- */
-
-#generalpage {
-    text-align: center;
-    background-image: url('/static/img/homepage.jpg');
-    background-size: cover;
-    background-attachment: fixed;
-    height:800px;
-}
-/* ---------------------- */
-/*        loginpage       */
-/* ---------------------- */
-
-
-#general_page_segment {
-    margin-top:200px;
-}
-
-/* ---------------------- */
-/* password reset done    */
-/* ---------------------- */
-
-#password_reset_done p , #password_reset_done h2 {
-    text-align: center;
-}
 
 /* ------------------------- */
 /*          homepage         */
@@ -162,7 +68,7 @@
 /* homepage part about toolbox */
 #vertical-segment-homepage-toolbox {
     background:#ece9e4;
-    padding-bottom:60px;
+
 }
 
 #vertical-segment-homepage-toolbox .ui.image {
@@ -215,44 +121,10 @@
     padding-bottom: 60px;
 }
 
-/* ---------------------- */
-/* courseeventdetailpage  */
-/* ---------------------- */
-
-#courseevent_detail {
-    margin-top:80px;
-}
-
-/* ------------------------- */
-/*         desk          */
-/* ------------------------- */
-/* desk background image */
-
-#desk {
-  background-image: url('/static/img/normaldesk.jpg');
-  background-size: cover;
-  background-attachment: fixed;
-}
-
-#desk_pagegrid {
-    padding-top:100px;
-}
-
-#desk_pagegrid {
-    min-height:800px;
-}
 /* ------------------------- */
 /*         classroom         */
 /* ------------------------- */
 
-#classroom_page_grid {
-    padding-top:20px;
-    padding-bottom: 60px;
-}
-
-#classroomheader, #classroomheader a {
-    color:black;
-}
 
 /* -------------------- */
 /* until here  checked  */
@@ -287,7 +159,7 @@
 }
 
 #publiclist #mainheader {
-    padding-top:20px;
+    margin-top:-1em;
     color:white;
     background: #aeb3a4;
     opacity: 0.9;
@@ -310,47 +182,6 @@
     color:black;
 }
 
-/* ------------------------- */
-/*     coursedetailpage      */
-/* ------------------------- */
-
-#public {
-    background-image: url('/static/img/30019719_l.jpg');
-    background-size: cover;
-    background-attachment: fixed;
-}
-
-
-#public #mainheader {
-    border:1px solid #c8d0dd;
-
-}
-
-#public #coursedetail {
-   background-color:  #aeb3a4;
-   color:white;
-}
-
-#public #coursedetail .item {
-   color:white;
-}
-
-#public #coursedetail div.header {
-   color:white;
-}
-
-
-#public #buttonprebook, #public #buttonbook {
-    background:white;
-}
-
-#courseowner_img {
-    max-width:350px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto
-
-}
 
 
 /* ------------------------- */
@@ -399,49 +230,13 @@
 }
 
 
-/* ------------------------- */
-/*     thankyou page         */
-/* ------------------------- */
 
-#logo_big {
-    height:100px;
-    width:auto;
-}
-
-#thankyou_letter {
-    padding-top:100px;
-    padding-bottom:100px;
-    margin-top:80px;
-    margin-bottom:80px;
-    padding-left:100px;
-    padding-right:100px;
-    text-align:center;
-}
-
-
-#signature {
-
-}
-
-/* Handwriting for the contact page answer */
-#handwriting h2 {
-    font: 400 2.5em/125% 'Petit Formal Script', Helvetica, Sans-serif;
-}
-
-#handwriting p {
-    font: 400 1.5em/125% 'Petit Formal Script', Helvetica, Sans-serif;
-}
 
 
 /* ------------------------- */
 /*     team and impressum    */
 /* ------------------------- */
 
-#team, #impressum {
-    background-image: url('/static/img/12052071_ml.jpg');
-    background-size: cover;
-    background-attachment: fixed;
-}
 
 #teamcard {
     background: white;
@@ -450,18 +245,6 @@
 #team #mainheader, #impressum #mainheader {
     opacity:0.8;
 }
-
-
-#desk_teach {
-    background: #aeb3a4;
-}
-
-
-#desk_admin {
-    background:  #aeb3a4;
-    color:white;
-}
-
 
 #team #mainheader {
     padding-top:60px;
@@ -515,16 +298,13 @@ input#id_title {
 input#id_description {
     width:700px;
 }
-
-#classroombackend {
-    background-image: url('/static/img/normaldesk.jpg');
-    background-size: cover;
-    background-attachment: fixed;
 }
 
 #backendheader {
     padding-top:40px;
     padding-left:20px;
+    background:white;
+    opacity:0.8;
 }
 
 #classroombackend .active {
@@ -533,44 +313,33 @@ input#id_description {
 }
 
 
-
-
-/* ------------------------- */
-/*         desk          */
-/* ------------------------- */
-/* desk background image */
-#desk {
-  background-image: url('/static/img/normaldesk.jpg');
-  background-size: cover;
-  background-attachment: fixed;
+#classroombackend .ui.breadcrumb {
+    background:white;
+    padding:10px;
 }
 
-#desk_pagegrid {
-    padding-top:100px;
+#classroombackend .ui.breadcrumb .active {
+    padding:10px;
 }
 
-
+#classroombackend  .ui.piled.segment {
+    margin-top:0;
+}
 /* ------------------------- */
 /*         classroom         */
 /* ------------------------- */
 
-#classroomheader {
-    opacity:0.5;
-    background:white;
-}
 
 #classroommenu a.item {
     color:black;
 
 }
 
-#classroom {
-        background-image: url('/static/img/38098805_l_lighter2.jpg');
-        background-image: url('/static/img/7989831_ml.jpg');
-        background-image: url('/static/img/30520566_l_lighter.jpg');
-        background-size: cover;
-        background-attachment: fixed;
+#classroommenu {
+    background: #dee3e5;
 }
+
+
 
 #classroom_page_grid {
     margin-top:60px;
@@ -584,14 +353,6 @@ input#id_description {
     color:black!important;
 }
 
-#newsletter_admin_main_grid {
-    margin-top:60px;
-    margin-bottom:60px;
-}
-
-#newsletter_admin_main_segment {
-    min-height: 700px;
-}
 
 #classroom .ui.button a, #classroom .ui.button a:hover,  #classroom .ui.button {
     color:black;
@@ -600,3 +361,6 @@ input#id_description {
 #classroom  .header.item {
     background:#edf5fb;
 }
+
+
+

@@ -54,7 +54,7 @@ class DeskStartView(LoginRequiredMixin, MatchMixin, TemplateView):
             courses = Course.objects.filter(id__in=teach_course_ids)
             context['teach_courses'] = courses
 
-            if self.request.user.id in [1,2,4]:
+            if current_user.is_staff:
                 context['user_is_editor'] = True
             else:
                 context['user_is_editor'] = False

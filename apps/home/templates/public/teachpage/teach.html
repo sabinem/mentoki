@@ -1,6 +1,9 @@
 {% extends "base_semantic/base_page.html" %}
 {% block title %}Mentoki Starterkurs{% endblock %}
 {% block description %}Ausbildung zum Online-Mentor{% endblock %}
+{% block body %}
+    <body id="teach_page_body">
+{% endblock %}
 {% block main %}
 {% if gotodiv %}
     <script> window.location.hash = '#{{gotodiv}}'; </script>

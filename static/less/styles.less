@@ -1,3 +1,192 @@
-#desk_admin {
-  background:@teal;
+/* ------------------------- */
+/* Variables                 */
+/* ------------------------- */
+
+@base-url: "/static/img";
+@standard_public_page_background_1_img: url("@{base-url}/homepage.jpg");
+@standard_public_page_background_2_img: url('@{base-url}/12052071_ml.jpg');
+@classroom_background_img: url("@{base-url}/30520566_l_lighter.jpg");
+@desk_background_img: url("@{base-url}/normaldesk.jpg");
+@courseevent_public_background_img: url("@{base-url}/30019719_l.jpg");
+
+@desk_header_color:#aeb3a4;
+@homepage_toolbox_background_color: #ece9e4;
+
+/* ------------------------- */
+/* Mixins                    */
+/* ------------------------- */
+
+.fixed-background-image (@url) {
+    background-image: @url;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+/* ------------------------- */
+/* base_semantic/base_page   */
+/* ------------------------- */
+
+/* the menu button on the mobile should stay white */
+#mobile_button:hover {
+    background: white;
+    color:black
+}
+
+/* --------------------------------- */
+/* base_semantic/_logo_mobile_menu   */
+/* --------------------------------- */
+
+/* logo on top of the mobile menu in the sidebar */
+#logo_mobile_menu {
+    padding:2px;
+    margin:0;
+    background:white;
+    text-align: center;
+}
+
+/* size of logo img in the navbar */
+#logo_img_mobile {
+    height:50px; width:auto;
+}
+
+/* --------------------------------- */
+/* base_semantic/_pc_logo            */
+/* --------------------------------- */
+
+/* logo in the navbar in the pc version: tablet and computer */
+#logo_navbar_pc {
+    padding:0;
+    margin:0;
+    padding-left:30px;
+}
+
+/* size of logo img in the navbar */
+#logo_img_navbar {
+    height:50px; width:auto;
+}
+
+/* ------------------------- */
+/* base_semantic/footer      */
+/* ------------------------- */
+
+#footer {
+    padding-bottom:0;
+    margin-bottom:0;
+    .column {
+        padding:0;
+        margin:0;
+    }
+}
+
+/* ------------------------- */
+/* base_semantic/base_page   */
+/* ------------------------- */
+
+#base_page {
+    padding-top:70px;
+    padding-bottom:60px;
+    min-height:800px;
+}
+
+/* ---------------------- */
+/* general pages          */
+/* ---------------------- */
+
+#standard_public_page_body_1 {
+    .fixed-background-image(@standard_public_page_background_1_img);
+}
+
+#standard_public_page_body_2 {
+    .fixed-background-image(@standard_public_page_background_2_img);
+}
+
+/* ---------------------- */
+/* classroom page         */
+/* ---------------------- */
+
+#classroom {
+    .fixed-background-image(@classroom_background_img);
+    a {
+      color:black;
+    }
+    h2 {
+      color:black;
+      opacity:0.5;
+      background:white;
+    }
+}
+
+
+
+/* ------------------------- */
+/* desk page                 */
+/* ------------------------- */
+
+#desk {
+  .fixed-background-image(@desk_background_img);
+  h2 {
+      background: @desk_header_color;
+      color:white;
+  }
+
+}
+
+/* ------------------------- */
+/* classroom backend page    */
+/* ------------------------- */
+
+#classroombackend {
+  .fixed-background-image(@desk_background_img);
+  h2 {
+      background:white;
+      opacity:0.8;
+  }
+}
+
+/* ------------------------- */
+/*     Newsletter            */
+/* ------------------------- */
+
+#newsletter_admin {
+  .fixed-background-image(@desk_background_img);
+}
+
+#newsletter_public {
+  background: @homepage_toolbox_background_color;
+}
+
+/* ------------------------- */
+/*     coursedetailpage      */
+/* ------------------------- */
+
+#courseevent_public {
+   .fixed-background-image(@courseevent_public_background_img);
+}
+
+#courseowner_img {
+    max-width:350px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto
+}
+
+/* ------------------------- */
+/*     thankyou page         */
+/* ------------------------- */
+
+#logo_answer_page {
+    height:100px;
+    width:auto;
+}
+
+/* ------------------------- */
+/*     home page         */
+/* ------------------------- */
+
+#home {
+    background: @homepage_toolbox_background_color;
+}
+
+#teach_page_body {
+    background: white;
 }

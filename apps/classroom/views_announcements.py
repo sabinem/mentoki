@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 class AnnouncementsListView(ClassroomMixin, TemplateView):
-    template_name = 'classroom_announcements/announcementslist.html'
+    template_name = 'classroom/announcements/announcementslist.html'
 
     def get_context_data(self, **kwargs):
         context = super(AnnouncementsListView, self).get_context_data(**kwargs)
@@ -20,7 +20,7 @@ class AnnouncementsListView(ClassroomMixin, TemplateView):
 
 
 class AnnouncementDetailView(ClassroomMixin, TemplateView):
-    template_name = 'classroom_announcements/announcementdetail.html'
+    template_name = 'classroom/announcements/announcementdetail.html'
     model = Announcement
     context_object_name = 'announcement'
 

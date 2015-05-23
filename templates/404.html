@@ -1,9 +1,11 @@
 {% extends "base_semantic/base_public.html" %}
 {% block main %}
-<div class="ui grid page tablet computer only two column centered" id="generalpage">
-    {% include '_404.html' %}
-</div>
-<div class="ui grid page mobile only column centered" id="generalpage">
-    {% include '_404' %}
+<div class="standard_public_page">
+    <div class="ui grid page tablet computer only two column centered">
+        {% include '_404.html' %}
+    </div>
+    <div class="ui grid page mobile only column centered">
+        {% include '_404' %}
+    </div>
 </div>
 {% endblock %}

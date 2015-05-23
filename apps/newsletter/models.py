@@ -25,7 +25,7 @@ class Newsletter(models.Model):
     """
     title = models.CharField(max_length=100, verbose_name="Thema")
     # abstract that appears on the list page for newsletters
-    excerpt = models.TextField(verbose_name="Abstract", default="x")
+    excerpt =  MarkdownField()
     # left newsletter column
     slug = models.SlugField(max_length=100, unique=True)
     content = MarkdownField()

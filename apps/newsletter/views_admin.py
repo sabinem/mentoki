@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 class NewsletterAdminListView(ListView):
     model = Newsletter
-    template_name = 'admin/newsletteradminlist.html'
+    template_name = 'newsletter/admin/newsletter_list.html'
     queryset = Newsletter.objects.published()
     context_object_name = 'newsletters'
     paginate_by = 2
@@ -17,11 +17,11 @@ class NewsletterAdminListView(ListView):
 class NewsletterCreateView(CreateView):
     model = Newsletter
     form_class = NewsletterCreateForm
-    template_name = 'admin/newslettercreate.html'
+    template_name = 'newsletter/admin/newsletter_create.html'
 
 
 class NewsletterUpdateView(UpdateView):
     model = Newsletter
     form_class = NewsletterUpdateForm
-    template_name = 'admin/newsletterupdate.html'
+    template_name = 'newsletter/admin/newsletter_update.html'
 

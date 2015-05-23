@@ -48,7 +48,7 @@ class ForumMixin(ClassroomMixin):
 
 
 class ForumListView(ForumMixin, TemplateView):
-    template_name = 'classroom_forum/forum.html'
+    template_name = 'classroom/forum/forum.html'
 
     def get_context_data(self, **kwargs):
         context = super(ForumListView, self).get_context_data(**kwargs)
@@ -58,7 +58,7 @@ class ForumListView(ForumMixin, TemplateView):
 
 
 class ForumRecentListView(ForumMixin, TemplateView):
-    template_name = 'classroom_forum/forumrecent.html'
+    template_name = 'classroom/forum/forumrecent.html'
 
     def get_context_data(self, **kwargs):
         context = super(ForumRecentListView, self).get_context_data(**kwargs)
@@ -76,7 +76,7 @@ class ForumRecentListView(ForumMixin, TemplateView):
 
 
 class SubForumListView(ForumMixin, TemplateView):
-    template_name = 'classroom_forum/subforum.html'
+    template_name = 'classroom/forum/subforum.html'
 
     def get_context_data(self, **kwargs):
         context = super(SubForumListView, self).get_context_data(**kwargs)

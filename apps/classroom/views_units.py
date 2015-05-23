@@ -32,7 +32,7 @@ class UnitMixin(ClassroomMixin):
 
 class LessonDetailView(UnitMixin, TemplateView):
     model = CourseUnit
-    template_name = 'classroom_lessons/lessondetail.html'
+    template_name = 'classroom/lessons/lessondetail.html'
 
     def get_context_data(self, **kwargs):
         logger.debug("---------- in LessonDetailView")
@@ -43,7 +43,7 @@ class LessonDetailView(UnitMixin, TemplateView):
 
 class LessonMaterialView(UnitMixin, TemplateView):
 
-    template_name = 'classroom_lessons/lessonmaterial.html'
+    template_name = 'classroom/lessons/lessonmaterial.html'
 
     def get_context_data(self, **kwargs):
         context = super(LessonMaterialView, self).get_context_data(**kwargs)

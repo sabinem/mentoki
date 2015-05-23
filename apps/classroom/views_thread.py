@@ -68,7 +68,7 @@ class ThreadMixin(ForumMixin, MessageMixin):
 
 class ThreadListPostCreateView(ThreadMixin, CreateView):
 
-    template_name = 'classroom_forum/thread.html'
+    template_name = 'classroom/forum/thread.html'
     form_class = PostCreateForm
 
     def get_context_data(self, **kwargs):
@@ -149,7 +149,7 @@ class ThreadListPostCreateView(ThreadMixin, CreateView):
 
 class ThreadCreateView(ThreadMixin, CreateView):
 
-    template_name = 'classroom_forum/threadcreate.html'
+    template_name = 'classroom/forum/threadcreate.html'
     form_class = ThreadCreateForm
 
     def get_success_url(self):

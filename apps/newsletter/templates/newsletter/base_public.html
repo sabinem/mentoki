@@ -1,0 +1,16 @@
+{% extends "base_semantic/base_page.html" %}
+{% block body %}
+    <body id="newsletter_public" >
+{% endblock %}
+{% block custom_menu_item %}
+{% endblock %}
+{% block main %}
+    <main class="ui grid page" id="newsletter_page">
+        <div class="column">
+            <div class="ui piled segment" id="newspaper_paper">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+    </main>
+{% endblock %}

@@ -10,17 +10,17 @@
     {% endif %}
 {% endblock %}
 {% block main %}
-    <div class="ui page grid" id="classroom_page_grid">
+    <div class="ui page grid">
     <div class="column">
     {% block classroom_header %}
-        <h2 class="ui block header" id="classroomheader">
+        <h2 class="ui block header">
             Klassenzimmer
             {{ courseevent.title }}
         </h2>
     {% endblock %}
     <div class="ui grid regularpage" >
         <div class="five wide column">
-            {% include 'classroom_base/_menu.html' %}
+            {% include 'classroom/_menu.html' %}
         </div>
         <div class="eleven wide column">
         <div class="ui segment piled">

@@ -11,7 +11,7 @@
     <div class="ui grid">
         <!-- mobile version of the menu: in a sidebar -->
         <div class="mobile only narrow row">
-            <div class="ui left vertical labeled icon sidebar menu" id="mobile_menu">
+            <div class="ui left vertical labeled icon sidebar menu">
                 {% include 'base_semantic/_mobile_logo.html' %}
                 {% if user.is_authenticated %}
                     {% include 'base_semantic/_main_menu_authenticated_left.html' %}
@@ -26,7 +26,7 @@
         </div>
         <!-- pc and tablet version of the navbar -->
         <div class="tablet computer only row" >
-            <div class="ui menu fixed center aligned top" id="tablet_menu">
+            <div class="ui menu fixed center aligned top">
                 {% include 'base_semantic/_pc_logo.html' %}
                 {% if user.is_authenticated %}
                     {% include 'base_semantic/_main_menu_authenticated_left.html' %}
@@ -64,8 +64,10 @@
         </div>
     </div>
 {% endblock %}
+<div id="base_page">
 {% block main %}
 {% endblock %}
+</div>
 {% block footer %}
     {% include 'base_semantic/_footer.html' %}
 {% endblock %}
