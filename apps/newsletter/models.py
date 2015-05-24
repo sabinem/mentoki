@@ -25,10 +25,10 @@ class Newsletter(models.Model):
     """
     title = models.CharField(max_length=100, verbose_name="Thema")
     # abstract that appears on the list page for newsletters
-    excerpt =  MarkdownField()
+    excerpt =  models.TextField(verbose_name='Abstrakt')
     # left newsletter column
     slug = models.SlugField(max_length=100, unique=True)
-    content = MarkdownField()
+    content = MarkdownField(verbose_name='Text')
     # right newsletter column
     published = models.BooleanField(default=False, verbose_name="jetzt veröffentlichen?")
     # if published: this contains the date of publication
@@ -50,4 +50,4 @@ class Newsletter(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('newsletters:single', kwargs={'slug':self.slug})
+        return reverse('newsletter:single', kwargs={'slug':self.slug})

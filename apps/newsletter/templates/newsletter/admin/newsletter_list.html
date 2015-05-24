@@ -29,17 +29,12 @@
                                 {{ newsletter.excerpt | safe }}
 
                             </div>
-                            <a href="{% url 'newsletter:update' pk=newsletter.id %}">
+                            <a href="{% url 'newsletter:update' pk=newsletter.pk %}">
                                <i class="ui wrench icon"></i> bearbeiten
                             </a>
-                            <div class="ui accordion field">
-                            <div class="title">
-                              <i class="icon dropdown"></i>
-                              ansehen
-                            </div>
-                            <div class="content field">
-                               {{ newsletter.content | markdown }}
-                            </div>
+                            <a href="{% url 'newsletter:feed' %}">
+                               <i class="ui eye open icon"></i>ansehen
+                            </a>
                           </div>
                         </div>
                     {% endfor %}

@@ -20,8 +20,8 @@ class NewsletterCreateView(CreateView):
     template_name = 'newsletter/admin/newsletter_create.html'
 
 
-class NewsletterUpdateView(FormView):
-
+class NewsletterUpdateView(UpdateView):
     form_class = NewsletterUpdateForm
     template_name = 'newsletter/admin/newsletter_update.html'
+    model = Newsletter
 

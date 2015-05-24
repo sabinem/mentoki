@@ -50,6 +50,7 @@ INSTALLED_APPS = (
     'autoslug',
     'activelink',
     'django_markdown',
+    'pagedown',
     # homepage
     'apps.home',
     # courses

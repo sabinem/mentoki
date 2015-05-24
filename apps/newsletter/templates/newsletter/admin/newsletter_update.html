@@ -1,9 +1,7 @@
 {% extends "newsletter/base_admin.html" %}
-{% markdown_editor "#id_content" %}
-{% markdown_editor "#id_excerpt" %}
-{% markdown_media %}
+{% load django_markdown %}
 {% block content %}
-      <form class="ui form" id="course_form" method="post" action="" enctype="multipart/form-data">
+      <form class="ui form" id="newsletter_update_form" method="post" action="">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" value="post" class="ui primary button">

@@ -13,7 +13,7 @@ urlpatterns = patterns("",
     url(r'^feed/$', LatestNewsletterFeed(), name='feed'),
 
     # urls for writing newsletters
-    url(r'^newsletter/verwalten$', NewsletterAdminListView.as_view(), name='adminlist'),
-    url(r'^schreiben$', NewsletterCreateView.as_view(), name='create'),
-    url(r'^bearbeiten/(?P<pk>\d{1,4})/$', NewsletterUpdateView.as_view(), name='update'),
+    url(r'^verwalten$', NewsletterAdminListView.as_view(), name='adminlist'),
+    url(r'^anlegen$', NewsletterCreateView.as_view(), name='create'),
+    url(r'^bearbeiten/(?P<pk>\d+)/$', NewsletterUpdateView.as_view(), name='update'),
 )
