@@ -1,6 +1,9 @@
 {% extends "newsletter/base_admin.html" %}
+{% markdown_editor "#id_content" %}
+{% markdown_editor "#id_excerpt" %}
+{% markdown_media %}
 {% block content %}
-      <form class="ui form" id="course_form" method="post" action="">
+      <form class="ui form" id="course_form" method="post" action="" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" value="post" class="ui primary button">

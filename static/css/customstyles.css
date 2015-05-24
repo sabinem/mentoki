@@ -212,8 +212,6 @@
 
 #contact_page_grid {
     min-height: 800px;
-    padding-top:150px;
-    padding-bottom:100px;
 }
 
 #application {
@@ -221,7 +219,7 @@
 }
 
 #application #formsubmit {
-    background-color:#7fc39a;
+    background-color:teal;
     color:white;
 }
 

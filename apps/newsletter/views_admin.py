@@ -1,5 +1,5 @@
 import logging
-from django.views.generic import TemplateView, CreateView, UpdateView, ListView
+from django.views.generic import TemplateView, CreateView, UpdateView, ListView, FormView
 from braces.views import LoginRequiredMixin, UserPassesTestMixin
 from .models import Newsletter
 from .forms import NewsletterCreateForm, NewsletterUpdateForm
@@ -20,8 +20,8 @@ class NewsletterCreateView(CreateView):
     template_name = 'newsletter/admin/newsletter_create.html'
 
 
-class NewsletterUpdateView(UpdateView):
-    model = Newsletter
+class NewsletterUpdateView(FormView):
+
     form_class = NewsletterUpdateForm
     template_name = 'newsletter/admin/newsletter_update.html'
 
