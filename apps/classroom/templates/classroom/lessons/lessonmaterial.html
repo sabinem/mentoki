@@ -1,6 +1,6 @@
 {% extends "classroom/base.html" %}
 {% block classroom_header %}
-    <h3 class="ui inverted header" id="classroomheader">
+    <h3 class="ui header" id="classroomheader">
         {{ courseevent.courseevent_title }}
         : {{ courseblock.title }} /
         <a href="{% url 'classroom:lesson' slug=match.kwargs.slug unit=unit.id  %}">

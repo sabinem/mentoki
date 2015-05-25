@@ -46,7 +46,7 @@
             {% endfor %}
         </div>
         {% if subforum.can_have_threads %}
-            <a class="ui blue button" href="{% url 'classroom:createthread' slug=match.kwargs.slug subforum=subforum.id %}" role="button">
+            <a class="ui button" href="{% url 'classroom:createthread' slug=match.kwargs.slug subforum=subforum.id %}" role="button">
                 Hast Du etwas beizutragen?
             </a>
             <table class="ui compact table">
