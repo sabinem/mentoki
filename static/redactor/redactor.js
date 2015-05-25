@@ -110,7 +110,7 @@
 
 		plugins: false, // array
 
-		focus: false,
+		focus: true,
 		focusEnd: false,
 
 		placeholder: false,
