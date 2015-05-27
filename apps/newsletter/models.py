@@ -4,6 +4,8 @@ from django.db import models
 from django.core.urlresolvers import reverse
 from apps.courseevent.models import CourseEvent
 from django_markdown.models import MarkdownField
+from model_utils.models import TimeStampedModel
+from autoslug import AutoSlugField
 
 
 class Tag(models.Model):
@@ -13,29 +15,31 @@ class Tag(models.Model):
          return self.slug
 
 
-
 class NewsletterQuerySet(models.QuerySet):
+    """
+    all published newsletters
+    """
     def published(self):
         return self.filter(published=True)
 
 
-class Newsletter(models.Model):
+class Newsletter(TimeStampedModel):
     """
     Newsletters are appear once a month
     """
     title = models.CharField(max_length=100, verbose_name="Thema")
     # abstract that appears on the list page for newsletters
     excerpt =  models.TextField(verbose_name='Abstrakt')
-    # left newsletter column
-    slug = models.SlugField(max_length=100, unique=True)
+    # slug for the newsletter
+    slug = AutoSlugField(populate_from='title')
+    # content of the newsletter
     content = MarkdownField(verbose_name='Text')
-    # right newsletter column
+    # is the newsletter published?
     published = models.BooleanField(default=False, verbose_name="jetzt veröffentlichen?")
     # if published: this contains the date of publication
     published_at_date = models.DateTimeField(null=True, blank=True,
                                              verbose_name="veröffentlicht am")
-    created = models.DateTimeField(auto_now_add=True)
-    modified = models.DateTimeField(auto_now=True)
+    # tags for the newsletter
     tags = models.ManyToManyField(Tag)
 
     objects = NewsletterQuerySet.as_manager()
@@ -43,7 +47,7 @@ class Newsletter(models.Model):
     class meta:
         verbose_name = "Der Mentoki Newletter"
         verbose_name_plural = "Die Mentoki Newletter"
-        ordering = ['created']
+        ordering = ['published_at_date']
 
 
     def __unicode__(self):

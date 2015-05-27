@@ -14,7 +14,6 @@ class NewsletterAdmin(MarkdownModelAdmin):
 admin.site.register(Newsletter, NewsletterAdmin)
 class NewsletterAdmin(MarkdownModelAdmin):
     list_display = ('published_at_date', 'id', 'title',  )
-    prepopulated_fields = {'slug': ('title',)}
 
 
 admin.site.register(Tag)
