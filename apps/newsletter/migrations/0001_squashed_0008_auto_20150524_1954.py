@@ -7,8 +7,6 @@ import django_markdown.models
 
 class Migration(migrations.Migration):
 
-    replaces = [(b'newsletter', '0001_initial'), (b'newsletter', '0002_auto_20150515_2018'), (b'newsletter', '0003_auto_20150517_0859'), (b'newsletter', '0004_auto_20150517_0905'), (b'newsletter', '0005_auto_20150517_1023'), (b'newsletter', '0006_auto_20150517_1137'), (b'newsletter', '0007_auto_20150517_1544'), (b'newsletter', '0008_auto_20150524_1954')]
-
     dependencies = [
     ]
 
