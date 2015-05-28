@@ -1,4 +1,4 @@
-{% extends "newsletter/base_admin.html" %}
+{% extends "newsletter/base.html" %}
 {% load django_markdown %}
 {% block main %}
 <main class="ui page grid centered main" id="newsletter_admin_main_grid">
@@ -8,10 +8,16 @@
                 <h1 class="ui header center aligned" id="newsletter_admin_mainheader">
                     Mentoki Newsletter Verwaltung
                 </h1>
+                <a href="{% url 'newsletter:index' %}">
+                   <i class="ui eye open icon"></i>öffentliche Seite ansehen
+                </a>
+                <a href="{% url 'newsletter:create' %}">
+                   <i class="ui plus icon"></i>neuen Newsletter anlegen
+                </a>
                      {% for newsletter in newsletters %}
                         <div class="ui segment piled">
                             <h3 class="ui header">
-                                  <a href="{% url 'newsletter:single' slug=newsletter.slug %}" >
+                                  <a href="{% url 'newsletter:detail' slug=newsletter.slug %}" >
                                       {{ newsletter.title }}
                                   </a>
                             </h3>
@@ -21,18 +27,18 @@
                             <p class="meta">
                                 Status: {{ newsletter.published |yesno:"veröffentlicht, Entwurf"  }}
                             </p>
-                            <p class="meta">
-                                Schlagworte: {{ newsletter.tags.all|join:", "}}
-                            </p>
                             <div>
                                 <h3 class="ui header">Abstrakt</h3>
                                 {{ newsletter.excerpt | safe }}
 
                             </div>
-                            <a href="{% url 'newsletter:update' pk=newsletter.pk %}">
+                            <a href="{% url 'newsletter:update' slug=newsletter.slug %}">
                                <i class="ui wrench icon"></i> bearbeiten
                             </a>
-                            <a href="{% url 'newsletter:feed' %}">
+                            <a href="{% url 'feed' %}">
+                               <i class="ui rss icon"></i>feed
+                            </a>
+                            <a href="{% url 'newsletter:detail' slug=newsletter.slug %}">
                                <i class="ui eye open icon"></i>ansehen
                             </a>
                           </div>

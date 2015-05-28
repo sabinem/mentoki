@@ -4,6 +4,7 @@ from django.views.defaults import *
 from django.contrib import admin
 from django.views.generic.base import TemplateView
 from django.conf import settings
+from apps.newsletter.feeds import LatestNewsletterFeed
 
 
 
@@ -37,7 +38,9 @@ urlpatterns = patterns('',
     url(r'^markdown/', include('django_markdown.urls')),
 
     # file newsletter ...
-    url(r'^', include('apps.newsletter.urls', namespace='newsletter')),
+    url(r'^newsletter/', include('apps.newsletter.urls', namespace='newsletter')),
+
+    url(r'^feed/$', LatestNewsletterFeed(), name='feed'),
 
     # quiz
     #url(r'^q/', include('quiz.urls')),

@@ -1,27 +1,41 @@
 import logging
-from django.views.generic import TemplateView, CreateView, UpdateView, ListView, FormView
-from braces.views import LoginRequiredMixin, UserPassesTestMixin
+from django.views.generic import TemplateView, CreateView, UpdateView, ListView, FormView, DetailView
+from braces.views import LoginRequiredMixin, StaffuserRequiredMixin
+from django.core.urlresolvers import reverse_lazy
 from .models import Newsletter
-from .forms import NewsletterCreateForm, NewsletterUpdateForm
+from .forms import NewsletterEditForm
 
 
 logger = logging.getLogger(__name__)
 
-class NewsletterAdminListView(ListView):
+class NewsletterAdminMixin(LoginRequiredMixin,StaffuserRequiredMixin):
+    pass
+
+class NewsletterAdminListView(NewsletterAdminMixin, ListView):
     model = Newsletter
-    template_name = 'newsletter/admin/newsletter_list.html'
-    queryset = Newsletter.objects.published()
+    template_name = 'newsletter/admin/index.html'
+    queryset = Newsletter.objects.all()
     context_object_name = 'newsletters'
     paginate_by = 2
 
-class NewsletterCreateView(CreateView):
+
+class NewsletterCreateView(NewsletterAdminMixin, CreateView):
     model = Newsletter
-    form_class = NewsletterCreateForm
-    template_name = 'newsletter/admin/newsletter_create.html'
+    form_class = NewsletterEditForm
+    context_object_name = 'newsletter'
+    template_name = 'newsletter/admin/create.html'
 
 
-class NewsletterUpdateView(UpdateView):
-    form_class = NewsletterUpdateForm
-    template_name = 'newsletter/admin/newsletter_update.html'
+class NewsletterUpdateView(NewsletterAdminMixin, UpdateView):
+    model = Newsletter
+    template_name = 'newsletter/admin/update.html'
+    context_object_name = 'newsletter'
+    form_class = NewsletterEditForm
+
+
+class NewsletterDeleteView(NewsletterAdminMixin, UpdateView):
+    success_url = reverse_lazy('admin')
+    template_name = 'newsletter/admin/delete.html'
+    context_object_name = 'newsletter'
     model = Newsletter
 
