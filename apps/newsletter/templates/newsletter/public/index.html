@@ -1,4 +1,4 @@
-{% extends "newsletter/base_public.html" %}
+{% extends "newsletter/base.html" %}
 {% load django_markdown %}
 {% block newsletter_header %}
     <h1 class="ui header aligned center" id="mainheader">Newsletter
@@ -6,7 +6,9 @@
         </div>
     </h1>
 {% endblock %}
-{% block left_column %}
+{% block content %}
+    <div class="ui grid two column stacked">
+    <div class="column">
     <div class="ui segment">
         <img class="ui image" src="/static/img/post_mentoki_newsletter.jpg">
         <p>Registriere Dich für unseren Newsletter:</p>
@@ -30,12 +32,12 @@
             </a>
         </div>
     </div>
-{% endblock %}
-{% block right_column %}
+    </div>
+    <div class="column">
     {% for newsletter in newsletters %}
         <div class="ui segment raised">
             <h3 class="ui header">
-                  <a href="{% url 'newsletter:single' slug=newsletter.slug %}" >
+                  <a href="{% url 'newsletter:detail' slug=newsletter.slug %}" >
                       {{ newsletter.title }}
                   </a>
             </h3>
@@ -49,9 +51,11 @@
                 {{ newsletter.excerpt | safe }}
 
             </div>
-            <a href="{% url 'newsletter:single' slug=newsletter.slug %}">
+            <a href="{% url 'newsletter:detail' slug=newsletter.slug %}">
                <i class="ui angle double right icon"></i> weiterlesen
             </a>
         </div>
     {% endfor %}
+    </div>
+    </div>
 {% endblock %}

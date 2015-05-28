@@ -1,0 +1,12 @@
+{% extends "newsletter/base.html" %}
+{% load django_markdown %}
+{% block content %}
+    {{ newsletter.published_at_date |date:'d.m.Y' }}
+    <h1 class="ui header aligned center" id="mainheader">
+        {{ newsletter.title }}
+    </h1>
+    {{ newsletter.excerpt | safe }}
+    {{ newsletter.content | markdown }}
+{% endblock %}
+
+

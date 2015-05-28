@@ -1,9 +1,11 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from .models import Newsletter
+from selenium import webdriver
+import unittest
 
 
-class NewsletterSingleTest(TestCase):
+class NewsletterCreateAndPublishTest(TestCase):
     def setUp(self):
         self.user = get_user_model().objects.create(username='testuser')
 
@@ -26,4 +28,3 @@ class NewslettersViewTests(TestCase):
         # test feed_url
         response = self.client.get('/feed/')
         self.assertIn("xml", response['Content-Type'])
-

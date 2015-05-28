@@ -1,0 +1,11 @@
+{% extends "newsletter/base.html" %}
+{% load django_markdown %}
+{% block content %}
+      <form class="ui form" method="post" action="">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" value="post" class="ui button">
+            Speichern
+        </button>
+    </form>
+{% endblock %}
