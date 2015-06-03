@@ -106,7 +106,7 @@
                                 Jetzt zum Vorgespräch anmelden
                             </a>
                         {% else %}
-                            <a class="ui button fluid teal" href="http://eepurl.com/bnHpAP">Jetzt als Interessent anmelden</a>
+                            <a class="ui button fluid teal" href="http://eepurl.com/bnwrzv">Jetzt als Interessent anmelden</a>
                         {% endif %}
                     </div>
                 </div>
@@ -122,34 +122,48 @@
                             </div>
                         </div>
                     {% endif %}
+                    {% if courseevent_info.target_group %}
                     <h3 class="ui header">
                         Zielgruppe
                     </h3>
                     {{ courseevent_info.target_group | safe }}
+                    {% endif %}
+                    {% if courseevent_info.project %}
                     <h3 class="ui header">
                         Was Du aus diesem Kurs mitnimmst
                     </h3>
                     {{courseevent_info.project | safe }}
+                    {% endif %}
+                    {% if courseevent_info.format %}
                     <h3 class="ui header">
                         Kursformat
                     </h3>
                     {{ courseevent_info.format | safe}}
+                    {% endif %}
+                    {% if courseevent_info.project %}
                     <h3 class="ui header">
                         Gliederung
                     </h3>
+                    {% endif %}
+                    {% if courseevent_info.project %}
                     {{courseevent_info.structure | safe }}
                     <h3 class="ui header">
                         Voraussetzungen
                     </h3>
+                    {% endif %}
+                    {% if courseevent_info.project %}
                     {{ courseevent_info.prerequisites | safe }}
                     <h3 class="ui header">
                         Arbeitsaufwand
                     </h3>
                     {{ courseevent_info.workload | safe }}
+                    {% endif %}
+                    {% if courseevent_info.project %}
                     <h3 class="ui header">
                         Kursbeschreibung
                     </h3>
                     {{courseevent_info.text | safe }}
+                    {% endif %}
                 </div>
             </div>
         </div>
