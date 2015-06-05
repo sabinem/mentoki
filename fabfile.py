@@ -47,6 +47,15 @@ def deploy():
         run("touch app.wsgi")
 
 
+def livedata():
+    """
+    gets data from the live website
+    """
+    get(remote_path="/srv/http/web0263/tools/live.sql", local_path="./live.sql")
+
+
+
+
 
 
 
