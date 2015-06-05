@@ -24,9 +24,8 @@ On my local computer I have two environments: Live and Dev.
 The procedure to get the database down into my local Live Database is as follows:
 
 1. On the remote 'bash get-live-data.sh' (in the tools directory): produces a file 'live.sql'
-2. Locally 'fab livedata' : gets the the file down to the local directory
-3. Locally run 'bash empty-mentoki-live-db.sh': empties the local copy of the live-database
-4. Locally run 'psql mentoki_live < live.sql'
+2. Locally 'fab livedata' : gets the the file down to the local directory 'mentoki_tools'
+3. Locally run 'bash renew-local-db.sh' (in directory 'mentoki_tools'): empties the local copy of the live-database 
 5. Done
 
 ###Deployment:
@@ -37,53 +36,4 @@ My deployment is as follows for the time being:
 4. on remote: collectsstatic, migrate
 5. fab deploy: deploys the live platform
 6. on remote: collectstatic, migrate
-
-
-
-
-  
-
-#Structure
-The platform splits up into a public part and a private part, that is only accessible by registered users, mostly
-teachers and their students.
-There are the following basic components that correspond to apps:
-
-### accessible by the public:
-* home (app): all info pages accessible to the public, that do not relate to classes.
-* contact (app) : all contact forms for unregistered users 
-* courseevent (app): courseevents the public might book (so far booking itself is not yet activated)
-
-### only accessed by logged in users:
-* *desk*: (app): starting point for all registered users, from where they access classes or class preperations. 
-* course (app): A course is where all the coursematerial is gathered. A course serves as base for several courseevents.
-* classroom (app): each courseevent comes with a classroom
-* forum(app): the forum belongs to the classroom or courseevent
-
-### auxiliary apps
-* core (app): some common functions
-* upload (app): for the upload of images
-* pdf (app): no longer in use, will be deleted as soon as I figure out how to do this in a safe way (it is part of some migrations)
-
-#The two Central Apps and their models:
-### Course App
-The course is the central app for teachers. Teachers own courses. This is where all their material resides. 
-Their material is further structured into *blocks*, *lessons* and *materials*. This is a hierarchical structure with 
-blocks on top and materials at the bottom. So far lower levels such as a material can't exist without belonging
-to a higher level and delete is cascading. 
-####Models:
-* Course (Course Base)
-* CourseOwner (The team teaching the Course)
-* CourseBlock (Lessons that belong together, and will be treated as one block in the classroom menu)
-* CourseUnit (Lesson, belongs to a Block)
-* CourseMaterialUnit (Material, belongs to a CourseUnit)
-###Courseevent-App
-The actuall classes are courseevents. 
-Students are not registered for course, but for courseevents. Courseevents come in a variety of formats 
-like selflearning, selflearning with  a coach or group learning. There can be several courseevents build upon a course, 
-which actually is the norm since courseevents will be repeated with the same coursematerial for several times.
-####Models:
-* CourseEvent (core attributes of the courseevent, that are needed for processing)
-* CourseEventPubicInformation (Attributes describing the courseevent, in 1-1 relation with the courseevent)
-* CourseEventParticipation (users that are participating as students)
-* CourseeventUnitPublish (Lessons that have been published in that courseevent)
 
