@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('courseevent', '__first__'),
+        ('courseevent', '0001_initial'),
     ]
 
     operations = [
@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
                 ('created', model_utils.fields.AutoCreatedField(default=django.utils.timezone.now, verbose_name='created', editable=False)),
                 ('modified', model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, verbose_name='modified', editable=False)),
                 ('title', models.CharField(max_length=100)),
-                ('text', models.TextField()),
+                ('text', models.TextField(blank=True)),
                 ('courseevent', models.ForeignKey(to='courseevent.CourseEvent')),
             ],
             options={
@@ -53,7 +53,7 @@ class Migration(migrations.Migration):
                 ('created', model_utils.fields.AutoCreatedField(default=django.utils.timezone.now, verbose_name='created', editable=False)),
                 ('modified', model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, verbose_name='modified', editable=False)),
                 ('title', models.CharField(max_length=100)),
-                ('text', models.TextField()),
+                ('text', models.TextField(blank=True)),
                 ('display_nr', models.IntegerField()),
                 ('can_have_threads', models.BooleanField(default=True)),
                 ('forum', models.ForeignKey(to='forum.Forum')),
