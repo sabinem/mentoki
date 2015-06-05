@@ -2,6 +2,7 @@ tmp/**
 
 *.sh
 *.sql
+*.old
 
 master.sql
 .idea
