@@ -1,5 +1,8 @@
 tmp/**
 
+*.sh
+*.sql
+
 master.sql
 .idea
 *.pyc
