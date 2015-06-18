@@ -8,6 +8,12 @@
 
 {% endblock %}
 
+{% block page_topic %}
+    <a class="item" href="{% url 'classroombackend:lesson:start' course_slug=course.slug %}">
+        Unterricht {{ course.title }}
+    </a>
+{% endblock %}
+
 {% block page_content %}
 
     {% block nodes_breadcrumb %}

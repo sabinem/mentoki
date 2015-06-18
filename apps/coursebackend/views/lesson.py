@@ -10,7 +10,6 @@ from apps.course.models import Lesson, Course, Material
 
 from ..mixins import LessonsMenuMixin, CourseFormMixin
 from ..forms import LessonForm, LessonAddMaterialForm
-from apps.course.querysets import get_previous_sibling_within_course, get_next_sibling_within_course
 
 
 class StartView(LessonsMenuMixin, TemplateView):
@@ -40,7 +39,7 @@ class LessonBlockView(LessonsMenuMixin, TemplateView):
             start_node.get_next_sibling()
 
         context['previous_node'] = \
-            get_previous_sibling_within_course(lesson=start_node, course=context['course'])
+            start_node.get_previous_sibling()
 
         context['breadcrumbs'] = start_node.get_ancestors()
 

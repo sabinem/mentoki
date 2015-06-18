@@ -2,11 +2,11 @@
 
 from __future__ import unicode_literals, absolute_import
 
-# import from django
 from django.contrib import admin
-# import from own app
-from .models import Course, CourseBlock, CourseUnit, CourseMaterialUnit, CourseOwner
-from .models import Course, CourseOwner, Lesson, Material, ContentBlock
+
+from .models import Course, CourseOwner, Lesson, Material
+# old models: will be deleted as soon as the data has been transfered
+from .models import CourseBlock, CourseUnit, CourseMaterialUnit
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
@@ -18,13 +18,8 @@ class CourseOwnerAdmin(admin.ModelAdmin):
     list_display = ('id', 'course', 'user', 'modified')
 
 
-@admin.register(ContentBlock)
-class ContentBlockAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', )
-
-
 @admin.register(Lesson)
-class CourseOwnerAdmin(admin.ModelAdmin):
+class LessonAdmin(admin.ModelAdmin):
     list_display = ('id', 'course', 'nr', 'title', 'lesson_nr',)
     list_filter = ('course',)
 
@@ -32,8 +27,9 @@ class CourseOwnerAdmin(admin.ModelAdmin):
 @admin.register(Material)
 class MaterialAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'slug')
+    list_filter = ('course',)
 
-
+# old models: will be deleted as soon as the data has been transfered
 @admin.register(CourseBlock)
 class CourseBlockAdmin(admin.ModelAdmin):
     list_display = ('id', 'course', 'title', 'is_numbered')

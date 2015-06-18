@@ -11,8 +11,7 @@ from model_utils.models import TimeStampedModel
 from model_utils.managers import PassThroughManager
 from autoslug import AutoSlugField
 
-from ..managers import CourseOwnerQuerySet, CourseQuerySet
-from ..helpers import foto_location
+from ..managers import CourseOwnerQuerySet
 
 
 class Course(TimeStampedModel):
@@ -28,9 +27,6 @@ class Course(TimeStampedModel):
     text = models.TextField(blank=True, verbose_name='Kursbeschreibung')
 
     email = models.EmailField(default="info@mentoki.com")
-
-    #objects = CourseQuerySet.as_manager()
-    objects = PassThroughManager.for_queryset_class(CourseQuerySet)()
 
     class Meta:
         verbose_name = "Kursvorlage"
@@ -61,7 +57,7 @@ class Course(TimeStampedModel):
         return reverse('coursebackend:course', kwargs={'slug':self.slug})
 
 
-def course_name(instance, filename):
+def foto_location(instance, filename):
         return '/'.join([instance.course.slug, filename])
 
 class CourseOwner(TimeStampedModel):
@@ -77,7 +73,6 @@ class CourseOwner(TimeStampedModel):
 
     display_nr = models.IntegerField(default=1, verbose_name='Anzeigereihenfolge bei mehreren Kursleitern')
 
-    #objects = CourseOwnerQuerySet.as_manager()
     objects = PassThroughManager.for_queryset_class(CourseOwnerQuerySet)()
 
     class Meta:

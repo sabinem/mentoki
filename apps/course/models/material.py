@@ -14,6 +14,7 @@ from model_utils import Choices
 from model_utils.managers import PassThroughManager
 
 from .course import Course
+from .oldcoursepart import CourseMaterialUnit
 from ..managers import MaterialQuerySet
 
 
@@ -25,7 +26,7 @@ class Material(TimeStampedModel):
 
     course = models.ForeignKey(Course, blank=True, null=True)
 
-    title = models.CharField(max_length=50, unique=True)
+    title = models.CharField(max_length=100)
     description = models.CharField(max_length=200, blank=True, verbose_name='kurze Beschreibung')
 
     DOCTYPE = Choices('text', 'pdf')
@@ -38,7 +39,10 @@ class Material(TimeStampedModel):
     file = models.FileField(upload_to=lesson_material_name, blank=True, verbose_name="Datei")
     slug = AutoSlugField(populate_from='get_file_slug', blank=True)
 
-    #objects = MaterialQuerySet.as_manager()
+    #just for the data_migration: refers to old data-structure (oldcourseparts),
+    # will be deleted after data-transfer
+    unitmaterial = models.ForeignKey(CourseMaterialUnit, null=True, blank=True)
+
     objects = PassThroughManager.for_queryset_class(MaterialQuerySet)()
 
     class Meta:

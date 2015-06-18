@@ -15,6 +15,13 @@
 
 {% endblock %}
 
+{% block page_topic %}
+    <a class="item" href="{% url 'coursebackend:material:list' course_slug=course.slug %}">
+        Material {{ course.title }}
+    </a>
+{% endblock %}
+
+
 {% block page_content %}
 <h1 class="ui header">Material-Liste</h1>
 <table class="ui table">
