@@ -1,0 +1,36 @@
+{% extends "coursebackend/base.html" %}
+{% block help %}
+{% include 'coursebackend/courseowner/_help_list.html' %}
+{% endblock %}
+{% block page_content %}
+    <div class="ui piled segment">
+        <h2 class="ui header">Kursleitung</h2>
+        <div class="ui grid doubling two column">
+            {% for owner in owners %}
+                <div class="column">
+                    <div class="ui tabular menu">
+                        <a class="active item">
+                            Ansehen
+                        </a>
+                        <a class="item" href="{% url 'coursebackend:courseowner:update' course_slug=course.slug pk=owner.pk %}">
+                            Bearbeiten
+                        </a>
+                    </div>
+                    <div class="ui card">
+                        <div class="image">
+                            {% if owner.foto %}
+                                <img src="{{ owner.foto.url }}">
+                            {% endif %}
+                        </div>
+                        <div class="content">
+                            <a class="header">{{ owner.user.first_name }}{{ owner.user.last_name }}</a>
+                            <div class="description">
+                                {{ owner.text | safe }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

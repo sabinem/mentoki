@@ -1,5 +1,5 @@
 from django.views.generic import TemplateView
-from .mixins import PublicMixin
+
 
 class HomePageView(TemplateView):
     template_name = "public/homepage/homepage.html"

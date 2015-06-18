@@ -1,0 +1,70 @@
+<div class="tree well" id="buildforumtree">
+
+<p>
+{% if match.url_name == "buildforum" %}
+            <a href="{% url 'forum:forum' slug=match.kwargs.slug %}">
+             <span class="glyphicon glyphicon-eye-open" id="classroomeye"></span>
+        </a>
+{% endif %}
+    <span class="glyphicon glyphicon-pushpin"></span>
+    <a href="{% url 'buildclassroom:buildforum' slug=match.kwargs.slug %}">
+    Forum
+    </a>
+    aufbauen
+{% if match.url_name == 'buildforum' %}
+        <a href="{% url 'buildclassroom:createsubforum' slug=match.kwargs.slug %}">
+            <span class="glyphicon glyphicon-plus"></span>
+        </a>
+
+{% else %}
+{% if  match.url_name == 'updatesubforum'  %}
+    <span class="text-muted"> / </span>Unterforum {{ subforum.title }} bearbeiten
+{% elif  match.url_name == 'deletesubforum'  %}
+    <span class="text-muted"> / </span>Unterforum {{ subforum.title }} löschen
+{% elif  match.url_name == 'createsubforum'  %}
+    <span class="text-muted"> / </span><span id="createnewsubforum" class="active">neues Unterforum anlegen</span>
+{% endif %}
+{% endif %}
+</p>
+    <ul>
+    {% for item in forumtree  %}
+
+        <li>
+        {% if item.is_leaf %}
+            {% include 'classroombackend/forum/_leaf.html' %}
+            {% include 'classroombackend/forum/_CRUD_options.html' %}
+        {% else %}
+            {% include 'classroombackend/forum/_folder.html' %}
+            {% include 'classroombackend/forum/_update_option.html' %}
+            <ul>
+            {% for item in item.list %}
+                <li style="display:none">
+                {% if item.is_leaf %}
+                    {% include 'classroombackend/forum/_leaf.html' %}
+                    {% include 'classroombackend/forum/_CRUD_options.html' %}
+                {% else %}
+                    {% include 'classroombackend/forum/_folder.html' %}
+                    {% include 'classroombackend/forum/_update_option.html' %}
+                    <ul>
+                    {% for item in item.list %}
+                        <li>
+                        {% if item.is_leaf %}
+                            {% include 'classroombackend/forum/_leaf.html' %}
+                            {% include 'classroombackend/forum/_CRUD_options.html' %}
+                        {% else %}
+                            {% include 'classroombackend/forum/_folder.html' %}
+                            {% include 'classroombackend/forum/_update_option.html' %}
+                        {% endif %}
+                        </li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+                </li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+

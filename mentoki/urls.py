@@ -21,8 +21,9 @@ urlpatterns = patterns('',
     # desk
     url(r'^schreibtisch/', include('apps.desk.urls', namespace='desk')),
 
-    # course
-    url(r'^kursvorlage/', include('apps.course.urls', namespace='course')),
+    # coursebackend
+    url(r'^(?P<course_slug>[a-z0-9_-]+)/kursvorbereitung/', include('apps.coursebackend.urls', namespace='coursebackend')),
+    url(r'^pdf/', include('apps.coursebackend.urls', namespace='coursebackend')),
 
     # forum and classroom
     url(r'^forum/', include('apps.forum.urls', namespace='forum')),
@@ -49,6 +50,7 @@ urlpatterns = patterns('',
     url(r'^accounts/', include('userauth.urls')),
 
     (r'^robots\.txt/$', TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),
+
 )
 
 if settings.DEBUG:

@@ -18,7 +18,7 @@ class DeskStartView(LoginRequiredMixin, MatchMixin, TemplateView):
     """
     This View is the desk. It is the main entry point for every authenticated user.
     """
-    template_name = 'desk.html'
+    template_name = 'desk/start.html'
 
     def get_context_data(self, **kwargs):
         """

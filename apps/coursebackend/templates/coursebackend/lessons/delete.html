@@ -1,0 +1,64 @@
+{% extends "coursebackend/lessons/base.html" %}
+
+{% load mptt_tags %}
+
+{% block header %}
+   Unterricht {{ course.title }}
+{% endblock %}
+
+{% block controls %}
+
+    {% include 'coursebackend/_checkbox_help.html' %}
+
+{% endblock %}
+
+{% block help %}
+    {% include 'coursebackend/lessons/_help_lessons.html' %}
+{% endblock %}
+
+{% block page_content %}
+        <h1>{{ lesson.nr }} {{ lesson.title }}</h1>
+        <p>{{ lesson.description }}</p>
+        <p>{{ lesson.text | safe }}</p>
+
+    <div class="ui divider"></div>
+
+    <div class="ui divided list">
+
+        {% recursetree nodes %}
+
+            <div class="item">
+
+                {% block node_icon %}
+                    <i class="top aligned icon">
+                        {{ node.lesson_nr }}
+                    </i>
+                {% endblock %}
+
+                <div class="content">
+
+                    {% block node_header %}
+                        <a href="{% url "coursebackend:lesson:sublist" course_slug=course.slug pk=node.pk %}">
+                           {{ node.title }}
+                        </a>
+                    {% endblock %}
+
+                    {% if not node.is_leaf_node %}
+                        <div class="list">
+                            {{ children }}
+                        </div>
+                    {% endif %}
+
+                </div>
+            </div>
+
+        {% endrecursetree %}
+
+    </div>
+
+
+
+        {% include 'coursebackend/lessons/_form_delete.html' %}
+
+{% endblock %}
+

@@ -8,7 +8,10 @@ from django.contrib.auth.models import User
 # import from third party
 from model_utils.models import TimeStampedModel
 # import from other apps
-from apps.course.models import Course, CourseUnit, CourseOwner
+from apps.course.models import Course, CourseUnit, CourseOwner, Lesson
+from .managers import CourseEventQuerySet, CourseEventPubicInformationQuerySet, CourseeventUnitPublishQuerySet
+from django.core.urlresolvers import reverse
+from django.utils.functional import cached_property
 
 
 class CourseEvent(TimeStampedModel):
@@ -22,12 +25,12 @@ class CourseEvent(TimeStampedModel):
     # the title of the course
     title = models.CharField(max_length=100)
     # several describing attributes
-    excerpt = models.TextField(blank=True)
+    excerpt = models.TextField(blank=True, verbose_name="Abstrakt")
     # startdate and nr of weeks if this applies
-    start_date = models.DateField(null=True, blank=True)
-    nr_weeks = models.IntegerField(null=True, blank=True)
+    start_date = models.DateField(null=True, blank=True, verbose_name="Startdatum")
+    nr_weeks = models.IntegerField(null=True, blank=True, verbose_name="Wochenanzahl")
     # maximal nr of participants if this applies
-    max_participants = models.IntegerField(null=True, blank=True)
+    max_participants = models.IntegerField(null=True, blank=True, verbose_name="Teilnehmeranzahl")
     # type of the courseevent
     EVENTTYPE_TIMED_COURSE ='0'
     EVENTTYPE_FORUM = '1'
@@ -53,7 +56,7 @@ class CourseEvent(TimeStampedModel):
         (EXTEVENT_BOOKING_CLOSED, 'Buchung abgeschlossen'),
         (EXTEVENT_FINISHED, 'Kursereignis abgeschlossen'),
     )
-    status_external = models.CharField(choices=EXTEVENT_CHOICES, default=EXTEVENT_UNPUBLISHED, max_length=2)
+    status_external = models.CharField(choices=EXTEVENT_CHOICES, default=EXTEVENT_UNPUBLISHED, max_length=2, verbose_name="Status extern")
     # this status is not needed any more
     INTEVENT_OPEN = '0'
     INTEVENT_DRAFT  = '1'
@@ -63,16 +66,25 @@ class CourseEvent(TimeStampedModel):
         (INTEVENT_OPEN, 'zur internen Buchung geoeffnet'),
         (INTEVENT_CLOSED, 'keine interne Buchung mehr moeglich'),
     )
-    status_internal = models.CharField(choices=INTEVENT_CHOICES, default=INTEVENT_DRAFT, max_length=2)
+    status_internal = models.CharField(choices=INTEVENT_CHOICES, default=INTEVENT_DRAFT, max_length=2, verbose_name="Status intern")
+
+    objects = CourseEventQuerySet.as_manager()
 
     def __unicode__(self):
         return self.title
 
-    @property
+    @cached_property
+    def course_slug(self):
+        return self.course.slug
+
+    @cached_property
+    def course_title(self):
+        return self.course.title
+
+    @cached_property
     def end_date(self):
         """
         calculate the end date form the startdate and the number of weeks if a startdate is given.
-        :return:
         """
         if self.start_date:
            end_date = self.start_date + datetime.timedelta(days=7*self.nr_weeks)
@@ -88,6 +100,25 @@ class CourseEvent(TimeStampedModel):
                return (self.start_date - today).days
         except:
             return None
+
+
+
+    def get_absolute_url(self):
+        return reverse('coursebackend:courseevent:detail', kwargs={'course_slug':self.course_slug, 'slug':self.slug})
+
+
+class CourseeventLessonPublish(models.Model):
+    """
+    Units (Lessons) are published in a class, when the instructor decides
+    students are ready for them. Publication is decided on the level of the
+    CourseUnit. See app course for details.
+    """
+    courseevent = models.ForeignKey(CourseEvent)
+    lesson = models.ForeignKey(Lesson)
+    published_at_date = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return u'%s / %s' % (self.courseevent, self.unit)
 
 
 
@@ -126,17 +157,18 @@ class CourseEventPubicInformation(TimeStampedModel):
     courseevent = models.ForeignKey(CourseEvent)
     # the video is shown in a certain way, therefor just the code of the video is needed here.
     video_url = models.CharField(max_length=100, blank=True, verbose_name="Kürzel des Videos bei You Tube ")
-    text = models.TextField(blank=True, verbose_name="freie Kursbeschreibung, überschreibt die allgemeine "
-                                                     "Kursbeschreibung, wenn ausgefüllt")
+    text = models.TextField(blank=True, verbose_name="freie Kursbeschreibung")
     format = models.TextField(blank=True, verbose_name="Kursformat")
     workload = models.TextField(blank=True, verbose_name="Arbeitsbelastung")
-    project = models.TextField(blank=True,  verbose_name="Teilnehmernutzen, überschreibt die allgemeine "
-                                                     "Kursbeschreibung, wenn ausgefüllt")
+    project = models.TextField(blank=True,  verbose_name="Teilnehmernutzen")
     structure = models.TextField(blank=True,  verbose_name="Gliederung")
-    target_group = models.TextField(blank=True, verbose_name="Zielgruppe, , überschreibt die allgemeine "
-                                                     "Kursbeschreibung, wenn ausgefüllt")
-    prerequisites = models.TextField(blank=True, verbose_name="Voraussetzungen, , überschreibt die allgemeine "
-                                                     "Kursbeschreibung, wenn ausgefüllt")
+    target_group = models.TextField(blank=True, verbose_name="Zielgruppe")
+    prerequisites = models.TextField(blank=True, verbose_name="Voraussetzungen")
+
+    objects = CourseEventPubicInformationQuerySet.as_manager()
 
     def __unicode__(self):
         return u'%s' % (self.courseevent)
+
+    def get_absolute_url(self):
+        return CourseEvent.get_absolute_url(self.courseevent)

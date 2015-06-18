@@ -1,10 +1,8 @@
-{% extends "base_semantic/base_page.html" %}
+{% extends "base/page.html" %}
 {% block title %}
     {{ courseevent.title }}
 {% endblock %}
-{% block body %}
-   <body id="courseevent_public" >
-{% endblock %}
+{% block section %}id="courseevent_public"{% endblock %}
 {% block main %}
     <main class="ui two column doubling page grid">
         <div class="row">

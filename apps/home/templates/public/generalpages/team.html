@@ -1,16 +1,30 @@
-{% extends "base_semantic/base_page.html" %}
-{% block body %}
-<body id="standard_public_page_body_2" >
-{% endblock %}
+{% extends "base/page.html" %}
+
+{% block meta_title %}Team | Mentoki {% endblock %}
+
+{% block meta_description %}Mentokis Team besteht aus zwei Power-Frauen 50 Plus{% endblock %}
+{% block meta_keywords %}online lernen, online unterrichten, 50plus{% endblock %}
+
+{% block section %}id="standard_public_page_body_2"{% endblock %}
+
 {% block main %}
+
     <main class="ui two column doubling page grid">
+
         <div class="row">
+
+            <!-- content -->
             <h1 class="ui header center aligned" id="mainheader">Mentokis Team
-                <div class="sub header">Mentoki wird von zwei Power-Frauen geführt
+                <div class="sub header">
+                    Mentoki wird von zwei Power-Frauen geführt
                 </div>
             </h1>
+
+            <!-- Sabine -->
             <div class="eight wide column">
+
                  <div class="ui piled segment">
+
                      <div class="ui card fluid" id="teamcard" >
                          <img  class="ui image small centered circular bordered" src="/static/img/sabine3.jpg">
                          <div class="header ui center aligned">
@@ -41,10 +55,16 @@
                              </div>
                          </div>
                      </div>
+
                  </div>
+
             </div>
+
+            <!-- Anette -->
             <div class="eight wide column">
+
                 <div class="ui piled segment">
+
                     <div class="ui card fluid">
                         <img  class="ui image small centered circular bordered" src="/static/img/anette-229x300.jpg">
                          <div class="header ui h2 center aligned">
@@ -76,8 +96,11 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
+
             </div>
+
         </div>
     </main>
 {% endblock %}

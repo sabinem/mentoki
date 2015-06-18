@@ -33,6 +33,7 @@ SITE_ID = 1
 # Application definition
 INSTALLED_APPS = (
     # django apps
+    'suit',
     'django.contrib.admin',
     'django.contrib.admindocs',
     'django.contrib.auth',
@@ -41,12 +42,14 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'raven.contrib.django.raven_compat',
+    #'raven.contrib.django.raven_compat',
     # 3rd party apps
     'floppyforms',
     'crispy_forms',
+    'semantic_ui',
     'braces',
     'model_utils',
+    'mptt',
     'autoslug',
     'activelink',
     'django_markdown',
@@ -55,6 +58,7 @@ INSTALLED_APPS = (
     'apps.home',
     # courses
     'apps.course',
+    'apps.coursebackend',
     'apps.newsletter',
     'apps.courseevent',
     'apps.desk',
@@ -63,8 +67,6 @@ INSTALLED_APPS = (
     # other
     'apps.upload', 
     #'apps.email',
-    # delete pdf app soon
-    'apps.pdf',
     'apps.contact',
     'apps.core',
     'userauth',
@@ -96,8 +98,6 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': os.environ.get('DATABASE_NAME'),
         'USER': os.environ.get('DATABASE_USER'),
-        #'NAME': 'netteachers_dev',
-        #'USER': 'sabinemaennel',
 	    'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
 	    'HOST': os.environ.get('DATABASE_HOST'),
     }
@@ -161,7 +161,7 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.app_directories.Loader',
 )
 
-CRISPY_TEMPLATE_PACK = 'bootstrap3'
+CRISPY_TEMPLATE_PACK = 'semantic-ui'
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.auth.context_processors.auth",
@@ -267,9 +267,9 @@ if LOCAL_ENVIRONMENT:
         LOGGING['loggers'][logger]['handlers'] = ['console']
 
 # Set your DSN value
-RAVEN_CONFIG = {
-    'dsn': os.environ.get('SENTRY_DSN'),
-}
+#RAVEN_CONFIG = {
+#    'dsn': os.environ.get('SENTRY_DSN'),
+#}
 
 # Markdown
 MARKDOWN_EDITOR_SKIN = 'simple'
@@ -278,3 +278,9 @@ from django.core.urlresolvers import reverse_lazy
 LOGIN_URL = reverse_lazy("login")
 LOGIN_REDIRECT_URL = reverse_lazy("desk:start")
 LOGOUT_URL = reverse_lazy("home:home")
+
+
+FILEPICKER_API_KEY = 'AXexAhTMeSbO1LZ911Es9z'
+
+CWD = os.getcwd()
+MEDIA_ROOT = os.path.join(CWD, 'media')

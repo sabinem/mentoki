@@ -1,0 +1,58 @@
+{% extends "base/page.html" %}
+
+{% block section %}
+    id="classroombackend"
+{% endblock %}
+
+{% block main %}
+
+    <div class="ui page grid" >
+
+        <div class="content classroombackend ui column">
+
+            <div class="ui top attached demo menu">
+
+                <a class="item" id="sidebar_button">
+                  <i class="sidebar icon"></i>
+                  Menu
+                </a>
+
+                {% block page_topic %}
+                    <div class="item">
+                        Unterricht {{ course.title }}
+                    </div>
+                {% endblock %}
+
+                {% block controls %}
+                    {% include 'coursebackend/_checkbox_help.html' %}
+                {% endblock %}
+
+            </div>
+
+            <div class="ui bottom attached segment" >
+
+                <div class="ui labeled icon left inline vertical sidebar menu" id="coursemenu">
+                    {% include 'coursebackend/_menu.html' %}
+                </div>
+
+                <div class="pusher">
+
+                    <div class="ui basic segment">
+                        <h2 class="ui header" id="page-header">
+                            {% block page_header %}
+                            {% endblock %}
+                        </h2>
+                        <div id="helpinstructions">
+                            <div class="ui segment info message">
+                                {% block help %}
+                                {% endblock %}
+                            </div>
+                        </div>
+                        {% block page_content %}
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

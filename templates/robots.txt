@@ -1,5 +1,7 @@
 User-agent:*
+
 Disallow:/admin
+
 Disallow:/kursvorlage
 Disallow:/forum
 Disallow:/klassenzimmer
@@ -7,5 +9,11 @@ Disallow:/uploads
 Disallow:/accounts
 Disallow:/klassenzimmer
 Disallow:/user
+
 Disallow:/media
 Disallow:/static
+
+Disallow:/danke
+Disallow:/impressum
+
+Disallow:/login

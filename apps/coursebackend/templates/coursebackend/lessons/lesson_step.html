@@ -1,0 +1,145 @@
+{% extends "coursebackend/lessons/base.html" %}
+
+{% block help %}
+
+    {% include 'coursebackend/lessons/_help_lessons.html' %}
+
+{% endblock %}
+
+{% block controls %}
+
+    {% include 'coursebackend/_checkbox_help.html' %}
+    {% include 'coursebackend/_checkbox_worklinks.html' %}
+    {% if not node.is_leaf_node %}
+        {% include 'coursebackend/lessons/_checkbox_fulltext.html' %}
+    {% endif %}
+
+{% endblock %}
+
+{% block page_header %}
+
+    <div class="header ui small" href="{% url "coursebackend:lesson:sublist" course_slug=course.slug pk=root_node.pk %}"">
+
+        <a href="{% url "coursebackend:lesson:list" course_slug=course.slug %}">
+           <i class="icon cube"></i>
+        </a>
+
+        <a href="{% url "coursebackend:lesson:sublist" course_slug=course.slug pk=root_node.pk %}">
+           {{ root_node.title }}
+        </a>
+
+    </div>
+
+{% endblock %}
+
+{% block nodes_breadcrumb %}
+
+    <div class="ui large breadcrumb" id ="page-breadcrumb">
+
+        {% for breadcrumb in breadcrumbs %}
+            <a href="{% url 'coursebackend:lesson:sublist'  course_slug=course.slug pk=breadcrumb.pk %}" class="section">
+                {{ breadcrumb.lesson_nr }} {{ breadcrumb.title }}
+            </a>
+            <i class="right chevron icon divider"></i>
+        {% endfor %}
+
+        {% if previous_node %}
+            <a href="{% url "coursebackend:lesson:sublist" course_slug=course.slug pk=previous_node.pk %}">
+               <i class="write chevron left icon"></i>
+            </a>
+        {% endif %}
+
+        <a class="active" href="{% url "coursebackend:lesson:sublist" course_slug=course.slug pk=start_node.pk %}">
+           {{ start_node.lesson_nr }} {{ start_node.title }}
+        </a>
+
+        {% if next_node %}
+            <a href="{% url "coursebackend:lesson:sublist" course_slug=course.slug pk=next_node.pk %}">
+               <i class="write chevron right icon"></i>
+            </a>
+        {% endif %}
+
+    </div>
+
+{% endblock %}
+
+
+{% block node_icon %}
+
+    <i class="top aligned icon">
+        {{ node.lesson_nr }}
+    </i>
+
+{% endblock %}
+
+{% block node_header %}
+
+    <div class="header" href="{% url "coursebackend:lesson:sublist" course_slug=course.slug pk=node.pk %}">
+
+        <a href="{% url "coursebackend:lesson:sublist" course_slug=course.slug pk=node.pk %}">
+           {{ node.title }}
+        </a>
+        <a class="worklink"
+            href="{% url 'coursebackend:lesson:update' course_slug=course.slug pk=node.pk %}">
+            <i class="write blue icon"></i>
+        </a>
+        <a class="worklink"
+            href="{% url 'coursebackend:lesson:material' course_slug=course.slug pk=node.pk %}">
+            <i class="plus blue icon"></i>
+        </a>
+
+    </div>
+
+{% endblock %}
+
+{% block node_main %}
+
+    <div
+        {% if not node.is_leaf_node %}
+            class="contentdescription"
+        {% endif %}
+        >
+        {{ node.text | safe }}
+    </div>
+{% endblock %}
+
+{% block materials %}
+
+    <div
+        {% if not node.is_leaf_node %}
+            class="contentdescription"
+        {% endif %}
+        >
+        {% if node.has_material %}
+
+            {% for material in node.attached_materials %}
+
+                <a href="{{ material.file.url }}">
+                    {{ material.title }}  | file
+                </a>
+
+                <a href="{% url 'coursebackend:material:detail' course_slug=course.slug pk=material.pk %}">
+                    {{ material.title }}  | pdfviewer
+                </a>
+
+
+                {% if material.pdf_download_link %}
+                    <a href="{% url 'coursebackend:download' slug=material.slug course_slug=course.slug %}">
+                        <i class="download icon blue"></i>;
+                    </a>
+                {% endif %}
+
+                <a class="worklink"
+                    href="">
+                    <i class="write blue icon"></i>
+                </a>
+
+                <p>{{ material.description }}</p>
+
+            {% endfor %}
+
+        {% endif %}
+
+    </div>
+
+{% endblock %}

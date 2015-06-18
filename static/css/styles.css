@@ -47,6 +47,8 @@
 #footer {
   padding-bottom: 0;
   margin-bottom: 0;
+  padding-top: 0px;
+  margin-top: 0px;
 }
 #footer .column {
   padding: 0;
@@ -57,7 +59,6 @@
 /* ------------------------- */
 #base_page {
   padding-top: 70px;
-  padding-bottom: 60px;
   min-height: 800px;
 }
 /* ---------------------- */
@@ -112,6 +113,17 @@
 #classroombackend h2 {
   background: white;
   opacity: 0.8;
+}
+#classroombackend .ui .checkbox {
+  padding-right: 30px;
+}
+#classroombackend #page-header {
+  padding: 0;
+  margin: 0;
+}
+#classroombackend #page-breadcrumb {
+  padding: 0;
+  margin: 0;
 }
 /* ------------------------- */
 /*     Newsletter            */

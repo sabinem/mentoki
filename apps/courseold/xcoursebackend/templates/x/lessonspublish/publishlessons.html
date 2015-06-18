@@ -1,0 +1,82 @@
+{% extends "base_course/base.html" %}
+{% block header %}
+        Kursereignis {{ courseevent.title }}
+{% endblock %}
+{% block header_controls %}
+    {% include 'base_course/_helpcheckbox.html' %}
+{% endblock %}
+{% block help %}
+    {% include 'base_course/_help_publish.html' %}
+{% endblock %}
+{% block controls %}
+    <div class="ui checkbox" id="worklinks">
+        <input type="checkbox">
+        <label>Bearbeitungs-Links</label>
+    </div>
+{% endblock %}
+{% block page_content %}
+    <div class="ui segment">
+        <h1 class="ui header">Unterricht freischalten</h1>
+        {% for item in blocks %}
+
+         <h3 class="ui header">{{ item.block.title }}</h3>
+        <table class="ui table">
+          <thead>
+            <tr>
+              <th>
+                  Freigeschaltet? Wann?
+              </th>
+              <th>Lektion</th>
+              <th>Aktion</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for unit in item.units %}
+            <tr>
+              <td>
+                  {% if unit.published %}
+                      <i class="icon checkmark green"></i>
+                      {{ unit.publication.published_at_date | date:'d.m.Y' }}
+                  {% endif %}
+              </td>
+              <td>
+                  {% if unit.published %}
+                  <a href="{% url 'classroom:lesson' slug=match.kwargs.ce_slug unit=unit.unit.id %}">
+                  {% if item.block.is_numbered %}
+                      {{ unit.unit.display_nr }}.
+                  {% endif %}
+                  {{ unit.unit.title }}
+                  </a>
+                  {% else %}
+                  {% if item.block.is_numbered %}
+                      {{ unit.unit.display_nr }}.
+                  {% endif %}
+                  {{ unit.unit.title }}                  {% endif %}
+
+                  <a class="worklink"
+                 href="{% url 'course:unitupdate' slug=match.kwargs.slug unit=unit.unit.id %}">
+                 <i class="write blue icon"></i>
+                 </a>
+              </td>
+
+              <td>
+                  {% if unit.published %}
+                       <a
+                           href="{% url 'course:deletepublication' slug=match.kwargs.slug ce_slug=match.kwargs.ce_slug unit=unit.unit.id %}" >
+                           <i class="icon remove"></i>
+                        </a>
+                  {% else %}
+                        <a
+                            href="{% url 'course:createpublication' slug=match.kwargs.slug  ce_slug=match.kwargs.ce_slug unit=unit.unit.id %}" >
+                            freischalten
+                        </a>
+                  {% endif %}
+              </td>
+            </tr>
+
+          {% endfor %}
+          </tbody>
+        </table>
+     {% endfor %}
+    </div>
+{% endblock %}

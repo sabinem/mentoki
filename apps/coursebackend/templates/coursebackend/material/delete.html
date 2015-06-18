@@ -1,0 +1,24 @@
+{% extends "coursebackend/lessons/base.html" %}
+
+{% load mptt_tags %}
+
+{% block header %}
+   Unterricht {{ course.title }}
+{% endblock %}
+
+{% block controls %}
+
+    {% include 'coursebackend/_checkbox_help.html' %}
+
+{% endblock %}
+
+{% block help %}
+    {% include 'coursebackend/lessons/_help_lessons.html' %}
+{% endblock %}
+
+{% block page_content %}
+
+        {% include 'coursebackend/material/_form_multipart.html' %}
+
+{% endblock %}
+

@@ -1,0 +1,24 @@
+<div class="ui dropdown item">
+    Unterrichtsblöcke
+    <i class="dropdown icon"></i>
+
+    <div class="menu">
+
+        <div class="item">
+            <a href="{% url 'coursebackend:lesson:list'  course_slug=course.slug %}">
+                Übersicht
+            </a>
+        </div>
+
+        {% for node in rootnodes %}
+
+            <div class="item">
+                <a href="{% url 'coursebackend:lesson:sublist'  course_slug=course.slug pk=node.pk %}">
+                    {{ node.lesson_nr }} {{ node.title }}
+                </a>
+            </div>
+
+        {% endfor %}
+
+    </div>
+</div>

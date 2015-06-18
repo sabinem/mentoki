@@ -4,38 +4,50 @@
 {% endblock %}
 {% block custom_menu_item %}
     {% if user.is_superuser or participant.is_owner %}
-        <a href="{% url 'course:start' slug=courseevent.course_slug %}" class="item">
+        <a href="{% url 'coursebackend:course:detail' course_slug=courseevent.course_slug %}" class="item">
             Unterrichtsvorbereitung
         </a>
     {% endif %}
 {% endblock %}
 {% block main %}
     <div class="ui page grid">
-    <div class="column">
-    {% block classroom_header %}
-        <h2 class="ui block header">
-            Klassenzimmer
-            {{ courseevent.title }}
-        </h2>
-    {% endblock %}
-    <div class="ui grid regularpage" >
-        <div class="five wide column">
-            {% include 'classroom/_menu.html' %}
+        <div class="content classroombackend ui column">
+            <div class="ui top attached demo menu">
+                <a class="item" id="sidebar_button">
+                  <i class="sidebar icon"></i>
+                  Menu
+                </a>
+
+             Vorlage {{ course.title }}
+                {% block header %}
+                      Vorlage {{ course.title }}
+                {% endblock %}
+                {% block controls %}
+                     {% include 'coursebackend/_checkbox_help.html' %}
+                {% endblock %}
+            </div>
+            <div class="ui bottom attached segment" >
+                <div class="ui labeled icon left inline vertical sidebar visible menu" id="coursemenu">
+                    {% include 'classroom/_menu.html' %}
+                </div>
+                <div class="pusher">
+                    <div class="ui basic segment">
+                        <h3 class="ui header">
+                            {% block breadcrumb %}
+                            {% endblock %}
+                        </h3>
+                        <div id="helpinstructions">
+                            <div class="ui segment info message">
+                                {% block help %}
+                                {% endblock %}
+                            </div>
+                        </div>
+                        {% block regular_page_content %}
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="eleven wide column">
-        <div class="ui segment piled">
-            {% block regular_page_content %}
-            {% endblock %}
-        </div>
-        </div>
-    </div>
-    <div class="ui grid widepage" >
-    <div class="column">
-        {% block wide_page_content %}
-        {% endblock %}
-    </div>
-    </div>
-    </div>
     </div>
 {% endblock %}
 

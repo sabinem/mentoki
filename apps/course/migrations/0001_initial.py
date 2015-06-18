@@ -7,6 +7,7 @@ import django.utils.timezone
 from django.conf import settings
 import model_utils.fields
 import apps.course.models
+from apps.course.helpers import foto_location
 
 
 class Migration(migrations.Migration):
@@ -88,7 +89,7 @@ class Migration(migrations.Migration):
                 ('modified', model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, verbose_name='modified', editable=False)),
                 ('text', models.TextField(verbose_name='Text', blank=True)),
                 ('status', models.CharField(default='0', max_length=2, choices=[('0', 'Im Aufbau'), ('1', 'Fertig')])),
-                ('foto', models.ImageField(upload_to=apps.course.models.course_name, blank=True)),
+                ('foto', models.ImageField(upload_to=foto_location, blank=True)),
                 ('display', models.BooleanField(default=True, verbose_name='Anzeigen bei der Kursausschreibung?')),
                 ('display_nr', models.IntegerField(default=1, verbose_name='Anzeigereihenfolge bei mehreren Kursleitern')),
                 ('course', models.ForeignKey(to='course.Course')),

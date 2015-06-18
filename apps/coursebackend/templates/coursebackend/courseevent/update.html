@@ -1,0 +1,33 @@
+{% extends "coursebackend/base.html" %}
+{% block header %}
+    Kurseereignis {{ courseevent.title }}
+{% endblock %}
+
+{% block controls %}
+    {{ block.super }}
+    <div class="item">
+        <div class="ui checkbox" id="showdescriptions">
+            <input type="checkbox">
+            <label>Vorlage anzeigen</label>
+        </div>
+    </div>
+{% endblock %}
+
+{% block help %}
+    {% include 'coursebackend/courseevent/_help_update.html' %}
+{% endblock %}
+
+{% block page_topic %}
+    {% include 'coursebackend/courseevent/_page_topic.html' %}
+{% endblock %}
+
+{% block page_content %}
+
+
+        <div class="contentdescription">
+            <div class="ui header">Aus der Kursvorlage:</div>
+            {{ exampletext | safe }}
+        </div>
+        {% include 'coursebackend/courseowner/_form.html' %}
+
+{% endblock %}

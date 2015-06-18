@@ -1,0 +1,52 @@
+{% extends "coursebackend/base.html" %}
+
+{% load mptt_tags %}
+
+{% block help %}
+
+    {% include 'coursebackend/lessons/_help_lessons.html' %}
+
+{% endblock %}
+
+{% block page_content %}
+
+    {% block nodes_breadcrumb %}
+    {% endblock %}
+
+    <div class="ui divided list">
+
+        {% recursetree nodes %}
+
+            <div class="item">
+
+                {% block node_icon %}
+                {% endblock %}
+
+                <div class="content">
+
+                    {% block node_header %}
+                    {% endblock %}
+
+                    {% block node_main %}
+                    {% endblock %}
+
+                    {% block materials %}
+                        {% if materials %}
+                             {% include 'coursebackend/material/_material_long.html' %}
+                        {% endif %}
+                    {% endblock %}
+
+                    {% if not is_leaf %}
+                        <div class="list">
+                            {{ children }}
+                        </div>
+                    {% endif %}
+
+                </div>
+            </div>
+
+        {% endrecursetree %}
+
+    </div>
+
+{% endblock %}

@@ -1,170 +1,182 @@
-{% extends "base_semantic/base_page.html" %}
-{% block title %}Mentoki - Lernen und Lehren lebenslang{% endblock %}
-{% block description %}Mentoren-Netzwerk, Lehr- und Lern-Plattform{% endblock %}
-{% block body %}
-    <body id="home">
-{% endblock %}
+{% extends "base/page.html" %}
+
+{% block meta_title %}Mentoki - Lehr- und Lernplattform | Lernen und Lehren lebenslang{% endblock %}
+
+{% block meta_description %}Wir sind eine Lehr- und Lern-Plattform für unabhängiger Mentoren und ihre Schüler{% endblock %}
+{% block meta_keywords %}mentoren netzwerk, lern plattform, erwachsenen bildung, online unterrichten, lehr plattform{% endblock %}
+
+
+{% block section %}id="home"{% endblock %}
+
 {% block main %}
-<div class="ui page grid main centered tablet computer only" id="page-grid-homepage-top-pc">
-    <div class="row">
-        <div class="column twelve wide">
-            <h1 class="ui block header center aligned">
-               <img id="logo_homepage_header" src="/static/img/mentoki_logo_untertitel.jpg">
-               <div class="content center aligned">
-                   Die neue Lernplattform für Online-Mentoren<br> und ihre Schüler.
-               </div>
-            </h1>
+
+    <!-- computer: image as background -->
+    <div class="ui page grid main centered tablet computer only" id="page-grid-homepage-top-pc">
+        <div class="row">
+            <div class="column twelve wide">
+                <h1 class="ui block header center aligned">
+                   <img id="logo_homepage_header" src="/static/img/mentoki_logo_untertitel.jpg">
+                   <div class="content center aligned">
+                       Die neue Lernplattform für Online-Mentoren<br> und ihre Schüler.
+                   </div>
+                </h1>
+            </div>
         </div>
     </div>
-</div>
-<div class="ui grid page centered mobile only" id="page-grid-homepage-top-mobile-1">
-    <div class="row">
-        <div class="column">
-        </div>
+
+    <!-- mobile text and image seperate-->
+    <div class="ui grid page centered mobile only" id="page-grid-homepage-top-mobile-1">
     </div>
-</div>
-<div class="ui grid page centered mobile only" id="page-gird-homepage-top-mobile-2">
-   <div class="column">
-       <div class="ui vertical segment">
-           <h1 class="ui  header">
-               <img id="logo_homepage_header" src="/static/img/mentoki_logo_untertitel.jpg">
-               <div class="content">
-                   Die neue Lernplattform für Online-Mentoren<br> und ihre Schüler.
-               </div>
-           </h1>
+    <div class="ui grid page centered mobile only" id="page-gird-homepage-top-mobile-2">
+       <div class="column">
+           <div class="ui vertical segment">
+               <h1 class="ui  header">
+                   <img id="logo_homepage_header" src="/static/img/mentoki_logo_untertitel.jpg">
+                   <div class="content">
+                       Die neue Lernplattform für Online-Mentoren<br> und ihre Schüler.
+                   </div>
+               </h1>
+           </div>
        </div>
-   </div>
-</div>
-<div class="ui vertical segment" id="angebote">
-    <div class="stackable very relaxed ui page grid homepage" >
-        <div class="row">
-            <div class="seven wide column">
-                <h1 class="ui large header">Bei uns kannst Du lernen:</h1>
-                <p>
-                    Wir starten im September 2015 mit den ersten Kursen:
-                    In der Liste rechts siehst Du die Kurse in der Vorankündigung.
-                    Klicke die Links, um zu den Kursausschreibungen zu gelangen!
-                </p>
-                  <a class="ui button yellow" href="http://eepurl.com/bnHpAP">Jetzt als Interessent anmelden</a>
-            </div>
-            <div class="nine wide column">
-                <div class="ui animated list">
-                    <a class="item" href="{% url 'courseevent:publicdetail' slug="selbstfuehrung" %}">
-                        <img class="ui avatar image" src="/static/img/christine.jpg">
-                        <div class="content">
-                            <div class="header">Christine Radomsky: Selbstführung</div>
-                        </div>
-                    </a>
-                    <a class="item" href="{% url 'courseevent:publicdetail' slug="schreibwerkstatt" %}">
-                        <img class="ui avatar image" src="/static/img/franz3.jpg">
-                        <div class="content">
-                            <div class="header">Franz Neff: 24/7 Schreibwerkstatt</div>
-                        </div>
-                    </a>
-                    <a class="item" href="{% url 'courseevent:publicdetail' slug="keineangstvormalter" %}">
-                        <img class="ui avatar image" src="/static/img/anette-229x300.jpg">
-                        <div class="content">
-                            <div class="header">Anette Pekrul: Keine Angst vorm Alter</div>
-                        </div>
-                    </a>
-                    <a class="item" href="{% url 'courseevent:publicdetail' slug="schnellerlesen" %}">
-                        <img class="ui avatar image" src="/static/img/bea3.jpg">
-                        <div class="content">
-                            <div class="header">Bea Ribaux: Schneller Lesen</div>
-                        </div>
-                    </a>
+    </div>
+
+    <!-- offers learning -->
+    <div class="ui vertical segment" id="angebote">
+        <div class="stackable very relaxed ui page grid homepage" >
+            <div class="row">
+                <div class="seven wide column">
+                    <h1 class="ui large header">Bei uns kannst Du lernen:</h1>
+                    <p>
+                        Wir starten im September 2015 mit den ersten Kursen:
+                        In der Liste rechts siehst Du die Kurse in der Vorankündigung.
+                        Klicke die Links, um zu den Kursausschreibungen zu gelangen!
+                    </p>
+                      <a class="ui button yellow" href="http://eepurl.com/bnHpAP">Jetzt als Interessent anmelden</a>
                 </div>
-                <a class="ui button yellow" href="{% url 'courseevent:publiclist'%}">Zur Kursübersicht</a>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="ui vertical segment" id="vertical-segment-homepage-teach">
-    <div class="stackable very relaxed ui page grid">
-        <div class="row">
-            <div class=" seven wide column">
-                <h1 class="ui large header">Bei uns kannst Du unterrichten:</h1>
-                <p>
-                    Hast Du schon Erfahrung mit dem Online-Unterrichten?
-                    Der Starterkurs bildet Dich zum Online-Trainer aus und unterstützt Dich beim
-                    Entwickeln Deines Kursangebots für Mentoki
-
-                </p>
-                <a class="ui button teal" href="http://eepurl.com/bnHpAP">Jetzt als Interessent anmelden</a>
-            </div>
-            <div class=" nine wide column">
-                <div class="ui animated list">
-                    <a class="item" href="{% url 'home:teach' %}">
-                        <img class="ui avatar image" src="/static/img/pilotkurs.jpg">
-                        <div class="content">
-                            <div class="header">Video zur Einführung</div>
-                        </div>
-                    </a>
-                    <a class="item" href="{% url 'home:teach' %}#starterkursdetails">
-                        <img class="ui avatar image" src="/static/img/15743592_s.jpg">
-                        <div class="content">
-                            <div class="header">Die Details</div>
-                        </div>
-                    </a>
-                    <a class="item" href="{% url 'home:teach' %}#testimonials">
-                        <img class="ui avatar image" src="/static/img/3062926_s.jpg">
-                        <div class="content">
-                            <div class="header">Was die ersten Teilnehmer sagen</div>
-                        </div>
-                    </a>
-                    <a class="item" href="{% url 'home:teach' %}#webinarinfo">
-                        <img class="ui avatar image" src="/static/img/23865010_s.jpg">
-                        <div class="content">
-                            <div class="header">Gratis Webinar zur Vorinformation</div>
-                        </div>
-                    </a>
-                    <a class="item" href="{% url 'courseevent:publicdetail' slug='starterkurs2' %}">
-                        <img class="ui avatar image" src="/static/img/sabine_100_100.jpg">
-                        <div class="content">
-                            <div class="header">Zur Kursausschreibung</div>
-                        </div>
-                    </a>
+                <div class="nine wide column">
+                    <div class="ui animated list">
+                        <a class="item" href="{% url 'courseevent:publicdetail' slug="selbstfuehrung" %}">
+                            <img class="ui avatar image" src="/static/img/christine.jpg">
+                            <div class="content">
+                                <div class="header">Christine Radomsky: Selbstführung</div>
+                            </div>
+                        </a>
+                        <a class="item" href="{% url 'courseevent:publicdetail' slug="schreibwerkstatt" %}">
+                            <img class="ui avatar image" src="/static/img/franz3.jpg">
+                            <div class="content">
+                                <div class="header">Franz Neff: 24/7 Schreibwerkstatt</div>
+                            </div>
+                        </a>
+                        <a class="item" href="{% url 'courseevent:publicdetail' slug="keineangstvormalter" %}">
+                            <img class="ui avatar image" src="/static/img/anette-229x300.jpg">
+                            <div class="content">
+                                <div class="header">Anette Pekrul: Keine Angst vorm Alter</div>
+                            </div>
+                        </a>
+                        <a class="item" href="{% url 'courseevent:publicdetail' slug="schnellerlesen" %}">
+                            <img class="ui avatar image" src="/static/img/bea3.jpg">
+                            <div class="content">
+                                <div class="header">Bea Ribaux: Schneller Lesen</div>
+                            </div>
+                        </a>
+                    </div>
+                    <a class="ui button yellow" href="{% url 'courseevent:publiclist'%}">Zur Kursübersicht</a>
                 </div>
-                <a class="ui button teal" href="{% url 'home:teach' %}">Zur Informationsseite "Unterrichten"</a>
             </div>
         </div>
     </div>
-</div>
-<div class="ui vertical segment" id="vertical-segment-homepage-newsletter">
-    <div class="stackable very relaxed ui page grid">
-        <div class="row">
-            <div class="seven wide column">
-                <h1 class="ui large header">Abonniere unseren kostenlosen Newsletter</h1>
 
-                <p>
-                    Bleibe auf dem Laufenden über die neuesten Lerntechniken und die coolsten Werkzeuge!
-                    Erster Erscheinungstermin: Anfang Juni
-                </p>
-                 <a class="ui button green" href="http://eepurl.com/bnHpAP">Jetzt als Abonnent anmelden</a>
-            </div>
-            <div class="nine wide column">
-                <img class="ui image" src="/static/img/post_mentoki_newsletter_400.jpg">
-            </div>
-        </div>
-    </div>
-</div>
-<div class="ui vertical segment" id="vertical-segment-homepage-toolbox">
-    <div class="stackable very relaxed ui page grid">
-        <div class="row">
-            <div class="seven wide column">
-                <h5 class="ui header orange">Coming soon!</h5>
-                <h1 class="ui large header">Wir bauen eine Werkzeugkiste auf</h1>
+    <!-- offers teaching -->
+    <div class="ui vertical segment" id="vertical-segment-homepage-teach">
+        <div class="stackable very relaxed ui page grid">
+            <div class="row">
+                <div class=" seven wide column">
+                    <h1 class="ui large header">Bei uns kannst Du unterrichten:</h1>
+                    <p>
+                        Hast Du schon Erfahrung mit dem Online-Unterrichten?
+                        Der Starterkurs bildet Dich zum Online-Trainer aus und unterstützt Dich beim
+                        Entwickeln Deines Kursangebots für Mentoki
 
-                <p>
-                    Wir gewähren Euch einen Blick in unsere Werkzeugkiste - kostenlos! Jeden Monat stellen wir
-                    Euch im Newsletter ein Werkzeug vor und schenken Euch das dazugehörige Tutorial.
-                </p>
-            </div>
-            <div class="nine wide column">
-                <img class="ui image" src="/static/img/38425202_s.jpg">
+                    </p>
+                    <a class="ui button teal" href="http://eepurl.com/bnHpAP">Jetzt als Interessent anmelden</a>
+                </div>
+                <div class=" nine wide column">
+                    <div class="ui animated list">
+                        <a class="item" href="{% url 'home:teach' %}">
+                            <img class="ui avatar image" src="/static/img/pilotkurs.jpg">
+                            <div class="content">
+                                <div class="header">Video zur Einführung</div>
+                            </div>
+                        </a>
+                        <a class="item" href="{% url 'home:teach' %}#starterkursdetails">
+                            <img class="ui avatar image" src="/static/img/15743592_s.jpg">
+                            <div class="content">
+                                <div class="header">Die Details</div>
+                            </div>
+                        </a>
+                        <a class="item" href="{% url 'home:teach' %}#testimonials">
+                            <img class="ui avatar image" src="/static/img/3062926_s.jpg">
+                            <div class="content">
+                                <div class="header">Was die ersten Teilnehmer sagen</div>
+                            </div>
+                        </a>
+                        <a class="item" href="{% url 'home:teach' %}#webinarinfo">
+                            <img class="ui avatar image" src="/static/img/23865010_s.jpg">
+                            <div class="content">
+                                <div class="header">Gratis Webinar zur Vorinformation</div>
+                            </div>
+                        </a>
+                        <a class="item" href="{% url 'courseevent:publicdetail' slug='starterkurs2' %}">
+                            <img class="ui avatar image" src="/static/img/sabine_100_100.jpg">
+                            <div class="content">
+                                <div class="header">Zur Kursausschreibung</div>
+                            </div>
+                        </a>
+                    </div>
+                    <a class="ui button teal" href="{% url 'home:teach' %}">Zur Informationsseite "Unterrichten"</a>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
+    <!-- offer newsletter -->
+    <div class="ui vertical segment" id="vertical-segment-homepage-newsletter">
+        <div class="stackable very relaxed ui page grid">
+            <div class="row">
+                <div class="seven wide column">
+                    <h1 class="ui large header">Abonniere unseren kostenlosen Newsletter</h1>
+
+                    <p>
+                        Bleibe auf dem Laufenden über die neuesten Lerntechniken und die coolsten Werkzeuge!
+                        Erster Erscheinungstermin: Anfang Juni
+                    </p>
+                     <a class="ui button green" href="http://eepurl.com/bnHpAP">Jetzt als Abonnent anmelden</a>
+                </div>
+                <div class="nine wide column">
+                    <img class="ui image" src="/static/img/post_mentoki_newsletter_400.jpg">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- offer toolbox -->
+    <div class="ui vertical segment" id="vertical-segment-homepage-toolbox">
+        <div class="stackable very relaxed ui page grid">
+            <div class="row">
+                <div class="seven wide column">
+                    <h5 class="ui header orange">Coming soon!</h5>
+                    <h1 class="ui large header">Wir bauen eine Werkzeugkiste auf</h1>
+
+                    <p>
+                        Wir gewähren Euch einen Blick in unsere Werkzeugkiste - kostenlos! Jeden Monat stellen wir
+                        Euch im Newsletter ein Werkzeug vor und schenken Euch das dazugehörige Tutorial.
+                    </p>
+                </div>
+                <div class="nine wide column">
+                    <img class="ui image" src="/static/img/38425202_s.jpg">
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 

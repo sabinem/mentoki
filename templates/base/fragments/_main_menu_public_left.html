@@ -1,0 +1,22 @@
+{% load activelink %}
+<a class="item
+    {% ifactive "home:home" %}
+        active
+    {% endifactive %}
+    " href="{% url 'home:home' %}#angebote">
+    Angebote
+</a>
+<a class="item
+    {% ifstartswith "courseevent:publiclist" %}
+        active
+    {% endifstartswith %}
+    " href="{% url 'courseevent:publiclist' %}">
+    Lernen
+</a>
+<a class="item
+    {% ifactive "home:teach" %}
+        active
+    {% endifactive %}
+    " href="{% url 'home:teach' %}">
+     Unterrichten
+</a>
