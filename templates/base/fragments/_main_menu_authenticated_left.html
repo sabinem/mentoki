@@ -1,9 +1,9 @@
 {% load activelink %}
 <a class="item
-    {% ifactive "courseevent:publiclist" %}
+    {% ifactive "courseoffer:list" %}
         active
     {% endifactive %}
-    " href="{% url 'courseevent:publiclist' %}">
+    " href="{% url 'courseoffer:list' %}">
     Kurse
 </a>
 <a  href="{% url 'desk:start' %}" class="item

@@ -671,6 +671,10 @@ input::selection {
 #desk_admin {
   background: #aeb3a4;
 }
+
+.ui.form .error.message {
+  display: block;
+}
 /*!
  * # Semantic UI 1.12.2 - Button
  * http://github.com/semantic-org/semantic-ui/

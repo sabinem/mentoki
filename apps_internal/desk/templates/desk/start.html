@@ -1,0 +1,80 @@
+{% extends "base/page.html" %}
+
+{% block section %}id="desk"{% endblock %}
+
+{% block main %}
+
+    <div class="ui page grid doubling two column">
+
+        <div class="column">
+
+            <h2 class="ui header inverted center aligned" id="desk_teach">
+                Dein Lernen
+            </h2>
+
+            <div class="ui cards">
+
+                {% for courseevent in study_courseevents %}
+
+                    <div class="ui card fluid">
+
+                        {% include 'desk/_courseevent_learn_record.html' %}
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+        <div class="column">
+
+            <!-- teach only -->
+            {% if teach_courses %}
+
+                <h2 class="ui header inverted center aligned">
+                    Dein Unterricht
+                </h2>
+
+                <div class="ui cards">
+
+                    {% for course in teach_courses %}
+
+                        <div class="ui card fluid">
+
+                            {% include 'desk/_courseevent_teach_record.html' %}
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+            <!-- end teach only -->
+
+            <!-- staff only -->
+            {% if request.user.is_staff %}
+
+                <h2 class="ui header center inverted aligned">
+                    Verwaltung
+                </h2>
+                <div class="ui cards">
+                    <div class="ui card fluid">
+
+                        {% include 'desk/_newsletter_admin_link.html' %}
+
+                    </div>
+                </div>
+
+            {% endif %}
+            <!-- end staff only -->
+
+        </div>
+
+    </div>
+
+{% endblock %}
+
+

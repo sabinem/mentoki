@@ -1,0 +1,21 @@
+<div class="content">
+
+    <div class="header">{{ courseevent.title }} von {{ courseevent.course.teachersrecord }}</div>
+
+    <div class="description">
+
+        {% if courseevent.start_date %}
+            gestartet vor {{ courseevent.start_date | timesince }}
+            <p>{{ courseevent.start_date }} - {{ courseevent.end_date }}</p>
+        {% endif %}
+
+        {{ courseevent.get_status_external_display }}
+
+    </div>
+
+</div>
+
+<a class="ui bottom attached button" href="{% url 'classroom:start' slug=courseevent.slug %}">
+    <i class="arrow right icon"></i>
+    Zum Klassenzimmer gehen
+</a>

@@ -1,0 +1,28 @@
+{% extends "base/page.html" %}
+{% block title %}
+    {{ courseevent.title }}
+{% endblock %}
+{% block section %}id="courseevent_public"{% endblock %}
+{% block main %}
+    <main class="ui two column doubling page grid">
+        <div class="row">
+            <div class="five wide column">
+                {% include 'courseoffer/detail/_courseevent_teachersinfo.html' %}
+            </div>
+            <div class="eleven wide column">
+                <div class="ui piled segment" >
+                    {% include 'courseoffer/detail/_courseevent_title.html' %}
+                    <div class="ui card fluid">
+                        <div class="content">
+                            <div class="description">
+                                {% include 'courseoffer/detail/_courseevent_operationaldata.html' %}
+                            </div>
+                        </div>
+                    </div>
+                    {% include 'courseoffer/detail/_courseevent_infofields.html' %}
+                </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

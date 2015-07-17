@@ -1,0 +1,36 @@
+{% extends "base/page.html" %}
+{% block title %}Kursliste{% endblock %}
+{% block section %}id="publiclist"{% endblock %}
+{% block main %}
+    <h2 class="ui block header" id="mainheader">Kursübersicht
+        <div class="sub header">Jetzt buchbar: Der Mentoki Starterkurs</div>
+    </h2>
+    <main class="ui two column page doubling grid">
+        <div class="row">
+            <div class="five wide column">
+                <div class="ui fluid vertical menu" id="courselist_menu">
+                    <div class="header item">
+                        Jetzt buchen
+                    </div>
+                    <div class="item">
+                        <div class="menu" >
+                            {% include 'courseoffer/list/_menu_now.html' %}
+                        </div>
+                    </div>
+                    <div class="header item">
+                        Vorschau Herbst-Kurse
+                    </div>
+                    <div class="item">
+                        <div class="menu">
+                            {% include 'courseoffer/list/_menu_preview.html' %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="eleven wide column">
+                {% include 'courseoffer/list/_items_now.html' %}
+                {% include 'courseoffer/list/_items_preview.html' %}
+            </div>
+        </div>
+    </main>
+{% endblock %}

@@ -1,54 +1,96 @@
-#import from django
-from django.conf.urls import patterns, include, url
-from django.views.defaults import *
+# -*- coding: utf-8 -*-
+
+from django.conf.urls import include, url, patterns
 from django.contrib import admin
+from django.conf.urls.i18n import i18n_patterns
 from django.views.generic.base import TemplateView
 from django.conf import settings
-from apps.newsletter.feeds import LatestNewsletterFeed
+from django.views.defaults import *
+from django.conf.urls import url, include
+from rest_framework import routers
+from api import views
+
+from rest_framework_extensions.routers import (
+    ExtendedDefaultRouter as DefaultRouter
+)
+router = DefaultRouter()
 
 
+router.register(r'users', views.UserViewSet)
+router.register(r'courses', views.CourseViewSet)
+router.register(r'materials', views.MaterialViewSet)
 
-urlpatterns = patterns('',
+
+course_routes = router.register(
+    r'courses',
+    views.CourseViewSet,
+    base_name='course'
+)
+course_routes.register(
+    r'materials',
+    views.MaterialViewSet,
+    base_name='course-material',
+    parents_query_lookups=['course']
+)
+
+
+#router.register(r'lessons', views.LessonViewSet)
+#router.register(r'courseevents', views.CourseEventsViewSet)
+router.register(r'materials', views.MaterialViewSet)
+#router.register(r'announcements', views.AnnouncementViewSet)
+#router.register(r'forums', views.ForumViewSet)
+#router.register(r'owner', views.OwnerViewSet)
+#router.register(r'participation', views.ParticipationViewSet)
+
+
+from apps_public.newsletter.feeds import LatestNewsletterFeed
+
+urlpatterns = i18n_patterns('',
+
+    url(r'^api/', include(router.urls)),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+
     # admin urls
     url(r'^admin/', include(admin.site.urls)),
 
-    # homepage and front
-    url(r'^', include('apps.home.urls', namespace='home')),
+    # course urls
+    url(r'^api/', include('api.urls')),
 
-    # courseevents
-    url(r'^kurse/', include('apps.courseevent.urls', namespace='courseevent')),
+    # homepage and front
+    url(r'^', include('apps_public.home.urls', namespace='home')),
+
+    # courses on offer
+    url(r'^kurse/', include('apps_public.courseoffer.urls', namespace='courseoffer')),
 
     # desk
-    url(r'^schreibtisch/', include('apps.desk.urls', namespace='desk')),
+    url(r'^schreibtisch/', include('apps_internal.desk.urls', namespace='desk')),
 
     # coursebackend
-    url(r'^(?P<course_slug>[a-z0-9_-]+)/kursvorbereitung/', include('apps.coursebackend.urls', namespace='coursebackend')),
-    url(r'^pdf/', include('apps.coursebackend.urls', namespace='coursebackend')),
+    url(r'^(?P<course_slug>[a-z0-9_-]+)/kursvorbereitung/', include('apps_internal.coursebackend.urls', namespace='coursebackend')),
+    url(r'^pdf/', include('apps_internal.coursebackend.urls', namespace='coursebackend')),
 
-    # forum and classroom
-    url(r'^forum/', include('apps.forum.urls', namespace='forum')),
-    url(r'^klassenzimmer/', include('apps.classroom.urls', namespace='classroom')),
+    # classroom
+    #url(r'^(?P<course_slug>[a-z0-9_-]+)/(?P<courseevent_slug>[a-z0-9_-]+)klassenzimmer/', include('apps_internal.classroom.urls', namespace='classroom')),
 
     # contact
-    url(r'^kontakt/', include('apps.contact.urls', namespace='contact')),
+    url(r'^kontakt/', include('apps_public.contact.urls', namespace='contact')),
 
     # file upload ...
-    url(r'^upload/', include('apps.upload.urls', namespace='upload')),
+    url(r'^upload/', include('apps_core.upload.urls', namespace='upload')),
 
     # file markdown ...
     url(r'^markdown/', include('django_markdown.urls')),
 
     # file newsletter ...
-    url(r'^newsletter/', include('apps.newsletter.urls', namespace='newsletter')),
+    url(r'^newsletter/', include('apps_public.newsletter.urls', namespace='newsletter')),
 
+    # feed
     url(r'^feed/$', LatestNewsletterFeed(), name='feed'),
-
-    # quiz
-    #url(r'^q/', include('quiz.urls')),
 
     # user handling urls
     url(r'^accounts/', include('userauth.urls')),
 
+    # robots
     (r'^robots\.txt/$', TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),
 
 )

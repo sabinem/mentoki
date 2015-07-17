@@ -1,0 +1,19 @@
+<div class="header" href="{% url "coursebackend:lesson:detail" course_slug=course.slug pk=node.pk %}">
+
+    <a href="{% url "coursebackend:lesson:detail" course_slug=course.slug pk=node.pk %}">
+       {{ node.title }}
+    </a>
+    <a class="worklink"
+        href="{% url 'coursebackend:lesson:update' course_slug=course.slug pk=node.pk %}">
+        <i class="write blue icon"></i>
+    </a>
+    <a class="worklink"
+        href="{% url 'coursebackend:lesson:material' course_slug=course.slug pk=node.pk %}">
+        <i class="plus blue icon"></i>
+    </a>
+    <a class="worklink"
+        href="{% url 'coursebackend:lesson:move' course_slug=course.slug pk=node.pk %}">
+        <i class="share blue icon"></i>
+    </a>
+
+</div>

@@ -1,0 +1,63 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Mentoki\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-06-23 13:24+0200\n"
+"PO-Revision-Date: 2015-06-23 13:31+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.6.9\n"
+"X-Language: de_CH\n"
+"X-Source-Language: C\n"
+
+#: mentoki/settings.py:116
+msgid "English"
+msgstr ""
+
+#: mentoki/settings.py:117
+msgid "German"
+msgstr ""
+
+#: public/home/templates/public/homepage/homepage.html:21
+#: public/home/templates/public/homepage/homepage.html:37
+msgid ""
+"The new teaching and learning platform for online mentors<br> and their "
+"students."
+msgstr "Die neue Lernplattform für Online-Mentoren und ihre Schüler."
+
+#: public/home/templates/public/homepage/homepage.html:49
+msgid "This is what you can learn with us:"
+msgstr "Bei uns kannst Du lernen:"
+
+#: userauth/templates/password_reset_done.html:8
+msgid ""
+"We've emailed you instructions for setting your password. You should be "
+"receiving them shortly."
+msgstr ""
+"Wir haben die Instruktionen zum Wiederherstellen Deines Passworts per Email "
+"an Dich geschickt."
+
+#: userauth/templates/password_reset_done.html:14
+msgid ""
+"If you don't receive an email, please make sure you've entered the address "
+"you registered with, and check your spam folder."
+msgstr ""
+"Wenn Du keine Email erhalten hast, check Deinen Spam-Folder und überprüfe "
+"mit welcher Email Du Dich bei uns angemeldet hast."
+
+#~ msgid ""
+#~ "\n"
+#~ "                       Die neue Lernplattform für Online-Mentoren<br> und "
+#~ "ihre Schüler.\n"
+#~ "                       "
+#~ msgstr "Die neue Lernplattform für Online-Mentoren und ihre Schüler"

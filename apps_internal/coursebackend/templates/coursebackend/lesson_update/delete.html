@@ -1,0 +1,50 @@
+{% extends "coursebackend/base_lesson.html" %}
+
+{% block header %}
+   Unterricht {{ course.title }}
+{% endblock %}
+
+{% block controls %}
+
+    {% include 'coursebackend/_checkbox_help.html' %}
+    {% include 'coursebackend/lessons_view/_checkbox_fulltext.html' %}
+
+{% endblock %}
+
+{% block help %}
+    {% include 'coursebackend/lesson_update/_help_lessons.html' %}
+{% endblock %}
+
+{% block nodes_breadcrumb %}
+    <div class="ui large breadcrumb" id ="page-breadcrumb">
+        {% include 'coursebackend/lessons_view/_breadcrumbs.html' %}
+    </div>
+{% endblock %}
+
+{% block recursetree_item_header %}
+    {% include 'coursebackend/lessons_view/_item_header_lesson.html' %}
+{% endblock %}
+
+{% block recursetree_item_content %}
+   {% if node.is_lesson %}
+       {% include 'coursebackend/lessons_view/_node_header_lesson.html' %}
+   {% else %}
+       {% include 'coursebackend/lessons_view/_node_header_lesson_step.html' %}
+   {% endif %}
+{% endblock %}
+
+{% block recursetree_item_more %}
+   {{ node.text | safe }}
+   {% block materials %}
+       {% include 'coursebackend/lessons_view/_material.html' %}
+   {% endblock %}
+{% endblock %}
+
+{% block form %}
+    {% include 'coursebackend/lesson_update/_form_delete.html' %}
+{% endblock %}
+
+{% block item_class %}
+    active
+{% endblock %}
+

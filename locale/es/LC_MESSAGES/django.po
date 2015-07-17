@@ -1,0 +1,112 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-06-23 17:44+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: mentoki/settings.py:116
+msgid "English"
+msgstr "Inglés"
+
+#: mentoki/settings.py:117
+msgid "German"
+msgstr "Alemán"
+
+#: mentoki/settings.py:118
+msgid "Spanish"
+msgstr "Español"
+
+#: public/home/templates/public/homepage/homepage.html:21
+msgid ""
+"The new teaching and learning platform for online mentors<br> and their "
+"students."
+msgstr ""
+"La nueva plataforma de enseñanza y aprendizaje para los mentores y en línea "
+"en sus alumnos."
+
+#: public/home/templates/public/homepage/homepage.html:37
+msgid "Die neue Lernplattform für Online-Mentoren und ihre Schüler."
+msgstr ""
+
+#: public/home/templates/public/homepage/homepage.html:49
+msgid "Bei uns kannst Du lernen:"
+msgstr ""
+
+#: public/home/templates/public/homepage/homepage.html:51
+msgid ""
+"Wir starten im September 2015 mit den ersten Kursen: In der Liste rechts "
+"siehst Du die Kurse in der Vorankündigung. Klicke die Links, um zu den "
+"Kursausschreibungen zu gelangen!"
+msgstr ""
+
+#: public/home/templates/public/homepage/homepage.html:62
+msgid "Christine Radomsky: Selbstführung"
+msgstr ""
+
+#: public/home/templates/public/homepage/homepage.html:68
+msgid "Franz Neff: 24/7 Schreibwerkstatt"
+msgstr ""
+
+#: public/home/templates/public/homepage/homepage.html:74
+msgid "Anette Pekrul: Keine Angst vorm Alter"
+msgstr ""
+
+#: public/home/templates/public/homepage/homepage.html:80
+msgid "Bea Ribaux: Schneller Lesen"
+msgstr ""
+
+#: public/home/templates/public/homepage/homepage.html:84
+msgid "Zur Kursübersicht"
+msgstr ""
+
+#: public/home/templates/public/homepage/homepage.html:95
+msgid "Bei uns kannst Du unterrichten:"
+msgstr ""
+
+#: public/home/templates/public/homepage/homepage.html:96
+msgid ""
+"Hast Du schon Erfahrung mit dem Online-Unterrichten? Der Starterkurs bildet "
+"Dich zum Online-Trainer aus und unterstützt Dich beim Entwickeln Deines "
+"Kursangebots für Mentoki"
+msgstr ""
+
+#: userauth/templates/password_reset_done.html:8
+msgid ""
+"We've emailed you instructions for setting your password. You should be "
+"receiving them shortly."
+msgstr ""
+"Te hemos enviado un correo electrónico instrucciones para configurar la "
+"contraseña. Usted debe estar recibiendo de ellos en breve."
+
+#: userauth/templates/password_reset_done.html:14
+msgid ""
+"If you don't receive an email, please make sure you've entered the address "
+"you registered with, and check your spam folder."
+msgstr ""
+"Si usted no recibe un correo electrónico, por favor, asegúrese de que ha "
+"introducido la dirección que se registró, y comprobar su carpeta de correo "
+"no deseado."
+
+#~ msgid ""
+#~ "The new teaching and learning platform for online mentors and their "
+#~ "students."
+#~ msgstr ""
+#~ "La nueva plataforma de enseñanza y aprendizaje para los mentores en línea "
+#~ "y sus estudiantes."
+
+#~ msgid "This is what you can learn with us:"
+#~ msgstr "Esto es lo que se puede aprender con nosotros:"

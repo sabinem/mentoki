@@ -1,0 +1,56 @@
+<div class="inline fields">
+    <div class="sixteen wide field">
+        <label>Titel</label>
+        {{ form.title.errors }}
+        {{ form.title }}
+    </div>
+</div>
+<div class="inline fields">
+    <div class="sixteen wide field">
+        <label>Kurze Beschreibung</label>
+        {{ form.description.errors }}
+        {{ form.description }}
+    </div>
+</div>
+<div class="inline fields">
+    <div class="sixteen wide field">
+        <label>Datei derzeit:</label>
+        {{ material.file.url }}
+        <p>{% include 'coursebackend/material/_material.html' %}</p>
+    </div>
+</div>
+<div class="inline fields">
+    <div class="field inline">
+        <label>Datei zurücksetzen?</label>
+        <input id="file-clear_id" name="file-clear" type="checkbox">
+    </div>
+</div>
+<div class="inline fields">
+    <div class="field">
+        <label>download möglich?</label>
+        {{ form.pdf_download_link.errors }}
+        {{ form.pdf_download_link }}
+    </div>
+    <div class="field">
+        <label>im Viewer anzeigen?</label>
+        {{ form.pdf_viewer.errors }}
+        {{ form.pdf_viewer }}
+    </div>
+    <div class="field">
+        <label>Link zum Pdf?</label>
+        {{ form.pdf_link.errors }}
+        {{ form.pdf_link }}
+    </div>
+</div>
+
+<div class="inline fields">
+    <div class="field inline">
+        <label>Neue Datei hochladen?</label>
+        <input id="id_file" name="file" type="file">
+        <div class="ui hidden negative message">
+                {{ form.file.errors }}
+        </div>
+    </div>
+</div>
+
+

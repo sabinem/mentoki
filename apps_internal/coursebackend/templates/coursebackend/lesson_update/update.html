@@ -1,0 +1,24 @@
+{% extends "coursebackend/lesson_update/base.html" %}
+
+{% block header %}
+   Unterricht {{ course.title }}
+{% endblock %}
+
+{% block controls %}
+    {% include 'coursebackend/_checkbox_help.html' %}
+{% endblock %}
+
+{% block help %}
+    {% include 'coursebackend/lesson_update/_help_lessons.html' %}
+{% endblock %}
+
+{% block nodes_breadcrumb %}
+    <div class="ui large breadcrumb" id ="page-breadcrumb">
+        {% include 'coursebackend/lessons_view/_breadcrumbs.html' %}
+    </div>
+{% endblock %}
+
+{% block form %}
+    {% include 'coursebackend/lesson_update/_form_update.html' %}
+{% endblock %}
+

@@ -1,0 +1,14 @@
+{% for courseevent in courseevents_preview %}
+    <div class="ui fluid segment">
+    <h3 class="ui header">
+        <a class="ui header"
+           href="{% url 'courseoffer:detail' slug=courseevent.slug %}">
+           {{ courseevent.title }} mit {{ courseevent.teachersrecord }}
+        </a>
+        <a class="ui tag teal label" href="{% url 'courseoffer:detail' slug=courseevent.slug %}">
+            Vorankündigung
+        </a>
+    </h3>
+    {{ courseevent.excerpt |safe}}
+    </div>
+{% endfor %}

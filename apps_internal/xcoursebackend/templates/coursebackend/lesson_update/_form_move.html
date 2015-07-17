@@ -1,0 +1,13 @@
+<form class="ui form" method="post" action="">{% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="ui form">
+        {% include 'coursebackend/lesson_update/_form_field_move.html' %}
+        <button type="submit" value="post" class="ui button">
+            Speichern
+        </button>
+        {% include 'coursebackend/lesson_update/_cancel.html' %}
+        <a href="{% url 'coursebackend:lesson:delete' course_slug=course.slug pk=lesson.pk %}" class="ui button">
+            Löschen
+        </a>
+    </div>
+</form>

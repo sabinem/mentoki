@@ -1,0 +1,6 @@
+{% for courseevent in courseevents_now %}
+      <a class="item" href="{% url 'courseoffer:detail' slug=courseevent.slug %}">
+          {{ courseevent.title }}
+      </a>
+{% endfor %}
+

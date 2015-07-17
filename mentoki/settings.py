@@ -32,7 +32,7 @@ SITE_ID = 1
 
 # Application definition
 INSTALLED_APPS = (
-    # django apps
+
     'suit',
     'django.contrib.admin',
     'django.contrib.admindocs',
@@ -43,7 +43,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.sites',
     #'raven.contrib.django.raven_compat',
-    # 3rd party apps
+
     'floppyforms',
     'crispy_forms',
     'semantic_ui',
@@ -53,22 +53,31 @@ INSTALLED_APPS = (
     'autoslug',
     'activelink',
     'django_markdown',
+    'django_coverage',
+    #'django_nose',
     'pagedown',
-    # homepage
-    'apps.home',
-    # courses
-    'apps.course',
-    'apps.coursebackend',
-    'apps.newsletter',
-    'apps.courseevent',
-    'apps.desk',
+    'rest_framework',
+    'api',
+
+    'apps_data.course',
+    'apps_data.courseevent',
+
+    'apps_internal.desk',
+    'apps_internal.coursebackend',
+    #'apps_internal.classroom',
+
+    'apps_public.newsletter',
+    'apps_public.contact',
+    'apps_public.home',
+    'apps_public.courseoffer',
+
+    'apps_core.upload',
+
+    #old will be deleted after data-transfer
     'apps.forum',
-    'apps.classroom',
-    # other
-    'apps.upload', 
-    #'apps.email',
-    'apps.contact',
+
     'apps.core',
+
     'userauth',
 )
 
@@ -80,6 +89,7 @@ if DEBUG:
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -108,11 +118,19 @@ DATABASES = {
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 gettext = lambda x: x
 
+from django.utils.translation import ugettext_lazy as _
 LANGUAGES = (
-    ('de', gettext('German')),
+    ('en',_('English')),
+    ('de',_('German')),
+    ('es',_('Spanish')),
 )
 
+
 LANGUAGE_CODE = 'de_DE'
+
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, 'locale'),
+)
 
 TIME_ZONE = 'Europe/Zurich'
 
@@ -279,8 +297,17 @@ LOGIN_URL = reverse_lazy("login")
 LOGIN_REDIRECT_URL = reverse_lazy("desk:start")
 LOGOUT_URL = reverse_lazy("home:home")
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
+    'PAGE_SIZE': 10
+}
 
-FILEPICKER_API_KEY = 'AXexAhTMeSbO1LZ911Es9z'
 
-CWD = os.getcwd()
-MEDIA_ROOT = os.path.join(CWD, 'media')
+# Use nose to run all tests
+#TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+# Tell nose to measure coverage on the 'foo' and 'bar' apps
+#NOSE_ARGS = [
+#    '--with-coverage',
+#    '--cover-package=apps_data/course/models',
+#]

@@ -1,0 +1,63 @@
+{% load mptt_tags %}
+
+<div class="ui divided list">
+
+    {% recursetree nodes %}
+
+        <div class="item">
+            {% block node_icon %}
+                <div
+                {% if not node.is_block %}
+                    class="contentdescription"
+                {% endif %}
+                >
+
+                <i class="top aligned icon">
+                   {{ node.lesson_nr }}
+                </i>
+
+                </div>
+
+            {% endblock %}
+
+            <div class="content">
+
+                {% block node_header %}
+                    <div
+                    {% if not node.is_block %}
+                        class="contentdescription"
+                    {% endif %}
+                    >
+                        {% include 'coursebackend/lessons_view/_node_header.html' %}
+                    </div>
+                {% endblock %}
+
+                {% block node_main %}
+                     {% if node.is_block %}
+                     <p>
+                         {{ node.description }}
+                     </p>
+                     <p>
+                         {{ node.text | safe }}
+                     </p>
+                     {% endif %}
+
+                {% endblock %}
+
+                {% if not is_leaf %}
+
+                    <div class="list">
+
+                        {{ children }}
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    {% endrecursetree %}
+
+</div>

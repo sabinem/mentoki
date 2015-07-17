@@ -4,7 +4,7 @@ from django.utils.timezone import is_aware, utc
 import datetime
 
 from django.contrib.auth.models import User
-from apps.courseevent.models import CourseEvent
+from apps_data.courseevent.models import CourseEvent
 from model_utils.models import TimeStampedModel
 from django.db import models
 from django.core.exceptions import ValidationError
@@ -40,7 +40,7 @@ class Forum(TimeStampedModel):
     """
     title = models.CharField(max_length=100)
     text = models.TextField(blank=True)
-    courseevent = models.ForeignKey(CourseEvent)
+    courseevent = models.ForeignKey(CourseEvent, related_name="kursforum")
 
     def __unicode__(self):
         return u'%s' % (self.title)
@@ -87,7 +87,7 @@ class SubForum(TimeStampedModel):
 
 class ForumContributionModel(TimeStampedModel):
     text = models.TextField()
-    author = models.ForeignKey(User)
+
     forum = models.ForeignKey(Forum)
 
     class Meta:
@@ -101,6 +101,7 @@ class Thread(ForumContributionModel):
     """This is a thread. A thread still has its own url, but not with a slug, rather it has just an id."""
     title = models.CharField(max_length=100)
     subforum = models.ForeignKey(SubForum)
+    author = models.ForeignKey(User, related_name="beitragsautor")
     #!!! modified of Thread must be updated for save method of Comment and Post!!!
 
 
@@ -124,6 +125,7 @@ class Post(ForumContributionModel):
     """These are the posts under a thread. They are only shown on the threads page and have no url
     on their own."""
     thread = models.ForeignKey(Thread)
+    author = models.ForeignKey(User, related_name="postautor")
 
 
     def __unicode__(self):

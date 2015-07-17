@@ -1,0 +1,43 @@
+{% extends "coursebackend/base_lesson.html" %}
+
+{% block help %}
+
+    {% include 'coursebackend/lessons_view/_help_lessons.html' %}
+
+{% endblock %}
+
+{% block controls %}
+
+    {% include 'coursebackend/_checkbox_help.html' %}
+    {% include 'coursebackend/_checkbox_worklinks.html' %}
+
+{% endblock %}
+
+
+{% block nodes_breadcrumb %}
+
+    <div class="ui large breadcrumb" id ="page-breadcrumb">
+
+        {% include 'coursebackend/lessons_view/_breadcrumbs.html' %}
+
+        {% include 'coursebackend/lessons_view/_next_current_previous.html' %}
+
+    </div>
+
+{% endblock %}
+
+{% block recursetree_item_header %}
+    {% include 'coursebackend/lessons_view/_item_header_lesson.html' %}
+{% endblock %}
+
+{% block recursetree_item_content %}
+   {% include 'coursebackend/lessons_view/_node_header_lesson_step.html' %}
+   {{ node.text | safe }}
+   {% include 'coursebackend/lessons_view/_material.html' %}
+{% endblock %}
+
+{% block material_view %}
+    {% include 'coursebackend/lessons_view/_material_step.html' %}
+{% endblock %}
+
+
