@@ -2,33 +2,14 @@
 
 from __future__ import unicode_literals, absolute_import
 
-from ..models import Course, CourseOwner, Lesson, Material
+from .models import Account
 
 import factory
 
-class CourseFactory(factory.DjangoModelFactory):
+from .models import Account
+
+
+class AccountFactory(factory.Factory):
     class Meta:
-        model = Course
+        model = Account
 
-
-class CourseOwnerFactory(factory.DjangoModelFactory):
-    class Meta:
-        model = CourseOwner
-
-
-class LessonFactory(factory.DjangoModelFactory):
-    class Meta:
-        model = Lesson
-
-
-class MaterialFactory(factory.DjangoModelFactory):
-    class Meta:
-        model = Material
-
-
-class UserFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = 'Account'
-        django_get_or_create = ('username',)
-
-    username = 'john'

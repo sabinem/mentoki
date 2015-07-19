@@ -27,15 +27,19 @@ class AuthMixin(LoginRequiredMixin, UserPassesTestMixin, MessageMixin):
         This function belongs to the Braces Mixin UserPasesTest: test for using the course backend.
         Only the Superuser and the owner of the course are allowed
         """
-        if user.is_superuser:
-            return True
-        else:
-            try:
-                course = get_object_or_404(Course, slug=self.kwargs['course_slug'])
+        course = get_object_or_404(Course, slug=self.kwargs['course_slug'])
+        try:
+            if self.request.session['workon_course_id'] == course.id:
+                return True
+        except:
+            # check for user
+            if user.is_superuser:
+                self.request.session['workon_course_id'] = course.id
+                return True
+            else:
                 if user in course.teachers:
+                    self.request.session['workon_course_id'] = course.id
                     return True
-            except:
-                pass
         return None
 
 

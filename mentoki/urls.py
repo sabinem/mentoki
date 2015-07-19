@@ -16,9 +16,10 @@ from rest_framework_extensions.routers import (
 router = DefaultRouter()
 
 
-router.register(r'users', views.UserViewSet)
+router.register(r'accounts', views.AccountViewSet)
 router.register(r'courses', views.CourseViewSet)
 router.register(r'materials', views.MaterialViewSet)
+router.register(r'lessons', views.LessonViewSet)
 
 
 course_routes = router.register(
@@ -88,7 +89,7 @@ urlpatterns = i18n_patterns('',
     url(r'^feed/$', LatestNewsletterFeed(), name='feed'),
 
     # user handling urls
-    url(r'^accounts/', include('userauth.urls')),
+    url(r'^accounts/', include('authentication.urls')),
 
     # robots
     (r'^robots\.txt/$', TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),

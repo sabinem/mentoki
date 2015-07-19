@@ -9,6 +9,8 @@ from .factories import CourseFactory
 
 from django.test import Client
 
+from django.contrib.auth import get_user_model
+
 
 client = Client()
 
@@ -27,6 +29,10 @@ class LessonAttributesTest(TestCase):
         """
         slug1 = "slug1"
         self.course1 = CourseFactory.create(title="title1", slug=slug1)
+        self.user = get_user_model().objects.create(username='testuser1',
+                                                     email="name1@mail.com",
+                                                     first_name="firstname1",
+                                                     last_name="lastname1")
 
         lesson1 = Lesson(course=self.course1,nr=1, title="title1")
         lesson1.insert_at(None)

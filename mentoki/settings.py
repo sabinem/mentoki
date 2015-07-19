@@ -33,7 +33,7 @@ SITE_ID = 1
 # Application definition
 INSTALLED_APPS = (
 
-    'suit',
+    #'suit',
     'django.contrib.admin',
     'django.contrib.admindocs',
     'django.contrib.auth',
@@ -78,7 +78,7 @@ INSTALLED_APPS = (
 
     'apps.core',
 
-    'userauth',
+    'authentication',
 )
 
 if DEBUG:
@@ -86,6 +86,7 @@ if DEBUG:
         'debug_toolbar',
     )
 
+AUTH_USER_MODEL = 'authentication.Account'
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',

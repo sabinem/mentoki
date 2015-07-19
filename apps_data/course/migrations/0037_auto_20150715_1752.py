@@ -16,9 +16,4 @@ class Migration(migrations.Migration):
             model_name='material',
             name='owners',
         ),
-        migrations.AlterField(
-            model_name='coursematerialunit',
-            name='file',
-            field=models.FileField(upload_to=apps_data.course.models.oldcoursepart.lesson_material_name, verbose_name='Datei', blank=True),
-        ),
     ]

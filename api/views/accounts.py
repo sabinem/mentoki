@@ -4,9 +4,9 @@ from rest_framework import viewsets
 from django.contrib.auth.models import User, Group, Permission
 
 
-class UserViewSet(viewsets.ModelViewSet):
+class AccountViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+    queryset = Account.objects.all()
+    serializer_class = AccountSerializer

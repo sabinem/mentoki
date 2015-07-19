@@ -4,17 +4,12 @@ from __future__ import unicode_literals, absolute_import
 
 from django.contrib import admin
 
-from .models import Course, CourseOwner, Lesson, Material
+from .models import Course, Lesson, Material, CourseOwner
 
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'slug', 'teachersrecord', 'email', 'modified')
-
-
-@admin.register(CourseOwner)
-class CourseOwnerAdmin(admin.ModelAdmin):
-    list_display = ('id', 'course', 'user', 'modified')
+    list_display = ('id', 'title', 'slug', 'teachersrecord', 'email', 'modified', 'teachers', 'teachersrecord')
 
 
 @admin.register(Lesson)
@@ -29,8 +24,14 @@ class MaterialAdmin(admin.ModelAdmin):
     list_filter = ('course',)
 
 
+@admin.register(CourseOwner)
+class CourseOwnerAdmin(admin.ModelAdmin):
+    list_display = ('id', 'course', 'user', 'modified')
+
+
 # old models: will be deleted as soon as the data has been transfered
 from .models import CourseBlock, CourseUnit, CourseMaterialUnit
+
 
 @admin.register(CourseBlock)
 class CourseBlockAdmin(admin.ModelAdmin):

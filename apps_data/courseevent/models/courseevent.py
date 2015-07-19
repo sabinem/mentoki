@@ -93,7 +93,9 @@ class CourseEvent(TimeStampedModel):
     public_ready_for_booking = QueryManager(status_external=STATUS_EXTERNAL.booking)
     public_ready_for_preview = QueryManager(status_external=STATUS_EXTERNAL.preview)
 
-    participants = models.ManyToManyField(settings.AUTH_USER_MODEL)
+    participation = models.ManyToManyField(settings.AUTH_USER_MODEL, through="CourseEventParticipation", related_name='participation')
+
+    #participants = models.ForeignKey(settings.AUTH_USER_MODEL)
 
     def __unicode__(self):
         return self.title

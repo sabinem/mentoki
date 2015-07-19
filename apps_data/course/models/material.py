@@ -22,14 +22,15 @@ from model_utils.managers import PassThroughManager
 from autoslug import AutoSlugField
 
 from .course import Course
-from ..managers import MaterialQuerySet
-
-# will be deleted after data transfer
+# still a Foreignkey on a old table: this will be deleted after the data-transfer
 from .oldcoursepart import CourseMaterialUnit
 
 
 class ContentTypeRestrictedFileField(FileField):
     """
+    I have copied this from this source:
+    http://nemesisdesign.net/blog/coding/django-filefield-content-type-size-validation/
+
     Same as FileField, but you can specify:
         * content_types - list containing allowed content_types. Example: ['application/pdf', 'image/jpeg']
         * max_upload_size - a number indicating the maximum file size allowed for upload.
@@ -43,6 +44,7 @@ class ContentTypeRestrictedFileField(FileField):
             500MB - 429916160
     """
     def __init__(self, content_types=None, max_upload_size=None, **kwargs):
+        # these are defined in the field
         self.content_types = content_types
         self.max_upload_size = max_upload_size
         super(ContentTypeRestrictedFileField, self).__init__(**kwargs)
@@ -126,7 +128,3 @@ class Material(TimeStampedModel):
         if self.document_type == self.DOCTYPE.zip:
             if (self.pdf_viewer or self.pdf_link):
                 forms.ValidationError(_('zip file kann nicht angezeigt werden.'))
-
-    def save(self):
-        self.owners = self.course.owner
-        super(Material, self).save()

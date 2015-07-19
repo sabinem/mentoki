@@ -6,6 +6,7 @@ from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey, TreeManager
 from django.utils.functional import cached_property
 from django.template.defaultfilters import slugify
+from django.conf import settings
 
 from model_utils.models import TimeStampedModel
 

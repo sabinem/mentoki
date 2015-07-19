@@ -2,27 +2,28 @@
 
 from __future__ import unicode_literals
 
-from django.shortcuts import get_object_or_404
-
 import floppyforms.__future__ as forms
 
-from crispy_forms.helper import FormHelper
-
-from apps_data.course.models import Material, Course
+from apps_data.course.models import Material
 
 
 class MaterialForm(forms.ModelForm):
 
     class Meta:
         model = Material
-        fields = ('title', 'description', 'document_type', 'pdf_download_link', 'pdf_viewer', 'pdf_link', 'file')
+        fields = ('excerpt',)
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user=None, *args, **kwargs):
+        super(CourseForm, self).__init__(*args, **kwargs)
+        if not self.instance.pk:
+           raise forms.ValidationError(_("Course does not exist yet"))
+        self.course = course
 
-        course_slug = kwargs.pop('course_slug', None)
-        course = get_object_or_404(Course, slug=course_slug)
+    def clean(self):
+        cleaned_data = super(CourseForm, self).clean()
+        return cleaned_data
 
-        super(MaterialForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_tag = False
-
+    def save(self, commit=True):
+        if not self.instance.pk:
+            self.instance.course = self.course
+        return super(CourseForm, self).save(commit)

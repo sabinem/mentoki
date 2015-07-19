@@ -8,31 +8,35 @@ from django.shortcuts import get_object_or_404
 from django.conf import settings
 from django.utils.functional import cached_property
 from django.core.urlresolvers import reverse
-from django.contrib.auth.models import User
 
 from model_utils.models import TimeStampedModel
 from model_utils.managers import PassThroughManager
 from autoslug import AutoSlugField
 
+
 class CourseManager(models.Manager):
 
     def get_course_or_404_from_slug(self, slug):
+        # gets course from slug
         return get_object_or_404(self, slug=slug)
 
-    def create_course_for_user(self, user, title, slug):
-        return get_object_or_404(self, slug=slug)
+    # <obj>.owners.all() gives all the owners for this course
 
-    def teaching(self, user):
-        course_ids = CourseOwner.objects.teachingcourses(user=user).values_list('course_id', flat=True)
-        print course_ids
-        return self.filter(pk__in=course_ids)
 
 
 class Course(TimeStampedModel):
+    """
+    Courses are the central model of the Application. They gather all the material for teaching the subject
+    without any regards to the actual event of teaching that material to students.
+    """
 
     title = models.CharField(max_length=100, verbose_name='Überschrift')
-    slug = AutoSlugField(populate_from='title', blank=True, unique=True)
+    slug = AutoSlugField(populate_from='title', unique=True)
 
+    # course owners are the teachers
+    owners = models.ManyToManyField(settings.AUTH_USER_MODEL, through='CourseOwner')
+
+    # Information about the course
     excerpt = models.TextField(blank=True,verbose_name="Abstrakt")
     target_group = models.TextField(blank=True, verbose_name="Zielgruppe")
     prerequisites = models.TextField(blank=True, verbose_name="Voraussetzungen")
@@ -40,11 +44,9 @@ class Course(TimeStampedModel):
     structure = models.TextField(blank=True, verbose_name="Gliederung")
     text = models.TextField(blank=True, verbose_name='Kursbeschreibung')
 
-    owners = models.ManyToManyField(settings.AUTH_USER_MODEL, through='CourseOwner')
-
+    # Email Account for the course
     email = models.EmailField(default="info@mentoki.com")
 
-    #objects = PassThroughManager.for_queryset_class(CourseQuerySet)()
     objects = CourseManager()
 
     class Meta:
@@ -55,6 +57,9 @@ class Course(TimeStampedModel):
         return u'%s' % (self.title)
 
     def is_owner(self, user):
+        """
+        Is this person a teacher in this course? (Then he may work on it.)
+        """
         try:
             CourseOwner.objects.get(course=self, user=user)
             return True
@@ -63,52 +68,48 @@ class Course(TimeStampedModel):
 
     @cached_property
     def teachers(self):
-        user_ids = CourseOwner.objects.courseteachers(course=self).values_list('user_id', flat=True)
-        return User.objects.filter(id__in=user_ids)
+        """
+        Returns all the accounts of users who are involved with teaching that course sorted by the order in which
+        they should be displayed
+        """
+        return self.owners.all().order_by('courseowner__display_nr')
 
     @cached_property
     def teachersrecord(self):
+        """
+        Returns the teachers of the course as a string ready for display.
+        """
         teachers = self.teachers
         namesstring = ""
         for teacher in teachers:
             if namesstring != "":
                 namesstring += " und "
-            namesstring += u"%s %s" % (teacher.first_name, teacher.last_name)
+            namesstring += teacher.get_full_name()
         return namesstring
 
     def get_absolute_url(self):
         return reverse('coursebackend:course:detail', kwargs={'course_slug':self.slug})
 
 
-class CourseOwnerManager(models.Manager):
-
-    def teachingcourses(self, user):
-        return self.filter(user=user).select_related('course')
-
-    def courseteachers(self, course):
-        return self.filter(course=course).order_by('display_nr').select_related('user')
-
-    def teachers_courseinfo(self, course):
-        return self.filter(course=course, display=True).select_related('user')
-
-
 def foto_location(instance, filename):
         return '/'.join([instance.course.slug, filename])
 
 class CourseOwner(TimeStampedModel):
-
+    """
+    Relationship of Courses to Accounts through the Relationship of teaching.
+    """
     course = models.ForeignKey(Course)
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
 
+    # special text and foto for this course
     text = models.TextField(blank=True, verbose_name='Text')
-
     foto = models.ImageField(upload_to=foto_location, blank=True)
 
+    # this information is about the display of the teachers in the course-profile:
+    # Should the whole profile be displayed or just the name
     display = models.BooleanField(default=True, verbose_name='Anzeigen bei der Kursausschreibung?')
-
+    # Whose name goes first?
     display_nr = models.IntegerField(default=1, verbose_name='Anzeigereihenfolge bei mehreren Kursleitern')
-
-    objects = CourseOwnerManager()
 
     class Meta:
         verbose_name = "Kursleitung"
@@ -118,6 +119,3 @@ class CourseOwner(TimeStampedModel):
     def __unicode__(self):
         return u'%s %s' % (self.course, self.user)
 
-    @cached_property
-    def owner_name(self):
-        return u'%s %s' % (self.user.first_name, self.user.last_name)

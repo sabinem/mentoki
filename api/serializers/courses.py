@@ -5,7 +5,7 @@ from apps_data.course.models import *
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework_recursive.fields import RecursiveField
-from django.contrib.auth.models import User
+from authentication.models import Account
 from rest_framework_extensions.mixins import DetailSerializerMixin
 
 class CourseCompleteSerializer(serializers.HyperlinkedModelSerializer):
@@ -24,9 +24,9 @@ class CourseOperationalSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url', 'title', 'slug', 'excerpt', 'teachersrecord')
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    owner = serializers.HyperlinkedRelatedField(many=True, view_name='course-detail', read_only=True)
+#class AccountSerializer(serializers.HyperlinkedModelSerializer):
+#    owner = serializers.HyperlinkedRelatedField(many=True, view_name='course-detail', read_only=True)
 
-    class Meta:
-        model = User
-        fields = ('url', 'username', 'owners')
+#    class Meta:
+#        model = Account
+#        fields = ('url', 'username', )
