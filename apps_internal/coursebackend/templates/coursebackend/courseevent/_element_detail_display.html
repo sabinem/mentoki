@@ -1,0 +1,153 @@
+<h3 class="ui header">
+    Maximale Teilnehmerzahl
+    <a class= "worklink item"
+       href="{% url 'coursebackend:courseevent:update' course_slug=course.slug slug=courseevent.slug field="max_participants" %}">
+       <i class="write blue icon"></i>
+    </a>
+</h3>
+{{ courseevent.max_participants }}
+
+<div class="ui fitted divider"></div>
+
+<h3 class="ui header">
+    Wochenanzahl
+    <a class= "worklink item"
+       href="{% url 'coursebackend:courseevent:update' course_slug=course.slug slug=courseevent.slug field="nr_weeks" %}">
+       <i class="write blue icon"></i>
+    </a>
+</h3>
+{{ courseevent.nr_weeks }}
+
+<div class="ui fitted divider"></div>
+
+<h3 class="ui header">
+    Interner Status
+    <a class= "worklink item"
+       href="{% url 'coursebackend:courseevent:update' course_slug=course.slug slug=courseevent.slug field="status_internal" %}">
+       <i class="write blue icon"></i>
+    </a>
+</h3>
+{{ courseevent.get_status_internal_display }}
+
+<div class="ui fitted divider"></div>
+
+<h3 class="ui header">
+    Kursart
+    <a class= "worklink item"
+       href="{% url 'coursebackend:courseevent:update' course_slug=course.slug slug=courseevent.slug field="event_type" %}">
+       <i class="write blue icon"></i>
+    </a>
+</h3>
+{{ courseevent.get_event_type_display }}
+
+<div class="ui fitted divider"></div>
+
+<h3 class="ui header">
+    Startdatum
+    <a class= "worklink item"
+       href="{% url 'coursebackend:courseevent:update' course_slug=course.slug slug=courseevent.slug field="start_date" %}">
+       <i class="write blue icon"></i>
+    </a>
+</h3>
+{{ courseevent.start_date }}
+
+<div class="ui fitted divider"></div>
+
+<h3 class="ui header">
+    Abstrakt
+    <a class= "worklink item"
+       href="{% url 'coursebackend:courseevent:update' course_slug=course.slug slug=courseevent.slug field="excerpt" %}">
+       <i class="write blue icon"></i>
+    </a>
+</h3>
+{{ courseevent.excerpt | safe }}
+
+<div class="ui fitted divider"></div>
+
+<h3 class="ui header">
+    Video:
+    <a class= "worklink item"
+       href="{% url 'coursebackend:courseevent:update' course_slug=course.slug slug=courseevent.slug field="video_url" %}">
+       <i class="write blue icon"></i>
+    </a>
+</h3>
+{% if courseevent.video_url %}
+    {% include 'coursebackend/courseevent/_video_embed.html' %}
+{% endif %}
+
+<div class="ui fitted divider"></div>
+
+<h3 class="ui header">
+    Zielgruppe:
+    <a class= "worklink item"
+        href="{% url 'coursebackend:courseevent:update' course_slug=course.slug slug=courseevent.slug field="target_group" %}">
+        <i class="write blue icon"></i>
+    </a>
+</h3>
+{{ courseevent.target_group | safe }}
+
+<div class="ui fitted divider"></div>
+
+<h3 class="ui header">
+    Voraussetzungen:
+    <a class= "worklink item"
+        href="{% url 'coursebackend:courseevent:update' course_slug=course.slug slug=courseevent.slug field="prerequisites" %}">
+        <i class="write blue icon"></i>
+    </a>
+</h3>
+{{ courseevent.prerequisites | safe }}
+
+<div class="ui fitted divider"></div>
+
+<h3 class="ui header">
+    Was nimmt der Teilnehmer aus dem Kurs mit:
+    <a class= "worklink item"
+        href="{% url 'coursebackend:courseevent:update' course_slug=course.slug slug=courseevent.slug field="project" %}">
+        <i class="write blue icon"></i>
+    </a>
+</h3>
+{{ courseevent.project | safe }}
+
+<div class="ui fitted divider"></div>
+
+<h3 class="ui header">
+    Gliederung:
+    <a class= "worklink item"
+        href="{% url 'coursebackend:courseevent:update' course_slug=course.slug slug=courseevent.slug field="structure" %}">
+        <i class="write blue icon"></i>
+    </a>
+</h3>
+{{ courseevent.structure | safe  }}
+
+<div class="ui fitted divider"></div>
+
+<h3 class="ui header">
+    Freie Kursbeschreibung:
+    <a class= "worklink item"
+        href="{% url 'coursebackend:courseevent:update' course_slug=course.slug slug=courseevent.slug field="text" %}">
+        <i class="write blue icon"></i>
+    </a>
+</h3>
+{{ courseevent.text | safe }}
+
+<div class="ui fitted divider"></div>
+
+<h3 class="ui header">
+    Kursformat:
+    <a class= "worklink item"
+        href="{% url 'coursebackend:courseevent:update' course_slug=course.slug slug=courseevent.slug field="format" %}">
+        <i class="write blue icon"></i>
+    </a>
+</h3>
+{{ courseevent.format | safe }}
+
+<div class="ui fitted divider"></div>
+
+<h3 class="ui header">
+    Arbeitsbelastung:
+    <a class= "worklink item"
+        href="{% url 'coursebackend:courseevent:update' course_slug=course.slug slug=courseevent.slug field="workload" %}">
+        <i class="write blue icon"></i>
+    </a>
+</h3>
+{{ courseevent.workload | safe }}

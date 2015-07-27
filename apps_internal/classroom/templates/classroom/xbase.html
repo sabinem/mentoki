@@ -1,0 +1,97 @@
+{% extends "base/page.html" %}
+
+{% comment %}
+Inherited blocks:
+-----------------
+cutomized:
+
+   custom_menu_item: expected: <a class=item>...</a> or <div class=item>...</div>
+
+   section: expected: id="..."
+
+   main: expected: <div class="ui page grid">...</div>
+
+Inherited, as is:
+   footer
+
+New blocks:
+-----------
+with defaults:
+   page_topic: has default: Unterricht
+   controls: has default: help-checkbox
+
+empty:
+   page_header
+   help
+   page_content
+
+{% endcomment %}
+
+{% block section %}
+    id="classroom"
+{% endblock %}
+
+{% block custom_menu_item %}
+    {% if user.is_superuser or participant.is_owner %}
+        <a href="{% url 'coursebackend:course:detail' course_slug=courseevent.course_slug %}" class="item">
+            Unterrichtsvorbereitung
+        </a>
+    {% endif %}
+{% endblock %}
+
+
+{% block main %}
+
+    <div class="ui page grid" >
+
+        <div class="content classroombackend ui column">
+
+            <div class="ui top attached demo menu">
+
+                <a class="item" id="sidebar_button">
+                  <i class="sidebar icon"></i>
+                  Menu
+                </a>
+
+                {% block page_topic %}
+                    <div class="item">
+                        Klassenzimmer
+                        {{ courseevent.title }}
+                    </div>
+                {% endblock %}
+
+                {% block controls %}
+                    {% include 'coursebackend/_checkbox_help.html' %}
+                {% endblock %}
+
+            </div>
+
+            <div class="ui bottom attached segment" >
+
+                <div class="ui labeled icon left inline vertical sidebar menu" id="coursemenu">
+                    {% include 'classroom/_menu.html' %}
+                </div>
+
+                <div class="pusher">
+
+                    <div class="ui basic segment">
+                        {% comment %}
+                        <h2 class="ui header" id="page-header">
+                            {% block page_header %}
+                            {% endblock %}
+                        </h2>
+                        {% endcomment %}
+                        <div id="helpinstructions">
+                            <div class="ui segment message">
+                                {% block help %}
+                                {% endblock %}
+                            </div>
+                        </div>
+                        {% block page_content %}
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "classroom/base.html" %}
+{% block classroom_header %}
+       {{ courseevent.courseevent_title }}
+       : Ankündigungen
+{% endblock %}
+{% block regular_page_content %}
+            <div class="ui segment">
+            <h2 class="ui  header ">
+            Ankündigungen
+                <div class="ui checkbox" id="expandcontent">
+                    <input type="checkbox">
+                    <label>den vollen Text anzeigen</label>
+                </div>
+            </h2>
+            {% for announcement in announcements %}
+                <div class="ui raised segment">
+                    {{ announcement.published_at |date:'d.m.Y' }}
+                    <h3 class="ui header">
+                        <a href="{% url 'classroom:announcement:detail' slug=match.kwargs.slug id=announcement.id %}">
+                            {{ announcement.title }}
+                        </a>
+                    </h3>
+                    <div class="fullcontent">{{ announcement.text | safe }}</div>
+                </div>
+            {% endfor %}
+            </div>
+{% endblock %}

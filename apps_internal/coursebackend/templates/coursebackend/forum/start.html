@@ -1,0 +1,24 @@
+{% extends "coursebackend/base_forum.html" %}
+
+{% block page_header %}
+    Forum {{ courseevent.title }}
+{% endblock %}
+
+{% block help %}
+    {% include 'coursebackend/forum/_help_forum.html' %}
+{% endblock %}
+
+{% block controls %}
+    {% include 'coursebackend/_checkbox_help.html' %}
+    {% include 'coursebackend/_checkbox_worklinks.html' %}
+    {% include 'coursebackend/_checkbox_structure.html' %}
+{% endblock %}
+
+
+{% block recursetree_item_content %}
+
+   {% include 'coursebackend/forum/_node_header_forum.html' %}
+   {{ node.description }}
+   {{ node.text | safe }}
+
+{% endblock %}

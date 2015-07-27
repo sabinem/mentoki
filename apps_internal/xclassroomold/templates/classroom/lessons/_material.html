@@ -1,0 +1,28 @@
+    <div class="ui segment" id="ui_textdisplay">
+        <h2 class="header ui h2">
+            <div>
+                {% if courseblock.is_numbered %}
+                      {{ unit.display_nr }}.{{ material.display_nr }}
+                {% endif %}
+
+                {{ material.title }}
+
+            {% if material.document_type == material.DOCTYPE_PDFVIEWDOWNLOAD or material.document_type == material.DOCTYPE_PDFDOWNLOADONLY %}
+                {% if material.file %}
+                    <a href="{% url 'course:download' slug=material.slug %}">
+                        <i class="download icon blue"></i>
+                    </a>
+                {% endif %}
+            {% endif %}
+               </div>
+        </h2>
+        <div>
+            {{ material.text | safe }}
+            {% if material.document_type == material.DOCTYPE_PDFVIEWDOWNLOAD %}
+                {% if material.file %}
+                    <object data="{{ material.file.url }}" type="application/pdf" width="100%" height="800px">
+                    </object>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>

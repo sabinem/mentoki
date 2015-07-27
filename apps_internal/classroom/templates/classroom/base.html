@@ -1,97 +1,30 @@
-{% extends "base/page.html" %}
+{% extends "base/base_pusher.html" %}
 
 {% comment %}
-Inherited blocks:
------------------
-cutomized:
 
-   custom_menu_item: expected: <a class=item>...</a> or <div class=item>...</div>
+    Blocks filled here:
+    -------------------
+    {% block page_section_css_id %}classroombackend{% endblock %}
 
-   section: expected: id="..."
+    {% block sidebar_menu %}{% include 'coursebackend/_menu.html' %}{% endblock %}
 
-   main: expected: <div class="ui page grid">...</div>
-
-Inherited, as is:
-   footer
-
-New blocks:
------------
-with defaults:
-   page_topic: has default: Unterricht
-   controls: has default: help-checkbox
-
-empty:
-   page_header
-   help
-   page_content
+    Additional inherited blocks: see base_pusher.html, they still have to be filled
+    -------------------------------------------------------------------------------
+    {% block page_subsection %}{% endblock %}
+    {% block controls %}{% endblock %}
+    {% block page_content %}{% endblock %}
 
 {% endcomment %}
 
-{% block section %}
-    id="classroom"
+<!-- BLOCK: css id subsection: filled! -->
+
+{% block page_section_css_id %}classroombackend{% endblock %}
+
+{% block sidebar_menu %}
+
+    <!-- BLOCK: sidebar: filled! -->
+
+    {% include 'coursebackend/_menu.html' %}
+
 {% endblock %}
 
-{% block custom_menu_item %}
-    {% if user.is_superuser or participant.is_owner %}
-        <a href="{% url 'coursebackend:course:detail' course_slug=courseevent.course_slug %}" class="item">
-            Unterrichtsvorbereitung
-        </a>
-    {% endif %}
-{% endblock %}
-
-
-{% block main %}
-
-    <div class="ui page grid" >
-
-        <div class="content classroombackend ui column">
-
-            <div class="ui top attached demo menu">
-
-                <a class="item" id="sidebar_button">
-                  <i class="sidebar icon"></i>
-                  Menu
-                </a>
-
-                {% block page_topic %}
-                    <div class="item">
-                        Klassenzimmer
-                        {{ courseevent.title }}
-                    </div>
-                {% endblock %}
-
-                {% block controls %}
-                    {% include 'coursebackend/_checkbox_help.html' %}
-                {% endblock %}
-
-            </div>
-
-            <div class="ui bottom attached segment" >
-
-                <div class="ui labeled icon left inline vertical sidebar menu" id="coursemenu">
-                    {% include 'classroom/_menu.html' %}
-                </div>
-
-                <div class="pusher">
-
-                    <div class="ui basic segment">
-                        {% comment %}
-                        <h2 class="ui header" id="page-header">
-                            {% block page_header %}
-                            {% endblock %}
-                        </h2>
-                        {% endcomment %}
-                        <div id="helpinstructions">
-                            <div class="ui segment message">
-                                {% block help %}
-                                {% endblock %}
-                            </div>
-                        </div>
-                        {% block page_content %}
-                        {% endblock %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-{% endblock %}

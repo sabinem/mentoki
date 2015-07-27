@@ -1,51 +1,128 @@
 {% load activelink %}
-<div class="ui fluid vertical yellow menu" id="classroommenu">
-      <div class="header item">
-          Klassenzimmer
-      </div>
-      <div class="item">
-          <div class="menu">
+<div class="ui fluid vertical menu">
+
+    <div class="header item">
+      Vorlage Kurs
+    </div>
+
+    <a class="item
+      {% ifstartswith 'coursebackend:course:detail' course_slug=course.slug %}
+           active
+      {% endifstartswith %}
+      " href="{% include 'coursebackend/course/_url_detail.html' %}">
+      Kursvorlage
+    </a>
+
+    <a class="item completed
+      {% ifstartswith 'coursebackend:courseowner:list' course_slug=course.slug %}active {% endifstartswith %}
+      " href="{% url 'coursebackend:courseowner:list' course_slug=course.slug %}">
+      Kursleitung
+    </a>
+
+    <div class="header item">
+      Kursereignisse
+    </div>
+
+          {% for courseevent in courseevents %}
+
               <a class="item
-                  {% ifstartswith "classroom:start" slug=match.kwargs.slug %}active black{% endifstartswith %}
-                  "href="{% url 'classroom:start' slug=match.kwargs.slug %}">Ankündigungen
+                  {% ifstartswith 'coursebackend:courseevent:detail' course_slug=course.slug slug=courseevent.slug %}
+                       active
+                  {% endifstartswith %}
+                  " href="{% include 'coursebackend/courseevent/_url_detail.html' %}">
+                  {{ courseevent.title }}
+              </a>
+
+          {% endfor %}
+
+    <div class="header item">
+      Unterricht
+    </div>
+
+    <div class="item">
+      <div class="menu">
+
+          <a class="item
+              {% ifstartswith "coursebackend:lesson:start" course_slug=course.slug %}
+                  active
+              {% endifstartswith %}
+              " href="{% url "coursebackend:lesson:start" course_slug=course.slug %}">
+              <i class="list icon"></i>Unterricht
+          </a>
+
+          <a class="item
+              {% ifstartswith "coursebackend:material:list" course_slug=course.slug %}
+                  active
+              {% endifstartswith %}
+              " href="{% url 'coursebackend:material:list' course_slug=course.slug %}">
+              <i class="list icon"></i>Material
+          </a>
+
+          <a class="item
+              {% ifstartswith "coursebackend:lesson:create" course_slug=course.slug %}
+                  active
+              {% endifstartswith %}
+              " href="{% url 'coursebackend:lesson:create' course_slug=course.slug %}">
+              <i class="plus icon"></i>Lektion anlegen
+          </a>
+
+          <a class="item
+              {% ifstartswith "coursebackend:material:create" course_slug=course.slug %}
+                  active
+              {% endifstartswith %}
+              " href="{% url 'coursebackend:material:create' course_slug=course.slug %}">
+              <i class="plus icon"></i>Material anlegen
+          </a>
+
+      </div>
+    </div>
+    {% for courseevent in courseevents %}
+    <div class="header item">
+      Klassenzimmer {{ courseevent }}
+    </div>
+      <div class="item">
+          Arbeit im Klassenzimmer
+          <div class="menu">
+              <a class="item"
+                 href="">
+                 <i class="icon student blue"></i>ins Klassenzimmer gehen
+              </a>
+              <a class="item
+                 {% ifactive 'coursebackend:participant:list' course_slug=course.slug slug=courseevent.slug  %}
+                  active
+                 {% endifactive %}"
+                 href="{% url 'coursebackend:participant:list' course_slug=course.slug slug=courseevent.slug %}">
+                  <i class="list icon"></i>Teilnehmerliste ansehen
+              </a>
+              <a class="item
+                 {% ifstartswith 'coursebackend:forum:start' course_slug=course.slug slug=courseevent.slug  %}
+                     active
+                 {% endifstartswith %}
+                 " href="{% url 'coursebackend:forum:start' course_slug=course.slug slug=courseevent.slug %}">
+                  <i class="list icon"></i>Forum
+              </a>
+              <a class="item
+                 {% ifstartswith 'coursebackend:forum:create' course_slug=course.slug slug=courseevent.slug  %}
+                  active
+                 {% endifstartswith %}"
+                 href="">
+                  <i class="list icon"></i>Unterforum anlegen
+              </a>
+              <a class="item
+                 {% ifstartswith 'coursebackend:announcement:list' course_slug=course.slug slug=courseevent.slug %}
+                  active
+                 {% endifstartswith %}"
+                 href="{% url 'coursebackend:announcement:list' course_slug=course.slug slug=courseevent.slug  %}">
+                  <i class="list icon"></i>Ankündigungen schreiben
+              </a>
+              <a class="item
+                 {% ifactive 'coursebackend:publishlessons' slug=courseevent.slug  %}
+                  active
+                 {% endifactive %}"
+                 href="">
+                  Unterricht freischalten
               </a>
           </div>
       </div>
-      <div class="header item">
-          Forum
-      </div>
-<div class="item">
-          <div class="menu">
-          <a class="item
-            {% ifstartswith "classroom:forum" slug=match.kwargs.slug %}active black{% endifstartswith %}
-          " href="{% url 'classroom:forum' slug=match.kwargs.slug %}">
-              Forum
-          </a>
-          <a class="item
-            {% ifstartswith "classroom:recent" slug=match.kwargs.slug %}active black{% endifstartswith %}
-          " href="{% url 'classroom:recent' slug=match.kwargs.slug %}">
-              letzte Beiträge
-          </a>
-      </div></div>
-      <div class="header item">
-          Blöcke
-      </div>
-      {% for blockitem in published_block_list %}
-          <div class="item">
-              {{ blockitem.block.title }}
-              <div class="menu">
-                 {% for unit in blockitem.unit_list %}
-                  <a class="item
-                    {% ifstartswith "classroom:lesson" slug=match.kwargs.slug unit=unit.id %}
-                    active black
-                    {% endifstartswith %}
-                    " href="{% url 'classroom:lesson' slug=match.kwargs.slug unit=unit.id %}">
-                      {% if blockitem.block.is_numbered %}
-                          {{ unit.display_nr }}.
-                      {% endif %}
-                      {{ unit.title }}</a>
-                 {% endfor %}
-              </div>
-          </div>
-      {% endfor %}
+    {% endfor %}
 </div>

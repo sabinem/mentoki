@@ -1,31 +1,25 @@
-import logging
-from django.views.generic import TemplateView
-from .mixins import ClassroomMixin
-from .models import Announcement
+# -*- coding: utf-8 -*-
 
-class AnnouncementsListView(ClassroomMixin, TemplateView):
-    template_name = 'classroom/announcements/announcementslist.html'
+from __future__ import unicode_literals
 
-    def get_context_data(self, **kwargs):
-        context = super(AnnouncementsListView, self).get_context_data(**kwargs)
-        logger.debug("---------- in AnnouncementsListView get_context_data")
-        announcement_list = Announcement.objects.filter(courseevent = context['courseevent']['courseevent_id'],
-            published=True).order_by('-published_at_date')
-        context['announcement_list'] = announcement_list
-        return context
+from vanilla import TemplateView
+
+from apps_data.courseevent.models.announcement import Announcement
+
+from ..mixins.base import CourseMenuMixin
 
 
-class AnnouncementDetailView(ClassroomMixin, TemplateView):
-    template_name = 'classroom/announcements/announcementdetail.html'
-    model = Announcement
-    context_object_name = 'announcement'
+class AnnouncementListView(CourseMenuMixin, TemplateView):
+    """
+    Owners of the course are listed
+    """
+    template_name = 'coursebackend/announcement/list.html'
 
     def get_context_data(self, **kwargs):
-        context = super(AnnouncementDetailView, self).get_context_data(**kwargs)
-        logger.debug("---------- in AnnouncementDetailView get_context_data")
-        try:
-            announcement = Announcement.objects.get(id = kwargs['id'])
-            context['announcement'] = announcement
-        except:
-            pass
+        context = super(AnnouncementListView, self).get_context_data(**kwargs)
+
+        context ['announcements_unpublished'] = Announcement.objects.unpublished(courseevent = context['courseevent'])
+        context ['announcements_published'] = Announcement.objects.published(courseevent = context['courseevent'])
+
         return context
+

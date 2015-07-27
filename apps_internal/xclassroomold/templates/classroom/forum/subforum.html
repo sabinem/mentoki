@@ -1,0 +1,84 @@
+{% extends "classroom/base.html" %}
+{% block classroom_header %}
+    <h2 class="ui inverted header"  id="classroomheader">
+    {{ courseevent.courseevent_title }}
+    : Forum
+    </h2>
+{% endblock %}
+{% block regular_page_content %}
+    <div class="ui segment">
+        <h2 class="ui title">
+           {{ subforum.title }}
+        </h2>
+        <p>{{ subforum.text | safe}}</p>
+        <div class="ui list">
+            {% for item in output_list %}
+                <div class="item">
+                    <div class="content">
+                        <div class="header">
+                            <a href="{% url 'classroom:subforum' slug=match.kwargs.slug subforum=item.subforum_id %}">
+                                {{ item.subforum_title }}
+                                <div class="ui circular label">
+                                    {{ item.subforum_threadcount }}
+                                </div>
+                            </a>
+                        </div>
+                        <div class="list">
+                            {% for item in item.level_2_output_list %}
+                                <div class="item">
+                                    <i class="right triangle icon"></i>
+                                    <div class="content">
+                                        <a class="header"
+                                            href="{% url 'classroom:subforum' slug=match.kwargs.slug subforum=item.subforum_id %}">
+                                            {{ item.subforum_title }}
+                                            {% if item.subforum_threadcount > 0 %}
+                                                <div class="ui circular label fullcontent">
+                                                     {{ item.subforum_threadcount }}
+                                                </div>
+                                            {% endif %}
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        {% if subforum.can_have_threads %}
+            <a class="ui button" href="{% url 'classroom:createthread' slug=match.kwargs.slug subforum=subforum.id %}" role="button">
+                Hast Du etwas beizutragen?
+            </a>
+            <table class="ui compact table">
+                <thead>
+                    <tr>
+                        <th>Beitrag</th>
+                        <th>Posts</th>
+                        <th class="right aligned">Zeit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in threads %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'classroom:thread' slug=match.kwargs.slug subforum=item.thread.subforum_id thread=item.thread.id %}">
+                                    {{ item.thread.title }}
+                                </a>
+                            <td>
+                                {% if item.postcount > 0 %}
+                                    <div class="ui circular label">
+                                        {{ item.postcount }}
+                                    </div>
+                                {% endif %}
+                            </td>
+                            <td class="right aligned">
+                                letzter Beitrag vor {{ item.last_changed | timesince }}
+                                von   {{ item.last_author }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+{% endblock %}

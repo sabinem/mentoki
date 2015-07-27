@@ -1,0 +1,38 @@
+{% if start_forum.can_have_threads %}
+    <a class="ui button" href="" role="button">
+        Hast Du etwas beizutragen?
+    </a>
+    <table class="ui table">
+        <thead>
+            <tr>
+                <th>Beitrag</th>
+                <th class="right aligned">wann? von wem?</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for thread in threads %}
+                <tr>
+                    <td>
+                        <a href="{% url 'classroom:forum:thread' slug=courseevent.slug pk=thread.pk %}">
+                            "{{ thread.title }}"
+                            {% if thread.post_count > 0 %}
+                                <div class="ui circular label">
+                                    {{ thread.post_count }}
+                                </div>
+                            {% endif %}
+                        </a>
+                    </td>
+                    <td class="right aligned">
+                        <div class="ui circular label">{{ thread.author }}</div>
+                        vor {{ thread.created | timesince }}
+                        {% if thread.post_count > 0 %}
+                            <div class="ui divider"></div>
+                            letzter Beitrag <div class="ui circular label">{{ thread.last_author }}</div>:
+                            vor {{ thread.modified | timesince }}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}

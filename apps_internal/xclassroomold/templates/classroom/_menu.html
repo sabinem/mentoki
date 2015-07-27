@@ -1,0 +1,35 @@
+{% load activelink %}
+
+<div class="ui fluid vertical menu">
+
+    <div class="header item">
+      Klassenzimmer {{ courseevent.title }}
+    </div>
+    {% if request.user in course.teachers %}
+        <div class="header item">
+          nur für Lehrer sichtbar
+        </div>
+
+        <a class="item
+          {% ifstartswith 'coursebackend:course:detail' course_slug=course.slug %}
+               active
+          {% endifstartswith %}
+          " href="{% include 'coursebackend/course/_url_detail.html' %}">
+          Kursvorlage
+        </a>
+
+        <div class="header item">
+          allgemeiner Bereich
+        </div>
+    {% endif %}
+
+    {% for item in menu %}
+
+        <a class="item
+          " href="">
+          {{ item.title }}
+        </a>
+
+    {% endfor %}
+
+</div>

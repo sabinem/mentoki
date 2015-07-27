@@ -1,0 +1,78 @@
+{% extends "base/base.html" %}
+
+{% comment %}
+Inherited blocks:
+-----------------
+cutomized here:
+
+   custom_menu_item: expected: <a class=item>...</a> or <div class=item>...</div>
+
+   section: expected: id="..."
+
+   main: expected: <div class="ui page grid">...</div>
+
+Inherited, as is:
+   footer
+
+New blocks, that have to be customized in pages, that build upon this page:
+-----------
+with defaults:
+   controls: has default: help-checkbox
+
+empty:
+   help
+   page_content: actual content of the page
+   page_subsection: subsection where the page belongs, will be displayed in the subsection menu
+   page_header: heading for this page
+{% endcomment %}
+
+{% block section %}
+    id="classroombackend"
+{% endblock %}
+
+{% block main %}
+
+    <div class="ui page grid" >
+
+        <div class="content classroombackend ui column">
+
+            <div class="ui top attached demo menu">
+
+                <a class="item" id="sidebar_button">
+                  <i class="sidebar icon"></i>
+                  Menu
+                </a>
+
+                {% block page_subsection %}
+                {% endblock %}
+
+                {% block controls %}
+                    {% include 'coursebackend/_checkbox_help.html' %}
+                {% endblock %}
+
+            </div>
+
+            <div class="ui bottom attached segment" >
+
+                <div class="ui labeled icon left inline vertical sidebar menu" id="coursemenu">
+                    {% include 'coursebackend/_menu.html' %}
+                </div>
+
+                <div class="pusher">
+
+                    <div class="ui basic segment">
+
+                        <h2 class="ui header" id="page-header">
+                            {% block page_header %}
+                            {% endblock %}
+                        </h2>
+
+                        {% block page_content %}
+                        {% endblock %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

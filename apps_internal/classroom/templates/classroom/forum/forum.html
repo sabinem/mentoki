@@ -1,49 +1,53 @@
-{% extends "classroom/base.html" %}
-{% block classroom_header %}
-   <h2 class="ui inverted header"  id="classroomheader">
-       {{ courseevent.courseevent_title }} : Forum
-   </h2>
+{% extends "classroom/forum/base.html" %}
+
+{% comment %}
+
+    Blocks filled here:
+    -------------------
+    {% block page_section_css_id %}classroombackend{% endblock %}
+
+    {% block sidebar_menu %}{% include 'coursebackend/_menu.html' %}{% endblock %}
+
+    {% block page_content %}...(see below){% endblock %}
+
+    {% block page_subsection %}{% endblock %}
+
+    Additional inherited blocks: see coursebackend/base.html, they still have to be filled
+    --------------------------------------------------------------------------------------
+    {% block controls %}{% endblock %}
+
+{% endcomment %}
+
+<!-- BLOCK: css id subsection: filled! -->
+
+{% load mptt_tags %}
+
+{% block controls %}
+    {% include 'classroom/_control_fulltext.html' %}
 {% endblock %}
-{% block regular_page_content %}
-    <div class="ui segment">
-        <h2 class="ui title">
-            {{ forum.title }}
-        </h2>
-        <div class="ui list divided">
-            {% for item in output_list %}
-                <div class="item">
-                    <div class="content">
-                        <div class="ui big header">
-                            <a class="header" href="{% url 'classroom:subforum' slug=match.kwargs.slug subforum=item.subforum_id %}">
-                                {{ item.subforum_title }}
-                                {% if item.subforum_threadcount > 0 %}
-                                    <div class="ui circular label">
-                                        {{ item.subforum_threadcount }}
-                                    </div>
-                                {% endif %}
-                            </a>
-                        </div>
-                        <div class="list">
-                            {% for item in item.level_2_output_list %}
-                                <div class="item">
-                                    <i class="right triangle icon"></i>
-                                    <div class="content">
-                                        <a class="header"
-                                            href="{% url 'classroom:subforum' slug=match.kwargs.slug subforum=item.subforum_id %}">
-                                            {{ item.subforum_title }}
-                                            {% if item.subforum_threadcount > 0 %}
-                                                <div class="ui circular label">
-                                                    {{ item.subforum_threadcount }}
-                                                </div>
-                                            {% endif %}
-                                        </a>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
+
+{% block nodes_breadcrumb %}
+
+    <div class="ui large breadcrumb" id ="page-breadcrumb">
+
+        {% include 'classroom/forum/_breadcrumbs.html' %}
+
     </div>
+
 {% endblock %}
+
+
+{% block node %}<div class="ui header huge">
+    {{ start_node.title }}
+</div>
+{% endblock %}
+
+
+{% block recursetree_item %}
+    {{ node.title }}
+{% endblock %}
+
+{% block recursetree_item_more %}
+    {{ node.text | safe }}
+{% endblock %}
+

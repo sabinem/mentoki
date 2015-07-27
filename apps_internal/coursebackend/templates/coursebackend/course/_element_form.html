@@ -1,0 +1,32 @@
+<form class="ui form" id="course_form" method="post" action="">
+
+    {% csrf_token %}
+
+    {% for field in form %}
+
+        <div class="fieldWrapper">
+
+            <div id="helpinstructions">
+                <div class="ui segment message">
+                    {{ field.help_text }}
+                </div>
+                <p></p>
+            </div>
+
+            {{ field.errors }}
+
+            {{ field.label_tag }} {{ field }}
+
+        </div>
+
+    {% endfor %}
+
+    <button type="submit" value="post" class="ui button">
+        Speichern
+    </button>
+
+    <a href="{% url 'coursebackend:course:detail' course_slug=course.slug %}" class="ui button">
+        Abbruch
+    </a>
+
+</form>

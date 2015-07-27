@@ -1,0 +1,32 @@
+{% comment %}
+   expects a queryset of Lesson - Breadcrumbs, "breadcrumbs"
+{% endcomment %}
+<div class="ui large breadcrumb" id ="page-breadcrumb">
+
+    {% for breadcrumb in breadcrumbs %}
+
+        {% if breadcrumb.is_block %}
+
+            <a href="{% url 'coursebackend:lesson:block'  course_slug=course.slug pk=breadcrumb.pk %}" class="section">
+                <i class="icon cube"></i>{{ breadcrumb.lesson_nr }} {{ breadcrumb.title }}
+            </a>
+
+        {% elif breadcrumb.is_lesson %}
+
+            <a href="{% url 'coursebackend:lesson:detail'  course_slug=course.slug pk=breadcrumb.pk %}" class="section">
+                {{ breadcrumb.lesson_nr }} {{ breadcrumb.title }}
+            </a>
+
+        {% else %}
+
+            <a href="{% url 'coursebackend:lesson:step'  course_slug=course.slug pk=breadcrumb.pk %}" class="section">
+                {{ breadcrumb.lesson_nr }} {{ breadcrumb.title }}
+            </a>
+
+        {% endif %}
+
+        <i class="right chevron icon divider"></i>
+
+    {% endfor %}
+
+</div>

@@ -1,0 +1,67 @@
+{% if start_node.is_block %}
+
+    {% if previous_node %}
+
+        <a href="{% url "coursebackend:lesson:block" course_slug=course.slug pk=previous_node.pk %}">
+           <i class="write chevron left icon"></i>
+        </a>
+
+    {% endif %}
+
+    <a class="active" href="{% url "coursebackend:lesson:block" course_slug=course.slug pk=start_node.pk %}">
+       <i class="icon cube"></i>{{ start_node.lesson_nr }} {{ start_node.title }}
+    </a>
+
+    {% if next_node %}
+
+        <a href="{% url "coursebackend:lesson:block" course_slug=course.slug pk=next_node.pk %}">
+           <i class="write chevron right icon"></i>
+        </a>
+
+    {% endif %}
+
+{% elif start_node.is_lesson %}
+
+    {% if previous_node %}
+
+        <a href="{% url "coursebackend:lesson:detail" course_slug=course.slug pk=previous_node.pk %}">
+           <i class="write chevron left icon"></i>
+        </a>
+
+    {% endif %}
+
+    <a class="active" href="{% url "coursebackend:lesson:detail" course_slug=course.slug pk=start_node.pk %}">
+       {{ start_node.lesson_nr }} {{ start_node.title }}
+    </a>
+
+    {% if next_node %}
+
+        <a href="{% url "coursebackend:lesson:detail" course_slug=course.slug pk=next_node.pk %}">
+           <i class="write chevron right icon"></i>
+        </a>
+
+    {% endif %}
+
+{% else %}
+
+    {% if previous_node %}
+
+        <a href="{% url "coursebackend:lesson:step" course_slug=course.slug pk=previous_node.pk %}">
+           <i class="write chevron left icon"></i>
+        </a>
+
+    {% endif %}
+
+    <a class="active" href="{% url "coursebackend:lesson:step" course_slug=course.slug pk=start_node.pk %}">
+       {{ start_node.lesson_nr }} {{ start_node.title }}
+    </a>
+
+    {% if next_node %}
+
+        <a href="{% url "coursebackend:lesson:step" course_slug=course.slug pk=next_node.pk %}">
+           <i class="write chevron right icon"></i>
+        </a>
+
+    {% endif %}
+
+{% endif %}
