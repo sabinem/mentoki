@@ -5,7 +5,7 @@ from rest_framework.decorators import list_route
 from rest_framework_extensions.mixins import DetailSerializerMixin
 from rest_framework_extensions.mixins import NestedViewSetMixin
 
-from apps_data.course.models import Material
+from apps_data.course.models.material import Material
 
 class MaterialViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
     """

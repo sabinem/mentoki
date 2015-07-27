@@ -8,8 +8,9 @@ from django.contrib.auth.models import User
 # import from third party
 from model_utils.models import TimeStampedModel
 # import from other apps
-from apps_data.course.models import Course, CourseUnit, CourseOwner, Lesson
-from ..managers import CourseeventUnitPublishQuerySet
+from apps_data.course.models.oldcoursepart import Course, CourseUnit
+from apps_data.course.models.lesson import Lesson
+from ..managers.courseevent import CourseeventUnitPublishQuerySet
 from .courseevent import CourseEvent
 from django.core.urlresolvers import reverse
 from django.utils.functional import cached_property
@@ -29,6 +30,8 @@ class CourseeventLessonPublish(models.Model):
     def __unicode__(self):
         return u'%s / %s' % (self.courseevent, self.unit)
 
+    class Meta:
+        verbose_name = "XLessonPublish"
 
 
 class CourseeventUnitPublish(models.Model):
@@ -44,7 +47,8 @@ class CourseeventUnitPublish(models.Model):
     def __unicode__(self):
         return u'%s / %s' % (self.courseevent, self.unit)
 
-
+    class Meta:
+        verbose_name = "XUnitPublish"
 
 
 #old will be deleted after data have bben transeferred
@@ -69,3 +73,6 @@ class CourseEventPubicInformation(TimeStampedModel):
 
     def get_absolute_url(self):
         return CourseEvent.get_absolute_url(self.courseevent)
+
+    class Meta:
+        verbose_name = "XCourseeventInfo"

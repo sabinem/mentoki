@@ -22,27 +22,19 @@
 
 {% load mptt_tags %}
 
-{% block help %}
-    {% include 'coursebackend/lessons/_help_lessons.html' %}
-{% endblock %}
+{% block controls %}{% endblock %}
 
-{% block controls %}
-    {% include 'coursebackend/_control_help.html' %}
-{% endblock %}
-
-{% block page_topic %}
-    <a class="item" href="{% url 'coursebackend:lesson:start' course_slug=course.slug %}">
-        Unterricht {{ course.title }}
-    </a>
+{% block page_subsection %}
+    {% include 'coursebackend/forum/_element_subsection_header.html' %}xxx
 {% endblock %}
 
 {% block page_content %}
 
-    {% block nodes_breadcrumb %}
-    {% endblock %}
+    {% block page_help %}{% endblock %}
 
-    {% block node %}
-    {% endblock %}
+    {% block nodes_breadcrumb %}{% endblock %}
+
+    {% block node %}{% endblock %}
 
     {% block recursetree %}
 
@@ -50,19 +42,20 @@
 
             {% recursetree nodes %}
 
-                <div class="item {% block item_class %}{% endblock %}">
+                <div class="item">
 
-                    {% block recursetree_item_header %}
-                    {% endblock %}
+                    <i class="top aligned folder outline icon"></i>
 
                     <div class="content">
 
-                        {% block recursetree_item_content %}
-                        {% endblock %}
+                        {% block recursetree_item %}{% endblock %}
 
                         <div class="contentdescription">
-                            {% block recursetree_item_more %}
-                            {% endblock %}
+
+                            <div class="ui segment attached vertical">
+                                {% block recursetree_item_more %}{% endblock %}
+                            </div>
+
                         </div>
 
                         {% if not is_leaf %}
@@ -85,12 +78,6 @@
 
     {% endblock %}
 
-    <div class="{% block view_material_class %}{% endblock %}">
-        {% block material_view %}
-        {% endblock %}
-    </div>
-
-    {% block form %}
-    {% endblock %}
+    {% block form %}{% endblock %}
 
 {% endblock %}

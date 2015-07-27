@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from apps_data.course.models import Lesson
+from django.shortcuts import get_object_or_404
 
-from ..mixins import CourseMenuMixin
+from apps_data.course.models.lesson import Lesson
+
+from ..mixins.base import CourseMenuMixin
 
 
 class CourseFormMixin(CourseMenuMixin):
@@ -27,7 +29,7 @@ class LessonMixin(CourseMenuMixin):
     def get_context_data(self, **kwargs):
         context = super(LessonMixin, self).get_context_data(**kwargs)
 
-        start_node = Lesson.objects.get(pk=self.kwargs['pk'])
+        start_node = get_object_or_404(Lesson, pk=self.kwargs['pk'])
 
         context['start_node'] = start_node
 
@@ -39,7 +41,8 @@ class LessonMixin(CourseMenuMixin):
 
         context['breadcrumbs'] = start_node.get_ancestors()
 
-        context['nodes'] = start_node.get_descendants(include_self=True).prefetch_related('material')
+        #context['nodes'] = start_node.get_descendants(include_self=True).prefetch_related('material')
+        context['nodes'] = start_node.get_tree_with_material
 
         return context
 

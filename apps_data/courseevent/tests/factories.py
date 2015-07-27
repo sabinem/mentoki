@@ -2,8 +2,10 @@
 
 from __future__ import unicode_literals, absolute_import
 
-from apps_data.course.models import Course, CourseOwner
-from ..models import CourseEvent, CourseEventParticipation, Forum, Thread, Post, Announcement
+from apps_data.course.models.course import Course, CourseOwner
+from ..models.courseevent import CourseEvent, CourseEventParticipation
+from ..models.forum import Forum, Thread, Post
+from ..models.announcement import Announcement
 
 import factory
 

@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 from django.conf.urls import patterns, url
 
-from ..views import CourseOwnerListView, CourseOwnerUpdateView
+from ..views.courseowner import CourseOwnerListView, CourseOwnerUpdateView
 
 
 urlpatterns = patterns('',

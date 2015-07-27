@@ -5,10 +5,12 @@ from __future__ import unicode_literals, absolute_import
 from django.views.generic import TemplateView, UpdateView, CreateView, DeleteView, DetailView
 from django.shortcuts import get_object_or_404
 
-from apps_data.course.models import Material
+from apps_data.course.models.material import Material
 
-from ..mixins import CourseMenuMixin, CourseFormMixin, MaterialMixin
-from ..forms import MaterialForm
+from ..mixins.base import CourseMenuMixin
+from ..mixins.lesson import CourseFormMixin
+from ..mixins.material import MaterialMixin
+from ..forms.material import MaterialForm
 
 
 class MaterialListView(CourseMenuMixin, TemplateView):

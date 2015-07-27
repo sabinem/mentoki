@@ -9,9 +9,9 @@ from django.core.validators import ValidationError
 
 from django.test import Client
 
-from ..forms import CourseTeachersChangeForm
+from ..forms.course import CourseTeachersChangeForm
 from .factories import CourseFactory
-from ..models import CourseOwner
+from ..models.course import CourseOwner
 
 
 client = Client()

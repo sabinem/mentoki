@@ -2,9 +2,9 @@
 
 from django.shortcuts import get_object_or_404
 
-from apps_data.courseevent.models import CourseEvent, CourseEventPubicInformation
+from apps_data.courseevent.models.courseevent import CourseEvent
 
-from ..mixins import CourseMenuMixin
+from ..mixins.base import CourseMenuMixin
 
 class CourseEventMixin(CourseMenuMixin):
 
@@ -12,9 +12,7 @@ class CourseEventMixin(CourseMenuMixin):
         context = super(CourseEventMixin, self).get_context_data(**kwargs)
 
         courseevent = get_object_or_404(CourseEvent, slug=self.kwargs['slug'])
-        courseeventpublicinformation = get_object_or_404(CourseEventPubicInformation, courseevent=courseevent)
 
         context['courseevent'] = courseevent
-        context['courseeventinfo'] = courseeventpublicinformation
 
         return context

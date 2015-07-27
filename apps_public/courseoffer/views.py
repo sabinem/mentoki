@@ -1,16 +1,16 @@
-# import from python
-import logging
-# import from django
-from django.views.generic import TemplateView
-from django.http import HttpResponseRedirect
-from django.core.urlresolvers import reverse
-# import from 3rd party apps
-from braces.views import LoginRequiredMixin, UserPassesTestMixin
-# import from other apps
-from apps_internal.classroom.cache import get_courseeventdata
-from apps_data.course.models import Course, CourseOwner
-# import from this app
-from apps_data.courseevent.models import CourseEvent, CourseEventParticipation, CourseEventPubicInformation
+# -*- coding: utf-8 -*-
+
+from __future__ import unicode_literals
+# -*- coding: utf-8 -*-
+
+from __future__ import unicode_literals
+
+from django.forms.models import modelform_factory
+
+from vanilla import DetailView, TemplateView
+
+from apps_data.courseevent.models.courseevent import CourseEvent
+from apps_data.course.models.course import CourseOwner
 
 
 class CourseOfferListView(TemplateView):
@@ -29,17 +29,19 @@ class CourseOfferListView(TemplateView):
         return context
 
 
-class CourseOfferDetailView(TemplateView):
+class CourseOfferDetailView(DetailView):
     """
     This View shows the details of a courseevents. From here you can book them, if they are
     available for booking yet.
     """
     template_name = "courseoffer/detail/courseevent_detail.html"
+    model = CourseEvent
+    lookup_field = 'slug'
+    context_object_name ='courseevent'
 
     def get_context_data(self, **kwargs):
         context = super(CourseOfferDetailView, self).get_context_data()
 
-        context['courseevent'] = CourseEvent.objects.get_courseevent_or_404_from_slug(slug=kwargs['slug'])
-        context['teachersinfo'] = CourseOwner.objects.teachers_courseinfo(course=context['courseevent'].course)
+        context['teachersinfo'] = CourseOwner.objects.teachers_courseinfo_display(course=context['courseevent'].course)
 
         return context

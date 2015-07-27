@@ -1,6 +1,1 @@
-# constants for the searchform
-COURSE_TYPE_ALL = 1
-COURSE_TYPE_SELF = 2
-COURSE_TYPE_GROUP = 3
-SORT_BY_NEWEST = 1
-SORT_BY_STARTDATE = 2
+default_app_config = 'apps_data.courseevent.apps.CourseEventConfig'

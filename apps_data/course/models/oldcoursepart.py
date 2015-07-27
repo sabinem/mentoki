@@ -46,7 +46,7 @@ class CourseBlock(CoursePartModel):
         ordering = ['display_nr']
 
     def __unicode__(self):
-        return u'%s/%s' % (self.course, self.title)
+        return u'%s' % (self.title)
 
     @cached_property
     def urlprefix(self):
@@ -58,7 +58,7 @@ class CourseUnit(CoursePartModel):
     block = models.ForeignKey(CourseBlock)
 
     def __unicode__(self):
-        return u'%s / %s' % (self.block, self.title)
+        return u'%s' % (self.title)
 
     class Meta:
         verbose_name = "xLektion"
@@ -87,7 +87,7 @@ class CourseMaterialUnit(CoursePartModel):
         verbose_name = "xMaterial"
 
     def __unicode__(self):
-        return u'%s/%s' % (self.unit, self.title)
+        return u'%s' % (self.title)
 
     def get_file_slug(instance):
         pathparts = instance.file.name.split('/')

@@ -1,35 +1,23 @@
 # -*- coding: utf-8 -*-0023_auto_20150617_1038.py
 
-
 """
 shell script:
-from apps.course.models import Lesson, CourseMaterialUnit, Material
+from apps_data.courseevent.models import Announcement as NewA
+from apps_internal.classroom.models import Announcement as OldA
 
-materials = CourseMaterialUnit.objects.exclude(file="")
+l = OldA.objects.filter(published=True)
 
-for m in materials:
-        material = Material(
-            course = m.course,
-            title = m.title,
-            description = m.description,
-            document_type = m.document_type,
-            created = m.created,
-            modified = m.modified,
-            unitmaterial = m,
-            file = m.file,
-            slug = m.slug
+for a in l:
+        b = NewA(
+            courseevent = a.courseevent,
+            title = a.title,
+            text = a.text,
+            created = a.created,
+            modified = a.modified,
+            published_at = a.published_at_date,
+            published = a.published,
             )
-
-        material.save()
-
-Lesson.objects.rebuild()
-
-materials = Material.objects.all()
-
-for m in materials:
-       l = Lesson.objects.get(unitmaterial=m.unitmaterial)
-       l.material.add(m)
-       l.save()
+        b.save()
 
 """
 

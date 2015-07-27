@@ -1,78 +1,27 @@
 {% extends "coursebackend/base.html" %}
-{% load activelink %}
-{% block header %}
-    {{ course.title }}
-{% endblock %}
 
 {% block controls %}
-    {% include 'coursebackend/_checkbox_help.html' %}
-    {% include 'coursebackend/_checkbox_worklinks.html' %}
+    {% include 'coursebackend/_control_help.html' %}
+    {% include 'coursebackend/_control_worklinks.html' %}
 {% endblock %}
 
-{% block page_topic %}
-    {% include 'coursebackend/course/_page_topic.html' %}
+{% block page_subsection %}
+    {% include 'coursebackend/course/_element_subsection_header.html' %}
 {% endblock %}
 
-{% block help %}
-    {% include 'coursebackend/course/_help.html' %}
-{% endblock %}
 {% block page_content %}
-    <div id="ui_textdisplay">
-        <p>* Diese Beschreibung ist nur für Dich gedacht. Sie dient als Vorlage und wird nicht veröffentlicht.</p>
-        <h3 class="ui header">
-             Abstrakt
-            <a class= "worklink item"
-               href="{% url 'coursebackend:course:update' course_slug=course.slug field="excerpt" %}">
-                <i class="write blue icon"></i>
-            </a>
-        </h3>
-        {{ backend.excerpt |safe  }}
-        <div class="ui fitted divider"></div>
-        <h3 class="ui header">
-            Zielgruppe:
-            <a class= "worklink item"
-               href="{% url 'coursebackend:course:update' course_slug=course.slug field="target_group" %}">
-                <i class="write blue icon"></i>
-            </a>
-        </h3>
-        {{ course.target_group  |safe }}
-        <div class="ui fitted divider"></div>
-        <h3 class="ui header">
-            Voraussetzungen:
-            <a class= "worklink item"
-               href="{% url 'coursebackend:course:update' course_slug=course.slug field="prerequisites" %}">
-                <i class="write blue icon"></i>
-            </a>
-        </h3>
-        {{ course.prerequisites |safe }}
-        <div class="ui fitted divider"></div>
-        <h3 class="ui header">
-            Was nimmt der Teilnehmer aus dem Kurs mit:
-            <a class= "worklink item"
-               href="{% url 'coursebackend:course:update' course_slug=course.slug field="project" %}">
-                <i class="write blue icon"></i>
-            </a>
-        </h3>
-        {{ course.project  |safe  }}
-        <div class="ui fitted divider"></div>
-        <h3 class="ui header">
-            Gliederung:
-            <a class= "worklink item"
-               href="{% url 'coursebackend:course:update' course_slug=course.slug field="structure" %}">
-                <i class="write blue icon"></i>
-            </a>
-        </h3>
-        {{ course.structure | safe  }}
-        <div class="ui fitted divider"></div>
-        <h3 class="ui header">
-            Freie Kursbeschreibung:
-            <a class= "worklink item"
-               href="{% url 'coursebackend:course:update' course_slug=course.slug field="text" %}">
-                <i class="write blue icon"></i>
-            </a>
-        </h3>
-        {{ course.text | safe }}
+
+    {% include 'coursebackend/course/_element_header.html' %}
+
+    <div id="helpinstructions">
+        <div class="ui segment message">
+            {% include 'coursebackend/course/_help_detail.html' %}
+        </div>
+        <p></p>
     </div>
+
+    {% include 'coursebackend/course/_element_detail_display.html' %}
+
 {% endblock %}
 
 

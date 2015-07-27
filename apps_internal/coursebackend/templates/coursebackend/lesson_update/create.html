@@ -1,4 +1,4 @@
-{% extends "coursebackend/base_lesson.html" %}
+{% extends "coursebackend/lessons_view/base.html" %}
 
 {% load mptt_tags %}
 
@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block controls %}
-    {% include 'coursebackend/_checkbox_help.html' %}
+    {% include 'coursebackend/_control_help.html' %}
 {% endblock %}
 
 {% block help %}

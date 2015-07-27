@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Announcement, ClassRules
+from .models.oldmodels import Announcement, ClassRules
 
 
 class AnnouncementAdmin(admin.ModelAdmin):

@@ -1,128 +1,80 @@
 {% load activelink %}
+
 <div class="ui fluid vertical menu">
 
     <div class="header item">
-      Vorlage Kurs
+      Klassenzimmer {{ courseevent.title }}
     </div>
+    {% if request.user in course.teachers or request.user.is_superuser %}
+        <div class="header item">
+          nur für Lehrer sichtbar
+        </div>
 
-    <a class="item
-      {% ifstartswith 'coursebackend:course:detail' course_slug=course.slug %}
-           active
-      {% endifstartswith %}
-      " href="{% include 'coursebackend/course/_url_detail.html' %}">
-      Kursvorlage
-    </a>
+        <a class="item
+          {% ifstartswith 'coursebackend:course:detail' course_slug=course.slug %}
+               active
+          {% endifstartswith %}
+          " href="{% include 'coursebackend/course/_url_detail.html' %}">
+          Kursvorlage<i class="wrench icon"></i>
+        </a>
 
-    <a class="item completed
-      {% ifstartswith 'coursebackend:courseowner:list' course_slug=course.slug %}active {% endifstartswith %}
-      " href="{% url 'coursebackend:courseowner:list' course_slug=course.slug %}">
-      Kursleitung
-    </a>
+        <div class="header item">
+          allgemeiner Bereich
+        </div>
+    {% endif %}
 
-    <div class="header item">
-      Kursereignisse
-    </div>
+    {% for item in menu_items %}
 
-          {% for courseevent in courseevents %}
+        {% if item.item_type == item.MENU_ITEM_TYPE.announcements %}
+            <a class="item"
+                href="{% url 'classroom:announcement:list' slug=courseevent.slug %}">
+                <i class="announcement icon"></i>
+                {{ item.display_title }}
+            </a>
 
-              <a class="item
-                  {% ifstartswith 'coursebackend:courseevent:detail' course_slug=course.slug slug=courseevent.slug %}
-                       active
-                  {% endifstartswith %}
-                  " href="{% include 'coursebackend/courseevent/_url_detail.html' %}">
-                  {{ courseevent.title }}
-              </a>
+        {% elif item.item_type == item.MENU_ITEM_TYPE.forum_item %}
+            <a class="item"
+                href="{% url 'classroom:forum:detail' slug=courseevent.slug pk=item.forum_id %}">
+                <i class="comments outline icon"></i>{{ item.display_title }}
+            </a>
 
-          {% endfor %}
+        {% elif item.item_type == item.MENU_ITEM_TYPE.homework %}
+            <a class="item"
+                href="{% url 'classroom:homework:list' slug=courseevent.slug pk=item.homework_id %}">
+                <i class="write icon"></i>{{ item.display_title }}
+            </a>
 
-    <div class="header item">
-      Unterricht
-    </div>
+        {% elif item.item_type == item.MENU_ITEM_TYPE.forum_last_posts %}
+            <a class="item"
+                href="{% url 'classroom:forum:newposts' slug=courseevent.slug %}">
+                <i class="find icon"></i>{{ item.display_title }}
+            </a>
 
-    <div class="item">
-      <div class="menu">
+        {% elif item.item_type == item.MENU_ITEM_TYPE.student_private %}
+            <a class="item"
+                href="{% url 'classroom:studentswork:list' slug=courseevent.slug %}">
+                <i class="privacy icon"></i>{{ item.display_title }}
+            </a>
 
-          <a class="item
-              {% ifstartswith "coursebackend:lesson:start" course_slug=course.slug %}
-                  active
-              {% endifstartswith %}
-              " href="{% url "coursebackend:lesson:start" course_slug=course.slug %}">
-              <i class="list icon"></i>Unterricht
-          </a>
+        {% elif item.item_type == item.MENU_ITEM_TYPE.lesson_item %}
+            <a class="item"
+                href="{% url 'classroom:lesson:detail' slug=courseevent.slug pk=item.lesson_id %}">
+                <i class="student icon"></i>{{ item.display_title }}
+            </a>
 
-          <a class="item
-              {% ifstartswith "coursebackend:material:list" course_slug=course.slug %}
-                  active
-              {% endifstartswith %}
-              " href="{% url 'coursebackend:material:list' course_slug=course.slug %}">
-              <i class="list icon"></i>Material
-          </a>
+        {% elif item.item_type == item.MENU_ITEM_TYPE.participants_list %}
+            <a class="item"
+                href="{% url 'classroom:participant:list' slug=courseevent.slug %}">
+                <i class="users icon"></i>{{ item.display_title }}
+            </a>
 
-          <a class="item
-              {% ifstartswith "coursebackend:lesson:create" course_slug=course.slug %}
-                  active
-              {% endifstartswith %}
-              " href="{% url 'coursebackend:lesson:create' course_slug=course.slug %}">
-              <i class="plus icon"></i>Lektion anlegen
-          </a>
+        {% elif item.item_type == item.MENU_ITEM_TYPE.header %}
+            <div class="header item">
+                {{ item.display_title }}
+            </div>
 
-          <a class="item
-              {% ifstartswith "coursebackend:material:create" course_slug=course.slug %}
-                  active
-              {% endifstartswith %}
-              " href="{% url 'coursebackend:material:create' course_slug=course.slug %}">
-              <i class="plus icon"></i>Material anlegen
-          </a>
+        {% endif %}
 
-      </div>
-    </div>
-    {% for courseevent in courseevents %}
-    <div class="header item">
-      Klassenzimmer {{ courseevent }}
-    </div>
-      <div class="item">
-          Arbeit im Klassenzimmer
-          <div class="menu">
-              <a class="item"
-                 href="">
-                 <i class="icon student blue"></i>ins Klassenzimmer gehen
-              </a>
-              <a class="item
-                 {% ifactive 'coursebackend:participant:list' course_slug=course.slug slug=courseevent.slug  %}
-                  active
-                 {% endifactive %}"
-                 href="{% url 'coursebackend:participant:list' course_slug=course.slug slug=courseevent.slug %}">
-                  <i class="list icon"></i>Teilnehmerliste ansehen
-              </a>
-              <a class="item
-                 {% ifstartswith 'coursebackend:forum:start' course_slug=course.slug slug=courseevent.slug  %}
-                     active
-                 {% endifstartswith %}
-                 " href="{% url 'coursebackend:forum:start' course_slug=course.slug slug=courseevent.slug %}">
-                  <i class="list icon"></i>Forum
-              </a>
-              <a class="item
-                 {% ifstartswith 'coursebackend:forum:create' course_slug=course.slug slug=courseevent.slug  %}
-                  active
-                 {% endifstartswith %}"
-                 href="">
-                  <i class="list icon"></i>Unterforum anlegen
-              </a>
-              <a class="item
-                 {% ifstartswith 'coursebackend:announcement:list' course_slug=course.slug slug=courseevent.slug %}
-                  active
-                 {% endifstartswith %}"
-                 href="{% url 'coursebackend:announcement:list' course_slug=course.slug slug=courseevent.slug  %}">
-                  <i class="list icon"></i>Ankündigungen schreiben
-              </a>
-              <a class="item
-                 {% ifactive 'coursebackend:publishlessons' slug=courseevent.slug  %}
-                  active
-                 {% endifactive %}"
-                 href="">
-                  Unterricht freischalten
-              </a>
-          </div>
-      </div>
     {% endfor %}
+
 </div>

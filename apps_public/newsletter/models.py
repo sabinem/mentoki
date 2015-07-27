@@ -1,8 +1,9 @@
 # coding: utf-8
+
 from __future__ import unicode_literals, absolute_import
 from django.db import models
 from django.core.urlresolvers import reverse
-from apps_data.courseevent.models import CourseEvent
+from apps_data.courseevent.models.courseevent import CourseEvent
 from django_markdown.models import MarkdownField
 from model_utils.models import TimeStampedModel
 from autoslug import AutoSlugField

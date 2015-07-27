@@ -6,9 +6,11 @@ from django.shortcuts import get_object_or_404
 
 import floppyforms.__future__ as forms
 
-from crispy_forms.helper import FormHelper
+from django.utils.translation import ugettext_lazy as _
 
-from apps_data.course.models import Lesson, Course, Material
+from apps_data.course.models.course import Course
+from apps_data.course.models.lesson import Lesson
+from apps_data.course.models.material import Material
 
 from mptt.exceptions import InvalidMove
 from mptt.forms import TreeNodeChoiceField, TreeNodePositionField

@@ -2,35 +2,39 @@
 
 from __future__ import unicode_literals
 
+from django.shortcuts import get_object_or_404
+
 from vanilla import TemplateView, DetailView
 
-from apps_data.courseevent.models.homework import StudentsWork
+from apps_data.courseevent.models.homework import Homework, StudentsWork
 
-from ..mixins.base import ClassroomMenuMixin
+from .mixins.base import ClassroomMenuMixin
 
 
-class StudentsWorkListView(ClassroomMenuMixin, TemplateView):
+class HomeWorkListView(ClassroomMenuMixin, TemplateView):
     """
     AnnouncementList
     """
-    template_name = 'classroom/announcement/list.html'
+    template_name = 'classroom/homework/list.html'
 
     def get_context_data(self, **kwargs):
-        context = super(StudentsWorkListView, self).get_context_data(**kwargs)
-        print 'xxxxxxxxxxx------------------'
-        print context['courseevent']
+        context = super(HomeWorkListView, self).get_context_data(**kwargs)
 
-        context ['announcements'] = Announcement.objects.published(courseevent = context['courseevent'])
-        print "===========ANOUNCEMNTS"
-        print context ['announcements']
+        context['homework'] = get_object_or_404(Homework, pk=self.kwargs['pk'])
+
+        context['studentsworks'] = \
+            StudentsWork.objects.turnedin_homework(homework=context['homework'])
+
+        print context['studentsworks']
+
         return context
 
 
-class StudentsWorkDetailView(ClassroomMenuMixin, TemplateView):
+class HomeWorkDetailView(ClassroomMenuMixin, TemplateView):
     """
     Announcement Detail
     """
-    template_name = 'classroom/announcement/detail.html'
+    template_name = 'classroom/homework/detail.html'
     model = StudentsWork
     lookup_field = 'pk'
-    context_object_name ='announcement'
+    context_object_name ='work'

@@ -6,8 +6,12 @@ from django.utils.translation import ugettext_lazy as _
 
 import floppyforms.__future__ as forms
 
-from apps_data.course.models import Course
+from django.utils.translation import ugettext_lazy as _
 
+from apps_data.course.models.course import Course
+
+ALLOWED_CHANGE_FIELDS_COURSE = ['title', 'excerpt', 'target_group', 'prerequisites', 'project',
+                  'structure', 'text']
 
 class CourseTeachersChangeForm(forms.ModelForm):
 
@@ -15,13 +19,3 @@ class CourseTeachersChangeForm(forms.ModelForm):
         model = Course
         fields = ('title', 'excerpt', 'target_group', 'prerequisites', 'project',
                   'structure', 'text')
-
-    def __init__(self, user=None, *args, **kwargs):
-        super(CourseTeachersChangeForm, self).__init__(*args, **kwargs)
-        if not self.instance.pk:
-           raise forms.ValidationError(_("no permission to create a new course, ask administrator to do it for you."))
-        else:
-           course = self.instance
-           if not course.owners.filter(pk=user.pk).exists():
-              raise forms.ValidationError(_("no permission to work on that course."))
-

@@ -25,15 +25,26 @@ from model_utils.managers import PassThroughManager
 from django.core.urlresolvers import reverse
 
 from .courseevent import CourseEvent
+
 from apps.forum.models import Forum as OldForum
 from apps.forum.models import SubForum as OldSubForum
 from apps.forum.models import Post as OldPost
 from apps.forum.models import Thread as OldThread
 
-
 from model_utils.managers import QueryManager
+from model_utils.fields import MonitorField
 
 from django.db.models import Q
+
+
+class ForumManager(TreeManager):
+
+    def forums_for_courseevent(self, courseevent):
+        return self.filter(courseevent=courseevent, level=0).\
+            get_descendants(include_self=True)
+
+    def forums_published_in_courseevent(self, courseevent):
+        return self.filter(courseevent=courseevent, published=True)
 
 
 class Forum(MPTTModel, TimeStampedModel):
@@ -48,10 +59,13 @@ class Forum(MPTTModel, TimeStampedModel):
 
     can_have_threads = models.BooleanField(default=True)
 
+    published = models.BooleanField(default=False)
+    publish_status_changed = MonitorField(monitor='published')
+
     oldforum = models.ForeignKey(OldForum, blank=True, null=True)
     oldsubforum = models.ForeignKey(OldSubForum, blank=True, null=True, related_name="Unterforum_alt")
 
-    objects = TreeManager()
+    objects = ForumManager()
     forum = QueryManager(level=0)
     subforum = QueryManager(level__gte=1)
     parent_choice_new = QueryManager(level__lte=1).order_by('tree_id', 'level', 'display_nr')
@@ -64,11 +78,20 @@ class Forum(MPTTModel, TimeStampedModel):
         order_insertion_by = ['courseevent', 'display_nr']
 
     def __unicode__(self):
-        return u'%s' % (self.title)
+        return u'%s: %s' % (str(self.courseevent_id), self.title)
+
+    def get_absolute_url(self):
+        return reverse('coursebackend:forum:detail',
+                       kwargs={'course_slug':self.course_slug, 'slug': self.slug, 'pk':self.pk })
 
     @cached_property
     def slug(self):
         return self.courseevent.slug
+
+
+    @cached_property
+    def course_slug(self):
+        return self.courseevent.course_slug
 
     def get_next_sibling(self):
         next = super(Forum, self).get_next_sibling()
@@ -121,7 +144,6 @@ class ForumContributionModel(TimeStampedModel):
     courseevent = models.ForeignKey(CourseEvent)
 
     text = models.TextField()
-    author = models.ForeignKey(settings.AUTH_USER_MODEL)
 
     objects = InheritanceManager()
 
@@ -135,37 +157,58 @@ class Thread(ForumContributionModel):
 
     title = models.CharField(max_length=100)
 
+    post_count = models.IntegerField(default=0)
+    last_author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="last_post_author", blank=True, null=True)
+    last_post = models.DateTimeField(auto_now=True, null=True, blank=True)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="thread_author")
+
     # delete later on
     oldthread = models.ForeignKey(OldThread, blank=True, null=True)
 
+    class Meta:
+        verbose_name = "Beitrag"
+        verbose_name_plural = "Beiträge"
+        ordering = [ '-modified' ]
+
     def __unicode__(self):
-        return u'%s' % (self.title)
+        return u'%s: %s %s' % (str(self.courseevent_id), str(self.id), self.title)
 
     def save(self):
         self.courseevent = self.forum.courseevent
+        if not self.last_author:
+            self.last_author = self.author
         super(Thread, self).save()
-
-    @cached_property
-    def post_count(self):
-        count = Post.objects.filter(thread=self.id).count()
-        return count
 
 
 class Post(ForumContributionModel):
 
+    title = models.CharField(max_length=100)
+
     thread = models.ForeignKey(Thread)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="post_author")
 
     # will be deleted later on
     oldpost = models.ForeignKey(OldPost, blank=True, null=True)
 
+    class Meta:
+        verbose_name = "Post"
+        verbose_name_plural = "Posts"
+        ordering = [ '-modified' ]
+
     def __unicode__(self):
-        return u'%s zu %s' % (self.author, self.thread)
+        return u'%s: %s: %s' % (str(self.courseevent_id), str(self.thread_id), self.title)
 
     def save(self):
         self.courseevent = self.thread.courseevent
+        thread = Thread.objects.get(id=self.thread_id)
+        thread.post_count = Post.objects.filter(thread=self.thread).count() + 1
+        thread.last_author = self.author
+        thread.save()
         super(Post, self).save()
 
 
 def last_contributions(courseevent):
     return ForumContributionModel.objects.filter(courseevent=courseevent).select_subclasses().\
     order_by('created')
+
+

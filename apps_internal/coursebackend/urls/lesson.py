@@ -4,13 +4,13 @@ from __future__ import unicode_literals
 
 from django.conf.urls import patterns, url
 
-from ..views import LessonBlockView, StartView,\
+from ..views.lesson import LessonBlockView, LessonStartView,\
     LessonDetailView, StepDetailView, \
     LessonUpdateView, LessonCreateView, LessonDeleteView, LessonAddMaterialView, LessonMoveView
 
 
 urlpatterns = patterns('',
-    url(r'^$', StartView.as_view(), name='start'),
+    url(r'^$', LessonStartView.as_view(), name='start'),
 
     url(r'^block/(?P<pk>\d+)$', LessonBlockView.as_view(), name='block'),
     url(r'^lektion/(?P<pk>\d+)$', LessonDetailView.as_view(), name='detail'),

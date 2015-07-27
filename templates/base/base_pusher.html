@@ -1,75 +1,75 @@
 {% extends "base/base.html" %}
 
 {% comment %}
-Inherited blocks:
------------------
-cutomized here:
 
-   custom_menu_item: expected: <a class=item>...</a> or <div class=item>...</div>
+    Blockstructure:
+    --------------
+    {% block main %}
 
-   section: expected: id="..."
+       {% block page_subsection %}{% endblock %}: subsection in the top
 
-   main: expected: <div class="ui page grid">...</div>
+       {% block controls %}{% endblock %}: controls in the top
 
-Inherited, as is:
-   footer
+       {% block page_content %}{% endblock %}: inner page
 
-New blocks, that have to be customized in pages, that build upon this page:
------------
-with defaults:
-   controls: has default: help-checkbox
+       {% block sidebar_menu %}{% endblock %}
 
-empty:
-   help
-   page_content: actual content of the page
-   page_subsection: subsection where the page belongs, will be displayed in the subsection menu
-   page_header: heading for this page
+    {% endblock %}
+
+    Additional inherited blocks: see base.html
+    ------------------------------------------
+    {% block page_section_css_id %}{% endblock %}
+    {% block custom_menu_item %}{% endblock %}
+
 {% endcomment %}
-
-{% block section %}
-    id="classroombackend"
-{% endblock %}
 
 {% block main %}
 
     <div class="ui page grid" >
 
-        <div class="content classroombackend ui column">
+        <div class="content ui column">
+
+            <!-- top attached  -->
 
             <div class="ui top attached demo menu">
+
+                <!-- menu button  -->
 
                 <a class="item" id="sidebar_button">
                   <i class="sidebar icon"></i>
                   Menu
                 </a>
 
-                {% block page_subsection %}
-                {% endblock %}
+                <!-- BLOCK: Subsection of the page in the top -->
 
-                {% block controls %}
-                    {% include 'coursebackend/_checkbox_help.html' %}
-                {% endblock %}
+                {% block page_subsection %}{% endblock %}
+
+                <!-- BLOCK: Controls in the top -->
+
+                {% block controls %}{% endblock %}
 
             </div>
 
             <div class="ui bottom attached segment" >
 
                 <div class="ui labeled icon left inline vertical sidebar menu" id="coursemenu">
-                    {% include 'coursebackend/_menu.html' %}
+
+                    <!-- BLOCK: sidebar menu -->
+
+                    {% block sidebar_menu %}{% endblock %}
+
                 </div>
 
                 <div class="pusher">
 
                     <div class="ui basic segment">
 
-                        <h2 class="ui header" id="page-header">
-                            {% block page_header %}
-                            {% endblock %}
-                        </h2>
+                        {% include 'base/fragments/_messages.html' %}
 
-                        {% block page_content %}
-                        {% endblock %}
-
+                        <!-- BLOCK: page content -->
+                        
+                        {% block page_content %}{% endblock %}
+                    
                     </div>
                 </div>
             </div>

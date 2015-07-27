@@ -1,10 +1,21 @@
-{% extends "base/page.html" %}
+{% extends "base/base_public.html" %}
+{% load i18n %}
+
+{% block meta_title %}Mentoki Kursliste | Mentoki: Lernen und Lehren lebenslang{% endblock %}
+
+{% block meta_description %}Unser Kursangebot für den Herbst 2015{% endblock %}
+{% block meta_keywords %}mentoren netzwerk, lern plattform, erwachsenen bildung, online unterrichten, lehr plattform{% endblock %}
+
+
 {% block title %}Kursliste{% endblock %}
-{% block section %}id="publiclist"{% endblock %}
+
+{% block page_section_css_id %}publiclist{% endblock %}
 {% block main %}
+
     <h2 class="ui block header" id="mainheader">Kursübersicht
         <div class="sub header">Jetzt buchbar: Der Mentoki Starterkurs</div>
     </h2>
+
     <main class="ui two column page doubling grid">
         <div class="row">
             <div class="five wide column">
@@ -33,4 +44,5 @@
             </div>
         </div>
     </main>
+
 {% endblock %}

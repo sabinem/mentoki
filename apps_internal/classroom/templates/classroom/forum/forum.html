@@ -1,4 +1,4 @@
-{% extends "classroom/forum/base.html" %}
+{% extends "classroom/forum/base_forum.html" %}
 
 {% comment %}
 
@@ -22,11 +22,7 @@
 
 {% load mptt_tags %}
 
-{% block controls %}
-    {% include 'classroom/_control_fulltext.html' %}
-{% endblock %}
-
-{% block nodes_breadcrumb %}
+{% block breadcrumbs %}
 
     <div class="ui large breadcrumb" id ="page-breadcrumb">
 
@@ -37,17 +33,27 @@
 {% endblock %}
 
 
-{% block node %}<div class="ui header huge">
-    {{ start_node.title }}
-</div>
+{% block start_forum %}
+
+    <div class="ui header huge">
+        <a href="{% url "classroom:forum:detail" slug=courseevent.slug pk=start_forum.pk %}">
+           {{ start_forum.title }}
+        </a>
+    </div>
+    {{ start_forum.text | safe }}
+
 {% endblock %}
 
-
 {% block recursetree_item %}
-    {{ node.title }}
+    <a href="{% url "classroom:forum:detail" slug=courseevent.slug pk=node.pk %}">
+       {{ node.title }}
+    </a>
 {% endblock %}
 
 {% block recursetree_item_more %}
     {{ node.text | safe }}
 {% endblock %}
 
+{% block threads %}
+    {% include 'classroom/forum/_threads.html' %}
+{% endblock %}

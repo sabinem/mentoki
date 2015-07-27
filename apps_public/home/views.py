@@ -1,4 +1,4 @@
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, RedirectView
 
 
 class HomePageView(TemplateView):
@@ -27,8 +27,10 @@ class ImpressumPageView(TemplateView):
 class TeamPageView(TemplateView):
     template_name = "public/generalpages/team.html"
 
-class WebinarView(TemplateView):
-    template_name = "public/webinar.html"
-
 class NewsLetterView(TemplateView):
     template_name = "public/newsletter.html"
+
+# old urls will still be served
+class WebinarView(RedirectView):
+    permanent = True
+    url = '/unterrichten#webinarinfo'

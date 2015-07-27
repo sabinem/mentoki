@@ -1,26 +1,32 @@
 {% extends "base/base.html" %}
 
-{% block section %}id="desk"{% endblock %}
+{% block page_section_css_id %}desk{% endblock %}
 
 {% block main %}
 
-    <div class="ui page grid">
-        {% include 'base/fragments/_messages.html' %}
-    </div>
-
     <div class="ui page grid doubling two column">
 
-        <div class="column">
+        <div class="row">
 
-            {% block learn_records %}{% endblock %}
+            {% include 'base/fragments/_messages.html' %}
 
         </div>
 
-        <div class="column">
+        <div class="row">
 
-            {% block teach_records %}{% endblock %}
+            <div class="column">
 
-            {% block admin_access %}{% endblock %}
+                {% block learn_records %}{% endblock %}
+
+            </div>
+
+            <div class="column">
+
+                {% block teach_records %}{% endblock %}
+
+                {% block admin_access %}{% endblock %}
+
+            </div>
 
         </div>
 

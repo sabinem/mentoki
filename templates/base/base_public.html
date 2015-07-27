@@ -1,138 +1,76 @@
-<!DOCTYPE html>
-<html>
+{% extends "base/base.html" %}
+
 {% comment %}
-Empty blocks:
--------------
-   Meta-Information: (only used for public pages)
-   "block meta_title": expected: plain text ..| ... | Mentoki
-   "block meta_description":
-   "block meta-keywords":
 
-   Menu-Addition:
-   "block custom_menu_item": expected: <a class=item>...</a> or <div class=item>...</div>
+    Blockstructure:
+    --------------
+    {% block meta %}
+       {% block meta_description %}{% endblock %}: meta information for public pages
 
-   Page-css-id:
-   "block section": expected: id="..."
+       {% block meta_keywords %}{% endblock %}
 
-   Main-Content:
-   "block main": expected: <div class="ui page grid">...</div>
+       {% block meta_title %}{% endblock %}
+    {% endblock %}
 
-Blocks with default:
---------------------
-   footer: if a page doesenot come with a footer: replace empty
+    {% block main %}
+
+       {% block page_content %}{% endblock %}: inner page
+
+       {% block page_grid_class %}stackable two column centered{% endblock %}: not in use so far
+       {% block main_segment_id %}standard_public_segment{% endblock %}: not in use so far
+
+    {% endblock %}
+
+    Additional inherited blocks: see base.html
+    ------------------------------------------
+    {% block page_section_css_id %}{% endblock %}
+    {% block custom_menu_item %}{% endblock %}
+
+    to do: employ the two blocks that are not in use into the public pages!!!
+
 {% endcomment %}
-<head>
-    <!-- Meta information -->
-    {% include 'base/fragments/_meta.html' %}
+
+<!-- BLOCK: Meta data for the page -->
+
+{% block meta %}
+
+    <!-- BLOCK: Meta description -->
 
     <meta name="description" content="{% block meta_description %}{% endblock %}">
+
+    <!-- BLOCK: Meta keywords -->
+
     <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
+
+    <!-- BLOCK: Meta title -->
 
     <title>{% block meta_title %}{% endblock %}</title>
 
-    <!-- Google Verification -->
-    <meta name="google-site-verification" content="mxd7wHh8P4QFFW-V0tYqmHAUB5Yz3MydQOpyiRiyGbg" />
-
-    <!-- CSS -->
-    {% include 'base/fragments/_css.html' %}
-
-    <!-- favicon -->
-    {% include 'base/fragments/_favicon.html' %}
-
-    {% include 'base/fragments/_head.html' %}
-
-</head>
-{% block body %}
-   <body id="mentoki">
 {% endblock %}
-{% load activelink %}
 
-{% comment %}menu {% endcomment %}
-    <!-- pc and tablet version of the navbar -->
+<!-- BLOCK: Main page -->
 
-    <div class="ui menu fixed center aligned top" id="pc_navbar">
-        {% include 'base/fragments/_pc_logo.html' %}
-        {% if user.is_authenticated %}
+{% block main %}
 
-            {% include 'base/fragments/_main_menu_authenticated_left.html' %}
+    <div class="ui grid page {% block page_grid_class %}stackable two column centered{% endblock %}">
 
-            {% if is_owner %}
-               <a  href="{% url 'course:courseevent' ce_slug=courseevent.slug slug=course.slug %}" class="item
-                    ">
-                    Kursbearbeitung
-                </a>
-            {% endif %}
+        <div class="column center aligned">
 
-            {% block custom_menu_item %}
-            {% endblock %}
+            <div class="segment ui" id="{% block main_segment_id %}standard_public_segment{% endblock %}">
 
-            <div class="right menu">
-                {% include 'base/fragments/_main_menu_authenticated_right.html' %}
+                {% include 'base/fragments/_messages.html' %}
+
+                <!-- BLOCK: Inner page -->
+
+                {% block page_content %}{% endblock %}
+
             </div>
-
-        {% else %}
-
-            {% include 'base/fragments/_main_menu_public_left.html' %}
-
-            <div class="right menu">
-                {% include 'base/fragments/_social_media_icons.html' %}
-                {% include 'base/fragments/_main_menu_public_right.html' %}
-            </div>
-
-        {% endif %}
-    </div>
-
-    {% comment %}menu{% endcomment %}
-    <div class="ui top attached menu fluid six item" id="mobile_navbar">
-
-        {% comment %}mobile button{% endcomment %}
-        <a class="item" id="mobile_button">
-          <i class="sidebar icon"></i>
-        </a>
-        {% include 'base/fragments/_home_icon.html' %}
-        {% include 'base/fragments/_social_media_icons.html' %}
-        {% include 'base/fragments/_main_menu_public_right.html' %}
-    </div>
-
-    {% comment %}sidebar{% endcomment %}
-    <div class="ui labeled icon wide left inline vertical sidebar menu mobile only" id="mobile_menu">
-        {% include 'base/fragments/_mobile_menu.html' %}
-    </div>
-    <!-- Section of the Website -->
-    <div {% block section %}id="section"{% endblock %} >
-    {% comment %}section{% endcomment %}
-    <div id="content">
-
-
-        {% comment %}main page{% endcomment %}
-        <div id="base_page">
-            {% if messages %}
-                <div class="ui message">
-                    <ul class="list">
-                        {% for message in messages %}
-                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            {% endif %}
-            {% block main %}
-            {% endblock %}
 
         </div>
 
     </div>
 
-    {% comment %}footer{% endcomment %}
-    <div class="ui bottom attached menu fluid three item">
-        <a class="item"  href="{% url 'contact:contact' %}">Kontakt</a>
-        <a class="item"  href="{% url 'home:team' %}">Team</a>
-        <a class="item"  href="{% url 'home:impressum' %}">Impressum</a>
-    </div>
-
-    </div>
-</body>
-</html>
-
+{% endblock %}
 
 
 

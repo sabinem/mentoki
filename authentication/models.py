@@ -12,7 +12,8 @@ from django.db import models
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 
-from apps_data.course.models import Course
+from apps_data.course.models.course import Course
+from apps_data.courseevent.models.courseevent import CourseEvent
 
 
 class AccountManager(BaseUserManager):
@@ -26,6 +27,9 @@ class AccountManager(BaseUserManager):
                           )
         user.is_active = True
         user.set_password(password)
+        print "=============="
+        print user
+        print self._db
         user.save(using=self._db)
         return user
 
@@ -54,11 +58,11 @@ class Account(AbstractBaseUser, PermissionsMixin):
     is_teacher = models.BooleanField(default=False)
     is_student = models.BooleanField(default=False)
 
-    #teaches = models.ManyToManyField(Course)
-    #studies = models.ManyToManyField(CourseEvent)
-
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    profile_image = models.ImageField(upload_to="uploads", blank=False, null=False,
+                                      default='/static/img/happyface.jpg' )
+
 
     objects = AccountManager()
 
@@ -66,7 +70,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['username']
 
     def __unicode__(self):
-        return self.first_name
+        return u'%s' % (self.username)
 
     def get_full_name(self):
         return ' '.join([self.first_name, self.last_name])
@@ -76,6 +80,9 @@ class Account(AbstractBaseUser, PermissionsMixin):
 
     def teaching(self):
         return Course.objects.filter(courseowner__user=self)
+
+    def studying(self):
+        return CourseEvent.objects.filter(courseeventparticipation__user=self)
 
     def has_ownership(self, course):
         try:

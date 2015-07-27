@@ -9,7 +9,7 @@ from django.contrib.auth import get_user_model
 
 from django.test import TestCase
 
-from ..models import CourseEvent
+from ..models.courseevent import CourseEvent
 from .factories import CourseEventFactory
 from apps_data.course.tests.factories import CourseFactory, CourseOwnerFactory
 

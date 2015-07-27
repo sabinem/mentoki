@@ -2,7 +2,9 @@
 
 from __future__ import unicode_literals, absolute_import
 
-from ..models import Course, CourseOwner, Lesson, Material
+from ..models.course import Course, CourseOwner
+from ..models.lesson import Lesson
+from ..models.material import Material
 from authentication.factories import AccountFactory
 
 import factory

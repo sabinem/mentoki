@@ -8,7 +8,9 @@ import floppyforms.__future__ as forms
 
 from crispy_forms.helper import FormHelper
 
-from apps_data.course.models import Lesson, Course, Material
+from apps_data.course.models.course import Course
+from apps_data.course.models.lesson import Lesson
+from apps_data.course.models.material import Material
 
 from mptt.exceptions import InvalidMove
 from mptt.forms import TreeNodeChoiceField, TreeNodePositionField

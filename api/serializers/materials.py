@@ -1,4 +1,4 @@
-from apps_data.course.models import Material
+from apps_data.course.models.material import Material
 
 from rest_framework import serializers
 from rest_framework_extensions.mixins import PaginateByMaxMixin

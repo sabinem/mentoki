@@ -2,80 +2,46 @@
 
 from __future__ import unicode_literals
 
-from django.views.generic import DetailView, UpdateView
-from django.forms.models import modelform_factory
 from django.shortcuts import get_object_or_404
+from django.forms.models import modelform_factory
+from django.forms.models import model_to_dict
 
-from apps_data.courseevent.models import CourseEvent, CourseEventPubicInformation
-from ..mixins import CourseEventMixin
+from vanilla import UpdateView, DetailView
+
+from apps_data.courseevent.models.courseevent import CourseEvent
+
+from ..mixins.base import CourseMenuMixin
 
 
-class CourseEventDetailView(CourseEventMixin, DetailView):
+class CourseEventDetailView(CourseMenuMixin, DetailView):
+    """
+    Start in this section of the website: it shows the course and its attributes
+    """
     model = CourseEvent
-    context_object_name = 'courseevent'
     template_name = 'coursebackend/courseevent/detail.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(CourseEventDetailView, self).get_context_data(**kwargs)
-
-        courseeventpublicinformation = get_object_or_404(CourseEventPubicInformation, courseevent=context['courseevent'])
-
-        context['courseeventinfo'] = courseeventpublicinformation
-
-        return context
+    lookup_field = 'slug'
+    lookup_url_kwarg = 'slug'
+    context_object_name ='courseevent'
 
 
-class CourseEventUpdateView(CourseEventMixin, UpdateView):
+class CourseEventUpdateView(CourseMenuMixin, UpdateView):
+    """
+    Update the course one field at a time
+    """
     model = CourseEvent
     template_name = 'coursebackend/courseevent/update.html'
-    context_object_name = 'courseevent'
+    lookup_field = 'slug'
+    lookup_url_kwarg = 'slug'
+    context_object_name ='courseevent'
 
     def get_form_class(self, **kwargs):
-        return modelform_factory(CourseEvent, fields=('status_internal',
-                                                      'nr_weeks', 'max_participants', 'start_date',
-                                                      'event_type'))
-
-
-class CourseEventExcerptUpdateView(CourseEventMixin, UpdateView):
-    model = CourseEvent
-    template_name = 'coursebackend/courseevent/update.html'
-    context_object_name = 'courseevent'
-
-    def get_form_class(self, **kwargs):
-        return modelform_factory(CourseEvent, fields=('excerpt',))
+        return modelform_factory(CourseEvent, fields=(self.kwargs['field'],))
 
     def get_context_data(self, **kwargs):
         context = super(CourseEventUpdateView, self).get_context_data(**kwargs)
 
-        context['exampletext'] = context['course'].excerpt
+        course_dict = model_to_dict(context['course'])
+        if self.kwargs['field'] in course_dict:
+            context['exampletext'] = course_dict[self.kwargs['field']]
 
-        return context
-
-
-class CourseEventPublicInformationUpdateView(CourseEventMixin, UpdateView):
-    model = CourseEventPubicInformation
-    template_name = 'coursebackend/courseevent/update.html'
-    context_object_name = 'courseevent'
-
-    def get_form_class(self, **kwargs):
-        return modelform_factory(CourseEventPubicInformation, fields=(self.kwargs['field'],))
-
-    def get_context_data(self, **kwargs):
-        context = super(CourseEventPublicInformationUpdateView, self).get_context_data(**kwargs)
-
-        field = self.kwargs['field']
-        if field == 'target_group':
-            context['exampletext'] = context['course'].target_group
-        elif field == 'prerequisites':
-            context['exampletext'] = context['course'].prerequisites
-        elif field == 'project':
-            context['exampletext'] = context['course'].project
-        elif field == 'structure':
-            context['exampletext'] = context['course'].structure
-        elif field == 'prerequisites':
-            context['exampletext'] = context['course'].prerequisites
-        elif field == 'text':
-            context['exampletext'] = context['course'].text
-        else:
-            context['exampletext'] = 'Dieses Feld ist in der Kursvorlage nicht vorhanden.'
         return context

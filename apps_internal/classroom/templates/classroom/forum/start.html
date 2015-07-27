@@ -1,4 +1,4 @@
-{% extends "classroom/forum/base.html" %}
+{% extends "classroom/forum/base_forum.html" %}
 
 {% comment %}
 
@@ -32,18 +32,6 @@
 
 {% endblock %}
 
-
-{% block start_forum %}
-
-    <div class="ui header huge">
-        <a href="{% url "classroom:forum:detail" slug=courseevent.slug pk=start_forum.pk %}">
-           {{ start_forum.title }}
-        </a>
-    </div>
-    {{ start_forum.text | safe }}
-
-{% endblock %}
-
 {% block recursetree_item %}
     <a href="{% url "classroom:forum:detail" slug=courseevent.slug pk=node.pk %}">
        {{ node.title }}
@@ -54,6 +42,4 @@
     {{ node.text | safe }}
 {% endblock %}
 
-{% block threads %}
-    {% include 'classroom/forum/_threads.html' %}
-{% endblock %}
+

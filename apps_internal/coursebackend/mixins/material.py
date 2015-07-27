@@ -3,9 +3,9 @@
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 
-from apps_data.course.models import Material
+from apps_data.course.models.material import Material
 
-from ..mixins import CourseMenuMixin
+from ..mixins.base import CourseMenuMixin
 
 
 

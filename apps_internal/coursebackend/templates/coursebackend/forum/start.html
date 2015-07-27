@@ -1,24 +1,51 @@
-{% extends "coursebackend/base_forum.html" %}
+{% extends "coursebackend/forum/base.html" %}
 
-{% block page_header %}
-    Forum {{ courseevent.title }}
-{% endblock %}
+{% comment %}
 
-{% block help %}
-    {% include 'coursebackend/forum/_help_forum.html' %}
+    Blocks filled here:
+    -------------------
+    {% block page_section_css_id %}classroombackend{% endblock %}
+
+    {% block sidebar_menu %}{% include 'coursebackend/_menu.html' %}{% endblock %}
+
+    {% block page_content %}...(see below){% endblock %}
+
+    {% block page_subsection %}{% endblock %}
+
+    Additional inherited blocks: see coursebackend/base.html, they still have to be filled
+    --------------------------------------------------------------------------------------
+    {% block controls %}{% endblock %}
+
+{% endcomment %}
+
+<!-- BLOCK: css id subsection: filled! -->
+
+{% load mptt_tags %}
+
+{% block page_help %}
+    <div id="helpinstructions">
+        <div class="ui segment message">
+            {% include 'coursebackend/forum/_help_start.html' %}
+        </div>
+        <p></p>
+    </div>
 {% endblock %}
 
 {% block controls %}
-    {% include 'coursebackend/_checkbox_help.html' %}
-    {% include 'coursebackend/_checkbox_worklinks.html' %}
-    {% include 'coursebackend/_checkbox_structure.html' %}
+    {% include 'coursebackend/_control_help.html' %}
+    {% include 'coursebackend/_control_worklinks.html' %}
+    {% include 'coursebackend/forum/_control_fulltext.html' %}
 {% endblock %}
 
+{% block nodes_breadcrumb %}{% endblock %}
 
-{% block recursetree_item_content %}
+{% block node %}{% endblock %}
 
-   {% include 'coursebackend/forum/_node_header_forum.html' %}
-   {{ node.description }}
-   {{ node.text | safe }}
-
+{% block recursetree_item %}
+    {{ node.title }}
 {% endblock %}
+
+{% block recursetree_item_more %}
+    {{ node.text | safe }}
+{% endblock %}
+

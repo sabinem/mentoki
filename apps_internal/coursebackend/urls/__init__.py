@@ -6,7 +6,7 @@ from django.conf.urls import patterns, include, url
 
 from django_downloadview import ObjectDownloadView
 
-from apps_data.course.models import Material
+from apps_data.course.models.material import Material
 
 
 # for the download of files
@@ -23,6 +23,12 @@ urlpatterns = patterns('',
     url(r'^material/', include('apps_internal.coursebackend.urls.material', namespace='material')),
 
     url(r'^unterricht/', include('apps_internal.coursebackend.urls.lesson', namespace='lesson')),
+
+    url(r'^kurs/(?P<slug>[a-z0-9_-]+)/teilnehmer/', include('apps_internal.coursebackend.urls.participant', namespace='participant')),
+
+    url(r'^kurs/(?P<slug>[a-z0-9_-]+)/forum/', include('apps_internal.coursebackend.urls.forum', namespace='forum')),
+
+    url(r'^kurs/(?P<slug>[a-z0-9_-]+)/ankuendigungen/', include('apps_internal.coursebackend.urls.announcement', namespace='announcement')),
 
     url(r'^download/(?P<slug>[a-zA-Z0-9_-]+)/$', download, name="download"),
 

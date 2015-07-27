@@ -1,4 +1,4 @@
-from apps_data.course.models import *
+from apps_data.course.models.lesson import Lesson
 
 from rest_framework import serializers
 from rest_framework_recursive.fields import RecursiveField

@@ -5,7 +5,6 @@
     {% for field in form %}
 
         <div class="fieldWrapper">
-
             <div id="helpinstructions">
                 <div class="ui segment message">
                     {{ field.help_text }}
@@ -25,7 +24,7 @@
         Speichern
     </button>
 
-    <a href="{% url 'coursebackend:courseevent:detail' course_slug=course.slug slug=courseevent.slug %}" class="ui button">
+    <a href="{% include 'coursebackend/courseevent/_url_detail.html' %}" class="ui button">
         Abbruch
     </a>
 

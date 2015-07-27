@@ -20,8 +20,6 @@
 
 <!-- BLOCK: css id subsection: filled! -->
 
-{% load mptt_tags %}
-
 {% block controls %}{% endblock %}
 
 {% block page_subsection %}
@@ -32,44 +30,10 @@
 
     {% block breadcrumbs %}{% endblock %}
 
-    {% block start_forum %}{% endblock %}
+    {% block thread %}{% endblock %}
 
-    <div class="ui divided list">
+    {% block posts %}{% endblock %}
 
-        {% recursetree nodes %}
-
-            <div class="item">
-
-                <i class="top aligned folder outline icon"></i>
-
-                <div class="content">
-
-                    {% block recursetree_item %}{% endblock %}
-
-                    <div class="fullcontent">
-
-                            {% block recursetree_item_more %}{% endblock %}
-
-                    </div>
-
-                    {% if not is_leaf %}
-
-                        <div class="list">
-
-                            {{ children }}
-
-                        </div>
-
-                    {% endif %}
-
-                </div>
-
-            </div>
-
-        {% endrecursetree %}
-
-    </div>
-
-    {% block threads %}{% endblock %}
+    {% block form %}{% endblock %}
 
 {% endblock %}

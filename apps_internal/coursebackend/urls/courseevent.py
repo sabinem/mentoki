@@ -4,26 +4,15 @@ from __future__ import unicode_literals
 
 from django.conf.urls import patterns, url
 
-from ..views import CourseEventDetailView, CourseEventUpdateView, \
-    CourseEventPublicInformationUpdateView, CourseEventExcerptUpdateView
+from ..views.courseevent import CourseEventDetailView, CourseEventUpdateView
 
 
 urlpatterns = patterns('',
-    url(r'^$', CourseEventDetailView.as_view(), name='detail'),
+    url(r'^$',
+        CourseEventDetailView.as_view(), name='detail'),
 
-    url(r'^parameter$',
+    #choice are the fields allowed for Update by the teachers in a courseevent
+    url(r'^(?P<field>title|excerpt|target_group|prerequisites|project|text|structure|video_url|workload|format|nr_weeks|max_participants|status_internal|event_type|start_date)$',
         CourseEventUpdateView.as_view(), name='update'),
-
-    url(r'^feld/abstrakt$',
-        CourseEventExcerptUpdateView.as_view(), name='updateexcerpt'),
-
-    url(r'^(?P<pk>\d+)/feld/(?P<field>[a-z_]+)$',
-        CourseEventPublicInformationUpdateView.as_view(), name='update'),
-
-    #url(r'^freischaltung/$', include('apps.course.urls.publish', namespace='publish')),
-
-    #url(r'^forum/$', include('apps.course.urls.forum', namespace='forum')),
-
-    #url(r'^nachrichten/$', include('apps.course.urls.announcement', namespace='announcement')),
 
 )

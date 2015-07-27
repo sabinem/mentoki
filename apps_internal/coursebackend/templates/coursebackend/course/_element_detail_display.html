@@ -2,7 +2,7 @@
 <h3 class="ui header">
      Titel:
     <a class= "worklink item"
-       href="{% url 'coursebackend:course:update' course_slug=course.slug field="title" %}">
+       href="{% include 'coursebackend/course/_url_update.html' with field="title" %}">
         <i class="write blue icon"></i>
     </a>
 </h3>
@@ -11,7 +11,7 @@
 <h3 class="ui header">
      Abstrakt:
     <a class= "worklink item"
-       href="{% url 'coursebackend:course:update' course_slug=course.slug field="excerpt" %}">
+       href="{% include 'coursebackend/course/_url_update.html' with field="excerpt" %}">
         <i class="write blue icon"></i>
     </a>
 </h3>
@@ -20,7 +20,7 @@
 <h3 class="ui header">
     Zielgruppe:
     <a class= "worklink item"
-       href="{% url 'coursebackend:course:update' course_slug=course.slug field="target_group" %}">
+       href="{% include 'coursebackend/course/_url_update.html' with field="target_group" %}">
         <i class="write blue icon"></i>
     </a>
 </h3>
@@ -29,7 +29,7 @@
 <h3 class="ui header">
     Voraussetzungen:
     <a class= "worklink item"
-       href="{% url 'coursebackend:course:update' course_slug=course.slug field="prerequisites" %}">
+       href="{% include 'coursebackend/course/_url_update.html' with field="prerequisites" %}">
         <i class="write blue icon"></i>
     </a>
 </h3>
@@ -38,7 +38,7 @@
 <h3 class="ui header">
     Was nimmt der Teilnehmer aus dem Kurs mit:
     <a class= "worklink item"
-       href="{% url 'coursebackend:course:update' course_slug=course.slug field="project" %}">
+       href="{% include 'coursebackend/course/_url_update.html' with field="project" %}">
         <i class="write blue icon"></i>
     </a>
 </h3>
@@ -47,7 +47,7 @@
 <h3 class="ui header">
     Gliederung:
     <a class= "worklink item"
-       href="{% url 'coursebackend:course:update' course_slug=course.slug field="structure" %}">
+       href="{% include 'coursebackend/course/_url_update.html' with field="structure" %}">
         <i class="write blue icon"></i>
     </a>
 </h3>
@@ -56,7 +56,7 @@
 <h3 class="ui header">
     Freie Kursbeschreibung:
     <a class= "worklink item"
-       href="{% url 'coursebackend:course:update' course_slug=course.slug field="text" %}">
+       href="{% include 'coursebackend/course/_url_update.html' with field="text" %}">
         <i class="write blue icon"></i>
     </a>
 </h3>

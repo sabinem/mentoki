@@ -8,7 +8,8 @@ import floppyforms.__future__ as forms
 
 from crispy_forms.helper import FormHelper
 
-from apps_data.course.models import Material, Course
+from apps_data.course.models.material import Material
+from apps_data.course.models.course import Course
 
 
 class MaterialForm(forms.ModelForm):

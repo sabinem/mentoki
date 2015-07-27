@@ -1,4 +1,4 @@
-{% extends "coursebackend/base_lesson.html" %}
+{% extends "coursebackend/lessons_view/base.html" %}
 
 {% block header %}
    Unterricht {{ course.title }}
@@ -6,7 +6,7 @@
 
 {% block controls %}
 
-    {% include 'coursebackend/_checkbox_help.html' %}
+    {% include 'coursebackend/_control_help.html' %}
     {% include 'coursebackend/lessons_view/_checkbox_fulltext.html' %}
 
 {% endblock %}

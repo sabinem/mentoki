@@ -5,7 +5,7 @@ from rest_framework import renderers
 from rest_framework.response import Response
 
 from ..serializers import *
-from apps_data.courseevent.models import CourseEvent
+from apps_data.courseevent.models.courseevent import CourseEvent
 from django.contrib.auth.models import User
 from ..permissions import *
 

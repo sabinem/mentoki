@@ -1,33 +1,19 @@
 {% extends "coursebackend/base.html" %}
-{% block header %}
-    Kurseereignis {{ courseevent.title }}
-{% endblock %}
 
 {% block controls %}
-    {{ block.super }}
-    <div class="item">
-        <div class="ui checkbox" id="showdescriptions">
-            <input type="checkbox">
-            <label>Vorlage anzeigen</label>
-        </div>
-    </div>
+
+    {% include 'coursebackend/_control_help.html' %}
+
 {% endblock %}
 
-{% block help %}
-    {% include 'coursebackend/courseevent/_help_update.html' %}
-{% endblock %}
-
-{% block page_topic %}
-    {% include 'coursebackend/courseevent/_page_topic.html' %}
+{% block page_subsection %}
+    {% include 'coursebackend/courseevent/_element_subsection_header.html' %}
 {% endblock %}
 
 {% block page_content %}
 
+    {% include 'coursebackend/courseevent/_element_header.html' %}
 
-        <div class="contentdescription">
-            <div class="ui header">Aus der Kursvorlage:</div>
-            {{ exampletext | safe }}
-        </div>
-        {% include 'coursebackend/courseowner/_form.html' %}
+    {% include 'coursebackend/courseevent/_element_form.html' %}
 
 {% endblock %}

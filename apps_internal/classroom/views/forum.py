@@ -2,31 +2,45 @@
 
 from __future__ import unicode_literals, absolute_import
 
-from vanilla import TemplateView
+from django.core.urlresolvers import reverse_lazy
 
-from apps_data.courseevent.models.forum import Forum
+from vanilla import TemplateView, CreateView
 
-from ..mixins.base import CourseMenuMixin
-from ..mixins.forum import ForumMixin
+from .mixins.forum import ForumMixin, ThreadMixin
+
+from apps_data.courseevent.models.forum import Post
 
 
-class ForumStartView(CourseMenuMixin, TemplateView):
+class ForumStartView(ForumMixin, TemplateView):
     """
     List all lesson blocks with lessons underneath
     """
-    template_name = 'coursebackend/forum/start.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(ForumStartView, self).get_context_data(**kwargs)
-
-        context['nodes'] = Forum.objects.forums_for_courseevent(courseevent=context['courseevent'])
-        print context['nodes']
-
-        return context
+    template_name = 'classroom/forum/start.html'
 
 
 class ForumDetailView(ForumMixin, TemplateView):
     """
     List all lesson blocks with lessons underneath
     """
-    template_name = 'coursebackend/forum/detail.html'
+    template_name = 'classroom/forum/forum.html'
+
+
+class ForumNewPostsView(ForumMixin, TemplateView):
+    """
+    List all lesson blocks with lessons underneath
+    """
+    template_name = 'classroom/forum/newposts.html'
+
+
+class ForumThreadView(ThreadMixin, CreateView):
+    """
+    List all lesson blocks with lessons underneath
+    """
+    template_name = 'classroom/forum/thread.html'
+    model = Post
+    context_object_name = 'post'
+    fields = ['text']
+
+    def get_success_url(self):
+       return reverse_lazy('classroom:forum:thread',
+                           kwargs={'slug': self.kwargs['slug'], 'pk': self.kwargs['pk']})

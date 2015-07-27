@@ -14,7 +14,7 @@ class CustomUserCreationForm(UserCreationForm):
         fields = ('username', 'email')
 
     def clean_username(self):
-        username = self.cleaned_data.get['username']
+        username = self.cleaned_data.get('username')
         try:
             Account._default_manager.get(username=username)
         except Account.DoesNotExist:
@@ -31,7 +31,16 @@ class CustomUserCreationForm(UserCreationForm):
 
     def save(self,commit=True):
         # save the provided password in hashed format
-        user = super(UserCreationForm,self).save(commit=False)
+        user = super(CustomUserCreationForm,self).save(commit=False)
+        print "========== in form"
+        print user
+        print user.id
+        print user.username
+        print user.email
+        attrs = vars(user)
+        # {'kids': 0, 'name': 'Dog', 'color': 'Spotted', 'age': 10, 'legs': 2, 'smell': 'Alot'}
+        # now dump this in some way or another
+        print ', '.join("%s: %s" % item for item in attrs.items())
         user.set_password(self.cleaned_data['password1'])
         if commit:
             user.save()

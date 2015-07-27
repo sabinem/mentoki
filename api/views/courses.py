@@ -5,7 +5,7 @@ from rest_framework import renderers
 from rest_framework.response import Response
 
 from ..serializers import *
-from apps_data.course.models import Course
+from apps_data.course.models.course import Course
 from django.contrib.auth.models import User
 from ..permissions import *
 from rest_framework_extensions.mixins import NestedViewSetMixin

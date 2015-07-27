@@ -25,7 +25,7 @@
         Speichern
     </button>
 
-    <a href="{% url 'coursebackend:course:detail' course_slug=course.slug %}" class="ui button">
+    <a href="{% include 'coursebackend/course/_url_detail.html' %}" class="ui button">
         Abbruch
     </a>
 

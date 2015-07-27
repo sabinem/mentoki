@@ -2,7 +2,7 @@
 from __future__ import unicode_literals, absolute_import
 from django.db import models
 from model_utils.models import TimeStampedModel
-from apps_data.courseevent.models import CourseEvent
+from apps_data.courseevent.models.courseevent import CourseEvent
 
 
 class Announcement(TimeStampedModel):
@@ -18,6 +18,9 @@ class Announcement(TimeStampedModel):
 
     def __unicode__(self):
         return self.title
+
+    class Meta:
+        verbose_name = "XAnnouncement"
 
 
 class ClassRules(TimeStampedModel):
@@ -41,3 +44,6 @@ class ClassRules(TimeStampedModel):
 
     def valid_since(self):
         return self.published_at_date
+
+    class Meta:
+        verbose_name = "Xclassrules"

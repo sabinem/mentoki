@@ -64,7 +64,7 @@ INSTALLED_APPS = (
 
     'apps_internal.desk',
     'apps_internal.coursebackend',
-    #'apps_internal.classroom',
+    'apps_internal.classroom',
 
     'apps_public.newsletter',
     'apps_public.contact',
@@ -211,6 +211,7 @@ EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SERVER_EMAIL = EMAIL_HOST_USER
 
+DEFAULT_COURSE_FROM_EMAIL = 'info@mentoki.com'
 
 
 CACHES = {

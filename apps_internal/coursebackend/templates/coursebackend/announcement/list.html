@@ -1,4 +1,4 @@
-{% extends "base_course/base.html" %}
+{% extends "coursebackend/base.html" %}
 {% load tz %}
 {% block header %}
         Kursereignis {{ courseevent.title }}
@@ -18,7 +18,7 @@
             <a class="active blue item">
             Ansehen
             </a>
-            <a class="item" href="{% url 'course:createannouncement' slug=match.kwargs.slug ce_slug=match.kwargs.ce_slug %}">
+            <a class="item" href="{% url 'coursebackend:announcement:list' course_slug=course.slug slug=courseevent.slug %}">
             <i class="write blue icon"></i>Neue Ankündigung verfassen
             </a>
         </div>
@@ -36,10 +36,10 @@
           {% for announcement in announcements_unpublished %}
             <tr>
               <td>
-                  <a href="{% url 'course:updateannouncement' ce_slug=match.kwargs.ce_slug slug=match.kwargs.slug announcement=announcement.id %}">
+                  <a href="{% url 'course:announcement:list' course_slug=course.slug slug=courseevent.slug %}  %}">
                         <i class="icon write blue"></i>
                     </a>
-                    <a href="{% url 'course:deleteannouncement' ce_slug=match.kwargs.ce_slug slug=match.kwargs.slug announcement=announcement.id %}">
+                    <a href="{% url 'course:announcement:list' course_slug=course.slug slug=courseevent.slug  %}">
                         <i class="icon remove blue"></i>
                     </a>
               </td>
@@ -54,7 +54,7 @@
               <td>
                   <i class="icon checkmark green"></i>
               </td>
-              <td>{{ announcement.published_at_date |date:'d.m.Y'  }}</td>
+              <td>{{ announcement.published_at | date:'d.m.Y'  }}</td>
               <td>
 
                         <div class="ui accordion field">

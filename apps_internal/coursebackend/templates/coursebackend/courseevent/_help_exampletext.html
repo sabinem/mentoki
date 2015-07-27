@@ -1,4 +1,9 @@
-<div class="contentdescription">
-    <div class="ui header">Aus der Kursvorlage:</div>
-    {{ exampletext | safe }}
-</div>
+{% if exampletext %}
+    <div id="helpinstructions">
+        <div class="ui segment message">
+            <div class="ui header">Aus der Kursvorlage:</div>
+            {{ exampletext | safe }}
+        </div>
+        <p></p>
+    </div>
+{% endif %}

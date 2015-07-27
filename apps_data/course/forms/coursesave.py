@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 
 import floppyforms.__future__ as forms
 
-from apps_data.course.models import Course
+from apps_data.course.models.course import Course
 
 
 class CourseTeachersChangeForm(forms.ModelForm):

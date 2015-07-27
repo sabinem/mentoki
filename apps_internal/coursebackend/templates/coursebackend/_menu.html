@@ -1,15 +1,15 @@
 {% load activelink %}
 <div class="ui fluid vertical menu">
 
-    <div class="header item">
-      Vorlage Kurs
+    <div class="header item huge">
+      Dashboard {{ course.title }}
     </div>
 
     <a class="item
       {% ifstartswith 'coursebackend:course:detail' course_slug=course.slug %}
-          active
+           active
       {% endifstartswith %}
-      " href="{% url 'coursebackend:course:detail' course_slug=course.slug %}">
+      " href="{% include 'coursebackend/course/_url_detail.html' %}">
       Kursvorlage
     </a>
 
@@ -27,9 +27,9 @@
 
               <a class="item
                   {% ifstartswith 'coursebackend:courseevent:detail' course_slug=course.slug slug=courseevent.slug %}
-                      active
+                       active
                   {% endifstartswith %}
-                  " href="{% url 'coursebackend:courseevent:detail' course_slug=course.slug slug=courseevent.slug %}">
+                  " href="{% include 'coursebackend/courseevent/_url_detail.html' %}">
                   {{ courseevent.title }}
               </a>
 
@@ -84,35 +84,35 @@
           Arbeit im Klassenzimmer
           <div class="menu">
               <a class="item"
-                 href="">
+                 href="{% url 'classroom:start' slug=courseevent.slug %}">
                  <i class="icon student blue"></i>ins Klassenzimmer gehen
               </a>
               <a class="item
-                 {% ifactive 'coursebackend:participantslist' slug=courseevent.slug  %}
+                 {% ifactive 'coursebackend:participant:list' course_slug=course.slug slug=courseevent.slug  %}
                   active
                  {% endifactive %}"
-                 href="">
+                 href="{% url 'coursebackend:participant:list' course_slug=course.slug slug=courseevent.slug %}">
                   <i class="list icon"></i>Teilnehmerliste ansehen
               </a>
               <a class="item
-                 {% ifstartswith 'coursebackend:buildforum' slug=courseevent.slug  %}
-                  active
-                 {% endifstartswith %}"
-                 href="">
+                 {% ifstartswith 'coursebackend:forum:start' course_slug=course.slug slug=courseevent.slug  %}
+                     active
+                 {% endifstartswith %}
+                 " href="{% url 'coursebackend:forum:start' course_slug=course.slug slug=courseevent.slug %}">
                   <i class="list icon"></i>Forum
               </a>
               <a class="item
-                 {% ifstartswith 'coursebackend:createsubforum' slug=courseevent.slug  %}
+                 {% ifstartswith 'coursebackend:forum:create' course_slug=course.slug slug=courseevent.slug  %}
                   active
                  {% endifstartswith %}"
                  href="">
                   <i class="list icon"></i>Unterforum anlegen
               </a>
               <a class="item
-                 {% ifstartswith 'coursebackend:listannouncements' slug=courseevent.slug  %}
+                 {% ifstartswith 'coursebackend:announcement:list' course_slug=course.slug slug=courseevent.slug %}
                   active
                  {% endifstartswith %}"
-                 href="">
+                 href="{% url 'coursebackend:announcement:list' course_slug=course.slug slug=courseevent.slug  %}">
                   <i class="list icon"></i>Ankündigungen schreiben
               </a>
               <a class="item

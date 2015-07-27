@@ -7,7 +7,7 @@ import django.utils.timezone
 from django.conf import settings
 import model_utils.fields
 import apps_data.course.models
-from apps_data.course.models import foto_location
+from apps_data.course.models.course import foto_location
 
 
 class Migration(migrations.Migration):

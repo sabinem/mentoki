@@ -4,8 +4,9 @@ from __future__ import unicode_literals, absolute_import
 
 from django.contrib import admin
 
-from .models import Course, Lesson, Material, CourseOwner
-
+from .models.course import Course, CourseOwner
+from .models.lesson import Lesson, LessonPublisher
+from .models.material import Material
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
@@ -14,8 +15,14 @@ class CourseAdmin(admin.ModelAdmin):
 
 @admin.register(Lesson)
 class LessonAdmin(admin.ModelAdmin):
-    list_display = ('id', 'course', 'nr', 'title', 'lesson_nr',)
-    list_filter = ('course',)
+    list_display = ('id', 'course', 'nr', 'title', 'lesson_nr', 'lesson_type', 'level')
+    list_filter = ('course', 'lesson_type')
+
+
+@admin.register(LessonPublisher)
+class LessonAdmin(admin.ModelAdmin):
+    list_display = ('id', 'courseevent', 'lesson', 'published')
+    list_filter = ('courseevent', 'lesson', 'published')
 
 
 @admin.register(Material)
@@ -30,7 +37,7 @@ class CourseOwnerAdmin(admin.ModelAdmin):
 
 
 # old models: will be deleted as soon as the data has been transfered
-from .models import CourseBlock, CourseUnit, CourseMaterialUnit
+from .models.oldcoursepart import CourseBlock, CourseUnit, CourseMaterialUnit
 
 
 @admin.register(CourseBlock)

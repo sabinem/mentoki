@@ -27,7 +27,7 @@ class CourseEventParticipationAdmin(admin.ModelAdmin):
 @admin.register(Announcement)
 class AnnouncementAdmin(admin.ModelAdmin):
     list_display = ('courseevent', 'published_at', 'published', 'created')
-    list_filter = ('courseevent',)
+    list_filter = ('courseevent', 'published')
 
 
 @admin.register(ClassroomMenuItem)
@@ -40,34 +40,35 @@ class ClassroomMenuItemAdmin(admin.ModelAdmin):
 @admin.register(Homework)
 class HomeworkAdmin(admin.ModelAdmin):
     list_display = ('courseevent', 'due_date', 'title')
-    list_filter = ('courseevent',)
+    list_filter = ('courseevent', 'published')
 
 
 @admin.register(StudentsWork)
 class StudentsWorkAdmin(admin.ModelAdmin):
     list_display = ('courseevent', 'published_at', 'published', 'title', 'homework')
-    list_filter = ('courseevent', 'homework')
+    list_filter = ('courseevent', 'homework', 'published')
 
 
 @admin.register(Forum)
 class ForumAdmin(admin.ModelAdmin):
-    list_display = ('title', 'courseevent', 'id', 'parent' )
-    list_filter = ( 'courseevent', )
+    list_display = ('title', 'courseevent', 'id', 'published', 'parent' )
+    list_filter = ( 'courseevent', 'published')
     list_display_links =  ('courseevent','title')
 
 
 @admin.register(Thread)
 class ThreadAdmin(admin.ModelAdmin):
-    list_display = ('modified', 'id', 'forum','title', 'forum')
-    list_filter = ( 'forum' ,  'author')
-    list_display_links  = ( 'forum',)
-    readonly_fields = ('modified', )
+    list_display = ( 'courseevent', 'forum', 'id', 'title', 'post_count',
+                     'author', 'last_author', 'modified', 'created')
+    list_filter = ( 'courseevent', 'author', 'last_author')
+    list_display_links  = ( 'title',)
+    readonly_fields = ('modified', 'last_author' )
 
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('modified',  'id', 'thread', 'author', 'created')
-    list_filter = ( 'thread__forum',  'author' )
+    list_display = ( 'courseevent', 'thread', 'id', 'title', 'author', 'modified', 'created')
+    list_filter = ( 'courseevent', 'author' )
 
 
 #old delete later on

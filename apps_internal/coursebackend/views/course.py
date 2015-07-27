@@ -2,34 +2,35 @@
 
 from __future__ import unicode_literals
 
-from django.views.generic import TemplateView, UpdateView, ListView
 from django.forms.models import modelform_factory
-from django.shortcuts import get_object_or_404
-from django.core.urlresolvers import reverse
 
-from apps_data.course.models import Course
-from ..mixins import CourseMenuMixin, CourseEventMixin
+from vanilla import UpdateView, DetailView
+
+from apps_data.course.models.course import Course
+
+from ..mixins.base import CourseMenuMixin
 
 
-class CourseDetailView(CourseMenuMixin, TemplateView):
+class CourseDetailView(CourseMenuMixin, DetailView):
     """
     Start in this section of the website: it shows the course and its attributes
     """
+    model = Course
     template_name = 'coursebackend/course/detail.html'
+    lookup_field = 'slug'
+    lookup_url_kwarg = 'course_slug'
+    context_object_name ='course'
 
 
 class CourseUpdateView(CourseMenuMixin, UpdateView):
     """
-    Here course owner can update the information on the course general description
+    Update the course one field at a time
     """
     model = Course
     template_name = 'coursebackend/course/update.html'
-
-    def get_object(self, **kwargs):
-        return get_object_or_404(Course, slug=self.kwargs['course_slug'])
+    lookup_field = 'slug'
+    lookup_url_kwarg = 'course_slug'
+    context_object_name ='course'
 
     def get_form_class(self, **kwargs):
         return modelform_factory(Course, fields=(self.kwargs['field'],))
-
-    def get_success_url(self):
-        return reverse('coursebackend:course:detail', kwargs={"course_slug": self.kwargs['course_slug']})

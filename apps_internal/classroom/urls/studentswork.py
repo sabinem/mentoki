@@ -7,7 +7,7 @@ from django.conf.urls import patterns, url
 from ..views.studentswork import StudentsWorkDetailView, StudentsWorkListView
 
 
-urlpatterns = patterns("apps.classroom.views.announcement",
+urlpatterns = patterns("apps.classroom.views.studentswork",
 
     url(r'^$', StudentsWorkListView.as_view(),
         name='list'),

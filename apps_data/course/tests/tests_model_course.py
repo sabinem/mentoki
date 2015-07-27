@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 
 from django.test import TestCase
 
-from ..models import Course, CourseOwner
+from ..models.course import Course, CourseOwner
 from .factories import CourseFactory
 
 

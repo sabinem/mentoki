@@ -1,4 +1,4 @@
-{% extends "base/page.html" %}
+{% extends "base/base_public.html" %}
 {% load i18n %}
 
 {% block meta_title %}Mentoki - Lehr- und Lernplattform | Lernen und Lehren lebenslang{% endblock %}
@@ -7,9 +7,10 @@
 {% block meta_keywords %}mentoren netzwerk, lern plattform, erwachsenen bildung, online unterrichten, lehr plattform{% endblock %}
 
 
-{% block section %}id="home"{% endblock %}
+{% block page_section_css_id %}home{% endblock %}
 
 {% block main %}
+
     <img class="ui image" src="/static/img/homepage2.png">
     <div class="ui grid page centered" id="top-homepage">
        <div class="column">

@@ -5,7 +5,7 @@ import datetime
 from django.conf import settings
 
 from django.contrib.auth.models import User
-from apps_data.courseevent.models import CourseEvent
+from apps_data.courseevent.models.courseevent import CourseEvent
 from model_utils.models import TimeStampedModel
 from django.db import models
 from django.core.exceptions import ValidationError
@@ -43,6 +43,9 @@ class Forum(TimeStampedModel):
     text = models.TextField(blank=True)
     courseevent = models.ForeignKey(CourseEvent, related_name="kursforum")
 
+    class Meta:
+        verbose_name = "XForum"
+
     def __unicode__(self):
         return u'%s' % (self.title)
 
@@ -72,6 +75,8 @@ class SubForum(TimeStampedModel):
     forum = models.ForeignKey(Forum)
     can_have_threads = models.BooleanField(default=True)
 
+    class Meta:
+        verbose_name = "XSubForum"
 
     def __unicode__(self):
         if self.parentforum:
@@ -105,6 +110,9 @@ class Thread(ForumContributionModel):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="beitragsautor")
     #!!! modified of Thread must be updated for save method of Comment and Post!!!
 
+    class Meta:
+        verbose_name = "XThread"
+
 
     def __unicode__(self):
         return u'%s' % (self.title)
@@ -128,9 +136,11 @@ class Post(ForumContributionModel):
     thread = models.ForeignKey(Thread)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="postautor")
 
+    class Meta:
+        verbose_name = "XPost"
 
     def __unicode__(self):
-        return u'%s' % (self.thread)
+        return u'%s' % (self.thread_id)
 
     def timesince_created(self):
         return timesince(self.created)

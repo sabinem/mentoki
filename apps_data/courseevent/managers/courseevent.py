@@ -5,11 +5,6 @@ from __future__ import unicode_literals
 from django.db.models.query import QuerySet
 
 
-
-
-
-
-
 class CourseeventUnitPublishQuerySet(QuerySet):
 
     def published_unit_ids_for_course(self, course):

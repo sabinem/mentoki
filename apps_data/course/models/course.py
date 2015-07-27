@@ -3,25 +3,32 @@
 from __future__ import unicode_literals, absolute_import
 
 from django.db import models
-from django.db.models.query import QuerySet
-from django.shortcuts import get_object_or_404
+
 from django.conf import settings
 from django.utils.functional import cached_property
 from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext_lazy as _
 
 from model_utils.models import TimeStampedModel
-from model_utils.managers import PassThroughManager
+
 from autoslug import AutoSlugField
+
+from mentoki.settings import DEFAULT_COURSE_FROM_EMAIL
 
 
 class CourseManager(models.Manager):
 
-    def get_course_or_404_from_slug(self, slug):
+    use_for_related_fields = True
+
+    #def get_course_or_404_from_slug(self, slug):
         # gets course from slug
-        return get_object_or_404(self, slug=slug)
+        #return get_object_or_404(self, slug=slug)
+
+    #def teachers_courseinfo(self, slug):
+        # gets course from slug
+        #return get_object_or_404(self, slug=slug)
 
     # <obj>.owners.all() gives all the owners for this course
-
 
 
 class Course(TimeStampedModel):
@@ -30,22 +37,35 @@ class Course(TimeStampedModel):
     without any regards to the actual event of teaching that material to students.
     """
 
-    title = models.CharField(max_length=100, verbose_name='Überschrift')
-    slug = AutoSlugField(populate_from='title', unique=True)
+    title = models.CharField(verbose_name=_('title'),
+                             help_text=_('Working title for your course. You may change this later on'),
+                             max_length=100)
+    slug = AutoSlugField(populate_from='title', unique=True, editable=False)
 
     # course owners are the teachers
     owners = models.ManyToManyField(settings.AUTH_USER_MODEL, through='CourseOwner')
 
     # Information about the course
-    excerpt = models.TextField(blank=True,verbose_name="Abstrakt")
-    target_group = models.TextField(blank=True, verbose_name="Zielgruppe")
-    prerequisites = models.TextField(blank=True, verbose_name="Voraussetzungen")
-    project = models.TextField(blank=True, verbose_name="Teilnehmerprojekt")
-    structure = models.TextField(blank=True, verbose_name="Gliederung")
-    text = models.TextField(blank=True, verbose_name='Kursbeschreibung')
-
+    excerpt = models.TextField(verbose_name=_('abstract'),
+                               help_text=_('Abstracts serve to describe courses on course list page'),
+                               blank=True,)
+    target_group = models.TextField(verbose_name=_('targetgroup'),
+                               help_text = _('The target group for your course.'),
+                               blank=True)
+    prerequisites = models.TextField(verbose_name="Voraussetzungen",
+                               help_text = _('The prequisites for your course. What prior knowledge must be there?'),
+                               blank=True)
+    project = models.TextField(verbose_name="Teilnehmerprojekt",
+                               help_text = _('What do the participants take away from your course?'),
+                               blank=True)
+    structure = models.TextField(verbose_name="Gliederung",
+                               help_text = _('Provide the structure of your course.'),
+                               blank=True)
+    text = models.TextField(verbose_name='Kursbeschreibung',
+                               help_text = _('Here you can give a detailed description of your course.'),
+                               blank=True)
     # Email Account for the course
-    email = models.EmailField(default="info@mentoki.com")
+    email = models.EmailField(default=DEFAULT_COURSE_FROM_EMAIL)
 
     objects = CourseManager()
 
@@ -56,16 +76,6 @@ class Course(TimeStampedModel):
     def __unicode__(self):
         return u'%s' % (self.title)
 
-    def is_owner(self, user):
-        """
-        Is this person a teacher in this course? (Then he may work on it.)
-        """
-        try:
-            CourseOwner.objects.get(course=self, user=user)
-            return True
-        except:
-            return False
-
     @cached_property
     def teachers(self):
         """
@@ -74,7 +84,6 @@ class Course(TimeStampedModel):
         """
         return self.owners.all().order_by('courseowner__display_nr')
 
-    @cached_property
     def teachersrecord(self):
         """
         Returns the teachers of the course as a string ready for display.
@@ -87,8 +96,32 @@ class Course(TimeStampedModel):
             namesstring += teacher.get_full_name()
         return namesstring
 
+    def is_owner(self, user):
+        """
+        Is this person a teacher in this course? (Then he may work on it.)
+        """
+        if user in self.teachers:
+            return True
+        else:
+            return False
+
     def get_absolute_url(self):
         return reverse('coursebackend:course:detail', kwargs={'course_slug':self.slug})
+
+
+class CourseOwnerManager(models.Manager):
+
+    #def teachingcourses(self, user):
+    #    return self.filter(user=user).select_related('course')
+
+    #def courseteachers(self, course):
+    #    return self.filter(course=course).order_by('display_nr').select_related('user')
+
+    def teachers_courseinfo_display(self, course):
+        return self.filter(course=course, display=True).select_related('user').order_by('display_nr')
+
+    def teachers_courseinfo_all(self, course):
+        return self.filter(course=course).select_related('user').order_by('display_nr')
 
 
 def foto_location(instance, filename):
@@ -110,6 +143,8 @@ class CourseOwner(TimeStampedModel):
     display = models.BooleanField(default=True, verbose_name='Anzeigen bei der Kursausschreibung?')
     # Whose name goes first?
     display_nr = models.IntegerField(default=1, verbose_name='Anzeigereihenfolge bei mehreren Kursleitern')
+
+    objects = CourseOwnerManager()
 
     class Meta:
         verbose_name = "Kursleitung"

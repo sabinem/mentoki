@@ -1,38 +1,42 @@
-{% if start_forum.can_have_threads %}
-    <a class="ui button" href="" role="button">
-        Hast Du etwas beizutragen?
-    </a>
-    <table class="ui table">
-        <thead>
-            <tr>
-                <th>Beitrag</th>
-                <th class="right aligned">wann? von wem?</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for thread in threads %}
-                <tr>
-                    <td>
-                        <a href="{% url 'classroom:forum:thread' slug=courseevent.slug pk=thread.pk %}">
-                            "{{ thread.title }}"
-                            {% if thread.post_count > 0 %}
-                                <div class="ui circular label">
-                                    {{ thread.post_count }}
-                                </div>
-                            {% endif %}
-                        </a>
-                    </td>
-                    <td class="right aligned">
-                        <div class="ui circular label">{{ thread.author }}</div>
-                        vor {{ thread.created | timesince }}
-                        {% if thread.post_count > 0 %}
-                            <div class="ui divider"></div>
-                            letzter Beitrag <div class="ui circular label">{{ thread.last_author }}</div>:
-                            vor {{ thread.modified | timesince }}
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-{% endif %}
+{% for post in posts %}
+
+{% endfor %}
+
+<div class="ui comments">
+
+    <h3 class="ui dividing header">Antworten</h3>
+
+    {% for post in posts %}
+
+        <div class="comment">
+
+            <a class="avatar">
+
+                <img src="{{ post.author.profile_image.url }}">
+
+            </a>
+
+            <div class="content">
+
+                <a class="author">{{ post.author }}: {{ post.title }}</a>
+
+                <div class="metadata">
+                    <span class="date">{{ post.created }}</span>
+                </div>
+
+                <div class="text">
+                    {{ post.text | safe }}
+                </div>
+
+            </div>
+
+        </div>
+
+    {% endfor %}
+
+    <h2></h2>
+    <div class="actions">
+        <a class="reply">Neue Antwort schreiben?</a>
+    </div>
+
+</div>

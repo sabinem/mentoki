@@ -4,7 +4,8 @@ from __future__ import unicode_literals, absolute_import
 
 from django.test import TestCase
 
-from ..models import Course, Lesson, CourseOwner
+from ..models.course import Course, CourseOwner
+from ..models.lesson import Lesson
 from .factories import CourseFactory
 
 from django.contrib.auth import get_user_model

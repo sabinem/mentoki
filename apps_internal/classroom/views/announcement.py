@@ -2,24 +2,32 @@
 
 from __future__ import unicode_literals
 
-from vanilla import TemplateView
+from vanilla import TemplateView, DetailView
 
 from apps_data.courseevent.models.announcement import Announcement
 
-from ..mixins.base import CourseMenuMixin
+from .mixins.base import ClassroomMenuMixin
 
 
-class AnnouncementListView(CourseMenuMixin, TemplateView):
+class AnnouncementListView(ClassroomMenuMixin, TemplateView):
     """
-    Owners of the course are listed
+    AnnouncementList
     """
-    template_name = 'coursebackend/announcement/list.html'
+    template_name = 'classroom/announcement/list.html'
 
     def get_context_data(self, **kwargs):
         context = super(AnnouncementListView, self).get_context_data(**kwargs)
 
-        context ['announcements_unpublished'] = Announcement.objects.unpublished(courseevent = context['courseevent'])
-        context ['announcements_published'] = Announcement.objects.published(courseevent = context['courseevent'])
+        context ['announcements'] = Announcement.objects.published(courseevent = context['courseevent'])
 
         return context
 
+
+class AnnouncementDetailView(ClassroomMenuMixin, TemplateView):
+    """
+    Announcement Detail
+    """
+    template_name = 'classroom/announcement/detail.html'
+    model = Announcement
+    lookup_field = 'pk'
+    context_object_name ='announcement'

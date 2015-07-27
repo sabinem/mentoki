@@ -18,13 +18,22 @@
 
 <!-- BLOCK: css id subsection: filled! -->
 
-{% block page_section_css_id %}classroombackend{% endblock %}
+{% block page_section_css_id %}classroom{% endblock %}
 
 {% block sidebar_menu %}
 
     <!-- BLOCK: sidebar: filled! -->
 
-    {% include 'coursebackend/_menu.html' %}
+    {% include 'classroom/_menu.html' %}
 
 {% endblock %}
 
+{% block page_content %}
+
+    <div class="ui header large">
+        {% block classroom_header %}{% endblock %}
+    </div>
+
+    {% block classroom_page %}{% endblock %}
+
+{% endblock %}

@@ -2,35 +2,55 @@
 
 from __future__ import unicode_literals
 
-from django.forms.models import modelform_factory
+from django.core.urlresolvers import reverse
 
-from vanilla import UpdateView, DetailView
+from vanilla import RedirectView
 
-from apps_data.course.models import Course
+from apps_data.courseevent.models.menu import ClassroomMenuItem
 
-from ..mixins import CourseMenuMixin
+from .mixins.base import ClassroomMenuMixin
 
 
-class CourseDetailView(CourseMenuMixin, DetailView):
+
+class ClassroomStartView(ClassroomMenuMixin, RedirectView):
+    permanent = False
     """
     Start in this section of the website: it shows the course and its attributes
     """
-    model = Course
-    template_name = 'coursebackend/course/detail.html'
-    lookup_field = 'slug'
-    lookup_url_kwarg = 'course_slug'
-    context_object_name ='course'
+    def get_redirect_url(self, *args, **kwargs):
 
+        startitem = ClassroomMenuItem.objects.get_startitem_from_slug(courseevent_slug=self.kwargs['slug'])
 
-class CourseUpdateView(CourseMenuMixin, UpdateView):
-    """
-    Update the course one field at a time
-    """
-    model = Course
-    template_name = 'coursebackend/course/update.html'
-    lookup_field = 'slug'
-    lookup_url_kwarg = 'course_slug'
-    context_object_name ='course'
+        print "=======??? IN REDIRECT"
+        print startitem
 
-    def get_form_class(self, **kwargs):
-        return modelform_factory(Course, fields=(self.kwargs['field'],))
+        if startitem.item_type == ClassroomMenuItem.MENU_ITEM_TYPE.announcements:
+            url = reverse('classroom:announcement:list', args=args, kwargs=kwargs)
+            return url
+
+        elif startitem.item_type == ClassroomMenuItem.MENU_ITEM_TYPE.forum_item:
+            kwargs['pk'] = startitem.forum_id
+            url = reverse('classroom:forum:detail', args=args, kwargs=kwargs)
+            return url
+
+        elif startitem.item_type == ClassroomMenuItem.MENU_ITEM_TYPE.homework:
+            kwargs['pk'] = startitem.forum_id
+            url = reverse('classroom:homework:list', args=args, kwargs=kwargs)
+            return url
+
+        elif startitem.item_type == ClassroomMenuItem.MENU_ITEM_TYPE.forum_last_posts:
+            url = reverse('classroom:forum:newposts', args=args, kwargs=kwargs)
+            return url
+
+        elif startitem.item_type == ClassroomMenuItem.MENU_ITEM_TYPE.student_private:
+            url = reverse('classroom:studentswork:list', args=args, kwargs=kwargs)
+            return url
+
+        elif startitem.item_type == ClassroomMenuItem.MENU_ITEM_TYPE.lesson_item:
+            kwargs['pk'] = startitem.lesson_id
+            url = reverse('classroom:lesson:detail', args=args, kwargs=kwargs)
+            return url
+
+        elif startitem.item_type == ClassroomMenuItem.MENU_ITEM_TYPE.participants_list:
+            url = reverse('classroom:participant:list', args=args, kwargs=kwargs)
+            return url

@@ -71,7 +71,7 @@ urlpatterns = i18n_patterns('',
     url(r'^pdf/', include('apps_internal.coursebackend.urls', namespace='coursebackend')),
 
     # classroom
-    #url(r'^(?P<course_slug>[a-z0-9_-]+)/(?P<courseevent_slug>[a-z0-9_-]+)klassenzimmer/', include('apps_internal.classroom.urls', namespace='classroom')),
+    url(r'^(?P<slug>[a-z0-9_-]+)klassenzimmer/', include('apps_internal.classroom.urls', namespace='classroom')),
 
     # contact
     url(r'^kontakt/', include('apps_public.contact.urls', namespace='contact')),

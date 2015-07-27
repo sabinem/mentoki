@@ -11,6 +11,6 @@ urlpatterns = patterns("",
     url(r'^unterrichten$', TeachPageView.as_view(), name='teach'),
     url(r'^unterrichten/(?P<goto>\S+)$', TeachPageView.as_view(), name='teach'),
 
-    #old links still maintained
-    url(r'^webinar-online-unterrichten$', TeachPageView.as_view(), name='teach'),
+    #old urls still maintained
+    url(r'^webinar-online-unterrichten$', WebinarView.as_view(), name='webinar'),
 )

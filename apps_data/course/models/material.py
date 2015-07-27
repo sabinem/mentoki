@@ -11,8 +11,6 @@ from django.template.defaultfilters import filesizeformat
 from django.utils.translation import ugettext_lazy as _
 from django.db.models.query import QuerySet
 from django.utils.functional import cached_property
-from django.core.exceptions import ValidationError
-from django.conf import settings
 
 from model_utils.models import TimeStampedModel
 from model_utils.fields import StatusField
@@ -111,7 +109,7 @@ class Material(TimeStampedModel):
         verbose_name_plural = "Materialien"
 
     def __unicode__(self):
-        return u'%s/%s' % (self.course, self.title)
+        return u'%s/%s' % (str(self.course_id), self.title)
 
     def get_file_slug(instance):
         pathparts = instance.file.name.split('/')

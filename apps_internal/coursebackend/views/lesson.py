@@ -2,37 +2,53 @@
 
 from __future__ import unicode_literals, absolute_import
 
-from django.views.generic import TemplateView, UpdateView, DeleteView, CreateView
+from django.views.generic import UpdateView, DeleteView, CreateView
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 
-from apps_data.course.models import Lesson, Course, Material
+from ..mixins.lesson import CourseFormMixin
+from ..forms.lesson import LessonUpdateForm, LessonAddMaterialForm, LessonMoveForm, LessonCreateForm
 
-from ..mixins import CourseMenuMixin, CourseFormMixin, LessonMixin
-from ..forms import LessonUpdateForm, LessonAddMaterialForm, LessonMoveForm, LessonCreateForm
+from vanilla import UpdateView, DetailView, TemplateView
+
+from apps_data.course.models.lesson import Lesson
+
+from ..mixins.base import CourseMenuMixin
+from ..mixins.lesson import LessonMixin
 
 
-class StartView(CourseMenuMixin, TemplateView):
-    template_name = 'coursebackend/lessons_view/lesson_start.html'
+class LessonStartView(CourseMenuMixin, TemplateView):
+    """
+    List all lesson blocks with lessons underneath
+    """
+    template_name = 'coursebackend/lessons_view/start.html'
 
     def get_context_data(self, **kwargs):
-        context = super(StartView, self).get_context_data(**kwargs)
+        context = super(LessonStartView, self).get_context_data(**kwargs)
 
-        context['nodes'] = Lesson.objects.filter(course=context['course'], level=0).\
-            get_descendants(include_self=True)
+        context['nodes'] = Lesson.objects.blocks_for_course(course=context['course'])
 
         return context
 
 
 class LessonBlockView(LessonMixin, TemplateView):
+    """
+    List all lesson blocks with lessons underneath
+    """
     template_name = 'coursebackend/lessons_view/detail_lesson_block.html'
 
 
 class LessonDetailView(LessonMixin, TemplateView):
+    """
+    List all lesson-steps of a lesson
+    """
     template_name = 'coursebackend/lessons_view/detail_lesson_block.html'
 
 
 class StepDetailView(LessonMixin, TemplateView):
+    """
+    Shows one lesson-step
+    """
     template_name = 'coursebackend/lessons_view/lesson_step.html'
 
 
@@ -46,8 +62,6 @@ class LessonUpdateView(CourseFormMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(LessonUpdateView, self).get_context_data(**kwargs)
-        print "_________________"
-        print "hallo"
 
         context['breadcrumbs'] = context['lesson'].get_ancestors()
 

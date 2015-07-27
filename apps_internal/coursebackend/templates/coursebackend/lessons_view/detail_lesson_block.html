@@ -1,9 +1,9 @@
-{% extends "coursebackend/base_lesson.html" %}
+{% extends "coursebackend/lessons_view/base.html" %}
 
 {% block controls %}
 
-    {% include 'coursebackend/_checkbox_help.html' %}
-    {% include 'coursebackend/_checkbox_worklinks.html' %}
+    {% include 'coursebackend/_control_help.html' %}
+    {% include 'coursebackend/_control_worklinks.html' %}
     {% include 'coursebackend/lessons_view/_checkbox_fulltext.html' %}
 
 {% endblock %}

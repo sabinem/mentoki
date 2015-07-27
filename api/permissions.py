@@ -1,6 +1,6 @@
 from rest_framework import permissions
 
-from apps_data.course.models import Course
+from apps_data.course.models.course import Course
 
 class CourseIsOwnerOrReadOnly(permissions.IsAuthenticated):
     def has_object_permission(self, request, view, obj):

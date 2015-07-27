@@ -1,49 +1,32 @@
-from __future__ import unicode_literals
-import logging
-# import from django
-from django.core.urlresolvers import reverse
-from django.views.generic import CreateView, UpdateView, DeleteView, TemplateView
-# from other apps
-from apps.forum.views_forum import ForumMixin
-# import from this app
-from apps.forum.cache import recalc_forum_structure, recalc_subforum_change
-from apps.forum.models import SubForum, Thread
-#from .forms_forum import SubForumCreateForm
-from apps_data.courseevent.models import CourseEvent
-from apps.forum.models import Forum
-#from .mixins import CourseEventBuildMixin
-from apps.forum.views_forum import subforums_output_list
+# coding: utf-8
 
-logger = logging.getLogger(__name__)
+from __future__ import unicode_literals, absolute_import
+
+from vanilla import TemplateView
+
+from apps_data.courseevent.models.forum import Forum
+
+from ..mixins.base import CourseMenuMixin
+from ..mixins.forum import ForumMixin
 
 
-"""
-class SubForumCreateView(CourseEventBuildMixin, CreateView):
+class ForumStartView(CourseMenuMixin, TemplateView):
+    """
+    List all lesson blocks with lessons underneath
+    """
+    template_name = 'coursebackend/forum/start.html'
 
-    template_name = 'courseforum/subforumcreate.html'
-    form_class = SubForumCreateForm
+    def get_context_data(self, **kwargs):
+        context = super(ForumStartView, self).get_context_data(**kwargs)
 
-    def form_valid(self, form, **kwargs):
-        print "----------- in valid 1"
-        context = self.get_context_data(**kwargs)
-        print "----------- in valid"
-        form.instance.forum_id = context['courseevent']['forum_id']
-        return super(SubForumCreateView, self).form_valid(form)
+        context['nodes'] = Forum.objects.forums_for_courseevent(courseevent=context['courseevent'])
+        print context['nodes']
 
-    def get_success_url(self):
-        print "----------- in url"
-        recalc_forum_structure(self.object.forum_id)
-        recalc_subforum_change(self.object.forum_id)
-        return reverse('course:buildforum', kwargs={"slug": self.kwargs['slug']})
+        return context
 
-    def get_form_kwargs(self):
-        print "----------- in kwargs"
-        slug = self.kwargs['slug']
-        courseevent = CourseEvent.objects.get(slug=slug)
-        forum = Forum.objects.get(courseevent_id = courseevent.id)
-        forum_id = forum.id
-        kwargs = super(SubForumCreateView, self).get_form_kwargs()
-        kwargs['forum_id'] = forum_id
-        return kwargs
-"""
 
+class ForumDetailView(ForumMixin, TemplateView):
+    """
+    List all lesson blocks with lessons underneath
+    """
+    template_name = 'coursebackend/forum/detail.html'

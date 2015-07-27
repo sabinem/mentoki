@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from apps_data.course.models import Course, CourseOwner
+from apps_data.course.models.course import Course, CourseOwner
 from ..serializers import *
 from rest_framework import viewsets
 from rest_framework import generics, permissions, mixins
