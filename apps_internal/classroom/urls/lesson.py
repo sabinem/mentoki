@@ -4,9 +4,16 @@ from __future__ import unicode_literals
 
 from django.conf.urls import patterns, url
 
-from ..views.lesson import LessonDetailView, StepDetailView
+from ..views.lesson import LessonDetailView, StepDetailView, LessonStartView
 
 urlpatterns = patterns('',
-    url(r'^lektion/(?P<pk>\d+)$', LessonDetailView.as_view(), name='detail'),
-    url(r'^abschnitt/(?P<pk>\d+)$', StepDetailView.as_view(), name='step'),
+
+    url(r'^$', LessonStartView.as_view(),
+        {'template':'classroom/lesson/pages/start.html'}, name='start'),
+
+    url(r'^lektion/(?P<pk>\d+)$', LessonDetailView.as_view(),
+        {'template': 'classroom/lesson/pages/lesson.html'}, name='detail'),
+
+    url(r'^abschnitt/(?P<pk>\d+)$', StepDetailView.as_view(),
+        {'template':'classroom/lesson/pages/lessonstep.html'}, name='step'),
 )

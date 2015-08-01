@@ -1,0 +1,46 @@
+{% extends "base/plain.html" %}
+
+{% block plain %}
+    <hr>
+    <h1><a href="{% url 'classroom:forum:start' slug=courseevent.slug %}">Forum Startpage</a></h1>
+    <hr>
+
+    <hr>
+    <h2>breadcrumbs</h2>
+    <ul>
+    {% for breadcrumb in breadcrumbs %}
+        <li><a href="{% url 'classroom:forum:detail' slug=courseevent.slug pk=breadcrumb.pk %}">
+            {{ breadcrumb.title }}</a></li>
+    {% endfor %}
+    </ul>
+
+    <hr>
+
+    <h2>forum</h2>
+    {{ forum.title }}
+        <li><a href="{% url 'classroom:forum:detail' slug=courseevent.slug pk=forum.pk %}">
+            {{ forum.title }}</a></li>
+    <hr>
+
+    <h2>nodes</h2>
+    <ul>
+    {% for node in nodes %}
+        <li><a href="{% url 'classroom:forum:detail' slug=courseevent.slug pk=node.pk %}">{{ node.title }}</a></li>
+    {% endfor %}
+    </ul>
+
+    <hr>
+
+    <h2>threads</h2>
+    <ul>
+    {% for thread in threads %}
+        <li><a href="{% url 'classroom:forum:createpost' slug=courseevent.slug pk=thread.pk %}">
+            {{ thread.title }}</a></li>
+    {% endfor %}
+    </ul>
+
+    <hr>
+
+{% endblock %}
+
+

@@ -9,7 +9,7 @@
       {% ifstartswith 'coursebackend:course:detail' course_slug=course.slug %}
            active
       {% endifstartswith %}
-      " href="{% include 'coursebackend/course/_url_detail.html' %}">
+      " href="{% include 'coursebackend/course/fragments/_url_detail.html' %}">
       Kursvorlage
     </a>
 
@@ -29,7 +29,7 @@
                   {% ifstartswith 'coursebackend:courseevent:detail' course_slug=course.slug slug=courseevent.slug %}
                        active
                   {% endifstartswith %}
-                  " href="{% include 'coursebackend/courseevent/_url_detail.html' %}">
+                  " href="{% include 'coursebackend/courseevent/fragments/_url_detail.html' %}">
                   {{ courseevent.title }}
               </a>
 

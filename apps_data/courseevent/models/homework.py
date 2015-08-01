@@ -17,8 +17,8 @@ from .courseevent import CourseEvent
 
 class HomeworkManager(models.Manager):
 
-    def courseevent(self, courseevent):
-        return self.filter(courseevent=courseevent).order_by('due_date')
+    def published_homework_for_courseevent(self, courseevent):
+        return self.filter(courseevent=courseevent, published=True).order_by('due_date')
 
 
 class Homework(TimeStampedModel):
@@ -27,8 +27,8 @@ class Homework(TimeStampedModel):
 
     lesson = models.ForeignKey(Lesson, null=True, blank=True)
 
-    title = models.CharField(max_length=100, verbose_name="Thema")
-    text = models.TextField(verbose_name="Text der Ankündigung: Vorsicht Bilder werden noch nicht mitgeschickt")
+    title = models.CharField(verbose_name="Titel", max_length=100)
+    text = models.TextField(verbose_name="Text")
 
     published = models.BooleanField(default=False)
     publish_status_changed = MonitorField(monitor='published')
@@ -48,6 +48,12 @@ class StudentsWorkManager(models.Manager):
     def mywork(self, user, courseevent):
         return self.filter(courseevent=courseevent, workers=user).select_related('homework').order_by('created')
 
+    def create_new_work(self, courseevent, homework,
+                        text, title, user):
+        work = StudentsWork(courseevent=courseevent, homework=homework, text=text, title=title)
+        work.save()
+        work.workers.add(user)
+        return work
 
 class StudentsWork(TimeStampedModel):
 
@@ -55,10 +61,11 @@ class StudentsWork(TimeStampedModel):
     workers = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='teammembers')
     homework = models.ForeignKey(Homework)
 
-    title = models.CharField(max_length=100, verbose_name="Thema")
-    text = models.TextField(verbose_name="Text der Ankündigung: Vorsicht Bilder werden noch nicht mitgeschickt")
+    title = models.CharField(verbose_name="Titel", max_length=100)
+    text = models.TextField(verbose_name="Text")
+    comments = models.TextField(verbose_name="Kommentare", blank=True)
 
-    published = models.BooleanField(default=False)
+    published = models.BooleanField(verbose_name="veröffentlichen", default=False)
     published_at = MonitorField(monitor='published', when=[True])
 
     objects = StudentsWorkManager()

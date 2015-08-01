@@ -49,7 +49,7 @@ class Course(TimeStampedModel):
     excerpt = models.TextField(verbose_name=_('abstract'),
                                help_text=_('Abstracts serve to describe courses on course list page'),
                                blank=True,)
-    target_group = models.TextField(verbose_name=_('targetgroup'),
+    target_group = models.TextField(verbose_name=_('target group'),
                                help_text = _('The target group for your course.'),
                                blank=True)
     prerequisites = models.TextField(verbose_name="Voraussetzungen",

@@ -1,0 +1,78 @@
+{% extends "base/base.html" %}
+
+{% comment %}
+
+    Blockstructure:
+    --------------
+    {% block main %}
+
+       {% block page_subsection %}{% endblock %}: subsection in the top
+
+       {% block controls %}{% endblock %}: controls in the top
+
+       {% block page_content %}{% endblock %}: inner page
+
+       {% block sidebar_menu %}{% endblock %}
+
+    {% endblock %}
+
+    Additional inherited blocks: see base.html
+    ------------------------------------------
+    {% block page_section_css_id %}{% endblock %}
+    {% block custom_menu_item %}{% endblock %}
+
+{% endcomment %}
+
+{% block main %}
+
+    <div class="ui page grid" >
+
+        <div class="content ui column">
+
+            <!-- top attached  -->
+
+            <div class="ui top attached demo menu">
+
+                <!-- menu button  -->
+
+                <a class="item" id="sidebar_button">
+                  <i class="sidebar icon"></i>
+                  Menu
+                </a>
+
+                <!-- BLOCK: Subsection of the page in the top -->
+
+                {% block page_subsection %}{% endblock %}
+
+                <!-- BLOCK: Controls in the top -->
+
+                {% block controls %}{% endblock %}
+
+            </div>
+
+            <div class="ui bottom attached segment" >
+
+                <div class="ui labeled icon left inline vertical sidebar menu" id="coursemenu">
+
+                    <!-- BLOCK: sidebar menu -->
+
+                    {% block sidebar_menu %}{% endblock %}
+
+                </div>
+
+                <div class="pusher">
+
+                    <div class="ui basic segment">
+
+                        {% include 'base/fragments/_messages.html' %}
+
+                        <!-- BLOCK: page content -->
+                        
+                        {% block page_content %}{% endblock %}
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

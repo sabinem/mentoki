@@ -21,9 +21,6 @@ class ClassroomStartView(ClassroomMenuMixin, RedirectView):
 
         startitem = ClassroomMenuItem.objects.get_startitem_from_slug(courseevent_slug=self.kwargs['slug'])
 
-        print "=======??? IN REDIRECT"
-        print startitem
-
         if startitem.item_type == ClassroomMenuItem.MENU_ITEM_TYPE.announcements:
             url = reverse('classroom:announcement:list', args=args, kwargs=kwargs)
             return url

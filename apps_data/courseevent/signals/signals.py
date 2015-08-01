@@ -4,6 +4,7 @@ from django.dispatch import Signal
 from django.conf import settings
 from ..models.menu import ClassroomMenuItem
 from ..models.forum import Forum
+#from .handlers import publish_forum_handler
 
 example_signal = Signal(providing_args=['arg1', 'arg2'])
 

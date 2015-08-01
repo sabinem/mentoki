@@ -1,0 +1,63 @@
+<div class="ui fitted divider"></div>
+<h3 class="ui header">
+     Titel:
+    <a class= "worklink item"
+       href="{% include 'coursebackend/course/fragments/_url_update.html' with field="title" %}">
+        <i class="write blue icon"></i>
+    </a>
+</h3>
+<h2>{{ course.title |safe  }}</h2>
+<div class="ui fitted divider"></div>
+<h3 class="ui header">
+     Abstrakt:
+    <a class= "worklink item"
+       href="{% include 'coursebackend/course/fragments/_url_update.html' with field="excerpt" %}">
+        <i class="write blue icon"></i>
+    </a>
+</h3>
+{{ course.excerpt |safe  }}
+<div class="ui fitted divider"></div>
+<h3 class="ui header">
+    Zielgruppe:
+    <a class= "worklink item"
+       href="{% include 'coursebackend/course/fragments/_url_update.html' with field="target_group" %}">
+        <i class="write blue icon"></i>
+    </a>
+</h3>
+{{ course.target_group  | safe }}
+<div class="ui fitted divider"></div>
+<h3 class="ui header">
+    Voraussetzungen:
+    <a class= "worklink item"
+       href="{% include 'coursebackend/course/fragments/_url_update.html' with field="prerequisites" %}">
+        <i class="write blue icon"></i>
+    </a>
+</h3>
+{{ course.prerequisites |safe }}
+<div class="ui fitted divider"></div>
+<h3 class="ui header">
+    Was nimmt der Teilnehmer aus dem Kurs mit:
+    <a class= "worklink item"
+       href="{% include 'coursebackend/course/fragments/_url_update.html' with field="project" %}">
+        <i class="write blue icon"></i>
+    </a>
+</h3>
+{{ course.project  |safe  }}
+<div class="ui fitted divider"></div>
+<h3 class="ui header">
+    Gliederung:
+    <a class= "worklink item"
+       href="{% include 'coursebackend/course/fragments/_url_update.html' with field="structure" %}">
+        <i class="write blue icon"></i>
+    </a>
+</h3>
+{{ course.structure | safe  }}
+<div class="ui fitted divider"></div>
+<h3 class="ui header">
+    Freie Kursbeschreibung:
+    <a class= "worklink item"
+       href="{% include 'coursebackend/course/fragments/_url_update.html' with field="text" %}">
+        <i class="write blue icon"></i>
+    </a>
+</h3>
+{{ course.text | safe }}

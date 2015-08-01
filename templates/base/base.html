@@ -1,134 +1,24 @@
 <!DOCTYPE html>
+
 <html>
-
-{% comment %}
-
-    Blockstructure
-    --------------
-    {% block meta %}{% endblock %}: meta information for public pages
-
-    {% block custom_menu_item %}{% endblock %}: custom menu item for authenticated users
-    expected: <a class=item>...</a> or <div class=item>...</div>
-
-    {% block page_section_css_id %}{% endblock %}: section of the website
-    expected: name inside from id=""
-
-    {% block main %}{% endblock %}: main page
-    expected: <div class="ui page grid">...</div>
-
-{% endcomment %}
 
 <head>
 
-    <!-- Meta information -->
-    {% include 'base/fragments/_meta.html' %}
-
-    <!-- BLOCK: Page Meta information -->
-
-    {% block meta %}{% endblock %}
-
-    <!-- Google Verification -->
-    <meta name="google-site-verification" content="mxd7wHh8P4QFFW-V0tYqmHAUB5Yz3MydQOpyiRiyGbg" />
-
-    <!-- CSS -->
-    {% include 'base/fragments/_css.html' %}
-
-    <!-- favicon -->
-    {% include 'base/fragments/_favicon.html' %}
-
-    {% include 'base/fragments/_head.html' %}
+   {% block head %}{% endblock %}
 
 </head>
 
-<body id="mentoki">
+<body id="mentoki" class="preload load">
 
-{% load activelink %}
+    {% block navbar %}{% endblock %}
 
-    <!-- pc and tablet version of the navbar -->
+    {% block page %}{% endblock %}
 
-    <div class="ui menu fixed center aligned top" id="pc_navbar">
+    {% block sidebar %}{% endblock %}
 
-        {% include 'base/fragments/_pc_logo.html' %}
+    {% block pusher %}{% endblock %}
 
-        {% if user.is_authenticated %}
-
-            {% include 'base/fragments/_main_menu_authenticated_left.html' %}
-
-            {% if is_owner %}
-
-               <a  href="{% url 'course:courseevent' ce_slug=courseevent.slug slug=course.slug %}" class="item
-                    ">
-                    Kursbearbeitung
-                </a>
-            {% endif %}
-
-            <!-- BLOCK: custom menu item -->
-
-            {% block custom_menu_item %}{% endblock %}
-
-            <div class="right menu">
-                {% include 'base/fragments/_main_menu_authenticated_right.html' %}
-            </div>
-
-        {% else %}
-
-            {% include 'base/fragments/_main_menu_public_left.html' %}
-
-            <div class="right menu">
-                {% include 'base/fragments/_social_media_icons.html' %}
-                {% include 'base/fragments/_main_menu_public_right.html' %}
-            </div>
-
-        {% endif %}
-    </div>
-
-   <!-- mobile menu -->
-
-    <div class="ui top attached menu fluid six item" id="mobile_navbar">
-
-        <!-- mobile button -->
-
-        <a class="item" id="mobile_button">
-          <i class="sidebar icon"></i>
-        </a>
-
-        {% include 'base/fragments/_home_icon.html' %}
-        {% include 'base/fragments/_social_media_icons.html' %}
-        {% include 'base/fragments/_main_menu_public_right.html' %}
-
-    </div>
-
-    <!-- mobile sidebar -->
-
-    <div class="ui labeled icon wide left inline vertical sidebar menu mobile only" id="mobile_menu">
-        {% include 'base/fragments/_mobile_menu.html' %}
-    </div>
-
-    <!-- BLOCK: Section css id of the Website -->
-
-    <div id="{% block page_section_css_id %}{% endblock %}">
-
-    <div id="content">
-
-        <div id="base_page">
-
-             <!-- BLOCK: main page content -->
-
-            {% block main %}{% endblock %}
-
-        </div>
-
-    </div>
-
-    <!-- Footer -->
-
-    <div class="ui bottom attached menu fluid three item">
-        <a class="item"  href="{% url 'contact:contact' %}">Kontakt</a>
-        <a class="item"  href="{% url 'home:team' %}">Team</a>
-        <a class="item"  href="{% url 'home:impressum' %}">Impressum</a>
-    </div>
-
-    </div>
+    {% block bottom_js %}{% endblock %}
 
 </body>
 

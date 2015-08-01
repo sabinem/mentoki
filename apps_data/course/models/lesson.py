@@ -30,7 +30,11 @@ class LessonManager(TreeManager):
         return self.filter(course=course, level=0).\
             get_descendants(include_self=True)
 
-
+    def lessons_published_in_courseevent(self, courseevent):
+        return self.filter(lessonpublisher__courseevent=courseevent,
+                           lessonpublisher__published=True,
+                           level=1).\
+                           get_descendants(include_self=True)
 
 def lesson_material_name(instance, filename):
         path = '/'.join([instance.course.slug, slugify(instance.title), filename])
@@ -59,19 +63,16 @@ class Lesson(MPTTModel, TimeStampedModel):
     unit = models.ForeignKey(CourseUnit, null=True, blank=True)
     unitmaterial = models.ForeignKey(CourseMaterialUnit, null=True, blank=True)
 
-    LESSON_TYPE = Choices(
-                     ('block', 'block', _('Block')),
-                     ('lesson', 'lesson', _('Lesson')),
-                     ('step', 'step', _('Step')),
-                    )
-    lesson_type = models.CharField(choices=LESSON_TYPE, max_length=15, default=LESSON_TYPE.block)
-
-
     objects = LessonManager()
     block = QueryManager(level=0)
     lesson = QueryManager(level=1)
     lesson_step = QueryManager(level=2)
     parent_choice_new = QueryManager(level__lte=1).order_by('tree_id', 'level', 'nr')
+
+    LESSON_TYPE = Choices(
+                     ('block', _('Block')),
+                     ('lesson', _('Lesson')),
+                     ('step', _('Step')),)
 
     class Meta:
         verbose_name = "Lektion"
@@ -84,17 +85,27 @@ class Lesson(MPTTModel, TimeStampedModel):
         # lesson_nr is calculated and stored in the database for performance
         if self.level == 0 :
             self.lesson_nr = ""
-            self.lesson_type = self.LESSON_TYPE.block
         elif self.level == 1 :
             self.lesson_nr = u'%s' % str(self.nr)
-            self.lesson_type = self.LESSON_TYPE.lesson
-        else:
+        elif self.level == 2 :
             self.lesson_nr = u'%s.%s' % (str(self.parent.nr), str(self.nr))
-            self.lesson_type = self.LESSON_TYPE.step
+        else:
+            raise ValueError('unexpected lesson level')
         super(Lesson, self).save(*args, **kwargs)
 
+    @property
+    def lesson_type(self):
+        if self.level == 0 :
+            return self.LESSON_TYPE.block
+        elif self.level == 1 :
+            return self.LESSON_TYPE.lesson
+        elif self.level == 2 :
+            return self.LESSON_TYPE.step
+        else:
+            raise ValueError('unexpected lesson level')
+
     def __unicode__(self):
-        return u'%s: %s %s' % (str(self.course_id), str(self.nr), self.title)
+        return u'%s: %s %s' % (str(self.course_id), self.lesson_nr, self.title)
 
     def display_with_nr(self):
         return u'%s: %s %s' % (str(self.course_id), str(self.lesson_nr), self.title)
@@ -184,7 +195,7 @@ class LessonPublisher(models.Model):
     published = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return u'%s / %s' % (self.courseevent, self.unit)
+        return u'%s / %s' % (self.courseevent, self.lesson)
 
     class Meta:
         verbose_name = "LessonPublisher"

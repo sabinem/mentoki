@@ -1,78 +1,116 @@
 {% extends "base/base.html" %}
 
-{% comment %}
+{% block head %}
 
-    Blockstructure:
-    --------------
-    {% block main %}
+    <!-- Meta information -->
+    {% include 'base/fragments/meta/_meta.html' %}
 
-       {% block page_subsection %}{% endblock %}: subsection in the top
+    <!-- CSS -->
+    {% include 'base/fragments/vendor/_semantic_css.html' %}
+    {% include 'base/fragments/custom/_custom_css.html' %}
 
-       {% block controls %}{% endblock %}: controls in the top
+    <!-- favicon -->
+    {% include 'base/fragments/menu/_favicon.html' %}
 
-       {% block page_content %}{% endblock %}: inner page
+    {% include 'base/fragments/vendor/_jquery.html' %}
 
-       {% block sidebar_menu %}{% endblock %}
-
-    {% endblock %}
-
-    Additional inherited blocks: see base.html
-    ------------------------------------------
-    {% block page_section_css_id %}{% endblock %}
-    {% block custom_menu_item %}{% endblock %}
-
-{% endcomment %}
-
-{% block main %}
-
-    <div class="ui page grid" >
-
-        <div class="content ui column">
-
-            <!-- top attached  -->
-
-            <div class="ui top attached demo menu">
-
-                <!-- menu button  -->
-
-                <a class="item" id="sidebar_button">
-                  <i class="sidebar icon"></i>
-                  Menu
-                </a>
-
-                <!-- BLOCK: Subsection of the page in the top -->
-
-                {% block page_subsection %}{% endblock %}
-
-                <!-- BLOCK: Controls in the top -->
-
-                {% block controls %}{% endblock %}
-
-            </div>
-
-            <div class="ui bottom attached segment" >
-
-                <div class="ui labeled icon left inline vertical sidebar menu" id="coursemenu">
-
-                    <!-- BLOCK: sidebar menu -->
-
-                    {% block sidebar_menu %}{% endblock %}
-
-                </div>
-
-                <div class="pusher">
-
-                    <div class="ui basic segment">
-
-                        {% include 'base/fragments/_messages.html' %}
-
-                        <!-- BLOCK: page content -->
-                        
-                        {% block page_content %}{% endblock %}
-                    
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 {% endblock %}
+
+{% block bottom_js %}
+    {% include 'base/fragments/vendor/_semantic_js.html' %}
+    {% include 'base/fragments/custom/_semantic.html' %}
+{% endblock %}
+
+{% block sidebar %}
+
+    <div class="ui labeled icon left inline vertical sidebar menu" id="coursemenu">
+
+        <!-- BLOCK: sidebar menu -->
+
+        {% block sidebar_menu %}{% endblock %}
+
+    </div>
+
+{% endblock %}
+
+{% block pusher %}
+
+    <div class="pusher">
+
+    <!-- BLOCK: Section css id of the Website -->
+
+    <div id="{% block page_section_css_id %}{% endblock %}">
+
+        <div class="ui page grid" >
+
+            <div class="content ui column sixteen wide">
+                <h3></h3>
+                <h2>{% block page_header %}{% endblock %}</h2>
+
+                <!-- top attached  -->
+
+                <div class="ui top attached menu">
+
+                    <!-- menu button  -->
+
+                    <a class="item" id="sidebar_button">
+                      <i class="sidebar icon"></i>
+                      Menu
+                    </a>
+
+                    <!-- BLOCK: Subsection of the page in the top -->
+
+                    {% block page_subsection %}{% endblock %}
+
+                    <!-- BLOCK: Controls in the top -->
+
+                    {% block controls %}{% endblock %}
+
+                </div>
+
+                <div class="ui bottom attached segment" id="{% block page_subsection_css_id %}{% endblock %}" >
+
+                    <div class="ui vertical grid">
+
+                        {% block page_content %}{% endblock %}
+
+                        {% block rows %}
+                        <div class="row breadcrumb {% block breadcrumb_row_css_class %}{% endblock %}">
+                            <div class="sixteen wide column">{% block breadcrumb_row %}{% endblock %}</div>
+                        </div>
+
+                        <div class="row top {% block top_content_row_css_class %}{% endblock %}">
+                            <div class="sixteen wide column">{% block top_content_row %}{% endblock %}</div>
+                        </div>
+
+                        <div class="row middle {% block middle_content_row_css_class %}{% endblock %}">
+                            <div class="sixteen wide column">{% block middle_content_row %}{% endblock %}</div>
+                        </div>
+
+                        <div class="row detail {% block detail_content_row_css_class %}{% endblock %}">
+                            <div class="sixteen wide column">{% block detail_content_row %}{% endblock %}</div>
+                        </div>
+
+                        <div class="row form {% block form_content_row_css_class %}{% endblock %}">
+                            <div class="sixteen wide column">{% block form_content_row %}{% endblock %}</div>
+                        </div>
+                        {% endblock %}
+
+
+                    </div>
+
+                </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    </div>
+
+{% endblock %}
+
+

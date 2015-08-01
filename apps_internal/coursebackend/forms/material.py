@@ -2,15 +2,15 @@
 
 from __future__ import unicode_literals
 
-from django.shortcuts import get_object_or_404
-
 import floppyforms.__future__ as forms
 
-from crispy_forms.helper import FormHelper
+from froala_editor.widgets import FroalaEditor
 
 from apps_data.course.models.material import Material
-from apps_data.course.models.course import Course
+from django.shortcuts import get_object_or_404
 
+from crispy_forms.helper import FormHelper
+from apps_data.course.models.course import Course
 
 class MaterialForm(forms.ModelForm):
 
@@ -18,12 +18,13 @@ class MaterialForm(forms.ModelForm):
         model = Material
         fields = ('title', 'description', 'document_type', 'pdf_download_link', 'pdf_viewer', 'pdf_link', 'file')
 
+
     def __init__(self, *args, **kwargs):
 
         course_slug = kwargs.pop('course_slug', None)
+
         course = get_object_or_404(Course, slug=course_slug)
 
         super(MaterialForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
-

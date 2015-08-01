@@ -9,10 +9,8 @@ from .mixins.base import ClassroomMenuMixin
 
 class CourseParticipantListView(ClassroomMenuMixin, TemplateView):
     """
-    Owners of the course are listed
+    Participants of the courseevent are listed
     """
-    template_name = 'classroom/participant/list.html'
-
     def get_context_data(self, **kwargs):
         context = super(CourseParticipantListView, self).get_context_data(**kwargs)
 

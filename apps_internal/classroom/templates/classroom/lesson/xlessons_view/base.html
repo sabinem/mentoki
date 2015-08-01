@@ -1,0 +1,92 @@
+{% extends "coursebackend/base.html" %}
+
+{% comment %}
+
+    Blocks filled here:
+    -------------------
+    {% block page_section_css_id %}classroombackend{% endblock %}
+
+    {% block sidebar_menu %}{% include 'coursebackend/_menu.html' %}{% endblock %}
+
+    {% block page_content %}...(see below){% endblock %}
+
+    {% block page_subsection %}{% endblock %}
+
+    Additional inherited blocks: see coursebackend/base.html, they still have to be filled
+    --------------------------------------------------------------------------------------
+    {% block controls %}{% endblock %}
+
+{% endcomment %}
+
+<!-- BLOCK: css id subsection: filled! -->
+
+{% load mptt_tags %}
+
+{% block controls %}{% endblock %}
+
+{% block page_subsection %}
+    {% include 'coursebackend/lessons_view/_element_subsection_header.html' %}
+{% endblock %}
+
+{% block page_content %}
+
+    <div class="ui large header">
+       {% block page_header %}{% endblock %}
+    </div>
+
+    {% block page_help %}{% endblock %}
+
+    {% block nodes_breadcrumb %}{% endblock %}
+
+    {% block node %}{% endblock %}
+
+    {% block recursetree %}
+
+        <div class="ui divided list">
+
+            {% recursetree nodes %}
+
+                <div class="item {% block item_class %}{% endblock %}">
+
+                    {% block recursetree_item_header %}
+                    {% endblock %}
+
+                    <div class="content">
+
+                        {% block recursetree_item_content %}
+                        {% endblock %}
+
+                        <div class="contentdescription">
+                            {% block recursetree_item_more %}
+                            {% endblock %}
+                        </div>
+
+                        {% if not is_leaf %}
+
+                            <div class="list">
+
+                                {{ children }}
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            {% endrecursetree %}
+
+        </div>
+
+    {% endblock %}
+
+    <div class="{% block view_material_class %}{% endblock %}">
+        {% block material_view %}
+        {% endblock %}
+    </div>
+
+    {% block form %}
+    {% endblock %}
+
+{% endblock %}

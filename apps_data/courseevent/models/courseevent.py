@@ -11,6 +11,7 @@ from django.utils.functional import cached_property
 from django.utils.translation import ugettext_lazy as _
 from django.db.models.query import QuerySet
 from django.shortcuts import get_object_or_404
+from django.core.validators import ValidationError
 
 from model_utils.models import TimeStampedModel
 from model_utils.managers import QueryManager
@@ -22,6 +23,7 @@ from apps_data.course.models.course import Course, CourseOwner
 
 
 class CourseEventQuerySet(QuerySet):
+#class CourseEventManager(models.Manager):
 
     def courseevents_for_course(self, course):
         return self.filter(course=course)
@@ -44,6 +46,8 @@ class CourseEventQuerySet(QuerySet):
             return True
         else:
             return False
+
+
 
 
 class CourseEvent(TimeStampedModel):
@@ -100,6 +104,7 @@ class CourseEvent(TimeStampedModel):
     you_okay = models.BooleanField(default=True)
 
     objects = PassThroughManager.for_queryset_class(CourseEventQuerySet)()
+    #objects = CourseEvent.Manager()
     public_ready_for_booking = QueryManager(status_external=STATUS_EXTERNAL.booking)
     public_ready_for_preview = QueryManager(status_external=STATUS_EXTERNAL.preview)
 

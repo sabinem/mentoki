@@ -1,0 +1,28 @@
+{% extends "coursebackend/base.html" %}
+
+{% block controls %}
+
+    {% include 'coursebackend/_control_help.html' %}
+    {% include 'coursebackend/_control_worklinks.html' %}
+    {% include 'coursebackend/courseevent/fragments/_control_unhide_public_offer.html' %}
+
+{% endblock %}
+
+{% block page_subsection %}
+    {% include 'coursebackend/courseevent/fragments/_element_subsection_header.html' %}
+{% endblock %}
+
+{% block page_content %}
+
+    <div id="helpinstructions">
+        <div class="ui segment message">
+            {% include 'coursebackend/courseevent/fragments/_help_detail.html' %}
+        </div>
+        <p></p>
+    </div>
+
+    {% include 'coursebackend/courseevent/fragments/_element_header.html' %}
+
+    {% include 'coursebackend/courseevent/fragments/_element_detail_display.html' %}
+
+{% endblock %}

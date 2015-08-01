@@ -1,0 +1,17 @@
+<div class="ui segment raised">
+    <h3 class="ui header">
+        {{ studentswork.title }}
+    </h3>
+    <p>
+        {% if studentswork.published %}
+            {{ studentswork.published | yesno:"abgegeben, " }}: {{ studentswork.published_at | date:'d.m.Y' }}
+            <i class="green icon check"></i>
+        {% else %}
+            <i class="red icon warning"></i>
+        {% endif %}
+    </p>
+    <p>
+        Team: {{ studentswork.team | join:', ' }}
+    </p>
+    {{ studentswork.text | safe }}
+</div>

@@ -10,6 +10,10 @@
 @courseevent_public_background_img: url("@{base-url}/30019719_l.jpg");
 
 @desk_header_color:#aeb3a4;
+@classroom_backend_active_color:#aeb3a4;
+
+@classroom_active_color:#d3bba5;
+@classroom_lightblue_color:#f6fafd;
 @homepage_toolbox_background_color: #ece9e4;
 
 /* ------------------------- */
@@ -106,6 +110,7 @@
 /* ---------------------- */
 
 #classroom {
+    min-height: 800px;
     .fixed-background-image(@classroom_background_img);
     a {
       color:black;
@@ -137,6 +142,7 @@
 /* ------------------------- */
 
 #classroombackend {
+  min-height: 800px;
   .fixed-background-image(@desk_background_img);
   h2 {
       background:white;
@@ -202,3 +208,57 @@
 #teach_page_body {
     background: white;
 }
+
+/* ------------------------- */
+/*     page load             */
+/* ------------------------- */
+.preload * {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -ms-transition: none !important;
+  -o-transition: none !important;
+}
+
+.load * {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -ms-transition: none !important;
+  -o-transition: none !important;
+}
+
+/* ------------------------- */
+/*     classroom             */
+/* ------------------------- */
+
+#classroom_header {
+  background:@classroom_active_color;
+}
+
+#forum_thread_comments {
+  max-width:none;
+}
+
+
+/* --------------------------------------  */
+/*    base_pusher content rows             */
+/* --------------------------------------- */
+#classroom {
+  .classroom_background {background:@classroom_lightblue_color;}
+  .classroom_white {background:white;}
+  .classroom_breadcrumb {background:@classroom_active_color;}
+  .classroom_emphasis {background:@classroom_active_color;}
+  .classroom_display_none {display:none}
+}
+
+#classroombackend {
+  .classroom_backend_background {background:white;}
+  .classroom_backend_white {background:white;}
+  .classroom_backend_breadcrumb {background:@classroom_backend_active_color;}
+  .classroom_backend_emphasis {background:@classroom_backend_active_color;}
+  .classroom_backend_display_none {display:none}
+}
+/* --------------------------------------  */
+/*    plain data                           */
+/* --------------------------------------- */
+
+#plain_mode {padding-left:300px;}

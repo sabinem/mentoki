@@ -1,13 +1,18 @@
 # -*- coding: utf-8 -*-
 
+# -*- coding: utf-8 -*-
+
 from __future__ import unicode_literals
 
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse_lazy
+from django.shortcuts import get_object_or_404
+from django.http import Http404, HttpResponseRedirect
 
-from vanilla import UpdateView, TemplateView
+from vanilla import TemplateView, DetailView, UpdateView, FormView, DeleteView
 
 from apps_data.course.models.course import Course, CourseOwner
-from ..mixins.base import CourseMenuMixin
+
+from .mixins.base import CourseMenuMixin
 
 
 class CourseOwnerListView(CourseMenuMixin, TemplateView):

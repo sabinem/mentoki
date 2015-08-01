@@ -58,6 +58,7 @@ INSTALLED_APPS = (
     'pagedown',
     'rest_framework',
     'api',
+    'froala_editor',
 
     'apps_data.course',
     'apps_data.courseevent',
@@ -304,6 +305,8 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10
 }
 
+#FROALA_INCLUDE_JQUERY = False
+
 
 # Use nose to run all tests
 #TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
@@ -313,3 +316,5 @@ REST_FRAMEWORK = {
 #    '--with-coverage',
 #    '--cover-package=apps_data/course/models',
 #]
+
+MENTOKI_TEST_VIEWS_AND_DATA = True

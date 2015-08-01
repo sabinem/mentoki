@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 from vanilla import TemplateView
 
-from ..mixins.base import CourseMenuMixin
+from .mixins.base import CourseMenuMixin
 
 
 class CourseParticipantListView(CourseMenuMixin, TemplateView):
@@ -17,6 +17,5 @@ class CourseParticipantListView(CourseMenuMixin, TemplateView):
         context = super(CourseParticipantListView, self).get_context_data(**kwargs)
 
         context['participants'] = context['courseevent'].students()
-
         return context
 

@@ -24,11 +24,17 @@ urlpatterns = patterns('',
 
     url(r'^unterricht/', include('apps_internal.coursebackend.urls.lesson', namespace='lesson')),
 
-    url(r'^kurs/(?P<slug>[a-z0-9_-]+)/teilnehmer/', include('apps_internal.coursebackend.urls.participant', namespace='participant')),
+    url(r'^kurs/(?P<slug>[a-z0-9_-]+)/teilnehmer/',
+        include('apps_internal.coursebackend.urls.participant', namespace='participant')),
 
-    url(r'^kurs/(?P<slug>[a-z0-9_-]+)/forum/', include('apps_internal.coursebackend.urls.forum', namespace='forum')),
+    url(r'^kurs/(?P<slug>[a-z0-9_-]+)/forum/',
+        include('apps_internal.coursebackend.urls.forum', namespace='forum')),
 
-    url(r'^kurs/(?P<slug>[a-z0-9_-]+)/ankuendigungen/', include('apps_internal.coursebackend.urls.announcement', namespace='announcement')),
+    url(r'^kurs/(?P<slug>[a-z0-9_-]+)/ankuendigungen/',
+        include('apps_internal.coursebackend.urls.announcement', namespace='announcement')),
+
+    url(r'^kurs/(?P<slug>[a-z0-9_-]+)/aufgaben/',
+        include('apps_internal.coursebackend.urls.homework', namespace='homework')),
 
     url(r'^download/(?P<slug>[a-zA-Z0-9_-]+)/$', download, name="download"),
 

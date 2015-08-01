@@ -21,5 +21,7 @@ urlpatterns = patterns('',
 
     url(r'^aufgabe/', include('apps_internal.classroom.urls.homework', namespace='homework')),
 
-    url(r'^teilnehmerliste/', include('apps_internal.classroom.urls.participant', namespace='participant'))
+    url(r'^teilnehmerliste/', include('apps_internal.classroom.urls.participant', namespace='participant')),
+
+    url(r'^plain/', include('apps_internal.classroom.urls.plain', namespace='plain'))
     )

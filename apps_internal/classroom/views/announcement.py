@@ -13,8 +13,6 @@ class AnnouncementListView(ClassroomMenuMixin, TemplateView):
     """
     AnnouncementList
     """
-    template_name = 'classroom/announcement/list.html'
-
     def get_context_data(self, **kwargs):
         context = super(AnnouncementListView, self).get_context_data(**kwargs)
 
@@ -23,11 +21,10 @@ class AnnouncementListView(ClassroomMenuMixin, TemplateView):
         return context
 
 
-class AnnouncementDetailView(ClassroomMenuMixin, TemplateView):
+class AnnouncementDetailView(ClassroomMenuMixin, DetailView):
     """
     Announcement Detail
     """
-    template_name = 'classroom/announcement/detail.html'
     model = Announcement
     lookup_field = 'pk'
     context_object_name ='announcement'

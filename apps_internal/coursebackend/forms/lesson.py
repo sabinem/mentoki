@@ -8,6 +8,8 @@ import floppyforms.__future__ as forms
 
 from crispy_forms.helper import FormHelper
 
+from froala_editor.widgets import FroalaEditor
+
 from apps_data.course.models.course import Course
 from apps_data.course.models.lesson import Lesson
 from apps_data.course.models.material import Material
@@ -18,6 +20,7 @@ from mptt.forms import TreeNodeChoiceField, TreeNodePositionField
 from django.forms.widgets import CheckboxSelectMultiple
 
 class LessonUpdateForm(forms.ModelForm):
+    text = forms.CharField(widget=FroalaEditor)
 
     class Meta:
         model = Lesson
@@ -69,43 +72,6 @@ class LessonCreateForm(forms.ModelForm):
         self.helper.form_tag = False
 
 
-class xLessonForm(forms.ModelForm):
-    #parent = ModelChoiceField(queryset=Category.objects.all())
-
-    class Meta:
-        model = Lesson
-        fields = ('nr', 'title', 'description', 'text')
-
-    def __init__(self, *args, **kwargs):
-
-        course_slug = kwargs.pop('course_slug', None)
-        pk = kwargs.pop('pk', None)
-        course = get_object_or_404(Course, slug=course_slug)
-
-        super(xLessonForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_tag = False
-        parent_choices = Lesson.objects.filter(course=course)
-        if pk:
-            parent_choices.exclude(id=pk)
-        self.fields['parent'].queryset = parent_choices
-        #category = ModelChoiceField(queryset=Category.objects.all())
-
-    def clean(self):
-        cleaned_data = super(xLessonForm, self).clean()
-        parent = cleaned_data.get("parent")
-
-        if self.instance:
-            add_level = self.instance_level
-        if parent.level + self.instance.level > 0:
-            # Only do something if both fields are valid so far.
-                raise forms.ValidationError(
-                    "Abschnitt darf nicht einen Unterabschnitt haben."
-                )
-
-
-
-
 class LessonAddMaterialForm(forms.ModelForm):
 
     class Meta:
@@ -113,12 +79,10 @@ class LessonAddMaterialForm(forms.ModelForm):
         fields = ('material',)
 
     def __init__(self, *args, **kwargs):
-
-        course_slug = kwargs.pop('course_slug', None)
-        course = get_object_or_404(Course, slug=course_slug)
-
         super(LessonAddMaterialForm, self).__init__(*args, **kwargs)
+        lesson = kwargs['instance']
         self.helper = FormHelper()
         self.helper.form_tag = False
+        course = lesson.course
 
         self.fields['material'].queryset = Material.objects.filter(course=course)

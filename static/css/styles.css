@@ -78,6 +78,7 @@
 /* classroom page         */
 /* ---------------------- */
 #classroom {
+  min-height: 800px;
   background-image: url("/static/img/30520566_l_lighter.jpg");
   background-size: cover;
   background-attachment: fixed;
@@ -106,6 +107,7 @@
 /* classroom backend page    */
 /* ------------------------- */
 #classroombackend {
+  min-height: 800px;
   background-image: url("/static/img/normaldesk.jpg");
   background-size: cover;
   background-attachment: fixed;
@@ -165,4 +167,67 @@
 }
 #teach_page_body {
   background: white;
+}
+/* ------------------------- */
+/*     page load             */
+/* ------------------------- */
+.preload * {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -ms-transition: none !important;
+  -o-transition: none !important;
+}
+.load * {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -ms-transition: none !important;
+  -o-transition: none !important;
+}
+/* ------------------------- */
+/*     classroom             */
+/* ------------------------- */
+#classroom_header {
+  background: #d3bba5;
+}
+#forum_thread_comments {
+  max-width: none;
+}
+/* --------------------------------------  */
+/*    base_pusher content rows             */
+/* --------------------------------------- */
+#classroom .classroom_background {
+  background: #f6fafd;
+}
+#classroom .classroom_white {
+  background: white;
+}
+#classroom .classroom_breadcrumb {
+  background: #d3bba5;
+}
+#classroom .classroom_emphasis {
+  background: #d3bba5;
+}
+#classroom .classroom_display_none {
+  display: none;
+}
+#classroombackend .classroom_backend_background {
+  background: white;
+}
+#classroombackend .classroom_backend_white {
+  background: white;
+}
+#classroombackend .classroom_backend_breadcrumb {
+  background: #aeb3a4;
+}
+#classroombackend .classroom_backend_emphasis {
+  background: #aeb3a4;
+}
+#classroombackend .classroom_backend_display_none {
+  display: none;
+}
+/* --------------------------------------  */
+/*    plain data                           */
+/* --------------------------------------- */
+#plain_mode {
+  padding-left: 300px;
 }

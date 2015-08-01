@@ -2,27 +2,19 @@
 
 from __future__ import unicode_literals, absolute_import
 
+from itertools import chain
+from operator import attrgetter
+
 from django.db import models
 from django.conf import settings
-from django.utils.functional import cached_property
 from django.core.urlresolvers import reverse
+from django.utils.functional import cached_property
 
 from model_utils.models import TimeStampedModel
-from model_utils.managers import PassThroughManager
-from autoslug import AutoSlugField
+from model_utils.managers import QueryManager
+from model_utils.fields import MonitorField
 
-from django.contrib.auth.models import User
-
-from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey, TreeManager
-from django.utils.functional import cached_property
-from django.template.defaultfilters import slugify
-
-from model_utils.models import TimeStampedModel
-from model_utils.managers import InheritanceManager
-from model_utils.managers import PassThroughManager
-
-from django.core.urlresolvers import reverse
 
 from .courseevent import CourseEvent
 
@@ -30,11 +22,6 @@ from apps.forum.models import Forum as OldForum
 from apps.forum.models import SubForum as OldSubForum
 from apps.forum.models import Post as OldPost
 from apps.forum.models import Thread as OldThread
-
-from model_utils.managers import QueryManager
-from model_utils.fields import MonitorField
-
-from django.db.models import Q
 
 
 class ForumManager(TreeManager):
@@ -58,6 +45,7 @@ class Forum(MPTTModel, TimeStampedModel):
     display_nr = models.IntegerField()
 
     can_have_threads = models.BooleanField(default=True)
+    #thread_count = models.IntegerField(default=0)
 
     published = models.BooleanField(default=False)
     publish_status_changed = MonitorField(monitor='published')
@@ -127,7 +115,6 @@ class Forum(MPTTModel, TimeStampedModel):
         else:
             return False
 
-
     def possible_parents(self):
         qs = Forum.objects.none()
         if self.is_forum:
@@ -145,25 +132,46 @@ class ForumContributionModel(TimeStampedModel):
 
     text = models.TextField()
 
-    objects = InheritanceManager()
-
     class Meta:
         abstract=True
+
+
+class ThreadManager(models.Manager):
+
+    def create_new_thread(self, courseevent, forum,
+                        text, title, author):
+        thread = Thread(courseevent=courseevent, forum=forum, text=text, title=title, author=author)
+        thread.save()
+        return thread
+
+    def recent_contributions(self, courseevent):
+        threads = self.select_related('author').\
+            filter(courseevent=courseevent).\
+            order_by('-modified')[0:50]
+        posts = Post.objects.filter(courseevent=courseevent).\
+            select_related('thread','author').order_by('-modified')[0:50]
+        contributions = sorted(
+            chain(threads, posts),
+            key=attrgetter('modified'))
+        return contributions
 
 
 class Thread(ForumContributionModel):
 
     forum = models.ForeignKey(Forum)
 
-    title = models.CharField(max_length=100)
+    title = models.CharField(
+        verbose_name="Titel für Deinen Beitrag",
+        max_length=100)
 
     post_count = models.IntegerField(default=0)
     last_author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="last_post_author", blank=True, null=True)
-    last_post = models.DateTimeField(auto_now=True, null=True, blank=True)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="thread_author")
 
     # delete later on
     oldthread = models.ForeignKey(OldThread, blank=True, null=True)
+
+    objects = ThreadManager()
 
     class Meta:
         verbose_name = "Beitrag"
@@ -179,6 +187,24 @@ class Thread(ForumContributionModel):
             self.last_author = self.author
         super(Thread, self).save()
 
+    def clean(self):
+        """
+        strip blanks before and after input
+        """
+        if self.text:
+            self.text = self.text.strip()
+        if self.title:
+            self.title = self.title.strip()
+
+
+class PostManager(models.Manager):
+
+    def create_new_post(self, courseevent, thread,
+                        text, title, author):
+        post = Post(courseevent=courseevent, thread=thread, text=text, title=title, author=author)
+        post.save()
+        return post
+
 
 class Post(ForumContributionModel):
 
@@ -190,6 +216,8 @@ class Post(ForumContributionModel):
     # will be deleted later on
     oldpost = models.ForeignKey(OldPost, blank=True, null=True)
 
+    objects = PostManager()
+
     class Meta:
         verbose_name = "Post"
         verbose_name_plural = "Posts"
@@ -200,7 +228,7 @@ class Post(ForumContributionModel):
 
     def save(self):
         self.courseevent = self.thread.courseevent
-        thread = Thread.objects.get(id=self.thread_id)
+        thread = self.thread
         thread.post_count = Post.objects.filter(thread=self.thread).count() + 1
         thread.last_author = self.author
         thread.save()

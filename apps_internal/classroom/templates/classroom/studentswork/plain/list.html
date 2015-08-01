@@ -1,0 +1,16 @@
+{% extends "base/plain.html" %}
+
+{% block plain %}
+    <hr>
+    <h2>studentworks</h2>
+    <ul>
+    {% for studentswork in studentsworks %}
+        <li>Homework: {{ studentswork.homework.title }}</li>
+        <hr>
+        <li>Work: {{ studentswork.title }}</li>
+        <hr>
+    {% endfor %}
+    </ul>
+    <hr>
+{% endblock %}
+

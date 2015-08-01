@@ -15,8 +15,8 @@ class CourseAdmin(admin.ModelAdmin):
 
 @admin.register(Lesson)
 class LessonAdmin(admin.ModelAdmin):
-    list_display = ('id', 'course', 'nr', 'title', 'lesson_nr', 'lesson_type', 'level')
-    list_filter = ('course', 'lesson_type')
+    list_display = ('id', 'course', 'lesson_nr', 'lesson_type', 'title', 'nr', 'is_block', 'level')
+    list_filter = ('course', 'level')
 
 
 @admin.register(LessonPublisher)

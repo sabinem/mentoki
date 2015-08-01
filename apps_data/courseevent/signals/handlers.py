@@ -13,7 +13,7 @@ def example_signal_handler(sender, **kwargs):
     print kwargs['arg1']
     print kwargs['arg2']
 
-"""
+
 @receiver(post_save, sender=ClassroomMenuItem)
 def publish_forum_handler(sender, instance, created, **kwargs):
     print "+++++++++ in handler"
@@ -29,4 +29,4 @@ def publish_forum_handler(sender, instance, created, **kwargs):
         print "-----later"
         print forum.published
         print "forum saved"
-"""
+

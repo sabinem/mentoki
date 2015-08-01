@@ -1,0 +1,21 @@
+{% extends "classroom/base.html" %}
+
+{% block page_subsection %}
+    <a class="item active" href="{% url 'classroom:studentswork:list' slug=courseevent.slug %}">
+        Dein Privatbereich: {{ request.user.get_full_name }}
+    </a>
+{% endblock %}
+
+{% block page_subsection_css_id %}studentswork{% endblock %}
+
+{% block breadcrumb_row_css_class %}classroom_display_none{% endblock %}
+{% block form_content_row_css_class %}classroom_white{% endblock %}
+{% block top_content_row_css_class %}classroom_background{% endblock %}
+{% block middle_content_row_css_class %}classroom_display_none{% endblock %}
+{% block detail_content_row_css_class %}classroom_emphasis{% endblock %}
+
+{% block form_content_row %}
+
+    {% include 'classroom/forms/_form_studenswork.html' %}
+
+{% endblock %}

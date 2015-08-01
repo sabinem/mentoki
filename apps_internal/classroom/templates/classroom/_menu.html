@@ -1,10 +1,21 @@
 {% load activelink %}
 
-<div class="ui fluid vertical menu">
-
+<div class="ui fluid vertical menu" id="classroom_menu">
     <div class="header item">
-      Klassenzimmer {{ courseevent.title }}
+        Hallo {{ user.username }}!
     </div>
+    <a  href="{% url 'desk:start' %}" class="item
+        {% ifactive "desk:start" %}
+              active
+        {% endifactive %}
+        ">
+        Zurück zum Schreibtisch
+    </a>
+
+    <a href="{% url "logout" %}" class="item">
+        Ausloggen
+    </a>
+
     {% if request.user in course.teachers or request.user.is_superuser %}
         <div class="header item">
           nur für Lehrer sichtbar
@@ -14,14 +25,15 @@
           {% ifstartswith 'coursebackend:course:detail' course_slug=course.slug %}
                active
           {% endifstartswith %}
-          " href="{% include 'coursebackend/course/_url_detail.html' %}">
+          " href="{% include 'coursebackend/course/fragments/_url_detail.html' %}">
           Kursvorlage<i class="wrench icon"></i>
         </a>
 
-        <div class="header item">
-          allgemeiner Bereich
-        </div>
     {% endif %}
+
+    <div class="header item active" id="classroom_header">
+      Willkommen bei der {{ courseevent.title }}
+    </div>
 
     {% for item in menu_items %}
 

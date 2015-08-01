@@ -1,0 +1,22 @@
+{% extends "classroom/base.html" %}
+
+{% block controls %}
+    {% include 'classroom/_control_fulltext.html' %}
+{% endblock %}
+
+{% block page_subsection %}
+    {% include 'classroom/announcement/fragments/_link_subsection.html' %}
+{% endblock %}
+
+{% block page_content %}
+
+    <div class="row classroom_background">
+        <div class="sixteen wide column">
+
+            {% include 'classroom/announcement/fragments/_list_annoucements.html' %}
+
+        </div>
+    </div>
+
+{% endblock %}
+{% block rows %}{% endblock %}

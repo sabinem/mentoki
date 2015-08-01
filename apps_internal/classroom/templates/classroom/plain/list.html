@@ -1,0 +1,22 @@
+{% extends "base/plain.html" %}
+
+{% block plain %}
+    <hr>
+
+    <h1>Linklist</h1>
+    Linklist for plain Classroompages:
+    <hr>
+
+    <h2>Forum</h2>
+    <ul>
+    {% for studentswork in studentsworks %}
+        <li>{% url 'classroom:studentswork:list' slug=course.slug %}</li>
+    {% endfor %}
+    </ul>
+
+    <hr>
+{% endblock %}
+
+
+
+

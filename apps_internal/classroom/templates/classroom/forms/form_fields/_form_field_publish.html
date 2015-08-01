@@ -1,0 +1,16 @@
+<div class="inline fields">
+    <div class="field">
+        <label>{{ form.published.label_tag }}</label>
+
+        {% if form.title.errors %}
+            <div class="ui negative floating message">
+                {{ form.published.errors }}
+            </div>
+        {% endif %}
+
+        <div id="title_container">
+        {{ form.published }}
+        </div>
+
+    </div>
+</div>

@@ -9,6 +9,7 @@ from django.views.defaults import *
 from django.conf.urls import url, include
 from rest_framework import routers
 from api import views
+from django_downloadview import ObjectDownloadView
 
 from rest_framework_extensions.routers import (
     ExtendedDefaultRouter as DefaultRouter
@@ -46,16 +47,17 @@ router.register(r'materials', views.MaterialViewSet)
 
 from apps_public.newsletter.feeds import LatestNewsletterFeed
 
+
 urlpatterns = i18n_patterns('',
 
-    url(r'^api/', include(router.urls)),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    #url(r'^api/', include(router.urls)),
+    #url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
     # admin urls
     url(r'^admin/', include(admin.site.urls)),
 
     # course urls
-    url(r'^api/', include('api.urls')),
+    #url(r'^api/', include('api.urls')),
 
     # homepage and front
     url(r'^', include('apps_public.home.urls', namespace='home')),
@@ -71,13 +73,13 @@ urlpatterns = i18n_patterns('',
     url(r'^pdf/', include('apps_internal.coursebackend.urls', namespace='coursebackend')),
 
     # classroom
-    url(r'^(?P<slug>[a-z0-9_-]+)klassenzimmer/', include('apps_internal.classroom.urls', namespace='classroom')),
+    url(r'^(?P<slug>[a-z0-9_-]+)/klassenzimmer/', include('apps_internal.classroom.urls', namespace='classroom')),
 
     # contact
     url(r'^kontakt/', include('apps_public.contact.urls', namespace='contact')),
 
     # file upload ...
-    url(r'^upload/', include('apps_core.upload.urls', namespace='upload')),
+    #url(r'^upload/', include('apps_core.upload.urls', namespace='upload')),
 
     # file markdown ...
     url(r'^markdown/', include('django_markdown.urls')),
@@ -90,6 +92,9 @@ urlpatterns = i18n_patterns('',
 
     # user handling urls
     url(r'^accounts/', include('authentication.urls')),
+
+    # froala editor
+    url(r'^froala_editor/', include('froala_editor.urls')),
 
     # robots
     (r'^robots\.txt/$', TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),

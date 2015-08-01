@@ -6,15 +6,15 @@ from django.views.generic import UpdateView, DeleteView, CreateView
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 
-from ..mixins.lesson import CourseFormMixin
+from .mixins.lesson import CourseFormMixin
 from ..forms.lesson import LessonUpdateForm, LessonAddMaterialForm, LessonMoveForm, LessonCreateForm
 
 from vanilla import UpdateView, DetailView, TemplateView
 
 from apps_data.course.models.lesson import Lesson
 
-from ..mixins.base import CourseMenuMixin
-from ..mixins.lesson import LessonMixin
+from .mixins.base import CourseMenuMixin
+from .mixins.lesson import LessonMixin
 
 
 class LessonStartView(CourseMenuMixin, TemplateView):

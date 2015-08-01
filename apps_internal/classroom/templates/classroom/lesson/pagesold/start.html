@@ -1,0 +1,33 @@
+{% extends "classroom/lesson/base.html" %}
+
+{% block controls %}
+    {% include 'classroom/lesson/fragments/_checkbox_fulltext.html' %}
+{% endblock %}
+
+{% block recursetree_item_header %}
+    {% include 'classroom/lesson/fragments/_item_header_lesson.html' %}
+{% endblock %}
+
+{% block recursetree_item_content %}
+   {% if node.is_lesson %}
+       {% include 'classroom/lesson/fragments/_node_header_lesson.html' %}
+   {% else %}
+       {% include 'classroom/lesson/fragments/_node_header_lesson_step.html' %}
+   {% endif %}
+{% endblock %}
+
+{% block recursetree_item_more %}
+   {{ node.text | safe }}
+   {% block materials %}
+       {% include 'classroom/lesson/fragments/_material.html' %}
+   {% endblock %}
+{% endblock %}
+
+{% block material_view %}
+    {% if lesson.is_leaf_node %}
+        {% include 'classroom/lesson/fragments/_material_step.html' %}
+    {% endif %}
+{% endblock %}
+
+{% block view_material_class %}contentdescription{% endblock %}
+

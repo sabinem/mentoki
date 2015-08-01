@@ -8,6 +8,7 @@ from ..views.participant import CourseParticipantListView
 
 
 urlpatterns = patterns('',
-        url(r'^$', CourseParticipantListView.as_view(), name='list'),
-        )
 
+    url(r'^$', CourseParticipantListView.as_view(),
+        {'template':'classroom/participant/pages/list.html'}, name='list')
+    )
