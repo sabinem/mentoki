@@ -1,0 +1,24 @@
+<div class="segment raised ui">
+    <div class="ui header medium">
+        Aufgabe:
+    </div>
+
+    <div class="ui header medium">{{ homework.title }}</div>
+    <p>
+        Abgabedatum: {{ homework.due_date | date:'d.m.Y' }},
+    </p>
+    <p>
+        bezieht sich auf Lektion:
+        <a href="">
+            {{ homework.lesson.title }}
+        </a>
+    </p>
+    <p>
+        {% if homework.published %}
+            {{ homework.published_at_date |date:'d.m.Y' }}
+        {% else %}
+            unveröffentlicht
+        {% endif %}
+    </p>
+    <p>{{ homework.text | safe }}</p>
+</div>

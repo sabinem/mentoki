@@ -26,8 +26,8 @@ class StudentWorkAddTeamForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(StudentWorkAddTeamForm, self).__init__(*args, **kwargs)
-        work = kwargs['instance']
-        self.fields['workers'].queryset = work.courseevent.students()
+        studentswork = kwargs['instance']
+        self.fields['workers'].queryset = studentswork.courseevent.students()
 
 
 class StudentWorkCommentForm(forms.ModelForm):

@@ -4,12 +4,14 @@ from __future__ import unicode_literals
 
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import get_object_or_404
-from django.http import Http404, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 
 from vanilla import TemplateView, DetailView, UpdateView, FormView, DeleteView
 
 from apps_data.courseevent.models.homework import Homework
 from apps_data.courseevent.models.courseevent import CourseEvent
+from apps_data.courseevent.models.courseevent import Course
+from apps_data.course.models.lesson import Lesson
 
 from .mixins.base import CourseMenuMixin
 from ..forms.homework import HomeworkForm
@@ -21,73 +23,82 @@ class HomeworkMixin(CourseMenuMixin):
        """
        for create update and delete view
        """
-       return reverse_lazy('classroom:studentswork:list',
-                           kwargs={'slug': self.kwargs['slug']})
+       return reverse_lazy('coursebackend:homework:list',
+                           kwargs={'slug': self.kwargs['slug'],
+                                   'course_slug': self.kwargs['course_slug']})
 
 
-class HomeworkStartView(HomeworkMixin, TemplateView):
+class HomeworkListView(HomeworkMixin, TemplateView):
     """
-    Work List
+    Homework List
     """
-    template_name = 'classroom/studentswork/pages/list.html'
-
     def get_context_data(self, **kwargs):
-        context = super(HomeworkStartView, self).get_context_data(**kwargs)
+        context = super(HomeworkListView, self).get_context_data(**kwargs)
 
-        context['studentworks'] = Homework.objects.mywork(user=self.request.user,
-                                                              courseevent=context['courseevent'])
+        context['homeworks_published'] = \
+            Homework.objects.published_homework_for_courseevent(courseevent=context['courseevent'])
+        context['homeworks_unpublished'] = \
+            Homework.objects.unpublished_per_courseevent(courseevent=context['courseevent'])
+
         return context
 
 
 class HomeworkDetailView(HomeworkMixin, DetailView):
     """
-    Work Detail
+    Homework Detail
     """
-    template_name = 'classroom/studentswork/pages/detail.html'
     model = Homework
     lookup_field = 'pk'
-    context_object_name ='work'
+    context_object_name ='homework'
 
 
 class HomeworkUpdateView(HomeworkMixin, UpdateView):
     """
-    Work Update
+    Homework Update
     """
-    template_name = 'classroom/studentswork/pages/update.html'
     model = Homework
     form_class = HomeworkForm
     lookup_field = 'pk'
-    context_object_name ='work'
+    context_object_name ='homework'
 
 
 class HomeworkDeleteView(HomeworkMixin, DeleteView):
     """
-    Work Delete
+    Homework Delete
     """
-    template_name = 'classroom/studentswork/pages/delete.html'
     model = Homework
     lookup_field = 'pk'
-    context_object_name ='work'
+    context_object_name ='homework'
 
 
 class HomeworkCreateView(HomeworkMixin, FormView):
     """
-    Work Create
+    Homework Create
     """
-    template_name = 'classroom/studentswork/pages/create.html'
     model = HomeworkMixin
-    lookup_field = 'pk'
     form_class = HomeworkForm
-    context_object_name ='work'
+    context_object_name ='homework'
+    form_class = HomeworkForm
+
+    def get(self, request, *args, **kwargs):
+        course = get_object_or_404(Course,slug=self.kwargs['course_slug'])
+        form = self.get_form()
+        form.fields['lesson'].queryset = \
+            Lesson.objects.lessons_for_course(course=course)
+        context = self.get_context_data(form=form)
+        return self.render_to_response(context)
+
 
     def form_valid(self, form):
         courseevent = get_object_or_404(CourseEvent, slug=self.kwargs['slug'])
-        Homework.objects.create_new_work(
+        Homework.objects.create(
             courseevent=courseevent,
-            homework=form.cleaned_data['homework'],
+            lesson=form.cleaned_data['lesson'],
             text=form.cleaned_data['text'],
             title=form.cleaned_data['title'],
-            user=self.request.user)
+            due_date=form.cleaned_data['due_date'],
+            published=form.cleaned_data['published']
+        )
 
         return HttpResponseRedirect(self.get_success_url())
 

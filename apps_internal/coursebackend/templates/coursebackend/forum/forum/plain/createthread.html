@@ -1,0 +1,32 @@
+{% extends "base/plain.html" %}
+
+{% block plain %}
+    <hr>
+
+    <h2>breadcrumbs</h2>
+    <ul>
+    {% for breadcrumb in breadcrumbs %}
+        <li>{{ breadcrumb.title }}</li>
+    {% endfor %}
+    </ul>
+
+    <hr>
+
+    <h2>forum</h2>
+    {{ forum.title }}
+
+    <hr>
+
+    <h2>nodes</h2>
+    <ul>
+    {% for node in nodes %}
+        <li>{{ node.title }}</li>
+    {% endfor %}
+    </ul>
+
+    <hr>
+
+    {% include 'classroom/forms/_form_thread.html' %}
+{% endblock %}
+
+

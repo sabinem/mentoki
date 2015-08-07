@@ -28,6 +28,9 @@ class CourseEventQuerySet(QuerySet):
     def courseevents_for_course(self, course):
         return self.filter(course=course)
 
+    def active_courseevents_for_course(self, course):
+        return self.filter(course=course, active=True)
+
     def courseevents_for_course_slug(self, course_slug):
         return self.select_related('course').filter(course__slug=course_slug)
 
@@ -55,9 +58,16 @@ class CourseEvent(TimeStampedModel):
     course = models.ForeignKey(Course)
 
     slug = models.SlugField(unique=True)
-    title = models.CharField(max_length=100)
 
-    start_date = models.DateField(null=True, blank=True, verbose_name="Startdatum")
+    title = models.CharField(
+        verbose_name="Kurstitel",
+        help_text="Kurstitel unter dem dieser Kurs ausgeschrieben wird.",
+        max_length=100)
+
+    start_date = models.DateField(
+        verbose_name="Startdatum",
+        null=True, blank=True)
+
     nr_weeks = models.IntegerField(verbose_name="Wochenanzahl",
                                    help_text="Die Anzahl der Wochen, die der Kurs dauern soll, nur bei geführten Kursen.",
                                    null=True, blank=True)
@@ -73,11 +83,14 @@ class CourseEvent(TimeStampedModel):
 
     STATUS_EXTERNAL = Choices(('0', 'not_public', _('not public')),
                               ('1', 'booking', _('open for booking')),
+                              ('1', 'booking_closed', _('booking closed')),
                               ('2', 'preview', _('open for preview'))
                              )
     status_external =  models.CharField(max_length=2, choices=STATUS_EXTERNAL, default=STATUS_EXTERNAL.not_public)
-    published_at = MonitorField(monitor='status_external', when=['public'])
-    opened_at = MonitorField(monitor='status_external', when=['booking'])
+    published_at = MonitorField(monitor='status_external', when=['booking'])
+    booking_closed_at = MonitorField(monitor='status_external', when=['booking_closed'])
+
+    active = models.BooleanField(default=True)
 
     STATUS_INTERNAL = Choices(('0', 'draft', _('not public')),
                               ('1', 'review', _('open for booking')),
@@ -87,6 +100,7 @@ class CourseEvent(TimeStampedModel):
     accepted_at = MonitorField(monitor='status_external', when=['accepted'])
     review_ready_at = MonitorField(monitor='status_external', when=['review'])
 
+    # description of the courseevent
     excerpt = models.TextField(verbose_name="Abstrakt",
                                help_text="Diese Zusammenfassung erscheint auf der Kursliste.",
                                blank=True)
@@ -99,6 +113,7 @@ class CourseEvent(TimeStampedModel):
     target_group = models.TextField(blank=True, verbose_name="Zielgruppe")
     prerequisites = models.TextField(blank=True, verbose_name="Voraussetzungen")
 
+    #participants
     participation = models.ManyToManyField(settings.AUTH_USER_MODEL, through="CourseEventParticipation", related_name='participation')
 
     you_okay = models.BooleanField(default=True)
@@ -171,7 +186,7 @@ class CourseEventParticipation(TimeStampedModel):
     courseevent = models.ForeignKey(CourseEvent)
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
 
-    objects = PassThroughManager.for_queryset_class(ParticipationQuerySet)()
+    #objects = PassThroughManager.for_queryset_class(ParticipationQuerySet)()
 
     def __unicode__(self):
         return u'%s / %s' % (self.courseevent, self.user)

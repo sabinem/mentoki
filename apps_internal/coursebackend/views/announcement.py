@@ -15,11 +15,21 @@ from .mixins.base import CourseMenuMixin
 from ..forms.announcement import AnnouncementForm
 
 
+class AnnouncementChangeMixin(CourseMenuMixin):
+
+    def get_success_url(self):
+       """
+       for create update and delete view
+       """
+       return reverse_lazy('coursebackend:announcement:list',
+                           kwargs={'course_slug': self.kwargs['course_slug'], 'slug': self.kwargs['slug']})
+
+
 class AnnouncementListView(CourseMenuMixin, TemplateView):
     """
-    Owners of the course are listed
+    Announcements list
     """
-    template_name = 'coursebackend/announcement/list.html'
+    template_name = 'coursebackend/announcement/pages/list.html'
 
     def get_context_data(self, **kwargs):
         context = super(AnnouncementListView, self).get_context_data(**kwargs)
@@ -30,80 +40,49 @@ class AnnouncementListView(CourseMenuMixin, TemplateView):
         return context
 
 
-
-class AnnouncementMixin(CourseMenuMixin):
-
-    def get_success_url(self):
-       """
-       for create update and delete view
-       """
-       return reverse_lazy('classroom:studentswork:list',
-                           kwargs={'slug': self.kwargs['slug']})
-
-
-class AnnouncementListView(CourseMenuMixin, TemplateView):
-    """
-    Work List
-    """
-    template_name = 'classroom/studentswork/pages/list.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(AnnouncementListView, self).get_context_data(**kwargs)
-
-        context['studentworks'] = Announcement.objects.mywork(user=self.request.user,
-                                                              courseevent=context['courseevent'])
-        return context
-
-
 class AnnouncementDetailView(CourseMenuMixin, DetailView):
     """
-    Work Detail
+    Announcement Detail
     """
-    template_name = 'classroom/studentswork/pages/detail.html'
     model = Announcement
     lookup_field = 'pk'
-    context_object_name ='work'
+    context_object_name ='announcement'
 
 
-class AnnouncementUpdateView(AnnouncementMixin, UpdateView):
+class AnnouncementUpdateView(AnnouncementChangeMixin, UpdateView):
     """
-    Work Update
+    Announcement Update
     """
-    template_name = 'classroom/studentswork/pages/update.html'
     model = Announcement
     form_class = AnnouncementForm
     lookup_field = 'pk'
-    context_object_name ='work'
+    context_object_name ='announcement'
 
 
-class AnnouncementDeleteView(AnnouncementMixin, DeleteView):
+class AnnouncementDeleteView(AnnouncementChangeMixin, DeleteView):
     """
-    Work Delete
+    Announcement Delete
     """
-    template_name = 'classroom/studentswork/pages/delete.html'
     model = Announcement
     lookup_field = 'pk'
-    context_object_name ='work'
+    context_object_name ='announcement'
 
 
-class AnnouncementCreateView(AnnouncementMixin, FormView):
+class AnnouncementCreateView(AnnouncementChangeMixin, FormView):
     """
-    Work Create
+    Announcement Create
     """
-    template_name = 'classroom/studentswork/pages/create.html'
     model = Announcement
-    lookup_field = 'pk'
     form_class = AnnouncementForm
-    context_object_name ='work'
+    context_object_name ='announcement'
 
     def form_valid(self, form):
         courseevent = get_object_or_404(CourseEvent, slug=self.kwargs['slug'])
-        Announcement.objects.create_new_work(
+        Announcement.objects.create(
             courseevent=courseevent,
-            homework=form.cleaned_data['homework'],
             text=form.cleaned_data['text'],
             title=form.cleaned_data['title'],
-            user=self.request.user)
+            published=form.cleaned_data['published'])
 
         return HttpResponseRedirect(self.get_success_url())
 

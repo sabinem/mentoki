@@ -4,25 +4,25 @@ from __future__ import unicode_literals
 
 from django.conf.urls import patterns, url
 
-from ..views.homework import HomeworkStartView, HomeworkDetailView, HomeworkDeleteView,\
+from ..views.homework import HomeworkListView, HomeworkDetailView, HomeworkDeleteView,\
    HomeworkCreateView, HomeworkUpdateView
 
 
-urlpatterns = patterns("apps_data.course.views.forum",
+urlpatterns = patterns('',
 
-    url(r'^$', HomeworkStartView.as_view(),
-        name='start'),
+    url(r'^$', HomeworkListView.as_view(),
+        {'template':'coursebackend/homework/pages/list.html'}, name='list'),
 
     url(r'^(?P<pk>\d{1,4})$', HomeworkDetailView.as_view(),
-        name='detail'),
+        {'template':'coursebackend/homework/pages/detail.html'}, name='detail'),
 
     url(r'^(?P<pk>\d{1,4})/bearbeiten$', HomeworkUpdateView.as_view(),
-        name='update'),
+        {'template':'coursebackend/homework/pages/update.html'}, name='update'),
 
     url(r'^anlegen$', HomeworkCreateView.as_view(),
-        name='create'),
+        {'template':'coursebackend/homework/pages/create.html'}, name='create'),
 
     url(r'^(?P<pk>\d{1,4})/loeschen$', HomeworkDeleteView.as_view(),
-        name='delete'),
+        {'template':'coursebackend/homework/pages/delete.html'}, name='delete'),
 
     )

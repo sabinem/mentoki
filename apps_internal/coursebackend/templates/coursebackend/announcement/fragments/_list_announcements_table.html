@@ -1,0 +1,46 @@
+<table class="ui table">
+    <thead>
+        <tr>
+            <tr>
+                <th>veröffentlicht?</th>
+                <th>wann?</th>
+                <th>Titel</th>
+            </tr>
+        </tr>
+    </thead>
+    <tbody>
+        {% for announcement in announcements_unpublished %}
+            <tr>
+                <td>
+                    <a href="{% url 'coursebackend:announcement:update' course_slug=course.slug slug=courseevent.slug pk=announcement.pk %}">
+                        <i class="icon write blue"></i>
+                    </a>
+                    <a href="{% url 'coursebackend:announcement:delete' course_slug=course.slug slug=courseevent.slug pk=announcement.pk %}">
+                        <i class="icon trash blue"></i>
+                    </a>
+                </td>
+                <td>-</td>
+                <td>
+                    <a href="{% url 'coursebackend:announcement:detail' course_slug=course.slug slug=courseevent.slug pk=announcement.pk %}">
+                        {{ announcement.title }}
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        {% for announcement in announcements_published %}
+            <tr>
+                <td>
+                    <i class="icon checkmark green"></i>
+                </td>
+                <td>
+                    {{ announcement.published_at | date:'d.m.Y'  }}
+                </td>
+                <td>
+                    <a href="{% url 'coursebackend:announcement:detail' course_slug=course.slug slug=courseevent.slug pk=announcement.pk %}">
+                        {{ announcement.title }}
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

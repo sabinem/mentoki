@@ -26,7 +26,7 @@ from django.db.models import Q
 
 class LessonManager(TreeManager):
 
-    def blocks_for_course(self, course):
+    def complete_tree_for_course(self, course):
         return self.filter(course=course, level=0).\
             get_descendants(include_self=True)
 
@@ -35,6 +35,17 @@ class LessonManager(TreeManager):
                            lessonpublisher__published=True,
                            level=1).\
                            get_descendants(include_self=True)
+
+    def next_published_lesson(self, lesson):
+        return self.filter(lessonpublisher__courseevent=lesson.courseevent,
+                           lessonpublisher__published=True,
+                           level=1).\
+                           get_descendants(include_self=True)
+
+    def lessons_for_course(self, course):
+        return self.filter(course=course,
+                           level=1,
+                           )
 
 def lesson_material_name(instance, filename):
         path = '/'.join([instance.course.slug, slugify(instance.title), filename])
@@ -55,7 +66,7 @@ class Lesson(MPTTModel, TimeStampedModel):
 
     material = models.ManyToManyField(Material, blank=True)
 
-    published_in_courseevent = models.ManyToManyField(CourseEvent, through="LessonPublisher", blank=True)
+    courseeventpublications = models.ManyToManyField(CourseEvent, through="LessonPublisher", blank=True)
 
     #just for the data_migration: refers to old data-structure (oldcourseparts),
     # will be deleted after data-transfer
@@ -105,7 +116,12 @@ class Lesson(MPTTModel, TimeStampedModel):
             raise ValueError('unexpected lesson level')
 
     def __unicode__(self):
-        return u'%s: %s %s' % (str(self.course_id), self.lesson_nr, self.title)
+        if self.is_block:
+            return u'%s' % (self.title)
+        elif self.is_lesson:
+            return u'%s: %s. %s' % (self.parent.title, self.lesson_nr, self.title)
+        elif self.is_lesson_step:
+            return u'%s %s' % (self.lesson_nr, self.title)
 
     def display_with_nr(self):
         return u'%s: %s %s' % (str(self.course_id), str(self.lesson_nr), self.title)
@@ -133,6 +149,32 @@ class Lesson(MPTTModel, TimeStampedModel):
                 return None
         except:
             return None
+
+    def get_next_published_sibling(self, courseevent):
+        next = self
+        while True:
+            next = next.get_next_sibling()
+            if next == None:
+                break
+            elif courseevent in next.courseeventpublications.filter(
+                    lessonpublisher__published=True):
+                    break
+        return next
+
+    def get_previous_published_sibling(self, courseevent):
+        previous = self
+        while True:
+            previous = previous.get_previous_sibling()
+            if previous == None:
+                break
+            elif courseevent in previous.courseeventpublications.filter(
+                    lessonpublisher__published=True):
+                break
+        return previous
+
+    def get_published_children(self, courseevent):
+        return self.get_children().filter(
+            lessonpublisher__published=True)
 
     def get_tree_with_material(self):
         return self.get_descendants(include_self=True).prefetch_related('material')

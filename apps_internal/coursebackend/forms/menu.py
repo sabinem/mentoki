@@ -9,9 +9,11 @@ from froala_editor.widgets import FroalaEditor
 from apps_data.courseevent.models.menu import ClassroomMenuItem
 
 
-class MenuForm(forms.ModelForm):
+class MenuItemForm(forms.ModelForm):
     text = forms.CharField(widget=FroalaEditor)
 
     class Meta:
         model = ClassroomMenuItem
-        fields = ('title', 'text', 'published')
+        fields = ('display_nr', 'display_title', 'item_type',
+                  'lesson', 'forum', 'homework',
+                  'published', 'is_start_item')

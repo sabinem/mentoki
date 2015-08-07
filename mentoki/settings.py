@@ -60,6 +60,8 @@ INSTALLED_APPS = (
     'api',
     'froala_editor',
 
+    'apps_core.core',
+
     'apps_data.course',
     'apps_data.courseevent',
 
@@ -77,7 +79,7 @@ INSTALLED_APPS = (
     #old will be deleted after data-transfer
     'apps.forum',
 
-    'apps.core',
+    #'apps.core',
 
     'authentication',
 )

@@ -8,30 +8,13 @@ from vanilla import TemplateView
 
 from apps_data.course.models.lesson import Lesson
 
-from .mixins.lesson import ClassroomMenuMixin
-
-
-class LessonMixin(ClassroomMenuMixin):
-
-    def get_context_data(self, **kwargs):
-        context = super(LessonMixin, self).get_context_data(**kwargs)
-
-        start_node = get_object_or_404(Lesson, pk=self.kwargs['pk'])
-        context['start_lesson'] = start_node
-        context['next_node'] = start_node.get_next_sibling()
-        context['previous_node'] = start_node.get_previous_sibling()
-        context['breadcrumbs'] = start_node.get_ancestors()
-        context['nodes'] = start_node.get_tree_with_material
-
-        return context
+from .mixins.base import ClassroomMenuMixin
 
 
 class LessonStartView(ClassroomMenuMixin, TemplateView):
     """
     Shows one lesson-step
     """
-    template_name = 'classroom/lesson/pages/start.html'
-
     def get_context_data(self, **kwargs):
         context = super(LessonStartView, self).get_context_data(**kwargs)
 
@@ -41,33 +24,25 @@ class LessonStartView(ClassroomMenuMixin, TemplateView):
         return context
 
 
-class LessonDetailView(ClassroomMenuMixin, TemplateView):
+class LessonBlockDetailView(ClassroomMenuMixin, TemplateView):
     """
     List all lesson-steps of a lesson
     """
-    template_name = 'classroom/lesson/pages/lesson.html'
-
     def get_context_data(self, **kwargs):
-        context = super(LessonDetailView, self).get_context_data(**kwargs)
+        context = super(LessonBlockDetailView, self).get_context_data(**kwargs)
 
-        lesson = get_object_or_404(Lesson, pk=self.kwargs['pk'])
+        lessonblock = get_object_or_404(Lesson, pk=self.kwargs['pk'])
 
-        context['lesson'] = lesson
-        context['breadcrumbs'] = lesson.get_ancestors()
-        context['next_node'] = lesson.get_next_sibling()
-        context['previous_node'] = lesson.get_previous_sibling()
-        context['nodes'] = lesson.get_tree_with_material
-
+        context['lessonblock'] = lessonblock
+        context['lessons'] = lessonblock.get_published_children(courseevent=context['courseevent'])
 
         return context
 
 
-class StepDetailView(ClassroomMenuMixin, TemplateView):
+class LessonDetailView(ClassroomMenuMixin, TemplateView):
     """
-    Shows one lesson-step
+    List all lesson-steps of a lesson
     """
-    template_name = 'classroom/lesson/pages/lesson_step.html'
-
     def get_context_data(self, **kwargs):
         context = super(LessonDetailView, self).get_context_data(**kwargs)
 
@@ -75,8 +50,27 @@ class StepDetailView(ClassroomMenuMixin, TemplateView):
 
         context['lesson'] = lesson
         context['breadcrumbs'] = lesson.get_ancestors()
-        context['next_node'] = lesson.get_next_sibling()
-        context['previous_node'] = lesson.get_previous_sibling()
+        context['next_lesson'] = lesson.get_next_published_sibling(courseevent=context['courseevent'])
+        context['previous_lesson'] = lesson.get_previous_published_sibling(courseevent=context['courseevent'])
         context['nodes'] = lesson.get_tree_with_material
+        context['lessonsteps'] = lesson.get_children()
+
+        return context
+
+
+class LessonStepDetailView(ClassroomMenuMixin, TemplateView):
+    """
+    Shows one lesson-step
+    """
+    def get_context_data(self, **kwargs):
+        context = super(LessonStepDetailView, self).get_context_data(**kwargs)
+
+        lessonstep = get_object_or_404(Lesson, pk=self.kwargs['pk'])
+
+        context['lessonstep'] = lessonstep
+        context['breadcrumbs'] = lessonstep.get_ancestors()
+        context['next_lessonstep'] = lessonstep.get_next_sibling()
+        context['previous_lessonstep'] = lessonstep.get_previous_sibling()
+        #context['materials'] = lessonstep.get_material
 
         return context

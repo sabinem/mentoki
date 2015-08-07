@@ -1,23 +1,15 @@
-{% extends "coursebackend/base.html" %}
+{% extends "coursebackend/base_course.html" %}
 
-{% block controls %}
-    {% include 'coursebackend/_control_help.html' %}
-{% endblock %}
+{% block page_content %}
 
-{% block page_subsection %}
-    {% include 'coursebackend/course/fragments/_element_subsection_header.html' %}
-{% endblock %}
+    <div class="row classroombackend_white">
+        <div class="sixteen wide column">
 
-{% block form_content_row %}
+            {% include 'coursebackend/course/fragments/_instance_course_header.html' %}
 
-         {% include 'coursebackend/course/fragments/_element_header.html' %}
+            {% include 'coursebackend/forms/_form_course.html' %}
 
-         {% include 'coursebackend/course/fragments/_element_form.html' %}
+        </div>
+    </div>
 
 {% endblock %}
-
-{% block breadcrumb_row_css_class %}classroom_backend_display_none{% endblock %}
-{% block form_content_row_css_class %}classroom_backend_white{% endblock %}
-{% block top_content_row_css_class %}classroom_backend_display_none{% endblock %}
-{% block middle_content_row_css_class %}classroom_backend_display_none{% endblock %}
-{% block detail_content_row_css_class %}classroom_backend_display_none{% endblock %}

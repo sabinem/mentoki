@@ -2,16 +2,20 @@
 
     <div class="fieldWrapper">
 
-        <div id="helpinstructions">
-            <div class="ui segment message">
-                {{ field.help_text }}
+        <div class="ui header medium" style="padding-top:1em;">{{ field.label_tag }}</div>
+            {% if field.help_text %}
+                <div class="ui segment message">
+                    {{ field.help_text }}
+                </div>
+            {% endif %}
+
+        {% if field.errors %}
+            <div class="ui negative floating message">
+                {{ field.errors }}
             </div>
-            <p></p>
-        </div>
+        {% endif %}
 
-        {{ field.errors }}
-
-        {{ field.label_tag }} {{ field }}
+        {{ field }}
 
     </div>
 

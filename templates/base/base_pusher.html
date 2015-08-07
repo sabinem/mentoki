@@ -18,12 +18,12 @@
 
 {% block bottom_js %}
     {% include 'base/fragments/vendor/_semantic_js.html' %}
-    {% include 'base/fragments/custom/_semantic.html' %}
+    {% include 'base/fragments/custom/_custom_js.html' %}
 {% endblock %}
 
 {% block sidebar %}
 
-    <div class="ui labeled icon left inline vertical sidebar menu" id="coursemenu">
+    <div class="ui wide left labeled vertical menu sidebar" id="coursemenu">
 
         <!-- BLOCK: sidebar menu -->
 
@@ -37,77 +37,55 @@
 
     <div class="pusher">
 
-    <!-- BLOCK: Section css id of the Website -->
+        <div id="{% block page_section_css_id %}{% endblock %}">
 
-    <div id="{% block page_section_css_id %}{% endblock %}">
+            <div class="ui grid container" >
 
-        <div class="ui page grid" >
+                <div class="content ui column sixteen wide">
 
-            <div class="content ui column sixteen wide">
-                <h3></h3>
-                <h2>{% block page_header %}{% endblock %}</h2>
+                    <h3></h3>
+                    <h2>{% block page_header %}{% endblock %}</h2>
 
-                <!-- top attached  -->
+                    <!-- top attached  -->
+                    {% block top_attached_menu %}
 
-                <div class="ui top attached menu">
+                    <div class="ui top attached menu">
 
-                    <!-- menu button  -->
+                        <!-- menu button  -->
 
-                    <a class="item" id="sidebar_button">
-                      <i class="sidebar icon"></i>
-                      Menu
-                    </a>
+                        <a class="item" id="sidebar_button">
+                          <i class="sidebar icon"></i>
+                          Menu
+                        </a>
 
-                    <!-- BLOCK: Subsection of the page in the top -->
 
-                    {% block page_subsection %}{% endblock %}
+                        <!-- BLOCK: Subsection of the page in the top -->
 
-                    <!-- BLOCK: Controls in the top -->
+                        {% block page_subsection %}{% endblock %}
 
-                    {% block controls %}{% endblock %}
+                        <!-- BLOCK: Controls in the top -->
 
-                </div>
-
-                <div class="ui bottom attached segment" id="{% block page_subsection_css_id %}{% endblock %}" >
-
-                    <div class="ui vertical grid">
-
-                        {% block page_content %}{% endblock %}
-
-                        {% block rows %}
-                        <div class="row breadcrumb {% block breadcrumb_row_css_class %}{% endblock %}">
-                            <div class="sixteen wide column">{% block breadcrumb_row %}{% endblock %}</div>
-                        </div>
-
-                        <div class="row top {% block top_content_row_css_class %}{% endblock %}">
-                            <div class="sixteen wide column">{% block top_content_row %}{% endblock %}</div>
-                        </div>
-
-                        <div class="row middle {% block middle_content_row_css_class %}{% endblock %}">
-                            <div class="sixteen wide column">{% block middle_content_row %}{% endblock %}</div>
-                        </div>
-
-                        <div class="row detail {% block detail_content_row_css_class %}{% endblock %}">
-                            <div class="sixteen wide column">{% block detail_content_row %}{% endblock %}</div>
-                        </div>
-
-                        <div class="row form {% block form_content_row_css_class %}{% endblock %}">
-                            <div class="sixteen wide column">{% block form_content_row %}{% endblock %}</div>
-                        </div>
-                        {% endblock %}
-
+                        {% block controls %}{% endblock %}
 
                     </div>
 
-                </div>
+                    {% endblock %}
+
+                    <div class="ui bottom attached segment" id="{% block page_subsection_css_id %}{% endblock %}" >
+
+                        <div class="ui vertical grid">
+
+                            {% block page_content %}{% endblock %}
+
+                        </div>
+
+                    </div>
 
                 </div>
 
             </div>
 
         </div>
-
-    </div>
 
     </div>
 

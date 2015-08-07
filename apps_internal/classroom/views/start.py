@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 
 from django.core.urlresolvers import reverse
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 
 from vanilla import RedirectView
 
@@ -19,7 +20,13 @@ class ClassroomStartView(ClassroomMenuMixin, RedirectView):
     """
     def get_redirect_url(self, *args, **kwargs):
 
-        startitem = ClassroomMenuItem.objects.get_startitem_from_slug(courseevent_slug=self.kwargs['slug'])
+        try:
+            startitem = ClassroomMenuItem.objects.get_startitem_from_slug(slug=self.kwargs['slug'])
+        except ObjectDoesNotExist:
+            return reverse('classroom:announcement:list', args=args, kwargs=kwargs)
+        except MultipleObjectsReturned:
+            return reverse('classroom:announcement:list', args=args, kwargs=kwargs)
+            #log entry: dataintegrity error: courseevent has multiple start items
 
         if startitem.item_type == ClassroomMenuItem.MENU_ITEM_TYPE.announcements:
             url = reverse('classroom:announcement:list', args=args, kwargs=kwargs)

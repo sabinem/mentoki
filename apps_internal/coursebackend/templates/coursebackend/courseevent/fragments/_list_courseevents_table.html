@@ -1,0 +1,50 @@
+<table class="ui table">
+    <thead>
+        <tr>
+            <tr>
+                <th>aktiv?</th>
+                <th>Titel</th>
+                <th>Kursformat</th>
+                <th>Dauer</th>
+                <th>Teilnehmeranzahl</th>
+                <th>Startdatum</th>
+                <th>Preisliste</th>
+            </tr>
+        </tr>
+    </thead>
+    <tbody>
+        {% for courseevent in courseevents %}
+            <tr>
+                <td>
+                    {% if courseevent.active %}
+                        <i class="icon checkmark green" ></i>
+                    {% else %}
+                        <i class="icon remove" ></i>
+                    {% endif %}
+                </td>
+                <td>
+                    {{ courseevent.title  }}
+                </td>
+                <td>
+                    {{ courseevent.get_event_type_display }}
+                </td>
+                <td>
+                    {% if courseevent.nr_weeks %}
+                       {{ courseevent.nr_weeks }} Wochen
+                    {% endif %}
+                </td>
+                <td>
+                    {% if courseevent.nr_weeks %}
+                        {{ courseevent.max_participants }} Teilnehmer
+                    {% endif %}
+                </td>
+                <td>
+                    {% if courseevent.start_date %}
+                        {{ courseevent.start_date }}
+                    {% endif %}
+                </td>
+
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

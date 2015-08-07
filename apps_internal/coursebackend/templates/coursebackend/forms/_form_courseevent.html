@@ -1,5 +1,5 @@
 {{ form.media }}
-<form class="ui form" id="course_form" method="post" action="">
+<form class="ui form" method="post" action="">
 
     {% csrf_token %}
 
@@ -11,7 +11,8 @@
         Speichern
     </button>
 
-    <a href="{% include 'coursebackend/courseevent/_url_detail.html' %}" class="ui button">
+    <a href="{% url 'coursebackend:courseevent:detail' slug=courseevent.slug course_slug=course.slug %}"
+       class="ui button">
         Abbruch
     </a>
 

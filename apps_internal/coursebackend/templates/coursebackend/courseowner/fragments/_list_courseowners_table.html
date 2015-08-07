@@ -1,0 +1,38 @@
+<table class="ui table">
+    <thead>
+        <tr>
+            <tr>
+                <th>bearbeiten?</th>
+                <th>anzeigen in der Kursausschreibung?</th>
+                <th>Nr</th>
+                <th>Name</th>
+            </tr>
+        </tr>
+    </thead>
+    <tbody>
+        {% for courseowner in courseowners %}
+            <tr>
+                <td>
+                    <a href="{% url 'coursebackend:courseowner:update' course_slug=course.slug pk=courseowner.pk %}">
+                        <i class="icon write blue"></i>
+                    </a>
+                </td>
+                <td>
+                    {% if courseowner.display %}
+                        <i class="icon checkmark green"></i>
+                    {% else %}
+                        <i class="icon remove"></i>
+                    {% endif %}
+                </td>
+                <td>
+                    {{ courseowner.display_nr }}
+                </td>
+                <td>
+                    <a href="{% url 'coursebackend:courseowner:detail' course_slug=course.slug pk=courseowner.pk %}">
+                        {{ courseowner.user.get_full_name }}{{ courseowner.username }}
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

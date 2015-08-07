@@ -1,0 +1,60 @@
+{% load mptt_tags %}
+<div class="ui divided list">
+
+    {% recursetree nodes %}
+
+        <div class="item">
+            {% if node.is_block %}
+                <i class="top aligned cube icon"></i>
+            {% else %}
+                <i class="top aligned icon"></i>
+            {% endif %}
+            <div class="content">
+
+                <a class="ui button worklinks"
+                    href="{% url "coursebackend:lesson:detail" course_slug=course.slug pk=node.pk %}">
+                    {{ node.lesson_nr }} {{ node.title }}
+                </a>
+                <div class="ui flowing popup top left transition hidden">
+                  <div class="ui one column divided center aligned grid">
+                    <div class="column">
+                    <a class= "worklink item"
+                       href="{% url "coursebackend:lesson:update" course_slug=course.slug pk=node.pk %}">
+                        <i class="write blue icon"></i>
+                    </a>
+                    <a class= "worklink item"
+                       href="{% url "coursebackend:lesson:delete" course_slug=course.slug pk=node.pk %}">
+                        <i class="trash blue icon"></i>
+                    </a>
+                    </div>
+                  </div>
+                </div>
+
+                {% if node.published %}
+                    <i class="icon checkmark green"></i>
+                {% endif %}
+
+                {% if node.decription != "" %}
+                    <p>
+                        {{ node.description }}
+                    </p>
+                {% endif %}
+                {% comment %}
+                <div class="fullcontent">
+                    {{ node.text | safe }}
+                </div>
+                {% endcomment %}
+
+                {% if not is_leaf %}
+                    <div class="list">
+                        {{ children }}
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+
+    {% endrecursetree %}
+
+</div>
+

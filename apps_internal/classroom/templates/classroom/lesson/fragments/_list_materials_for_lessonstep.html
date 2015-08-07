@@ -1,0 +1,25 @@
+{% for material in lessonstep.material.all %}
+
+    {% if material.file %}
+        <p>
+
+        <a href="{{ material.file.url }}">
+            <i class="icon file"></i>
+        </a>
+
+        <a href="{% url 'coursebackend:material:detail' course_slug=course.slug pk=material.pk %}">
+            {{ material.title }}
+        </a>
+
+        {% if material.pdf_download_link %}
+            <a href="{% url 'coursebackend:download' slug=material.slug course_slug=course.slug %}">
+                <i class="download icon blue"></i>;
+            </a>
+        {% endif %}
+
+        <p>{{ material.description }}</p>
+
+    {% endif %}
+
+{% empty %}
+{% endfor %}

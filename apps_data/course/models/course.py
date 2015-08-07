@@ -8,6 +8,7 @@ from django.conf import settings
 from django.utils.functional import cached_property
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
+from django.core.validators import ValidationError
 
 from model_utils.models import TimeStampedModel
 
@@ -37,8 +38,8 @@ class Course(TimeStampedModel):
     without any regards to the actual event of teaching that material to students.
     """
 
-    title = models.CharField(verbose_name=_('title'),
-                             help_text=_('Working title for your course. You may change this later on'),
+    title = models.CharField(verbose_name='Kurstitel',
+                             help_text='Arbeitstitel für Deinen Kurs. Er ist nicht öffentlich sichtbar.',
                              max_length=100)
     slug = AutoSlugField(populate_from='title', unique=True, editable=False)
 
@@ -46,14 +47,16 @@ class Course(TimeStampedModel):
     owners = models.ManyToManyField(settings.AUTH_USER_MODEL, through='CourseOwner')
 
     # Information about the course
-    excerpt = models.TextField(verbose_name=_('abstract'),
-                               help_text=_('Abstracts serve to describe courses on course list page'),
+    excerpt = models.TextField(verbose_name='Kurze Zusammenfassung / Abstrakt',
+                               help_text=_('''Diese Kurzbeschreibung dient später als Vorlage
+                               bei der Ausschreibung Deiner Kurse'''),
                                blank=True,)
-    target_group = models.TextField(verbose_name=_('target group'),
-                               help_text = _('The target group for your course.'),
+    target_group = models.TextField(verbose_name='Zielgruppe',
+                               help_text = 'Die Zielgruppe für Deinen Kurs.',
                                blank=True)
     prerequisites = models.TextField(verbose_name="Voraussetzungen",
-                               help_text = _('The prequisites for your course. What prior knowledge must be there?'),
+                               help_text = '''Welches Vorwissen wird in Deinem
+                               Kurses Voraussetzung?''',
                                blank=True)
     project = models.TextField(verbose_name="Teilnehmerprojekt",
                                help_text = _('What do the participants take away from your course?'),
@@ -123,6 +126,10 @@ class CourseOwnerManager(models.Manager):
     def teachers_courseinfo_all(self, course):
         return self.filter(course=course).select_related('user').order_by('display_nr')
 
+    def other_teachers_for_display(self, course, user):
+        return self.filter(course=course, display=True).exclude(user=user)
+
+
 
 def foto_location(instance, filename):
         return '/'.join([instance.course.slug, filename])
@@ -132,17 +139,32 @@ class CourseOwner(TimeStampedModel):
     Relationship of Courses to Accounts through the Relationship of teaching.
     """
     course = models.ForeignKey(Course)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        verbose_name="Kursleiter"
+    )
 
     # special text and foto for this course
-    text = models.TextField(blank=True, verbose_name='Text')
-    foto = models.ImageField(upload_to=foto_location, blank=True)
+    text = models.TextField(verbose_name='Text',
+                            help_text='''Personenbeschreibung: was qualifiziert Dich für das Halten dieses
+                            Kurses?''',
+                            blank=True)
+    foto = models.ImageField(verbose_name='Foto',
+                             help_text='''Hier kannst Du ein Foto von Dir hochladen, das auf der Kursauschreibung
+                             erscheinen soll.''',
+                             upload_to=foto_location, blank=True)
 
     # this information is about the display of the teachers in the course-profile:
     # Should the whole profile be displayed or just the name
-    display = models.BooleanField(default=True, verbose_name='Anzeigen bei der Kursausschreibung?')
+    display = models.BooleanField(
+                             verbose_name='Anzeigen auf der Auschreibungsseite?',
+                             help_text='''Soll dieses Profil auf der Kursausschreibungsseite angezeigt werden?.''',
+                             default=True)
     # Whose name goes first?
-    display_nr = models.IntegerField(default=1, verbose_name='Anzeigereihenfolge bei mehreren Kursleitern')
+    display_nr = models.IntegerField(
+        verbose_name='Anzeigereihenfolge bei mehreren Kursleitern',
+        help_text='''Dieses Feld steuert die Anzeigereihenfolge bei mehreren Kursleitern.''',
+        default=1)
 
     objects = CourseOwnerManager()
 
@@ -154,3 +176,9 @@ class CourseOwner(TimeStampedModel):
     def __unicode__(self):
         return u'%s %s' % (self.course, self.user)
 
+    def clean(self):
+        print "----------- in model clean"
+        if not self.display:
+            if not CourseOwner.objects.other_teachers_for_display(course=self.course, user=self.user):
+                raise ValidationError('''Wenigstens ein Lehrerprofil pro Kurs muss in der Kurs-Ausschreibung
+                                      angezeigt werden.''')

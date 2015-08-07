@@ -1,0 +1,64 @@
+<a class="ui button floating" href="{% url 'classroom:forum:thread_create' slug=courseevent.slug pk=forum.pk %}">
+    Einen neuen Beitrag schreiben?
+</a>
+
+<div class="ui comments" id="forum_thread_comments">
+
+    <h3 class="ui dividing header">Beiträge</h3>
+
+    {% for thread in threads %}
+
+    <div class="comment">
+
+        <a class="avatar">
+
+            <img src="{{ thread.author.profile_image.url }}">
+
+        </a>
+
+        <div class="content">
+
+            <a href="{% url 'classroom:forum:thread' slug=courseevent.slug pk=thread.pk %}" class="author">
+
+                {{ thread.author }}: {{ thread.title }}
+
+            </a>
+
+            <div class="metadata">
+
+                {% if thread.post_count > 0 %}
+                    <div class="ui circular label">
+                        {{ thread.post_count }}
+                    </div>
+                {% endif %}
+
+                <span class="date">{{ thread.modified | date:"D d M" }}, </span>
+
+                letzter Post: <span class="date">{{ thread.created | date:"D d M" }}</span>
+                    von <span class="author">{{ thread.last_author }}</span>
+
+                <a class="reply ui button mini" href="{% url 'classroom:forum:thread' slug=courseevent.slug pk=thread.pk %}">
+                Antworten?
+                </a>
+
+            </div>
+
+
+            <p>{{ thread.text | safe | truncatewords:10 }}</p>
+
+
+
+        </div>
+
+    </div>
+
+    <div class="ui hidden divider"></div>
+    <div class="ui divider"></div>
+
+    {% empty %}
+
+        <p>Es sind noch keine Beiträge vorhanden. Jetzt den ersten Beitrag schreiben?</p>
+
+    {% endfor %}
+
+</div>

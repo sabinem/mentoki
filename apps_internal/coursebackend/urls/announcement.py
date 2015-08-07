@@ -8,21 +8,21 @@ from ..views.announcement import AnnouncementListView, AnnouncementDetailView,\
    AnnouncementDeleteView, AnnouncementUpdateView, AnnouncementCreateView
 
 
-urlpatterns = patterns("apps_data.course.views.announcement",
+urlpatterns = patterns('',
 
     url(r'^$', AnnouncementListView.as_view(),
-        name='list'),
+        {'template':'coursebackend/announcement/pages/list.html'}, name='list'),
 
     url(r'^(?P<pk>\d{1,4})$', AnnouncementDetailView.as_view(),
-        name='detail'),
+        {'template':'coursebackend/announcement/pages/detail.html'}, name='detail'),
 
     url(r'^(?P<pk>\d{1,4})/bearbeiten$', AnnouncementUpdateView.as_view(),
-        name='update'),
+        {'template':'coursebackend/announcement/pages/update.html'}, name='update'),
 
     url(r'^anlegen$', AnnouncementCreateView.as_view(),
-        name='create'),
+        {'template':'coursebackend/announcement/pages/create.html'}, name='create'),
 
     url(r'^(?P<pk>\d{1,4})/loeschen$', AnnouncementDeleteView.as_view(),
-        name='delete'),
+        {'template':'coursebackend/announcement/pages/delete.html'}, name='delete'),
 
     )

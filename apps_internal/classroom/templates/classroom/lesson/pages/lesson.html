@@ -1,51 +1,37 @@
 {% extends "classroom/base.html" %}
 
 {% block page_subsection %}
-    {% include 'classroom/forum/fragments/_link_subsection.html' %}
+    {% include 'classroom/lesson/fragments/_link_subsection.html' %}
 {% endblock %}
 
-{% block page_subsection_css_id %}forum{% endblock %}
+{% block page_subsection_css_id %}lesson{% endblock %}
 
 {% block page_content %}
 
     <div class="row classroom_emphasis">
         <div class="sixteen wide column">
 
-            {% include 'classroom/lesson/fragments/_list_breadcrumbs.html' %}
+            {% include 'classroom/lesson/fragments/_list_breadcrumbs_lesson.html' %}
 
         </div>
     </div>
 
-    <div class="row classroom_background">
+    <div class="row classroom_white">
         <div class="sixteen wide column">
 
-            <div class="ui header huge">
-                <a href="{% url "classroom:forum:detail" slug=courseevent.slug pk=forum.pk %}">
-                   {{ forum.title }}
-                </a>
-            </div>
-            {{ forum.text | safe }}
+            {% include 'classroom/lesson/fragments/_instance_lesson.html' %}
 
         </div>
     </div>
 
-    <div class="row classroom_background">
+    <div class="row classroom_white">
         <div class="sixteen wide column">
 
-            {% include 'classroom/forum/fragments/_recursetree_nodes.html' %}
+            {% include 'classroom/lesson/fragments/_list_lessonsteps_for_lesson.html' %}
 
         </div>
     </div>
 
-    {% if forum.can_have_threads %}
-        <div class="row classroom_white">
-            <div class="sixteen wide column">
-
-                    {% include 'classroom/forum/fragments/_list_threads.html' %}
-
-            </div>
-        </div>
-    {% endif %}
 
 {% endblock %}
 {% block rows %}{% endblock %}

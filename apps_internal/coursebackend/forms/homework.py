@@ -14,4 +14,4 @@ class HomeworkForm(forms.ModelForm):
 
     class Meta:
         model = Homework
-        fields = ('title', 'text', 'published')
+        fields = ('title', 'text', 'lesson', 'published', 'due_date')

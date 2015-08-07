@@ -1,0 +1,105 @@
+{% load activelink %}
+<div class="ui fluid vertical menu">
+      <div class="header item">
+          Auschreibungsunterlagen
+      </div>
+      <div class="item">
+          <div class="menu">
+              <a class="item
+                  {% ifstartswith "course:start" slug=match.kwargs.slug %}active {% endifstartswith %}
+                  "href="{% url 'course:start' slug=match.kwargs.slug %}">
+                  Kursbeschreibung
+              </a>
+              <a class="item completed
+                  {% ifstartswith "course:ownerslist" slug=match.kwargs.slug %}active {% endifstartswith %}
+                  " href="{% url 'course:ownerslist' slug=match.kwargs.slug %}">
+                  Kursleiterbeschreibung
+              </a>
+          </div>
+      </div>
+      <div class="header item">
+          Unterricht
+      </div>
+      <div class="item">
+          <div class="menu">
+              <a class="item
+                  {% ifstartswith "course:lessons" slug=match.kwargs.slug %}
+                      active
+                  {% endifstartswith %}
+                  "href="{% url 'course:lessons' slug=match.kwargs.slug %}">
+                  <i class="list icon"></i>Unterricht
+              </a>
+              <a class="item
+                  {% ifstartswith "course:blockcreate" slug=match.kwargs.slug %}
+                      active
+                  {% endifstartswith %}
+                  " href="{% url 'course:blockcreate' slug=match.kwargs.slug %}">
+                  <i class="plus icon"></i>Block anlegen
+              </a>
+              <a class="item
+                  {% ifstartswith "course:unitcreate" slug=match.kwargs.slug %}
+                      active
+                  {% endifstartswith %}
+                  " href="{% url 'course:unitcreate' slug=match.kwargs.slug %}">
+                  <i class="plus icon"></i>Lektion anlegen
+              </a>
+              <a class="item
+                  {% ifstartswith "course:materialcreate" slug=match.kwargs.slug %}
+                      active
+                  {% endifstartswith %}
+                  " href="{% url 'course:materialcreate' slug=match.kwargs.slug %}">
+                  <i class="plus icon"></i>Material anlegen
+              </a>
+          </div>
+      </div>
+      {% for courseevent in courseevents %}
+      <div class="header item">
+          Kursereignis {{ courseevent }}
+      </div>
+          <div class="item">
+              Arbeit im Klassenzimmer
+              <div class="menu">
+                  <a class="item"
+                     href="{% url 'classroom:start' slug=courseevent.slug  %}">
+                     <i class="icon student blue"></i>ins Klassenzimmer gehen
+                  </a>
+                  <a class="item
+                     {% ifactive 'course:participantslist' slug=match.kwargs.slug ce_slug=courseevent.slug  %}
+                      active
+                     {% endifactive %}"
+                     href="{% url 'course:participantslist' slug=match.kwargs.slug ce_slug=courseevent.slug  %}">
+                      <i class="list icon"></i>Teilnehmerliste ansehen
+                  </a>
+                  <a class="item
+                     {% ifstartswith 'course:buildforum' slug=match.kwargs.slug ce_slug=courseevent.slug  %}
+                      active
+                     {% endifstartswith %}"
+                     href="{% url 'course:buildforum' slug=match.kwargs.slug ce_slug=courseevent.slug  %}">
+                      <i class="list icon"></i>Forum
+                  </a>
+                  <a class="item
+                     {% ifstartswith 'course:createsubforum' slug=match.kwargs.slug ce_slug=courseevent.slug  %}
+                      active
+                     {% endifstartswith %}"
+                     href="{% url 'course:createsubforum' slug=match.kwargs.slug ce_slug=courseevent.slug  %}">
+                      <i class="list icon"></i>Unterforum anlegen
+                  </a>
+                  <a class="item
+                     {% ifstartswith 'course:listannouncements' slug=match.kwargs.slug ce_slug=courseevent.slug  %}
+                      active
+                     {% endifstartswith %}"
+                     href="{% url 'course:listannouncements' slug=match.kwargs.slug ce_slug=courseevent.slug  %}">
+                      <i class="list icon"></i>Ankündigungen schreiben
+                  </a>
+                  <a class="item
+                     {% ifactive 'course:publishlessons' slug=match.kwargs.slug ce_slug=courseevent.slug  %}
+                      active
+                     {% endifactive %}"
+                     href="{% url 'course:publishlessons' slug=match.kwargs.slug ce_slug=courseevent.slug  %}">
+                      Unterricht freischalten
+                  </a>
+
+              </div>
+          </div>
+      {% endfor %}
+</div>

@@ -9,6 +9,11 @@
 
                 <a href="{% url "classroom:forum:detail" slug=courseevent.slug pk=node.pk %}">
                    {{ node.title }}
+                    {% if node.can_have_threads %}
+                        <div class="ui circular label">
+                            {{ node.thread_count }}
+                        </div>
+                    {% endif %}
                 </a>
 
                 <div class="fullcontent">

@@ -1,0 +1,27 @@
+{% extends "coursebackend/base.html" %}
+
+{% block page_subsection %}
+    {% include 'coursebackend/menu/fragments/_link_subsection.html' %}
+{% endblock %}
+
+{% block controls %}
+    {% include 'coursebackend/_control_help.html' %}
+    {% include 'coursebackend/menu/fragments/_link_create_menuitem.html' %}
+{% endblock %}
+
+{% block page_subsection_css_id %}classroommenu{% endblock %}
+
+{% block page_content %}
+
+    <div class="row classroom_background">
+        <div class="sixteen wide column">
+
+            {% include 'coursebackend/menu/fragments/_help_classroommenu.html' %}
+
+            {% include 'coursebackend/menu/fragments/_list_classroommenuitems_table.html' %}
+
+        </div>
+    </div>
+
+{% endblock %}
+{% block rows %}{% endblock %}

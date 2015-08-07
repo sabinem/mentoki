@@ -1,0 +1,14 @@
+{% extends "base/plain.html" %}
+
+{% block plain %}
+    <hr>
+
+    <h2>forum contributions</h2>
+    <ul>
+    {% for contribution in contributions %}
+        <li>{{ contribution.title }}</li>
+    {% endfor %}
+    </ul>
+
+    <hr>
+{% endblock %}    

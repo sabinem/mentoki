@@ -16,6 +16,356 @@
 @classroom_lightblue_color:#f6fafd;
 @homepage_toolbox_background_color: #ece9e4;
 
+
+/* ------------------------- */
+/*          homepage         */
+/* ------------------------- */
+
+/* logo as main header on the homepage */
+#logo_homepage_header {
+    height:100px; width:auto;
+}
+
+/* the computer and tablet version: background img */
+#page-grid-homepage-top-pc {
+    background-image: url('/static/img/homepage.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    height:800px;
+}
+
+/* the computer and tablet version: header */
+#page-grid-homepage-top-pc h1 {
+    opacity: 0.8;
+    background:white;
+    margin-top:50px;
+    padding-top:50px;
+    border:5px solid #aeb3a4;
+}
+
+/* the mobile version: upper grid with background image */
+#page-grid-homepage-top-mobile-1 {
+    background-image: url('/static/img/homepage.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    height:500px;
+}
+
+/* overwriting semantic css for mobiles: gets rid of some padding */
+.ui.grid+.grid {
+  margin-top: 0rem;
+}
+
+/* the mobile version: lower grid with logo */
+#page-grid-homepage-top-mobile-2 .column {
+    background: white;
+}
+
+#page-grid-homepage-top-mobile-2 h1 {
+    background:white;
+    margin:0;
+    padding:0;
+}
+
+/* homepage part about learning */
+#angebote {
+    padding-top:80px;
+    background:white;
+}
+
+/* homepage part about teaching */
+#vertical-segment-homepage-teach {
+    background:rgba(127, 195, 154, 0.2);
+}
+
+/* homepage part about newsletter */
+#vertical-segment-homepage-newsletter {
+    background:white;
+}
+
+/* homepage part about toolbox */
+#vertical-segment-homepage-toolbox {
+    background:#ece9e4;
+
+}
+
+#vertical-segment-homepage-toolbox .ui.image {
+    height:300px;
+}
+
+/* ------------------------- */
+/*       teach-page          */
+/* ------------------------- */
+
+#page_grid_teach_video {
+    background:#b2becc;
+    background:#f1dfd1;
+    background:#ecdbcb;
+    background:#f9f4ee;
+    padding-top:60px;
+    padding-bottom:30px;
+}
+
+#starterkursdetails {
+    background:white;
+    padding-bottom:40px;
+    margin-bottom:1em;
+    padding-top:60px;
+}
+
+#starterkursdetails .row {
+    margin:0;
+}
+
+#testimonials {
+    background: rgba(127, 195, 154, 0.2);
+    padding-top:60px;
+    margin-top:0px;
+    padding-bottom:50px;
+}
+
+#testimonials blockquote h3 {
+    font-family: 'Helvetica Neue Light', 'HelveticaNeue-Light', 'Helvetica Neue', Calibri, Helvetica, Arial;
+    font-weight:normal;
+}
+
+#testimonials .accordion.field {
+    padding-left:40px;
+}
+
+#webinarinfo {
+    padding-top: 60px;
+    background: white;
+    padding-bottom: 60px;
+}
+
+/* ------------------------- */
+/*         classroom         */
+/* ------------------------- */
+
+
+/* -------------------- */
+/* until here  checked  */
+/* -------------------- */
+
+#pagestart {
+    padding-top:100px;
+}
+
+#pagetop {
+    background:#aeb3a4;
+}
+
+/* ------------------------- */
+/*     courselistpage        */
+/* ------------------------- */
+#publiclist {
+    background-image: url('/static/img/30019719_l.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+#publiclist .segment {
+
+}
+
+#publiclist #courselist_menu .header {
+    background:  #aeb3a4;
+    color:white;
+    /* background: hsla(300,4%,2%,0.1); */
+
+}
+
+#publiclist #mainheader {
+    margin-top:-1em;
+    color:white;
+    background: #aeb3a4;
+    opacity: 0.9;
+}
+
+ #publiclist #mainheader div {
+
+ }
+
+#publiclist #mainheader, #publiclist #mainheader a {
+    color:white;
+}
+
+#publiclist #courselist_menu  {
+    /* opacity: 0.9; /* CSS3 Standard */
+        opacity: 1;
+}
+
+#publiclist #courselist_menu a  {
+    color:black;
+}
+
+
+
+/* ------------------------- */
+/*     newsletter            */
+/* ------------------------- */
+
+#newsletter {
+    background:rgba(127, 195, 154, 0.2);
+}
+
+#newsletter .ui.button {
+    background:#7fc39a;
+    color:white;
+}
+
+#newsletter #mainheader {
+    opacity: 0.8;
+}
+
+/* ------------------------- */
+/*     contact               */
+/* ------------------------- */
+#contact {
+    background-image: url('/static/img/12052071_ml.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+#contact_page_grid {
+    min-height: 800px;
+}
+
+#application {
+  background-color:rgba(127, 195, 154, 0.2);
+}
+
+#application #formsubmit {
+    background-color:teal;
+    color:white;
+}
+
+#prebook {
+  background-color:#7fc39a;
+}
+
+
+
+
+
+/* ------------------------- */
+/*     team and impressum    */
+/* ------------------------- */
+
+
+#teamcard {
+    background: white;
+}
+
+#team #mainheader, #impressum #mainheader {
+    opacity:0.8;
+}
+
+#team #mainheader {
+    padding-top:60px;
+}
+
+#impressum #maingrid{
+    padding-top:100px;
+    padding-bottom: 100px;
+}
+
+
+/* ------------------------- */
+/*         backend           */
+/* ------------------------- */
+/* Select radio boxes on the top of the page */
+#pageselects {
+    float:right
+}
+
+/* Prevent images from being too large */
+.img {
+    max-width: 600px;
+}
+
+
+/* embeding pdf files */
+object.htmlembed {
+    max-width: 600px;
+    height: 900px;
+}
+
+#helpinstructions, .displaynr, .publishinfo, .lessonlinks, .contentdescription {
+    display:none;
+}
+
+.accomplishment {
+    display:none;
+}
+
+.last_modified {
+    color:grey;
+}
+
+#backendheader {
+    padding-top:40px;
+    padding-left:20px;
+    background:white;
+    opacity:0.8;
+}
+
+#classroombackend .active {
+    background:#f6d9c1;
+    color:black;
+}
+
+
+#classroombackend .ui.breadcrumb {
+    background:white;
+    padding:10px;
+}
+
+#classroombackend .ui.breadcrumb .active {
+    padding:10px;
+}
+
+#classroombackend  .ui.piled.segment {
+    margin-top:0;
+}
+/* ------------------------- */
+/*         classroom         */
+/* ------------------------- */
+
+
+#classroommenu a.item {
+    color:black;
+
+}
+
+#classroommenu {
+    background: #dee3e5;
+}
+
+
+
+#classroom_page_grid {
+    margin-top:60px;
+    margin-bottom:60px;
+}
+
+#classroom .active {
+    background:#c0a999;
+    background:#f6d9c1;
+    background:#d3bba5;
+    color:black!important;
+}
+
+
+#classroom .ui.button a, #classroom .ui.button a:hover,  #classroom .ui.button {
+    color:black;
+}
+
+#classroom  .header.item {
+    background:#edf5fb;
+}
+
 /* ------------------------- */
 /* Mixins                    */
 /* ------------------------- */
@@ -141,7 +491,7 @@
 /* classroom backend page    */
 /* ------------------------- */
 
-#classroombackend {
+#coursebackend {
   min-height: 800px;
   .fixed-background-image(@desk_background_img);
   h2 {
@@ -247,18 +597,46 @@
   .classroom_white {background:white;}
   .classroom_breadcrumb {background:@classroom_active_color;}
   .classroom_emphasis {background:@classroom_active_color;}
-  .classroom_display_none {display:none}
+
+  i.icon.header:before{
+    content:"";
+  }
 }
 
-#classroombackend {
-  .classroom_backend_background {background:white;}
-  .classroom_backend_white {background:white;}
-  .classroom_backend_breadcrumb {background:@classroom_backend_active_color;}
-  .classroom_backend_emphasis {background:@classroom_backend_active_color;}
-  .classroom_backend_display_none {display:none}
+#coursebackend {
+  .coursebackend_white {background:white;}
+  .coursebackend_background {background:#ebdfd7; background:#cbd5ef;background:#f7fafe;}
+  .coursebackend_emphasis {background:@classroom_backend_active_color;}
+  .ui.menu .active.item.active{background:#ebc7a6;}
 }
 /* --------------------------------------  */
 /*    plain data                           */
 /* --------------------------------------- */
 
 #plain_mode {padding-left:300px;}
+
+
+/* --------------------------------------  */
+/*    sidebar menu                          */
+/* --------------------------------------- */
+#coursebackend_menu {
+  a.item {font-size:1.2em;}
+  background:#f7fafe;
+  .header.item {
+    background:#ebc7a6;
+    font-size:1.5em;
+  }
+  a.item.active, a.item:hover {
+    background:#8b452c;
+    background:#b48368;
+    color:white;
+  }
+  padding-bottom:100px;
+}
+
+
+/* --------------------------------------  */
+/*    sidebar menu                          */
+/* --------------------------------------- */
+#mentoki {
+}

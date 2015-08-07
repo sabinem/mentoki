@@ -1,111 +1,53 @@
-{% extends "classroom/lesson/base.html" %}
-
-{% block controls %}
-    {% include 'coursebackend/lessons_view/_checkbox_fulltext.html' %}
-{% endblock %}
-
-{% block breadcrumb %}
-    <div class="ui large breadcrumb" id ="page-breadcrumb">
-        {% include 'classroom/lesson/_breadcrumbs.html' %}
-        {% include 'classroom/lesson/_next_current_previous.html' %}
-    </div>
-{% endblock %}
-
-{% block recursetree_item_header %}
-    {% include 'coursebackend/lessons_view/_item_header_lesson.html' %}
-{% endblock %}
-
-{% block recursetree_item_content %}
-   {% if node.is_lesson %}
-       {% include 'coursebackend/lessons_view/_node_header_lesson.html' %}
-   {% else %}
-       {% include 'coursebackend/lessons_view/_node_header_lesson_step.html' %}
-   {% endif %}
-{% endblock %}
-
-{% block recursetree_item_more %}
-   {{ node.text | safe }}
-   {% block materials %}
-       {% include 'coursebackend/lessons_view/_material.html' %}
-   {% endblock %}
-{% endblock %}
-
-{% block material_view %}
-    {% if start_node.is_leaf_node %}
-        {% include 'coursebackend/lessons_view/_material_step.html' %}
-    {% endif %}
-{% endblock %}
-
-{% block view_material_class %}contentdescription{% endblock %}
-
-{% extends "classroom/base.html" %}
-
+{% extends "base/plain.html" %}
 {% load mptt_tags %}
+{% block plain %}
 
-{% block controls %}{% endblock %}
 
-{% block page_subsection %}
-    <a class="item active" href="{% url 'classroom:lesson:start' slug=courseevent.slug %}">
-        Unterricht {{ courseevent.title }}<i class="student icon"></i>
-    </a>
-{% endblock %}
+    <hr>
+    <h2>breadcrumbs</h2>
+    <ul>
+    {% for breadcrumb in breadcrumbs %}
+        <li><a href="{% url 'classroom:lesson:detail' slug=courseevent.slug pk=breadcrumb.pk %}">
+            {{ breadcrumb.lesson_nr }}{{ breadcrumb.title }}</a></li>
+    {% endfor %}
+    </ul>
+    <hr>
 
-{% block breadcrumb_row_css_class %}classroom_emphasis{% endblock %}
-{% block form_content_row_css_class %}classroom_display_none{% endblock %}
-{% block top_content_row_css_class %}classroom_white{% endblock %}
-{% block middle_content_row_css_class %}classroom_white{% endblock %}
-{% block detail_content_row_css_class %}classroom_white{% endblock %}
+    <h2>lesson</h2>
+    {{ lesson.title }}
+        <li><a href="{% url 'classroom:lesson:detail' slug=courseevent.slug pk=lesson.pk %}">
+            {{ lesson.lesson_nr }} {{ lesson.title }}</a></li>
+    <hr>
 
-{% block breadcrumb_row %}
-    {% block breadcrumbs %}{% endblock %}
-{% endblock %}
+    <h2>next_node</h2>
+    {% if next_node %}
+    {{ next_node.title }}
+        <li><a href="{% url 'classroom:lesson:detail' slug=courseevent.slug pk=next_node.pk %}">
+            {{ next_node.lesson_nr }} {{ next_node.title }}</a></li>
+    <hr>
+    {% endif %}
 
-{% block top_content_row %}
-    {% block lesson %}{% endblock %}
-{% endblock %}
+    <h2>previous_node</h2>
+    {% if previous_node %}
+    {{ previous_node.title }}
+    {% if previous_node %}
+        <li><a href="{% url 'classroom:lesson:detail' slug=courseevent.slug pk=previous_node.pk %}">
+            {{ previous_node.lesson_nr }} {{ previous_node.title }}</a></li>
+    {% endif %}
+    {% endif %}
+    <hr>
 
-{% block middle_content_row %}
-    <div class="ui divided list">
-
+    <ul class="root">
         {% recursetree nodes %}
-
-            <div class="item {% block item_class %}{% endblock %}">
-
-                {% block recursetree_item_header %}
-                {% endblock %}
-
-                <div class="content">
-
-                    {% block recursetree_item_content %}
-                    {% endblock %}
-
-                    <div class="contentdescription">
-                        {% block recursetree_item_more %}
-                        {% endblock %}
-                    </div>
-
-                    {% if not is_leaf %}
-
-                        <div class="list">
-
-                            {{ children }}
-
-                        </div>
-
-                    {% endif %}
-
-                </div>
-
-            </div>
-
+            <li>
+                {{ node.lesson_nr }} {{ node.title }}
+                {% if not node.is_leaf_node %}
+                    <ul class="children">
+                        {{ children }}
+                    </ul>
+                {% endif %}
+            </li>
         {% endrecursetree %}
+    </ul>
 
-    </div>
-{% endblock %}
-
-{% block detail_content_row %}
-    <div class="{% block view_material_class %}{% endblock %}">
-        {% block material_view %}
-        {% endblock %}
-    </div>
 {% endblock %}

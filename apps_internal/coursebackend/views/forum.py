@@ -25,19 +25,36 @@ class ForumMixin(CourseMenuMixin):
                            kwargs={'slug': self.kwargs['slug']})
 
 
-class ForumStartView(ForumMixin, TemplateView):
+class ForumListView(ForumMixin, TemplateView):
     """
     List all lesson blocks with lessons underneath
     """
-    template_name = 'coursebackend/forum/start.html'
-
     def get_context_data(self, **kwargs):
-        context = super(ForumStartView, self).get_context_data(**kwargs)
+        context = super(ForumListView, self).get_context_data(**kwargs)
 
         context['nodes'] = Forum.objects.forums_for_courseevent(courseevent=context['courseevent'])
         print context['nodes']
 
         return context
+
+
+class ForumDetailView(CourseMenuMixin, TemplateView):
+    """
+    List all lesson blocks with lessons underneath
+    """
+    def get_context_data(self, **kwargs):
+        context = super(ForumDetailView, self).get_context_data(**kwargs)
+
+        forum = get_object_or_404(Forum, pk=self.kwargs['pk'])
+
+        context['forum'] = forum
+        context['breadcrumbs'] = forum.get_ancestors()
+        context['nodes'] = forum.get_descendants()
+
+        return context
+
+
+
 
 
 class ForumDetailView(ForumMixin, DetailView):
@@ -73,13 +90,19 @@ class ForumDeleteView(ForumMixin, DeleteView):
 
 class ForumCreateView(ForumMixin, FormView):
     """
-    Work Create
+    Forum Create
     """
-    template_name = 'classroom/studentswork/pages/create.html'
     model = Forum
-    lookup_field = 'pk'
     form_class = ForumChangeForm
-    context_object_name ='work'
+    context_object_name ='forum'
+
+    def get(self, request, *args, **kwargs):
+        courseevent = get_object_or_404(CourseEvent,slug=self.kwargs['slug'])
+        form = self.get_form()
+        form.fields['parent'].queryset = \
+            Forum.objects.parent_choice_for_forum(courseevent=courseevent)
+        context = self.get_context_data(form=form)
+        return self.render_to_response(context)
 
     def form_valid(self, form):
         courseevent = get_object_or_404(CourseEvent, slug=self.kwargs['slug'])

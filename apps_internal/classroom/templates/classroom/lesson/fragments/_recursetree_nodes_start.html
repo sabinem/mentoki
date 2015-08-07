@@ -4,13 +4,26 @@
     {% recursetree nodes %}
 
         <div class="item">
-            <i class="top aligned icon">{{ node.lesson_nr }}</i>
+            {% if node.level == 1 %}
+                <i class="ui header medium top aligned icon">{{ node.lesson_nr }}</i>
+            {% else %}
+                <i class="top aligned icon">{{ node.lesson_nr }}</i>
+            {% endif %}
             <div class="content">
 
-                <a class="header"
-                   href="{% url "classroom:lesson:detail" slug=courseevent.slug pk=node.pk %}">
-                   {{ node.title }}
-                </a>
+                {% if node.level == 1 %}
+                    <a class="ui medium header"
+                       href="{% url "classroom:lesson:lesson_detail" slug=courseevent.slug pk=node.pk %}">
+                       {{ node.title }}
+                    </a>
+                {% else %}
+                    <a class="header"
+                       href="{% url "classroom:lesson:lesson_detail" slug=courseevent.slug pk=node.pk %}">
+                       {{ node.title }}
+                    </a>
+                {% endif %}
+
+
                 <div class="description">{{ node.description }}</div>
                 {% if not is_leaf %}
                     <div class="list">

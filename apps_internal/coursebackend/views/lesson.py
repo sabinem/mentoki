@@ -21,12 +21,10 @@ class LessonStartView(CourseMenuMixin, TemplateView):
     """
     List all lesson blocks with lessons underneath
     """
-    template_name = 'coursebackend/lessons_view/start.html'
-
     def get_context_data(self, **kwargs):
         context = super(LessonStartView, self).get_context_data(**kwargs)
 
-        context['nodes'] = Lesson.objects.blocks_for_course(course=context['course'])
+        context['nodes'] = Lesson.objects.complete_tree_for_course(course=context['course'])
 
         return context
 

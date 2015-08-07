@@ -18,19 +18,41 @@ from .courseevent import CourseEvent
 class HomeworkManager(models.Manager):
 
     def published_homework_for_courseevent(self, courseevent):
-        return self.filter(courseevent=courseevent, published=True).order_by('due_date')
+        return self.filter(courseevent=courseevent, published=True).\
+            order_by('due_date').\
+            select_related('lesson')
+
+    def unpublished_per_courseevent(self, courseevent):
+        return self.filter(courseevent=courseevent, published=False).\
+            order_by('published', 'due_date').select_related('lesson')
+
+    def create(self, courseevent, text, title, due_date=None, published=False, lesson=None):
+        homework = Homework(courseevent=courseevent,
+                                lesson=lesson,
+                                text=text,
+                                title=title,
+                                published=published,
+                                due_date=due_date)
+        homework.save()
+        return homework
+
+def limit_courseevent_choice():
+    return
 
 
 class Homework(TimeStampedModel):
 
     courseevent = models.ForeignKey(CourseEvent)
 
-    lesson = models.ForeignKey(Lesson, null=True, blank=True)
+    lesson = models.ForeignKey(Lesson,
+                               verbose_name="Bezug auf einen Lernabschnitt?",
+                               null=True, blank=True)
 
-    title = models.CharField(verbose_name="Titel", max_length=100)
+    title = models.CharField(verbose_name="Überschrift", max_length=100)
     text = models.TextField(verbose_name="Text")
 
-    published = models.BooleanField(default=False)
+    published = models.BooleanField(verbose_name="veröffentlichen",
+                                    default=False)
     publish_status_changed = MonitorField(monitor='published')
 
     due_date = models.DateField(blank=True, null=True)
@@ -48,12 +70,14 @@ class StudentsWorkManager(models.Manager):
     def mywork(self, user, courseevent):
         return self.filter(courseevent=courseevent, workers=user).select_related('homework').order_by('created')
 
-    def create_new_work(self, courseevent, homework,
-                        text, title, user):
-        work = StudentsWork(courseevent=courseevent, homework=homework, text=text, title=title)
-        work.save()
-        work.workers.add(user)
-        return work
+    def create(self, courseevent, homework, text, title, user):
+        studentswork = StudentsWork(courseevent=courseevent,
+                                    homework=homework,
+                                    text=text,
+                                    title=title)
+        studentswork.save()
+        studentswork.workers.add(user)
+        return studentswork
 
 class StudentsWork(TimeStampedModel):
 

@@ -1,0 +1,6 @@
+<div class="ui header huge">
+    <a href="{% url "classroom:forum:detail" slug=courseevent.slug pk=forum.pk %}">
+       {{ forum.title }}
+    </a>
+</div>
+{{ forum.text | safe }}

@@ -1,0 +1,46 @@
+<div class="ui center aligned header medium">Material-Liste</div>
+<table class="ui table stackable">
+  <thead>
+    <tr>
+      <th class="three wide">Bearbeitung</th>
+      <th class="three wide">Titel</th>
+      <th class="three wide">Datei</th>
+      <th class="three wide">Typ</th>
+      <th class="three wide">verfügbar als</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for material in materials %}
+    <tr>
+
+      <td>
+          <p>
+              <a href="{% url 'coursebackend:material:update' course_slug=course.slug pk=material.pk %}">
+                <i class="write blue icon"></i>
+              </a>
+              <a href="{% url 'coursebackend:material:delete' course_slug=course.slug pk=material.pk %}">
+                <i class="trash blue icon"></i>
+              </a>
+          </p>
+      </td>
+
+      <td>
+          <a href={% url 'coursebackend:material:detail' course_slug=course.slug pk=material.pk %}>
+          {{ material.title }}
+          </a>
+      </td>
+
+      <td>{{ material.file  }}</td>
+
+      <td>{{ material.slug  }}</td>
+
+      <td>{{ material.get_document_type_display }}</td>
+
+      <td>
+         {% include 'coursebackend/material/fragments/_instance_material_file.html' %}
+      </td>
+
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>

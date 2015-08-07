@@ -1,0 +1,37 @@
+{% extends "classroom/base.html" %}
+
+{% block page_subsection %}
+    {% include 'classroom/lesson/fragments/_link_subsection.html' %}
+{% endblock %}
+
+{% block page_subsection_css_id %}lesson{% endblock %}
+
+{% block page_content %}
+
+    <div class="row classroom_emphasis">
+        <div class="sixteen wide column">
+
+            {% include 'classroom/lesson/fragments/_list_breadcrumbs_lessonblock.html' %}
+
+        </div>
+    </div>
+
+    <div class="row classroom_white">
+        <div class="sixteen wide column">
+
+            {% include 'classroom/lesson/fragments/_instance_lessonblock.html' %}
+
+        </div>
+    </div>
+
+    <div class="row classroom_white">
+        <div class="sixteen wide column">
+
+            {% include 'classroom/lesson/fragments/_list_lessons_for_lessonblock.html' %}
+
+        </div>
+    </div>
+
+
+{% endblock %}
+{% block rows %}{% endblock %}

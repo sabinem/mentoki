@@ -1,0 +1,64 @@
+<table class="ui table">
+    <thead>
+        <tr>
+            <tr>
+                <th>veröffentlicht?</th>
+                <th>Titel</th>
+                <th>Abgabedatum</th>
+                <th>zu Lektion</th>
+            </tr>
+        </tr>
+    </thead>
+    <tbody>
+        {% for homework in homeworks_unpublished %}
+            <tr>
+                <td>
+                    <a href="{% url 'coursebackend:homework:update' course_slug=course.slug slug=courseevent.slug pk=homework.pk %}">
+                        <i class="icon write blue"></i>
+                    </a>
+                    <a href="{% url 'coursebackend:homework:delete' course_slug=course.slug slug=courseevent.slug pk=homework.pk %}">
+                        <i class="icon trash blue"></i>
+                    </a>
+                </td>
+                <td>
+                    <a href="{% url 'coursebackend:homework:detail' course_slug=course.slug slug=courseevent.slug pk=homework.pk %}">
+                        {{ homework.title }}
+                    </a>
+                </td>
+                <td>-</td>
+                <td>
+                    {% if homework.lesson %}
+                        <a href="{% url 'coursebackend:homework:detail' course_slug=course.slug slug=courseevent.slug pk=homework.pk %}">
+                            {{ homework.lesson.title }}
+                        </a>
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        {% for homework in homeworks_published %}
+            <tr>
+                <td>
+                    <a href="{% url 'coursebackend:homework:update' course_slug=course.slug slug=courseevent.slug pk=homework.pk %}">
+                        <i class="icon write blue"></i>
+                    </a>
+                    <i class="icon checkmark green"></i>
+                </td>
+                <td>
+                    <a href="{% url 'coursebackend:homework:detail' course_slug=course.slug slug=courseevent.slug pk=homework.pk %}">
+                        {{ homework.title }}
+                    </a>
+                </td>
+                <td>
+                    {{ homework.due_date | date:'d.m.Y'  }}
+                </td>
+                <td>
+                    <a href="{% url 'coursebackend:homework:detail' course_slug=course.slug slug=courseevent.slug pk=homework.pk %}">
+                        {{ homework.lesson.title }}
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

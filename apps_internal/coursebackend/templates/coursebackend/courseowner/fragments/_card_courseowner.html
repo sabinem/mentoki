@@ -1,0 +1,16 @@
+<div class="ui card">
+    <div class="image">
+        {% if courseowner.foto %}
+            <img src="{{ courseowner.foto.url }}">
+        {% endif %}
+    </div>
+    <div class="content">
+        <a class="header">
+            Kursleitung:
+            {{ courseowner.user.get_full_name}}
+        </a>
+        <div class="description">
+           {{ courseowner.text | safe }}
+        </div>
+    </div>
+</div>

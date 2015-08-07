@@ -2,16 +2,16 @@
 
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext_lazy as _
-from mentoki.settings import LOGIN_REDIRECT_URL, MENTOKI_TEST_VIEWS_AND_DATA
+from mentoki.settings import LOGIN_REDIRECT_URL
 
 from braces.views import LoginRequiredMixin, MessageMixin, UserPassesTestMixin
 
 from apps_data.courseevent.models.courseevent import CourseEvent
-
 from apps_data.courseevent.models.menu import ClassroomMenuItem
+from apps_core.core.mixins import TemplateMixin
 
 
-class AuthMixin(LoginRequiredMixin, UserPassesTestMixin, MessageMixin):
+class AuthMixin(LoginRequiredMixin, UserPassesTestMixin, MessageMixin, TemplateMixin):
     """
     this Mixin builds the menu in the side-bar and the top of the page.
     """
@@ -59,10 +59,3 @@ class ClassroomMenuMixin(AuthMixin):
             context['menu_items'] = ClassroomMenuItem.objects.published(courseevent=context['courseevent'])
 
         return context
-
-    def get_template_names(self):
-       template =  self.kwargs['template']
-       print "========== in get template_names =============="
-       print self.kwargs
-
-       return [template]

@@ -11,8 +11,6 @@ class CourseParticipantListView(CourseMenuMixin, TemplateView):
     """
     Participants of the course are listed
     """
-    template_name = 'coursebackend/participant/list.html'
-
     def get_context_data(self, **kwargs):
         context = super(CourseParticipantListView, self).get_context_data(**kwargs)
 

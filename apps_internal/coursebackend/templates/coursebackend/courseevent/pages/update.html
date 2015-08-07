@@ -1,19 +1,17 @@
-{% extends "coursebackend/base.html" %}
-
-{% block controls %}
-
-    {% include 'coursebackend/_control_help.html' %}
-
-{% endblock %}
-
-{% block page_subsection %}
-    {% include 'coursebackend/courseevent/fragments/_element_subsection_header.html' %}
-{% endblock %}
+{% extends "coursebackend/base_courseevent.html" %}
 
 {% block page_content %}
 
-    {% include 'coursebackend/courseevent/fragments/_element_header.html' %}
+    <div class="row classroombackend_white">
+        <div class="sixteen wide column">
 
-    {% include 'coursebackend/courseevent/fragments/_element_form.html' %}
+            {% include 'coursebackend/courseevent/fragments/_help_exampletext.html' %}
+
+            {% include 'coursebackend/courseevent/fragments/_instance_courseevent_header.html' %}
+
+            {% include 'coursebackend/forms/_form_courseevent.html' %}
+
+        </div>
+    </div>
 
 {% endblock %}

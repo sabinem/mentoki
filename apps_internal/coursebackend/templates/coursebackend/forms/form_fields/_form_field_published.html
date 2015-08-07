@@ -1,0 +1,18 @@
+<h3></h3>
+<div class="fields">
+    <div class="inline field">
+        <div class="ui checkbox">
+            {% if form.title.errors %}
+                <div class="ui negative floating message">
+                    {{ form.published.errors }}
+                </div>
+            {% endif %}
+
+
+            <label>{{ form.published.label_tag }}</label>
+            {{ form.published }}
+
+        </div>
+    </div>
+</div>
+<h3></h3>

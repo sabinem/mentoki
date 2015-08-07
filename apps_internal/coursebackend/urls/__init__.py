@@ -4,19 +4,12 @@ from __future__ import unicode_literals
 
 from django.conf.urls import patterns, include, url
 
-from django_downloadview import ObjectDownloadView
-
-from apps_data.course.models.material import Material
-
-
-# for the download of files
-download = ObjectDownloadView.as_view(model=Material, file_field='file')
 
 urlpatterns = patterns('',
 
     url(r'^vorlage/', include('apps_internal.coursebackend.urls.course', namespace="course")),
 
-    url(r'^kurs/(?P<slug>[a-z0-9_-]+)/', include('apps_internal.coursebackend.urls.courseevent', namespace="courseevent")),
+    url(r'^kurs/', include('apps_internal.coursebackend.urls.courseevent', namespace="courseevent")),
 
     url(r'^leitung/', include('apps_internal.coursebackend.urls.courseowner', namespace='courseowner')),
 
@@ -36,6 +29,7 @@ urlpatterns = patterns('',
     url(r'^kurs/(?P<slug>[a-z0-9_-]+)/aufgaben/',
         include('apps_internal.coursebackend.urls.homework', namespace='homework')),
 
-    url(r'^download/(?P<slug>[a-zA-Z0-9_-]+)/$', download, name="download"),
+    url(r'^kurs/(?P<slug>[a-z0-9_-]+)/menu/',
+        include('apps_internal.coursebackend.urls.menu', namespace='menu')),
 
     )

@@ -24,23 +24,12 @@ class ClassroomMenuItemManager(models.Manager):
     def published(self, courseevent):
         return self.filter(courseevent=courseevent, published=True).order_by('display_nr')
 
-    def courseevent(self, courseevent):
+    def all_for_courseevent(self, courseevent):
         return self.filter(courseevent=courseevent).order_by('display_nr')
 
-    def get_startitem_from_slug(self, courseevent_slug):
-        courseevent = get_object_or_404(CourseEvent, slug=courseevent_slug)
+    def get_startitem_from_slug(self, slug):
+        return self.get(courseevent__slug=slug, is_start_item=True )
 
-        return get_object_or_404(self, courseevent=courseevent, is_start_item=True )
-
-    def published_forums(self, courseevent):
-        #obj.classroommenuitem_set.all()
-
-        forum_ids = self.filter(courseevent=self.courseevent,
-                        item_type=ClassroomMenuItem.MENU_ITEM_TYPE.forum_item)
-
-        forum_set = Forum.objects.filter(forum )
-
-        return x
 
 class ClassroomMenuItem(TimeStampedModel):
     """
@@ -122,7 +111,7 @@ class ClassroomMenuItem(TimeStampedModel):
         # more helpful validations errors for the two main fields
 
         if not self.item_type:
-           raise ValidationError('Bitte einen Eitragstyp wählen für den Menüeintrag!')
+           raise ValidationError('Bitte einen Eintragstyp wählen für den Menüeintrag!')
         if not self.display_nr:
            raise ValidationError('Bitte angeben an wievielter Stelle der Menüeintrag erscheinen soll!')
 
@@ -138,7 +127,8 @@ class ClassroomMenuItem(TimeStampedModel):
                               self.MENU_ITEM_TYPE.student_private,
                               self.MENU_ITEM_TYPE.forum_last_posts,
                               self.MENU_ITEM_TYPE.participants_list]:
-                raise ValidationError("""Eintragsart kann keinen Bezug zu einem Forum,
+                if self.lesson or self.forum or self.homework:
+                    raise ValidationError("""Eintragsart kann keinen Bezug zu einem Forum,
                                       einer Aufgabe oder einer Lektion haben.""")
 
         if self.item_type == self.MENU_ITEM_TYPE.lesson_item:

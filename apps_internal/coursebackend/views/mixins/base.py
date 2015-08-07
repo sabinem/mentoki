@@ -7,11 +7,11 @@ from mentoki.settings import LOGIN_REDIRECT_URL
 from braces.views import LoginRequiredMixin, MessageMixin, UserPassesTestMixin
 
 from apps_data.courseevent.models.courseevent import CourseEvent
-
 from apps_data.course.models.course import Course
+from apps_core.core.mixins import TemplateMixin
 
 
-class AuthMixin(LoginRequiredMixin, UserPassesTestMixin, MessageMixin):
+class AuthMixin(LoginRequiredMixin, UserPassesTestMixin, MessageMixin, TemplateMixin):
     """
     this Mixin builds the menu in the side-bar and the top of the page.
     """
@@ -51,7 +51,7 @@ class CourseMenuMixin(AuthMixin):
             context['course'] = get_object_or_404(Course, slug=self.kwargs['course_slug'])
 
         if not 'courseevents' in context:
-            context['courseevents'] = CourseEvent.objects.courseevents_for_course(course=context['course'])
+            context['courseevents'] = CourseEvent.objects.active_courseevents_for_course(course=context['course'])
 
         if 'slug' in self.kwargs:
             if not 'courseevent' in context:

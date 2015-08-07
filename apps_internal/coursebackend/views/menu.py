@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import get_object_or_404
 from django.http import Http404, HttpResponseRedirect
+from django.forms.formsets import formset_factory
 
 from vanilla import TemplateView, DetailView, UpdateView, FormView, DeleteView
 
@@ -12,7 +13,7 @@ from apps_data.courseevent.models.menu import ClassroomMenuItem
 from apps_data.courseevent.models.courseevent import CourseEvent
 
 from .mixins.base import CourseMenuMixin
-from ..forms.menu import MenuForm
+from ..forms.menu import MenuItemForm
 
 
 class ClassroomMenuMixin(CourseMenuMixin):
@@ -21,63 +22,61 @@ class ClassroomMenuMixin(CourseMenuMixin):
        """
        for create update and delete view
        """
-       return reverse_lazy('classroom:studentswork:list',
+       return reverse_lazy('coursebackend:classroommenuitem:list',
                            kwargs={'slug': self.kwargs['slug']})
 
 
-class MenuStartView(CourseMenuMixin, TemplateView):
+class MenuListView(CourseMenuMixin, TemplateView):
     """
-    Work List
+    Classroom Menu Items List
     """
-    template_name = 'classroom/studentswork/pages/list.html'
-
     def get_context_data(self, **kwargs):
-        context = super(MenuStartView, self).get_context_data(**kwargs)
+        context = super(MenuListView, self).get_context_data(**kwargs)
 
-        context['studentworks'] = ClassroomMenuItem.objects.mywork(user=self.request.user,
-                                                              courseevent=context['courseevent'])
+        context['classroommenuitems'] = \
+            ClassroomMenuItem.objects.all_for_courseevent(courseevent=context['courseevent'])
+
         return context
 
 
-class StudentsWorkDetailView(ClassroomMenuMixin, DetailView):
+class MenuUpdateView(CourseMenuMixin, FormView):
     """
-    Work Detail
+    Classroom Menu Items List Update
     """
-    template_name = 'classroom/studentswork/pages/detail.html'
+    model = ClassroomMenuItem
+    form_class = MenuItemForm
+
+    def get(self, request, *args, **kwargs):
+        pass
+
+
+class MenuItemUpdateView(CourseMenuMixin, FormView):
+    """
+    Classroom Menu Items List Update
+    """
+    model = ClassroomMenuItem
+    form_class = MenuItemForm
+
+    def get(self, request, *args, **kwargs):
+        pass
+
+
+class MenuItemDeleteView(CourseMenuMixin, DeleteView):
+    """
+    Classroom Menu Item Delete
+    """
     model = ClassroomMenuItem
     lookup_field = 'pk'
-    context_object_name ='work'
+    context_object_name ='classroomenuitem'
 
 
-class StudentsWorkUpdateView(CourseMenuMixin, UpdateView):
+class MenuItemCreateView(CourseMenuMixin, FormView):
     """
-    Work Update
+    Classroom Menu Item Create
     """
-    template_name = 'classroom/studentswork/pages/update.html'
-    model = ClassroomMenuItem
-    form_class = MenuForm
-    lookup_field = 'pk'
-    context_object_name ='work'
-
-
-class StudentsWorkDeleteView(CourseMenuMixin, DeleteView):
-    """
-    Work Delete
-    """
-    template_name = 'classroom/studentswork/pages/delete.html'
     model = ClassroomMenuItem
     lookup_field = 'pk'
-    context_object_name ='work'
-
-
-class StudentsWorkCreateView(CourseMenuMixin, FormView):
-    """
-    Work Create
-    """
-    template_name = 'classroom/studentswork/pages/create.html'
-    model = ClassroomMenuItem
-    lookup_field = 'pk'
-    form_class = MenuForm
+    form_class = MenuItemForm
     context_object_name ='work'
 
     def form_valid(self, form):

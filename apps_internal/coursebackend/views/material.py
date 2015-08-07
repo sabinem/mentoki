@@ -2,8 +2,9 @@
 
 from __future__ import unicode_literals, absolute_import
 
-from django.views.generic import TemplateView, UpdateView, CreateView, DeleteView, DetailView
-from django.shortcuts import get_object_or_404
+from django.core.urlresolvers import reverse_lazy
+
+from vanilla import FormView, UpdateView, DetailView, TemplateView, DeleteView
 
 from apps_data.course.models.material import Material
 
@@ -13,31 +14,46 @@ from .mixins.material import MaterialMixin
 from ..forms.material import MaterialForm
 
 
+class MaterialMixin(CourseMenuMixin):
+
+    def get_success_url(self):
+       """
+       for create update and delete view
+       """
+       return reverse_lazy('coursebackend:material:list',
+                           kwargs={'course_slug': self.kwargs['course_slug']})
+
 class MaterialListView(CourseMenuMixin, TemplateView):
-    template_name = 'coursebackend/material/list.html'
 
     def get_context_data(self, **kwargs):
         context = super(MaterialListView, self).get_context_data(**kwargs)
 
-        context['materials'] = Material.objects.filter(course=context['course'])
+        context['materials'] = Material.objects.materials_for_course(course=context['course'])
         return context
 
 
 class MaterialDetailView(CourseFormMixin, MaterialMixin, DetailView):
-    template_name = 'coursebackend/material/detail.html'
     model = Material
+    lookup_field = 'pk'
+    context_object_name ='material'
 
 
-class MaterialUpdateView(CourseFormMixin, MaterialMixin, UpdateView):
-    template_name = 'coursebackend/material/update.html'
+class MaterialUpdateView(MaterialMixin, UpdateView):
     form_class = MaterialForm
-
-
-class MaterialCreateView(CourseFormMixin, MaterialMixin, CreateView):
-    template_name = 'coursebackend/material/create.html'
-    form_class = MaterialForm
+    model = Material
+    lookup_field = 'pk'
+    context_object_name ='material'
 
 
 class MaterialDeleteView(MaterialMixin, DeleteView):
     model=Material
-    template_name = 'coursebackend/material/delete.html'
+    model = Material
+    lookup_field = 'pk'
+    context_object_name ='material'
+
+
+class MaterialCreateView(MaterialMixin, FormView):
+    form_class = MaterialForm
+    model = Material
+    lookup_field = 'pk'
+    context_object_name ='material'

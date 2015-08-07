@@ -19,7 +19,6 @@ class CourseDetailView(CourseMenuMixin, DetailView):
     Start in this section of the website: it shows the course and its attributes
     """
     model = Course
-    template_name = 'coursebackend/course/pages/detail.html'
     lookup_field = 'slug'
     lookup_url_kwarg = 'course_slug'
     context_object_name ='course'
@@ -30,7 +29,6 @@ class CourseUpdateView(CourseMenuMixin, UpdateView):
     Update the course one field at a time
     """
     model = Course
-    template_name = 'coursebackend/course/pages/update.html'
     lookup_field = 'slug'
     lookup_url_kwarg = 'course_slug'
     context_object_name ='course'

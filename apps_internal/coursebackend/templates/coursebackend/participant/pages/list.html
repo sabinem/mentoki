@@ -1,0 +1,27 @@
+{% extends "coursebackend/base.html" %}
+
+{% block header_controls %}
+    {% include 'base_course/_helpcheckbox.html' %}
+{% endblock %}
+
+{% block help %}
+    {% include 'base_course/_help_participantlist.html' %}
+{% endblock %}
+
+{% block page_subsection %}
+    {% include 'classroom/participant/fragments/_link_subsection.html' %}
+{% endblock %}
+
+{% block page_content %}
+
+    <div class="row classroom_background">
+        <div class="sixteen wide column">
+
+            {% include 'coursebackend/participant/fragments/_list_participants.html' %}
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block rows %}{% endblock %}

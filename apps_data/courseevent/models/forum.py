@@ -33,21 +33,57 @@ class ForumManager(TreeManager):
     def forums_published_in_courseevent(self, courseevent):
         return self.filter(courseevent=courseevent, published=True)
 
+    def create(self, courseevent, text, title, display_nr, can_have_threads=False,
+               published=False, parent=None):
+        forum = Forum(courseevent=courseevent,
+                      text=text,
+                      title=title,
+                      published=published,
+                      display_nr=display_nr,
+                      can_have_threads=can_have_threads)
+        forum.insert_at(parent)
+        forum.save()
+
+        return forum
 
 class Forum(MPTTModel, TimeStampedModel):
 
     courseevent = models.ForeignKey(CourseEvent)
     parent = TreeForeignKey('self', null=True, blank=True, related_name='children', db_index=True, verbose_name="einhängen unter")
 
-    title = models.CharField(max_length=100)
-    text = models.TextField(blank=True)
+    title = models.CharField(
+        verbose_name="Forums-Titel",
+        max_length=100
+    )
+    text = models.TextField(
+        verbose_name="Beschreibung des Forums",
+        help_text="""Dieser Text wird den Forumsbeiträgen vorangestellt und leitet die Kursteilnehmern an, ihre
+                  Beiträge zu schreiben.""",
+        blank=True
+    )
+    description = models.CharField(
+        verbose_name="Kurzbeschreibung",
+        help_text="Die Kurzbeschreibung erscheint auf der Übersichtsseite der Foren.",
+        max_length=200,
+        blank=True
+    )
+    display_nr = models.IntegerField(
+        verbose_name="Anzeigereihenfolge",
+        help_text="Steuert die Anzeigereihenfolge der UnterForen innerhalb des übergeordneten Forums"
+    )
 
-    display_nr = models.IntegerField()
-
-    can_have_threads = models.BooleanField(default=True)
+    can_have_threads = models.BooleanField(
+        verbose_name="Beiträge erlaubt",
+        help_text="""Steuert, ob Beiträge in diesem Unterforum gemacht werden können,
+                  oder ob es nur zur Gliederung dient.""",
+        default=True)
     #thread_count = models.IntegerField(default=0)
 
-    published = models.BooleanField(default=False)
+    published = models.BooleanField(
+        verbose_name="veröffentlicht",
+        help_text="""Zeigt an, ob das Forum im Klassenzimmer sichtbar ist.""",
+        default=False
+    )
     publish_status_changed = MonitorField(monitor='published')
 
     oldforum = models.ForeignKey(OldForum, blank=True, null=True)
@@ -66,7 +102,7 @@ class Forum(MPTTModel, TimeStampedModel):
         order_insertion_by = ['courseevent', 'display_nr']
 
     def __unicode__(self):
-        return u'%s: %s' % (str(self.courseevent_id), self.title)
+        return u'%s' % (self.title)
 
     def get_absolute_url(self):
         return reverse('coursebackend:forum:detail',
@@ -114,6 +150,9 @@ class Forum(MPTTModel, TimeStampedModel):
             return True
         else:
             return False
+
+    def thread_count(self):
+        return Thread.objects.filter(forum=self).count()
 
     def possible_parents(self):
         qs = Forum.objects.none()

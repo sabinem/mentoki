@@ -11,6 +11,8 @@ from rest_framework import routers
 from api import views
 from django_downloadview import ObjectDownloadView
 
+from apps_data.course.models.material import Material
+
 from rest_framework_extensions.routers import (
     ExtendedDefaultRouter as DefaultRouter
 )
@@ -45,6 +47,10 @@ router.register(r'materials', views.MaterialViewSet)
 #router.register(r'participation', views.ParticipationViewSet)
 
 
+
+# for the download of files
+download = ObjectDownloadView.as_view(model=Material, file_field='file')
+
 from apps_public.newsletter.feeds import LatestNewsletterFeed
 
 
@@ -78,8 +84,9 @@ urlpatterns = i18n_patterns('',
     # contact
     url(r'^kontakt/', include('apps_public.contact.urls', namespace='contact')),
 
-    # file upload ...
-    #url(r'^upload/', include('apps_core.upload.urls', namespace='upload')),
+
+
+    url(r'^download/(?P<slug>[a-zA-Z0-9_-]+)/$', download, name="download"),
 
     # file markdown ...
     url(r'^markdown/', include('django_markdown.urls')),

@@ -76,7 +76,7 @@ class StudentsWorkCreateView(StudentsWorkChangeMixin, FormView):
 
     def form_valid(self, form):
         courseevent = get_object_or_404(CourseEvent, slug=self.kwargs['slug'])
-        StudentsWork.objects.create_new_work(
+        StudentsWork.objects.create(
             courseevent=courseevent,
             homework=form.cleaned_data['homework'],
             text=form.cleaned_data['text'],
