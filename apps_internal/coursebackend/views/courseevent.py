@@ -2,12 +2,10 @@
 
 from __future__ import unicode_literals
 
-from django.shortcuts import get_object_or_404
 from django.forms.models import modelform_factory
 from django.forms.models import model_to_dict
 from django.forms.widgets import NumberInput, DateInput,TextInput, Select
-
-from vanilla import UpdateView, DetailView, TemplateView
+from django.views.generic import DetailView, UpdateView, TemplateView
 
 from froala_editor.widgets import FroalaEditor
 
@@ -21,8 +19,8 @@ class CourseEventDetailView(CourseMenuMixin, DetailView):
     Start in this section of the website: it shows the course and its attributes
     """
     model = CourseEvent
-    lookup_field = 'slug'
-    lookup_url_kwarg = 'slug'
+    slug_url_kwarg = 'slug'
+    slug_field = 'slug'
     context_object_name ='courseevent'
 
 
@@ -37,13 +35,14 @@ class CourseEventListView(CourseMenuMixin, TemplateView):
 
         return context
 
+
 class CourseEventUpdateView(CourseMenuMixin, UpdateView):
     """
     Update the course one field at a time
     """
     model = CourseEvent
-    lookup_field = 'slug'
-    lookup_url_kwarg = 'slug'
+    slug_url_kwarg = 'slug'
+    slug_field = 'slug'
     context_object_name ='courseevent'
 
     def get_form_class(self, **kwargs):

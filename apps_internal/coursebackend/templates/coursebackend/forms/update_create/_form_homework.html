@@ -1,0 +1,12 @@
+{{ form.media }}
+<form class="ui form" method="post" action="" >{% csrf_token %}
+
+    {% include 'coursebackend/forms/form_fields/_form_non_field_errors.html' %}
+
+    {% include 'coursebackend/forms/form_fields/_form_field_loop.html' %}
+
+    <button type="submit" value="post" class="ui button">
+        Speichern
+    </button>
+
+</form>

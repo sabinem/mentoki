@@ -2,7 +2,7 @@
 
 from __future__ import unicode_literals
 
-from vanilla import TemplateView
+from django.views.generic import TemplateView
 
 from .mixins.base import CourseMenuMixin
 

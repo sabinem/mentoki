@@ -1,28 +1,22 @@
 {% extends "coursebackend/base_course.html" %}
 
-{% block controls %}
-    {% include 'coursebackend/_control_help.html' %}
-    {% include 'coursebackend/_control_worklinks.html' %}
-    {% include 'coursebackend/_control_structure.html' %}
-{% endblock %}
-
-{% block page_subsection %}
-    {% include 'coursebackend/lesson/fragments/_link_subsection.html' %}
-{% endblock %}
-
-{% block page_subsection_css_id %}forum{% endblock %}
-
 {% block page_content %}
 
-    <div class="row classroom_background">
+    <div class="row coursebackend_background">
         <div class="sixteen wide column">
 
-            {% include 'coursebackend/lesson/fragments/_help_lesson.html' %}
+            {% include 'coursebackend/lesson/fragments/_breadcrumbs.html' %}
 
+        </div>
+    </div>
+
+    <div class="row coursebackend_white">
+        <div class="sixteen wide column">
+
+            {% include 'base/fragments/_messages.html' %}
             {% include 'coursebackend/lesson/fragments/_recursetree_nodes_start.html' %}
 
         </div>
     </div>
 
 {% endblock %}
-{% block rows %}{% endblock %}

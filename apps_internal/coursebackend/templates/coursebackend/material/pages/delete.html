@@ -1,24 +1,17 @@
 {% extends "coursebackend/base_course.html" %}
 
-{% load mptt_tags %}
-
-{% block header %}
-   Unterricht {{ course.title }}
-{% endblock %}
-
-{% block controls %}
-
-    {% include 'coursebackend/_checkbox_help.html' %}
-
-{% endblock %}
-
-{% block help %}
-    {% include 'coursebackend/material/_help_material.html' %}
-{% endblock %}
 
 {% block page_content %}
 
-        {% include 'coursebackend/material/_form_multipart.html' %}
+    <div class="row coursebackend_white">
+        <div class="sixteen wide column">
+
+            {% include 'coursebackend/material/fragments/_instance_material.html' %}
+
+            {% include 'coursebackend/forms/delete/_form_material.html' %}
+
+        </div>
+    </div>
 
 {% endblock %}
 

@@ -30,6 +30,22 @@ class ClassroomMenuItemManager(models.Manager):
     def get_startitem_from_slug(self, slug):
         return self.get(courseevent__slug=slug, is_start_item=True )
 
+    def create(self, courseevent, homework, lesson, forum, display_title,
+               display_nr, item_type, published, is_start_item):
+        menuitem = ClassroomMenuItem(
+            courseevent=courseevent,
+            homework=homework,
+            lesson=lesson,
+            forum=forum,
+            display_title=display_title,
+            display_nr=display_nr,
+            published=published,
+            item_type=item_type,
+            is_start_item=is_start_item
+        )
+        menuitem.save()
+        return menuitem
+
 
 class ClassroomMenuItem(TimeStampedModel):
     """
@@ -37,31 +53,56 @@ class ClassroomMenuItem(TimeStampedModel):
     """
     courseevent = models.ForeignKey(CourseEvent)
 
-    lesson = models.ForeignKey(Lesson, blank=True, null=True,
-                               )
+    lesson = models.ForeignKey(Lesson, blank=True, null=True)
     forum = models.ForeignKey(Forum, blank=True, null=True)
     homework = models.ForeignKey(Homework, blank=True, null=True )
 
     MENU_ITEM_TYPE = Choices(('forum', 'forum_item', _('Forum')),
                      ('lesson', 'lesson_item', _('Unterricht')),
                      ('anouncements', 'announcements', _('Ankündigungen')),
-                     ('homework', 'homework', _('homework')),
-                     ('last_posts', 'forum_last_posts', _('latest forum posts')),
-                     ('private', 'student_private', _('students private place')),
-                     ('header', 'header', _('header')),
-                     ('participants', 'participants_list', _('participants list')),
+                     ('homework', 'homework', _('Hausaufgabe')),
+                     ('last_posts', 'forum_last_posts', _('Neueste Beiträge')),
+                     ('private', 'student_private', _('Privatbereich')),
+                     ('header', 'header', _('Überschrift')),
+                     ('participants', 'participants_list', _('Teilnehmerliste')),
                     )
+    item_type = models.CharField(
+        verbose_name="Typ des Menüpunkts",
+        help_text="""Welcher Art ist der Menüeintrag: Überschrift, Link, etc?""",
+        choices=MENU_ITEM_TYPE,
+        max_length=15)
 
-    item_type = models.CharField(choices=MENU_ITEM_TYPE, max_length=15)
-    display_nr = models.IntegerField()
+    display_nr = models.IntegerField(
+        verbose_name="Reihenfolge Nummer",
+        help_text="""An welcher Position im Menü soll der Menüpunkt angezeigt werden?""",
+    )
     display_title = models.CharField(max_length=200, blank=True)
 
-    published = models.BooleanField(default=False)
+    published = models.BooleanField(
+        verbose_name="veröffentlicht",
+        help_text="""ist im Klassenzimmer-Menü sichtbar""",
+        default=False)
     publish_status_changed = MonitorField(monitor='published')
 
-    is_start_item = models.BooleanField()
+    is_start_item = models.BooleanField(
+        verbose_name="Ist Startpunkt",
+        help_text="""Welcher Menüpunkt soll im Klassenzimmer als
+            erstes angesprungen werden?""")
 
     objects = ClassroomMenuItemManager()
+
+    unique_together=('display_title', 'courseevent')
+
+    def link(self):
+        if self.item_type == self.MENU_ITEM_TYPE.lesson_item and self.display_title == "" :
+            return u'Forum: %s' % (self.forum)
+        if self.item_type == self.MENU_ITEM_TYPE.homework and self.display_title == "" :
+            return u'Aufgabe: %s' % (self.homework)
+        if self.item_type == self.MENU_ITEM_TYPE.lesson and self.display_title == "" :
+            return u'Unterricht: %s' % (self.lesson)
+        else:
+            return u'-'
+
 
     def save(self, *args, **kwargs):
 
@@ -166,7 +207,7 @@ class ClassroomMenuItem(TimeStampedModel):
 
 
     def __unicode__(self):
-        return u'menu %s / %s' % (self.courseevent, str(self.display_nr))
+        return u'%s: %s' % (self.get_item_type_display(), self.display_title)
 
 
 

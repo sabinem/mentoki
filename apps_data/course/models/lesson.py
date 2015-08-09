@@ -28,7 +28,7 @@ class LessonManager(TreeManager):
 
     def complete_tree_for_course(self, course):
         return self.filter(course=course, level=0).\
-            get_descendants(include_self=True)
+            get_descendants(include_self=True).prefetch_related('material')
 
     def lessons_published_in_courseevent(self, courseevent):
         return self.filter(lessonpublisher__courseevent=courseevent,
@@ -45,6 +45,11 @@ class LessonManager(TreeManager):
     def lessons_for_course(self, course):
         return self.filter(course=course,
                            level=1,
+                           )
+
+    def blocks_for_course(self, course):
+        return self.filter(course=course,
+                           level=0,
                            )
 
 def lesson_material_name(instance, filename):
@@ -75,10 +80,6 @@ class Lesson(MPTTModel, TimeStampedModel):
     unitmaterial = models.ForeignKey(CourseMaterialUnit, null=True, blank=True)
 
     objects = LessonManager()
-    block = QueryManager(level=0)
-    lesson = QueryManager(level=1)
-    lesson_step = QueryManager(level=2)
-    parent_choice_new = QueryManager(level__lte=1).order_by('tree_id', 'level', 'nr')
 
     LESSON_TYPE = Choices(
                      ('block', _('Block')),
@@ -116,15 +117,20 @@ class Lesson(MPTTModel, TimeStampedModel):
             raise ValueError('unexpected lesson level')
 
     def __unicode__(self):
-        if self.is_block:
-            return u'%s' % (self.title)
-        elif self.is_lesson:
+        if self.level == 0:
+            return u'Block: %s' % (self.title)
+        elif self.level == 1:
             return u'%s: %s. %s' % (self.parent.title, self.lesson_nr, self.title)
-        elif self.is_lesson_step:
+        elif self.is_step:
             return u'%s %s' % (self.lesson_nr, self.title)
 
-    def display_with_nr(self):
-        return u'%s: %s %s' % (str(self.course_id), str(self.lesson_nr), self.title)
+    def breadcrumb(self):
+        if self.level == 0:
+            return u'%s' % (self.title)
+        elif self.level == 1:
+            return u'%s. %s' % (self.lesson_nr, self.title)
+        elif self.is_step:
+            return u'%s %s' % (self.lesson_nr, self.title)
 
     @cached_property
     def course_slug(self):
@@ -177,24 +183,24 @@ class Lesson(MPTTModel, TimeStampedModel):
             lessonpublisher__published=True)
 
     def get_tree_with_material(self):
-        return self.get_descendants(include_self=True).prefetch_related('material')
+        return self.get_descendants(include_self=False).prefetch_related('material')
 
-    @cached_property
+    def get_tree_without_material(self):
+        return self.get_descendants(include_self=False)
+
     def is_block(self):
         if self.get_level() == 0:
             return True
         else:
             return False
 
-    @cached_property
     def is_lesson(self):
         if self.get_level() == 1:
             return True
         else:
             return False
 
-    @cached_property
-    def is_lesson_step(self):
+    def is_step(self):
         if self.get_level() == 2:
             return True
         else:
@@ -208,21 +214,6 @@ class Lesson(MPTTModel, TimeStampedModel):
             return True
         else:
             return False
-
-
-    def get_absolute_url(self):
-        return reverse('coursebackend:lesson:detail', kwargs={'course_slug':self.course_slug, 'pk':self.pk })
-
-
-    def possible_parents(self):
-        qs = Lesson.objects.none()
-        if self.is_block:
-            pass
-        elif self.is_leaf_node():
-           qs = Lesson.objects.filter(level__lte=1, course=self.course)
-        else:
-           qs = Lesson.objects.filter(level=0, course=self.course)
-        return qs.exclude(pk=self.pk).order_by('tree_id', 'level', 'nr')
 
 
 class LessonPublisher(models.Model):

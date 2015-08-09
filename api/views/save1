@@ -1,6 +1,0 @@
-    def get_queryset(self, request, *args, **kwargs):
-        return Material.objects.all()
-        if self.request.user.is_staff:
-            return Material.objects.all()
-        else:
-            return Material.objects.filter(course_id=self.kwargs['parent_lookup_course'])

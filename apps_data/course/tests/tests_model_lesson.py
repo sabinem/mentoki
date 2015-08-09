@@ -106,9 +106,9 @@ class LessonAttributesTest(TestCase):
         """
         test that siblings are only fetched within the same course
         """
-        self.assertEqual(self.lesson5.is_lesson_step, False)
-        self.assertEqual(self.lesson6.is_lesson_step, False)
-        self.assertEqual(self.lesson7.is_lesson_step, True)
+        self.assertEqual(self.lesson5.is_step, False)
+        self.assertEqual(self.lesson6.is_step, False)
+        self.assertEqual(self.lesson7.is_step, True)
 
     def test_lesson_property_is_owner(self):
         """

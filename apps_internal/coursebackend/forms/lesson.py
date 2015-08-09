@@ -2,87 +2,64 @@
 
 from __future__ import unicode_literals
 
+from django.core.validators import ValidationError
 from django.shortcuts import get_object_or_404
+from django.forms.widgets import CheckboxSelectMultiple
 
 import floppyforms.__future__ as forms
 
-from crispy_forms.helper import FormHelper
-
 from froala_editor.widgets import FroalaEditor
+
+from mptt.forms import TreeNodeChoiceField
 
 from apps_data.course.models.course import Course
 from apps_data.course.models.lesson import Lesson
 from apps_data.course.models.material import Material
 
-from mptt.exceptions import InvalidMove
-from mptt.forms import TreeNodeChoiceField, TreeNodePositionField
 
-from django.forms.widgets import CheckboxSelectMultiple
-
-class LessonUpdateForm(forms.ModelForm):
+class LessonBlockForm(forms.ModelForm):
     text = forms.CharField(widget=FroalaEditor)
 
     class Meta:
         model = Lesson
-        fields = ('nr', 'title', 'description', 'text', 'material')
+        fields = ('title', 'description', 'text')
+
+
+class LessonForm(forms.ModelForm):
+    text = forms.CharField(widget=FroalaEditor, required=False)
+
+    class Meta:
+        model = Lesson
+        fields = ('parent', 'nr', 'title', 'description', 'text' )
 
     def __init__(self, *args, **kwargs):
         course_slug = kwargs.pop('course_slug', None)
-        course = get_object_or_404(Course, slug=course_slug)
+        self.course = get_object_or_404(Course, slug=course_slug)
 
-        super(LessonUpdateForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_tag = False
+        super(LessonForm, self).__init__(*args, **kwargs)
 
-        self.fields["material"].widget = CheckboxSelectMultiple()
-        self.fields["material"].queryset = Material.objects.filter(course=course)
-
-
-class LessonMoveForm(forms.ModelForm):
-
-    class Meta:
-        model = Lesson
-        fields = ('parent',)
-
-    def __init__(self, *args, **kwargs):
-        super(LessonMoveForm, self).__init__(*args, **kwargs)
-
-        self.fields['parent'].queryset = self.instance.possible_parents()
-        self.fields['parent'].empty_label=None
-
-        self.helper = FormHelper()
-        self.helper.form_tag = False
+        self.fields['parent'].empty_label = None
+        self.fields["parent"].queryset = \
+            Lesson.objects.blocks_for_course(course=self.course)
 
 
-class LessonCreateForm(forms.ModelForm):
+class LessonStepForm(forms.ModelForm):
+    text = forms.CharField(widget=FroalaEditor, required=False)
+    material = forms.CheckboxSelectMultiple()
 
     class Meta:
         model = Lesson
-        fields = ('parent', 'nr', 'title', 'description', 'text')
+        fields = ('parent', 'nr', 'title', 'description', 'text', 'material' )
 
     def __init__(self, *args, **kwargs):
         course_slug = kwargs.pop('course_slug', None)
-        course = get_object_or_404(Course, slug=course_slug)
-        super(LessonCreateForm, self).__init__(*args, **kwargs)
+        self.course = get_object_or_404(Course, slug=course_slug)
 
-        self.fields['parent'].queryset = Lesson.parent_choice_new.filter(course=course)
-        self.fields['parent'].empty_label=None
+        super(LessonStepForm, self).__init__(*args, **kwargs)
 
-        self.helper = FormHelper()
-        self.helper.form_tag = False
-
-
-class LessonAddMaterialForm(forms.ModelForm):
-
-    class Meta:
-        model = Lesson
-        fields = ('material',)
-
-    def __init__(self, *args, **kwargs):
-        super(LessonAddMaterialForm, self).__init__(*args, **kwargs)
-        lesson = kwargs['instance']
-        self.helper = FormHelper()
-        self.helper.form_tag = False
-        course = lesson.course
-
-        self.fields['material'].queryset = Material.objects.filter(course=course)
+        self.fields['parent'].empty_label = None
+        self.fields['parent'] = TreeNodeChoiceField(
+            queryset=Lesson.objects.lessons_for_course(course=self.course),
+            level_indicator=u'+--')
+        self.fields['material'].widget = CheckboxSelectMultiple()
+        self.fields["material"].queryset = Material.objects.filter(course=self.course)

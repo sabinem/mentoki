@@ -24,10 +24,10 @@ class CourseFormMixin(CourseMenuMixin):
         return super(CourseFormMixin, self).form_valid(form)
 
 
-class LessonMixin(CourseMenuMixin):
+class XXLessonMixin(CourseMenuMixin):
 
     def get_context_data(self, **kwargs):
-        context = super(LessonMixin, self).get_context_data(**kwargs)
+        context = super(XXLessonMixin, self).get_context_data(**kwargs)
 
         start_node = get_object_or_404(Lesson, pk=self.kwargs['pk'])
 

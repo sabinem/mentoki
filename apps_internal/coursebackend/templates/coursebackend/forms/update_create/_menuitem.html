@@ -1,0 +1,52 @@
+{{ form.media }}
+<form class="ui form" method="post" action="" >{% csrf_token %}
+
+    {% include 'classroom/forms/form_fields/_form_non_field_errors.html' %}
+
+  <div class="inline fields">
+    <div class="field sixteen wide">
+      <label>{{ form.item_type.label_tag }}</label>
+      {{ form.item_type.help_text }}
+      {{ form.item_type }}
+    </div>
+  </div>
+
+  <div class="inline fields">
+    <div class="field sixteen wide">
+      <label>Einhängen unter</label>
+      Unter welchem Menüeintrag soll dieser Eintrag eigehängt werden?
+      {{ form.reference_menu_item }}
+    </div>
+  </div>
+
+<div class="ui dividing large header">Menüeintrag</div>
+
+    <div class="inline fields">
+      <div class="field">
+          <label>{{ form.display_title.label_tag }}</label>
+          {{ form.display_title }}
+      </div>
+    </div>
+
+<div class="ui dividing large header">Link zu:</div>
+
+    <div class="fields">
+      <div class="field">
+          <label>{{ form.lesson.label_tag }}</label>
+          {{ form.lesson }}
+      </div>
+      <div class="field">
+          <label>{{ form.homework.label_tag }}</label>
+          {{ form.homework }}
+      </div>
+      <div class="field">
+          <label>{{ form.forum.label_tag }}</label>
+          {{ form.forum }}
+      </div>
+    </div>
+
+    <button type="submit" value="post" class="ui button">
+        Speichern
+    </button>
+
+</form>

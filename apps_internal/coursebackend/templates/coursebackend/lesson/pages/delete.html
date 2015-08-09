@@ -1,23 +1,24 @@
-{% extends "coursebackend/base.html" %}
-
-{% block page_subsection %}
-    {% include 'coursebackend/homework/fragments/_link_subsection.html' %}
-{% endblock %}
-
-{% block controls %}
-    {% include 'coursebackend/_control_help.html' %}
-{% endblock %}
-
-{% block page_subsection_css_id %}homework{% endblock %}
+{% extends "coursebackend/base_course.html" %}
 
 {% block page_content %}
+
+
+    <div class="row coursebackend_background">
+        <div class="sixteen wide column">
+
+            {% include 'coursebackend/lesson/fragments/_breadcrumbs.html' %}
+
+        </div>
+    </div>
 
     <div class="row classroom_emphasis">
         <div class="sixteen wide column">
 
-            {% include 'coursebackend/homework/fragments/_help_homework.html' %}
+            <div class="ui message warning">
+                Vorsicht: Der gesamte abgebildetet Baum wird bei dieser Aktion gelöscht!
+            </div>
 
-            {% include 'coursebackend/announcement/fragments/_instance_homework.html' %}
+            {% include 'coursebackend/lesson/fragments/_recursetree_nodes.html' %}
 
         </div>
     </div>
@@ -25,7 +26,7 @@
     <div class="row classroom_white">
         <div class="sixteen wide column">
 
-            {% include 'coursebackend/forms/_form_delete_homework.html' %}
+            {% include 'coursebackend/forms/delete/_form_lesson.html' %}
 
         </div>
     </div>

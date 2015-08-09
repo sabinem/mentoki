@@ -17,6 +17,9 @@ from .courseevent import CourseEvent
 
 class HomeworkManager(models.Manager):
 
+    def homeworks_for_courseevent(self, courseevent):
+        return self.filter(courseevent=courseevent)
+
     def published_homework_for_courseevent(self, courseevent):
         return self.filter(courseevent=courseevent, published=True).\
             order_by('due_date').\

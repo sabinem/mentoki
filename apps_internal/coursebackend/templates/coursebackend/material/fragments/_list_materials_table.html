@@ -1,12 +1,10 @@
-<div class="ui center aligned header medium">Material-Liste</div>
 <table class="ui table stackable">
   <thead>
     <tr>
       <th class="three wide">Bearbeitung</th>
       <th class="three wide">Titel</th>
       <th class="three wide">Datei</th>
-      <th class="three wide">Typ</th>
-      <th class="three wide">verfügbar als</th>
+      <th class="three wide">eingebunden in</th>
     </tr>
   </thead>
   <tbody>
@@ -25,19 +23,27 @@
       </td>
 
       <td>
-          <a href={% url 'coursebackend:material:detail' course_slug=course.slug pk=material.pk %}>
+          <a href="{% url 'coursebackend:material:detail' course_slug=course.slug pk=material.pk %}">
           {{ material.title }}
           </a>
       </td>
 
-      <td>{{ material.file  }}</td>
-
-      <td>{{ material.slug  }}</td>
-
-      <td>{{ material.get_document_type_display }}</td>
+      <td>{{ material.file  }}<br>
+          <a href={% url 'download' slug=material.slug %}>{{ material.slug  }}</a><br>
+          {% include 'coursebackend/material/fragments/_instance_material_file.html' %}
+      </td>
 
       <td>
-         {% include 'coursebackend/material/fragments/_instance_material_file.html' %}
+          <div class="ui list bulleted">
+              {% for lesson in material.lesson_set.all %}
+                  <a class="item"
+                      href="{% url 'coursebackend:lesson:step' course_slug=course.slug pk=lesson.pk %}">
+                      {{ lesson.lesson_nr }} {{ lesson.title }}
+                  </a>
+              {% empty %}
+                  -
+              {% endfor %}
+          </div>
       </td>
 
     </tr>

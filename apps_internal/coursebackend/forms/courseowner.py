@@ -19,7 +19,6 @@ class TeachersCourseProfileForm(forms.ModelForm):
         fields = ('foto', 'text', 'display', 'display_nr' )
 
     def clean_display(self):
-        print "----------- in clean_display"
         display = self.cleaned_data["display"]
         if not display:
             if not CourseOwner.objects.other_teachers_for_display(course=self.instance.course,

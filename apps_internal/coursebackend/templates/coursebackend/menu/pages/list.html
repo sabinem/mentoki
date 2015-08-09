@@ -1,22 +1,15 @@
-{% extends "coursebackend/base.html" %}
-
-{% block page_subsection %}
-    {% include 'coursebackend/menu/fragments/_link_subsection.html' %}
-{% endblock %}
-
-{% block controls %}
-    {% include 'coursebackend/_control_help.html' %}
-    {% include 'coursebackend/menu/fragments/_link_create_menuitem.html' %}
-{% endblock %}
-
-{% block page_subsection_css_id %}classroommenu{% endblock %}
+{% extends "coursebackend/base_courseevent.html" %}
 
 {% block page_content %}
 
-    <div class="row classroom_background">
+    <div class="row coursebackend_white">
         <div class="sixteen wide column">
 
-            {% include 'coursebackend/menu/fragments/_help_classroommenu.html' %}
+            <div class="ui center aligned header medium">Klassenzimmer-Menü</div>
+
+            {% include 'base/fragments/_messages.html' %}
+
+            {% include 'coursebackend/menu/fragments/_link_worklinks.html' %}
 
             {% include 'coursebackend/menu/fragments/_list_classroommenuitems_table.html' %}
 
@@ -24,4 +17,3 @@
     </div>
 
 {% endblock %}
-{% block rows %}{% endblock %}

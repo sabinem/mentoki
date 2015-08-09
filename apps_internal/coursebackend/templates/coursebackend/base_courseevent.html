@@ -1,26 +1,9 @@
 {% extends "base/base_pusher.html" %}
 {% load activelink %}
-{% comment %}
-
-    Blocks filled here:
-    -------------------
-    {% block page_section_css_id %}classroombackend{% endblock %}
-
-    {% block sidebar_menu %}{% include 'coursebackend/_menu.html' %}{% endblock %}
-
-    Additional inherited blocks: see base_pusher.html, they still have to be filled
-    -------------------------------------------------------------------------------
-    {% block page_subsection %}{% endblock %}
-    {% block controls %}{% endblock %}
-    {% block page_content %}{% endblock %}
-
-{% endcomment %}
-
-<!-- BLOCK: css id subsection: filled! -->
 
 {% block page_section_css_id %}coursebackend{% endblock %}
 
-{% block page_header %}Kurs {{ course.title }}: {{ course.teachersrecord }}{% endblock %}
+{% block page_header %}Kursereignis {{ courseevent.title }}: {{ course.teachersrecord }}{% endblock %}
 
 {% block top_attached_menu %}
 
@@ -28,42 +11,81 @@
 
         <!-- menu button  -->
 
-            <a class="item" id="sidebar_button">
-                <i class="sidebar icon"></i>
-                Menu
-            </a>
-            <a class="browse item">
-                Kusrvorlage
-                <i class="dropdown icon"></i>
-            </a>
-            <div class="ui fluid popup bottom left transition hidden" style="top: 555px; left: 1px; bottom: auto; right: auto; width: 583px;">
-                <div class="ui one column relaxed divided grid">
-                    <div class="column">
-                        <h4 class="ui header">Kursvorlage</h4>
-                        <div class="ui link list">
-                            <a href="{% url 'coursebackend:course:detail' course_slug=course.slug %}"
-                                class="item
-                                {% ifstartswith 'coursebackend:course:detail' course_slug=course.slug %}
-                                   active
-                                {% endifstartswith %}
-                                ">Kursvorlage</a>
-                            <a href="{% url 'coursebackend:courseowner:list' course_slug=course.slug %}"
-                                class="item">Kursleitung</a>
-                            <a href="{% url 'coursebackend:courseevent:list' course_slug=course.slug %}"
-                                class="item">Liste der Kurseereignisse</a>
-                            <a href="{% url 'coursebackend:lesson:start' course_slug=course.slug %}"
-                                class="item">Unterricht</a>
-                            <a href="{% url 'coursebackend:material:list' course_slug=course.slug %}"
-                                class="item">Materialien</a>
-                        </div>
-                        </div>
+        <a class="item" id="sidebar_button">
+            <i class="sidebar icon"></i>
+            Menu
+        </a>
+
+        <a class="browse item">
+            Kursereignis
+            <i class="dropdown icon"></i>
+        </a>
+
+        <div class="ui popup bottom left transition hidden"
+             style="top: 555px; left: 1px; bottom: auto; right: auto; width: 200px;">
+
+            <div class="ui one column relaxed divided grid">
+
+                <div class="column">
+
+                    <h4 class="ui header" id="coursebackend_menu_header">Kursereignis</h4>
+
+                    <div class="ui link list">
+
+                        <a href="{% url 'coursebackend:courseevent:detail' slug=courseevent.slug course_slug=course.slug %}"
+                            class="item
+                            {% ifstartswith 'coursebackend:courseevent:detail' slug=courseevent.slug course_slug=course.slug %}
+                               active
+                            {% endifstartswith %}
+                            ">Kurseereignisbeschreibung</a>
+
+                        <a href="{% url 'coursebackend:announcement:list' slug=courseevent.slug course_slug=course.slug %}"
+                            class="item
+                            {% ifstartswith 'coursebackend:announcement:list' slug=courseevent.slug course_slug=course.slug %}
+                               active
+                            {% endifstartswith %}
+                            ">Ankündigungen</a>
+
+                        <a href="{% url 'coursebackend:forum:list' slug=courseevent.slug course_slug=course.slug %}"
+                            class="item
+                            {% ifstartswith 'coursebackend:forum:list' slug=courseevent.slug course_slug=course.slug %}
+                               active
+                            {% endifstartswith %}
+                            ">Forum</a>
+
+                        <a href="{% url 'coursebackend:homework:list' slug=courseevent.slug course_slug=course.slug %}"
+                            class="item
+                            {% ifstartswith 'coursebackend:homework:list' slug=courseevent.slug course_slug=course.slug %}
+                               active
+                            {% endifstartswith %}
+                            ">Aufgaben</a>
+
+                        <a href="{% url 'coursebackend:menu:list' slug=courseevent.slug course_slug=course.slug %}"
+                            class="item
+                            {% ifstartswith 'coursebackend:menu:list' slug=courseevent.slug course_slug=course.slug %}
+                               active
+                            {% endifstartswith %}
+                            ">Klassenzimmer-Menü</a>
+
+                        <a href="{% url 'coursebackend:participant:list' slug=courseevent.slug course_slug=course.slug %}"
+                            class="item
+                            {% ifstartswith 'coursebackend:participant:list' slug=courseevent.slug course_slug=course.slug %}
+                               active
+                            {% endifstartswith %}
+                            ">Teilnehmer</a>
+
                     </div>
+
+                </div>
+
             </div>
 
         </div>
+
+    </div>
+
 {% endblock %}
 
-{% block page_subsection %}{% endblock %}
 {% block sidebar_menu %}
 
     <!-- BLOCK: sidebar: filled! -->

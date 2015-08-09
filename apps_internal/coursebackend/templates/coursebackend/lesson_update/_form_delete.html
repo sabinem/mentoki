@@ -1,8 +1,0 @@
-<form class="ui form" method="post" action="" enctype="multipart/form-data">
-    {% csrf_token %}
-    <p>Wollen Sie diese Lektion mit allen angezeigten Unterlektionen wirklich löschen?</p>
-    <button type="submit" value="post" class="ui button">
-        Löschung bestätigen
-    </button>
-    {% include 'coursebackend/lesson_update/_cancel.html' %}
-</form>

@@ -21,12 +21,7 @@
 
                     <td>
                         {% with pk=classroommenuitem.pk %}
-                            <a href="{% url 'coursebackend:menu:item_update' course_slug=c_slug slug=e_slug pk=pk %}">
-                                <i class="icon write blue"></i>
-                            </a>
-                            <a href="{% url 'coursebackend:menu:item_delete' course_slug=course.slug slug=e_slug pk=pk %}">
-                                <i class="icon trash blue"></i>
-                            </a>
+                            {% include 'coursebackend/menu/fragments/_instance_pk_worklinks.html' %}
                         {% endwith %}
                     </td>
 

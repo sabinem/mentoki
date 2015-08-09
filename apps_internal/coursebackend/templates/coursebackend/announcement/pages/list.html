@@ -1,22 +1,9 @@
-{% extends "coursebackend/base.html" %}
-
-{% block page_subsection %}
-    {% include 'coursebackend/announcement/fragments/_link_subsection.html' %}
-{% endblock %}
-
-{% block controls %}
-    {% include 'coursebackend/_control_help.html' %}
-    {% include 'coursebackend/announcement/fragments/_link_create_announcement.html' %}
-{% endblock %}
-
-{% block page_subsection_css_id %}announcements{% endblock %}
+{% extends "coursebackend/base_courseevent.html" %}
 
 {% block page_content %}
 
     <div class="row classroom_background">
         <div class="sixteen wide column">
-
-            {% include 'coursebackend/announcement/fragments/_help_announcements.html' %}
 
             {% include 'coursebackend/announcement/fragments/_list_announcements_table.html' %}
 
@@ -24,4 +11,3 @@
     </div>
 
 {% endblock %}
-{% block rows %}{% endblock %}

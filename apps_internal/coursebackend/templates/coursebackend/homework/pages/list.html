@@ -1,23 +1,11 @@
-{% extends "coursebackend/base.html" %}
-
-{% block page_subsection %}
-    {% include 'coursebackend/homework/fragments/_link_subsection.html' %}
-{% endblock %}
-
-{% block controls %}
-    {% include 'coursebackend/_control_help.html' %}
-    {% include 'coursebackend/_control_fulltext.html' %}
-    {% include 'coursebackend/homework/fragments/_link_create_homework.html' %}
-{% endblock %}
-
-{% block page_subsection_css_id %}homework{% endblock %}
+{% extends "coursebackend/base_courseevent.html" %}
 
 {% block page_content %}
 
     <div class="row classroom_background">
         <div class="sixteen wide column">
 
-            {% include 'coursebackend/homework/fragments/_help_homework.html' %}
+            {% include 'base/fragments/_messages.html' %}
 
             {% include 'coursebackend/homework/fragments/_list_homeworks_table.html' %}
 
@@ -25,4 +13,3 @@
     </div>
 
 {% endblock %}
-{% block rows %}{% endblock %}

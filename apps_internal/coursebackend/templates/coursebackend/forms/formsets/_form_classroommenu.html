@@ -1,0 +1,41 @@
+{{ form.media }}
+<form class="ui form" method="post" action="" enctype="multipart/form-data">{% csrf_token %}
+
+    {% include 'classroom/forms/form_fields/_form_non_field_errors.html' %}
+
+    <table>
+        <thead>
+            {% for form in Formset.forms %}
+                {% if forloop.first %}
+                    {% for field in form %}
+                        <th>{{ field.label_tag }}</th>
+                    {% endfor %}
+                {% endif %}
+        </thead>
+        <tbody>
+                <tr>
+                    {% for field in form %}
+                        <td>{{ field }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <button type="submit" value="post" class="ui button">
+        speichern
+    </button>
+
+    <a class="ui button" href="{% url 'coursebackend:material:list' course_slug=course.slug %}">
+        Abbrechen
+    </a>
+
+</form>
+{% for form in formset %}
+    <hr>
+
+        {% include 'coursebackend/forms/form_fields/_form_field_loop_flat.html' %}
+
+    <hr>
+{% endfor %}
+

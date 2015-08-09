@@ -51,6 +51,14 @@
     </a>
 
     <a class="item
+        {% ifstartswith "coursebackend:lesson:work" course_slug=course.slug %}
+            active
+        {% endifstartswith %}
+        " href="{% url "coursebackend:lesson:work" course_slug=course.slug %}">
+        <i class="list icon"></i> - bearbeiten
+    </a>
+
+    <a class="item
         {% ifstartswith "coursebackend:material:list" course_slug=course.slug %}
           active
         {% endifstartswith %}

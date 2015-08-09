@@ -56,8 +56,6 @@ INSTALLED_APPS = (
     'django_coverage',
     #'django_nose',
     'pagedown',
-    'rest_framework',
-    'api',
     'froala_editor',
 
     'apps_core.core',

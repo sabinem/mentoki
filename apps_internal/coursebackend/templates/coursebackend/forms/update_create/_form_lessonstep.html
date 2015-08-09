@@ -1,0 +1,16 @@
+{{ form.media }}
+<form class="ui form" method="post" action="">
+
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit" value="post" class="ui button">
+        Speichern
+    </button>
+
+    <a href="{% url 'coursebackend:lesson:start' course_slug=course.slug %}" class="ui button">
+        Abbruch
+    </a>
+
+</form>

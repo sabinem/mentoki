@@ -4,32 +4,20 @@
     {% recursetree nodes %}
 
         <div class="item">
-            {% if node.is_block %}
-                <i class="top aligned cube icon"></i>
-            {% else %}
-                <i class="top aligned icon">{{ node.lesson_nr }}</i>
-            {% endif %}
+            {% include 'coursebackend/lesson/fragments/_instance_node_icon.html' %}
             <div class="content">
 
-                <a class="ui worklink"
-                    href="{% url "coursebackend:lesson:detail" course_slug=course.slug pk=node.pk %}">
+                <a
+                    {% include 'coursebackend/lesson/fragments/_instance_node_href.html' %}
+                >
                      {{ node.title }}
                 </a>
-
-                {% if node.published %}
-                    <i class="icon checkmark green"></i>
-                {% endif %}
 
                 {% if node.decription != "" %}
                     <p>
                         {{ node.description }}
                     </p>
                 {% endif %}
-                {% comment %}
-                <div class="fullcontent">
-                    {{ node.text | safe }}
-                </div>
-                {% endcomment %}
 
                 {% if not is_leaf %}
                     <div class="list">

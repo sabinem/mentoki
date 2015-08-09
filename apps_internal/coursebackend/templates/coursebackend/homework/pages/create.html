@@ -1,14 +1,4 @@
-{% extends "coursebackend/base.html" %}
-
-{% block page_subsection %}
-    {% include 'coursebackend/homework/fragments/_link_subsection.html' %}
-{% endblock %}
-
-{% block controls %}
-    {% include 'coursebackend/_control_help.html' %}
-{% endblock %}
-
-{% block page_subsection_css_id %}homework{% endblock %}
+{% extends "coursebackend/base_courseevent.html" %}
 
 {% block page_content %}
 
@@ -23,4 +13,3 @@
     </div>
 
 {% endblock %}
-{% block rows %}{% endblock %}

@@ -70,7 +70,7 @@
 
         {% elif item.item_type == item.MENU_ITEM_TYPE.lesson_item %}
             <a class="item"
-                href="{% url 'classroom:lesson:detail' slug=courseevent.slug pk=item.lesson_id %}">
+                href="{% url 'classroom:lesson:lesson_detail' slug=courseevent.slug pk=item.lesson_id %}">
                 <i class="student icon"></i>{{ item.display_title }}
             </a>
 
