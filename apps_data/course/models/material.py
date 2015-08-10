@@ -62,9 +62,9 @@ class Material(TimeStampedModel):
         max_length=100
     )
     description = models.CharField(
-        verbose_name='kurze Beschreibung des Materials',
-        help_text="""Diese Beschreibung wird in Listen oder Übersichtsseiten
-        angezeigt.""",
+        verbose_name=_('kurze Beschreibung des Materials'),
+        help_text=_("""Diese Beschreibung wird in Listen oder Übersichtsseiten
+        angezeigt."""),
         max_length=200,
         blank=True
     )
@@ -77,21 +77,21 @@ class Material(TimeStampedModel):
         default='pdf'
     )
     pdf_download_link = models.BooleanField(
-        verbose_name='Download-Link anbieten?',
-        help_text="""Es wird ein Download-Link angeboten.""",
+        verbose_name=_('Download-Link anbieten?'),
+        help_text=_("""Es wird ein Download-Link angeboten."""),
         default=False
     )
     pdf_viewer = models.BooleanField(
         verbose_name='Pdf-Viewer anbieten?',
-        help_text="""Bei Dateityp pdf: Das pdf-Datei ist durch einen Pdf-
+        help_text=_("""Bei Dateityp pdf: Das pdf-Datei ist durch einen Pdf-
         Viewer ind die Webseite integriert, falls das möglich ist (auf dem PC
-        zum Beispiel).""",
+        zum Beispiel)."""),
         default=False
     )
     pdf_link = models.BooleanField(
-        verbose_name='Link anbieten?',
-        help_text="""Bei Dateityp pdf: das pdf-file ist über einen Link
-        erreichbar.""",
+        verbose_name=_('Link anbieten?'),
+        help_text=_("""Bei Dateityp pdf: das pdf-file ist über einen Link
+        erreichbar."""),
         default=False
     )
     file = ContentTypeRestrictedFileField(
@@ -110,8 +110,8 @@ class Material(TimeStampedModel):
     objects = MaterialManager()
 
     class Meta:
-        verbose_name = "Material"
-        verbose_name_plural = "Materialien"
+        verbose_name=_("Material")
+        verbose_name_plural=_("Materialien")
 
     def __unicode__(self):
         return u'%s' % (self.file)

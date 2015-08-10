@@ -67,7 +67,10 @@ class Lesson(MPTTModel, TimeStampedModel):
 
     title = models.CharField(max_length=100)
     text = models.TextField(blank=True)
-    description = models.CharField(max_length=200, blank=True, verbose_name='kurze Beschreibung')
+    description = models.CharField(
+        verbose_name='kurze Beschreibung',
+        max_length=200,
+        blank=True)
 
     material = models.ManyToManyField(Material, blank=True)
 

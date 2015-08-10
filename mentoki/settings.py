@@ -43,7 +43,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.sites',
     #'raven.contrib.django.raven_compat',
-
+    'email_extras',
     'floppyforms',
     'crispy_forms',
     'semantic_ui',
@@ -54,6 +54,7 @@ INSTALLED_APPS = (
     'activelink',
     'django_markdown',
     'django_coverage',
+    'rosetta',
     #'django_nose',
     'pagedown',
     'froala_editor',
@@ -132,13 +133,17 @@ LANGUAGE_CODE = 'de_DE'
 
 LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),
+    os.path.join(BASE_DIR, 'locale','apps_internal','classroom'),
+
 )
+print "============ IN SETTINGS"
+print LOCALE_PATHS
 
 TIME_ZONE = 'Europe/Zurich'
 
 USE_I18N = True
 
-USE_L10N = False
+USE_L10N = True
 
 USE_TZ = True
 

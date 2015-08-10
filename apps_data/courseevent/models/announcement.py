@@ -33,12 +33,19 @@ class Announcement(TimeStampedModel):
 
     courseevent = models.ForeignKey(CourseEvent)
 
-    title = models.CharField(verbose_name="Betreff",
-                             max_length=100)
-    text = models.TextField(verbose_name="Text")
+    title = models.CharField(
+        _(verbose_name="Betreff"),
+        max_length=100)
+    text = models.TextField(
+        verbose_name=_("Text"))
 
-    published = models.BooleanField(verbose_name="veröffentlichen?", default=False)
-    published_at = MonitorField(verbose_name="veröffentlicht am", monitor='published', when=[True])
+    published = models.BooleanField(
+        verbose_name=_("veröffentlichen?"),
+        default=False)
+    published_at = MonitorField(
+        verbose_name=_("veröffentlicht am"),
+        monitor='published',
+        when=[True])
 
     objects = AnnouncementManager()
 

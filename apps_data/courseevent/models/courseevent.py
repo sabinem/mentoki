@@ -60,20 +60,24 @@ class CourseEvent(TimeStampedModel):
     slug = models.SlugField(unique=True)
 
     title = models.CharField(
-        verbose_name="Kurstitel",
-        help_text="Kurstitel unter dem dieser Kurs ausgeschrieben wird.",
+        verbose_name=_("Kurstitel"),
+        help_text=_("Kurstitel unter dem dieser Kurs ausgeschrieben wird."),
         max_length=100)
 
     start_date = models.DateField(
-        verbose_name="Startdatum",
+        verbose_name=_("Startdatum"),
         null=True, blank=True)
 
-    nr_weeks = models.IntegerField(verbose_name="Wochenanzahl",
-                                   help_text="Die Anzahl der Wochen, die der Kurs dauern soll, nur bei geführten Kursen.",
-                                   null=True, blank=True)
+    nr_weeks = models.IntegerField(
+        verbose_name=_("Wochenanzahl"),
+        help_text=_("Die Anzahl der Wochen, die der Kurs dauern soll, nur bei geführten Kursen."),
+        null=True,
+        blank=True)
 
-    max_participants = models.IntegerField(null=True, blank=True, verbose_name="Teilnehmeranzahl",
-                                           help_text="E")
+    max_participants = models.IntegerField(
+        verbose_name=_("Teilnehmeranzahl"),
+        null=True,
+        blank=True)
 
     EVENT_TYPE = Choices(('guided', 'guidedgroup', _('geführter Gruppenkurs')),
                          ('selflearn', 'selflearn', _('Selbstlernen')),
@@ -97,21 +101,40 @@ class CourseEvent(TimeStampedModel):
                               ('a', 'accepted', _('open for preview'))
                              )
     status_internal =  models.CharField(max_length=2, choices=STATUS_INTERNAL, default=STATUS_INTERNAL.draft)
-    accepted_at = MonitorField(monitor='status_external', when=['accepted'])
-    review_ready_at = MonitorField(monitor='status_external', when=['review'])
+    accepted_at = MonitorField(
+        monitor='status_external',
+        when=['accepted'])
+    review_ready_at = MonitorField(
+        monitor='status_external',
+        when=['review'])
 
     # description of the courseevent
     excerpt = models.TextField(verbose_name="Abstrakt",
                                help_text="Diese Zusammenfassung erscheint auf der Kursliste.",
                                blank=True)
     video_url = models.CharField(max_length=100, blank=True, verbose_name="Kürzel des Videos bei You Tube ")
-    text = models.TextField(blank=True, verbose_name="freie Kursbeschreibung")
-    format = models.TextField(blank=True, verbose_name="Kursformat")
-    workload = models.TextField(blank=True, verbose_name="Arbeitsbelastung")
-    project = models.TextField(blank=True,  verbose_name="Teilnehmernutzen")
-    structure = models.TextField(blank=True,  verbose_name="Gliederung")
-    target_group = models.TextField(blank=True, verbose_name="Zielgruppe")
-    prerequisites = models.TextField(blank=True, verbose_name="Voraussetzungen")
+    text = models.TextField(
+        verbose_name=_("freie Kursbeschreibung"),
+        blank=True)
+    format = models.TextField(
+        verbose_name=_("Kursformat"),
+        blank=True)
+    workload = models.TextField(
+        verbose_name=_("Arbeitsbelastung"),
+        blank=True)
+    project = models.TextField(
+        verbose_name=_("Teilnehmernutzen"),
+        blank=True)        
+    structure = models.TextField(
+        verbose_name=_("Gliederung"),
+        blank=True)
+    target_group = models.TextField(
+        verbose_name=_("Zielgruppe"),
+        blank=True)
+    prerequisites = models.TextField(
+        verbose_name=_("Voraussetzungen"),
+        blank=True)
+
 
     #participants
     participation = models.ManyToManyField(settings.AUTH_USER_MODEL, through="CourseEventParticipation", related_name='participation')

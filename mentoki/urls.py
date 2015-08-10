@@ -120,3 +120,9 @@ if settings.DEBUG:
         'document_root': settings.MEDIA_ROOT}))
 
 
+from django.conf import settings
+
+if 'rosetta' in settings.INSTALLED_APPS:
+    urlpatterns += patterns('',
+        url(r'^rosetta/', include('rosetta.urls')),
+    )
