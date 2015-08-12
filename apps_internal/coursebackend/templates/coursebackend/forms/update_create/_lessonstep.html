@@ -1,0 +1,111 @@
+{{ form.media }}
+<form class="ui form" method="post" action="#target" onsubmit="return checkForm(this);">
+
+    {% csrf_token %}
+
+    <div class="ui dividing large header">Lernschritt bearbeiten</div>
+
+    <div class="fields inline">
+        <div class="field eight wide">
+            {{ form.parent.label_tag }}
+            <p>{{ form.parent.help_text }}</p>
+
+            {% if form.parent.errors %}
+                <div class="ui negative floating message">
+                    {{ form.parent.errors }}
+                </div>
+            {% endif %}
+            <br>
+
+            {{ form.parent }}
+
+        </div>
+    </div>
+    <div class="fields inline">
+
+        <div class="field two wide">
+            {{ form.nr.label_tag }}
+            <p>{{ form.nr.help_text }}</p>
+
+            {% if form.nr.errors %}
+                <div class="ui negative floating message">
+                    {{ form.nr.errors }}
+                </div>
+            {% endif %}
+            <br>
+
+            {{ form.nr }}
+
+        </div>
+
+        <div class="field fourteen wide">
+            <p>Titel</p>
+
+            {% if form.title.errors %}
+                <div class="ui negative floating message">
+                    {{ form.title.errors }}
+                </div>
+            {% endif %}
+            <br>
+
+            {{ form.title }}
+
+        </div>
+
+    </div>
+
+    <div class="field sixteen wide">
+        {{ form.description.label_tag }}
+        {{ form.description.help_text }}
+        {% if form.description.errors %}
+            <div class="ui negative floating message">
+                {{ form.description.errors }}
+            </div>
+        {% endif %}
+
+        {{ form.description }}
+
+    </div>
+
+    <div class="field sixteen wide">
+        {{ form.text.label_tag }}
+        {{ form.text.help_text }}
+        {% if form.text.errors %}
+            <div class="ui negative floating message">
+                {{ form.text.errors }}
+            </div>
+        {% endif %}
+
+        {{ form.text }}
+
+    </div>
+
+    <div class="ui dividing large header">Zugeordnetes Lernmaterial</div>
+
+    <div class="field sixteen wide">
+        {{ form.materials.label_tag }}
+        {{ form.materials.help_text }}
+        {% if form.materials.errors %}
+            <div class="ui negative floating message">
+                {{ form.materials.errors }}
+            </div>
+        {% endif %}
+        <br>
+
+        {{ form.materials }}
+
+    </div>
+
+    <button type="submit" value="post" name="onlyOnceButton" class="ui button" id="formsubmit_button"
+            action="#target">
+        Speichern
+    </button>
+    <button class="ui button" value="Reset Button" onclick="resetForm(this.form);">
+        Reset
+    </button>
+
+    <a href="{% url 'coursebackend:lesson:start' course_slug=course.slug %}" class="ui button">
+        Abbruch
+    </a>
+
+</form>

@@ -22,13 +22,13 @@
         </a>
 
         <div class="ui popup bottom left transition hidden"
-             style="top: 555px; left: 1px; bottom: auto; right: auto; width: 200px;">
+             style="top: 555px; left: 1px; bottom: auto; right: auto; width: 300px;">
 
             <div class="ui one column relaxed divided grid">
 
                 <div class="column">
 
-                    <h4 class="ui header" id="coursebackend_menu_header">Kursereignis</h4>
+                    <h4 class="ui header" id="coursebackend_menu_header">Kursereignis {{ courseevent }}</h4>
 
                     <div class="ui link list">
 
@@ -74,6 +74,14 @@
                             {% endifstartswith %}
                             ">Teilnehmer</a>
 
+                        <a href="{% url 'coursebackend:lesson:start' course_slug=course.slug %}"
+                            class="item
+                            ">Unterricht <i class="icon external"></i>
+                        </a>
+                        <a href="{% url 'coursebackend:material:list' course_slug=course.slug %}"
+                            class="item
+                            ">Material <i class="icon external"></i>
+                        </a>
                     </div>
 
                 </div>
@@ -81,6 +89,8 @@
             </div>
 
         </div>
+
+       {% block courseevent_menu_items %}{% endblock %}
 
     </div>
 

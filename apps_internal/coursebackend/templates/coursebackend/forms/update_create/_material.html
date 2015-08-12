@@ -5,35 +5,35 @@
 
   <div class="ui dividing large header">Material-Info</div>
 
-{% if form.title.errors %}
-    <div class="ui negative floating message">
-        {{ form.title.errors }}
-    </div>
-{% endif %}
-  <div class="inline fields">
+    {% if form.title.errors %}
+        <div class="ui negative floating message">
+            {{ form.title.errors }}
+        </div>
+    {% endif %}
+    <div class="inline fields">
     <div class="field sixteen wide">
       <label>{{ form.title.label_tag }}</label>
       {{ form.title.help_text }}
       {{ form.title }}
     </div>
-  </div>
-
-{% if form.description.errors %}
-    <div class="ui negative floating message">
-        {{ form.description.errors }}
     </div>
-{% endif %}
-  <div class="inline fields">
+
+    {% if form.description.errors %}
+        <div class="ui negative floating message">
+            {{ form.description.errors }}
+        </div>
+    {% endif %}
+    <div class="inline fields">
     <div class="field sixteen wide">
       <label>{{ form.description.label_tag }}</label>
       {{ form.description.help_text }}
       {{ form.description }}
     </div>
-  </div>
+    </div>
 
   <div class="ui dividing large header">Dateityp und wie soll die Datei verfügbar sein?</div>
 
-    {% include 'coursebackend/forms/form_fields/_form_non_field_errors.html' %}
+    {% include 'coursebackend/forms/fragments/_form_non_field_errors.html' %}
 
     {% if form.document_type.errors %}
         <div class="ui negative floating message">

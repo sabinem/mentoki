@@ -29,13 +29,13 @@ urlpatterns += patterns('',
     url(r'^bearbeiten$', LessonWorkView.as_view(),
         {'template':'coursebackend/lesson/pages/work.html'}, name='work'),
 
-    url(r'^bearbeiten/block/(?P<pk>\d+)/bearbeiten$', BlockUpdateView.as_view(),
+    url(r'^bearbeiten/block/(?P<pk>\d+)$', BlockUpdateView.as_view(),
         {'template':'coursebackend/lesson/pages/lessonblockupdate.html'}, name='blockupdate'),
 
-    url(r'^bearbeiten/lektion/(?P<pk>\d+)/bearbeiten$', LessonUpdateView.as_view(),
+    url(r'^bearbeiten/lektion/(?P<pk>\d+)$', LessonUpdateView.as_view(),
         {'template':'coursebackend/lesson/pages/lessonupdate.html'}, name='lessonupdate'),
 
-    url(r'^bearbeiten/abschnitt/(?P<pk>\d+)/bearbeiten$', LessonStepUpdateView.as_view(),
+    url(r'^bearbeiten/abschnitt/(?P<pk>\d+)$', LessonStepUpdateView.as_view(),
         {'template':'coursebackend/lesson/pages/lessonstepupdate.html'}, name='stepupdate'),
 )
 
@@ -46,12 +46,12 @@ urlpatterns += patterns('',
 
 urlpatterns += patterns('',
 
-    url(r'^anlegen/block/(?P<pk>\d+)/bearbeiten$', BlockCreateView.as_view(),
-        {'template':'coursebackend/lesson/pages/lessonblockupdate.html'}, name='blockupdate'),
+    url(r'^anlegen/block$', BlockCreateView.as_view(),
+        {'template':'coursebackend/lesson/pages/lessonblockupdate.html'}, name='blockcreate'),
 
-    url(r'^anlegen/lektion/(?P<pk>\d+)/bearbeiten$', LessonCreateView.as_view(),
-        {'template':'coursebackend/lesson/pages/lessonupdate.html'}, name='lessonupdate'),
+    url(r'^anlegen/lektion$', LessonCreateView.as_view(),
+        {'template':'coursebackend/lesson/pages/lessonupdate.html'}, name='lessoncreate'),
 
-    url(r'^anlegen/abschnitt/(?P<pk>\d+)/bearbeiten$', LessonStepCreateView.as_view(),
-        {'template':'coursebackend/lesson/pages/lessonstepupdate.html'}, name='stepupdate'),
+    url(r'^anlegen/abschnitt$', LessonStepCreateView.as_view(),
+        {'template':'coursebackend/lesson/pages/lessonstepupdate.html'}, name='stepcreate'),
 )

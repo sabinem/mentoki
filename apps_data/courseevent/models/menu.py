@@ -14,15 +14,13 @@ from model_utils.models import TimeStampedModel
 from apps_data.course.models.lesson import Lesson
 
 from .courseevent import CourseEvent
+from .announcement import Announcement
 from .forum import Forum
 from .homework import Homework
 
 
 
 class ClassroomMenuItemManager(models.Manager):
-
-    def published(self, courseevent):
-        return self.filter(courseevent=courseevent, published=True).order_by('display_nr')
 
     def all_for_courseevent(self, courseevent):
         return self.filter(courseevent=courseevent).order_by('display_nr')
@@ -39,7 +37,6 @@ class ClassroomMenuItemManager(models.Manager):
             forum=forum,
             display_title=display_title,
             display_nr=display_nr,
-            published=published,
             item_type=item_type,
             is_start_item=is_start_item
         )
@@ -58,13 +55,13 @@ class ClassroomMenuItem(TimeStampedModel):
     homework = models.ForeignKey(Homework, blank=True, null=True )
 
     MENU_ITEM_TYPE = Choices(('forum', 'forum_item', _('Forum')),
-                     ('lesson', 'lesson_item', _('Unterricht')),
-                     ('anouncements', 'announcements', _('Ankündigungen')),
-                     ('homework', 'homework', _('Hausaufgabe')),
-                     ('last_posts', 'forum_last_posts', _('Neueste Beiträge')),
-                     ('private', 'student_private', _('Privatbereich')),
-                     ('header', 'header', _('Überschrift')),
-                     ('participants', 'participants_list', _('Teilnehmerliste')),
+                     ('lesson', 'lesson_item',  _('Unterricht')),
+                     ('announcements', 'announcements_item', _('Ankündigungen')),
+                     ('homework', 'homework_item', _('Hausaufgabe')),
+                     ('last_posts', 'last_posts_item', _('Neueste Beiträge')),
+                     ('private', 'private_item', _('Privatbereich')),
+                     ('header', 'header_item', _('Überschrift')),
+                     ('participants', 'participants_item', _('Teilnehmerliste')),
                     )
     item_type = models.CharField(
         verbose_name="Typ des Menüpunkts",
@@ -78,12 +75,6 @@ class ClassroomMenuItem(TimeStampedModel):
     )
     display_title = models.CharField(max_length=200, blank=True)
 
-    published = models.BooleanField(
-        verbose_name="veröffentlicht",
-        help_text="""ist im Klassenzimmer-Menü sichtbar""",
-        default=False)
-    publish_status_changed = MonitorField(monitor='published')
-
     is_start_item = models.BooleanField(
         verbose_name="Ist Startpunkt",
         help_text="""Welcher Menüpunkt soll im Klassenzimmer als
@@ -93,23 +84,56 @@ class ClassroomMenuItem(TimeStampedModel):
 
     unique_together=('display_title', 'courseevent')
 
-    def link(self):
+    def preset_menu_item_display_title(self):
         if self.item_type == self.MENU_ITEM_TYPE.lesson_item and self.display_title == "" :
             return u'Forum: %s' % (self.forum)
-        if self.item_type == self.MENU_ITEM_TYPE.homework and self.display_title == "" :
+        if self.item_type == self.MENU_ITEM_TYPE.homework_item and self.display_title == "" :
             return u'Aufgabe: %s' % (self.homework)
-        if self.item_type == self.MENU_ITEM_TYPE.lesson and self.display_title == "" :
+        if self.item_type == self.MENU_ITEM_TYPE.lesson_item and self.display_title == "" :
             return u'Unterricht: %s' % (self.lesson)
         else:
             return u'-'
 
+    def get_menu_item_classroom_url(self):
+
+        if self.item_type == self.MENU_ITEM_TYPE.forum_item:
+            return Announcement.get_classroom_list_url(slug=self.slug)
+        if self.item_type == self.MENU_ITEM_TYPE.lesson_item:
+            return Announcement.get_classroom_list_url(slug=self.slug)
+        if self.item_type == self.MENU_ITEM_TYPE.homework_item:
+            return Announcement.get_classroom_list_url(slug=self.slug)
+        if self.item_type == self.MENU_ITEM_TYPE.announcements_item:
+            return Announcement.get_classroom_list_url(slug=self.slug)
+        if self.item_type == self.MENU_ITEM_TYPE.participants_item:
+            return Announcement.get_classroom_list_url(slug=self.slug)
+        if self.item_type == self.MENU_ITEM_TYPE.last_posts_item:
+            return Announcement.get_classroom_list_url(slug=self.slug)
+        if self.item_type == self.MENU_ITEM_TYPE.private_item:
+            return Announcement.get_classroom_list_url(slug=self.slug)
+
+    def get_menu_item_work_url(self):
+        if self.item_type == self.MENU_ITEM_TYPE.announcements_item:
+            return Announcement.get_list_url(slug=self.slug, course_slug=self.course_slug)
+
+    def is_classroom_link(self):
+        if self.item_type in [self.MENU_ITEM_TYPE.forum_item,
+                              self.MENU_ITEM_TYPE.lesson_item,
+                              self.MENU_ITEM_TYPE.homework_item,
+                              self.MENU_ITEM_TYPE.announcements_item,
+                              self.MENU_ITEM_TYPE.last_posts_item,
+                              self.MENU_ITEM_TYPE.private_item,
+                              self.MENU_ITEM_TYPE.participants_item,
+                              ]:
+            return True
+        else:
+            return False
 
     def save(self, *args, **kwargs):
 
         # there can only be one start-item per courseevent
 
         if self.is_start_item :
-            courseevents = ClassroomMenuItem.objects.courseevent(courseevent=self.courseevent).\
+            courseevents = ClassroomMenuItem.objects.all_for_courseevent(courseevent=self.courseevent).\
                 exclude(pk=self.pk)
             for courseevent in courseevents:
                 courseevent.is_start_item = False
@@ -126,20 +150,17 @@ class ClassroomMenuItem(TimeStampedModel):
             forum.published = True
             forum.save()
             forum = Forum.objects.get(id=self.forum_id)
-            print "*****in save of menu*****"
-            print forum.id
-            print forum.published
         if self.item_type == self.MENU_ITEM_TYPE.lesson_item and self.display_title == "" :
             self.display_title = self.lesson.title
-        if self.item_type == self.MENU_ITEM_TYPE.homework and self.display_title == "" :
+        if self.item_type == self.MENU_ITEM_TYPE.homework_item and self.display_title == "" :
             self.display_title = self.homework.title
-        if self.item_type == self.MENU_ITEM_TYPE.announcements and self.display_title == "" :
+        if self.item_type == self.MENU_ITEM_TYPE.announcements_item and self.display_title == "" :
             self.display_title = u'Ankündigungen'
-        if self.item_type == self.MENU_ITEM_TYPE.forum_last_posts and self.display_title == "" :
+        if self.item_type == self.MENU_ITEM_TYPE.last_posts_item and self.display_title == "" :
             self.display_title = u'aktuelle Beiträge'
-        if self.item_type == self.MENU_ITEM_TYPE.student_private and self.display_title == "" :
+        if self.item_type == self.MENU_ITEM_TYPE.private_item and self.display_title == "" :
             self.display_title = u'privater Arbeitsbereich'
-        if self.item_type == self.MENU_ITEM_TYPE.participants_list and self.display_title == "" :
+        if self.item_type == self.MENU_ITEM_TYPE.participants_item and self.display_title == "" :
             self.display_title = u'Teilnehmerliste'
 
         super(ClassroomMenuItem, self).save(*args, **kwargs)
@@ -156,18 +177,18 @@ class ClassroomMenuItem(TimeStampedModel):
         if not self.display_nr:
            raise ValidationError('Bitte angeben an wievielter Stelle der Menüeintrag erscheinen soll!')
 
-        if self.item_type == self.MENU_ITEM_TYPE.header:
+        if self.item_type == self.MENU_ITEM_TYPE.header_item:
 
             # header item: not start_item, no relationships allowed
 
             if self.is_start_item:
                 raise ValidationError('Überschrift kann nicht Startpunkt sein!')
 
-        if self.item_type in [self.MENU_ITEM_TYPE.header,
-                              self.MENU_ITEM_TYPE.announcements,
-                              self.MENU_ITEM_TYPE.student_private,
-                              self.MENU_ITEM_TYPE.forum_last_posts,
-                              self.MENU_ITEM_TYPE.participants_list]:
+        if self.item_type in [self.MENU_ITEM_TYPE.header_item,
+                              self.MENU_ITEM_TYPE.announcements_item,
+                              self.MENU_ITEM_TYPE.private_item,
+                              self.MENU_ITEM_TYPE.last_posts_item,
+                              self.MENU_ITEM_TYPE.participants_item]:
                 if self.lesson or self.forum or self.homework:
                     raise ValidationError("""Eintragsart kann keinen Bezug zu einem Forum,
                                       einer Aufgabe oder einer Lektion haben.""")
@@ -194,7 +215,7 @@ class ClassroomMenuItem(TimeStampedModel):
             if self.lesson or self.homework:
                 raise ValidationError('Bei Eintragstyp Forum bitte nur Forum als Link-Objekt angeben.')
 
-        if self.item_type == self.MENU_ITEM_TYPE.homework:
+        if self.item_type == self.MENU_ITEM_TYPE.homework_item:
 
              # homework item: only relationships homework, is required
 

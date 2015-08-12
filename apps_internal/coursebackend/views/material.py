@@ -23,7 +23,6 @@ class MaterialMixin(CourseMenuMixin, MessageMixin):
        """
        for create update and delete view
        """
-       self.messages.info(self.success_msg)
        return reverse_lazy('coursebackend:material:list',
                            kwargs={'course_slug': self.kwargs['course_slug']})
 
@@ -46,20 +45,20 @@ class MaterialUpdateView(MaterialMixin, UpdateView):
     form_class = MaterialForm
     model = Material
     context_object_name ='material'
-    success_msg = "Das Material wurde geändert!"
+    form_valid_message = "Das Material wurde geändert!"
 
 
 class MaterialDeleteView(MaterialMixin, DeleteView):
     model=Material
     context_object_name ='material'
-    success_msg = "Das Material wurde gelöscht!"
+    form_valid_message = "Das Material wurde gelöscht!"
 
 
 class MaterialCreateView(MaterialMixin, FormView):
     form_class = MaterialForm
     model = Material
     context_object_name ='material'
-    success_msg = "Das Material wurde angelegt!"
+    form_valid_message = "Das Material wurde angelegt!"
 
     def form_valid(self, form):
 

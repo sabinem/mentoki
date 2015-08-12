@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 
 from django.forms.models import modelform_factory
+from django.core.urlresolvers import reverse_lazy
 from django.forms.widgets import TextInput
 from django.views.generic import DetailView, UpdateView
 
@@ -31,6 +32,7 @@ class CourseUpdateView(CourseMenuMixin, UpdateView):
     slug_url_kwarg = 'course_slug'
     slug_field = 'slug'
     context_object_name ='course'
+    form_valid_message="Die Kursvorlage wurde geändert!"
 
     def get_form_class(self, **kwargs):
         field_name = self.kwargs['field']
@@ -40,3 +42,4 @@ class CourseUpdateView(CourseMenuMixin, UpdateView):
             widget = FroalaEditor
         return modelform_factory(Course, fields=(field_name,),
                                  widgets={ field_name: widget })
+

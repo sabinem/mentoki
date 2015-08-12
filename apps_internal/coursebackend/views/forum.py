@@ -5,27 +5,18 @@ from __future__ import unicode_literals
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import get_object_or_404
 from django.http import Http404, HttpResponseRedirect
+from django.views.generic import DetailView, TemplateView, UpdateView, DeleteView, FormView
 
-from vanilla import TemplateView, DetailView, UpdateView, FormView, DeleteView
+from braces.views import MessageMixin
 
 from apps_data.courseevent.models.forum import Forum
 from apps_data.courseevent.models.courseevent import CourseEvent
 
-from ..forms.forum import ForumChangeForm
+from ..forms.forum import ForumForm
 from .mixins.base import CourseMenuMixin
 
 
-class ForumMixin(CourseMenuMixin):
-
-    def get_success_url(self):
-       """
-       for create update and delete view
-       """
-       return reverse_lazy('classroom:studentswork:list',
-                           kwargs={'slug': self.kwargs['slug']})
-
-
-class ForumListView(ForumMixin, TemplateView):
+class ForumListView(CourseMenuMixin, TemplateView):
     """
     List all lesson blocks with lessons underneath
     """
@@ -54,38 +45,45 @@ class ForumDetailView(CourseMenuMixin, TemplateView):
         return context
 
 
+class ForumMixin(object):
 
-
-
-class ForumDetailView(ForumMixin, DetailView):
-    """
-    Work Detail
-    """
-    template_name = 'classroom/studentswork/pages/detail.html'
-    model = Forum
-    lookup_field = 'pk'
-    context_object_name ='work'
+    def get_success_url(self):
+       """
+       for create update and delete view
+       """
+       return reverse_lazy('coursebackend:forum:list',
+                           kwargs={'slug': self.kwargs['slug'],
+                                   'course_slug':self.kwargs['course_slug']})
 
 
 class ForumUpdateView(ForumMixin, UpdateView):
     """
-    Work Update
+    Forum Update
     """
-    template_name = 'classroom/studentswork/pages/update.html'
+    form_class = ForumForm
     model = Forum
-    form_class = ForumChangeForm
-    lookup_field = 'pk'
-    context_object_name ='work'
+    context_object_name ='forum'
+    form_valid_message = "Das Forum wurde geändert!"
+
+    def get_form_kwargs(self):
+        courseevent_slug = self.kwargs['slug']
+        kwargs = super(ForumUpdateView, self).get_form_kwargs()
+        kwargs['courseevent_slug']=courseevent_slug
+        return kwargs
 
 
 class ForumDeleteView(ForumMixin, DeleteView):
     """
-    Work Delete
+    Forum Delete
     """
-    template_name = 'classroom/studentswork/pages/delete.html'
     model = Forum
-    lookup_field = 'pk'
-    context_object_name ='work'
+    context_object_name ='forum'
+    form_valid_message = "Das Forum wurde gelöscht!"
+
+    def get_context_data(self, **kwargs):
+        context = super(ForumDeleteView, self).get_context_data(**kwargs)
+        context['nodes'] = context['object'].get_descendants(include_self=True)
+        return context
 
 
 class ForumCreateView(ForumMixin, FormView):
@@ -93,25 +91,24 @@ class ForumCreateView(ForumMixin, FormView):
     Forum Create
     """
     model = Forum
-    form_class = ForumChangeForm
-    context_object_name ='forum'
+    form_class = ForumForm
+    form_valid_message = "Das Forum wurde angelegt!"
 
-    def get(self, request, *args, **kwargs):
-        courseevent = get_object_or_404(CourseEvent,slug=self.kwargs['slug'])
-        form = self.get_form()
-        form.fields['parent'].queryset = \
-            Forum.objects.parent_choice_for_forum(courseevent=courseevent)
-        context = self.get_context_data(form=form)
-        return self.render_to_response(context)
+    def get_form_kwargs(self):
+        courseevent_slug = self.kwargs['slug']
+        kwargs = super(ForumCreateView, self).get_form_kwargs()
+        kwargs['courseevent_slug']=courseevent_slug
+        return kwargs
 
     def form_valid(self, form):
-        courseevent = get_object_or_404(CourseEvent, slug=self.kwargs['slug'])
-        Forum.objects.create_new_work(
+        courseevent = get_object_or_404(CourseEvent, slug=self.kwargs['course_slug'])
+        forum = Forum.objects.create(
             courseevent=courseevent,
-            homework=form.cleaned_data['homework'],
-            text=form.cleaned_data['text'],
             title=form.cleaned_data['title'],
-            user=self.request.user)
-
-        return HttpResponseRedirect(self.get_success_url())
-
+            description=form.cleaned_data['description'],
+            text=form.cleaned_data['text'],
+            can_have_threads=form.cleaned_data['can_have_threads'],
+            parent=form.cleaned_data['parent'],
+            display_nr=form.cleaned_data['display_nr']
+        )
+        return super(ForumCreateView, self).form_valid(form)

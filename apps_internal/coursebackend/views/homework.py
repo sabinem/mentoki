@@ -5,19 +5,20 @@ from __future__ import unicode_literals
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
+from django.views.generic import DetailView, TemplateView, UpdateView, DeleteView, FormView
 
-from vanilla import TemplateView, DetailView, UpdateView, FormView, DeleteView
+from braces.views import FormValidMessageMixin
 
 from apps_data.courseevent.models.homework import Homework
 from apps_data.courseevent.models.courseevent import CourseEvent
 from apps_data.courseevent.models.courseevent import Course
 from apps_data.course.models.lesson import Lesson
 
-from .mixins.base import CourseMenuMixin
+from .mixins.base import CourseMenuMixin, FormCourseKwargsMixin
 from ..forms.homework import HomeworkForm
 
 
-class HomeworkMixin(CourseMenuMixin):
+class ListRedirectMixin(object):
 
     def get_success_url(self):
        """
@@ -28,7 +29,7 @@ class HomeworkMixin(CourseMenuMixin):
                                    'course_slug': self.kwargs['course_slug']})
 
 
-class HomeworkListView(HomeworkMixin, TemplateView):
+class HomeworkListView(CourseMenuMixin, TemplateView):
     """
     Homework List
     """
@@ -43,50 +44,43 @@ class HomeworkListView(HomeworkMixin, TemplateView):
         return context
 
 
-class HomeworkDetailView(HomeworkMixin, DetailView):
+class HomeworkDetailView(CourseMenuMixin, DetailView):
     """
     Homework Detail
     """
     model = Homework
-    lookup_field = 'pk'
     context_object_name ='homework'
 
 
-class HomeworkUpdateView(HomeworkMixin, UpdateView):
+class HomeworkUpdateView(CourseMenuMixin, FormCourseKwargsMixin,
+                         FormValidMessageMixin, ListRedirectMixin, UpdateView):
     """
     Homework Update
     """
     model = Homework
     form_class = HomeworkForm
-    lookup_field = 'pk'
     context_object_name ='homework'
+    form_valid_message = "Die Aufgabe wurde geändert!"
 
 
-class HomeworkDeleteView(HomeworkMixin, DeleteView):
+class HomeworkDeleteView(CourseMenuMixin, FormValidMessageMixin, ListRedirectMixin, DeleteView):
     """
     Homework Delete
     """
     model = Homework
-    lookup_field = 'pk'
     context_object_name ='homework'
+    form_valid_message = "Die Aufgabe wurde gelöscht!"
 
 
-class HomeworkCreateView(HomeworkMixin, FormView):
+class HomeworkCreateView(CourseMenuMixin, FormCourseKwargsMixin,
+                         FormValidMessageMixin, ListRedirectMixin, FormView):
     """
     Homework Create
     """
-    model = HomeworkMixin
+    model = Homework
     form_class = HomeworkForm
     context_object_name ='homework'
-    form_class = HomeworkForm
-
-    def get(self, request, *args, **kwargs):
-        course = get_object_or_404(Course,slug=self.kwargs['course_slug'])
-        form = self.get_form()
-        form.fields['lesson'].queryset = \
-            Lesson.objects.lessons_for_course(course=course)
-        context = self.get_context_data(form=form)
-        return self.render_to_response(context)
+    form_valid_message = "Die Aufgabe wurde angelegt!"
 
 
     def form_valid(self, form):
@@ -97,7 +91,6 @@ class HomeworkCreateView(HomeworkMixin, FormView):
             text=form.cleaned_data['text'],
             title=form.cleaned_data['title'],
             due_date=form.cleaned_data['due_date'],
-            published=form.cleaned_data['published']
         )
 
         return HttpResponseRedirect(self.get_success_url())

@@ -2,9 +2,18 @@
 
 {% block page_content %}
 
+    <div class="row classroom_background">
+        <div class="sixteen wide column">
+
+            {% include 'coursebackend/announcement/fragments/_breadcrumbs.html' %}
+
+        </div>
+    </div>
+
     <div class="row coursebackend_background">
         <div class="sixteen wide column">
 
+            {% include 'base/fragments/_messages.html' %}
             {% include 'classroom/announcement/fragments/_instance_announcement.html' %}
 
         </div>

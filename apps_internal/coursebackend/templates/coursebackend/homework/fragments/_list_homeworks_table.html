@@ -5,7 +5,8 @@
                 <th>veröffentlicht?</th>
                 <th>Titel</th>
                 <th>Abgabedatum</th>
-                <th>zu Lektion</th>
+                <th>Lektion</th>
+                <th>im Klassenzimmer</th>
             </tr>
         </tr>
     </thead>
@@ -25,16 +26,23 @@
                         {{ homework.title }}
                     </a>
                 </td>
-                <td>-</td>
+                <td>
+                    {% if homework.due_date %}
+                        {{ homework.due_date | date:'d.m.Y'  }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
                 <td>
                     {% if homework.lesson %}
-                        <a href="{% url 'coursebackend:homework:detail' course_slug=course.slug slug=courseevent.slug pk=homework.pk %}">
+                        <a href="{{ homework.lesson.get_absolute_url }}">
                             {{ homework.lesson.title }}
                         </a>
                     {% else %}
                         -
                     {% endif %}
                 </td>
+               <td>-</td>
             </tr>
         {% endfor %}
         {% for homework in homeworks_published %}
@@ -54,7 +62,16 @@
                     {{ homework.due_date | date:'d.m.Y'  }}
                 </td>
                 <td>
-                    <a href="{% url 'coursebackend:homework:detail' course_slug=course.slug slug=courseevent.slug pk=homework.pk %}">
+                    {% if homework.lesson %}
+                        <a href="{{ homework.lesson.get_absolute_url }}">
+                            {{ homework.lesson }}
+                        </a>
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'classroom:homework:list' slug=courseevent.slug pk=homework.pk %}">
                         {{ homework.lesson.title }}
                     </a>
                 </td>

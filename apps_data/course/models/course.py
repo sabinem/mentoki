@@ -21,14 +21,6 @@ class CourseManager(models.Manager):
 
     use_for_related_fields = True
 
-    #def get_course_or_404_from_slug(self, slug):
-        # gets course from slug
-        #return get_object_or_404(self, slug=slug)
-
-    #def teachers_courseinfo(self, slug):
-        # gets course from slug
-        #return get_object_or_404(self, slug=slug)
-
     # <obj>.owners.all() gives all the owners for this course
 
 
@@ -105,7 +97,7 @@ class Course(TimeStampedModel):
         namesstring = ""
         for teacher in teachers:
             if namesstring != "":
-                namesstring += " _(und) "
+                namesstring += " und "
             namesstring += teacher.get_full_name()
         return namesstring
 
@@ -119,7 +111,8 @@ class Course(TimeStampedModel):
             return False
 
     def get_absolute_url(self):
-        return reverse('coursebackend:course:detail', kwargs={'course_slug':self.slug})
+        return reverse('coursebackend:course:detail',
+                       kwargs={'course_slug':self.slug})
 
 
 class CourseOwnerManager(models.Manager):
@@ -139,8 +132,6 @@ class CourseOwnerManager(models.Manager):
     def other_teachers_for_display(self, course, user):
         return self.filter(course=course, display=True).exclude(user=user)
 
-
-
 def foto_location(instance, filename):
         return '/'.join([instance.course.slug, filename])
 
@@ -156,12 +147,12 @@ class CourseOwner(TimeStampedModel):
 
     # special text and foto for this course
     text = models.TextField(
-        verbose_name=_('Text'),
+        verbose_name=_('Kursleiterbeschreibung'),
         help_text=_('''Personenbeschreibung: was qualifiziert Dich für das Halten dieses
         Kurses?'''),
         blank=True)
     foto = models.ImageField(
-        verbose_name=_('Foto'),
+        verbose_name=_('Kursleiter-Foto'),
         help_text=_('''Hier kannst Du ein Foto von Dir hochladen, das auf der Kursauschreibung
         erscheinen soll.'''),
         upload_to=foto_location, blank=True)
@@ -174,7 +165,7 @@ class CourseOwner(TimeStampedModel):
         default=True)
     # Whose name goes first?
     display_nr = models.IntegerField(
-        verbose_name=_('Anzeigereihenfolge bei mehreren Kursleitern'),
+        verbose_name=_('Anzeigereihenfolge'),
         help_text=_('''Dieses Feld steuert die Anzeigereihenfolge bei mehreren Kursleitern.'''),
         default=1)
 
@@ -187,6 +178,13 @@ class CourseOwner(TimeStampedModel):
 
     def __unicode__(self):
         return u'%s %s' % (self.course, self.user)
+
+    @cached_property
+    def course_slug(self):
+        return self.course.slug
+
+    def get_absolute_url(self):
+        return reverse('coursebackend:course:detail', kwargs={'course_slug':self.course_slug, 'pk':self.pk})
 
     def clean(self):
         print "----------- in model clean"

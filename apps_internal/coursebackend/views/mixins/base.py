@@ -4,14 +4,14 @@ from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext_lazy as _
 from mentoki.settings import LOGIN_REDIRECT_URL
 
-from braces.views import LoginRequiredMixin, MessageMixin, UserPassesTestMixin
+from braces.views import LoginRequiredMixin, FormValidMessageMixin, UserPassesTestMixin
 
 from apps_data.courseevent.models.courseevent import CourseEvent
 from apps_data.course.models.course import Course
 from apps_core.core.mixins import TemplateMixin
 
 
-class AuthMixin(LoginRequiredMixin, UserPassesTestMixin, MessageMixin, TemplateMixin):
+class AuthMixin(LoginRequiredMixin, UserPassesTestMixin, TemplateMixin):
     """
     this Mixin builds the menu in the side-bar and the top of the page.
     """
@@ -58,3 +58,19 @@ class CourseMenuMixin(AuthMixin):
                 context['courseevent'] = get_object_or_404(CourseEvent, slug=self.kwargs['slug'])
 
         return context
+
+class FormCourseKwargsMixin(object):
+
+    def get_form_kwargs(self):
+        course_slug = self.kwargs['course_slug']
+        kwargs = super(FormCourseKwargsMixin, self).get_form_kwargs()
+        kwargs['course_slug']=course_slug
+        return kwargs
+
+class FormCourseEventKwargsMixin(object):
+
+    def get_form_kwargs(self):
+        courseevent_slug = self.kwargs['slug']
+        kwargs = super(FormCourseEventKwargsMixin, self).get_form_kwargs()
+        kwargs['courseevent_slug']=courseevent_slug
+        return kwargs

@@ -5,24 +5,15 @@ from __future__ import unicode_literals
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import get_object_or_404
 from django.http import Http404, HttpResponseRedirect
+from django.views.generic import DetailView, TemplateView, UpdateView, DeleteView, FormView
 
-from vanilla import TemplateView, DetailView, UpdateView, FormView, DeleteView
+from braces.views import FormValidMessageMixin
 
 from apps_data.courseevent.models.announcement import Announcement
 from apps_data.courseevent.models.courseevent import CourseEvent
 
 from .mixins.base import CourseMenuMixin
 from ..forms.announcement import AnnouncementForm
-
-
-class AnnouncementChangeMixin(CourseMenuMixin):
-
-    def get_success_url(self):
-       """
-       for create update and delete view
-       """
-       return reverse_lazy('coursebackend:announcement:list',
-                           kwargs={'course_slug': self.kwargs['course_slug'], 'slug': self.kwargs['slug']})
 
 
 class AnnouncementListView(CourseMenuMixin, TemplateView):
@@ -40,41 +31,51 @@ class AnnouncementListView(CourseMenuMixin, TemplateView):
         return context
 
 
+class ListRedirectMixin(object):
+
+    def get_success_url(self):
+       """
+       for create update and delete view
+       """
+       return reverse_lazy('coursebackend:announcement:list',
+                           kwargs={'course_slug': self.kwargs['course_slug'], 'slug': self.kwargs['slug']})
+
+
 class AnnouncementDetailView(CourseMenuMixin, DetailView):
     """
     Announcement Detail
     """
     model = Announcement
-    lookup_field = 'pk'
     context_object_name ='announcement'
 
 
-class AnnouncementUpdateView(AnnouncementChangeMixin, UpdateView):
+class AnnouncementUpdateView(CourseMenuMixin, FormValidMessageMixin, ListRedirectMixin, UpdateView):
     """
     Announcement Update
     """
     model = Announcement
     form_class = AnnouncementForm
-    lookup_field = 'pk'
     context_object_name ='announcement'
+    form_valid_message="Die Ankündigung wurde geändert!"
 
 
-class AnnouncementDeleteView(AnnouncementChangeMixin, DeleteView):
+class AnnouncementDeleteView(CourseMenuMixin, FormValidMessageMixin, ListRedirectMixin, DeleteView):
     """
     Announcement Delete
     """
     model = Announcement
-    lookup_field = 'pk'
     context_object_name ='announcement'
+    form_valid_message="Die Ankündigung wurde gelöscht!"
 
 
-class AnnouncementCreateView(AnnouncementChangeMixin, FormView):
+class AnnouncementCreateView(CourseMenuMixin, FormValidMessageMixin, ListRedirectMixin, FormView):
     """
     Announcement Create
     """
     model = Announcement
     form_class = AnnouncementForm
     context_object_name ='announcement'
+    form_valid_message="Die Ankündigung wurde gespeichert!"
 
     def form_valid(self, form):
         courseevent = get_object_or_404(CourseEvent, slug=self.kwargs['slug'])

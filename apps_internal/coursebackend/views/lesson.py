@@ -6,18 +6,15 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from django.core.urlresolvers import reverse_lazy
 
-from vanilla import UpdateView, DeleteView, CreateView, DetailView, TemplateView
-from django.views.generic import DetailView, TemplateView, UpdateView, DeleteView, CreateView
-
-from mptt.forms import TreeNodeChoiceField
+from django.views.generic import DetailView, TemplateView, UpdateView, DeleteView, FormView
 
 from braces.views import MessageMixin
 
 from .mixins.lesson import CourseFormMixin
 from ..forms.lesson import LessonBlockForm, LessonForm, LessonStepForm
-from ..forms.lessonold import LessonUpdateForm, LessonAddMaterialForm, LessonMoveForm, LessonCreateForm
 
 from apps_data.course.models.lesson import Lesson
+from apps_data.course.models.course import Course
 
 from .mixins.base import CourseMenuMixin
 
@@ -111,13 +108,13 @@ class LessonMixin(CourseMenuMixin, MessageMixin):
        """
        for create update and delete view
        """
-       self.messages.info(self.success_msg)
        return reverse_lazy('coursebackend:lesson:work',
                            kwargs={'course_slug': self.kwargs['course_slug']})
 
     def get_context_data(self, **kwargs):
         context = super(LessonMixin, self).get_context_data(**kwargs)
-        context['breadcrumbs'] = context['object'].get_ancestors(include_self=True)
+        if 'object' in context:
+            context['breadcrumbs'] = context['object'].get_ancestors(include_self=True)
         return context
 
 
@@ -126,14 +123,14 @@ class BlockUpdateView(LessonMixin, UpdateView):
     form_class = LessonBlockForm
     model = Lesson
     context_object_name ='lessonblock'
-    success_msg = "Der Block wurde geändert!"
+    form_valid_message = "Der Block wurde geändert!"
 
 
 class LessonUpdateView(LessonMixin, UpdateView):
     form_class = LessonForm
     model = Lesson
     context_object_name ='lesson'
-    success_msg = "Die Lektion wurde geändert!"
+    form_valid_message = "Die Lektion wurde geändert!"
 
     def get_form_kwargs(self):
         course_slug = self.kwargs['course_slug']
@@ -146,7 +143,7 @@ class LessonStepUpdateView(LessonMixin, UpdateView):
     form_class = LessonStepForm
     model = Lesson
     context_object_name ='lessonstep'
-    success_msg = "Der Lernabschnitt wurde geändert!"
+    form_valid_message = "Der Lernabschnitt wurde geändert!"
 
     def get_form_kwargs(self):
         course_slug = self.kwargs['course_slug']
@@ -158,7 +155,7 @@ class LessonStepUpdateView(LessonMixin, UpdateView):
 class LessonDeleteView(LessonMixin, DeleteView):
     model=Lesson
     context_object_name = 'lesson'
-    success_msg = "Der Lektionsbaum wurde gelöscht!"
+    form_valid_message = "Der Lektionsbaum wurde gelöscht!"
 
     def get_context_data(self, **kwargs):
         context = super(LessonDeleteView, self).get_context_data(**kwargs)
@@ -166,18 +163,28 @@ class LessonDeleteView(LessonMixin, DeleteView):
         return context
 
 
-class BlockCreateView(LessonMixin, UpdateView):
+class BlockCreateView(LessonMixin, FormView):
     form_class = LessonBlockForm
     model = Lesson
     context_object_name ='lessonblock'
-    success_msg = "Der Block wurde angelegt!"
+    form_valid_message = "Der Block wurde angelegt!"
+
+    def form_valid(self, form):
+        course = get_object_or_404(Course, slug=self.kwargs['course_slug'])
+        lesson = Lesson.objects.create(
+            course=course,
+            title=form.cleaned_data['title'],
+            description=form.cleaned_data['description'],
+            text=form.cleaned_data['text']
+        )
+        return super(BlockCreateView, self).form_valid(form)
 
 
-class LessonCreateView(LessonMixin, UpdateView):
+class LessonCreateView(LessonMixin, FormView):
     form_class = LessonForm
     model = Lesson
     context_object_name ='lesson'
-    success_msg = "Die Lektion wurde angelegt!"
+    form_valid_message = "Die Lektion wurde angelegt!"
 
     def get_form_kwargs(self):
         course_slug = self.kwargs['course_slug']
@@ -185,12 +192,23 @@ class LessonCreateView(LessonMixin, UpdateView):
         kwargs['course_slug']=course_slug
         return kwargs
 
+    def form_valid(self, form):
+        course = get_object_or_404(Course, slug=self.kwargs['course_slug'])
+        lesson = Lesson.objects.create(
+            course=course,
+            title=form.cleaned_data['title'],
+            description=form.cleaned_data['description'],
+            text=form.cleaned_data['text'],
+            parent=form.cleaned_data['parent']
+        )
+        return super(LessonCreateView, self).form_valid(form)
 
-class LessonStepCreateView(LessonMixin, UpdateView):
+
+class LessonStepCreateView(LessonMixin, FormView):
     form_class = LessonStepForm
     model = Lesson
     context_object_name ='lessonstep'
-    success_msg = "Der Lernabschnitt wurde angelegt!"
+    form_valid_message = "Der Lernabschnitt wurde angelegt!"
 
     def get_form_kwargs(self):
         course_slug = self.kwargs['course_slug']
@@ -198,3 +216,16 @@ class LessonStepCreateView(LessonMixin, UpdateView):
         kwargs['course_slug']=course_slug
         return kwargs
 
+    def form_valid(self, form):
+        course = get_object_or_404(Course, slug=self.kwargs['course_slug'])
+
+        lesson = Lesson.objects.create_step(
+            course=course,
+            title=form.cleaned_data['title'],
+            description=form.cleaned_data['description'],
+            text=form.cleaned_data['text'],
+            materials=form.cleaned_data['materials'],
+            nr=form.cleaned_data['nr'],
+            parent=form.cleaned_data['parent']
+        )
+        return super(LessonStepCreateView, self).form_valid(form)

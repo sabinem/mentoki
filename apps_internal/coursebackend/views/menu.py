@@ -52,7 +52,6 @@ class MenuPreView(CourseMenuMixin, TemplateView):
 
         context['classroommenuitems'] = \
             ClassroomMenuItem.objects.all_for_courseevent(courseevent=context['courseevent'])
-
         return context
 
 
@@ -63,6 +62,7 @@ class MenuItemUpdateView(ClassroomMenuMixin, UpdateView):
     model = ClassroomMenuItem
     form_class = MenuItemForm
     context_object_name ='classroomenuitem'
+    form_valid_message="Der Eintrag wurde geändert."
 
     def get_form_kwargs(self):
         course_slug = self.kwargs['course_slug']
@@ -71,6 +71,14 @@ class MenuItemUpdateView(ClassroomMenuMixin, UpdateView):
         kwargs['course_slug']=course_slug
         kwargs['courseevent_slug']=courseevent_slug
         return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super(MenuItemUpdateView, self).get_context_data(**kwargs)
+
+        context['classroommenuitems'] = \
+            ClassroomMenuItem.objects.all_for_courseevent(courseevent=context['courseevent'])
+
+        return context
 
 
 class MenuUpdateView(CourseMenuMixin, ModelFormSetView):
@@ -82,16 +90,11 @@ class MenuUpdateView(CourseMenuMixin, ModelFormSetView):
     readonly = ('link',)
     can_order = True
 
-    #def get_queryset(self):
-    #    slug = self.kwargs['slug']
-    #    return super(MenuUpdateView, self).get_queryset().filter(slug=slug)
-
     def get_context_data(self, **kwargs):
         context = super(MenuUpdateView, self).get_context_data(**kwargs)
-        print "============================="
-        print context
-        print "-----"
-        print context['formset']
+
+        context['classroommenuitems'] = \
+            ClassroomMenuItem.objects.all_for_courseevent(courseevent=context['courseevent'])
 
         return context
 
@@ -100,8 +103,8 @@ class MenuItemDeleteView(CourseMenuMixin, DeleteView):
     Classroom Menu Item Delete
     """
     model = ClassroomMenuItem
-    lookup_field = 'pk'
     context_object_name ='classroomenuitem'
+    form_valid_message="Der Eintrag wurde gelöscht."
 
 
 class MenuItemCreateView(ClassroomMenuMixin, FormView):
@@ -110,6 +113,7 @@ class MenuItemCreateView(ClassroomMenuMixin, FormView):
     """
     model = ClassroomMenuItem
     form_class = MenuItemForm
+    form_valid_message="Der Eintrag wurde gespeichert."
 
     def get_context_data(self, **kwargs):
         context = super(MenuItemCreateView, self).get_context_data(**kwargs)
@@ -137,7 +141,6 @@ class MenuItemCreateView(ClassroomMenuMixin, FormView):
             forum=form.cleaned_data['forum'],
             display_title=form.cleaned_data['display_title'],
             display_nr=form.cleaned_data['display_nr'],
-            published=form.cleaned_data['published'],
             item_type=form.cleaned_data['item_type'],
             is_start_item=form.cleaned_data['is_start_item']
         )

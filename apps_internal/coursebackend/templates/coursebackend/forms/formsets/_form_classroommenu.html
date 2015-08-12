@@ -1,7 +1,7 @@
 {{ form.media }}
 <form class="ui form" method="post" action="" enctype="multipart/form-data">{% csrf_token %}
 
-    {% include 'classroom/forms/form_fields/_form_non_field_errors.html' %}
+    {% include 'coursebackend/forms/fragments/_form_non_field_errors.html' %}
 
     <table>
         <thead>

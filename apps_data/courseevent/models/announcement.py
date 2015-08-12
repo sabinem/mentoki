@@ -4,6 +4,8 @@ from __future__ import unicode_literals, absolute_import
 
 from django.db import models
 from django.utils.translation import ugettext as _
+from django.core.urlresolvers import reverse
+from django.utils.functional import cached_property
 
 from model_utils.models import TimeStampedModel
 from model_utils.fields import MonitorField, StatusField
@@ -34,7 +36,7 @@ class Announcement(TimeStampedModel):
     courseevent = models.ForeignKey(CourseEvent)
 
     title = models.CharField(
-        _(verbose_name="Betreff"),
+        verbose_name=_("Betreff"),
         max_length=100)
     text = models.TextField(
         verbose_name=_("Text"))
@@ -51,3 +53,22 @@ class Announcement(TimeStampedModel):
 
     def __unicode__(self):
         return self.title
+
+    @cached_property
+    def course_slug(self):
+        return self.courseevent.course_slug
+
+    @cached_property
+    def slug(self):
+        return self.courseevent.slug
+
+    def get_absolute_url(self):
+        return reverse('coursebackend:announcement:detail',
+                       kwargs={'course_slug':self.course_slug,
+                               'slug':self.slug,
+                               'pk':self.pk})
+
+    def get_classroom_url(self):
+        return reverse('classroom:announcement:detail',
+               kwargs={'slug':self.slug,
+                       'pk':self.pk})

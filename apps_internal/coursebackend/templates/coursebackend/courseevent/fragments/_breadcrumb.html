@@ -1,0 +1,10 @@
+<div class="ui large breadcrumb" id ="page-breadcrumb">
+    <a href="{% url 'coursebackend:course:detail' course_slug=course.slug %}"
+        class="item">Kursvorlage {{ course.title }}
+    </a>
+    <i class="right chevron icon divider"></i>
+    <a href="{% url 'coursebackend:courseevent:list' course_slug=course.slug %}"
+        class="item">Kursereignisse {{ courseevent.title }}
+    </a>
+    <i class="right chevron icon divider"></i>
+</div>

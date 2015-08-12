@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 
 from django.forms.models import modelform_factory
+from django.core.urlresolvers import reverse_lazy
 from django.forms.models import model_to_dict
 from django.forms.widgets import NumberInput, DateInput,TextInput, Select
 from django.views.generic import DetailView, UpdateView, TemplateView
@@ -44,6 +45,7 @@ class CourseEventUpdateView(CourseMenuMixin, UpdateView):
     slug_url_kwarg = 'slug'
     slug_field = 'slug'
     context_object_name ='courseevent'
+    form_valid_message="Das Kursereignis wurde geändert!"
 
     def get_form_class(self, **kwargs):
         field_name = self.kwargs['field']

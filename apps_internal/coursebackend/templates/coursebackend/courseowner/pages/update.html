@@ -2,12 +2,20 @@
 
 {% block page_content %}
 
+    <div class="row coursebackend_background">
+        <div class="sixteen wide column">
+
+            {% include 'coursebackend/courseowner/fragments/_breadcrumb.html' %}
+
+        </div>
+    </div>
+
     <div class="row classroombackend_white">
         <div class="sixteen wide column">
 
             {% include 'coursebackend/courseowner/fragments/_instance_courseowner_user.html' %}
 
-            {% include 'coursebackend/forms/update_create/_form_courseowner.html' %}
+            {% include 'coursebackend/forms/update_create/_courseowner.html' %}
 
         </div>
     </div>

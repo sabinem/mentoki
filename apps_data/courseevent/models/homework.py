@@ -4,6 +4,8 @@ from __future__ import unicode_literals, absolute_import
 
 from django.db import models
 from django.utils.translation import ugettext as _
+from django.core.urlresolvers import reverse
+from django.utils.functional import cached_property
 from mentoki import settings
 
 from model_utils.models import TimeStampedModel
@@ -29,12 +31,12 @@ class HomeworkManager(models.Manager):
         return self.filter(courseevent=courseevent, published=False).\
             order_by('published', 'due_date').select_related('lesson')
 
-    def create(self, courseevent, text, title, due_date=None, published=False, lesson=None):
+    def create(self, courseevent, text, title, due_date=None, lesson=None):
         homework = Homework(courseevent=courseevent,
                                 lesson=lesson,
                                 text=text,
                                 title=title,
-                                published=published,
+                                published=False,
                                 due_date=due_date)
         homework.save()
         return homework
@@ -63,6 +65,26 @@ class Homework(TimeStampedModel):
 
     def __unicode__(self):
         return self.title
+
+    @cached_property
+    def course_slug(self):
+        return self.courseevent.course_slug
+
+    @cached_property
+    def slug(self):
+        return self.courseevent.slug
+
+    def get_absolute_url(self):
+        return reverse('coursebackend:homework:detail',
+                       kwargs={'course_slug':self.course_slug,
+                               'slug':self.slug,
+                               'pk':self.pk})
+
+    def get_classroom_url(self):
+        return reverse('classroom:homework:list',
+               kwargs={'slug':self.slug,
+                       'pk':self.pk})
+
 
 
 class StudentsWorkManager(models.Manager):
@@ -105,3 +127,8 @@ class StudentsWork(TimeStampedModel):
         Returns all the accounts of users who are students in the courseevent
         """
         return self.workers.all().order_by('username').prefetch_related('teammembers')
+
+    def get_absolute_url(self):
+        return reverse('classroom:studentswork:detail',
+                       kwargs={'slug':self.slug,
+                               'pk':self.pk})

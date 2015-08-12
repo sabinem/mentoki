@@ -1,0 +1,40 @@
+{{ form.media }}
+<form class="ui form" method="post" action="">
+
+    {% csrf_token %}
+
+    <div class="ui dividing large header">Kursvorlage {{ course.titel }} bearbeiten</div>
+
+    {% include 'coursebackend/forms/fragments/_form_non_field_errors.html' %}
+
+    {% for field in form %}
+
+        <div class="fieldWrapper">
+
+            <div class="ui header medium" style="padding-top:1em;">{{ field.label_tag }}</div>
+
+            {% if field.help_text %}
+                 <p>{{ field.help_text }}</p>
+            {% endif %}
+
+            {% if field.errors %}
+                <div class="ui negative floating message">
+                    {{ field.errors }}
+                </div>
+            {% endif %}
+
+            {{ field }}
+
+        </div>
+
+    {% endfor %}
+
+    <button type="submit" value="post" class="ui button">
+        Speichern
+    </button>
+
+    <a href="{% url 'coursebackend:course:detail' course_slug=course.slug %}" class="ui button">
+        Abbruch
+    </a>
+
+</form>

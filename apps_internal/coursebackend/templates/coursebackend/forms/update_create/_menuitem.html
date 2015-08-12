@@ -1,7 +1,7 @@
 {{ form.media }}
 <form class="ui form" method="post" action="" >{% csrf_token %}
 
-    {% include 'classroom/forms/form_fields/_form_non_field_errors.html' %}
+  {% include 'coursebackend/forms/fragments/_form_non_field_errors.html' %}
 
   <div class="inline fields">
     <div class="field sixteen wide">
@@ -13,9 +13,9 @@
 
   <div class="inline fields">
     <div class="field sixteen wide">
-      <label>Einhängen unter</label>
-      Unter welchem Menüeintrag soll dieser Eintrag eigehängt werden?
-      {{ form.reference_menu_item }}
+      <label>{{ form.dispaly_nr.label_tag }}</label>
+      {{ form.display_nr.help_text }}
+      {{ form.display_nr}}
     </div>
   </div>
 

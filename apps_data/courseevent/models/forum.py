@@ -33,12 +33,13 @@ class ForumManager(TreeManager):
     def forums_published_in_courseevent(self, courseevent):
         return self.filter(courseevent=courseevent, published=True)
 
-    def create(self, courseevent, text, title, display_nr, can_have_threads=False,
-               published=False, parent=None):
+    def create(self, courseevent, text, title, description, display_nr, can_have_threads=False,
+               parent=None):
         forum = Forum(courseevent=courseevent,
                       text=text,
                       title=title,
-                      published=published,
+                      description=description,
+                      published=False,
                       display_nr=display_nr,
                       can_have_threads=can_have_threads)
         forum.insert_at(parent)
@@ -154,15 +155,16 @@ class Forum(MPTTModel, TimeStampedModel):
     def thread_count(self):
         return Thread.objects.filter(forum=self).count()
 
-    def possible_parents(self):
-        qs = Forum.objects.none()
-        if self.is_forum:
-            pass
-        elif self.is_leaf_node():
-           qs = Forum.objects.filter(level__lte=1, courseevent=self.courseevent)
-        else:
-           qs = Forum.objects.filter(level=0, courseevent=self.courseevent)
-        return qs.exclude(pk=self.pk).order_by('tree_id', 'level', 'display_nr')
+    def get_absolute_url(self):
+        return reverse('coursebackend:forum:detail',
+                       kwargs={'course_slug':self.course_slug,
+                               'slug':self.slug,
+                               'pk':self.pk})
+
+    def get_classroom_url(self):
+        return reverse('classroom:forum:detail',
+               kwargs={'slug':self.slug,
+                       'pk':self.pk})
 
 
 class ForumContributionModel(TimeStampedModel):

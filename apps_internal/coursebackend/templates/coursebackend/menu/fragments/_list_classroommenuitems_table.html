@@ -1,12 +1,13 @@
 {% with e_slug=courseevent.slug c_slug=course.slug %}
 
+    <a href="{{ courseevent.get_absolute_url }}">xx</a>
+
     <table class="ui table">
 
         <thead>
             <tr>
                 <tr>
                     <th>bearbeiten?</th>
-                    <th>veröffentlicht?</th>
                     <th>Start-Item?</th>
                     <th>Eintrag</th>
                     <th>Eintragsart</th>
@@ -16,53 +17,42 @@
         </thead>
 
         <tbody>
-            {% for classroommenuitem in classroommenuitems %}
-                <tr>
+            {% for menuitem in classroommenuitems %}
+                {% if menuitem.is_classroom_link %}
+                    <tr>
 
-                    <td>
-                        {% with pk=classroommenuitem.pk %}
-                            {% include 'coursebackend/menu/fragments/_instance_pk_worklinks.html' %}
-                        {% endwith %}
-                    </td>
-
-                    <td>
-                        {% if classroommenuitem.published %}
-                            <i class="icon checkmark green"></i>
-                        {% endif %}
-                    </td>
-
-                    <td>
-                        {% if classroommenuitem.is_start_item %}
-                            <i class="icon circle red"></i>
-                        {% endif %}
-                    </td>
-
-                    <td>
-                        {{ classroommenuitem.display_title }}
-                    </td>
-
-                    <td>
-                        {{ classroommenuitem.get_item_type_display }}
-                    </td>
-
-                    <td>
-                        {% if classroommenuitem.lesson %}
-                             {{ classroommenuitem.lesson }}
-                        {% elif classroommenuitem.forum %}
-                             {{ classroommenuitem.forum }}
-                        {% elif classroommenuitem.homework %}
-                            {% with pk=classroommenuitem.homework_id %}
-                             <a href="{% url 'coursebackend:homework:detail' pk=pk slug=e_slug course_slug=c_slug %}">
-                                 {{ classroommenuitem.homework.title }}
-                             </a>
+                        <td>
+                            {% with pk=menuitem.pk %}
+                                {% include 'coursebackend/menu/fragments/_instance_menuitem_worklinks.html' %}
                             {% endwith %}
-                        {% else %}
-                            -
-                        {% endif %}
-                    </td>
+                        </td>
 
-                </tr>
+                        <td>
+                            {% if menuitem.is_start_item %}
+                                <i class="icon circle red"></i>
+                            {% endif %}
+                        </td>
 
+                        <td>
+                            {{ menuitem.display_title }}
+                        </td>
+
+                        <td>
+                            {{ menuitem.get_item_type_display }}
+                        </td>
+
+                        <td>
+                            <a href="{{ menuitem.get_menu_item_classroom_url }}">
+                                <i class="icon student"></i>
+                            </a>
+                            <a href="{{ menuitem.get_menu_item_work_url }}">
+                                <i class="icon wrench"></i>
+                            </a>
+                        </td>
+
+                    </tr>
+
+                {% endif %}
             {% endfor %}
 
         </tbody>

@@ -1,0 +1,10 @@
+<div class="ui list bulleted">
+  {% for lesson in material.lesson_set.all %}
+      <a class="item"
+          href="{% url 'coursebackend:lesson:step' course_slug=course.slug pk=lesson.pk %}">
+          {{ lesson.lesson_nr }} {{ lesson.title }}
+      </a>
+  {% empty %}
+      -
+  {% endfor %}
+</div>

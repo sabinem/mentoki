@@ -520,6 +520,39 @@ object.htmlembed {
   background: #b48368;
   color: white;
 }
+#classroom_menu {
+  background: #f7fafe;
+  padding-bottom: 100px;
+}
+#classroom_menu a.item {
+  font-size: 1.2em;
+}
+#classroom_menu .header.item {
+  background: #ebc7a6;
+  font-size: 1.5em;
+}
+#classroom_menu a.item.active,
+#classroom_menu a.item:hover {
+  background: #8b452c;
+  background: #b48368;
+  color: white;
+}
+#coursebackend #classroom_preview_menu {
+  background: #f7fafe;
+  padding-bottom: 100px;
+}
+#coursebackend #classroom_preview_menu a.item {
+  font-size: 1.2em;
+}
+#coursebackend #classroom_preview_menu .header.item {
+  background: #ebc7a6;
+  font-size: 1.5em;
+}
+#coursebackend #classroom_preview_menu a.item.active {
+  background: #8b452c;
+  background: #b48368;
+  color: white;
+}
 /* --------------------------------------  */
 /*    sidebar menu                          */
 /* --------------------------------------- */

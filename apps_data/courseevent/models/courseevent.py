@@ -19,7 +19,7 @@ from model_utils.managers import PassThroughManager
 from model_utils.fields import MonitorField
 from model_utils import Choices
 
-from apps_data.course.models.course import Course, CourseOwner
+from apps_data.course.models.course import Course
 
 
 class CourseEventQuerySet(QuerySet):
@@ -124,12 +124,13 @@ class CourseEvent(TimeStampedModel):
         blank=True)
     project = models.TextField(
         verbose_name=_("Teilnehmernutzen"),
-        blank=True)        
+        blank=True)
     structure = models.TextField(
         verbose_name=_("Gliederung"),
         blank=True)
     target_group = models.TextField(
         verbose_name=_("Zielgruppe"),
+        help_text=_('Zielgruppe, wie sie in der Kursausschreibung erscheinen soll.'),
         blank=True)
     prerequisites = models.TextField(
         verbose_name=_("Voraussetzungen"),
@@ -165,7 +166,7 @@ class CourseEvent(TimeStampedModel):
     def teachersrecord(self):
         return self.course.teachersrecord
 
-    @cached_property
+    @property
     def end_date(self):
         """
         calculate the end date form the startdate and the number of weeks if a startdate is given.
@@ -192,7 +193,9 @@ class CourseEvent(TimeStampedModel):
         return self.participation.all().prefetch_related('participation').order_by('username')
 
     def get_absolute_url(self):
-        return reverse('coursebackend:courseevent:detail', kwargs={'course_slug':self.course_slug, 'slug':self.slug})
+        return reverse('coursebackend:courseevent:detail',
+                       kwargs={'course_slug':self.course_slug,
+                               'slug':self.slug})
 
 
 class ParticipationQuerySet(QuerySet):

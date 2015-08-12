@@ -63,6 +63,8 @@ INSTALLED_APPS = (
 
     'apps_data.course',
     'apps_data.courseevent',
+    'apps_data.material',
+    'apps_data.lesson',
 
     'apps_internal.desk',
     'apps_internal.coursebackend',
@@ -136,8 +138,6 @@ LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale','apps_internal','classroom'),
 
 )
-print "============ IN SETTINGS"
-print LOCALE_PATHS
 
 TIME_ZONE = 'Europe/Zurich'
 

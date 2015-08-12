@@ -34,16 +34,7 @@
       </td>
 
       <td>
-          <div class="ui list bulleted">
-              {% for lesson in material.lesson_set.all %}
-                  <a class="item"
-                      href="{% url 'coursebackend:lesson:step' course_slug=course.slug pk=lesson.pk %}">
-                      {{ lesson.lesson_nr }} {{ lesson.title }}
-                  </a>
-              {% empty %}
-                  -
-              {% endfor %}
-          </div>
+          {% include 'coursebackend/material/fragments/_list_material_lesson_set.html' %}
       </td>
 
     </tr>

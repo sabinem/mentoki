@@ -22,7 +22,7 @@ class LessonBlockForm(forms.ModelForm):
 
     class Meta:
         model = Lesson
-        fields = ('title', 'description', 'text')
+        fields = ('title', 'description', 'text', 'nr')
 
 
 class LessonForm(forms.ModelForm):
@@ -45,11 +45,11 @@ class LessonForm(forms.ModelForm):
 
 class LessonStepForm(forms.ModelForm):
     text = forms.CharField(widget=FroalaEditor, required=False)
-    material = forms.CheckboxSelectMultiple()
+    materials = forms.CheckboxSelectMultiple()
 
     class Meta:
         model = Lesson
-        fields = ('parent', 'nr', 'title', 'description', 'text', 'material' )
+        fields = ('parent', 'nr', 'title', 'description', 'text', 'materials' )
 
     def __init__(self, *args, **kwargs):
         course_slug = kwargs.pop('course_slug', None)
@@ -61,5 +61,5 @@ class LessonStepForm(forms.ModelForm):
         self.fields['parent'] = TreeNodeChoiceField(
             queryset=Lesson.objects.lessons_for_course(course=self.course),
             level_indicator=u'+--')
-        self.fields['material'].widget = CheckboxSelectMultiple()
-        self.fields["material"].queryset = Material.objects.filter(course=self.course)
+        self.fields['materials'].widget = CheckboxSelectMultiple()
+        self.fields['materials'].queryset = Material.objects.filter(course=self.course)

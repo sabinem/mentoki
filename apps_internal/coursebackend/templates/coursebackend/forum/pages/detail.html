@@ -1,15 +1,24 @@
 {% extends "coursebackend/base_courseevent.html" %}
 
-{% block page_subsection_css_id %}homework{% endblock %}
+{% block course_menu_items %}
+    {% include 'coursebackend/forum/fragments/_link_worklinks.html' %}
+{% endblock %}
 
 {% block page_content %}
 
-    <div class="row coursebackend_background">
+    <div class="row classroom_background">
         <div class="sixteen wide column">
 
-            {% include 'coursebackend/homework/fragments/_help_homework.html' %}
+            {% include 'coursebackend/forum/fragments/_breadcrumbs.html' %}
 
-            {% include 'coursebackend/homework/fragments/_instance_homework.html' %}
+        </div>
+    </div>
+
+    <div class="row classroom_background">
+        <div class="sixteen wide column">
+
+            {% include 'base/fragments/_messages.html' %}
+            {% include 'coursebackend/forum/fragments/_recursetree_nodes.html' %}
 
         </div>
     </div>

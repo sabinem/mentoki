@@ -7,7 +7,7 @@
 
 {% block top_attached_menu %}
 
-    <div class="ui top attached menu">
+    <div class="ui top attached menu fluid">
 
         <!-- menu button  -->
 
@@ -22,7 +22,7 @@
         </a>
 
         <div class="ui popup bottom left transition hidden"
-             style="top: 555px; left: 1px; bottom: auto; right: auto; width: 200px;">
+             style="top: 555px; left: 1px; bottom: auto; right: auto; width: 300px;">
 
             <div class="ui one column relaxed divided grid">
 
@@ -72,6 +72,14 @@
                             {% endifstartswith %}
                             ">Materialien</a>
 
+                        {% for courseevent in courseevents %}
+
+                            <a href="{% url 'coursebackend:courseevent:detail' slug=courseevent.slug course_slug=course.slug %}"
+                                class="item
+                                ">{{ courseevent }} <i class="icon external"></i>
+                            </a>
+                        {% endfor %}
+
                     </div>
 
                 </div>
@@ -79,6 +87,8 @@
             </div>
 
         </div>
+
+        {% block course_menu_items %}{% endblock %}
 
     </div>
 

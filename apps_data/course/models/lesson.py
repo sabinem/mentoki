@@ -7,6 +7,7 @@ from django.utils.functional import cached_property
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
+from django.core.validators import ValidationError
 
 from mptt.models import MPTTModel, TreeForeignKey, TreeManager
 
@@ -28,7 +29,7 @@ class LessonManager(TreeManager):
 
     def complete_tree_for_course(self, course):
         return self.filter(course=course, level=0).\
-            get_descendants(include_self=True).prefetch_related('material')
+            get_descendants(include_self=True).prefetch_related('materials')
 
     def lessons_published_in_courseevent(self, courseevent):
         return self.filter(lessonpublisher__courseevent=courseevent,
@@ -52,27 +53,97 @@ class LessonManager(TreeManager):
                            level=0,
                            )
 
+    def create_block(self, nr, title, text, description, course):
+        block = Lesson(course=course,
+                       title=title,
+                       description=description,
+                       text=text,
+                       nr=nr,
+                       lesson_nr=lesson_nr_block()
+                       )
+        block.insert_at(None)
+        block.save()
+        return block
+
+    def create_lesson(self, nr, title, text, description, course, parent):
+        lesson = Lesson(course=course,
+                       title=title,
+                       description=description,
+                       text=text,
+                       nr=nr,
+                       lesson_nr=lesson_nr_lesson(nr=nr)
+                       )
+        lesson.insert_at(parent)
+        lesson.save()
+        return lesson
+
+    def create_step(self, nr, title, text, description, course, parent, materials):
+        step = Lesson(course=course,
+                       title=title,
+                       description=description,
+                       text=text,
+                       nr=nr,
+                       lesson_nr=lesson_nr_step(nr=nr, parent_nr=parent.nr)
+                       )
+        step.insert_at(parent)
+        step.save()
+        for item in materials:
+            step.materials.add(item)
+        return step
+
 def lesson_material_name(instance, filename):
         path = '/'.join([instance.course.slug, slugify(instance.title), filename])
         return path
+
+def lesson_nr_block():
+    return ""
+
+def lesson_nr_lesson(nr):
+    return u'%s' % str(nr)
+
+def lesson_nr_step(nr, parent_nr):
+    return u'%s.%s' % (str(parent_nr), str(nr))
+
 
 class Lesson(MPTTModel, TimeStampedModel):
 
     course = models.ForeignKey(Course)
 
-    parent = TreeForeignKey('self', null=True, blank=True, related_name='children', db_index=True, verbose_name="einhängen unter")
+    parent = TreeForeignKey('self',
+        verbose_name="einhängen unter",
+        null=True,
+        blank=True,
+        related_name='children',
+        db_index=True,
+        )
 
-    nr = models.IntegerField(default=1)
-    lesson_nr = models.CharField(blank=True, max_length=10)
+    nr = models.IntegerField(
+        verbose_name=_('Nr.'),
+        default=1)
+    lesson_nr = models.CharField(
+        verbose_name=_('Lektionsnr.'),
+        help_text='abgeleitetes Feld: keine manuelle Eingabe',
+        blank=True,
+        max_length=10)
 
-    title = models.CharField(max_length=100)
-    text = models.TextField(blank=True)
+    title = models.CharField(
+        verbose_name="Überschrift",
+        help_text="Lektions-Titel",
+        max_length=100)
+    text = models.TextField(
+        verbose_name="Lektionstext",
+        help_text="Text der Lektion",
+        blank=True)
     description = models.CharField(
         verbose_name='kurze Beschreibung',
+        help_text="diese Beschreibung erscheint nur in den Übersichten",
         max_length=200,
         blank=True)
 
-    material = models.ManyToManyField(Material, blank=True)
+    materials = models.ManyToManyField(Material,
+        verbose_name="Kursmaterial",
+        help_text="Material der Lektion",
+        blank=True)
 
     courseeventpublications = models.ManyToManyField(CourseEvent, through="LessonPublisher", blank=True)
 
@@ -96,16 +167,23 @@ class Lesson(MPTTModel, TimeStampedModel):
     class MPTTMeta:
         order_insertion_by = ['course', 'nr']
 
+    def __unicode__(self):
+        if self.level == 0:
+            return u'Block: %s' % (self.title)
+        elif self.level == 1:
+            return u'%s: %s. %s' % (self.parent.title, self.lesson_nr, self.title)
+        elif self.is_step:
+            return u'%s %s' % (self.lesson_nr, self.title)
+
     def save(self, *args, **kwargs):
         # lesson_nr is calculated and stored in the database for performance
-        if self.level == 0 :
-            self.lesson_nr = ""
-        elif self.level == 1 :
-            self.lesson_nr = u'%s' % str(self.nr)
-        elif self.level == 2 :
-            self.lesson_nr = u'%s.%s' % (str(self.parent.nr), str(self.nr))
-        else:
-            raise ValueError('unexpected lesson level')
+        if self.level:
+            if self.level == 0:
+                self.lesson_nr = lesson_nr_block()
+            elif self.level == 1 :
+                self.lesson_nr = lesson_nr_lesson(nr=self.nr)
+            elif self.level == 2 :
+                self.lesson_nr = lesson_nr_step(nr=self.nr, parent_nr=self.parent.nr)
         super(Lesson, self).save(*args, **kwargs)
 
     @property
@@ -119,13 +197,37 @@ class Lesson(MPTTModel, TimeStampedModel):
         else:
             raise ValueError('unexpected lesson level')
 
-    def __unicode__(self):
+    @cached_property
+    def course_slug(self):
+        return self.course.slug
+
+    def get_absolute_url(self):
+        """
+        get the absolute url which is in the backend of the course
+        """
         if self.level == 0:
-            return u'Block: %s' % (self.title)
+            return reverse('coursebackend:lesson:block',
+                           kwargs={'course_slug':self.course_slug, 'pk':self.pk})
         elif self.level == 1:
-            return u'%s: %s. %s' % (self.parent.title, self.lesson_nr, self.title)
-        elif self.is_step:
-            return u'%s %s' % (self.lesson_nr, self.title)
+            return reverse('coursebackend:lesson:lesson',
+                           kwargs={'course_slug':self.course_slug, 'pk':self.pk})
+        else:
+            return reverse('coursebackend:lesson:step',
+                           kwargs={'course_slug':self.course_slug, 'pk':self.pk})
+
+    def get_classroom_url(self, courseevent):
+        """
+        get the url for the classroom of the given courseevent
+        """
+        if self.level == 0:
+            return reverse('classroom:lesson:lessonblock_detail',
+                           kwargs={'slug':courseevent.slug, 'pk':self.pk})
+        elif self.level == 1:
+            return reverse('classroom:lesson:lesson_detail',
+                           kwargs={'slug':courseevent.slug, 'pk':self.pk})
+        else:
+            return reverse('classroom:lesson:lessonstep_detail',
+                           kwargs={'slug':courseevent.slug, 'pk':self.pk})
 
     def breadcrumb(self):
         if self.level == 0:
@@ -134,10 +236,6 @@ class Lesson(MPTTModel, TimeStampedModel):
             return u'%s. %s' % (self.lesson_nr, self.title)
         elif self.is_step:
             return u'%s %s' % (self.lesson_nr, self.title)
-
-    @cached_property
-    def course_slug(self):
-        return self.course.slug
 
     def get_next_sibling(self):
         next = super(Lesson, self).get_next_sibling()
@@ -186,7 +284,7 @@ class Lesson(MPTTModel, TimeStampedModel):
             lessonpublisher__published=True)
 
     def get_tree_with_material(self):
-        return self.get_descendants(include_self=False).prefetch_related('material')
+        return self.get_descendants(include_self=False).prefetch_related('materials')
 
     def get_tree_without_material(self):
         return self.get_descendants(include_self=False)

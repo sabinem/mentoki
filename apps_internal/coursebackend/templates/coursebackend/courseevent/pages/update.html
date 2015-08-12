@@ -2,14 +2,18 @@
 
 {% block page_content %}
 
+    <div class="row coursebackend_background">
+        <div class="sixteen wide column">
+
+            {% include 'coursebackend/courseevent/fragments/_breadcrumb.html' %}
+
+        </div>
+    </div>
+
     <div class="row classroombackend_white">
         <div class="sixteen wide column">
 
-            {% include 'coursebackend/courseevent/fragments/_help_exampletext.html' %}
-
-            {% include 'coursebackend/courseevent/fragments/_instance_courseevent_header.html' %}
-
-            {% include 'coursebackend/forms/update_create/_form_courseevent.html' %}
+            {% include 'coursebackend/forms/update_create/_courseevent.html' %}
 
         </div>
     </div>

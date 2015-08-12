@@ -1,14 +1,20 @@
-<div class="ui fluid vertical menu" id="classroom_menu">
+<div class="ui fluid vertical menu" id="classroom_preview_menu">
 
     <div class="header item active" id="classroom_header">
-      {{ courseevent.title }}
+      {{ courseevent.title }} {{ object.pk }}
     </div>
 
-    {% for item in classroommenuitems %}
+    {% for menuitem in classroommenuitems %}
 
-        {% if item.item_type == item.MENU_ITEM_TYPE.announcements %}
-            <a class="item"
-                href="{% url 'coursebackend:menu:update' course_slug=course.slug slug=courseevent.slug pk=item.pk %}">
+         {% if menuitem.is %}
+
+        {% if menuitem.item_type == item.MENU_ITEM_TYPE.announcements_item %}
+            <a class="item
+            {% if item.pk == object.pk %}
+            active
+            {% endif %}
+            "
+                href="{% url 'classroom:announcement:list' slug=courseevent.slug %}">
                 <i class="announcement icon"></i>
                 {{ item.display_title }}
             </a>
@@ -19,19 +25,19 @@
                 <i class="comments outline icon"></i>{{ item.display_title }}
             </a>
 
-        {% elif item.item_type == item.MENU_ITEM_TYPE.homework %}
+        {% elif item.item_type == item.MENU_ITEM_TYPE.homework_item %}
             <a class="item"
                 href="{% url 'coursebackend:menu:update' course_slug=course.slug  slug=courseevent.slug pk=item.pk %}">
                 <i class="write icon"></i>{{ item.display_title }}
             </a>
 
-        {% elif item.item_type == item.MENU_ITEM_TYPE.forum_last_posts %}
+        {% elif item.item_type == item.MENU_ITEM_TYPE.last_posts_item %}
             <a class="item"
                 href="{% url 'coursebackend:menu:update' course_slug=course.slug   slug=courseevent.slug pk=item.pk %}">
                 <i class="find icon"></i>{{ item.display_title }}
             </a>
 
-        {% elif item.item_type == item.MENU_ITEM_TYPE.student_private %}
+        {% elif item.item_type == item.MENU_ITEM_TYPE.private_item %}
             <a class="item"
                 href="{% url 'coursebackend:menu:update' course_slug=course.slug slug=courseevent.slug pk=item.pk %}">
                 <i class="privacy icon"></i>{{ item.display_title }}
@@ -43,19 +49,21 @@
                 <i class="student icon"></i>{{ item.display_title }}
             </a>
 
-        {% elif item.item_type == item.MENU_ITEM_TYPE.participants_list %}
+        {% elif item.item_type == item.MENU_ITEM_TYPE.participants_item %}
             <a class="item"
                 href="{% url 'coursebackend:menu:update' course_slug=course.slug slug=courseevent.slug pk=item.pk %}">
                 <i class="users icon"></i>{{ item.display_title }}
             </a>
 
-        {% elif item.item_type == item.MENU_ITEM_TYPE.header %}
-            <a class="header item active"
+        {% elif item.item_type == item.MENU_ITEM_TYPE.header_item %}
+            <a class="header item"
                href="{% url 'coursebackend:menu:update' course_slug=course.slug slug=courseevent.slug pk=item.pk %}">
                 {{ item.display_title }}
             </a>
 
         {% endif %}
+
+        {% include 'coursebackend/menu/fragments/_instance_menuitem_worklinks.html' %}
 
     {% endfor %}
 
