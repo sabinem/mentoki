@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.db import models, migrations
 import autoslug.fields
 import apps_data.course.models.oldcoursepart
-import apps_data.course.models.lesson
+import apps_data.course.models.xlesson
 import model_utils.fields
 
 
@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='lesson',
             name='file',
-            field=models.FileField(upload_to=apps_data.course.models.lesson.lesson_material_name, verbose_name='Datei', blank=True),
+            field=models.FileField(upload_to=apps_data.course.models.xlesson.lesson_material_name, verbose_name='Datei', blank=True),
         ),
         migrations.AddField(
             model_name='lesson',

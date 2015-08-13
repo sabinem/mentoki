@@ -1,6 +1,5 @@
 <table class="ui table">
     <thead>
-        <tr>
             <tr>
                 <th>veröffentlicht?</th>
                 <th>Titel</th>
@@ -8,7 +7,6 @@
                 <th>Lektion</th>
                 <th>im Klassenzimmer</th>
             </tr>
-        </tr>
     </thead>
     <tbody>
         {% for homework in homeworks_unpublished %}
@@ -35,7 +33,7 @@
                 </td>
                 <td>
                     {% if homework.lesson %}
-                        <a href="{{ homework.lesson.get_absolute_url }}">
+                        <a href="">
                             {{ homework.lesson.title }}
                         </a>
                     {% else %}
@@ -63,7 +61,7 @@
                 </td>
                 <td>
                     {% if homework.lesson %}
-                        <a href="{{ homework.lesson.get_absolute_url }}">
+                        <a href="">
                             {{ homework.lesson }}
                         </a>
                     {% else %}

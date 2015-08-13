@@ -8,7 +8,7 @@ import floppyforms.__future__ as forms
 
 from froala_editor.widgets import FroalaEditor
 
-from apps_data.course.models.lesson import Lesson
+from apps_data.lesson.models.lesson import Lesson
 from apps_data.courseevent.models.homework import Homework
 from apps_data.course.models.course import Course
 

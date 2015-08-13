@@ -1,0 +1,7 @@
+{% if node.is_block %}
+    href="{% url 'coursebackend:lesson_course:block'  course_slug=course.slug pk=node.pk %}"
+{% elif node.is_lesson %}
+    href="{% url 'coursebackend:lesson_course:lesson'  course_slug=course.slug pk=node.pk %}"
+{% elif node.is_step %}
+    href="{% url 'coursebackend:lesson_course:step'  course_slug=course.slug pk=node.pk %}"
+{% endif %}

@@ -5,6 +5,8 @@ from __future__ import unicode_literals
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic import DetailView, TemplateView, UpdateView
 
+from braces.views import FormValidMessageMixin
+
 from apps_data.course.models.course import CourseOwner
 
 from .mixins.base import CourseMenuMixin
@@ -32,7 +34,7 @@ class CourseOwnerDetailView(CourseMenuMixin, DetailView):
 
 
 
-class CourseOwnerUpdateView(CourseMenuMixin, UpdateView):
+class CourseOwnerUpdateView(CourseMenuMixin, FormValidMessageMixin, UpdateView):
     """
     Courseowner Update
     """
@@ -42,7 +44,6 @@ class CourseOwnerUpdateView(CourseMenuMixin, UpdateView):
     form_valid_message="Das Kursleiterprofil wurde geändert!"
 
     def get_success_url(self):
-        self.messages.info(self.success_msg)
         return reverse_lazy('coursebackend:courseowner:list',
                             kwargs={"course_slug": self.kwargs['course_slug'],})
 

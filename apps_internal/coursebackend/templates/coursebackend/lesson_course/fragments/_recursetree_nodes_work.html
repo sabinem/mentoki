@@ -1,0 +1,45 @@
+{% load mptt_tags %}
+<div class="ui divided list">
+
+    {% recursetree nodes %}
+
+        <div class="item">
+            {% include 'coursebackend/lesson_course/fragments/_instance_node_icon.html' %}
+            <div class="content">
+
+                <a
+                    {% include 'coursebackend/lesson_course/fragments/_instance_node_href.html' %}
+                >
+                     {{ node.title }}
+                </a>
+
+                {% include 'coursebackend/lesson_course/fragments/_instance_node_worklinks.html' %}
+
+                {% if node.materials.all %}
+                    {% for material in node.materials.all %}
+                        <i class="icon file outline "></i> {{ material }}
+                        <a href="{% url 'coursebackend:material:update' course_slug=course.slug pk=material.pk %}">
+                        <i class="icon write"></i>
+                        </a>
+                    {% endfor %}
+                {% endif %}
+
+                {% if node.decription != "" %}
+                    <p>
+                        {{ node.description }}
+                    </p>
+                {% endif %}
+
+                {% if not is_leaf %}
+                    <div class="list">
+                        {{ children }}
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+
+    {% endrecursetree %}
+
+</div>
+

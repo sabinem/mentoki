@@ -74,14 +74,23 @@
                             {% endifstartswith %}
                             ">Teilnehmer</a>
 
-                        <a href="{% url 'coursebackend:lesson:start' course_slug=course.slug %}"
+                        <a href="{% url 'coursebackend:lesson_courseevent:work' course_slug=course.slug slug=courseevent.slug %}"
                             class="item
-                            ">Unterricht <i class="icon external"></i>
+                            ">Unterricht
                         </a>
+                       <div class="ui divider"></div>
+                            <a href="{% url 'coursebackend:lesson_course:work' course_slug=course.slug %}"
+                                class="item
+                                ">Unterricht (Vorlage) <i class="icon external"></i>
+                            </a>
                         <a href="{% url 'coursebackend:material:list' course_slug=course.slug %}"
                             class="item
-                            ">Material <i class="icon external"></i>
+                            ">Material (Vorlage) <i class="icon external"></i>
                         </a>
+                            <a href="{% url 'coursebackend:course:detail' course_slug=course.slug %}"
+                                class="item
+                                ">Kursbeschreibung (Vorlage)<i class="icon external"></i>
+                            </a>
                     </div>
 
                 </div>

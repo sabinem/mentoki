@@ -8,6 +8,8 @@ from django.forms.models import model_to_dict
 from django.forms.widgets import NumberInput, DateInput,TextInput, Select
 from django.views.generic import DetailView, UpdateView, TemplateView
 
+from braces.views import FormValidMessageMixin
+
 from froala_editor.widgets import FroalaEditor
 
 from apps_data.courseevent.models.courseevent import CourseEvent
@@ -37,7 +39,7 @@ class CourseEventListView(CourseMenuMixin, TemplateView):
         return context
 
 
-class CourseEventUpdateView(CourseMenuMixin, UpdateView):
+class CourseEventUpdateView(CourseMenuMixin, FormValidMessageMixin, UpdateView):
     """
     Update the course one field at a time
     """

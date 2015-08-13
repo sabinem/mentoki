@@ -6,7 +6,7 @@ from django.core.validators import ValidationError
 
 import floppyforms.__future__ as forms
 
-from apps_data.course.models.material import Material
+from apps_data.material.models.material import Material
 
 
 class MaterialForm(forms.ModelForm):

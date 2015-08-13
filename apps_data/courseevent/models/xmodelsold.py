@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 from model_utils.models import TimeStampedModel
 # import from other apps
 from apps_data.course.models.oldcoursepart import Course, CourseUnit
-from apps_data.course.models.lesson import Lesson
+from apps_data.course.models.xlesson import Lesson
 from .courseevent import CourseEvent
 from django.core.urlresolvers import reverse
 from django.utils.functional import cached_property

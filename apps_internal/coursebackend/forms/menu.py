@@ -12,7 +12,7 @@ from apps_data.courseevent.models.courseevent import CourseEvent
 from apps_data.course.models.course import Course
 from apps_data.courseevent.models.homework import Homework
 from apps_data.courseevent.models.forum import Forum
-from apps_data.course.models.lesson import Lesson
+from apps_data.lesson.models.lesson import Lesson
 
 
 class MenuItemForm(forms.ModelForm):

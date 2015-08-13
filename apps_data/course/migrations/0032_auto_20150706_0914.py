@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import models, migrations
 import apps_data.course.models.oldcoursepart
-import apps_data.course.models.material
+import apps_data.course.models.xmaterial
 
 
 class Migration(migrations.Migration):
@@ -21,6 +21,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='material',
             name='file',
-            field=apps_data.course.models.material.ContentTypeRestrictedFileField(upload_to=apps_data.course.models.material.lesson_material_name, verbose_name='Datei', blank=True),
+            field=apps_data.course.models.xmaterial.ContentTypeRestrictedFileField(upload_to=apps_data.course.models.xmaterial.lesson_material_name, verbose_name='Datei', blank=True),
         ),
     ]

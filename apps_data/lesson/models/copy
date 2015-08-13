@@ -1,0 +1,68 @@
+   def copy_block_for_courseevent(self, courseevent):
+        course_lessonblock = self.filter.get_descendants(include_self=True)
+        for lesson in course_lessonblock:
+            courseevent_lesson = Lesson(
+                    course=lesson.course,
+                    title=lesson.title,
+                    description=lesson.description,
+                    text=lesson.text,
+                    nr=lesson.nr,
+                    courseeevent=courseevent,
+                    lesson_nr=lesson.lesson_nr_step(nr=lesson.nr, parent_nr=lesson.parent.nr),
+                    copy_of = lesson
+                )
+            lesson.insert_at(p)
+            courseevent_lesson.save()
+
+    def create_copy_for_courseevent(self, courseevent, parent=None):
+            courseevent_lesson = Lesson(
+                    course=self.course,
+                    title=self.title,
+                    description=self.description,
+                    text=self.text,
+                    nr=self.nr,
+                    courseeevent=courseevent,
+                    lesson_nr=self.lesson_nr_step(nr=self.nr, parent_nr=parent.nr),
+                    copy_of = self
+                )
+            for item in self.materials:
+                courseevent_lesson.materials.add(item)
+            courseevent_lesson.insert_at(parent)
+            courseevent_lesson.save()
+
+
+
+def make_tree_copy(lesson):
+    '''
+    Makes a copy of the tree starting at "page", reparenting it to "parent"
+    '''
+    if parent:
+        # re-read so django-mptt fields get updated
+        parent = Page.objects.get(id=parent.id)
+
+    new_page = Page.objects.create_copy(page)
+    new_page.save()
+    Page.tree.move_node(new_page, parent)
+
+    for child in page.get_children():
+        make_tree_copy(child, new_page)
+
+
+
+    def create_new_step(self, nr, title, text, description, parent, materials,
+                    course=None, courseevent=None, original_lesson=None ):
+        step = BaseLesson(
+            title=title,
+            description=description,
+            text=text,
+            nr=nr,
+            lesson_nr=lesson_nr_step(nr=nr, parent_nr=parent.nr)
+            )
+        step.set_extra_fields(lesson=step, course=course, courseevent=courseevent,
+                              original_lesson=original_lesson)
+
+        step.insert_at(parent)
+        step.save()
+        for item in materials:
+            step.materials.add(item)
+        return step

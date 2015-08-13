@@ -6,7 +6,7 @@ from vanilla import TemplateView
 
 from apps_data.courseevent.models.forum import Forum, Thread, Post
 from apps_data.courseevent.models.homework import Homework, StudentsWork
-from apps_data.course.models.lesson import Lesson
+from apps_data.lesson.models.lesson import Lesson
 from apps_data.courseevent.models.menu import ClassroomMenuItem
 
 from .mixins.base import ClassroomMenuMixin

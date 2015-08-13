@@ -483,6 +483,9 @@ object.htmlembed {
 #coursebackend .coursebackend_white {
   background: white;
 }
+#coursebackend .coursebackend_course {
+  background: #eee2da;
+}
 #coursebackend .coursebackend_background {
   background: #ebdfd7;
   background: #cbd5ef;

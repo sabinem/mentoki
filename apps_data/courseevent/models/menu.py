@@ -11,7 +11,7 @@ from model_utils.fields import MonitorField
 from model_utils import Choices
 from model_utils.models import TimeStampedModel
 
-from apps_data.course.models.lesson import Lesson
+from apps_data.lesson.models.classlesson import ClassLesson
 
 from .courseevent import CourseEvent
 from .announcement import Announcement
@@ -50,7 +50,7 @@ class ClassroomMenuItem(TimeStampedModel):
     """
     courseevent = models.ForeignKey(CourseEvent)
 
-    lesson = models.ForeignKey(Lesson, blank=True, null=True)
+    lesson = models.ForeignKey(ClassLesson, blank=True, null=True)
     forum = models.ForeignKey(Forum, blank=True, null=True)
     homework = models.ForeignKey(Homework, blank=True, null=True )
 

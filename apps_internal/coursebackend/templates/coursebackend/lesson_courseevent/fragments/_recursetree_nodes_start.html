@@ -1,0 +1,34 @@
+{% load mptt_tags %}
+<div class="ui divided list">
+
+    {% recursetree nodes %}
+
+        <div class="item">
+            {% include 'coursebackend/lesson_courseevent/fragments/_instance_node_icon.html' %}
+            <div class="content">
+
+                <a
+                    {% include 'coursebackend/lesson_courseevent/fragments/_instance_node_href.html' %}
+                >
+                     {{ node.title }}
+                </a>
+
+                {% if node.decription != "" %}
+                    <p>
+                        {{ node.description }}
+                    </p>
+                {% endif %}
+
+                {% if not is_leaf %}
+                    <div class="list">
+                        {{ children }}
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+
+    {% endrecursetree %}
+
+</div>
+

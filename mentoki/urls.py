@@ -11,7 +11,7 @@ from django.conf.urls import url, include
 
 from django_downloadview import ObjectDownloadView
 
-from apps_data.course.models.material import Material
+from apps_data.material.models.material import Material
 
 # for the download of files
 download = ObjectDownloadView.as_view(model=Material, file_field='file')
@@ -65,6 +65,14 @@ urlpatterns += i18n_patterns('',
     # user handling urls
     url(r'^accounts/',
         include('authentication.urls')),
+)
+
+# Data urls
+urlpatterns += i18n_patterns('',
+
+    # user handling urls
+    url(r'^lesson/',
+        include('apps_data.lesson.urls', namespace='lesson')),
 )
 
 

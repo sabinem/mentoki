@@ -12,7 +12,7 @@ from braces.views import FormValidMessageMixin
 from apps_data.courseevent.models.homework import Homework
 from apps_data.courseevent.models.courseevent import CourseEvent
 from apps_data.courseevent.models.courseevent import Course
-from apps_data.course.models.lesson import Lesson
+from apps_data.lesson.models.lesson import Lesson
 
 from .mixins.base import CourseMenuMixin, FormCourseKwargsMixin
 from ..forms.homework import HomeworkForm

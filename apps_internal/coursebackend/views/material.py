@@ -6,9 +6,9 @@ from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import get_object_or_404
 from django.views.generic import DetailView, UpdateView, TemplateView, FormView, DeleteView
 
-from braces.views import MessageMixin
+from braces.views import FormValidMessageMixin
 
-from apps_data.course.models.material import Material
+from apps_data.material.models.material import Material
 from apps_data.courseevent.models.courseevent import Course
 
 from .mixins.base import CourseMenuMixin
@@ -17,7 +17,7 @@ from .mixins.material import MaterialMixin
 from ..forms.material import MaterialForm
 
 
-class MaterialMixin(CourseMenuMixin, MessageMixin):
+class MaterialMixin(CourseMenuMixin, FormValidMessageMixin):
 
     def get_success_url(self):
        """

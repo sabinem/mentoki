@@ -5,7 +5,7 @@ from django.db import models, migrations
 import autoslug.fields
 import apps_data.course.models.oldcoursepart
 import model_utils.fields
-import apps_data.course.models.material
+import apps_data.course.models.xmaterial
 import apps_core.core.fields
 
 
@@ -34,7 +34,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='material',
             name='file',
-            field=apps_core.core.fields.ContentTypeRestrictedFileField(upload_to=apps_data.course.models.material.lesson_material_name, verbose_name='Datei'),
+            field=apps_core.core.fields.ContentTypeRestrictedFileField(upload_to=apps_data.course.models.xmaterial.lesson_material_name, verbose_name='Datei'),
         ),
         migrations.AlterField(
             model_name='material',

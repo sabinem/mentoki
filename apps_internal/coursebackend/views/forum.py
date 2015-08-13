@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404
 from django.http import Http404, HttpResponseRedirect
 from django.views.generic import DetailView, TemplateView, UpdateView, DeleteView, FormView
 
-from braces.views import MessageMixin
+from braces.views import FormValidMessageMixin
 
 from apps_data.courseevent.models.forum import Forum
 from apps_data.courseevent.models.courseevent import CourseEvent
@@ -56,7 +56,7 @@ class ForumMixin(object):
                                    'course_slug':self.kwargs['course_slug']})
 
 
-class ForumUpdateView(ForumMixin, UpdateView):
+class ForumUpdateView(ForumMixin, FormValidMessageMixin, CourseMenuMixin, UpdateView):
     """
     Forum Update
     """
@@ -72,7 +72,7 @@ class ForumUpdateView(ForumMixin, UpdateView):
         return kwargs
 
 
-class ForumDeleteView(ForumMixin, DeleteView):
+class ForumDeleteView(ForumMixin, FormValidMessageMixin, CourseMenuMixin, DeleteView):
     """
     Forum Delete
     """
@@ -86,7 +86,7 @@ class ForumDeleteView(ForumMixin, DeleteView):
         return context
 
 
-class ForumCreateView(ForumMixin, FormView):
+class ForumCreateView(ForumMixin, FormValidMessageMixin, CourseMenuMixin, FormView):
     """
     Forum Create
     """

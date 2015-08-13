@@ -2,7 +2,7 @@
 
 from django.shortcuts import get_object_or_404
 
-from apps_data.course.models.lesson import Lesson
+from apps_data.lesson.models.lesson import Lesson
 
 from ..mixins.base import CourseMenuMixin
 

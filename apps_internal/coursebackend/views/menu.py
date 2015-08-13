@@ -6,8 +6,9 @@ from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import get_object_or_404
 from django.http import Http404, HttpResponseRedirect
 from django.forms.formsets import formset_factory
-
 from django.views.generic import TemplateView, UpdateView, FormView, DeleteView
+
+from braces.views import FormValidMessageMixin
 
 from extra_views import ModelFormSetView
 

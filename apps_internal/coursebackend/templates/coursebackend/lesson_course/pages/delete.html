@@ -1,0 +1,33 @@
+{% extends "coursebackend/base_course.html" %}
+
+{% block page_content %}
+
+
+    <div class="row coursebackend_course">
+        <div class="sixteen wide column">
+
+            {% include 'coursebackend/lesson_course/fragments/_breadcrumbs.html' %}
+
+        </div>
+    </div>
+
+    <div class="row classroom_emphasis">
+        <div class="sixteen wide column">
+
+            <div class="ui message warning">
+                Vorsicht: Der gesamte abgebildetet Baum wird bei dieser Aktion gelöscht!
+            </div>
+
+            {% include 'coursebackend/lesson_course/fragments/_recursetree_nodes.html' %}
+
+        </div>
+    </div>
+
+    <div class="row classroom_white">
+        <div class="sixteen wide column">
+
+            {% include 'coursebackend/forms/delete/_lesson.html' %}
+
+        </div>
+    </div>
+{% endblock %}

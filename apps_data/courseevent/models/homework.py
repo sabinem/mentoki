@@ -12,7 +12,7 @@ from model_utils.models import TimeStampedModel
 from model_utils.fields import MonitorField, StatusField
 from model_utils import Choices
 
-from apps_data.course.models.lesson import Lesson
+from apps_data.lesson.models.classlesson import ClassLesson
 
 from .courseevent import CourseEvent
 
@@ -49,7 +49,7 @@ class Homework(TimeStampedModel):
 
     courseevent = models.ForeignKey(CourseEvent)
 
-    lesson = models.ForeignKey(Lesson,
+    lesson = models.ForeignKey(ClassLesson,
                                verbose_name="Bezug auf einen Lernabschnitt?",
                                null=True, blank=True)
 

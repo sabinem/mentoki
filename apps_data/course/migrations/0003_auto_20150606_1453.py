@@ -7,7 +7,7 @@ import model_utils.fields
 import autoslug.fields
 import mptt.fields
 import django.utils.timezone
-import apps_data.course.models.material
+import apps_data.course.models.xmaterial
 
 
 class Migration(migrations.Migration):
@@ -58,7 +58,7 @@ class Migration(migrations.Migration):
                 ('created', model_utils.fields.AutoCreatedField(default=django.utils.timezone.now, verbose_name='created', editable=False)),
                 ('modified', model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, verbose_name='modified', editable=False)),
                 ('document_type', model_utils.fields.StatusField(default='Text', max_length=100, no_check_for_status=True, choices=[('Text', 'Text'), ('PDF Viewer', 'PDF Viewer'), ('PDF download und Text', 'PDF download und Text')])),
-                ('file', models.FileField(upload_to=apps_data.course.models.material.lesson_material_name, verbose_name='Datei', blank=True)),
+                ('file', models.FileField(upload_to=apps_data.course.models.xmaterial.lesson_material_name, verbose_name='Datei', blank=True)),
                 ('slug', autoslug.fields.AutoSlugField(populate_from='get_file_slug', editable=False, blank=True)),
             ],
             options={

@@ -1,0 +1,14 @@
+<a class="item"
+   href="{% url 'coursebackend:lesson_course:blockcreate'  course_slug=course.slug %}">
+   <i class="icon plus">Block anlegen</i>
+</a>
+
+<a class="item"
+   href="{% url 'coursebackend:lesson_course:lessoncreate'  course_slug=course.slug %}">
+   <i class="icon plus">Lektion anlegen</i>
+</a>
+
+<a class="item"
+   href="{% url 'coursebackend:lesson_course:stepcreate'  course_slug=course.slug %}">
+   <i class="icon plus">Material anlegen</i>
+</a>

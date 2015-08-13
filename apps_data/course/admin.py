@@ -5,8 +5,8 @@ from __future__ import unicode_literals, absolute_import
 from django.contrib import admin
 
 from .models.course import Course, CourseOwner
-from .models.lesson import Lesson, LessonPublisher
-from .models.material import Material
+from .models.xlesson import Lesson, LessonPublisher
+from .models.xmaterial import Material
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):

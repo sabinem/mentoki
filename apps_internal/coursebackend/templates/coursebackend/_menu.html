@@ -43,18 +43,18 @@
     </a>
 
     <a class="item
-        {% ifstartswith "coursebackend:lesson:start" course_slug=course.slug %}
+        {% ifstartswith "coursebackend:lesson_course:start" course_slug=course.slug %}
             active
         {% endifstartswith %}
-        " href="{% url "coursebackend:lesson:start" course_slug=course.slug %}">
+        " href="{% url "coursebackend:lesson_course:start" course_slug=course.slug %}">
         <i class="list icon"></i>Unterricht
     </a>
 
     <a class="item
-        {% ifstartswith "coursebackend:lesson:work" course_slug=course.slug %}
+        {% ifstartswith "coursebackend:lesson_course:work" course_slug=course.slug %}
             active
         {% endifstartswith %}
-        " href="{% url "coursebackend:lesson:work" course_slug=course.slug %}">
+        " href="{% url "coursebackend:lesson_course:work" course_slug=course.slug %}">
         <i class="list icon"></i> - bearbeiten
     </a>
 
@@ -115,6 +115,14 @@
             {% endifstartswith %}
             " href="{% url 'coursebackend:menu:list' course_slug=course.slug slug=courseevent.slug %}">
             <i class="list icon"></i>Klassenzimmer-Menü
+        </a>
+
+        <a class="item
+            {% ifstartswith "coursebackend:lesson_courseevent:start" course_slug=course.slug slug=courseevent.slug %}
+                active
+            {% endifstartswith %}
+            " href="{% url "coursebackend:lesson_courseevent:start" course_slug=course.slug slug=courseevent.slug %}">
+            <i class="list icon"></i>Unterricht
         </a>
 
     {% endfor %}

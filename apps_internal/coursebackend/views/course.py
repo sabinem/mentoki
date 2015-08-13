@@ -7,6 +7,8 @@ from django.core.urlresolvers import reverse_lazy
 from django.forms.widgets import TextInput
 from django.views.generic import DetailView, UpdateView
 
+from braces.views import FormValidMessageMixin
+
 from froala_editor.widgets import FroalaEditor
 
 from apps_data.course.models.course import Course
@@ -24,7 +26,7 @@ class CourseDetailView(CourseMenuMixin, DetailView):
     slug_field = 'slug'
 
 
-class CourseUpdateView(CourseMenuMixin, UpdateView):
+class CourseUpdateView(CourseMenuMixin, FormValidMessageMixin, UpdateView):
     """
     Update the course one field at a time
     """
