@@ -1,0 +1,51 @@
+{{ form.media }}
+<form class="ui form" method="post" action="#target" onsubmit="return checkForm(this);">
+
+    {% csrf_token %}
+
+    {% include 'coursebackend/forms/fragments/_form_non_field_errors.html' %}
+
+    <div class="ui dividing large header">Lektion kopieren</div>
+
+    <div class="ui info message">
+        <p> Vorsicht! Durch diese Aktion werden die Anpassungen im Klassenzimmer überschrieben!</p>
+    </div>
+
+        <div class="field eight wide">
+            {% if form.copy_lesson.errors %}
+                <div class="ui negative floating message">
+                    {{ form.copy_lesson.errors }}
+                </div>
+            {% endif %}
+            <p>Soll die Lektion neu übernommen werden?</p>
+
+            {{ form.copy_lesson }}
+
+        </div>
+
+        <div class="field eight wide">
+            {% if form.copy_lessonsteps.errors %}
+                <div class="ui negative floating message">
+                    {{ form.copy_lessonsteps.errors }}
+                </div>
+            {% endif %}
+            <p>Welche Lernabschnitte sollen überschrieben werden?
+
+            {{ form.copy_lessonsteps }}
+
+        </div>
+
+    <button type="submit" value="post" name="onlyOnceButton" class="ui button" id="formsubmit_button"
+            action="#target">
+        Jetzt starten
+    </button>
+    <button class="ui button" value="Reset Button" onclick="resetForm(this.form);">
+        Reset
+    </button>
+
+    <a href="{% url 'coursebackend:lesson_courseevent:copy' slug=courseevent.slug course_slug=course.slug %}" class="ui button">
+        Abbruch
+    </a>
+
+
+</form>

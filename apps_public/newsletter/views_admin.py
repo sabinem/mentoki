@@ -1,10 +1,13 @@
+# -*- coding: utf-8 -*-
+
+from __future__ import unicode_literals
+
 import logging
 from django.views.generic import TemplateView, CreateView, UpdateView, ListView, FormView, DetailView
 from braces.views import LoginRequiredMixin, StaffuserRequiredMixin
 from django.core.urlresolvers import reverse_lazy
 from .models import Newsletter
 from .forms import NewsletterEditForm
-
 
 logger = logging.getLogger(__name__)
 

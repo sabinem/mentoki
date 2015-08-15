@@ -12,9 +12,21 @@ from apps_data.material.models.material import Material
 from apps_data.courseevent.models.courseevent import Course
 
 from .mixins.base import CourseMenuMixin
-from .mixins.lesson import CourseFormMixin
-from .mixins.material import MaterialMixin
 from ..forms.material import MaterialForm
+
+
+class CourseFormMixin(CourseMenuMixin):
+
+    def get_form_kwargs(self):
+        course_slug = self.kwargs['course_slug']
+        kwargs = super(CourseFormMixin, self).get_form_kwargs()
+        kwargs['course_slug'] = course_slug
+        return kwargs
+
+    def form_valid(self, form, **kwargs):
+        context = self.get_context_data(**kwargs)
+        form.instance.course = context['course']
+        return super(CourseFormMixin, self).form_valid(form)
 
 
 class MaterialMixin(CourseMenuMixin, FormValidMessageMixin):
@@ -36,7 +48,7 @@ class MaterialListView(CourseMenuMixin, TemplateView):
         return context
 
 
-class MaterialDetailView(CourseFormMixin, DetailView):
+class MaterialDetailView(CourseMenuMixin, DetailView):
     model = Material
     context_object_name ='material'
 

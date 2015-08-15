@@ -198,21 +198,40 @@ class CourseEvent(TimeStampedModel):
                                'slug':self.slug})
 
 
-class ParticipationQuerySet(QuerySet):
+class ParticipationManager(QuerySet):
 
     def learning(self, user):
         return self.filter(user=user)
 
-    def learners(self, course):
-        return self.filter(course=course).select_related('user')
+    def learners(self, courseevent):
+        return self.filter(courseevent=courseevent).select_related('user')
+
+    def active(self,courseevent):
+        return self.filter(courseevent=courseevent, hidden=False).select_related('user')
+
+    def hide_in_classroom(self,courseevent, user):
+        """
+        hide participant in forum!!!
+        """
+        #Threads.objects.get_participant_contribution(author=user)
+
+    def unhide_in_classroom(self,courseevent, user):
+        """
+        hide participant in forum!!!
+        """
+        #Threads.objects.get_participant_contribution(author=user)
 
 
 class CourseEventParticipation(TimeStampedModel):
 
     courseevent = models.ForeignKey(CourseEvent)
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    hidden = models.BooleanField(
+        verbose_name=_('versteckt'),
+        default=False)
+    hidden_status_changed = MonitorField(monitor='hidden')
 
-    #objects = PassThroughManager.for_queryset_class(ParticipationQuerySet)()
+    objects = ParticipationManager()
 
     def __unicode__(self):
         return u'%s / %s' % (self.courseevent, self.user)

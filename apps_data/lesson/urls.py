@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 from django.conf.urls import patterns, include, url
 
-from .utils import copy_lesson_for_courseevent
+from .utils.lessoncopy import copy_lesson_for_courseevent
 
 
 urlpatterns = patterns('',

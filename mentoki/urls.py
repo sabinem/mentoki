@@ -117,7 +117,7 @@ urlpatterns += i18n_patterns('',
 if settings.DEBUG:
     urlpatterns += patterns('',
         (r'^500/$', TemplateView.as_view(template_name="500.html")),
-        (r'^404/$', TemplateView.as_view(template_name="404.html")),
+        (r'^404/$', TemplateView.as_view(template_name="404.html"))
     )
 
 

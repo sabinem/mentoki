@@ -1,0 +1,23 @@
+
+def copy_lesson_selected(self, lesson, lessonsteps, copy_lesson):
+        pass
+
+def copy_any_level_lesson(lesson, courseevent, parent):
+    classlesson, created = ClassLesson.objects.update_or_create(
+        title=lesson.title,
+        text=lesson.text,
+        lesson_nr=lesson.lesson_nr,
+        nr=lesson.nr,
+        course=lesson.course,
+        description=lesson.description,
+        courseevent=courseevent,
+        original_lesson=lesson
+    )
+    if created:
+        classlesson.insert_at(parent)
+    classlesson.save()
+    for item in classlesson.materials.all():
+        classlesson.materials.remove(item)
+    for item in lesson.materials.all():
+        classlesson.materials.add(item)
+    return classlesson

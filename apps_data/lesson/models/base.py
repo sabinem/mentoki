@@ -67,7 +67,9 @@ class BaseLesson(MPTTModel, TimeStampedModel):
         db_index=True,
         )
 
-    course = models.ForeignKey(Course)
+    course = models.ForeignKey(
+        Course,
+        on_delete=models.PROTECT)
 
     nr = models.IntegerField(
         verbose_name=_('Nr.'),

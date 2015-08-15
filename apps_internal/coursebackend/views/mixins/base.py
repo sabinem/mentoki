@@ -49,6 +49,7 @@ class CourseMenuMixin(AuthMixin):
 
         if not 'course' in context:
             context['course'] = get_object_or_404(Course, slug=self.kwargs['course_slug'])
+        context['cs'] = context['course'].slug
 
         if not 'courseevents' in context:
             context['courseevents'] = CourseEvent.objects.active_courseevents_for_course(course=context['course'])
@@ -56,6 +57,7 @@ class CourseMenuMixin(AuthMixin):
         if 'slug' in self.kwargs:
             if not 'courseevent' in context:
                 context['courseevent'] = get_object_or_404(CourseEvent, slug=self.kwargs['slug'])
+            context['es'] = context['courseevent'].slug
 
         return context
 

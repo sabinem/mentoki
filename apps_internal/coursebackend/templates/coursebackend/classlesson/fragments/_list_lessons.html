@@ -1,0 +1,49 @@
+<table class="ui table stackable">
+  <thead>
+    <tr>
+      <th class="three wide">Kopieren</th>
+      <th class="three wide">Vorlage</th>
+      <th class="three wide">im Kurs</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for lesson in lessons %}
+    <tr>
+
+      <td>
+          <p>
+             {% if lesson.id in copied_lesson_ids %}
+                 bereits kopiert
+                  <a class="ui button"
+                     href="{% url 'coursebackend:lesson_courseevent:lessoncopy' slug=courseevent.slug course_slug=course.slug pk=lesson.pk %}">
+                     überschreiben?
+                  </a>
+             {% else %}
+                  <a class="ui button"
+                     href="{% url 'lesson:copy_block' courseevent_pk=courseevent.pk lesson_pk=lesson.pk %}">
+                     jetzt Kopieren
+                  </a>
+             {% endif %}
+
+          </p>
+      </td>
+
+      <td>
+
+          <a href="{% url 'coursebackend:lesson_course:lesson' pk=lesson.pk course_slug=course.slug %}">
+          {{ lesson }}
+          </a>
+      </td>
+      <td>
+          {% if lesson.id in copied_lesson_ids %}
+          <a href="{% url 'coursebackend:lesson_courseevent:start' slug=courseevent.slug course_slug=course.slug %}">
+              <i class="icon unhide"></i>zum Kurs-Unterricht
+          </a>
+          {% endif %}
+      </td>
+
+    </tr>
+  {% endfor %}
+
+  </tbody>
+</table>

@@ -20,10 +20,10 @@ urlpatterns = patterns('',
         include('apps_internal.coursebackend.urls.material', namespace='material')),
 
     url(r'^unterricht/',
-        include('apps_internal.coursebackend.urls.lesson_course', namespace='lesson_course')),
+        include('apps_internal.coursebackend.urls.lesson', namespace='lesson_course')),
 
     url(r'^kurs/(?P<slug>[a-z0-9_-]+)/unterricht/',
-        include('apps_internal.coursebackend.urls.lesson_courseevent', namespace='lesson_courseevent')),
+        include('apps_internal.coursebackend.urls.classlesson', namespace='lesson_courseevent')),
 
     url(r'^kurs/(?P<slug>[a-z0-9_-]+)/teilnehmer/',
         include('apps_internal.coursebackend.urls.participant', namespace='participant')),

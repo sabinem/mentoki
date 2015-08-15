@@ -33,7 +33,7 @@ class HomeworkManager(models.Manager):
 
     def create(self, courseevent, text, title, due_date=None, lesson=None):
         homework = Homework(courseevent=courseevent,
-                                lesson=lesson,
+                                classlesson=lesson,
                                 text=text,
                                 title=title,
                                 published=False,
@@ -49,7 +49,7 @@ class Homework(TimeStampedModel):
 
     courseevent = models.ForeignKey(CourseEvent)
 
-    lesson = models.ForeignKey(ClassLesson,
+    classlesson = models.ForeignKey(ClassLesson,
                                verbose_name="Bezug auf einen Lernabschnitt?",
                                null=True, blank=True)
 
@@ -59,6 +59,11 @@ class Homework(TimeStampedModel):
     published = models.BooleanField(verbose_name="veröffentlichen",
                                     default=False)
     publish_status_changed = MonitorField(monitor='published')
+
+    hidden = models.BooleanField(
+        verbose_name=_('versteckt'),
+        default=False)
+    hidden_status_changed = MonitorField(monitor='hidden')
 
     due_date = models.DateField(blank=True, null=True)
     objects = HomeworkManager()

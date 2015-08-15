@@ -67,23 +67,3 @@ class LessonStepForm(forms.ModelForm):
         self.fields['materials'].queryset = Material.objects.filter(course=self.course)
 
 
-class ClassLessonStepForm(forms.ModelForm):
-    text = forms.CharField(widget=FroalaEditor, required=False)
-    materials = forms.CheckboxSelectMultiple()
-
-    class Meta:
-        model = ClassLesson
-        fields = ('parent', 'nr', 'title', 'description', 'text', 'materials' )
-
-    def __init__(self, *args, **kwargs):
-        courseevent_slug = kwargs.pop('courseevent_slug', None)
-        self.courseevent = get_object_or_404(CourseEvent, slug=courseevent_slug)
-
-        super(ClassLessonStepForm, self).__init__(*args, **kwargs)
-
-        self.fields['parent'].empty_label = None
-        self.fields['parent'] = TreeNodeChoiceField(
-            queryset=Lesson.objects.lessons_for_course(course=self.course),
-            level_indicator=u'+--')
-        self.fields['materials'].widget = CheckboxSelectMultiple()
-        self.fields['materials'].queryset = Material.objects.filter(courseevent=self.courseevent)

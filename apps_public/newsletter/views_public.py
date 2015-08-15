@@ -1,10 +1,12 @@
+# -*- coding: utf-8 -*-
+
+from __future__ import unicode_literals
+
 import logging
 from django.views.generic import TemplateView, ListView, DetailView
 from .models import Newsletter
 
-
 logger = logging.getLogger(__name__)
-
 
 class NewsletterPublicListView(ListView):
     queryset = Newsletter.objects.published()

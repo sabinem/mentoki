@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 
-from vanilla import FormView
+from django.views.generic import FormView
 
 from apps_data.courseevent.models.forum import Thread, Forum
 from apps_data.courseevent.models.courseevent import CourseEvent

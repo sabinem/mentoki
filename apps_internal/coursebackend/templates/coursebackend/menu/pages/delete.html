@@ -1,12 +1,14 @@
-{% extends "coursebackend/base_course.html" %}
+{% extends "coursebackend/base_courseevent.html" %}
 
 
 {% block page_content %}
 
-    <div class="row coursebackend_white">
-        <div class="sixteen wide column">
+    {% url 'coursebackend:menu:preview' course_slug=cs slug=es as back_url %}
 
-            {% include 'coursebackend/menu/fragments/_instance_menuitem.html' %}
+    <div class="row coursebackend_white">
+        <div class="eight wide column">
+
+        {% include 'coursebackend/menu/fragments/_instance_classroommenuitem.html' %}
 
             {% include 'coursebackend/forms/delete/_menuitem.html' %}
 

@@ -2,6 +2,8 @@
 
 {% block page_content %}
 
+    {% url 'coursebackend:menu:preview' course_slug=course.slug slug=courseevent.slug as back_url %}
+
     <div class="row coursebackend_white">
         <div class="eight wide column">
 

@@ -1,10 +1,9 @@
-{% extends "coursebackend/base_course.html" %}
-
-{% block courseevent_menu_items %}
-    {% include 'coursebackend/menu/fragments/_link_worklinks.html' %}
-{% endblock %}
+{% extends "coursebackend/base_courseevent.html" %}
 
 {% block page_content %}
+
+    {% url 'coursebackend:menu:preview' course_slug=course.slug slug=courseevent.slug as back_url %}
+    {% url 'coursebackend:menu:delete' pk=object.pk course_slug=course.slug slug=courseevent.slug as delete_url %}
 
     <div class="row coursebackend_white">
         <div class="eight wide column">

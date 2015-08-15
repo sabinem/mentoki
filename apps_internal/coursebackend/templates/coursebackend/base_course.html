@@ -58,13 +58,6 @@
                             {% endifstartswith %}
                             ">Unterricht</a>
 
-                        <a href="{% url 'coursebackend:lesson_course:work' course_slug=course.slug %}"
-                            class="item
-                            {% ifstartswith 'coursebackend:lesson_course:work' course_slug=course.slug %}
-                               active
-                            {% endifstartswith %}
-                            "> - bearbeiten</a>
-
                         <a href="{% url 'coursebackend:material:list' course_slug=course.slug %}"
                             class="item
                             {% ifstartswith 'coursebackend:material:list' course_slug=course.slug %}
@@ -75,7 +68,7 @@
 
                         {% for courseevent in courseevents %}
 
-                            <a href="{% url 'coursebackend:courseevent:detail' slug=courseevent.slug course_slug=course.slug %}"
+                            <a href="{% url 'coursebackend:lesson_courseevent:start' slug=courseevent.slug course_slug=course.slug %}"
                                 class="item
                                 ">{{ courseevent }} <i class="icon external"></i>
                             </a>

@@ -7,13 +7,20 @@
 
     {% for breadcrumb in breadcrumbs %}
 
+        <i class="right chevron icon divider"></i>
+
+
         <a href="{% url 'coursebackend:forum:detail' slug=courseevent.slug course_slug=course.slug pk=breadcrumb.pk %}"
            class="section">
             {{ breadcrumb.title }}
         </a>
-        <i class="right chevron icon divider"></i>
+
+    {% empty %}
 
     {% endfor %}
+    {% if forum %}
+         <i class="right chevron icon divider"></i>
+    {% endif %}
 
     <div class="section active">{{ forum.title }}</div>
 

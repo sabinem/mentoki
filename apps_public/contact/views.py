@@ -8,7 +8,7 @@ from django.utils.safestring import mark_safe
 
 from braces.views import MessageMixin
 
-from .forms import  ContactForm
+from .forms import ContactForm
 
 
 class ContactView(MessageMixin, FormView):

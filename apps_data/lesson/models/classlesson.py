@@ -35,7 +35,7 @@ class ClassLessonManager(LessonManager):
 
     def complete_tree_for_courseevent(self, courseevent):
         return self.filter(course=courseevent.course, courseevent=courseevent, level=0).\
-            get_descendants(include_self=True).prefetch_related('materials')
+            get_descendants(include_self=True).order_by('nr').prefetch_related('materials')
 
     def complete_tree_uncopied(self, courseevent):
         course_blocks = self.filter(course=courseevent.course, level=0).\
@@ -67,7 +67,10 @@ class ClassLessonManager(LessonManager):
 
 class ClassLesson(BaseLesson):
     courseevent = models.ForeignKey(CourseEvent)
-    original_lesson = models.ForeignKey(Lesson)
+    original_lesson = models.ForeignKey(
+        Lesson,
+        on_delete=models.PROTECT
+    )
 
     objects = ClassLessonManager()
 

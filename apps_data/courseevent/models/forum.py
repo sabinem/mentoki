@@ -9,6 +9,7 @@ from django.db import models
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.utils.functional import cached_property
+from django.utils.translation import ugettext_lazy as _
 
 from model_utils.models import TimeStampedModel
 from model_utils.managers import QueryManager
@@ -28,6 +29,10 @@ class ForumManager(TreeManager):
 
     def forums_for_courseevent(self, courseevent):
         return self.filter(courseevent=courseevent, level=0).\
+            get_descendants(include_self=True)
+
+    def active_forums_for_courseevent(self, courseevent):
+        return self.filter(courseevent=courseevent, level=0, hidden=False).\
             get_descendants(include_self=True)
 
     def forums_published_in_courseevent(self, courseevent):
@@ -57,7 +62,7 @@ class Forum(MPTTModel, TimeStampedModel):
         max_length=100
     )
     text = models.TextField(
-        verbose_name="Beschreibung des Forums",
+        verbose_name="Ausführliche Beschreibung des Forums",
         help_text="""Dieser Text wird den Forumsbeiträgen vorangestellt und leitet die Kursteilnehmern an, ihre
                   Beiträge zu schreiben.""",
         blank=True
@@ -70,7 +75,7 @@ class Forum(MPTTModel, TimeStampedModel):
     )
     display_nr = models.IntegerField(
         verbose_name="Anzeigereihenfolge",
-        help_text="Steuert die Anzeigereihenfolge der UnterForen innerhalb des übergeordneten Forums"
+        help_text="nicht nach aussen sichtbar"
     )
 
     can_have_threads = models.BooleanField(
@@ -79,6 +84,11 @@ class Forum(MPTTModel, TimeStampedModel):
                   oder ob es nur zur Gliederung dient.""",
         default=True)
     #thread_count = models.IntegerField(default=0)
+
+    hidden = models.BooleanField(
+        verbose_name=_('versteckt'),
+        default=False)
+    hidden_status_changed = MonitorField(monitor='hidden')
 
     published = models.BooleanField(
         verbose_name="veröffentlicht",
@@ -171,6 +181,11 @@ class ForumContributionModel(TimeStampedModel):
 
     courseevent = models.ForeignKey(CourseEvent)
 
+    hidden = models.BooleanField(
+        verbose_name=_('versteckt'),
+        default=False)
+    hidden_status_changed = MonitorField(monitor='hidden')
+
     text = models.TextField()
 
     class Meta:
@@ -187,7 +202,7 @@ class ThreadManager(models.Manager):
 
     def recent_contributions(self, courseevent):
         threads = self.select_related('author').\
-            filter(courseevent=courseevent).\
+            filter(courseevent=courseevent, hidden=False).\
             order_by('-modified')[0:50]
         posts = Post.objects.filter(courseevent=courseevent).\
             select_related('thread','author').order_by('-modified')[0:50]

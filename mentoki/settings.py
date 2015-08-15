@@ -42,22 +42,22 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    #'raven.contrib.django.raven_compat',
+
+    #future?
     'email_extras',
-    'floppyforms',
-    'crispy_forms',
-    'semantic_ui',
+
     'braces',
     'model_utils',
     'mptt',
     'autoslug',
     'activelink',
-    'django_markdown',
-    'django_coverage',
-    'rosetta',
-    #'django_nose',
-    'pagedown',
+    'floppyforms',
     'froala_editor',
+
+    'pagedown',
+    'django_markdown',
+
+    'authentication',
 
     'apps_core.core',
 
@@ -75,14 +75,19 @@ INSTALLED_APPS = (
     'apps_public.home',
     'apps_public.courseoffer',
 
+    # delete?
+    'crispy_forms',
+    'django_coverage',
+    'rosetta',
+    'vanilla',
+
+    # needed?
     'apps_core.upload',
 
     #old will be deleted after data-transfer
     'apps.forum',
 
     #'apps.core',
-
-    'authentication',
 )
 
 if DEBUG:

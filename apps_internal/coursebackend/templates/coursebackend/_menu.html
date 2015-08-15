@@ -1,15 +1,17 @@
 {% load activelink %}
 
+{% url 'coursebackend:course:detail' course_slug=cs as course_url %}
+{% url 'coursebackend:courseowner:list' course_slug=cs as courseowner_url %}
+{% url 'coursebackend:courseevent:list' course_slug=cs as courseevents_url %}
+{% url "coursebackend:lesson_course:start" course_slug=cs as lesson_url %}
+{% url 'coursebackend:material:list' course_slug=course.slug as material_url %}
+
 <div class="ui fluid vertical menu" id="coursebackend_menu">
 
     <div class="header item huge" style="font-size:1.5em;">
         Hallo {{ user.username }}!
     </div>
-    <a  href="{% url 'desk:start' %}" class="item
-        {% ifactive "desk:start" %}
-              active
-        {% endifactive %}
-        ">
+    <a  href="{% url 'desk:start' %}" class="item">
         Zurück zum Schreibtisch
     </a>
 
@@ -23,105 +25,89 @@
     </div>
 
     <a class="item
-        {% ifstartswith 'coursebackend:course:detail' course_slug=course.slug %}
-           active
-        {% endifstartswith %}
-        " href="{% url 'coursebackend:course:detail' course_slug=course.slug %}">
+        {% ifstartswith course_url %}active {% endifstartswith %}
+        " href="{{ course_url }}">
         Kursvorlage
     </a>
 
     <a class="item completed
-        {% ifstartswith 'coursebackend:courseowner:list' course_slug=course.slug %}active {% endifstartswith %}
-        " href="{% url 'coursebackend:courseowner:list' course_slug=course.slug %}">
+        {% ifstartswith courseowner_url %}active {% endifstartswith %}
+        " href="{{ courseowner_url }}">
         Kursleitung
     </a>
 
     <a class="item completed
-        {% ifstartswith 'coursebackend:courseevent:list' course_slug=course.slug %}active {% endifstartswith %}
-        " href="{% url 'coursebackend:courseevent:list' course_slug=course.slug %}">
+        {% ifstartswith courseevents_url %}active {% endifstartswith %}
+        " href="{{ courseevents_url }}">
         Kursereignisse
     </a>
 
     <a class="item
-        {% ifstartswith "coursebackend:lesson_course:start" course_slug=course.slug %}
-            active
-        {% endifstartswith %}
-        " href="{% url "coursebackend:lesson_course:start" course_slug=course.slug %}">
+        {% ifstartswith lesson_url %}active {% endifstartswith %}
+        " href="{{ lesson_url }}">
         <i class="list icon"></i>Unterricht
     </a>
 
     <a class="item
-        {% ifstartswith "coursebackend:lesson_course:work" course_slug=course.slug %}
-            active
-        {% endifstartswith %}
-        " href="{% url "coursebackend:lesson_course:work" course_slug=course.slug %}">
-        <i class="list icon"></i> - bearbeiten
-    </a>
-
-    <a class="item
-        {% ifstartswith "coursebackend:material:list" course_slug=course.slug %}
-          active
-        {% endifstartswith %}
-        " href="{% url 'coursebackend:material:list' course_slug=course.slug %}">
+        {% ifstartswith material_url %}active {% endifstartswith %}
+        " href="{{ material_url }}">
         <i class="list icon"></i>Material
     </a>
 
-    {% for courseevent in courseevents %}
+    {% for event in courseevents %}
+
+        {% url 'classroom:start' slug=event.slug as classroom_url %}
+
+        {% url 'coursebackend:participant:list' course_slug=cs slug=event.slug as participants_url %}
+        {% url 'coursebackend:forum:list' course_slug=cs slug=event.slug as forum_url %}
+        {% url 'coursebackend:announcement:list' course_slug=event.slug slug=es as announcements_url %}
+        {% url 'coursebackend:homework:list' course_slug=cs slug=event.slug as homeworks_url %}
+        {% url 'coursebackend:menu:list' course_slug=cs slug=event.slug as menu_url %}
+        {% url "coursebackend:lesson_courseevent:start" course_slug=cs slug=event.slug as lesson_url %}
+        {% url "coursebackend:material:list" course_slug=cs slug=event.slug as material_url %}
 
         <div class="header item huge" style="font-size:1.5em;">
             Klassenzimmer {{ courseevent }}
         </div>
 
         <a class="item"
-            href="{% url 'classroom:start' slug=courseevent.slug %}">
+            href="{{ classroom_url }}">
             <i class="icon student blue"></i>ins Klassenzimmer gehen
         </a>
 
         <a class="item
-            {% ifactive 'coursebackend:participant:list' course_slug=course.slug slug=courseevent.slug  %}
-            active
-            {% endifactive %}"
-            href="{% url 'coursebackend:participant:list' course_slug=course.slug slug=courseevent.slug %}">
+            {% ifactive participants_url %}active{% endifactive %}
+            " href="{{ participants_url }}">
             <i class="list icon"></i>Teilnehmerliste ansehen
         </a>
 
         <a class="item
-            {% ifstartswith 'coursebackend:forum:list' course_slug=course.slug slug=courseevent.slug  %}
-             active
-            {% endifstartswith %}
-            " href="{% url 'coursebackend:forum:list' course_slug=course.slug slug=courseevent.slug %}">
+            {% ifactive forum_url %}active{% endifactive %}
+            " href="{{ forum_url }}">
             <i class="list icon"></i>Forum
         </a>
 
         <a class="item
-            {% ifstartswith 'coursebackend:announcement:list' course_slug=course.slug slug=courseevent.slug %}
-            active
-            {% endifstartswith %}"
-            href="{% url 'coursebackend:announcement:list' course_slug=course.slug slug=courseevent.slug  %}">
+            {% ifactive announcements_url %}active{% endifactive %}
+            " href="{{ announcements_url }}">
             <i class="list icon"></i>Ankündigungen
         </a>
 
         <a class="item
-            {% ifstartswith 'coursebackend:homework:list' course_slug=course.slug slug=courseevent.slug %}
-              active
-            {% endifstartswith %}
-            " href="{% url 'coursebackend:homework:list' course_slug=course.slug slug=courseevent.slug %}">
+            {% ifactive homeworks_url %}active{% endifactive %}
+            " href="{{ homeworks_url }}">
             <i class="list icon"></i>Aufgaben
         </a>
 
         <a class="item
-            {% ifstartswith 'coursebackend:menu:list' course_slug=course.slug slug=courseevent.slug %}
-              active
-            {% endifstartswith %}
-            " href="{% url 'coursebackend:menu:list' course_slug=course.slug slug=courseevent.slug %}">
+            {% ifactive menu_url %}active{% endifactive %}
+            " href="{{ menu_url }}">
             <i class="list icon"></i>Klassenzimmer-Menü
         </a>
 
         <a class="item
-            {% ifstartswith "coursebackend:lesson_courseevent:start" course_slug=course.slug slug=courseevent.slug %}
-                active
-            {% endifstartswith %}
-            " href="{% url "coursebackend:lesson_courseevent:start" course_slug=course.slug slug=courseevent.slug %}">
+            {% ifactive material_url %}active{% endifactive %}
+            " href="{{ material_url }}">
             <i class="list icon"></i>Unterricht
         </a>
 

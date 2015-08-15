@@ -7,7 +7,7 @@
         Löschen
     </button>
 
-    <a class="ui button" href="{% url 'coursebackend:forum:list' course_slug=course.slug %}">
+    <a class="ui button" href="{% url 'coursebackend:forum:list' course_slug=course.slug slug=courseevent.slug %}">
         Abbrechen
     </a>
 

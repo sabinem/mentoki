@@ -15,3 +15,20 @@
         if form.is_valid():
             return self.form_valid(form)
         return self.form_invalid(form)
+
+class MenuUpdateView(CourseMenuMixin, ModelFormSetView):
+    """
+    Classroom Menu Items List Update
+    """
+    model = ClassroomMenuItem
+    fields = ('display_nr', 'display_title', 'item_type' )
+    readonly = ('link',)
+    can_order = True
+
+    def get_context_data(self, **kwargs):
+        context = super(MenuUpdateView, self).get_context_data(**kwargs)
+
+        context['classroommenuitems'] = \
+            ClassroomMenuItem.objects.all_for_courseevent(courseevent=context['courseevent'])
+
+        return context

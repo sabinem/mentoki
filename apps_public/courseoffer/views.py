@@ -1,13 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import unicode_literals
-# -*- coding: utf-8 -*-
-
-from __future__ import unicode_literals
 
 from django.forms.models import modelform_factory
 
-from vanilla import DetailView, TemplateView
+from django.views.generic import DetailView, TemplateView
 
 from apps_data.courseevent.models.courseevent import CourseEvent
 from apps_data.course.models.course import CourseOwner
@@ -36,8 +33,8 @@ class CourseOfferDetailView(DetailView):
     """
     template_name = "courseoffer/detail/courseevent_detail.html"
     model = CourseEvent
-    lookup_field = 'slug'
     context_object_name ='courseevent'
+    slug_field = 'slug'
 
     def get_context_data(self, **kwargs):
         context = super(CourseOfferDetailView, self).get_context_data()

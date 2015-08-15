@@ -27,11 +27,11 @@ from django.db.models import Q
 from .base import BaseLesson, BaseLessonManager
 from .base import lesson_nr_block, lesson_nr_lesson, lesson_nr_step
 
+
 class LessonManager(BaseLessonManager):
 
-
     def create_block(self, nr, title, text, description, course):
-        block = BaseLesson(course=course,
+        block = Lesson(course=course,
                        title=title,
                        description=description,
                        text=text,
@@ -43,7 +43,7 @@ class LessonManager(BaseLessonManager):
         return block
 
     def create_lesson(self, nr, title, text, description, course, parent):
-        lesson = BaseLesson(course=course,
+        lesson = Lesson(course=course,
                        title=title,
                        description=description,
                        text=text,
@@ -55,13 +55,13 @@ class LessonManager(BaseLessonManager):
         return lesson
 
     def create_step(self, nr, title, text, description, course, parent, materials):
-        print "here"
-        step = Lesson()
-        step.course = course
-        step.title = title
-        step.description = description
-        #step.nr = lesson_nr_step(nr=nr, parent_nr=parent.nr)
-        step.nr =str(nr)
+        step = Lesson(course=course,
+                       title=title,
+                       description=description,
+                       text=text,
+                       nr=nr,
+                       lesson_nr=lesson_nr_lesson(nr=nr)
+                       )
         step.insert_at(parent)
         step.save()
         for item in materials:

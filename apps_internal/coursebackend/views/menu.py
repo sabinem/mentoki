@@ -16,19 +16,25 @@ from apps_data.courseevent.models.menu import ClassroomMenuItem
 
 from apps_data.courseevent.models.courseevent import CourseEvent
 
-from .mixins.base import CourseMenuMixin
+from .mixins.base import CourseMenuMixin, FormCourseEventKwargsMixin
 from ..forms.menu import MenuItemForm
 
 
-class ClassroomMenuMixin(CourseMenuMixin):
-
+class MenuSuccessUrlMixin(object):
     def get_success_url(self):
-       """
-       for create update and delete view
-       """
-       return reverse_lazy('coursebackend:menu:list',
+       return reverse_lazy('coursebackend:menu:preview',
                            kwargs={'slug': self.kwargs['slug'],
                                    'course_slug': self.kwargs['course_slug']})
+
+
+class MenuContextPreviewMixin(CourseMenuMixin):
+    def get_context_data(self, **kwargs):
+        context = super(MenuContextPreviewMixin, self).get_context_data(**kwargs)
+
+        context['classroommenuitems'] = \
+            ClassroomMenuItem.objects.all_for_courseevent(courseevent=context['courseevent'])
+
+        return context
 
 
 class MenuListView(CourseMenuMixin, TemplateView):
@@ -44,19 +50,18 @@ class MenuListView(CourseMenuMixin, TemplateView):
         return context
 
 
-class MenuPreView(CourseMenuMixin, TemplateView):
+class MenuPreView(MenuContextPreviewMixin,
+                  TemplateView):
     """
     Classroom Menu Items List
     """
-    def get_context_data(self, **kwargs):
-        context = super(MenuPreView, self).get_context_data(**kwargs)
-
-        context['classroommenuitems'] = \
-            ClassroomMenuItem.objects.all_for_courseevent(courseevent=context['courseevent'])
-        return context
 
 
-class MenuItemUpdateView(ClassroomMenuMixin, UpdateView):
+class MenuItemUpdateView(MenuContextPreviewMixin,
+                         FormCourseEventKwargsMixin,
+                         MenuSuccessUrlMixin,
+                         FormValidMessageMixin,
+                         UpdateView):
     """
     Classroom Menu Items Update
     """
@@ -65,41 +70,11 @@ class MenuItemUpdateView(ClassroomMenuMixin, UpdateView):
     context_object_name ='classroomenuitem'
     form_valid_message="Der Eintrag wurde geändert."
 
-    def get_form_kwargs(self):
-        course_slug = self.kwargs['course_slug']
-        courseevent_slug = self.kwargs['slug']
-        kwargs = super(MenuItemUpdateView, self).get_form_kwargs()
-        kwargs['course_slug']=course_slug
-        kwargs['courseevent_slug']=courseevent_slug
-        return kwargs
 
-    def get_context_data(self, **kwargs):
-        context = super(MenuItemUpdateView, self).get_context_data(**kwargs)
-
-        context['classroommenuitems'] = \
-            ClassroomMenuItem.objects.all_for_courseevent(courseevent=context['courseevent'])
-
-        return context
-
-
-class MenuUpdateView(CourseMenuMixin, ModelFormSetView):
-    """
-    Classroom Menu Items List Update
-    """
-    model = ClassroomMenuItem
-    fields = ('display_nr', 'display_title', 'item_type' )
-    readonly = ('link',)
-    can_order = True
-
-    def get_context_data(self, **kwargs):
-        context = super(MenuUpdateView, self).get_context_data(**kwargs)
-
-        context['classroommenuitems'] = \
-            ClassroomMenuItem.objects.all_for_courseevent(courseevent=context['courseevent'])
-
-        return context
-
-class MenuItemDeleteView(CourseMenuMixin, DeleteView):
+class MenuItemDeleteView(CourseMenuMixin,
+                         MenuSuccessUrlMixin,
+                         FormValidMessageMixin,
+                         DeleteView):
     """
     Classroom Menu Item Delete
     """
@@ -108,7 +83,11 @@ class MenuItemDeleteView(CourseMenuMixin, DeleteView):
     form_valid_message="Der Eintrag wurde gelöscht."
 
 
-class MenuItemCreateView(ClassroomMenuMixin, FormView):
+class MenuItemCreateView(MenuContextPreviewMixin,
+                         FormCourseEventKwargsMixin,
+                         MenuSuccessUrlMixin,
+                         FormValidMessageMixin,
+                         FormView):
     """
     Classroom Menu Item Create
     """
@@ -116,29 +95,12 @@ class MenuItemCreateView(ClassroomMenuMixin, FormView):
     form_class = MenuItemForm
     form_valid_message="Der Eintrag wurde gespeichert."
 
-    def get_context_data(self, **kwargs):
-        context = super(MenuItemCreateView, self).get_context_data(**kwargs)
-
-        context['classroommenuitems'] = \
-            ClassroomMenuItem.objects.all_for_courseevent(courseevent=context['courseevent'])
-
-        return context
-
-
-    def get_form_kwargs(self):
-        course_slug = self.kwargs['course_slug']
-        courseevent_slug = self.kwargs['slug']
-        kwargs = super(MenuItemCreateView, self).get_form_kwargs()
-        kwargs['course_slug']=course_slug
-        kwargs['courseevent_slug']=courseevent_slug
-        return kwargs
-
     def form_valid(self, form):
         courseevent = get_object_or_404(CourseEvent, slug=self.kwargs['slug'])
         ClassroomMenuItem.objects.create(
             courseevent=courseevent,
             homework=form.cleaned_data['homework'],
-            lesson=form.cleaned_data['lesson'],
+            classlesson=form.cleaned_data['classlesson'],
             forum=form.cleaned_data['forum'],
             display_title=form.cleaned_data['display_title'],
             display_nr=form.cleaned_data['display_nr'],

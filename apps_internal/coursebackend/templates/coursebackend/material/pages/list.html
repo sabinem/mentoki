@@ -1,7 +1,7 @@
 {% extends "coursebackend/base_course.html" %}
 
 {% block course_menu_items %}
-    {% include 'coursebackend/lesson_course/fragments/_link_worklinks.html' %}
+    {% include 'coursebackend/material/fragments/_link_worklinks.html' %}
 {% endblock %}
 
 {% block page_content %}
@@ -17,11 +17,7 @@
     <div class="row coursebackend_white">
         <div class="sixteen wide column">
 
-            <div class="ui center aligned header medium">Material-Liste</div>
-
             {% include 'base/fragments/_messages.html' %}
-
-            {% include 'coursebackend/material/fragments/_link_create_material.html' %}
 
             {% include 'coursebackend/material/fragments/_list_materials_table.html' %}
 
