@@ -1,83 +1,99 @@
 {% load activelink %}
 {% load i18n %}
 
+{% url "logout" as logout_url %}
+{% url 'desk:start' as desk_url %}
+{% url 'coursebackend:menu:list' course_slug=cs as coursebackend_url %}
+
 <div class="ui fluid vertical menu" id="classroom_menu">
+
     <div class="header item">
         Hallo {{ user.username }}!
     </div>
-    <a  href="{% url 'desk:start' %}" class="item
-        {% ifactive "desk:start" %}
-              active
-        {% endifactive %}
-        ">
+
+    <a  href="{{ desk_url }}" class="item
+    {% ifactive "desk:start" %}active{% endifactive %}">
         {% trans 'Zurück zum Schreibtisch' %}
     </a>
 
-    <a href="{% url "logout" %}" class="item">
+    <a href="{{ logout_url }}" class="item">
         Ausloggen
     </a>
 
     {% if request.user in course.teachers or request.user.is_superuser %}
+
         <div class="header item">
           nur für Lehrer sichtbar
         </div>
 
-        <a class="item
-          {% ifstartswith 'coursebackend:course:detail' course_slug=course.slug %}
-               active
-          {% endifstartswith %}
-          " href="{% url 'coursebackend:course:detail' course_slug=course.slug %}">
-          Kursvorlage<i class="wrench icon"></i>
+        <a class="item"
+        href="{{ coursebackend_url }}">
+          Kursvorbereitung<i class="wrench icon"></i>
         </a>
 
     {% endif %}
 
     <div class="header item active" id="classroom_header">
-      {{ courseevent.title }}
+        {{ courseevent.title }}
     </div>
 
     {% for item in menu_items %}
 
-        {% if item.item_type == item.MENU_ITEM_TYPE.announcements %}
-            <a class="item"
-                href="{% url 'classroom:announcement:list' slug=courseevent.slug %}">
+        {% url 'classroom:announcement:list' slug=courseevent.slug as announcements_url %}
+        {% url 'classroom:forum:detail' slug=es pk=item.forum_id as forum_url %}
+        {% url 'classroom:homework:list' slug=es pk=item.homework_id as homework_url %}
+        {% url 'classroom:forum:newposts' slug=es as newposts_url %}
+        {% url 'classroom:studentswork:list' slug=es as private_url %}
+        {% url 'classroom:lesson:lesson_detail' slug=es pk=item.classlesson_id as lesson_url %}
+        {% url 'classroom:participant:list' slug=es as participants_url %}
+
+        {% if item.item_type == item.MENU_ITEM_TYPE.announcements_item %}
+            <a class="item
+            {% ifstartswith announcements_url %}active{% endifstartswith %}"
+            href="{{ announcements_url }}">
                 <i class="announcement icon"></i>
                 {{ item.display_title }}
             </a>
 
         {% elif item.item_type == item.MENU_ITEM_TYPE.forum_item %}
-            <a class="item"
-                href="{% url 'classroom:forum:detail' slug=courseevent.slug pk=item.forum_id %}">
+            <a class="item
+            {% ifstartswith forum_url %}active{% endifstartswith %}"
+            href="{{ forum_url }}">
                 <i class="comments outline icon"></i>{{ item.display_title }}
             </a>
 
         {% elif item.item_type == item.MENU_ITEM_TYPE.homework %}
-            <a class="item"
-                href="{% url 'classroom:homework:list' slug=courseevent.slug pk=item.homework_id %}">
+            <a class="item
+            {% ifstartswith homework_url %}active{% endifstartswith %}"
+            href="{{ homework_url }}">
                 <i class="write icon"></i>{{ item.display_title }}
             </a>
 
         {% elif item.item_type == item.MENU_ITEM_TYPE.forum_last_posts %}
-            <a class="item"
-                href="{% url 'classroom:forum:newposts' slug=courseevent.slug %}">
+            <a class="item
+            {% ifstartswith newposts_url %}active{% endifstartswith %}"
+            href="{{ newposts_url }}">
                 <i class="find icon"></i>{{ item.display_title }}
             </a>
 
         {% elif item.item_type == item.MENU_ITEM_TYPE.student_private %}
-            <a class="item"
-                href="{% url 'classroom:studentswork:list' slug=courseevent.slug %}">
+            <a class="item
+            {% ifstartswith private_url %}active{% endifstartswith %}"
+            href="{{ private_url }}">
                 <i class="privacy icon"></i>{{ item.display_title }}
             </a>
 
         {% elif item.item_type == item.MENU_ITEM_TYPE.lesson_item %}
-            <a class="item"
-                href="{% url 'classroom:lesson:lesson_detail' slug=courseevent.slug pk=item.lesson_id %}">
+            <a class="item
+            {% ifstartswith lesson_url %}active{% endifstartswith %}"
+            href="{{ lesson_url }}">
                 <i class="student icon"></i>{{ item.display_title }}
             </a>
 
         {% elif item.item_type == item.MENU_ITEM_TYPE.participants_list %}
-            <a class="item"
-                href="{% url 'classroom:participant:list' slug=courseevent.slug %}">
+            <a class="item
+            {% ifstartswith participants_url %}active{% endifstartswith %}"
+            href="{{ participants_url }}">
                 <i class="users icon"></i>{{ item.display_title }}
             </a>
 

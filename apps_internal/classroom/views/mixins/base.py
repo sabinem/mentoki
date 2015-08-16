@@ -54,6 +54,8 @@ class ClassroomMenuMixin(AuthMixin):
 
             context['courseevent'] = get_object_or_404(CourseEvent, slug=self.kwargs['slug'])
             context['course'] = context['courseevent'].course
+            context['es'] = context['courseevent'].slug
+            context['cs'] = context['course'].slug
 
         if not 'menu' in context:
             context['menu_items'] = ClassroomMenuItem.objects.all_for_courseevent(courseevent=context['courseevent'])

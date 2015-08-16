@@ -1,21 +1,36 @@
 <div class="ui fluid vertical menu" id="classroom_preview_menu">
 
     <div class="header item active" id="classroom_header">
-      {{ courseevent.title }}
+      Klassenzimmer-Menü {{ courseevent.title }}
     </div>
 
     {% for menuitem in classroommenuitems %}
         {% url 'coursebackend:menu:update' pk=menuitem.pk course_slug=cs slug=es as list_update_url %}
         {% url 'coursebackend:menu:delete' pk=menuitem.pk course_slug=cs slug=es as list_delete_url %}
 
-        <a class="item
-        {% if menuitem.pk == object.pk %}active{% endif %}"
-        href="{{ list_update_url }}">
-            {% if menuitem.pk != object.pk %}
-                <i class="write blue icon"></i>
-            {% endif %}
-            {{ menuitem.display_title }}
-        </a>
+        {% if menuitem.item_type == menuitem.MENU_ITEM_TYPE.header_item %}
+            <a class="item header
+            {% if menuitem.pk == object.pk %}active{% endif %}"
+                href="{{ list_update_url }}">
+                {% if menuitem.pk != object.pk %}
+                    <i class="write blue icon"></i>
+                {% endif %}
+                {{ menuitem.display_title }}{{ menuitem.item_type }}
+            </a>
+        {% else %}
+            <a class="item
+            {% if menuitem.pk == object.pk %}active{% endif %}"
+                href="{{ list_update_url }}">
+                {% if menuitem.pk != object.pk %}
+                    <i class="write blue icon"></i>
+                {% endif %}
+                {{ menuitem.get_item_type_display }}: {{ menuitem.display_title }}
+                {% if menuitem.is_start_item %}
+                    <i class="red icon circle"></i>
+                {% endif %}
+            </a>
+        {% endif %}
+
 
     {% endfor %}
 
