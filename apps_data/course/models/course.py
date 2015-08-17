@@ -33,44 +33,59 @@ class Course(TimeStampedModel):
     title = models.CharField(
         verbose_name=_('Kurstitel'),
         help_text=_('Arbeitstitel für Deinen Kurs. Er ist nicht öffentlich sichtbar.'),
-        max_length=100)
-    slug = AutoSlugField(populate_from='title', unique=True, editable=False)
+        max_length=100
+    )
+    slug = AutoSlugField(
+        populate_from='title',
+        unique=True,
+        editable=False
+    )
 
     # course owners are the teachers
-    owners = models.ManyToManyField(settings.AUTH_USER_MODEL, through='CourseOwner')
+    owners = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        through='CourseOwner'
+    )
 
     # Information about the course
     excerpt = models.TextField(
         verbose_name=_('Kurze Zusammenfassung / Abstrakt'),
         help_text=_('''Diese Kurzbeschreibung dient später als Vorlage
         bei der Ausschreibung Deiner Kurse'''),
-        blank=True,)
+        blank=True,
+    )
     target_group=models.TextField(
         verbose_name=_('Zielgruppe'),
         help_text=_('Die Zielgruppe für Deinen Kurs.'),
-        blank=True)
+        blank=True
+    )
     prerequisites=models.TextField(
         verbose_name=_("Voraussetzungen"),
         help_text=_('''Welches Vorwissen wird in Deinem
         Kurses Voraussetzung?'''),
-        blank=True)
+        blank=True
+    )
     project = models.TextField(
         verbose_name=_("Teilnehmerprojekt"),
         help_text=_('What do the participants take away from your course?'),
-        blank=True)
+        blank=True
+    )
     structure = models.TextField(
         verbose_name=_("Gliederung"),
         help_text=_('Provide the structure of your course.'),
-        blank=True)
+        blank=True
+    )
     text = models.TextField(
         verbose_name=_('Kursbeschreibung'),
         help_text=_('Here you can give a detailed description of your course.'),
-        blank=True)
+        blank=True
+    )
     # Email Account for the course
     email = models.EmailField(
         verbose_name=_("email Addresse für den Kurs"),
         help_text=_("email des Kursleiters"),
-        default=DEFAULT_COURSE_FROM_EMAIL)
+        default=DEFAULT_COURSE_FROM_EMAIL
+    )
 
     objects = CourseManager()
 
@@ -139,10 +154,15 @@ class CourseOwner(TimeStampedModel):
     """
     Relationship of Courses to Accounts through the Relationship of teaching.
     """
-    course = models.ForeignKey(Course)
+    course = models.ForeignKey(
+        Course,
+        on_delete=models.PROTECT
+    )
+
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        verbose_name=_("Kursleiter")
+        verbose_name=_("Kursleiter"),
+        on_delete=models.PROTECT
     )
 
     # special text and foto for this course
@@ -150,24 +170,28 @@ class CourseOwner(TimeStampedModel):
         verbose_name=_('Kursleiterbeschreibung'),
         help_text=_('''Personenbeschreibung: was qualifiziert Dich für das Halten dieses
         Kurses?'''),
-        blank=True)
+        blank=True
+    )
     foto = models.ImageField(
         verbose_name=_('Kursleiter-Foto'),
         help_text=_('''Hier kannst Du ein Foto von Dir hochladen, das auf der Kursauschreibung
         erscheinen soll.'''),
-        upload_to=foto_location, blank=True)
+        upload_to=foto_location, blank=True
+    )
 
     # this information is about the display of the teachers in the course-profile:
     # Should the whole profile be displayed or just the name
     display = models.BooleanField(
         verbose_name=_('Anzeigen auf der Auschreibungsseite?'),
         help_text=_('''Soll dieses Profil auf der Kursausschreibungsseite angezeigt werden?.'''),
-        default=True)
+        default=True
+    )
     # Whose name goes first?
     display_nr = models.IntegerField(
         verbose_name=_('Anzeigereihenfolge'),
         help_text=_('''Dieses Feld steuert die Anzeigereihenfolge bei mehreren Kursleitern.'''),
-        default=1)
+        default=1
+    )
 
     objects = CourseOwnerManager()
 
@@ -179,16 +203,11 @@ class CourseOwner(TimeStampedModel):
     def __unicode__(self):
         return u'%s %s' % (self.course, self.user)
 
-    @cached_property
-    def course_slug(self):
-        return self.course.slug
-
     def get_absolute_url(self):
         return reverse('coursebackend:course:detail', kwargs={'course_slug':self.course_slug, 'pk':self.pk})
 
     def clean(self):
-        print "----------- in model clean"
         if not self.display:
             if not CourseOwner.objects.other_teachers_for_display(course=self.course, user=self.user):
-                raise ValidationError(_('''Wenigstens ein Lehrerprofil pro Kurs muss in der Kurs-Ausschreibung
-                                      angezeigt werden.'''))
+                raise ValidationError(_('''Wenigstens ein Lehrerprofil pro Kurs muss in der
+                Kurs-Ausschreibung angezeigt werden.'''))

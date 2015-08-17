@@ -1,27 +1,27 @@
 {% if node.is_block %}
-    <a href="{% url 'coursebackend:lesson_course:blockupdate'  course_slug=course.slug pk=node.pk %}">
+    <a href="{% url 'coursebackend:lesson:blockupdate'  course_slug=course.slug pk=node.pk %}">
        <i class="icon write"></i>
     </a>
 {% elif node.is_lesson %}
-    <a href="{% url 'coursebackend:lesson_course:lessonupdate'  course_slug=course.slug pk=node.pk %}">
+    <a href="{% url 'coursebackend:lesson:lessonupdate'  course_slug=course.slug pk=node.pk %}">
        <i class="icon write"></i>
     </a>
 {% else %}
-    <a href="{% url 'coursebackend:lesson_course:stepupdate'  course_slug=course.slug pk=node.pk %}">
+    <a href="{% url 'coursebackend:lesson:stepupdate'  course_slug=course.slug pk=node.pk %}">
        <i class="icon write"></i>
     </a>
 {% endif %}
 
 {% if node.is_block %}
-    <a href="{% url 'coursebackend:lesson_course:delete'  course_slug=course.slug pk=node.pk %}">
+    <a href="{% url 'coursebackend:lesson:delete'  course_slug=course.slug pk=node.pk %}">
        <i class="icon trash"></i>
     </a>
 {% elif node.is_lesson %}
-    <a href="{% url 'coursebackend:lesson_course:delete'  course_slug=course.slug pk=node.pk %}">
+    <a href="{% url 'coursebackend:lesson:delete'  course_slug=course.slug pk=node.pk %}">
        <i class="icon trash"></i>
     </a>
 {% else %}
-    <a href="{% url 'coursebackend:lesson_course:delete'  course_slug=course.slug pk=node.pk %}">
+    <a href="{% url 'coursebackend:lesson:delete'  course_slug=course.slug pk=node.pk %}">
        <i class="icon trash"></i>
     </a>
 {% endif %}

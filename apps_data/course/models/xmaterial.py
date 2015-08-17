@@ -5,9 +5,7 @@ from __future__ import unicode_literals, absolute_import
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
-from django.db.models import FileField
 from django.forms import forms
-from django.template.defaultfilters import filesizeformat
 from django.utils.translation import ugettext_lazy as _
 from django.utils.functional import cached_property
 

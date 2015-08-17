@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import get_object_or_404
-from django.http import Http404, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.views.generic import DetailView, TemplateView, UpdateView, DeleteView, FormView
 
 from braces.views import FormValidMessageMixin
@@ -16,9 +16,11 @@ from .mixins.base import CourseMenuMixin
 from ..forms.announcement import AnnouncementForm
 
 
-class AnnouncementListView(CourseMenuMixin, TemplateView):
+class AnnouncementListView(
+    CourseMenuMixin,
+    TemplateView):
     """
-    Announcements list
+    lists all announcements
     """
     template_name = 'coursebackend/announcement/pages/list.html'
 
@@ -31,8 +33,10 @@ class AnnouncementListView(CourseMenuMixin, TemplateView):
         return context
 
 
-class ListRedirectMixin(object):
-
+class AnnouncementRedirectMixin(object):
+    """
+    redirects to the list page
+    """
     def get_success_url(self):
        """
        for create update and delete view
@@ -41,7 +45,9 @@ class ListRedirectMixin(object):
                            kwargs={'course_slug': self.kwargs['course_slug'], 'slug': self.kwargs['slug']})
 
 
-class AnnouncementDetailView(CourseMenuMixin, DetailView):
+class AnnouncementDetailView(
+    CourseMenuMixin,
+    DetailView):
     """
     Announcement Detail
     """
@@ -49,7 +55,11 @@ class AnnouncementDetailView(CourseMenuMixin, DetailView):
     context_object_name ='announcement'
 
 
-class AnnouncementUpdateView(CourseMenuMixin, FormValidMessageMixin, ListRedirectMixin, UpdateView):
+class AnnouncementUpdateView(
+    CourseMenuMixin,
+    FormValidMessageMixin,
+    AnnouncementRedirectMixin,
+    UpdateView):
     """
     Announcement Update
     """
@@ -59,7 +69,11 @@ class AnnouncementUpdateView(CourseMenuMixin, FormValidMessageMixin, ListRedirec
     form_valid_message="Die Ankündigung wurde geändert!"
 
 
-class AnnouncementDeleteView(CourseMenuMixin, FormValidMessageMixin, ListRedirectMixin, DeleteView):
+class AnnouncementDeleteView(
+    CourseMenuMixin,
+    FormValidMessageMixin,
+    AnnouncementRedirectMixin,
+    DeleteView):
     """
     Announcement Delete
     """
@@ -68,7 +82,11 @@ class AnnouncementDeleteView(CourseMenuMixin, FormValidMessageMixin, ListRedirec
     form_valid_message="Die Ankündigung wurde gelöscht!"
 
 
-class AnnouncementCreateView(CourseMenuMixin, FormValidMessageMixin, ListRedirectMixin, FormView):
+class AnnouncementCreateView(
+    CourseMenuMixin,
+    FormValidMessageMixin,
+    AnnouncementRedirectMixin,
+    FormView):
     """
     Announcement Create
     """

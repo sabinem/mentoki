@@ -11,15 +11,12 @@ from braces.views import FormValidMessageMixin
 
 from apps_data.courseevent.models.homework import Homework
 from apps_data.courseevent.models.courseevent import CourseEvent
-from apps_data.courseevent.models.courseevent import Course
-from apps_data.lesson.models.lesson import Lesson
 
 from .mixins.base import CourseMenuMixin, FormCourseKwargsMixin
 from ..forms.homework import HomeworkForm
 
 
-class ListRedirectMixin(object):
-
+class HomeworkRedirectMixin(object):
     def get_success_url(self):
        """
        for create update and delete view
@@ -29,7 +26,9 @@ class ListRedirectMixin(object):
                                    'course_slug': self.kwargs['course_slug']})
 
 
-class HomeworkListView(CourseMenuMixin, TemplateView):
+class HomeworkListView(
+    CourseMenuMixin,
+    TemplateView):
     """
     Homework List
     """
@@ -44,7 +43,9 @@ class HomeworkListView(CourseMenuMixin, TemplateView):
         return context
 
 
-class HomeworkDetailView(CourseMenuMixin, DetailView):
+class HomeworkDetailView(
+    CourseMenuMixin,
+    DetailView):
     """
     Homework Detail
     """
@@ -52,8 +53,12 @@ class HomeworkDetailView(CourseMenuMixin, DetailView):
     context_object_name ='homework'
 
 
-class HomeworkUpdateView(CourseMenuMixin, FormCourseKwargsMixin,
-                         FormValidMessageMixin, ListRedirectMixin, UpdateView):
+class HomeworkUpdateView(
+    CourseMenuMixin,
+    FormCourseKwargsMixin,
+    FormValidMessageMixin,
+    HomeworkRedirectMixin,
+    UpdateView):
     """
     Homework Update
     """
@@ -63,7 +68,11 @@ class HomeworkUpdateView(CourseMenuMixin, FormCourseKwargsMixin,
     form_valid_message = "Die Aufgabe wurde geändert!"
 
 
-class HomeworkDeleteView(CourseMenuMixin, FormValidMessageMixin, ListRedirectMixin, DeleteView):
+class HomeworkDeleteView(
+    CourseMenuMixin,
+    FormValidMessageMixin,
+    HomeworkRedirectMixin,
+    DeleteView):
     """
     Homework Delete
     """
@@ -72,8 +81,12 @@ class HomeworkDeleteView(CourseMenuMixin, FormValidMessageMixin, ListRedirectMix
     form_valid_message = "Die Aufgabe wurde gelöscht!"
 
 
-class HomeworkCreateView(CourseMenuMixin, FormCourseKwargsMixin,
-                         FormValidMessageMixin, ListRedirectMixin, FormView):
+class HomeworkCreateView(
+    CourseMenuMixin,
+    FormCourseKwargsMixin,
+    FormValidMessageMixin,
+    HomeworkRedirectMixin,
+    FormView):
     """
     Homework Create
     """

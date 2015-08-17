@@ -7,7 +7,9 @@ from django.views.generic import TemplateView
 from .mixins.base import CourseMenuMixin
 
 
-class CourseParticipantListView(CourseMenuMixin, TemplateView):
+class CourseParticipantListView(
+    CourseMenuMixin,
+    TemplateView):
     """
     Participants of the course are listed
     """

@@ -9,7 +9,6 @@ import floppyforms.__future__ as forms
 
 from apps_data.courseevent.models.menu import ClassroomMenuItem
 from apps_data.courseevent.models.courseevent import CourseEvent
-from apps_data.course.models.course import Course
 from apps_data.courseevent.models.homework import Homework
 from apps_data.courseevent.models.forum import Forum
 from apps_data.lesson.models.classlesson import ClassLesson
@@ -34,11 +33,6 @@ class MenuItemForm(forms.ModelForm):
 
 
     def clean_display_title(self):
-        """
-        filling the display_title of the menu entry according to the chosen entry type,
-        if it is let empty
-        :return:
-        """
         if self.cleaned_data['display_title'] == "":
             raise ValidationError('''Der Eintrag muss beschriftet werden. ''')
         return self.cleaned_data["display_title"]

@@ -4,13 +4,10 @@ from __future__ import unicode_literals
 
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import get_object_or_404
-from django.http import Http404, HttpResponseRedirect
-from django.forms.formsets import formset_factory
+from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView, UpdateView, FormView, DeleteView
 
 from braces.views import FormValidMessageMixin
-
-from extra_views import ModelFormSetView
 
 from apps_data.courseevent.models.menu import ClassroomMenuItem
 
@@ -37,7 +34,9 @@ class MenuContextPreviewMixin(CourseMenuMixin):
         return context
 
 
-class MenuListView(CourseMenuMixin, TemplateView):
+class MenuListView(
+    CourseMenuMixin,
+    TemplateView):
     """
     Classroom Menu Items List
     """
@@ -50,18 +49,20 @@ class MenuListView(CourseMenuMixin, TemplateView):
         return context
 
 
-class MenuPreView(MenuContextPreviewMixin,
-                  TemplateView):
+class MenuPreView(
+    MenuContextPreviewMixin,
+    TemplateView):
     """
     Classroom Menu Items List
     """
 
 
-class MenuItemUpdateView(MenuContextPreviewMixin,
-                         FormCourseEventKwargsMixin,
-                         MenuSuccessUrlMixin,
-                         FormValidMessageMixin,
-                         UpdateView):
+class MenuItemUpdateView(
+    MenuContextPreviewMixin,
+    FormCourseEventKwargsMixin,
+    MenuSuccessUrlMixin,
+    FormValidMessageMixin,
+    UpdateView):
     """
     Classroom Menu Items Update
     """
@@ -71,10 +72,11 @@ class MenuItemUpdateView(MenuContextPreviewMixin,
     form_valid_message="Der Eintrag wurde geändert."
 
 
-class MenuItemDeleteView(CourseMenuMixin,
-                         MenuSuccessUrlMixin,
-                         FormValidMessageMixin,
-                         DeleteView):
+class MenuItemDeleteView(
+    CourseMenuMixin,
+    MenuSuccessUrlMixin,
+    FormValidMessageMixin,
+    DeleteView):
     """
     Classroom Menu Item Delete
     """
@@ -83,11 +85,12 @@ class MenuItemDeleteView(CourseMenuMixin,
     form_valid_message="Der Eintrag wurde gelöscht."
 
 
-class MenuItemCreateView(MenuContextPreviewMixin,
-                         FormCourseEventKwargsMixin,
-                         MenuSuccessUrlMixin,
-                         FormValidMessageMixin,
-                         FormView):
+class MenuItemCreateView(
+    MenuContextPreviewMixin,
+    FormCourseEventKwargsMixin,
+    MenuSuccessUrlMixin,
+    FormValidMessageMixin,
+    FormView):
     """
     Classroom Menu Item Create
     """

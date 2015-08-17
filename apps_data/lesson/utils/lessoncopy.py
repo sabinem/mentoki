@@ -66,7 +66,7 @@ def copy_lesson_for_courseevent(self, lesson_pk, courseevent_pk):
 
     ClassLesson.objects.rebuild()
 
-    return(HttpResponseRedirect(reverse('coursebackend:lesson_courseevent:start',
+    return(HttpResponseRedirect(reverse('coursebackend:classlesson:start',
                                kwargs={'course_slug': courseevent.course.slug, 'slug': courseevent.slug})))
 
 
@@ -92,7 +92,7 @@ def _copy_any_level_lesson(lesson, courseevent, parent):
 def _update_lesson(lesson):
     classlesson = ClassLesson.objects.get(original_lesson=lesson)
     classlesson.title=lesson.title
-    classlesson.text=lesson.text,
+    classlesson.text=lesson.text
     classlesson.lesson_nr=lesson.lesson_nr
     classlesson.nr=lesson.nr
     classlesson.course=lesson.course
@@ -102,7 +102,6 @@ def _update_lesson(lesson):
 
 
 def _update_or_create_lessonstep(lessonstep, classlesson):
-
     try:
         classlessonstep = ClassLesson.objects.get(original_lesson=lessonstep)
         classlessonstep.title=lessonstep.title

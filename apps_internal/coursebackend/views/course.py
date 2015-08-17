@@ -16,7 +16,9 @@ from apps_data.course.models.course import Course
 from .mixins.base import CourseMenuMixin
 
 
-class CourseDetailView(CourseMenuMixin, DetailView):
+class CourseDetailView(
+    CourseMenuMixin,
+    DetailView):
     """
     Start in this section of the website: it shows the course and its attributes
     """
@@ -26,7 +28,10 @@ class CourseDetailView(CourseMenuMixin, DetailView):
     slug_field = 'slug'
 
 
-class CourseUpdateView(CourseMenuMixin, FormValidMessageMixin, UpdateView):
+class CourseUpdateView(
+    CourseMenuMixin,
+    FormValidMessageMixin,
+    UpdateView):
     """
     Update the course one field at a time
     """

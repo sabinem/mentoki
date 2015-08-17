@@ -2,14 +2,14 @@
 
 from __future__ import unicode_literals
 
-from vanilla import TemplateView
+from django.views.generic import TemplateView
 
 from .mixins.base import ClassroomMenuMixin
 
 
 class CourseParticipantListView(ClassroomMenuMixin, TemplateView):
     """
-    Participants of the courseevent are listed
+    lists participants of the courseevent
     """
     def get_context_data(self, **kwargs):
         context = super(CourseParticipantListView, self).get_context_data(**kwargs)

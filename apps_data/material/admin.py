@@ -9,8 +9,12 @@ from .models.material import Material
 
 @admin.register(Material)
 class MaterialAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'slug', 'document_type', 'file')
-    list_filter = ('course',)
+    """
+    Materials are file that are uploaded and included in the lessons and classlessons
+    """
+    list_display = ('id', 'title', 'modified', 'created', 'slug', 'document_type', 'file',
+                    'um_id')
+    list_filter = ('course', 'document_type')
 
 
 

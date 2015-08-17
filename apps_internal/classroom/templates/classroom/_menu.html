@@ -3,7 +3,7 @@
 
 {% url "logout" as logout_url %}
 {% url 'desk:start' as desk_url %}
-{% url 'coursebackend:menu:list' course_slug=cs as coursebackend_url %}
+{% url 'coursebackend:menu:list' course_slug=cs slug=es as coursebackend_url %}
 
 <div class="ui fluid vertical menu" id="classroom_menu">
 
@@ -44,7 +44,7 @@
         {% url 'classroom:homework:list' slug=es pk=item.homework_id as homework_url %}
         {% url 'classroom:forum:newposts' slug=es as newposts_url %}
         {% url 'classroom:studentswork:list' slug=es as private_url %}
-        {% url 'classroom:lesson:lesson_detail' slug=es pk=item.classlesson_id as lesson_url %}
+        {% url 'classroom:classlesson:lesson_detail' slug=es pk=item.classlesson_id as lesson_url %}
         {% url 'classroom:participant:list' slug=es as participants_url %}
 
         {% if item.item_type == item.MENU_ITEM_TYPE.announcements_item %}
@@ -69,7 +69,7 @@
                 <i class="write icon"></i>{{ item.display_title }}
             </a>
 
-        {% elif item.item_type == item.MENU_ITEM_TYPE.forum_last_posts %}
+        {% elif item.item_type == item.MENU_ITEM_TYPE.last_posts_item %}
             <a class="item
             {% ifstartswith newposts_url %}active{% endifstartswith %}"
             href="{{ newposts_url }}">

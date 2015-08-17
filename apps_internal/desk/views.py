@@ -33,9 +33,3 @@ class DeskStartView(LoginRequiredMixin, TemplateView):
 
         return context
 
-
-class DeskTestView(LoginRequiredMixin, TemplateView):
-    """
-    This View is the desk. It is the main entry point for every authenticated user.
-    """
-    template_name = 'desk/test.html'

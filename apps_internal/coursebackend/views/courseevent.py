@@ -3,7 +3,6 @@
 from __future__ import unicode_literals
 
 from django.forms.models import modelform_factory
-from django.core.urlresolvers import reverse_lazy
 from django.forms.models import model_to_dict
 from django.forms.widgets import NumberInput, DateInput,TextInput, Select
 from django.views.generic import DetailView, UpdateView, TemplateView
@@ -17,7 +16,9 @@ from apps_data.courseevent.models.courseevent import CourseEvent
 from .mixins.base import CourseMenuMixin
 
 
-class CourseEventDetailView(CourseMenuMixin, DetailView):
+class CourseEventDetailView(
+    CourseMenuMixin,
+    DetailView):
     """
     Start in this section of the website: it shows the course and its attributes
     """
@@ -27,7 +28,9 @@ class CourseEventDetailView(CourseMenuMixin, DetailView):
     context_object_name ='courseevent'
 
 
-class CourseEventListView(CourseMenuMixin, TemplateView):
+class CourseEventListView(
+    CourseMenuMixin,
+    TemplateView):
     """
     Start in this section of the website: it shows the course and its attributes
     """
@@ -39,7 +42,10 @@ class CourseEventListView(CourseMenuMixin, TemplateView):
         return context
 
 
-class CourseEventUpdateView(CourseMenuMixin, FormValidMessageMixin, UpdateView):
+class CourseEventUpdateView(
+    CourseMenuMixin,
+    FormValidMessageMixin,
+    UpdateView):
     """
     Update the course one field at a time
     """

@@ -5,7 +5,6 @@ from __future__ import unicode_literals, absolute_import
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
-
 from django.views.generic import FormView
 
 from apps_data.courseevent.models.forum import Thread, Forum
@@ -15,9 +14,11 @@ from ..forms.thread import StudentThreadForm
 from .mixins.base import ClassroomMenuMixin
 
 
-class ThreadCreateView(ClassroomMenuMixin, FormView):
+class ThreadCreateView(
+    ClassroomMenuMixin,
+    FormView):
     """
-    List all lesson blocks with lessons underneath
+    provides a form to create a thread
     """
     form_class = StudentThreadForm
 

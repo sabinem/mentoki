@@ -11,12 +11,14 @@ from apps_data.courseevent.models.menu import ClassroomMenuItem
 from .mixins.base import ClassroomMenuMixin
 
 
-
-class ClassroomStartView(ClassroomMenuMixin, RedirectView):
+class ClassroomStartView(
+    ClassroomMenuMixin,
+    RedirectView):
+    """
+    redirects to the start-item in the menu when entering the classroom
+    """
     permanent = False
-    """
-    Start in this section of the website: it shows the course and its attributes
-    """
+
     def get_redirect_url(self, *args, **kwargs):
 
         try:

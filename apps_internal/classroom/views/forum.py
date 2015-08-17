@@ -4,16 +4,18 @@ from __future__ import unicode_literals, absolute_import
 
 from django.shortcuts import get_object_or_404
 
-from vanilla import TemplateView, CreateView, FormView
+from django.views.generic import TemplateView
 
 from apps_data.courseevent.models.forum import Forum, Thread, CourseEvent
 
 from .mixins.base import ClassroomMenuMixin
 
 
-class ForumStartView(ClassroomMenuMixin, TemplateView):
+class ForumStartView(
+    ClassroomMenuMixin,
+    TemplateView):
     """
-    List all lesson blocks with lessons underneath
+    shows all forums published in the classroom (published means a menu entry exists
     """
     def get_context_data(self, **kwargs):
         context = super(ForumStartView, self).get_context_data(**kwargs)
@@ -24,9 +26,11 @@ class ForumStartView(ClassroomMenuMixin, TemplateView):
         return context
 
 
-class ForumDetailView(ClassroomMenuMixin, TemplateView):
+class ForumDetailView(
+    ClassroomMenuMixin,
+    TemplateView):
     """
-    List all lesson blocks with lessons underneath
+    show one forum
     """
     def get_context_data(self, **kwargs):
         context = super(ForumDetailView, self).get_context_data(**kwargs)
@@ -42,9 +46,11 @@ class ForumDetailView(ClassroomMenuMixin, TemplateView):
         return context
 
 
-class ForumRecentView(ClassroomMenuMixin, TemplateView):
+class ForumRecentView(
+    ClassroomMenuMixin,
+    TemplateView):
     """
-    List all lesson blocks with lessons underneath
+    show all recent forum contributions (threads and posts)
     """
     def get_context_data(self, **kwargs):
         context = super(ForumRecentView, self).get_context_data(**kwargs)

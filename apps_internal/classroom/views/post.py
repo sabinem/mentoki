@@ -4,9 +4,8 @@ from __future__ import unicode_literals, absolute_import
 
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import get_object_or_404
-from django.http import Http404, HttpResponseRedirect
-
-from vanilla import FormView
+from django.http import HttpResponseRedirect
+from django.views.generic import FormView
 
 from apps_data.courseevent.models.forum import Post, CourseEvent, Thread, Forum
 from apps_data.courseevent.models.courseevent import CourseEvent
@@ -15,9 +14,11 @@ from ..forms.post import StudentPostForm
 from .mixins.base import ClassroomMenuMixin
 
 
-class PostCreateView(ClassroomMenuMixin, FormView):
+class PostCreateView(
+    ClassroomMenuMixin,
+    FormView):
     """
-    List all lesson blocks with lessons underneath
+    Lists a thread with posts underneath and provides a form to create a new post
     """
     form_class = StudentPostForm
 

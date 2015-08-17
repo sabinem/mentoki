@@ -15,7 +15,7 @@
              {% if lesson.id in copied_lesson_ids %}
                  bereits kopiert
                   <a class="ui button"
-                     href="{% url 'coursebackend:lesson_courseevent:lessoncopy' slug=courseevent.slug course_slug=course.slug pk=lesson.pk %}">
+                     href="{% url 'coursebackend:classlesson:lessoncopy' slug=courseevent.slug course_slug=course.slug pk=lesson.pk %}">
                      überschreiben?
                   </a>
              {% else %}
@@ -30,13 +30,13 @@
 
       <td>
 
-          <a href="{% url 'coursebackend:lesson_course:lesson' pk=lesson.pk course_slug=course.slug %}">
+          <a href="{% url 'coursebackend:lesson:lesson' pk=lesson.pk course_slug=course.slug %}">
           {{ lesson }}
           </a>
       </td>
       <td>
           {% if lesson.id in copied_lesson_ids %}
-          <a href="{% url 'coursebackend:lesson_courseevent:start' slug=courseevent.slug course_slug=course.slug %}">
+          <a href="{% url 'coursebackend:classlesson:start' slug=courseevent.slug course_slug=course.slug %}">
               <i class="icon unhide"></i>zum Kurs-Unterricht
           </a>
           {% endif %}

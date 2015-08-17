@@ -31,8 +31,12 @@ class AnnouncementManager(models.Manager):
         announcement.save()
         return announcement
 
-class Announcement(TimeStampedModel):
 
+class Announcement(TimeStampedModel):
+    """
+    Announcements are send out as emails to the class, therefor they can not be deleted or changed
+    once send
+    """
     courseevent = models.ForeignKey(CourseEvent)
 
     title = models.CharField(
@@ -54,21 +58,9 @@ class Announcement(TimeStampedModel):
     def __unicode__(self):
         return self.title
 
-    @cached_property
-    def course_slug(self):
-        return self.courseevent.course_slug
-
-    @cached_property
-    def slug(self):
-        return self.courseevent.slug
-
     def get_absolute_url(self):
         return reverse('coursebackend:announcement:detail',
                        kwargs={'course_slug':self.course_slug,
                                'slug':self.slug,
                                'pk':self.pk})
 
-    def get_classroom_url(self):
-        return reverse('classroom:announcement:detail',
-               kwargs={'slug':self.slug,
-                       'pk':self.pk})

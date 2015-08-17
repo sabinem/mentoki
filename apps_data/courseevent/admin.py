@@ -3,7 +3,6 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from django import forms
 
 from .models.announcement import Announcement
 from .models.courseevent import CourseEvent, CourseEventParticipation
@@ -14,25 +13,32 @@ from .models.homework import Homework, StudentsWork
 
 @admin.register(CourseEvent)
 class CourseEventAdmin(admin.ModelAdmin):
-    list_display = ('slug', 'id', 'title', 'course', )
+    """
+    courseevents
+    """
+    list_display = ('id', 'slug', 'title', 'course', 'modified', 'created',
+                    'event_type', 'status_external', 'status_internal')
     list_filter =  ('course',)
 
 
 @admin.register(CourseEventParticipation)
 class CourseEventParticipationAdmin(admin.ModelAdmin):
-    list_display = ('user', 'courseevent')
+    """
+    users as participants in a courseevent
+    """
+    list_display = ('id', 'user', 'courseevent')
     list_filter = ('user', 'courseevent')
 
 
 @admin.register(Announcement)
 class AnnouncementAdmin(admin.ModelAdmin):
-    list_display = ('courseevent', 'published_at', 'published', 'created')
+    list_display = ('id', 'courseevent', 'published_at', 'published', 'modified', 'created')
     list_filter = ('courseevent', 'published')
 
 
 @admin.register(ClassroomMenuItem)
 class ClassroomMenuItemAdmin(admin.ModelAdmin):
-    list_display = ('courseevent', 'is_start_item', 'display_title', 'display_nr', 'item_type', 'forum', 'classlesson', 'homework')
+    list_display = ('id', 'courseevent', 'is_start_item', 'display_title', 'display_nr', 'item_type', 'forum', 'classlesson', 'homework')
     list_filter = ('courseevent', )
 
 
@@ -51,23 +57,21 @@ class StudentsWorkAdmin(admin.ModelAdmin):
 
 @admin.register(Forum)
 class ForumAdmin(admin.ModelAdmin):
-    list_display = ('title', 'courseevent', 'id', 'published', 'parent' )
+    list_display = ('id', 'title', 'courseevent', 'published', 'parent' )
     list_filter = ( 'courseevent', 'published')
-    list_display_links =  ('courseevent','title')
 
 
 @admin.register(Thread)
 class ThreadAdmin(admin.ModelAdmin):
-    list_display = ( 'courseevent', 'forum', 'id', 'title', 'post_count',
+    list_display = ( 'id', 'courseevent', 'forum', 'title', 'post_count',
                      'author', 'last_author', 'modified', 'created')
     list_filter = ( 'courseevent', 'author', 'last_author')
-    list_display_links  = ( 'title',)
     readonly_fields = ('modified', 'last_author' )
 
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ( 'courseevent', 'thread', 'id', 'title', 'author', 'modified', 'created')
+    list_display = ( 'id', 'courseevent', 'thread', 'id', 'title', 'author', 'modified', 'created')
     list_filter = ( 'courseevent', 'author' )
 
 

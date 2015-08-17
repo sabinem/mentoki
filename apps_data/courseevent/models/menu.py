@@ -29,6 +29,21 @@ def switch_start_item(menuitem):
         item.save()
 
 
+def switch_item_object_published_status(menuitem, publish):
+    if menuitem.item_type ==  menuitem.MENU_ITEM_TYPE.forum_item:
+        forum = Forum.objects.get(pk=menuitem.forum_id)
+        forum.published = publish
+        forum.save()
+    elif menuitem.item_type ==  menuitem.MENU_ITEM_TYPE.lesson_item:
+        classlesson = ClassLesson.objects.get(pk=menuitem.classlesson_id)
+        classlesson.published = publish
+        classlesson.save()
+    elif menuitem.item_type ==  menuitem.MENU_ITEM_TYPE.homework_item:
+        homework = Homework.objects.get(pk=menuitem.forum_id)
+        homework.published = publish
+        homework.save()
+
+
 class ClassroomMenuItemManager(models.Manager):
 
     def all_for_courseevent(self, courseevent):
@@ -59,9 +74,24 @@ class ClassroomMenuItem(TimeStampedModel):
     """
     courseevent = models.ForeignKey(CourseEvent)
 
-    classlesson = models.ForeignKey(ClassLesson, blank=True, null=True)
-    forum = models.ForeignKey(Forum, blank=True, null=True)
-    homework = models.ForeignKey(Homework, blank=True, null=True )
+    classlesson = models.ForeignKey(
+        ClassLesson,
+        blank=True,
+        null=True,
+        on_delete=models.PROTECT
+    )
+    forum = models.ForeignKey(
+        Forum,
+        blank=True,
+        null=True,
+        on_delete=models.PROTECT
+    )
+    homework = models.ForeignKey(
+        Homework,
+        blank=True,
+        null=True,
+        on_delete=models.PROTECT
+    )
 
     MENU_ITEM_TYPE = Choices(('forum', 'forum_item', _('Forum')),
                      ('lesson', 'lesson_item',  _('Unterricht')),
@@ -82,7 +112,7 @@ class ClassroomMenuItem(TimeStampedModel):
         verbose_name="Reihenfolge Nummer",
         help_text="""An welcher Position im Menü soll der Menüpunkt angezeigt werden?""",
     )
-    display_title = models.CharField(max_length=200, blank=True)
+    display_title = models.CharField(max_length=200)
 
     is_start_item = models.BooleanField(
         verbose_name="Ist Startpunkt",
@@ -123,7 +153,6 @@ class ClassroomMenuItem(TimeStampedModel):
         else:
             return False
 
-
     def save(self, *args, **kwargs):
         """
         menu item save method
@@ -135,44 +164,49 @@ class ClassroomMenuItem(TimeStampedModel):
             # there can only be one start-item per courseevent
             switch_start_item(self)
 
-        if self.display_title == "":
-            raise ValidationError(_('Der Menüeintrag muss beschriftet werden!'))
-
+        if self.is_object_link:
+            #set object to status published:
+            switch_item_object_published_status(menuitem=self, publish=True)
 
         super(ClassroomMenuItem, self).save(*args, **kwargs)
+
+    def delete(self):
+        if self.is_object_link:
+            if self.item_type == self.MENU_ITEM_TYPE.homework_item:
+                if not self.homework.can_be_pulled_from_classroom:
+                    raise ValidationError('''Die Aufgabe kann
+                       nicht zurückgezogen werden, da sie schon in Berabeitung ist.''')
+            elif self.item_type == self.MENU_ITEM_TYPE.lesson_item:
+                    raise ValidationError('''Die Lektion kann
+                       nicht zurückgezogen werden, da sich eine veröffentlichter
+                       Aufgabe darauf bezieht.''')
+
+            switch_item_object_published_status(menuitem=self, publish=False)
+        super(ClassroomMenuItem, self).delete()
 
     def clean(self):
         """
         checks input in relation to item_type
         """
-
         # more helpful validations errors for the two main fields
-
         if not self.item_type:
            raise ValidationError('Bitte einen Eintragstyp wählen für den Menüeintrag!')
         if not self.display_nr:
            raise ValidationError('Bitte angeben an wievielter Stelle der Menüeintrag erscheinen soll!')
 
+        # header item: not start_item, no relationships allowed
         if self.item_type == self.MENU_ITEM_TYPE.header_item:
-
-            # header item: not start_item, no relationships allowed
-
             if self.is_start_item:
                 raise ValidationError('Überschrift kann nicht Startpunkt sein!')
 
-        if self.item_type in [self.MENU_ITEM_TYPE.header_item,
-                              self.MENU_ITEM_TYPE.announcements_item,
-                              self.MENU_ITEM_TYPE.private_item,
-                              self.MENU_ITEM_TYPE.last_posts_item,
-                              self.MENU_ITEM_TYPE.participants_item]:
+        # no object item: object link not allowed
+        if not self.is_object_link:
                 if self.classlesson or self.forum or self.homework:
                     raise ValidationError("""Eintragsart kann keinen Bezug zu einem Forum,
                                       einer Aufgabe oder einer Lektion haben.""")
 
+        # lesson item: only relationships lesson, is required
         if self.item_type == self.MENU_ITEM_TYPE.lesson_item:
-
-             # lesson item: only relationships lesson, is required
-
             if not self.classlesson:
                 raise ValidationError('''Lektions-Eintrag muss zu einer Lektion verlinken.
                                       Bitte eine Lektion auswählen.''', code='invalid_object'
@@ -181,26 +215,27 @@ class ClassroomMenuItem(TimeStampedModel):
                 raise ValidationError('''Bei Eintragstyp Lektion bitte nur eine Lektion
                                       als Link-Objekt angeben.''')
 
+        # forum item: only relationships forum, is required
         if self.item_type == self.MENU_ITEM_TYPE.forum_item:
-
-             # forum item: only relationships forum, is required
-
             if not self.forum:
                 raise ValidationError('''Forum-Eintrag muss zu einem Forum verlinken.
                                       Bitte ein Forum auswählen.''')
             if self.classlesson or self.homework:
                 raise ValidationError('Bei Eintragstyp Forum bitte nur Forum als Link-Objekt angeben.')
 
+        # homework item: only relationships homework, is required
+        # lesson must be published first
         if self.item_type == self.MENU_ITEM_TYPE.homework_item:
-
-             # homework item: only relationships homework, is required
-
             if not self.homework:
                 raise ValidationError('''Aufgaben-Eintrag muss zu einer Aufgabe verlinken.
                                       Bitte eine Aufgabe auswählen.''')
             if self.classlesson or self.forum:
                 raise ValidationError('''Bei diesem Eintragstyp bitte nur eine Aufgabe als
                                       Link-Objekt auswählen.''')
+            if not self.homework.classlesson.published:
+                raise ValidationError('''Bitte zuerst die Lektion veröffentlichen,
+                auf die sich die Aufgabe bezieht.''')
+
 
     def __unicode__(self):
         return u'%s: %s' % (self.get_item_type_display(), self.display_title)

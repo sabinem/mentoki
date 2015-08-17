@@ -93,7 +93,8 @@ class Forum(MPTTModel, TimeStampedModel):
     published = models.BooleanField(
         verbose_name="veröffentlicht",
         help_text="""Zeigt an, ob das Forum im Klassenzimmer sichtbar ist.""",
-        default=False
+        default=False,
+        editable=False
     )
     publish_status_changed = MonitorField(monitor='published')
 
@@ -119,15 +120,6 @@ class Forum(MPTTModel, TimeStampedModel):
         return reverse('coursebackend:forum:detail',
                        kwargs={'course_slug':self.course_slug, 'slug': self.slug, 'pk':self.pk })
 
-    @cached_property
-    def slug(self):
-        return self.courseevent.slug
-
-
-    @cached_property
-    def course_slug(self):
-        return self.courseevent.course_slug
-
     def get_next_sibling(self):
         next = super(Forum, self).get_next_sibling()
         try:
@@ -148,20 +140,6 @@ class Forum(MPTTModel, TimeStampedModel):
         except:
             return None
 
-    @cached_property
-    def is_forum(self):
-        if self.get_level() == 0:
-            return True
-        else:
-            return False
-
-    @cached_property
-    def is_subforum(self):
-        if self.get_level() >= 1:
-            return True
-        else:
-            return False
-
     def thread_count(self):
         return Thread.objects.filter(forum=self).count()
 
@@ -170,11 +148,6 @@ class Forum(MPTTModel, TimeStampedModel):
                        kwargs={'course_slug':self.course_slug,
                                'slug':self.slug,
                                'pk':self.pk})
-
-    def get_classroom_url(self):
-        return reverse('classroom:forum:detail',
-               kwargs={'slug':self.slug,
-                       'pk':self.pk})
 
 
 class ForumContributionModel(TimeStampedModel):
@@ -214,7 +187,10 @@ class ThreadManager(models.Manager):
 
 class Thread(ForumContributionModel):
 
-    forum = models.ForeignKey(Forum)
+    forum = models.ForeignKey(
+        Forum,
+        on_delete=models.PROTECT
+    )
 
     title = models.CharField(
         verbose_name="Titel für Deinen Beitrag",
@@ -266,8 +242,15 @@ class Post(ForumContributionModel):
 
     title = models.CharField(max_length=100)
 
-    thread = models.ForeignKey(Thread)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="post_author")
+    thread = models.ForeignKey(
+        Thread,
+        on_delete=models.PROTECT
+    )
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name="post_author",
+        on_delete=models.PROTECT
+    )
 
     # will be deleted later on
     oldpost = models.ForeignKey(OldPost, blank=True, null=True)
@@ -290,9 +273,5 @@ class Post(ForumContributionModel):
         thread.save()
         super(Post, self).save()
 
-
-def last_contributions(courseevent):
-    return ForumContributionModel.objects.filter(courseevent=courseevent).select_subclasses().\
-    order_by('created')
 
 

@@ -4,8 +4,7 @@ from __future__ import unicode_literals
 
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import get_object_or_404
-from django.http import Http404, HttpResponseRedirect
-from django.views.generic import DetailView, TemplateView, UpdateView, DeleteView, FormView
+from django.views.generic import TemplateView, UpdateView, DeleteView, FormView
 
 from braces.views import FormValidMessageMixin
 
@@ -13,10 +12,12 @@ from apps_data.courseevent.models.forum import Forum
 from apps_data.courseevent.models.courseevent import CourseEvent
 
 from ..forms.forum import ForumForm
-from .mixins.base import CourseMenuMixin
+from .mixins.base import CourseMenuMixin, FormCourseEventKwargsMixin
 
 
-class ForumListView(CourseMenuMixin, TemplateView):
+class ForumListView(
+    CourseMenuMixin,
+    TemplateView):
     """
     List all lesson blocks with lessons underneath
     """
@@ -29,7 +30,9 @@ class ForumListView(CourseMenuMixin, TemplateView):
         return context
 
 
-class ForumDetailView(CourseMenuMixin, TemplateView):
+class ForumDetailView(
+    CourseMenuMixin,
+    TemplateView):
     """
     List all lesson blocks with lessons underneath
     """
@@ -45,8 +48,7 @@ class ForumDetailView(CourseMenuMixin, TemplateView):
         return context
 
 
-class ForumMixin(object):
-
+class ForumRedirectMixin(object):
     def get_success_url(self):
        """
        for create update and delete view
@@ -56,7 +58,12 @@ class ForumMixin(object):
                                    'course_slug':self.kwargs['course_slug']})
 
 
-class ForumUpdateView(ForumMixin, FormValidMessageMixin, CourseMenuMixin, UpdateView):
+class ForumUpdateView(
+    ForumRedirectMixin,
+    FormValidMessageMixin,
+    FormCourseEventKwargsMixin,
+    CourseMenuMixin,
+    UpdateView):
     """
     Forum Update
     """
@@ -65,14 +72,12 @@ class ForumUpdateView(ForumMixin, FormValidMessageMixin, CourseMenuMixin, Update
     context_object_name ='forum'
     form_valid_message = "Das Forum wurde geändert!"
 
-    def get_form_kwargs(self):
-        courseevent_slug = self.kwargs['slug']
-        kwargs = super(ForumUpdateView, self).get_form_kwargs()
-        kwargs['courseevent_slug']=courseevent_slug
-        return kwargs
 
-
-class ForumDeleteView(ForumMixin, FormValidMessageMixin, CourseMenuMixin, DeleteView):
+class ForumDeleteView(
+    ForumRedirectMixin,
+    FormValidMessageMixin,
+    CourseMenuMixin,
+    DeleteView):
     """
     Forum Delete
     """
@@ -86,19 +91,18 @@ class ForumDeleteView(ForumMixin, FormValidMessageMixin, CourseMenuMixin, Delete
         return context
 
 
-class ForumCreateView(ForumMixin, FormValidMessageMixin, CourseMenuMixin, FormView):
+class ForumCreateView(
+    ForumRedirectMixin,
+    FormCourseEventKwargsMixin,
+    FormValidMessageMixin,
+    CourseMenuMixin,
+    FormView):
     """
     Forum Create
     """
     model = Forum
     form_class = ForumForm
     form_valid_message = "Das Forum wurde angelegt!"
-
-    def get_form_kwargs(self):
-        courseevent_slug = self.kwargs['slug']
-        kwargs = super(ForumCreateView, self).get_form_kwargs()
-        kwargs['courseevent_slug']=courseevent_slug
-        return kwargs
 
     def form_valid(self, form):
         courseevent = get_object_or_404(CourseEvent, slug=self.kwargs['course_slug'])

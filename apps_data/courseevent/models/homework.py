@@ -56,8 +56,11 @@ class Homework(TimeStampedModel):
     title = models.CharField(verbose_name="Überschrift", max_length=100)
     text = models.TextField(verbose_name="Text")
 
-    published = models.BooleanField(verbose_name="veröffentlichen",
-                                    default=False)
+    published = models.BooleanField(
+        verbose_name="veröffentlichen",
+        default=False,
+        editable=False
+    )
     publish_status_changed = MonitorField(monitor='published')
 
     hidden = models.BooleanField(
@@ -71,25 +74,17 @@ class Homework(TimeStampedModel):
     def __unicode__(self):
         return self.title
 
-    @cached_property
-    def course_slug(self):
-        return self.courseevent.course_slug
-
-    @cached_property
-    def slug(self):
-        return self.courseevent.slug
-
     def get_absolute_url(self):
         return reverse('coursebackend:homework:detail',
                        kwargs={'course_slug':self.course_slug,
                                'slug':self.slug,
                                'pk':self.pk})
 
-    def get_classroom_url(self):
-        return reverse('classroom:homework:list',
-               kwargs={'slug':self.slug,
-                       'pk':self.pk})
-
+    def can_be_pulled_from_classroom(self):
+        if self.studentswork_set:
+            return False
+        else:
+            return True
 
 
 class StudentsWorkManager(models.Manager):

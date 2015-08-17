@@ -10,13 +10,13 @@ class AccountAdmin(UserAdmin):
     form = CustomUserChangeForm
     add_form = CustomUserCreationForm
 
-    list_display = ('id', 'username', 'email', 'is_staff', 'is_superuser', 'is_teacher','teaching')
+    list_display = ('id', 'username', 'email', 'is_staff', 'is_superuser', 'is_teacher','teaching', 'is_student', 'studying')
     list_filter = ('is_superuser', 'is_teacher', 'is_student')
 
     fieldsets = (
         (None, {'fields': ('username', 'email', 'password', 'first_name', 'last_name', 'profile_image',
                            )}),
-        ('Permissions', {'fields': ('is_active', 'is_superuser', 'is_staff', 'is_teacher', 'is_student')}),
+        ('Permissions', {'fields': ('is_active', 'is_superuser', 'is_staff')}),
     )
 
     add_fieldsets = (

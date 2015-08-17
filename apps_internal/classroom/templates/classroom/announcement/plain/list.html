@@ -1,8 +1,0 @@
-{% extends "base/plain.html" %}
-
-{% block plain %}
-    {% for announcement in announcements %}
-        <h1>{{ announcement.title }}</h1>
-        <p>{{ announcement.text | safe }}</p>
-    {% endfor %}
-{% endblock %}    

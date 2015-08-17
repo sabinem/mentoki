@@ -51,11 +51,12 @@ class CourseEventQuerySet(QuerySet):
             return False
 
 
-
-
 class CourseEvent(TimeStampedModel):
 
-    course = models.ForeignKey(Course)
+    course = models.ForeignKey(
+        Course,
+        on_delete=models.PROTECT
+    )
 
     slug = models.SlugField(unique=True)
 
@@ -136,11 +137,12 @@ class CourseEvent(TimeStampedModel):
         verbose_name=_("Voraussetzungen"),
         blank=True)
 
-
     #participants
     participation = models.ManyToManyField(settings.AUTH_USER_MODEL, through="CourseEventParticipation", related_name='participation')
 
-    you_okay = models.BooleanField(default=True)
+    you_okay = models.BooleanField(
+        default=True
+    )
 
     objects = PassThroughManager.for_queryset_class(CourseEventQuerySet)()
     #objects = CourseEvent.Manager()
@@ -149,14 +151,6 @@ class CourseEvent(TimeStampedModel):
 
     def __unicode__(self):
         return self.title
-
-    @cached_property
-    def course_slug(self):
-        return self.course.slug
-
-    @cached_property
-    def course_title(self):
-        return self.course.title
 
     @cached_property
     def teachers(self):
@@ -208,18 +202,6 @@ class ParticipationManager(QuerySet):
 
     def active(self,courseevent):
         return self.filter(courseevent=courseevent, hidden=False).select_related('user')
-
-    def hide_in_classroom(self,courseevent, user):
-        """
-        hide participant in forum!!!
-        """
-        #Threads.objects.get_participant_contribution(author=user)
-
-    def unhide_in_classroom(self,courseevent, user):
-        """
-        hide participant in forum!!!
-        """
-        #Threads.objects.get_participant_contribution(author=user)
 
 
 class CourseEventParticipation(TimeStampedModel):

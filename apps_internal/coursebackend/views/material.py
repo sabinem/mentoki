@@ -29,8 +29,7 @@ class CourseFormMixin(CourseMenuMixin):
         return super(CourseFormMixin, self).form_valid(form)
 
 
-class MaterialMixin(CourseMenuMixin, FormValidMessageMixin):
-
+class MaterialRedirectMixin(object):
     def get_success_url(self):
        """
        for create update and delete view
@@ -39,8 +38,12 @@ class MaterialMixin(CourseMenuMixin, FormValidMessageMixin):
                            kwargs={'course_slug': self.kwargs['course_slug']})
 
 
-class MaterialListView(CourseMenuMixin, TemplateView):
-
+class MaterialListView(
+    CourseMenuMixin,
+    TemplateView):
+    """
+    list materials
+    """
     def get_context_data(self, **kwargs):
         context = super(MaterialListView, self).get_context_data(**kwargs)
 
@@ -48,25 +51,48 @@ class MaterialListView(CourseMenuMixin, TemplateView):
         return context
 
 
-class MaterialDetailView(CourseMenuMixin, DetailView):
+class MaterialDetailView(
+    CourseMenuMixin,
+    DetailView):
+    """
+    Material Detail
+    """
     model = Material
     context_object_name ='material'
 
 
-class MaterialUpdateView(MaterialMixin, UpdateView):
+class MaterialUpdateView(
+    CourseMenuMixin,
+    MaterialRedirectMixin,
+    UpdateView):
+    """
+    Update Material
+    """
     form_class = MaterialForm
     model = Material
     context_object_name ='material'
     form_valid_message = "Das Material wurde geändert!"
 
 
-class MaterialDeleteView(MaterialMixin, DeleteView):
+class MaterialDeleteView(
+    CourseMenuMixin,
+    MaterialRedirectMixin,
+    DeleteView):
+    """
+    Delete Material
+    """
     model=Material
     context_object_name ='material'
     form_valid_message = "Das Material wurde gelöscht!"
 
 
-class MaterialCreateView(MaterialMixin, FormView):
+class MaterialCreateView(
+    CourseMenuMixin,
+    MaterialRedirectMixin,
+    FormView):
+    """
+    Create Material
+    """
     form_class = MaterialForm
     model = Material
     context_object_name ='material'

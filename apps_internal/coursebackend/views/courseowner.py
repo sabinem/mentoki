@@ -13,7 +13,9 @@ from .mixins.base import CourseMenuMixin
 from ..forms.courseowner import TeachersCourseProfileForm
 
 
-class CourseOwnerListView(CourseMenuMixin, TemplateView):
+class CourseOwnerListView(
+    CourseMenuMixin,
+    TemplateView):
     """
     Courseowner List
     """
@@ -25,7 +27,9 @@ class CourseOwnerListView(CourseMenuMixin, TemplateView):
         return context
 
 
-class CourseOwnerDetailView(CourseMenuMixin, DetailView):
+class CourseOwnerDetailView(
+    CourseMenuMixin,
+    DetailView):
     """
     Courseowner List
     """
@@ -34,7 +38,10 @@ class CourseOwnerDetailView(CourseMenuMixin, DetailView):
 
 
 
-class CourseOwnerUpdateView(CourseMenuMixin, FormValidMessageMixin, UpdateView):
+class CourseOwnerUpdateView(
+    CourseMenuMixin,
+    FormValidMessageMixin,
+    UpdateView):
     """
     Courseowner Update
     """

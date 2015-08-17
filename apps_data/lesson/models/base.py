@@ -3,62 +3,74 @@
 from __future__ import unicode_literals, absolute_import
 
 from django.db import models
-from django.utils.functional import cached_property
-from django.template.defaultfilters import slugify
-from django.core.urlresolvers import reverse
-from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext_lazy as _
-from django.core.validators import ValidationError
-from django.db.models import Q
-from django.db.models.loading import get_model
-
 from mptt.models import MPTTModel, TreeForeignKey, TreeManager
 
 from model_utils.models import TimeStampedModel
-from model_utils.fields import MonitorField
 from model_utils.choices import Choices
 
 from apps_data.course.models.course import Course
-from apps_data.courseevent.models.courseevent import CourseEvent
 from apps_data.material.models.material import Material
-
-from model_utils.managers import QueryManager
-from django.db.models import Q
 
 
 class BaseLessonManager(TreeManager):
 
-    def complete_tree_for_course(self, course):
+    def start_tree_for_course(self, course):
+        """
+        fetches the complete tree for the course including material
+        :param course
+        :return: all nodes with material for a course in tree order
+        """
         return self.filter(course=course, level=0).\
             get_descendants(include_self=True).prefetch_related('materials')
 
     def lessons_for_course(self, course):
+        """
+        fetches lessons for the course
+        :param course
+        :return: all lessons for the course
+        """
         return self.filter(course=course,
                            level=1,
                            )
 
     def blocks_for_course(self, course):
+        """
+        fetches blocks for the course
+        :param course
+        :return: all blocks for the course
+        """
         return self.filter(course=course,
                            level=0,
                            )
 
-
-def lesson_material_name(instance, filename):
-        path = '/'.join([instance.course.slug, slugify(instance.title), filename])
-        return path
-
 def lesson_nr_block():
+    """
+    computed field in model: lesson_nr for blocks
+    :return: empty for blocks
+    """
     return ""
 
 def lesson_nr_lesson(nr):
+    """
+    computed field in model: lesson_nr for lessons
+    :return: is just <nr> for lessons
+    """
     return u'%s' % str(nr)
 
 def lesson_nr_step(nr, parent_nr):
+    """
+    computed field in model: lesson_nr for lessons
+    :return: is just <parent.nr>.<nr> for lessonsteps
+    """
     return u'%s.%s' % (str(parent_nr), str(nr))
 
 
 class BaseLesson(MPTTModel, TimeStampedModel):
-
+    """
+    Base Lessons is an abstract model and a blueprint for both
+    Lessons an ClassLessons. It depends on course.
+    """
     parent = TreeForeignKey('self',
         verbose_name="einhängen unter",
         null=True,
@@ -67,6 +79,7 @@ class BaseLesson(MPTTModel, TimeStampedModel):
         db_index=True,
         )
 
+    # dependant on course
     course = models.ForeignKey(
         Course,
         on_delete=models.PROTECT)
@@ -74,12 +87,15 @@ class BaseLesson(MPTTModel, TimeStampedModel):
     nr = models.IntegerField(
         verbose_name=_('Nr.'),
         default=1)
+
+    # this field is derived from nr and and parent.nr depending on the level
+    # see save_method
     lesson_nr = models.CharField(
         verbose_name=_('Lektionsnr.'),
         help_text='abgeleitetes Feld: keine manuelle Eingabe',
         blank=True,
-        max_length=10)
-
+        max_length=10,
+        editable=False)
     title = models.CharField(
         verbose_name="Überschrift",
         help_text="Lektions-Titel",
@@ -101,6 +117,7 @@ class BaseLesson(MPTTModel, TimeStampedModel):
 
     objects = BaseLessonManager()
 
+    # lesson type: blocks > lesson > step having levels: 0, 1, 2
     LESSON_TYPE = Choices(
                      ('block', _('Block')),
                      ('lesson', _('Lesson')),
@@ -115,6 +132,12 @@ class BaseLesson(MPTTModel, TimeStampedModel):
         order_insertion_by = ['course', 'nr']
 
     def __unicode__(self):
+        """
+        blocks are just shown by their title,
+        lessons are shown as <block-title>: <lesson_nr>. <lesson_title>
+        and lessonsteps are shown as <lesson_nr>. <lesson_title>
+        :return: self representation
+        """
         if self.level == 0:
             return u'Block: %s' % (self.title)
         elif self.level == 1:
@@ -123,7 +146,9 @@ class BaseLesson(MPTTModel, TimeStampedModel):
             return u'%s %s' % (self.lesson_nr, self.title)
 
     def save(self, *args, **kwargs):
-        # lesson_nr is calculated and stored in the database for performance
+        """
+        lesson_nr is calculated and stored in the database for performance
+        """
         if self.level:
             if self.level == 0:
                 self.lesson_nr = lesson_nr_block()
@@ -135,6 +160,11 @@ class BaseLesson(MPTTModel, TimeStampedModel):
 
     @property
     def lesson_type(self):
+        """
+        this just translates the internal level of the lesson into a level type,
+        see above.
+        :return: lesson_type: block, lesson or step
+        """
         if self.level == 0 :
             return self.LESSON_TYPE.block
         elif self.level == 1 :
@@ -145,6 +175,13 @@ class BaseLesson(MPTTModel, TimeStampedModel):
             raise ValueError('unexpected lesson level')
 
     def breadcrumb(self):
+        """
+        in breadcrumbs a different representation is chosen for block. lesson and step
+        block: <title>
+        lesson: <lesson_nr>. <title>
+        lessonstep: <lesson_nr> <title>
+        :return: representation in breadcrumbs
+        """
         if self.level == 0:
             return u'%s' % (self.title)
         elif self.level == 1:
@@ -153,6 +190,11 @@ class BaseLesson(MPTTModel, TimeStampedModel):
             return u'%s %s' % (self.lesson_nr, self.title)
 
     def get_next_sibling(self):
+        """
+        for blocks the mptt method get_next_sibling needs to be overwritten, so that
+        it stays into the course
+        :return: None or next mptt-sibiling
+        """
         next = super(BaseLesson, self).get_next_sibling()
         try:
             if next.course_id == self.course_id:
@@ -163,6 +205,11 @@ class BaseLesson(MPTTModel, TimeStampedModel):
             return None
 
     def get_previous_sibling(self):
+        """
+        for blocks the mptt method get_previous_sibling needs to be overwritten, so that
+        it stays into the course
+        :return: None or previous mptt-sibiling
+        """
         previous = super(BaseLesson, self).get_previous_sibling()
         try:
             if previous.course_id == self.course_id:
@@ -172,25 +219,48 @@ class BaseLesson(MPTTModel, TimeStampedModel):
         except:
             return None
 
-    def get_tree_with_material(self):
+    def get_breadcrumbs_with_self(self):
+        return self.get_ancestors(include_self=True)
+
+    def get_tree_without_self_with_material(self):
+        """
+        gets real decendants and materials of a node
+        :return: real decendants with material
+        """
         return self.get_descendants(include_self=False).prefetch_related('materials')
 
-    def get_tree_without_material(self):
+    def get_tree_without_self_without_material(self):
+        """
+        gets real decendants but not the materials of a node
+        :return: real decendants without material
+        """
         return self.get_descendants(include_self=False)
 
     def is_block(self):
+        """
+        bool that decides wether a lesson is a block
+        :return: bool
+        """
         if self.get_level() == 0:
             return True
         else:
             return False
 
     def is_lesson(self):
+        """
+        bool that decides wether a lesson is a lesson
+        :return: bool
+        """
         if self.get_level() == 1:
             return True
         else:
             return False
 
     def is_step(self):
+        """
+        bool that decides wether a lesson is a step
+        :return: bool
+        """
         if self.get_level() == 2:
             return True
         else:
@@ -199,6 +269,8 @@ class BaseLesson(MPTTModel, TimeStampedModel):
     def is_owner(self, user):
         """
         Is this person a teacher in this course? (Then he may work on it.)
+        :param user
+        :return: bool
         """
         if self.course.is_owner(user):
             return True

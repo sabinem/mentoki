@@ -2,7 +2,7 @@
 
 from __future__ import unicode_literals
 
-from vanilla import TemplateView, DetailView
+from django.views.generic import TemplateView, DetailView
 
 from apps_data.courseevent.models.announcement import Announcement
 
@@ -26,5 +26,4 @@ class AnnouncementDetailView(ClassroomMenuMixin, DetailView):
     Announcement Detail
     """
     model = Announcement
-    lookup_field = 'pk'
     context_object_name ='announcement'

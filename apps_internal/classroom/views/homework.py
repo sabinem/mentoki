@@ -4,8 +4,7 @@ from __future__ import unicode_literals
 
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import get_object_or_404
-
-from vanilla import TemplateView, UpdateView, DetailView
+from django.views.generic import TemplateView, UpdateView, DetailView
 
 from apps_data.courseevent.models.homework import StudentsWork, Homework
 
@@ -13,25 +12,24 @@ from .mixins.base import ClassroomMenuMixin
 from ..forms.studentswork import StudentWorkCommentForm
 
 
-class HomeWorkMixin(ClassroomMenuMixin):
-
-    def get_success_url(self):
-       """
-       for create update and delete view
-       """
+class HomeWorkContextMixin(object):
+    """
+    adds the homework to the context
+    """
     def get_context_data(self, **kwargs):
-        context = super(HomeWorkMixin, self).get_context_data(**kwargs)
+        context = super(HomeWorkContextMixin, self).get_context_data(**kwargs)
 
         context['homework'] = get_object_or_404(Homework, pk=self.kwargs['pk'])
         return context
 
 
-class HomeWorkListView(HomeWorkMixin, TemplateView):
+class HomeWorkListView(
+    ClassroomMenuMixin,
+    HomeWorkContextMixin,
+    TemplateView):
     """
     List all students works for a homework
     """
-    template_name = 'classroom/homework/pages/list.html'
-
     def get_context_data(self, **kwargs):
         context = super(HomeWorkListView, self).get_context_data(**kwargs)
         context['studentsworks'] = \
@@ -40,32 +38,31 @@ class HomeWorkListView(HomeWorkMixin, TemplateView):
         return context
 
 
-class StudentsWorkDetailView(HomeWorkMixin, DetailView):
+class StudentsWorkDetailView(
+    ClassroomMenuMixin,
+    HomeWorkContextMixin,
+    DetailView):
     """
-    Announcement Detail
+    shows detail of a students work, that is published in the homework section
     """
-    template_name = 'classroom/homework/pages/studentswork.html'
     model = StudentsWork
-    lookup_field = 'pk'
-    lookup_url_kwarg = 'work_pk'
+    pk_url_kwarg = 'work_pk'
     context_object_name ='studentswork'
 
 
-class StudentsWorkCommentView(HomeWorkMixin, UpdateView):
+class StudentsWorkCommentView(
+    ClassroomMenuMixin,
+    HomeWorkContextMixin,
+    UpdateView):
     """
-    Announcement Detail
+    provides a form for the rest of the class and the teacher to comment on a students work
     """
-    template_name = 'classroom/homework/pages/comment.html'
     model = StudentsWork
-    lookup_field = 'pk'
-    lookup_url_kwarg = 'work_pk'
+    pk_url_kwarg = 'work_pk'
     context_object_name ='studentswork'
     form_class = StudentWorkCommentForm
 
     def get_success_url(self):
-       """
-       for create update and delete view
-       """
        return reverse_lazy('classroom:homework:studentswork',
                            kwargs={'slug': self.kwargs['slug'], 'pk':self.kwargs['pk'],
                                    'work_pk':self.kwargs['work_pk']})

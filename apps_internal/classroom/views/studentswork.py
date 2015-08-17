@@ -4,9 +4,8 @@ from __future__ import unicode_literals
 
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import get_object_or_404
-from django.http import Http404, HttpResponseRedirect
-
-from vanilla import TemplateView, DetailView, UpdateView, FormView, DeleteView
+from django.http import HttpResponseRedirect
+from django.views.generic import TemplateView, DetailView, UpdateView, FormView, DeleteView
 
 from apps_data.courseevent.models.homework import StudentsWork
 from apps_data.courseevent.models.courseevent import CourseEvent
@@ -15,19 +14,21 @@ from .mixins.base import ClassroomMenuMixin
 from ..forms.studentswork import StudentWorkForm, StudentWorkAddTeamForm
 
 
-class StudentsWorkChangeMixin(ClassroomMenuMixin):
-
+class StudentsWorkRedirectMixin(
+    object):
+    """
+    redirects after successful form submit
+    """
     def get_success_url(self):
-       """
-       for create update and delete view
-       """
        return reverse_lazy('classroom:studentswork:list',
                            kwargs={'slug': self.kwargs['slug']})
 
 
-class StudentsWorkListView(ClassroomMenuMixin, TemplateView):
+class StudentsWorkListView(
+    ClassroomMenuMixin,
+    TemplateView):
     """
-    Work: List
+    list all works where student is in the team
     """
     def get_context_data(self, **kwargs):
         context = super(StudentsWorkListView, self).get_context_data(**kwargs)
@@ -37,40 +38,47 @@ class StudentsWorkListView(ClassroomMenuMixin, TemplateView):
         return context
 
 
-class StudentsWorkDetailView(ClassroomMenuMixin, DetailView):
+class StudentsWorkDetailView(
+    ClassroomMenuMixin,
+    DetailView):
     """
-    Work: Detail
+    shows details of studentswork object
     """
     model = StudentsWork
-    lookup_field = 'pk'
     context_object_name ='studentswork'
 
 
-class StudentsWorkUpdateView(StudentsWorkChangeMixin, UpdateView):
+class StudentsWorkUpdateView(
+    ClassroomMenuMixin,
+    StudentsWorkRedirectMixin,
+    UpdateView):
     """
-    Work: Update
+    updates a students work object
     """
     model = StudentsWork
     form_class = StudentWorkForm
-    lookup_field = 'pk'
     context_object_name ='studentswork'
 
 
-class StudentsWorkDeleteView(StudentsWorkChangeMixin, DeleteView):
+class StudentsWorkDeleteView(
+    ClassroomMenuMixin,
+    StudentsWorkRedirectMixin,
+    DeleteView):
     """
-    Work: Delete
+    deletes a students work object
     """
     model = StudentsWork
-    lookup_field = 'pk'
     context_object_name ='studentswork'
 
 
-class StudentsWorkCreateView(StudentsWorkChangeMixin, FormView):
+class StudentsWorkCreateView(
+    ClassroomMenuMixin,
+    StudentsWorkRedirectMixin,
+    FormView):
     """
-    Work: Create
+    creates a students work object
     """
     model = StudentsWork
-    lookup_field = 'pk'
     form_class = StudentWorkForm
     context_object_name ='studentswork'
 
@@ -86,12 +94,14 @@ class StudentsWorkCreateView(StudentsWorkChangeMixin, FormView):
         return HttpResponseRedirect(self.get_success_url())
 
 
-class StudentsWorkAddTeamView(StudentsWorkChangeMixin, UpdateView):
+class StudentsWorkAddTeamView(
+    ClassroomMenuMixin,
+    StudentsWorkRedirectMixin,
+    UpdateView):
     """
-    Work: Add Team Members
+    adds new team members to students work object
     """
     model = StudentsWork
-    lookup_field = 'pk'
     form_class = StudentWorkAddTeamForm
     context_object_name = 'studentswork'
 
