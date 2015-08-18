@@ -12,13 +12,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.DeleteModel(
-            name='Test',
-        ),
-        migrations.RemoveField(
-            model_name='lesson',
-            name='fpfile',
-        ),
+
         migrations.AlterField(
             model_name='coursematerialunit',
             name='file',

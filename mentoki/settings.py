@@ -78,8 +78,6 @@ INSTALLED_APPS = (
     # delete?
     'crispy_forms',
     'django_coverage',
-    'rosetta',
-    'vanilla',
 
     # needed?
     'apps_core.upload',

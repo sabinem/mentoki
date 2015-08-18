@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 
 from django.db import models, migrations
 import apps_data.course.models.oldcoursepart
-import django_filepicker.models
 
 
 class Migration(migrations.Migration):
@@ -13,12 +12,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='lesson',
-            name='fpfile',
-            field=django_filepicker.models.FPFileField(default='x', upload_to='uploads'),
-            preserve_default=False,
-        ),
         migrations.AlterField(
             model_name='coursematerialunit',
             name='file',
