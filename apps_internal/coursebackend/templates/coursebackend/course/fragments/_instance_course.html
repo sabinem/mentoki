@@ -1,67 +1,88 @@
+{% comment %}
+
+instance course
+
+for detail
+
+{% endcomment %}
+
+{% url 'coursebackend:course:update' course_slug=cs field="title" as update_title_url %}
+{% url 'coursebackend:course:update' course_slug=cs field="excerpt" as update_excerpt_url %}
+{% url 'coursebackend:course:update' course_slug=cs field="target_group" as update_target_group_url %}
+{% url 'coursebackend:course:update' course_slug=cs field="prerequisites" as update_prerequisites_url %}
+{% url 'coursebackend:course:update' course_slug=cs field="text" as update_text_url %}
+{% url 'coursebackend:course:update' course_slug=cs field="project" as update_project_url %}
+{% url 'coursebackend:course:update' course_slug=cs field="structure" as update_structure_url %}
+
 <div class="ui header huge">
     Kursvorlage {{ course.title }}
 </div>
 
 <div class="ui fitted divider"></div>
+
 <h3 class="ui header">
-     Titel:
+    Titel:
     {{ course.title |safe  }}
-    <a class= "worklink item"
-       href="{% include 'coursebackend/course/fragments/_link_update.html' with field="title" %}">
+    <a href="{{ update_title_url }}" class= "worklink item">
         <i class="write blue icon"></i>
     </a>
 </h3>
 
 <div class="ui fitted divider"></div>
+
 <h3 class="ui header">
-     Abstrakt:
-    <a class= "worklink item"
-       href="{% include 'coursebackend/course/fragments/_link_update.html' with field="excerpt" %}">
+    Abstrakt:
+    <a href="{{ update_excerpt_url }}" class= "worklink item">
         <i class="write blue icon"></i>
     </a>
 </h3>
 {{ course.excerpt |safe  }}
+
 <div class="ui fitted divider"></div>
+
 <h3 class="ui header">
     Zielgruppe:
-    <a class= "worklink item"
-       href="{% include 'coursebackend/course/fragments/_link_update.html' with field="target_group" %}">
+    <a href="{{ update_target_group_url }}" class= "worklink item">
         <i class="write blue icon"></i>
     </a>
 </h3>
 {{ course.target_group  | safe }}
+
 <div class="ui fitted divider"></div>
+
 <h3 class="ui header">
     Voraussetzungen:
-    <a class= "worklink item"
-       href="{% include 'coursebackend/course/fragments/_link_update.html' with field="prerequisites" %}">
+    <a href="{{ update_prerequisites_url }}" class= "worklink item">
         <i class="write blue icon"></i>
     </a>
 </h3>
 {{ course.prerequisites |safe }}
+
 <div class="ui fitted divider"></div>
+
 <h3 class="ui header">
     Was nimmt der Teilnehmer aus dem Kurs mit:
-    <a class= "worklink item"
-       href="{% include 'coursebackend/course/fragments/_link_update.html' with field="project" %}">
+    <a href="{{ update_project_url }}" class= "worklink item">
         <i class="write blue icon"></i>
     </a>
 </h3>
 {{ course.project  |safe  }}
+
 <div class="ui fitted divider"></div>
+
 <h3 class="ui header">
     Gliederung:
-    <a class= "worklink item"
-       href="{% include 'coursebackend/course/fragments/_link_update.html' with field="structure" %}">
+    <a href="{{ update_structure_url }}" class= "worklink item">
         <i class="write blue icon"></i>
     </a>
 </h3>
 {{ course.structure | safe  }}
+
 <div class="ui fitted divider"></div>
+
 <h3 class="ui header">
     Freie Kursbeschreibung:
-    <a class= "worklink item"
-       href="{% include 'coursebackend/course/fragments/_link_update.html' with field="text" %}">
+    <a href="{{ update_text_url }}" class= "worklink item">
         <i class="write blue icon"></i>
     </a>
 </h3>

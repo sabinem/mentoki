@@ -1,4 +1,8 @@
+{% url 'coursebackend:menu:preview' course_slug=cs slug=es as back_url %}
+{% url 'coursebackend:menu:delete' pk=object.pk course_slug=cs slug=es as delete_url %}
+
 {{ form.media }}
+
 <form class="ui form" method="post" action="" >{% csrf_token %}
 
   {% include 'coursebackend/forms/fragments/_form_non_field_errors.html' %}
@@ -104,7 +108,7 @@
         </a>
     {% endif %}
 
-    <a class="ui button" href="{{ back_url }}">
+    <a href="{{ back_url }}" class="ui button" >
         Abbrechen
     </a>
 

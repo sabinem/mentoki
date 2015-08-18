@@ -1,5 +1,7 @@
-{{ form.media }}
 {% url 'coursebackend:classlesson:start' course_slug=cs slug=es as back_url %}
+
+{{ form.media }}
+
 <form class="ui form" method="post" action="#target" onsubmit="return checkForm(this);">
 
     {% csrf_token %}
@@ -89,8 +91,7 @@
         Reset
     </button>
 
-    <a href="{{ back_url }}"
-       class="ui button">
+    <a href="{{ back_url }}" class="ui button">
         Abbruch
     </a>
 

@@ -1,4 +1,7 @@
+{% url 'coursebackend:menu:preview' course_slug=cs slug=es as back_url %}
+
 {{ form.media }}
+
 <form class="ui form" method="post" action="" enctype="multipart/form-data">{% csrf_token %}
 
     {% include 'coursebackend/forms/fragments/_form_non_field_errors.html' %}

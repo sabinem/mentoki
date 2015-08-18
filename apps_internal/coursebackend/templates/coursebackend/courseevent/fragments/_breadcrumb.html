@@ -1,10 +1,19 @@
+{% comment %}
+
+the breadcrumb for courseevent
+
+for detail/list/update
+
+{% endcomment %}
+
+{% url 'coursebackend:courseevent:detail' course_slug=cs course_slug=cs as courseevent_url %}
+
 <div class="ui large breadcrumb" id ="page-breadcrumb">
-    <a href="{% url 'coursebackend:course:detail' course_slug=course.slug %}"
-        class="item">Kursvorlage {{ course.title }}
+
+    <a href="{{ courseevent_url }}"
+        class="item">Kursereignis {{ courseevent.title }}
     </a>
+
     <i class="right chevron icon divider"></i>
-    <a href="{% url 'coursebackend:courseevent:list' course_slug=course.slug %}"
-        class="item">Kursereignisse {{ courseevent.title }}
-    </a>
-    <i class="right chevron icon divider"></i>
+
 </div>

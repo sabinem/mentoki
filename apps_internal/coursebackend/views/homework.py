@@ -12,7 +12,7 @@ from braces.views import FormValidMessageMixin
 from apps_data.courseevent.models.homework import Homework
 from apps_data.courseevent.models.courseevent import CourseEvent
 
-from .mixins.base import CourseMenuMixin, FormCourseKwargsMixin
+from .mixins.base import CourseMenuMixin, FormCourseEventKwargsMixin
 from ..forms.homework import HomeworkForm
 
 
@@ -55,7 +55,7 @@ class HomeworkDetailView(
 
 class HomeworkUpdateView(
     CourseMenuMixin,
-    FormCourseKwargsMixin,
+    FormCourseEventKwargsMixin,
     FormValidMessageMixin,
     HomeworkRedirectMixin,
     UpdateView):
@@ -83,7 +83,7 @@ class HomeworkDeleteView(
 
 class HomeworkCreateView(
     CourseMenuMixin,
-    FormCourseKwargsMixin,
+    FormCourseEventKwargsMixin,
     FormValidMessageMixin,
     HomeworkRedirectMixin,
     FormView):

@@ -1,4 +1,13 @@
+{% comment %}
+
+table of courseowners
+
+for detail/list/update
+
+{% endcomment %}
+
 <table class="ui table">
+
     <thead>
         <tr>
             <tr>
@@ -9,14 +18,20 @@
             </tr>
         </tr>
     </thead>
+
     <tbody>
         {% for courseowner in courseowners %}
+
+            {% url 'coursebackend:courseowner:update' course_slug=cs pk=courseowner.pk as update_url %}
+            {% url 'coursebackend:courseowner:detail' course_slug=cs pk=courseowner.pk as detail_url %}
+
             <tr>
                 <td>
-                    <a href="{% url 'coursebackend:courseowner:update' course_slug=course.slug pk=courseowner.pk %}">
+                    <a href="{{ update_url }}">
                         <i class="icon write blue"></i>
                     </a>
                 </td>
+
                 <td>
                     {% if courseowner.display %}
                         <i class="icon checkmark green"></i>
@@ -24,14 +39,17 @@
                         <i class="icon remove"></i>
                     {% endif %}
                 </td>
+
                 <td>
                     {{ courseowner.display_nr }}
                 </td>
+
                 <td>
-                    <a href="{% url 'coursebackend:courseowner:detail' course_slug=course.slug pk=courseowner.pk %}">
+                    <a href="{{ detail_url }}">
                         {{ courseowner.user.get_full_name }}{{ courseowner.username }}
                     </a>
                 </td>
+
             </tr>
         {% endfor %}
     </tbody>

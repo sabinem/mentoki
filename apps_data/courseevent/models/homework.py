@@ -25,11 +25,11 @@ class HomeworkManager(models.Manager):
     def published_homework_for_courseevent(self, courseevent):
         return self.filter(courseevent=courseevent, published=True).\
             order_by('due_date').\
-            select_related('lesson')
+            select_related('classlesson')
 
     def unpublished_per_courseevent(self, courseevent):
         return self.filter(courseevent=courseevent, published=False).\
-            order_by('published', 'due_date').select_related('lesson')
+            order_by('published', 'due_date').select_related('classlesson')
 
     def create(self, courseevent, text, title, due_date=None, lesson=None):
         homework = Homework(courseevent=courseevent,

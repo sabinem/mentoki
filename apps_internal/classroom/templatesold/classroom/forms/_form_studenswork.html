@@ -1,0 +1,27 @@
+{{ form.media }}
+<form class="ui form" method="post" action="" >{% csrf_token %}
+
+    {% include 'classroom/forms/form_fields/_form_non_field_errors.html' %}
+
+    {% include 'classroom/forms/form_fields/_form_field_homework.html' %}
+
+    {% include 'classroom/forms/form_fields/_form_field_title.html' %}
+
+    {% include 'classroom/forms/form_fields/_form_field_text.html' %}
+
+    {% include 'classroom/forms/form_fields/_form_field_publish.html' %}
+
+    <button type="submit" value="post" class="ui button">
+        Speichern
+    </button>
+    {% if stundentswork %}
+        <a class="ui button" href="{% url 'classroom:studentswork:detail' slug=courseevent.slug pk=studentswork.pk %}">
+            Zurück
+        </a>
+    {% else %}
+        <a class="ui button" href="{% url 'classroom:studentswork:list' slug=courseevent.slug %}">
+            Zurück
+        </a>
+    {% endif %}
+
+</form>

@@ -1,4 +1,7 @@
+{% url 'coursebackend:forum:list' course_slug=cs slug=es as back_url %}
+
 {{ form.media }}
+
 <form class="ui form" method="post" action="" enctype="multipart/form-data">{% csrf_token %}
 
     {% include 'coursebackend/forms/fragments/_form_non_field_errors.html' %}
@@ -7,7 +10,7 @@
         Löschen
     </button>
 
-    <a class="ui button" href="{% url 'coursebackend:forum:list' course_slug=course.slug slug=courseevent.slug %}">
+    <a href="{{ back_url }}" class="ui button" >
         Abbrechen
     </a>
 

@@ -1,12 +1,26 @@
 {% extends "coursebackend/base_courseevent.html" %}
 
 {% block courseevent_menu_items %}
-    {% include 'coursebackend/homework/fragments/_link_worklinks.html' %}
+
+    {% url 'coursebackend:homework:create' course_slug=cs slug=es as create_url %}
+
+    <a href="{{ create_url }}" class="item" >
+        <i class="write plus icon blue"></i>Aufgabe
+    </a>
+
 {% endblock %}
 
 {% block page_content %}
 
-    <div class="row classroom_background">
+    <div class="row coursebackend_background">
+        <div class="sixteen wide column">
+
+            {% include 'coursebackend/homework/fragments/_breadcrumb.html' %}
+
+        </div>
+    </div>
+
+    <div class="row coursebackend_white">
         <div class="sixteen wide column">
 
             {% include 'base/fragments/_messages.html' %}

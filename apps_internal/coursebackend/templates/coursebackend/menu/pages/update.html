@@ -2,9 +2,6 @@
 
 {% block page_content %}
 
-    {% url 'coursebackend:menu:preview' course_slug=course.slug slug=courseevent.slug as back_url %}
-    {% url 'coursebackend:menu:delete' pk=object.pk course_slug=course.slug slug=courseevent.slug as delete_url %}
-
     <div class="row coursebackend_white">
         <div class="eight wide column">
 

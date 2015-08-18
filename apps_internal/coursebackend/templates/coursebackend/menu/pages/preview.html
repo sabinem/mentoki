@@ -13,7 +13,6 @@
 
 {% block page_content %}
 
-    {% url 'coursebackend:menu:preview' course_slug=cs slug=es as preview_url %}
     {% url 'coursebackend:menu:create' course_slug=cs slug=es as create_url %}
 
     <div class="row coursebackend_background">
@@ -27,11 +26,13 @@
     </div>
 
     <div class="row coursebackend_white">
+
         <div class="eight wide column">
 
             {% include 'coursebackend/menu/fragments/_list_classroommenuitems_preview.html' %}
 
         </div>
+
         <div class="eight wide column">
 
             <div class="ui center aligned header medium">Menü in der Vorschau</div>
@@ -40,7 +41,10 @@
                     <i class="write plus icon blue"></i>Neuen Menüpunkt anlegen
                 </a>
 
+                {% include 'base/fragments/_messages.html' %}
+
         </div>
+
     </div>
 
 {% endblock %}

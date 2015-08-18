@@ -53,7 +53,7 @@ class ClassroomMenuItemManager(models.Manager):
         return self.get(courseevent__slug=slug, is_start_item=True )
 
     def create(self, courseevent, homework, classlesson, forum, display_title,
-               display_nr, item_type, is_start_item):
+               display_nr, item_type, is_start_item, active):
         menuitem = ClassroomMenuItem(
             courseevent=courseevent,
             homework=homework,
@@ -61,6 +61,7 @@ class ClassroomMenuItemManager(models.Manager):
             forum=forum,
             display_title=display_title,
             display_nr=display_nr,
+            active=active,
             item_type=item_type,
             is_start_item=is_start_item
         )
@@ -107,6 +108,8 @@ class ClassroomMenuItem(TimeStampedModel):
         help_text="""Welcher Art ist der Menüeintrag: Überschrift, Link, etc?""",
         choices=MENU_ITEM_TYPE,
         max_length=15)
+
+    active = models.BooleanField(default=True)
 
     display_nr = models.IntegerField(
         verbose_name="Reihenfolge Nummer",

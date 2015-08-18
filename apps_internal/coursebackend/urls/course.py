@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 from django.conf.urls import patterns, url
 
-from ..views.course import CourseDetailView, CourseUpdateView
+from ..views.course import CourseDetailView, CourseUpdateView, CourseEventListView
 
 
 urlpatterns = patterns('',
@@ -15,4 +15,8 @@ urlpatterns = patterns('',
     url(r'^(?P<field>title|excerpt|target_group|prerequisites|project|text|structure)$',
         CourseUpdateView.as_view(),
         {'template':'coursebackend/course/pages/update.html'}, name='update'),
+
+    url(r'^kursliste$',
+        CourseEventListView.as_view(),
+        {'template':'coursebackend/course/pages/list.html'}, name='list'),
 )

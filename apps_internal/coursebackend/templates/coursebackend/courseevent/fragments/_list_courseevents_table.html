@@ -1,3 +1,11 @@
+{% comment %}
+
+table of courseevents
+
+for list
+
+{% endcomment %}
+
 <table class="ui table">
     <thead>
         <tr>
@@ -14,6 +22,9 @@
     </thead>
     <tbody>
         {% for courseevent in courseevents %}
+
+            {% url 'coursebackend:courseevent:detail' course_slug=cs slug=courseevent.slug as detail_url %}
+
             <tr>
                 <td>
                     {% if courseevent.active %}
@@ -23,7 +34,9 @@
                     {% endif %}
                 </td>
                 <td>
-                    {{ courseevent.title  }}
+                    <a href="{{ detail_url }}">
+                        {{ courseevent.title  }}
+                    </a>
                 </td>
                 <td>
                     {{ courseevent.get_event_type_display }}

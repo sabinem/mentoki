@@ -1,4 +1,7 @@
+{% url 'coursebackend:course:detail' course_slug=cs as back_url %}
+
 {{ form.media }}
+
 <form class="ui form" method="post" action="">
 
     {% csrf_token %}
@@ -33,7 +36,7 @@
         Speichern
     </button>
 
-    <a href="{% url 'coursebackend:course:detail' course_slug=course.slug %}" class="ui button">
+    <a href="{{ back_url }}" class="ui button">
         Abbruch
     </a>
 

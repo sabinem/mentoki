@@ -13,6 +13,9 @@ urlpatterns = patterns('',
     url(r'^kursereignis/',
         include('apps_internal.coursebackend.urls.courseevent', namespace="courseevent")),
 
+    url(r'^kursliste/',
+        include('apps_internal.coursebackend.urls.courseeventslist', namespace="courseevents")),
+
     url(r'^leitung/',
         include('apps_internal.coursebackend.urls.courseowner', namespace='courseowner')),
 

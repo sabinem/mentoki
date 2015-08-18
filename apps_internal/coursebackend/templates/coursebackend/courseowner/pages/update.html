@@ -13,7 +13,7 @@
     <div class="row classroombackend_white">
         <div class="sixteen wide column">
 
-            {% include 'coursebackend/courseowner/fragments/_instance_courseowner_user.html' %}
+            <h1>{{ courseowner.user.get_full_name }}</h1>
 
             {% include 'coursebackend/forms/update_create/_courseowner.html' %}
 

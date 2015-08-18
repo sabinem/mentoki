@@ -4,14 +4,10 @@ from __future__ import unicode_literals
 
 from django.conf.urls import patterns, url
 
-from ..views.courseevent import CourseEventDetailView, CourseEventUpdateView, CourseEventListView
+from ..views.courseevent import CourseEventDetailView, CourseEventUpdateView
 
 
 urlpatterns = patterns('',
-
-    url(r'^liste$',
-        CourseEventListView.as_view(),
-        {'template':'coursebackend/courseevent/pages/list.html'}, name='list'),
 
     url(r'^(?P<slug>[a-z0-9_-]+)/$',
         CourseEventDetailView.as_view(),

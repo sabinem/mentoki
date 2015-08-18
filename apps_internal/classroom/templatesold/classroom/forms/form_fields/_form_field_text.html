@@ -1,0 +1,11 @@
+<div class="sixteen wide field">
+
+    {% if form.text.errors %}
+        <div class="ui negative floating message">
+            {{ form.text.errors }}
+        </div>
+    {% endif %}
+
+    {{ form.text }}
+
+</div>

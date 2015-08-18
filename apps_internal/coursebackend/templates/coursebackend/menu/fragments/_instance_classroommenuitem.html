@@ -1,3 +1,11 @@
+{% comment %}
+
+This fragment provides the menu item to be deleted in way that resembles the preview mode
+
+for delete
+
+{% endcomment %}
+
 <div class="ui fluid vertical menu" id="classroom_preview_menu">
 
     <div class="header item active" id="classroom_header">
@@ -7,7 +15,7 @@
         ...
     </a>
 
-    <a class="item active" href="{{ list_update_url }}">
+    <a class="item active">
         {{ classroomenuitem.display_title }}
     </a>
     <a class="item">

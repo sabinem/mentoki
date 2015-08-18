@@ -1,7 +1,12 @@
 {% extends "coursebackend/base_course.html" %}
 
 {% block course_menu_items %}
-    {% include 'coursebackend/material/fragments/_link_worklinks.html' %}
+    {% url 'coursebackend:material:create' course_slug=cs as material_create_url %}
+
+    <a href="{{ material_create_url }}" class="item" >
+        <i class="write plus icon blue"></i>Material
+    </a>
+
 {% endblock %}
 
 {% block page_content %}

@@ -2,7 +2,7 @@
 
 {% url 'coursebackend:course:detail' course_slug=cs as course_url %}
 {% url 'coursebackend:courseowner:list' course_slug=cs as courseowner_url %}
-{% url 'coursebackend:courseevent:list' course_slug=cs as courseevents_url %}
+{% url 'coursebackend:courseevents:list' course_slug=cs as courseevents_url %}
 {% url "coursebackend:lesson_course:start" course_slug=cs as lesson_url %}
 {% url 'coursebackend:material:list' course_slug=course.slug as material_url %}
 
@@ -57,7 +57,6 @@
     {% for event in courseevents %}
 
         {% url 'classroom:start' slug=event.slug as classroom_url %}
-
         {% url 'coursebackend:participant:list' course_slug=cs slug=event.slug as participants_url %}
         {% url 'coursebackend:forum:list' course_slug=cs slug=event.slug as forum_url %}
         {% url 'coursebackend:announcement:list' course_slug=event.slug slug=es as announcements_url %}
@@ -70,44 +69,37 @@
             Klassenzimmer {{ courseevent }}
         </div>
 
-        <a class="item"
-            href="{{ classroom_url }}">
+        <a href="{{ classroom_url }}" class="item"
             <i class="icon student blue"></i>ins Klassenzimmer gehen
         </a>
 
-        <a class="item
-            {% ifactive participants_url %}active{% endifactive %}
-            " href="{{ participants_url }}">
+        <a href="{{ participants_url }}" class="item
+            {% ifactive participants_url %}active{% endifactive %}">
             <i class="list icon"></i>Teilnehmerliste ansehen
         </a>
 
-        <a class="item
-            {% ifactive forum_url %}active{% endifactive %}
-            " href="{{ forum_url }}">
+        <a href="{{ forum_url }}" class="item
+            {% ifactive forum_url %}active{% endifactive %}">
             <i class="list icon"></i>Forum
         </a>
 
-        <a class="item
-            {% ifactive announcements_url %}active{% endifactive %}
-            " href="{{ announcements_url }}">
+        <a href="{{ announcements_url }}" class="item
+            {% ifactive announcements_url %}active{% endifactive %}" >
             <i class="list icon"></i>Ankündigungen
         </a>
 
-        <a class="item
-            {% ifactive homeworks_url %}active{% endifactive %}
-            " href="{{ homeworks_url }}">
+        <a href="{{ homeworks_url }}" class="item
+            {% ifactive homeworks_url %}active{% endifactive %}" >
             <i class="list icon"></i>Aufgaben
         </a>
 
-        <a class="item
-            {% ifactive menu_url %}active{% endifactive %}
-            " href="{{ menu_url }}">
+        <a href="{{ menu_url }}" class="item
+            {% ifactive menu_url %}active{% endifactive %}" >
             <i class="list icon"></i>Klassenzimmer-Menü
         </a>
 
-        <a class="item
-            {% ifactive material_url %}active{% endifactive %}
-            " href="{{ material_url }}">
+        <a href="{{ material_url }}" class="item
+            {% ifactive material_url %}active{% endifactive %}" >
             <i class="list icon"></i>Unterricht
         </a>
 

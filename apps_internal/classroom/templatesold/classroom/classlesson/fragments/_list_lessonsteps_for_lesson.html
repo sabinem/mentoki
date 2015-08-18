@@ -1,0 +1,20 @@
+<div class="ui list relaxed divided">
+    {% for lessonstep in lessonsteps %}
+        <div class="item">
+
+                <i class="top aligned icon">{{ lessonstep.lesson_nr }}</i>
+
+            <div class="content">
+                <div class="header">
+                    <a class="header"
+                       href="{% url "classroom:lesson:lessonstep_detail" slug=courseevent.slug pk=lessonstep.pk %}">
+                       {{ lessonstep.title }}
+                    </a>
+                </div>
+                <div>
+                    {{ lessonstep.description }}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

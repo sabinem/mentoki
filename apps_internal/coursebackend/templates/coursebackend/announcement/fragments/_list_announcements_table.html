@@ -1,4 +1,13 @@
+{% comment %}
+
+announcement table
+
+for list
+
+{% endcomment %}
+
 <table class="ui table">
+
     <thead>
         <tr>
             <tr>
@@ -8,26 +17,33 @@
             </tr>
         </tr>
     </thead>
+
     <tbody>
         {% for announcement in announcements_unpublished %}
+
+            {% url 'coursebackend:announcement:update' course_slug=cs slug=es pk=announcement.pk as update_url %}
+            {% url 'coursebackend:announcement:delete' course_slug=cs slug=es pk=announcement.pk as delete_url %}
             <tr>
                 <td>
-                    <a href="{% url 'coursebackend:announcement:update' course_slug=course.slug slug=courseevent.slug pk=announcement.pk %}">
+                    <a href="{{ update_url }}">
                         <i class="icon write blue"></i>
                     </a>
-                    <a href="{% url 'coursebackend:announcement:delete' course_slug=course.slug slug=courseevent.slug pk=announcement.pk %}">
+                    <a href="">
                         <i class="icon trash blue"></i>
                     </a>
                 </td>
                 <td>-</td>
                 <td>
-                    <a href="{% url 'coursebackend:announcement:detail' course_slug=course.slug slug=courseevent.slug pk=announcement.pk %}">
+                    <a href="{{ delete_url }}">
                         {{ announcement.title }}
                     </a>
                 </td>
             </tr>
         {% endfor %}
         {% for announcement in announcements_published %}
+
+            {% url 'coursebackend:announcement:detail' course_slug=cs slug=es pk=announcement.pk as detail_url %}
+
             <tr>
                 <td>
                     <i class="icon checkmark green"></i>
@@ -36,7 +52,7 @@
                     {{ announcement.published_at | date:'d.m.Y'  }}
                 </td>
                 <td>
-                    <a href="{% url 'coursebackend:announcement:detail' course_slug=course.slug slug=courseevent.slug pk=announcement.pk %}">
+                    <a href="{{ detail_url }}">
                         {{ announcement.title }}
                     </a>
                 </td>
