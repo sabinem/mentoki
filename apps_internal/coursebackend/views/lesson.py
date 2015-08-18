@@ -197,6 +197,7 @@ class LessonDeleteView(
 
 
 class BlockCreateView(
+    CourseMenuMixin,
     LessonRedirectMixin,
     FormValidMessageMixin,
     FormView):
@@ -220,6 +221,7 @@ class BlockCreateView(
 
 
 class LessonCreateView(
+    CourseMenuMixin,
     FormCourseKwargsMixin,
     LessonRedirectMixin,
     FormValidMessageMixin,
@@ -245,6 +247,7 @@ class LessonCreateView(
 
 
 class LessonStepCreateView(
+    CourseMenuMixin,
     FormCourseKwargsMixin,
     LessonRedirectMixin,
     FormValidMessageMixin,

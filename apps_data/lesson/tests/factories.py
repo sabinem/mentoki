@@ -5,7 +5,7 @@ from __future__ import unicode_literals, absolute_import
 from ..models.course import Course, CourseOwner
 from ..models.lesson import Lesson
 from ..models.material import Material
-from authentication.factories import AccountFactory
+from mentokiuser.factories import AccountFactory
 
 import factory
 

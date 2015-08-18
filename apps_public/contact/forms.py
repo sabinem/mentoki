@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 import floppyforms.__future__ as forms
-from crispy_forms.helper import FormHelper
+
 from django.core.mail import send_mail, EmailMessage
 from django.http import HttpResponse
 from django.template.loader import render_to_string, get_template
@@ -17,9 +17,6 @@ class ContactForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super(ContactForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper(form=self)
-        self.helper.form_tag = True
-        self.helper.form_show_labels = True
 
     def send_email_visitor(self):
         # send email to requesting email
