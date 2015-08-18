@@ -1,0 +1,4 @@
+<a class="item active" href="{% url 'classroom:studentswork:list' slug=courseevent.slug %}">
+    <i class="icon privacy"></i>
+    Dein Privatbereich: {{ request.user.get_full_name }}
+</a>

@@ -1,0 +1,30 @@
+{% for homework in homeworks %}
+    <div class="ui segment raised">
+        <h3 class="ui header">
+            <a href="{% url 'coursebackend:homework:detail' course_slug=course.slug slug=courseevent.slug pk=homework.pk %}">
+                {{ homework.title }}
+            </a>
+            <p>
+                {% if homework.lesson_id %}
+                    bezieht sich auf Lektion:
+                    <a href="">
+                        {{ homework.lesson.title }}
+                    </a>
+                {% endif %}
+            </p>
+        </h3>
+        <p>
+            Abgabedatum: {{ homework.due_date }}
+            {% if homework.published %}
+                veröffentlicht am {{ homework.publish_status_changed }}
+                <i class="icon checkmark green"></i>
+            {% endif %}
+        </p>
+        <div class="fullcontent">
+            <h3>Aufgabe:</h3>
+            {{ homework.text | safe }}
+        </div>
+    </div>
+{% empty %}
+     Keine Aufgaben vorhanden
+{% endfor %}

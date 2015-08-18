@@ -1,0 +1,26 @@
+{% comment %}
+
+the breadcrumb for courseowner
+
+for detail/list/update
+
+{% endcomment %}
+
+{% url 'coursebackend:course:detail' course_slug=cs as course_url %}
+{% url 'coursebackend:courseowner:list' course_slug=cs as courseowner_url %}
+
+<div class="ui large breadcrumb" id ="page-breadcrumb">
+
+    <a href="{{ course_url }}"
+        class="item">Kursvorlage {{ course.title }}
+    </a>
+
+    <i class="right chevron icon divider"></i>
+
+    <a href="{{ courseowner_url }}"
+        class="item">Kursleitung
+    </a>
+
+    <i class="right chevron icon divider"></i>
+
+</div>

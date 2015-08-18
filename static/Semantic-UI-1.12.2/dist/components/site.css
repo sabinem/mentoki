@@ -161,3 +161,6 @@ input::selection {
 #desk_admin {
   background: #aeb3a4;
 }
+.ui.form .error.message {
+  display: block;
+}

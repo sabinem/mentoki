@@ -1,0 +1,7 @@
+<div class="segment raised ui">
+    {{ announcement.published_at_date |date:'d.m.Y' }}
+    <h3 class="ui header">
+        {{ announcement.title }}
+    </h3>
+    <div>{{ announcement.text | safe }}</div>
+</div>

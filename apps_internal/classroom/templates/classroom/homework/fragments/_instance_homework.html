@@ -1,0 +1,8 @@
+<div class="ui header medium">
+    Aufgabe:
+</div>
+<div class="ui header medium">{{ homework.title }}</div>
+{{ homework.text | safe }}
+<p>
+    Abgabedatum: {{ homework.due_date | date:'d.m.Y' }},
+</p>

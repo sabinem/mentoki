@@ -286,18 +286,6 @@ object.htmlembed {
     color:grey;
 }
 
-
-/* Work on lessons: make title input field longer */
-input#id_title {
-    width:500px;
-}
-
-/* Work on lessons: make title input field longer */
-input#id_description {
-    width:700px;
-}
-}
-
 #backendheader {
     padding-top:40px;
     padding-left:20px;

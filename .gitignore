@@ -53,3 +53,6 @@ Semantic-UI-1.12.2/*.gitignore
 
 
 steel*/**
+
+deadsimple-less-watch-compiler-master/**
+static/froala_editor/**

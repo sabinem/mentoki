@@ -1,0 +1,27 @@
+<ul class="breadcrumb">
+
+{% if match.url_name == 'buildforum' %}
+        <a href="{% url 'forum:forum' slug=match.kwargs.slug %}">
+             <span class="glyphicon glyphicon-eye-open" id="classroomeye"></span>
+        </a>
+    <li><span class="glyphicon glyphicon-pushpin"></span>
+        Forum
+        <a href="{% url 'buildclassroom:buildforum' slug=match.kwargs.slug %}">
+            <span class="glyphicon glyphicon-plus"></span>
+        </a>
+
+    </li>
+{% else %}
+    <li>
+            Forum
+    </li>
+{% endif %}
+        {% if match.url_name == "updateannouncement" %}
+        <li>bearbeiten</li>
+        {% elif match.url_name == "deleteannouncement "%}
+        <li>loeschen</li>
+        {% elif match.url_name == "createannouncement "%}
+        <li>schreiben</li>
+        {% endif %}
+
+</ul>

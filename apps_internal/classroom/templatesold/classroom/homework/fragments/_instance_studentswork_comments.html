@@ -1,0 +1,9 @@
+<h4 class="ui horizontal divider header">
+    <i class="comments outline icon"></i>
+    Der Kommentar
+</h4>
+{{ studentswork.comments | safe }}
+<a class="ui button"
+    href="{% url 'classroom:homework:comments' slug=courseevent.slug pk=homework.pk work_pk=studentswork.pk  %}">
+    <i class="write icon blue"></i>Kommentar anfügen?
+</a>

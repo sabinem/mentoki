@@ -1,0 +1,83 @@
+{% url 'coursebackend:courseowner:list' course_slug=cs as back_url %}
+
+{{ form.media }}
+
+<form class="ui form" method="post" action="" enctype="multipart/form-data">
+
+    {% csrf_token %}
+
+    {% include 'coursebackend/forms/fragments/_form_non_field_errors.html' %}
+
+    <div class="ui dividing large header">{{ form.foto.label_tag }}</div>
+
+    <div class="field sixteen wide">
+        <p>{{ form.foto.help_text }}</p>
+
+        {% if form.foto.errors %}
+            <div class="ui negative floating message">
+                {{ form.foto.errors }}
+            </div>
+        {% endif %}
+
+        {% if courseowner.foto %}
+            <img src="{{ courseowner.foto.url }}">
+        {% endif %}
+        <br>
+
+        {{ form.foto }}
+
+    </div>
+
+    <div class="ui dividing large header">Kursleiterbeschreibung</div>
+
+    <div class="field sixteen wide">
+        <p>Was qualifiziert Dich diesen Kurs zu halten. Warum willst Du ihn halten? Was treibt Dich an?</p>
+
+        {% if form.text.errors %}
+            <div class="ui negative floating message">
+                {{ form.text.errors }}
+            </div>
+        {% endif %}
+
+        {{ form.text }}
+
+    </div>
+
+    <div class="ui dividing large header">Anzeigeattribute</div>
+
+    {% if form.display.errors %}
+        <div class="ui negative floating message">
+            {{ form.display.errors }}
+        </div>
+    {% endif %}
+    {% if form.display_nr.errors %}
+        <div class="ui negative floating message">
+            {{ form.display_nr.errors }}
+        </div>
+    {% endif %}
+
+    <div class="inline fields">
+
+        <div class="field">
+            <label>{{ form.display.label_tag }}</label>
+            {{ form.display.help_text }}
+            {{ form.display }}
+        </div>
+        <div class="field">
+            <label>{{ form.display_nr.label_tag }}</label>
+            {{ form.display_nr.help_text }}
+            {{ form.display_nr }}
+        </div>
+
+        </div>
+    </div>
+
+    <button type="submit" value="post" class="ui button">
+        Speichern
+    </button>
+
+    <a href="{{ back_url }}" class="ui button">
+        Abbruch
+    </a>
+
+</form>

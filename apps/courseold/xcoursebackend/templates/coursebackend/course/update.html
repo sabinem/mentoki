@@ -1,0 +1,12 @@
+{% extends "coursebackend/base.html" %}
+{% block help %}
+    {% include 'coursebackend/course/_help_update.html' %}
+{% endblock %}
+{% block page_content %}
+    {% with field=request.resolver_match.kwargs.field %}
+        <div class="ui piled segment">
+            {% include 'coursebackend/_tabs_course.html' %}
+            {% include 'coursebackend/_form.html' %}
+        </div>
+    {% endwith %}
+{% endblock %}

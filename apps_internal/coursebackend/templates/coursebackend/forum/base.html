@@ -1,0 +1,83 @@
+{% extends "coursebackend/base.html" %}
+
+{% comment %}
+
+    Blocks filled here:
+    -------------------
+    {% block page_section_css_id %}classroombackend{% endblock %}
+
+    {% block sidebar_menu %}{% include 'coursebackend/_menu.html' %}{% endblock %}
+
+    {% block page_content %}...(see below){% endblock %}
+
+    {% block page_subsection %}{% endblock %}
+
+    Additional inherited blocks: see coursebackend/base.html, they still have to be filled
+    --------------------------------------------------------------------------------------
+    {% block controls %}{% endblock %}
+
+{% endcomment %}
+
+<!-- BLOCK: css id subsection: filled! -->
+
+{% load mptt_tags %}
+
+{% block controls %}{% endblock %}
+
+{% block page_subsection %}
+    {% include 'coursebackend/forum/_element_subsection_header.html' %}xxx
+{% endblock %}
+
+{% block page_content %}
+
+    {% block page_help %}{% endblock %}
+
+    {% block nodes_breadcrumb %}{% endblock %}
+
+    {% block node %}{% endblock %}
+
+    {% block recursetree %}
+
+        <div class="ui divided list">
+
+            {% recursetree nodes %}
+
+                <div class="item">
+
+                    <i class="top aligned folder outline icon"></i>
+
+                    <div class="content">
+
+                        {% block recursetree_item %}{% endblock %}
+
+                        <div class="contentdescription">
+
+                            <div class="ui segment attached vertical">
+                                {% block recursetree_item_more %}{% endblock %}
+                            </div>
+
+                        </div>
+
+                        {% if not is_leaf %}
+
+                            <div class="list">
+
+                                {{ children }}
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            {% endrecursetree %}
+
+        </div>
+
+    {% endblock %}
+
+    {% block form %}{% endblock %}
+
+{% endblock %}

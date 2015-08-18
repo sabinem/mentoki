@@ -1,0 +1,26 @@
+{% extends "base_course/base.html" %}
+{% block header %}
+     Kursereignis {{ courseevent.courseevent_title }}
+{% endblock %}
+{% block header_controls %}
+    {% include 'base_course/_worklinkscheckbox.html' %}
+    {% include 'base_course/_helpcheckbox.html' %}
+{% endblock %}
+{% block help %}
+    {% include 'base_course/_help_courseevent.html' %}
+{% endblock %}
+{% block page_content %}
+        <div class="ui tabular menu">
+            <a class="active blue item">
+            Ansehen
+            </a>
+            <a class="item"
+                href="{% url 'course:createsubforum' slug=match.kwargs.slug ce_slug=match.kwargs.ce_slug %}">
+                Unterforum anlegen<i class="icon plus blue"></i>
+            </a>
+        </div>
+     <div class="ui segment">
+        <h1 class="ui h1 header">Unterforumxx anlegen</h1>
+       {% include 'base_course/_course_form.html' %}
+     </div>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends "classroom/base.html" %}
+
+{% load mptt_tags %}
+
+{% block controls %}{% endblock %}
+
+{% block page_subsection %}
+    <a class="item active" href="{% url 'classroom:lesson:start' slug=courseevent.slug %}">
+        Unterricht {{ courseevent.title }}<i class="student icon"></i>
+    </a>
+{% endblock %}
+
+{% block breadcrumb_row_css_class %}classroom_emphasis{% endblock %}
+{% block form_content_row_css_class %}classroom_display_none{% endblock %}
+{% block top_content_row_css_class %}classroom_white{% endblock %}
+{% block middle_content_row_css_class %}classroom_white{% endblock %}
+{% block detail_content_row_css_class %}classroom_white{% endblock %}
+
+{% block breadcrumb_row %}
+    {% block breadcrumbs %}{% endblock %}
+{% endblock %}
+
+{% block top_content_row %}
+    {% block lesson %}{% endblock %}
+{% endblock %}
+
+{% block middle_content_row %}
+    <div class="ui divided list">
+
+        {% recursetree nodes %}
+
+            <div class="item {% block item_class %}{% endblock %}">
+
+                {% block recursetree_item_header %}
+                {% endblock %}
+
+                <div class="content">
+
+                    {% block recursetree_item_content %}
+                    {% endblock %}
+
+                    <div class="contentdescription">
+                        {% block recursetree_item_more %}
+                        {% endblock %}
+                    </div>
+
+                    {% if not is_leaf %}
+
+                        <div class="list">
+
+                            {{ children }}
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        {% endrecursetree %}
+
+    </div>
+{% endblock %}
+
+{% block detail_content_row %}
+    <div class="{% block view_material_class %}{% endblock %}">
+        {% block material_view %}
+        {% endblock %}
+    </div>
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends "base_course/base.html" %}
+{% block header %}
+    Vorlage {{ course.title }} / Unterricht
+{% endblock %}
+{% block header_controls %}
+    {% include 'base_course/_helpcheckbox.html' %}
+{% endblock %}
+{% block help %}
+    {% include 'base_course/_help_units.html' %}
+{% endblock %}
+{% block controls %}
+    <div class="ui checkbox" id="showdescriptions">
+        <input type="checkbox">
+        <label>Beschreibungen anzeigen</label>
+    </div>
+    <div class="ui checkbox" id="status">
+        <input type="checkbox">
+        <label>Status</label>
+    </div>
+    <div class="ui checkbox" id="worklinks">
+        <input type="checkbox">
+        <label>Bearbeitungs-Links</label>
+    </div>
+{% endblock %}
+{% block breadcrumb %}
+    <div class="ui breadcrumb">
+        <a class="section" href="{% url 'course:lessons' slug=match.kwargs.slug %}">
+            {{ course.title }}
+        </a>
+        <i class="right chevron icon divider"></i>
+        <a class="section" href="{% url 'course:blockdetail' slug=match.kwargs.slug block=courseblock.id %}">
+            <i class="cube icon"></i>{{ courseblock.title }}
+        </a>
+        <i class="right chevron icon divider"></i>
+        <div class="section active">
+                      {% if courseblock.is_numbered %}
+                         <i class="top aligned icon">{{ unit.display_nr }}.</i>
+                      {% endif %}
+            {{ unit.title }}
+        </div>
+    </div>
+{% endblock %}
+{% block page_content %}
+    <div class="ui segment">
+        <h3 class="header ui header">
+             <a class="ui header h3"
+             href="">
+            {% if courseblock.is_numbered %}
+                {{ unit.display_nr }}.
+            {% endif %}
+                {{ unit.title }}
+            </a>
+            {% if unit.status == unit.STATUS_READY %}
+                 <i class="checkmark icon green accomplishment"></i>
+            {% endif %}
+            <a class="worklink"
+                 href="{% url 'course:unitupdate' slug=match.kwargs.slug unit=unit.id %}">
+                 <i class="write blue icon"></i>
+            </a>
+        </h3>
+        <div class="contentdescription">
+            {{ unit.description }}
+        </div>
+        <div id="ui_textdisplay">
+            {{ unit.text | safe }}
+        </div>
+        {% if materials %}
+                <div class="ui divided list">
+                    {% for material in materials %}
+                          <div class="item">
+                          {% if courseblock.is_numbered %}
+                          <i class="top aligned icon">{{ unit.display_nr }}.{{ material.display_nr }}</i>
+                          {% else %}
+                           <i class="top aligned icon triangle right"></i>
+                          {% endif %}
+                                <div class="content">
+                                        <div class="header">
+                                             <a href="{% url 'course:materialdetail' slug=match.kwargs.slug material=material.id %}">
+                                                {{ material.title }}
+                                             </a>
+                                            {% if material.document_type == material.DOCTYPE_PDFVIEWDOWNLOAD or material.document_type == material.DOCTYPE_PDFDOWNLOADONLY %}
+                                                {% if material.file %}
+                                                    <a href="{% url 'course:download' slug=material.slug %}">
+                                                        <i class="download icon blue"></i>
+                                                    </a>
+                                                {% endif %}
+                                            {% endif %}
+                                            {% if material.status == material.STATUS_READY %}
+                                                <i class="checkmark icon green accomplishment"></i>
+                                            {% endif %}
+                                            <a class="worklink"
+                                                href="{% url 'course:materialupdate' slug=match.kwargs.slug material=material.id %}">
+                                                <i class="write blue icon"></i>
+                                            </a>
+                                        </div>
+                                        <div class="contentdescription">
+                                            {{ material.description }}
+                                        </div>
+                                    </div>
+                                </div>
+                    {% endfor %}
+                </div>
+             {% endif %}
+                </div>
+{% endblock %}

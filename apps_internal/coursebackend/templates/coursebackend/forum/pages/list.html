@@ -1,0 +1,27 @@
+{% extends "coursebackend/base_courseevent.html" %}
+
+{% block courseevent_menu_items %}
+    {% include 'coursebackend/forum/fragments/_link_worklinks.html' %}
+{% endblock %}
+
+{% block page_content %}
+
+    <div class="row classroom_background">
+        <div class="sixteen wide column">
+
+            {% include 'coursebackend/forum/fragments/_breadcrumbs.html' %}
+
+        </div>
+    </div>
+
+    <div class="row classroom_background">
+        <div class="sixteen wide column">
+
+            {% include 'base/fragments/_messages.html' %}
+            {% include 'coursebackend/forum/fragments/_recursetree_nodes.html' %}
+
+        </div>
+    </div>
+
+{% endblock %}
+{% block rows %}{% endblock %}

@@ -1,0 +1,35 @@
+<div class="ui large breadcrumb" id ="page-breadcrumb">
+
+    {% for breadcrumb in breadcrumbs %}
+
+        <a href="{% url 'classroom:lesson:lessonstep_detail' slug=courseevent.slug pk=breadcrumb.pk %}" class="section">
+            {% if breadcrumb.level != 0 %}
+                {{ breadcrumb.lesson_nr }}.
+            {% endif %}
+            {{ breadcrumb.title }}
+        </a>
+        <i class="right chevron icon divider"></i>
+
+    {% endfor %}
+
+    {% if previous_lessonstep %}
+
+        <a href="{% url "classroom:lesson:lessonstep_detail" slug=courseevent.slug pk=previous_lessonstep.pk %}">
+           <i class="write chevron left icon"></i>
+        </a>
+
+    {% endif %}
+
+    <div class="section active">
+       {{ lessonstep.lesson_nr }} {{ lessonstep.title }}
+    </div>
+
+    {% if next_lessonstep %}
+
+        <a href="{% url "classroom:lesson:lessonstep_detail" slug=courseevent.slug pk=next_lessonstep.pk %}">
+           <i class="write chevron right icon"></i>
+        </a>
+
+    {% endif %}
+
+</div>

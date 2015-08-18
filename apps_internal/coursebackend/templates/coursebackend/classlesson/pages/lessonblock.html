@@ -1,0 +1,34 @@
+{% extends "coursebackend/base_courseevent.html" %}
+
+{% block course_menu_items %}
+    {% include 'coursebackend/classlesson/fragments/_link_worklinks.html' %}
+{% endblock %}
+
+{% block page_content %}
+
+    <div class="row coursebackend_background">
+        <div class="sixteen wide column">
+
+            {% include 'coursebackend/classlesson/fragments/_breadcrumbs.html' %}
+
+        </div>
+    </div>
+
+    <div class="row coursebackend_white">
+        <div class="sixteen wide column">
+
+            {% include 'base/fragments/_messages.html' %}
+            {{ lessonblock.text | safe }}
+
+        </div>
+    </div>
+
+    <div class="row coursebackend_white">
+        <div class="sixteen wide column">
+
+            {% include 'coursebackend/classlesson/fragments/_recursetree_nodes.html' %}
+
+        </div>
+    </div>
+
+{% endblock %}

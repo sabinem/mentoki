@@ -1,0 +1,30 @@
+{% comment %}
+
+card for courseowner
+
+for detail
+
+{% endcomment %}
+
+{% url 'coursebackend:courseowner:update' course_slug=cs pk=courseowner.pk as owner_update_url %}
+
+<a href="{{ owner_update_url }}" class="item active">
+   <i class="icon write"></i> bearbeiten
+</a>
+
+<div class="ui card">
+    <div class="image">
+        {% if courseowner.foto %}
+            <img src="{{ courseowner.foto.url }}">
+        {% endif %}
+    </div>
+    <div class="content">
+        <a class="header">
+            Kursleitung:
+            {{ courseowner.user.get_full_name}}
+        </a>
+        <div class="description">
+           {{ courseowner.text | safe }}
+        </div>
+    </div>
+</div>

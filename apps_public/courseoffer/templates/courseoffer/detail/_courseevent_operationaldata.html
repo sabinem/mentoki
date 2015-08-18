@@ -1,0 +1,49 @@
+<div class="ui divided list">
+    <div class="item">
+        <i class="ticket icon"></i>
+        <div class="content">
+            <div class="header">Kursformat:
+            {{ courseevent.get_event_type_display }}</div>
+        </div>
+    </div>
+    {% if courseevent.event_type == courseevent.EVENTTYPE_TIMED_COURSE  %}
+        {% if courseevent.nr_weeks %}
+            <div class="item">
+                <i class="map marker icon"></i>
+                <div class="content">
+                  <div class="header">Dauer: {{ courseevent.nr_weeks }} Wochen</div>
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+    {% if courseevent.status_external == courseevent.EXTEVENT_OPEN_FOR_BOOKING  %}
+        <div class="item">
+            <i class="calendar icon"></i>
+            <div class="content">
+                <div class="header" >Start nach Absprache
+                </div>
+                <p></p>
+            </div>
+        </div>
+    {% endif %}
+    {% if courseevent.event_type == courseevent.EVENTTYPE_TIMED_COURSE  %}
+        {% if courseevent.max_participants %}
+            <div class="item">
+                <i class="users icon"></i>
+                <div class="content">
+                  <div class="header">maximale Teilnehmerzahl:
+                  {{ courseevent.max_participants }}</div>
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+</div>
+
+<div style="height:5px;"></div>
+{% if courseevent.status_external == courseevent.EXTEVENT_OPEN_FOR_BOOKING %}
+    <a class="ui button fluid teal" href="http://eepurl.com/bnHpAP">
+        Jetzt zum Vorgespräch anmelden
+    </a>
+{% else %}
+    <a class="ui button fluid teal" href="http://eepurl.com/bnHpAP">Jetzt als Interessent anmelden</a>
+{% endif %}

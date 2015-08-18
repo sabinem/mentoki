@@ -1,0 +1,50 @@
+{% extends "coursebackend/base_courseevent.html" %}
+
+{% block courseevent_menu_items %}
+
+    {% url 'coursebackend:menu:list' course_slug=cs slug=es as list_url %}
+
+    <a class="item" href="{{ list_url }}">
+        <i class="list icon blue"></i>Link-Liste
+    </a>
+
+{% endblock %}
+
+
+{% block page_content %}
+
+    {% url 'coursebackend:menu:create' course_slug=cs slug=es as create_url %}
+
+    <div class="row coursebackend_background">
+        <div class="sixteen wide column">
+
+            <a class="item">
+                <i class="unhide icon blue"></i><i class="write icon blue"></i>Vorschau
+            </a>
+
+        </div>
+    </div>
+
+    <div class="row coursebackend_white">
+
+        <div class="eight wide column">
+
+            {% include 'coursebackend/menu/fragments/_list_classroommenuitems_preview.html' %}
+
+        </div>
+
+        <div class="eight wide column">
+
+            <div class="ui center aligned header medium">Menü in der Vorschau</div>
+
+                <a href="{{ create_url }}">
+                    <i class="write plus icon blue"></i>Neuen Menüpunkt anlegen
+                </a>
+
+                {% include 'base/fragments/_messages.html' %}
+
+        </div>
+
+    </div>
+
+{% endblock %}

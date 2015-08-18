@@ -1,0 +1,21 @@
+{% extends "coursebackend/base_courseevent.html" %}
+
+{% block page_content %}
+
+    <div class="row classroom_emphasis">
+        <div class="sixteen wide column">
+
+            {% include 'coursebackend/forum/fragments/_recursetree_nodes.html' %}
+
+        </div>
+    </div>
+
+    <div class="row classroom_white">
+        <div class="sixteen wide column">
+
+            {% include 'coursebackend/forms/delete/_forum.html' %}
+
+        </div>
+    </div>
+{% endblock %}
+{% block rows %}{% endblock %}

@@ -1,0 +1,18 @@
+{% comment %}
+
+the breadcrumb for announcements
+
+for list/update/detail/create/delete
+
+{% endcomment %}
+
+{% url 'coursebackend:announcement:list' course_slug=event.slug slug=es as announcements_url %}
+
+<div class="ui large breadcrumb" id ="page-breadcrumb">
+
+    <a href="{{ announcements_url }}"  class="item">
+         Ankündigungen {{ courseevent.title }}
+    </a>
+    <i class="right chevron icon divider"></i>
+
+</div>

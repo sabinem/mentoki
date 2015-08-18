@@ -1,0 +1,55 @@
+<table class="ui table">
+
+    <thead>
+        <tr>
+            <th>am</th>
+            <th>von</th>
+            <th>Überschrift</th>
+            <th>Beitragsart</th>
+            <th>Link zum Beitrag</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        {% for contribution in contributions %}
+
+            <tr>
+                <td>
+                    {{ contribution.modified }}
+                </td>
+                <td>
+                    {% if contribution.last_author %}
+                        {{ contribution.last_author }}
+                    {% else %}
+                        {{ contribution.author }}
+                    {% endif %}
+                </td>
+                <td>
+                    {{ contribution.title }}
+                </td>
+                <td>
+                    {% if contribution.thread_id %}
+                       Post
+                    {% else %}
+                       Beitrag
+                    {% endif %}
+                </td>
+                <td>
+                    <a
+                        {% if contribution.thread_id %}
+                           href="{% url 'classroom:forum:thread' slug=courseevent.slug pk=contribution.thread_id %}"
+                        {% else %}
+                           href="{% url 'classroom:forum:thread' slug=courseevent.slug pk=contribution.pk %}
+                        {% endif %}
+                    ">
+                        <i class="icon comments outline"></i>
+                    </a>
+                </td>
+            </tr>
+
+        {% endfor %}
+
+    </tbody>
+
+</table>

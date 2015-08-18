@@ -1,0 +1,106 @@
+{% comment %}
+
+table of all materials
+
+for list
+
+{% endcomment %}
+
+<table class="ui table stackable">
+
+    <thead>
+        <tr>
+            <th class="three wide">Bearbeitung</th>
+            <th class="three wide">Titel</th>
+            <th class="three wide">Datei</th>
+            <th class="three wide">eingebunden in</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        {% for material in materials %}
+
+            {% url 'coursebackend:material:update' course_slug=cs pk=material.pk as material_update_url %}
+            {% url 'coursebackend:material:delete' course_slug=cs pk=material.pk as material_delete_url %}
+            {% url 'coursebackend:material:detail' course_slug=cs pk=material.pk as material_detail_url %}
+            {% url 'download' slug=material.slug as download_url %}
+
+            <tr>
+
+                <td>
+                    <p>
+                        <a href="{{ material_update_url }}">
+                            <i class="write blue icon"></i>
+                        </a>
+                        <a href="{{ material_delete_url }}">
+                            <i class="trash blue icon"></i>
+                        </a>
+                    </p>
+                </td>
+
+                <td>
+                    <a href="{{ material_detail_url }}">
+                       {{ material.title }}
+                    </a>
+                </td>
+
+                <td>
+                    {{ material.file  }}<br>
+                    <a href="{{ download_url }}">
+                        {{ material.slug  }}
+                    </a><br>
+
+                    {% if material.file %}
+
+                        <p>
+
+                            <a href="{{ material.file.url }}">
+                                <i class="icon file"></i>
+                            </a>
+
+                            <a href="{{ material_detail_url }}">
+                                <i class="unhide icon blue"></i>
+                            </a>
+
+                            {% if material.pdf_download_link %}
+                                <a href="{{ download_url }}">
+                                    <i class="download icon blue"></i>
+                                </a>
+                            {% endif %}
+
+                        </p>
+
+                    {% endif %}
+                </td>
+
+                <td>
+
+                    <div class="ui list bulleted">
+
+                        {% for lesson in material.lesson_set.all %}
+
+                          {% url 'coursebackend:lesson:step' course_slug=cs pk=lesson.pk as lesson_update_url %}
+
+                          {% if not lesson.courseevent_id %}
+
+                              <a href="{{ lesson_update_url }}" class="item">
+                                  {{ lesson.lesson_nr }} {{ lesson.title }}
+                              </a>
+
+                          {% endif %}
+
+                        {% empty %}
+                          -
+                        {% endfor %}
+
+                    </div>
+                </td>
+
+            </tr>
+
+        {% endfor %}
+
+    </tbody>
+
+</table>

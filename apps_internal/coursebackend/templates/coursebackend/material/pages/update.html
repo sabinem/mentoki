@@ -1,0 +1,21 @@
+{% extends "coursebackend/base_course.html" %}
+
+{% block page_content %}
+
+    <div class="row coursebackend_background">
+        <div class="sixteen wide column">
+
+            {% include 'coursebackend/material/fragments/_breadcrumb.html' %}
+
+        </div>
+    </div>
+
+    <div class="row coursebackend_white">
+        <div class="sixteen wide column">
+
+            {% include 'coursebackend/forms/update_create/_material.html' %}
+
+        </div>
+    </div>
+
+{% endblock %}

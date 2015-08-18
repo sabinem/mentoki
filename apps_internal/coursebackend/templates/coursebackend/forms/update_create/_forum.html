@@ -1,0 +1,98 @@
+{% url 'coursebackend:forum:list' course_slug=cs slug=es as back_url %}
+
+{{ form.media }}
+
+<form class="ui form" method="post" action="" >{% csrf_token %}
+
+    {% include 'coursebackend/forms/fragments/_form_non_field_errors.html' %}
+
+    <div class="ui dividing large header">Forum bearbeiten</div>
+
+    <div class="fields inline">
+        <div class="field twelve wide">
+            {{ form.parent.label_tag }}
+            <p>{{ form.parent.help_text }}</p>
+
+            {% if form.parent.errors %}
+                <div class="ui negative floating message">
+                    {{ form.parent.errors }}
+                </div>
+            {% endif %}
+            <br>
+
+            {{ form.parent }}
+
+        </div>
+    </div>
+
+    <div class="fields inline">
+
+        <div class="field four wide">
+            {{ form.display_nr.label_tag }}
+
+            {% if form.display_nr.errors %}
+                <div class="ui negative floating message">
+                    {{ form.display_nr.errors }}
+                </div>
+            {% endif %}
+            <br>
+
+            {{ form.display_nr }}
+
+        </div>
+
+        <div class="field twelve wide">
+
+            {{ form.title.label_tag }}
+
+            {% if form.title.errors %}
+                <div class="ui negative floating message">
+                    {{ form.title.errors }}
+                </div>
+            {% endif %}
+            <br>
+
+            {{ form.title }}
+
+        </div>
+
+    </div>
+
+    <div class="field sixteen wide">
+        {{ form.description.label_tag }}
+        {{ form.description.help_text }}
+        {% if form.description.errors %}
+            <div class="ui negative floating message">
+                {{ form.description.errors }}
+            </div>
+        {% endif %}
+        <br>
+
+        {{ form.description }}
+
+    </div>
+
+    <div class="field sixteen wide">
+        <div class="ui header">Ausführliche Beschreibung des Forums</div>
+        <p>Dieser Text wird den Forumsbeiträgen vorangestellt und leitet die Kursteilnehmern an, ihre
+                  Beiträge zu schreiben.</p>
+        {% if form.text.errors %}
+            <div class="ui negative floating message">
+                {{ form.text.errors }}
+            </div>
+        {% endif %}
+        <br>
+
+        {{ form.text }}
+
+    </div>
+
+    <button type="submit" value="post" class="ui button">
+        Speichern
+    </button>
+
+    <a href="{{ back_url }}" class="ui button" type="submit" value="post">
+        Zurück zur Übersicht
+    </a>
+
+</form>

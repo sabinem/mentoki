@@ -15,7 +15,7 @@ from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
 from django.template.loader import get_template
 from django.template import Context
-from apps.course.models import Course,CourseOwner
+from apps_data.course.models import Course,CourseOwner
 from django.contrib.sites.models import Site
 from .helpers_subforums import calc_subforum_enriched_list
 from .cache import recalc_subforum_change, recalc_thread_data

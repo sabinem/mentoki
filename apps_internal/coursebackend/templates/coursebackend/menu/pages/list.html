@@ -1,0 +1,35 @@
+{% extends "coursebackend/base_courseevent.html" %}
+
+{% block courseevent_menu_items %}
+
+    {% url 'coursebackend:menu:preview' course_slug=cs slug=es as preview_url %}
+
+    <a class="item" href="{{ preview_url }}">
+        <i class="unhide icon blue"></i><i class="write icon blue"></i>Vorschau
+    </a>
+
+{% endblock %}
+
+{% block page_content %}
+
+    <div class="row coursebackend_background">
+        <div class="sixteen wide column">
+
+            <a class="item">
+                <i class="list icon blue"></i>Link-Liste
+            </a>
+
+        </div>
+    </div>
+
+    <div class="row coursebackend_white">
+        <div class="sixteen wide column">
+
+            {% include 'base/fragments/_messages.html' %}
+
+            {% include 'coursebackend/menu/fragments/_list_classroommenuitems_table.html' %}
+
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "coursebackend/base_courseevent.html" %}
+
+{% block page_content %}
+
+    <div class="row coursebackend_white">
+        <div class="eight wide column">
+
+            {% include 'coursebackend/menu/fragments/_instance_classroommenuitem.html' %}
+
+            {% include 'coursebackend/forms/delete/_menuitem.html' %}
+
+        </div>
+    </div>
+
+{% endblock %}
+

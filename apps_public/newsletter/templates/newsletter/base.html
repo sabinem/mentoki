@@ -1,0 +1,28 @@
+{% extends "base/base_public.html" %}
+
+{% block body %}
+    <body id="newsletter_admin" >
+{% endblock %}
+
+{% block custom_menu_item %}
+
+    {% if request.user.is_staff %}
+        <a class="item" href="{% url 'newsletter:admin' %}">Newsletter-Übersicht</a>
+    {% endif %}
+
+{% endblock %}
+
+{% block main %}
+
+    <main class="ui grid page" id="newsletter_page">
+        <div class="column">
+            <div class="ui piled segment" id="newspaper_paper">
+
+                {% block content %}
+                {% endblock %}
+
+            </div>
+        </div>
+    </main>
+
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "base/base_public.html" %}
+{% load i18n %}
+
+{% block meta_title %}Mentoki - Lehr- und Lernplattform | Lernen und Lehren lebenslang{% endblock %}
+
+{% block meta_description %}Wir sind eine Lehr- und Lern-Plattform für unabhängiger Mentoren und ihre Schüler{% endblock %}
+{% block meta_keywords %}mentoren netzwerk, lern plattform, erwachsenen bildung, online unterrichten, lehr plattform{% endblock %}
+
+
+{% block page_section_css_id %}home{% endblock %}
+
+{% block main %}
+
+    <img class="ui image" src="/static/img/homepage2.png">
+    <div class="ui grid page centered" id="top-homepage">
+       <div class="column">
+           <div class="ui vertical segment">
+
+
+               <h1 class="ui centered large header">
+               <img id="logo_homepage_header" src="/static/img/mentoki_logo_untertitel.jpg"><br>
+                       Die neue Lernplattform für Online-Mentoren<br> und ihre Schüler.
+
+               </h1>
+           </div>
+       </div>
+    </div>
+    <div class="home_divider">
+       <div class="ui large header centered divider_header">Bei uns kannst Du lernen</div>
+    </div>
+    {% include 'public/homepage/_learn.html' %}
+    <div class="home_divider">
+       <div class="ui large header centered divider_header">Du kannst unterrichten</div>
+    </div>
+    {% include 'public/homepage/_teach.html' %}
+    <div class="home_divider">
+       <div class="ui large header centered divider_header">Bestelle unseren Newsletter!</div>
+    </div>
+    {% include 'public/homepage/_newsletter.html' %}
+    <div class="home_divider">
+       <div class="ui large header centered divider_header">Bald startet unsere Werkzeugkiste</div>
+    </div>
+    {% include 'public/homepage/_toolbox.html' %}
+
+{% endblock %}

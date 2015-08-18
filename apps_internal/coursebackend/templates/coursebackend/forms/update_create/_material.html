@@ -1,0 +1,104 @@
+{% url 'coursebackend:material:list' course_slug=cs as back_url %}
+
+{{ form.media }}
+
+<form class="ui form" method="post" action="" enctype="multipart/form-data">
+
+    {% csrf_token %}
+
+  <div class="ui dividing large header">Material-Info</div>
+
+    {% if form.title.errors %}
+        <div class="ui negative floating message">
+            {{ form.title.errors }}
+        </div>
+    {% endif %}
+    <div class="inline fields">
+    <div class="field sixteen wide">
+      <label>{{ form.title.label_tag }}</label>
+      {{ form.title.help_text }}
+      {{ form.title }}
+    </div>
+    </div>
+
+    {% if form.description.errors %}
+        <div class="ui negative floating message">
+            {{ form.description.errors }}
+        </div>
+    {% endif %}
+    <div class="inline fields">
+    <div class="field sixteen wide">
+      <label>{{ form.description.label_tag }}</label>
+      {{ form.description.help_text }}
+      {{ form.description }}
+    </div>
+    </div>
+
+  <div class="ui dividing large header">Dateityp und wie soll die Datei verfügbar sein?</div>
+
+    {% include 'coursebackend/forms/fragments/_form_non_field_errors.html' %}
+
+    {% if form.document_type.errors %}
+        <div class="ui negative floating message">
+            {{ form.document_type.errors }}
+        </div>
+    {% endif %}
+    {% if form.pdf_viewer.errors %}
+        <div class="ui negative floating message">
+            {{ form.pdf_viewer.errors }}
+        </div>
+    {% endif %}
+    {% if form.pdf_download_link.errors %}
+        <div class="ui negative floating message">
+            {{ form.pdf_download_link.errors }}
+        </div>
+    {% endif %}
+    {% if form.pdf_link.errors %}
+        <div class="ui negative floating message">
+            {{ form.pdf_link.errors }}
+        </div>
+    {% endif %}
+    <div class="inline fields">
+      <div class="field">
+          <label>{{ form.document_type.label_tag }}</label>
+          {{ form.document_type }}
+      </div>
+      <div class="field">
+          <label>{{ form.pdf_download_link.label_tag }}</label>
+          {{ form.pdf_download_link }}
+      </div>
+      <div class="field">
+          <label>{{ form.pdf_viewer.label_tag }}</label>
+          {{ form.pdf_viewer }}
+      </div>
+      <div class="field">
+          <label>{{ form.pdf_link.label_tag }}</label>
+          {{ form.pdf_link }}
+      </div>
+    </div>
+    <div class="ui info floating message">
+    <p>Derzeit wird nur der Dateityp pdf unterstützt. </p>
+    <p>Auf Mobiletelefonen und Ipods funktioniert derzeit nur der Link zum pdf.</p>
+    <p>In allen anderen Fällen kann gewählt werden.</p>
+    </div>
+    <div class="ui dividing large header">Datei hochladen</div>
+
+    {% if form.file.errors %}
+        <div class="ui negative floating message">
+            {{ form.file.errors }}
+        </div>
+    {% endif %}
+      <div class="field">
+          <label>{{ form.file.label_tag }}</label>
+          {{ form.file }}
+      </div>
+
+    <button type="submit" value="post" class="ui button">
+        Speichern
+    </button>
+
+    <a href="{{ back_url }}" class="ui button">
+        Abbruch
+    </a>
+
+</form>

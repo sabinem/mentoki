@@ -1,0 +1,19 @@
+{% extends "classroom/base.html" %}
+
+{% block page_subsection %}
+    {% include 'classroom/participant/fragments/_link_subsection.html' %}
+{% endblock %}
+
+{% block page_content %}
+
+    <div class="row classroom_background">
+        <div class="sixteen wide column">
+
+            {% include 'classroom/participant/fragments/_list_participants.html' %}
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block rows %}{% endblock %}

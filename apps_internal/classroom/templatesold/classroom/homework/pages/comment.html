@@ -1,0 +1,35 @@
+{% extends "classroom/base.html" %}
+
+{% block page_subsection %}
+    {% include 'classroom/homework/fragments/_link_subsection.html' %}
+{% endblock %}
+
+{% block page_subsection_css_id %}homework{% endblock %}
+
+{% block page_content %}
+
+    <div class="row classroom_background">
+        <div class="sixteen wide column">
+
+            {% include 'classroom/homework/fragments/_instance_homework.html' %}
+
+        </div>
+    </div>
+
+    <div class="row classroom_emphasis">
+        <div class="sixteen wide column">
+
+            {% include 'classroom/homework/fragments/_instance_stundentswork_work.html' %}
+
+        </div>
+    </div>
+
+    <div class="row classroom_white">
+        <div class="sixteen wide column">
+
+            {% include 'classroom/forms/_form_studenswork_comment.html' %}
+
+        </div>
+    </div>
+
+{% endblock %}

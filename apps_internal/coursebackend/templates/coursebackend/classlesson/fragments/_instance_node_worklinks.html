@@ -1,0 +1,18 @@
+{% if node.is_lesson %}
+    <a href="{% url 'coursebackend:classlesson:lessonupdate'  slug=courseevent.slug course_slug=course.slug pk=node.pk %}">
+       <i class="icon write"></i>
+    </a>
+{% elif node.is_step %}
+    <a href="{% url 'coursebackend:classlesson:stepupdate'  slug=courseevent.slug course_slug=course.slug pk=node.pk %}">
+       <i class="icon write"></i>
+    </a>
+{% endif %}
+{% if node.is_lesson %}
+    <a href="{% url 'coursebackend:classlesson:delete'  slug=courseevent.slug course_slug=course.slug pk=node.pk %}">
+       <i class="icon trash"></i>
+    </a>
+{% elif node.is_step %}
+    <a href="{% url 'coursebackend:classlesson:delete'  slug=courseevent.slug course_slug=course.slug pk=node.pk %}">
+       <i class="icon trash"></i>
+    </a>
+{% endif %}

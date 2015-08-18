@@ -1,0 +1,130 @@
+{% extends "base/base_pusher.html" %}
+{% load activelink %}
+
+{% block page_section_css_id %}coursebackend{% endblock %}
+
+{% block page_header %}Kursereignis {{ courseevent.title }}: {{ course.teachersrecord }}{% endblock %}
+
+{% block top_attached_menu %}
+
+    {% url 'coursebackend:courseevent:detail' course_slug=cs slug=es as courseevent_url %}
+    {% url 'coursebackend:participant:list' course_slug=cs slug=es as participants_url %}
+    {% url 'coursebackend:forum:list' course_slug=cs slug=es as forum_url %}
+    {% url 'coursebackend:announcement:list' course_slug=es slug=es as announcements_url %}
+    {% url 'coursebackend:homework:list' course_slug=cs slug=es as homeworks_url %}
+    {% url 'coursebackend:menu:list' course_slug=cs slug=es as menu_url %}
+    {% url "coursebackend:lesson_courseevent:start" course_slug=cs slug=es as lesson_url %}
+    {% url "coursebackend:material:list" course_slug=cs slug=es as material_url %}
+    {% url 'coursebackend:classlesson:start' course_slug=cs slug=es as classlesson_url %}
+    {% url 'coursebackend:classlesson:copy' course_slug=cs slug=es as lessoncopy_url %}
+    {% url 'coursebackend:course:detail' course_slug=cs as course_url %}
+    {% url 'coursebackend:lesson:start' course_slug=cs as lesson_url %}
+    {% url 'coursebackend:material:list' course_slug=cs as material_url %}
+    {% url 'classroom:start' slug=es as classroom_url %}
+
+    <div class="ui top attached menu">
+
+        <!-- menu button  -->
+
+        <a class="item" id="sidebar_button">
+            <i class="sidebar icon"></i>
+            Menu
+        </a>
+
+        <a class="browse item">
+            Kursereignis
+            <i class="dropdown icon"></i>
+        </a>
+
+        <div class="ui popup bottom left transition hidden"
+             style="top: 555px; left: 1px; bottom: auto; right: auto; width: 300px;">
+
+            <div class="ui one column relaxed divided grid">
+
+                <div class="column">
+
+                    <h4 class="ui header" id="coursebackend_menu_header">
+                        Kursereignis {{ courseevent }}
+                    </h4>
+
+                    <div class="ui link list">
+
+                        <a href="{{ courseevent_url }}" class="item
+                            {% ifstartswith courseevent_url %}active{% endifstartswith %}">
+                            Kurseereignisbeschreibung
+                        </a>
+
+                        <a href="{{ announcements_url }}" class="item
+                            {% ifstartswith announcements_url %}active{% endifstartswith %}">
+                            Ankündigungen
+                        </a>
+
+                        <a href="{{ forum_url }}" class="item
+                            {% ifstartswith forum_url %}active{% endifstartswith %}">
+                            Forum
+                        </a>
+
+                        <a href="{{ homeworks_url }}" class="item
+                            {% ifstartswith homeworks_url %}active{% endifstartswith %}">
+                            Aufgaben
+                        </a>
+
+                        <a href="{{ menu_url }}" class="item
+                            {% ifstartswith menu_url %}active{% endifstartswith %}">
+                            Klassenzimmer-Menü
+                        </a>
+
+                        <a href="{{ participants_url }}" class="item
+                            {% ifstartswith participants_url %}active{% endifstartswith %}">
+                            Teilnehmer
+                        </a>
+
+                        <a href="{{ classlesson_url }}" class="item" >
+                            Unterricht
+                        </a>
+
+                        <a href="{{ lessoncopy_url }}" class="item" >
+                            Kopieren
+                        </a>
+
+                       <div class="ui divider"></div>
+
+                        <a href="{{ lesson_url }}" class="item" >
+                            Unterricht (Vorlage) <i class="icon external"></i>
+                        </a>
+
+                        <a href="{{ material_url }}" class="item" >
+                            Material (Vorlage) <i class="icon external"></i>
+                        </a>
+
+                        <a href="{{ course_url }}" class="item" >
+                            Kursbeschreibung (Vorlage)<i class="icon external"></i>
+                        </a>
+
+                        <div class="ui divider"></div>
+
+                        <a href="{{ classroom_url }}" class="item" >
+                            zum Unterrichtsraum<i class="icon external"></i>
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+       {% block courseevent_menu_items %}{% endblock %}
+
+    </div>
+
+{% endblock %}
+
+{% block sidebar_menu %}
+
+    <!-- BLOCK: sidebar: filled! -->
+
+    {% include 'coursebackend/_menu.html' %}
+
+{% endblock %}

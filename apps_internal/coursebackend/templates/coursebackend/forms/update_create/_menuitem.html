@@ -1,0 +1,115 @@
+{% url 'coursebackend:menu:preview' course_slug=cs slug=es as back_url %}
+{% url 'coursebackend:menu:delete' pk=object.pk course_slug=cs slug=es as delete_url %}
+
+{{ form.media }}
+
+<form class="ui form" method="post" action="" >{% csrf_token %}
+
+  {% include 'coursebackend/forms/fragments/_form_non_field_errors.html' %}
+
+    {% if form.item_type.errors %}
+        <div class="ui negative floating message">
+            {{ form.item_type.errors }}
+        </div>
+    {% endif %}
+
+  <div class="inline fields">
+    <div class="field sixteen wide">
+      <label>{{ form.item_type.label_tag }}</label>
+      {{ form.item_type.help_text }}
+      {{ form.item_type }}
+    </div>
+  </div>
+
+    {% if form.display_nr.errors %}
+        <div class="ui negative floating message">
+            {{ form.display_nr.errors }}
+        </div>
+    {% endif %}
+
+  <div class="inline fields">
+    <div class="field sixteen wide">
+      <label>{{ form.dispaly_nr.label_tag }}</label>
+      {{ form.display_nr.help_text }}
+      {{ form.display_nr}}
+    </div>
+  </div>
+
+<div class="ui dividing large header">Menüeintrag</div>
+
+    {% if form.display_title.errors %}
+        <div class="ui negative floating message">
+            {{ form.display_title.errors }}
+        </div>
+    {% endif %}
+
+    <div class="inline fields">
+      <div class="field sixteen wide">
+          <label>{{ form.display_title.label_tag }}</label>
+          {{ form.display_title }}
+      </div>
+    </div>
+
+<div class="ui dividing large header">Link zu:</div>
+
+    {% if form.classlesson.errors %}
+        <div class="ui negative floating message">
+            {{ form.classlesson.errors }}
+        </div>
+    {% endif %}
+    {% if form.homework.errors %}
+        <div class="ui negative floating message">
+            {{ form.homework.errors }}
+        </div>
+    {% endif %}
+    {% if form.forum.errors %}
+        <div class="ui negative floating message">
+            {{ form.forum.errors }}
+        </div>
+    {% endif %}
+
+    <div class="fields">
+      <div class="field">
+          <label>{{ form.classlesson.label_tag }}</label>
+          {{ form.classlesson }}
+      </div>
+      <div class="field">
+          <label>{{ form.homework.label_tag }}</label>
+          {{ form.homework }}
+      </div>
+      <div class="field">
+          <label>{{ form.forum.label_tag }}</label>
+          {{ form.forum }}
+      </div>
+    </div>
+
+<div class="ui dividing large header">Startitem wählen:</div>
+    <p>{{ form.is_start_item.help_text }}</p>
+
+    {% if form.is_start_item.errors %}
+        <div class="ui negative floating message">
+            {{ form.is_start_item.errors }}
+        </div>
+    {% endif %}
+
+    <div class="inline fields">
+      <div class="field sixteen wide">
+          <label>{{ form.is_start_item.label_tag }}</label>
+          {{ form.is_start_item }}
+      </div>
+    </div>
+
+    <button type="submit" value="post" class="ui button">
+        Speichern
+    </button>
+    {% if object %}
+        <a class="ui button" href="{{ delete_url }}">
+            Löschen
+        </a>
+    {% endif %}
+
+    <a href="{{ back_url }}" class="ui button" >
+        Abbrechen
+    </a>
+
+</form>

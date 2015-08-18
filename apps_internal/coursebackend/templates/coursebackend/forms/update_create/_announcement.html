@@ -1,0 +1,19 @@
+{% url 'coursebackend:announcement:list' course_slug=cs slug=es as back_url %}
+
+{{ form.media }}
+
+<form class="ui form" method="post" action="" >{% csrf_token %}
+
+    {% include 'coursebackend/forms/fragments/_form_non_field_errors.html' %}
+
+    {% include 'coursebackend/forms/form_fields/_form_field_loop.html' %}
+
+    <button type="submit" value="post" class="ui button">
+        Speichern
+    </button>
+
+    <a href="{{ back_url }}" class="ui button" type="submit" value="post">
+        Zurück zur Übersicht
+    </a>
+
+</form>

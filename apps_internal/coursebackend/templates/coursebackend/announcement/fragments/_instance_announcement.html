@@ -1,0 +1,19 @@
+{% comment %}
+
+announcement detail
+
+for detail/delete
+
+{% endcomment %}
+
+<div class="segment raised ui">
+    {% if announcement.published %}
+        {{ announcement.published_at_date |date:'d.m.Y' }}
+    {% else %}
+        unveröffentlicht
+    {% endif %}
+    <h3 class="ui header">
+        {{ announcement.title }}
+    </h3>
+    <div>{{ announcement.text | safe }}</div>
+</div>

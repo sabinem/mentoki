@@ -1,0 +1,41 @@
+{% extends "base/base_public.html" %}
+{% load i18n %}
+
+{% block meta_title %}Mentoki Kurs {{ course.title }} | Mentoki: Lernen und Lehren lebenslang{% endblock %}
+
+{% block meta_description %}{{ course.excerpt }}{% endblock %}
+{% block meta_keywords %}mentoren netzwerk, lern plattform, erwachsenen bildung, online unterrichten, lehr plattform{% endblock %}
+
+{% block title %}{{ courseevent.title }}{% endblock %}
+
+{% block page_section_css_id %}courseevent_public{% endblock %}
+
+{% block main %}
+
+    <main class="ui two column doubling page grid">
+
+        <div class="row">
+
+            <div class="five wide column">
+                {% include 'courseoffer/detail/_courseevent_teachersinfo.html' %}
+            </div>
+
+            <div class="eleven wide column">
+                <div class="ui piled segment" >
+                    {% include 'courseoffer/detail/_courseevent_title.html' %}
+                    <div class="ui card fluid">
+                        <div class="content">
+                            <div class="description">
+                                {% include 'courseoffer/detail/_courseevent_operationaldata.html' %}
+                            </div>
+                        </div>
+                    </div>
+                    {% include 'courseoffer/detail/_courseevent_infofields.html' %}
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+{% endblock %}

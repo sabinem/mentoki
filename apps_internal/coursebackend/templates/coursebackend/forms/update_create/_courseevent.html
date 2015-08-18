@@ -1,0 +1,51 @@
+{% url 'coursebackend:courseevent:detail' slug=es course_slug=cs as back_url %}
+
+{{ form.media }}
+
+<form class="ui form" method="post" action="">
+
+    {% csrf_token %}
+
+    <div class="ui dividing large header">Kursereignis {{ courseevent.titel }} bearbeiten</div>
+
+    {% include 'coursebackend/forms/fragments/_form_non_field_errors.html' %}
+
+    {% for field in form %}
+
+        <div class="fieldWrapper">
+
+            <div class="ui header medium" style="padding-top:1em;">{{ field.label_tag }}</div>
+
+            {% if field.help_text %}
+                 <p>{{ field.help_text }}</p>
+            {% endif %}
+
+            {% if exampletext %}
+                <div class="ui segment message">
+                    <div class="ui header">{{ form.text.label_tag }} Das ist der entsprechende Text aus der Kursvorlage:</div>
+                    {{ exampletext | safe }}
+                </div>
+                <p></p>
+            {% endif %}
+
+            {% if field.errors %}
+                <div class="ui negative floating message">
+                    {{ field.errors }}
+                </div>
+            {% endif %}
+
+            {{ field }}
+
+        </div>
+
+    {% endfor %}
+
+    <button type="submit" value="post" class="ui button">
+        Speichern
+    </button>
+
+    <a href="{{ back_url }}" class="ui button">
+        Abbruch
+    </a>
+
+</form>

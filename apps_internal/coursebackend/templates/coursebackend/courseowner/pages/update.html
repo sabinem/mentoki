@@ -1,0 +1,23 @@
+{% extends "coursebackend/base_course.html" %}
+
+{% block page_content %}
+
+    <div class="row coursebackend_course">
+        <div class="sixteen wide column">
+
+            {% include 'coursebackend/courseowner/fragments/_breadcrumb.html' %}
+
+        </div>
+    </div>
+
+    <div class="row classroombackend_white">
+        <div class="sixteen wide column">
+
+            <h1>{{ courseowner.user.get_full_name }}</h1>
+
+            {% include 'coursebackend/forms/update_create/_courseowner.html' %}
+
+        </div>
+    </div>
+
+{% endblock %}

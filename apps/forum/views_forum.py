@@ -8,7 +8,7 @@ from operator import attrgetter
 # import from django
 from django.views.generic import TemplateView
 # from other apps
-from apps.classroom.mixins import ClassroomMixin
+from apps_internal.classroom.mixins import ClassroomMixin
 from .models import Thread, SubForum, Forum, Post
 from .cache import get_forum_structure, get_thread_data
 from .cache import get_subforum_change

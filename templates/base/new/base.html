@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+   {% block head %}{% endblock %}
+
+</head>
+
+<body id="mentoki" class="preload load">
+
+    {% block navbar %}{% endblock %}
+
+    {% block page %}
+
+    <!-- BLOCK: Section css id of the Website -->
+
+    <div id="{% block page_section_css_id %}{% endblock %}">
+
+        <div id="content">
+
+            <div id="base_page">
+
+                 <!-- BLOCK: main page content -->
+
+                {% block main %}{% endblock %}
+
+            </div>
+
+        </div>
+
+       {% block footer %}
+
+            <!-- Footer -->
+
+            <div class="ui bottom attached menu fluid three item">
+                <a class="item"  href="{% url 'contact:contact' %}">Kontakt</a>
+                <a class="item"  href="{% url 'home:team' %}">Team</a>
+                <a class="item"  href="{% url 'home:impressum' %}">Impressum</a>
+            </div>
+
+        {% endblock %}
+
+    </div>
+
+    {% endblock %}
+
+    <!-- js ---->
+
+    {% include 'base/fragments/vendor/_jquery.html' %}
+    {% include 'base/fragments/vendor/_semantic_js.html' %}
+    {% include 'base/fragments/custom/_semantic.html' %}
+
+    {% block editor_js %}{% endblock %}
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+

@@ -2,9 +2,10 @@ from __future__ import unicode_literals
 from django.core.cache import cache
 from django.utils.timezone import is_aware, utc
 import datetime
+from django.conf import settings
 
 from django.contrib.auth.models import User
-from apps.courseevent.models import CourseEvent
+from apps_data.courseevent.models.courseevent import CourseEvent
 from model_utils.models import TimeStampedModel
 from django.db import models
 from django.core.exceptions import ValidationError
@@ -40,7 +41,10 @@ class Forum(TimeStampedModel):
     """
     title = models.CharField(max_length=100)
     text = models.TextField(blank=True)
-    courseevent = models.ForeignKey(CourseEvent)
+    courseevent = models.ForeignKey(CourseEvent, related_name="kursforum")
+
+    class Meta:
+        verbose_name = "XForum"
 
     def __unicode__(self):
         return u'%s' % (self.title)
@@ -71,6 +75,8 @@ class SubForum(TimeStampedModel):
     forum = models.ForeignKey(Forum)
     can_have_threads = models.BooleanField(default=True)
 
+    class Meta:
+        verbose_name = "XSubForum"
 
     def __unicode__(self):
         if self.parentforum:
@@ -87,7 +93,7 @@ class SubForum(TimeStampedModel):
 
 class ForumContributionModel(TimeStampedModel):
     text = models.TextField()
-    author = models.ForeignKey(User)
+
     forum = models.ForeignKey(Forum)
 
     class Meta:
@@ -101,7 +107,11 @@ class Thread(ForumContributionModel):
     """This is a thread. A thread still has its own url, but not with a slug, rather it has just an id."""
     title = models.CharField(max_length=100)
     subforum = models.ForeignKey(SubForum)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="beitragsautor")
     #!!! modified of Thread must be updated for save method of Comment and Post!!!
+
+    class Meta:
+        verbose_name = "XThread"
 
 
     def __unicode__(self):
@@ -124,10 +134,13 @@ class Post(ForumContributionModel):
     """These are the posts under a thread. They are only shown on the threads page and have no url
     on their own."""
     thread = models.ForeignKey(Thread)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="postautor")
 
+    class Meta:
+        verbose_name = "XPost"
 
     def __unicode__(self):
-        return u'%s' % (self.thread)
+        return u'%s' % (self.thread_id)
 
     def timesince_created(self):
         return timesince(self.created)
