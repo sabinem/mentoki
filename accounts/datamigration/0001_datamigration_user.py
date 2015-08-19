@@ -6,8 +6,8 @@ AUTH_USER in settings must be still off, until the data has been transfered.
 
 Permissisons and Groups have been empty so far.
 
-from django.contrib.auth.models import User
-from account.models import User as New
+from django.contrib.auth.models import User as Old
+from accounts.models import User as New
 
 oldusers = User.objects.all()
 
