@@ -1,3 +1,5 @@
+{% load activelink %}
+
 {% url 'classroom:announcement:list' slug=courseevent.slug as announcements_url %}
 {% url 'classroom:forum:detail' slug=es pk=item.forum_id as forum_url %}
 {% url 'classroom:homework:list' slug=es pk=item.homework_id as homework_url %}
