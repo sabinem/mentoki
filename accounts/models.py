@@ -7,7 +7,7 @@ from apps_data.course.models.course import Course
 from apps_data.courseevent.models.courseevent import CourseEvent
 
 
-class MentokiUserManager(BaseUserManager):
+class UserManager(BaseUserManager):
     def create_user(self, username, email, password=None):
         if not email:
             raise ValueError('Users must have an email address')
@@ -31,8 +31,7 @@ class MentokiUserManager(BaseUserManager):
     #obj.course_set.all(): gets all the courses for the account, where he teaches
 
 
-#class MentokiUser(AbstractBaseUser, PermissionsMixin):
-class MentokiUser(AbstractBaseUser):
+class User(AbstractBaseUser, PermissionsMixin):
     alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', message='Only alphanumeric characters are allowed.')
 
     # redefine fields that would normally be in User
@@ -56,7 +55,7 @@ class MentokiUser(AbstractBaseUser):
     profile_image = models.ImageField(upload_to="uploads", blank=False, null=False,
                                       default='/static/img/happyface.jpg' )
 
-    objects = MentokiUserManager()
+    objects = UserManager()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
@@ -64,12 +63,12 @@ class MentokiUser(AbstractBaseUser):
     def __unicode__(self):
         return u'%s' % (self.username)
 
-    def save(self, *args, **kwargs):
-        if self.teaching():
-            self.is_teacher = True
-        if self.studying():
-            self.is_student = True
-        super(MentokiUser, self).save(*args, **kwargs)
+    #def save(self, *args, **kwargs):
+    #    if self.teaching():
+    #        self.is_teacher = True
+    #    if self.studying():
+    #        self.is_student = True
+    #    super(User, self).save(*args, **kwargs)
 
 
     def get_full_name(self):

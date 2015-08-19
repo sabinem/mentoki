@@ -57,7 +57,7 @@ INSTALLED_APPS = (
     'pagedown',
     'django_markdown',
 
-    #'mentokiuser',
+    'accounts',
 
     'apps_core.core',
 
@@ -93,7 +93,7 @@ if DEBUG:
         'debug_toolbar',
     )
 
-AUTH_USER_MODEL = 'auth.User'
+AUTH_USER_MODEL = 'accounts.User'
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',

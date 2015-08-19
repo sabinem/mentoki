@@ -3,21 +3,21 @@ import floppyforms.__future__ as forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
 
-from .models import MentokiUser
+from .models import User
 
 class CustomUserCreationForm(UserCreationForm):
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Password Confirmation', widget=forms.PasswordInput)
 
     class Meta(UserCreationForm.Meta):
-        model = MentokiUser
+        model = User
         fields = ('username', 'email')
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
         try:
-            MentokiUser._default_manager.get(username=username)
-        except MentokiUser.DoesNotExist:
+            User._default_manager.get(username=username)
+        except User.DoesNotExist:
             return username
         raise forms.ValidationError(self.error_messages('Duplicate username'))
 
@@ -49,7 +49,7 @@ class CustomUserChangeForm(UserChangeForm):
                                          this form</a>.""")
 
     class Meta(UserChangeForm.Meta):
-        model = MentokiUser
+        model = User
         fields = ('username', 'email', 'password', 'is_active', 'is_staff', 'is_superuser', 'user_permissions')
 
     def clean_password(self):
