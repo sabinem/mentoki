@@ -8,9 +8,9 @@ from apps.course.models import Lesson, CourseUnit
 units = CourseUnit.objects.all()
 
 for u in units:
-       parent = Lesson.objects.get(course=u.course, block=u.block, unit=None)
+       parent = Lesson.objects.get(course=u.course, courseblock=u.block, unit=None)
        lesson = Lesson(title=u.title, text=u.text, description=u.description,
-               course=u.course, created=u.created, modified=u.modified, nr=u.display_nr, unit=u, block=u.block)
+               course=u.course, created=u.created, modified=u.modified, nr=u.display_nr, unit=u, courseblock=u.block)
        lesson.insert_at(parent)
        lesson.save()
 

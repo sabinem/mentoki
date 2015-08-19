@@ -12,9 +12,8 @@ for m in materials:
            parent = Lesson.objects.get(course=m.course, unit=m.unit, unitmaterial=None)
        except:
            parent = None
-
        lesson = Lesson(title=m.title, text=m.text, description=m.description,
-           course=m.course, created=m.created, modified=m.modified, nr=m.display_nr, unit=m.unit, unitmaterial=m)
+          course=m.course, created=m.created, modified=m.modified, nr=m.display_nr, unit=m.unit, unitmaterial=m)
        lesson.insert_at(parent)
        lesson.save()
 

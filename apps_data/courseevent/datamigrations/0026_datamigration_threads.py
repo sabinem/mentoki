@@ -3,18 +3,28 @@
 
 """
 shell script:
-from data.courseevent.models import Thread, Forum
+from apps_data.courseevent.models.forum import Thread, Forum
 from apps.forum.models import Thread as OldThread
 
-threads = OldThread.objects.all().select_related('subforum')
+threads = OldThread.objects.all()
 
 for t in threads:
        forum = Forum.objects.get(oldsubforum=t.subforum)
-       thread = Thread(title=t.title, text=s.text, author=t.author, forum=forum,
+       thread = Thread(title=t.title, text=t.text, author=t.author, forum=forum,
           courseevent= forum.courseevent, created=t.created, modified=t.modified,
           oldthread=t)
        thread.save()
 
+from apps_data.courseevent.models.forum import Post
+from apps.forum.models import Post as OldPost
+
+posts = OldPost.objects.all()
+
+for p in posts:
+   thread = Thread.objects.get(oldthread=p.thread)
+   post = Post(thread=thread, title=thread.title, text=p.text, author=p.author, courseevent=thread.forum.courseevent,
+      created=p.created, modified=p.modified, oldpost=p)
+   post.save()
 
 """
 

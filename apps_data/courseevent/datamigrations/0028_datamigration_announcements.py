@@ -2,7 +2,7 @@
 
 """
 shell script:
-from apps_data.courseevent.models import Announcement as NewA
+from apps_data.courseevent.models.announcement import Announcement as NewA
 from apps_internal.classroom.models import Announcement as OldA
 
 l = OldA.objects.filter(published=True)

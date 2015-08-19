@@ -19,7 +19,6 @@ for m in materials:
             file = m.file,
             slug = m.slug
             )
-
         material.save()
 
 Lesson.objects.rebuild()
@@ -28,7 +27,7 @@ materials = Material.objects.all()
 
 for m in materials:
        l = Lesson.objects.get(unitmaterial=m.unitmaterial)
-       l.material.add(m)
+       l.materials.add(m)
        l.save()
 
 """
