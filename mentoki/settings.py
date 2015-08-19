@@ -93,7 +93,7 @@ if DEBUG:
         'debug_toolbar',
     )
 
-AUTH_USER_MODEL = 'accounts.User'
+AUTH_USER_MODEL = 'auth.User'
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
