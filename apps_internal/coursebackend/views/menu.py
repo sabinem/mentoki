@@ -108,7 +108,8 @@ class MenuItemCreateView(
             display_title=form.cleaned_data['display_title'],
             display_nr=form.cleaned_data['display_nr'],
             item_type=form.cleaned_data['item_type'],
-            is_start_item=form.cleaned_data['is_start_item']
+            is_start_item=form.cleaned_data['is_start_item'],
+            active=True
         )
 
         return HttpResponseRedirect(self.get_success_url())
