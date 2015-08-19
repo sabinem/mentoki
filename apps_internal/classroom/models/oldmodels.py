@@ -9,7 +9,7 @@ class Announcement(TimeStampedModel):
     """
     Announcements are stored here.
     """
-    courseevent = models.ForeignKey(CourseEvent, related_name="kurs")
+    courseevent = models.ForeignKey(CourseEvent, related_name="x")
     title = models.CharField(max_length=100, verbose_name="Thema")
     text = models.TextField(verbose_name="Text der Ankündigung: Vorsicht Bilder werden noch nicht mitgeschickt")
     published = models.BooleanField(default=False, verbose_name="jetzt veröffentlichen?")
@@ -27,7 +27,7 @@ class ClassRules(TimeStampedModel):
     """
     Rules are stored here.
     """
-    courseevent = models.ForeignKey(CourseEvent, related_name="regel")
+    courseevent = models.ForeignKey(CourseEvent)
     title = models.CharField(max_length=100)
     excerpt = models.TextField(default="x")
     text = models.TextField()

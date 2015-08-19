@@ -12,7 +12,7 @@ import apps_core.core.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('course', '0099_auto_20150812_1438'),
+        ('course', '0003_auto_20150818_1818'),
     ]
 
     operations = [
@@ -31,6 +31,7 @@ class Migration(migrations.Migration):
                 ('file', apps_core.core.fields.ContentTypeRestrictedFileField(upload_to=apps_data.material.models.material.lesson_material_name, verbose_name='Datei')),
                 ('slug', autoslug.fields.AutoSlugField(editable=False, populate_from='get_file_slug', always_update=True, unique=True)),
                 ('course', models.ForeignKey(related_name='coursematerial', to='course.Course')),
+                ('unitmaterial', models.ForeignKey(related_name='unitmaterial', blank=True, to='course.CourseMaterialUnit', null=True)),
             ],
             options={
                 'verbose_name': 'Material',

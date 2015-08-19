@@ -37,7 +37,7 @@ class Announcement(TimeStampedModel):
     Announcements are send out as emails to the class, therefor they can not be deleted or changed
     once send
     """
-    courseevent = models.ForeignKey(CourseEvent)
+    courseevent = models.ForeignKey(CourseEvent, related_name="courseeventnews")
 
     title = models.CharField(
         verbose_name=_("Betreff"),

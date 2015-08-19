@@ -9,28 +9,11 @@ from django.contrib.auth.models import User
 from model_utils.models import TimeStampedModel
 # import from other apps
 from apps_data.course.models.oldcoursepart import Course, CourseUnit
-from apps_data.course.models.xlesson import Lesson
+
 from .courseevent import CourseEvent
 from django.core.urlresolvers import reverse
 from django.utils.functional import cached_property
 
-
-
-class CourseeventLessonPublish(models.Model):
-    """
-    Units (Lessons) are published in a class, when the instructor decides
-    students are ready for them. Publication is decided on the level of the
-    CourseUnit. See app course for details.
-    """
-    courseevent = models.ForeignKey(CourseEvent)
-    lesson = models.ForeignKey(Lesson)
-    published_at_date = models.DateTimeField(auto_now_add=True)
-
-    def __unicode__(self):
-        return u'%s / %s' % (self.courseevent, self.unit)
-
-    class Meta:
-        verbose_name = "XLessonPublish"
 
 
 class CourseeventUnitPublish(models.Model):

@@ -8,10 +8,10 @@ from apps.course.models import CourseBlock, Lesson
 blocks = CourseBlock.objects.all()
 
 for b in blocks:
-...    lesson = Lesson(title=b.title, text=b.text, description=b.description,
-...        course= b.course, created=b.created, modified=b.modified, block=b)
-...    lesson.insert_at(None)
-...    lesson.save()
+   lesson = Lesson(title=b.title, text=b.text, description=b.description,
+      course= b.course, created=b.created, modified=b.modified, courseblock=b)
+   lesson.insert_at(None)
+   lesson.save()
 
 Lesson.objects.rebuild()
 """

@@ -44,7 +44,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
 
     #future?
-    'email_extras',
+    #'email_extras',
 
     'braces',
     'model_utils',
@@ -57,7 +57,7 @@ INSTALLED_APPS = (
     'pagedown',
     'django_markdown',
 
-    'authentication',
+    #'mentokiuser',
 
     'apps_core.core',
 
@@ -76,8 +76,8 @@ INSTALLED_APPS = (
     'apps_public.courseoffer',
 
     # delete?
-    'crispy_forms',
-    'django_coverage',
+    #'crispy_forms',
+    #'django_coverage',
 
     # needed?
     'apps_core.upload',
@@ -93,7 +93,7 @@ if DEBUG:
         'debug_toolbar',
     )
 
-AUTH_USER_MODEL = 'authentication.Account'
+AUTH_USER_MODEL = 'auth.User'
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -220,7 +220,7 @@ EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SERVER_EMAIL = EMAIL_HOST_USER
 
-DEFAULT_COURSE_FROM_EMAIL = 'info@mentoki.com'
+DEFAULT_COURSE_FROM_EMAIL = u'info@mentoki.com'
 
 
 CACHES = {

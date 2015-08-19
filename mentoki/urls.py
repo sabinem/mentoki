@@ -64,7 +64,7 @@ urlpatterns += i18n_patterns('',
 
     # user handling urls
     url(r'^accounts/',
-        include('authentication.urls')),
+        include('userauth.urls')),
 )
 
 # Data urls
