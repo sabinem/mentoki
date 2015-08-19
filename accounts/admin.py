@@ -2,11 +2,11 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.admin import UserCreationForm
 from .forms import CustomUserCreationForm, CustomUserChangeForm
-from .models import MentokiUser
+from .models import User
 from django import forms
 
 
-class MentokiUserAdmin(UserAdmin):
+class UserAdmin(UserAdmin):
     form = CustomUserChangeForm
     add_form = CustomUserCreationForm
 
@@ -30,4 +30,4 @@ class MentokiUserAdmin(UserAdmin):
     ordering = ('email',)
     filter_horizontal = ('groups', 'user_permissions',)
 
-admin.site.register(MentokiUser, MentokiUserAdmin)
+admin.site.register(User, UserAdmin)

@@ -1,10 +1,66 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+{% load activelink %}
 
-</body>
-</html>
+{% url 'classroom:announcement:list' slug=courseevent.slug as announcements_url %}
+{% url 'classroom:forum:detail' slug=es pk=item.forum_id as forum_url %}
+{% url 'classroom:homework:list' slug=es pk=item.homework_id as homework_url %}
+{% url 'classroom:forum:newposts' slug=es as newposts_url %}
+{% url 'classroom:studentswork:list' slug=es as private_url %}
+{% url 'classroom:classlesson:lesson_detail' slug=es pk=item.classlesson_id as lesson_url %}
+{% url 'classroom:participant:list' slug=es as participants_url %}
+
+{% if item.item_type == item.MENU_ITEM_TYPE.announcements_item %}
+    <a class="item
+    {% ifstartswith announcements_url %}active{% endifstartswith %}"
+    href="{{ announcements_url }}">
+        <i class="announcement icon"></i>
+        {{ item.display_title }}
+    </a>
+
+{% elif item.item_type == item.MENU_ITEM_TYPE.forum_item %}
+    <a class="item
+    {% ifstartswith forum_url %}active{% endifstartswith %}"
+    href="{{ forum_url }}">
+        <i class="comments outline icon"></i>{{ item.display_title }}
+    </a>
+
+{% elif item.item_type == item.MENU_ITEM_TYPE.homework %}
+    <a class="item
+    {% ifstartswith homework_url %}active{% endifstartswith %}"
+    href="{{ homework_url }}">
+        <i class="write icon"></i>{{ item.display_title }}
+    </a>
+
+{% elif item.item_type == item.MENU_ITEM_TYPE.last_posts_item %}
+    <a class="item
+    {% ifstartswith newposts_url %}active{% endifstartswith %}"
+    href="{{ newposts_url }}">
+        <i class="find icon"></i>{{ item.display_title }}
+    </a>
+
+{% elif item.item_type == item.MENU_ITEM_TYPE.student_private %}
+    <a class="item
+    {% ifstartswith private_url %}active{% endifstartswith %}"
+    href="{{ private_url }}">
+        <i class="privacy icon"></i>{{ item.display_title }}
+    </a>
+
+{% elif item.item_type == item.MENU_ITEM_TYPE.lesson_item %}
+    <a class="item
+    {% ifstartswith lesson_url %}active{% endifstartswith %}"
+    href="{{ lesson_url }}">
+        <i class="student icon"></i>{{ item.display_title }}
+    </a>
+
+{% elif item.item_type == item.MENU_ITEM_TYPE.participants_list %}
+    <a class="item
+    {% ifstartswith participants_url %}active{% endifstartswith %}"
+    href="{{ participants_url }}">
+        <i class="users icon"></i>{{ item.display_title }}
+    </a>
+
+{% elif item.item_type == item.MENU_ITEM_TYPE.header %}
+    <div class="header item">
+        {{ item.display_title }}
+    </div>
+
+{% endif %}
