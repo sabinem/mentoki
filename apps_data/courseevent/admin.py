@@ -32,13 +32,13 @@ class CourseEventParticipationAdmin(admin.ModelAdmin):
 
 @admin.register(Announcement)
 class AnnouncementAdmin(admin.ModelAdmin):
-    list_display = ('id', 'courseevent', 'published_at', 'published', 'modified', 'created')
+    list_display = ('id', 'title', 'courseevent', 'published_at', 'published', 'modified', 'created')
     list_filter = ('courseevent', 'published')
 
 
 @admin.register(ClassroomMenuItem)
 class ClassroomMenuItemAdmin(admin.ModelAdmin):
-    list_display = ('id', 'courseevent', 'is_start_item', 'display_title', 'display_nr', 'item_type', 'forum', 'classlesson', 'homework')
+    list_display = ('id', 'courseevent', 'display_title', 'display_nr', 'item_type', 'forum', 'classlesson', 'homework', 'is_start_item', )
     list_filter = ('courseevent', )
 
 
