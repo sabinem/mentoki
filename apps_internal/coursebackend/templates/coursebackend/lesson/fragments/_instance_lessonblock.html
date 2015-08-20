@@ -1,0 +1,17 @@
+{% url 'coursebackend:lesson:blockupdate'  course_slug=cs pk=lessonblock.pk as blockupdate_url %}
+{% url 'coursebackend:lesson:delete'  course_slug=cs pk=lessonblock.pk as delete_url %}
+
+<div class="ui header medium">
+    <i class="icon cube"></i>
+    <div class="content">
+        {{ lessonblock.title }}
+        <a href="{{ blockupdate_url }}">
+           <i class="icon write"></i>
+        </a>
+        <a href="{{ delete_url }}">
+           <i class="icon trash"></i>
+        </a>
+    </div>
+</div>
+
+{{ lessonblock.text | safe }}

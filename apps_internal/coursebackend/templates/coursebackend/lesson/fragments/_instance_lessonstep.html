@@ -1,3 +1,15 @@
+{% url 'coursebackend:lesson:stepupdate'  course_slug=cs pk=lessonstep.pk as stepupdate_url %}
+{% url 'coursebackend:lesson:delete'  course_slug=cs pk=lessonstep.pk as delete_url %}
+
+<div class="ui header medium">
+    {{ lessonstep.title }}
+    <a href="{{ stepupdate_url }}">
+       <i class="icon write"></i>
+    </a>
+    <a href="{{ delete_url }}">
+       <i class="icon trash"></i>
+    </a>
+</div>
 {{ lessonstep.text | safe }}
 
 {% for material in lessonstep.materials.all %}

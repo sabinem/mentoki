@@ -11,10 +11,10 @@ for detail/list/update
     <thead>
         <tr>
             <tr>
-                <th>bearbeiten?</th>
-                <th>anzeigen in der Kursausschreibung?</th>
-                <th>Nr</th>
+                <th>bearbeiten / ansehen?</th>
                 <th>Name</th>
+                <th>Reihenfolge</th>
+                <th>anzeigen in der Kursausschreibung?</th>
             </tr>
         </tr>
     </thead>
@@ -30,14 +30,14 @@ for detail/list/update
                     <a href="{{ update_url }}">
                         <i class="icon write blue"></i>
                     </a>
+                    <a href="{{ detail_url }}">
+                        <i class="icon unhide"></i>
+                    </a>
                 </td>
-
                 <td>
-                    {% if courseowner.display %}
-                        <i class="icon checkmark green"></i>
-                    {% else %}
-                        <i class="icon remove"></i>
-                    {% endif %}
+                    <a href="{{ detail_url }}">
+                        {{ courseowner.user.get_full_name }}{{ courseowner.username }}
+                    </a>
                 </td>
 
                 <td>
@@ -45,9 +45,11 @@ for detail/list/update
                 </td>
 
                 <td>
-                    <a href="{{ detail_url }}">
-                        {{ courseowner.user.get_full_name }}{{ courseowner.username }}
-                    </a>
+                    {% if courseowner.display %}
+                        ja <i class="icon checkmark green"></i>
+                    {% else %}
+                        nein
+                    {% endif %}
                 </td>
 
             </tr>

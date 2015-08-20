@@ -55,10 +55,11 @@ class ClassLessonDetailView(
         lesson = get_object_or_404(ClassLesson, pk=self.kwargs['pk'])
 
         context['lesson'] = lesson
-        context['breadcrumbs'] = lesson.get_ancestors()
-        context['next_lesson'] = lesson.get_next_sibling()
-        context['previous_lesson'] = lesson.get_previous_sibling()
+        context['breadcrumbs'] = lesson.get_breadcrumbs_with_self_published
+        context['next_node'] = lesson.get_next_sibling_published
+        context['previous_node'] = lesson.get_previous_sibling_published
         context['lessonsteps'] = lesson.get_children()
+        print context
 
         return context
 
@@ -76,6 +77,6 @@ class ClassLessonStepDetailView(
 
         context['lessonstep'] = lessonstep
         context['breadcrumbs'] = lessonstep.get_ancestors()
-        context['next_lessonstep'] = lessonstep.get_next_sibling()
-        context['previous_lessonstep'] = lessonstep.get_previous_sibling()
+        context['next_node'] = lessonstep.get_next_sibling()
+        context['previous_node'] = lessonstep.get_previous_sibling()
         return context

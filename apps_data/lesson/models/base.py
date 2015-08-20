@@ -44,6 +44,7 @@ class BaseLessonManager(TreeManager):
                            level=0,
                            )
 
+
 def lesson_nr_block():
     """
     computed field in model: lesson_nr for blocks
@@ -188,6 +189,9 @@ class BaseLesson(MPTTModel, TimeStampedModel):
             return u'%s. %s' % (self.lesson_nr, self.title)
         elif self.is_step:
             return u'%s %s' % (self.lesson_nr, self.title)
+
+    def get_delete_tree(self):
+        return self.get_descendants(include_self=True).prefetch_related('materials')
 
     def get_next_sibling(self):
         """

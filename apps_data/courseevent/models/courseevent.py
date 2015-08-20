@@ -160,7 +160,10 @@ class CourseEvent(TimeStampedModel):
     def teachersrecord(self):
         return self.course.teachersrecord
 
-    @property
+    @cached_property
+    def course_slug(self):
+        return self.course.slug
+
     def end_date(self):
         """
         calculate the end date form the startdate and the number of weeks if a startdate is given.
@@ -168,7 +171,6 @@ class CourseEvent(TimeStampedModel):
         if self.start_date:
            end_date = self.start_date + datetime.timedelta(days=7*self.nr_weeks)
            return end_date
-
 
     @property
     def days_to_start(self):

@@ -17,7 +17,7 @@ from apps_data.lesson.models.lesson import Lesson
 from apps_data.lesson.utils.lessoncopy import copy_lesson_selected
 
 
-from .mixins.base import CourseMenuMixin
+from .mixins.base import CourseMenuMixin, FormCourseKwargsMixin
 
 
 class CopyLessonListView(
@@ -81,11 +81,12 @@ class ClassBlockDetailView(
 
         lessonblock = context['lessonblock']
 
-        context['next_node'] = lessonblock.get_next_sibling()
-        context['previous_node'] = lessonblock.get_previous_sibling()
+        context['next_node'] = lessonblock.get_next_sibling_in_courseevent
+        context['previous_node'] = lessonblock.get_previous_sibling_in_courseevent
         context['breadcrumbs'] = lessonblock.get_breadcrumbs_with_self
 
         context['nodes'] = lessonblock.get_tree_without_self_without_material
+
         return context
 
 
@@ -111,11 +112,12 @@ class ClassLessonDetailView(
 
         lesson = context['lesson']
 
-        context['next_node'] = lesson.get_next_sibling()
-        context['previous_node'] = lesson.get_previous_sibling()
+        context['next_node'] = lesson.get_next_sibling_in_courseevent
+        context['previous_node'] = lesson.get_previous_sibling_in_courseevent
         context['breadcrumbs'] = lesson.get_breadcrumbs_with_self
 
         context['nodes'] = lesson.get_tree_without_self_with_material
+        print context
         return context
 
 
@@ -168,6 +170,7 @@ class ClassLessonBreadcrumbMixin(object):
 
 class ClassLessonUpdateView(
     CourseMenuMixin,
+    ClassLessonBreadcrumbMixin,
     FormValidMessageMixin,
     ClassLessonSuccessUrlMixin,
     UpdateView):
@@ -182,7 +185,9 @@ class ClassLessonUpdateView(
 
 class ClassLessonStepUpdateView(
     CourseMenuMixin,
+    ClassLessonBreadcrumbMixin,
     FormValidMessageMixin,
+    FormCourseKwargsMixin,
     ClassLessonSuccessUrlMixin,
     UpdateView):
     """

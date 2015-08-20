@@ -28,8 +28,6 @@ class CourseEventDetailView(
     context_object_name ='courseevent'
 
 
-
-
 class CourseEventUpdateView(
     CourseMenuMixin,
     FormValidMessageMixin,
@@ -74,3 +72,5 @@ class CourseEventUpdateView(
             context['exampletext'] = course_dict[self.kwargs['field']]
 
         return context
+
+

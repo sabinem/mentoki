@@ -1,0 +1,56 @@
+{% url 'classroom:classlesson:start' slug=cs course_slug=es as start_url %}
+
+<a href="{{ start_url }}" class="section">
+    Unterricht Kurs {{ courseevent.title }}
+</a>
+
+
+<i class="right chevron icon divider"></i>
+
+{% for breadcrumb in breadcrumbs %}
+
+    {% if not forloop.first %}
+        <i class="right chevron icon divider"></i>
+    {% endif %}
+
+    {% if forloop.last %}
+
+        <a class="item">
+
+        {% if previous_node %}
+            {% with node=previous_node %}
+                <a
+                    {% include 'classroom/classlesson/fragments/_link_node_detail.html' %}
+                >
+                    <i class="icon angle double left"></i>
+                </a>
+            {% endwith %}
+        {% endif %}
+
+    {% endif %}
+
+    {% with node=breadcrumb %}
+         <a
+         {% include 'classroom/classlesson/fragments/_link_node_detail.html' %}
+         class="section">
+             {{ node.breadcrumb }}
+         </a>
+    {% endwith %}
+
+    {% if forloop.last %}
+
+        {% if next_node %}
+            {% with node=next_node %}
+                <a
+                {% include 'classroom/classlesson/fragments/_link_node_detail.html' %}
+                >
+                    <i class="icon angle double right"></i>
+                </a>
+            {% endwith %}
+        {% endif %}
+
+        </a>
+
+    {% endif %}
+
+{% endfor %}

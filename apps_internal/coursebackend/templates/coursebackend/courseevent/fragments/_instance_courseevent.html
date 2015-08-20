@@ -6,21 +6,21 @@ for detail
 
 {% endcomment %}
 
-{% url 'coursebackend:course:update' course_slug=cs slug=es field="max_participants" as update_particpants_url %}
-{% url 'coursebackend:course:update' course_slug=cs slug=es field="title" as update_title_url %}
-{% url 'coursebackend:course:update' course_slug=cs slug=es field="excerpt" as update_excerpt_url %}
-{% url 'coursebackend:course:update' course_slug=cs slug=es field="target_group" as update_target_group_url %}
-{% url 'coursebackend:course:update' course_slug=cs slug=es field="prerequisites" as update_prerequisites_url %}
-{% url 'coursebackend:course:update' course_slug=cs slug=es field="text" as update_text_url %}
-{% url 'coursebackend:course:update' course_slug=cs slug=es field="project" as update_project_url %}
-{% url 'coursebackend:course:update' course_slug=cs slug=es field="structure" as update_structure_url %}
-{% url 'coursebackend:course:update' course_slug=cs slug=es field="workload" as update_work_url %}
-{% url 'coursebackend:course:update' course_slug=cs slug=es field="event_type" as update_type_url %}
-{% url 'coursebackend:course:update' course_slug=cs slug=es field="status_internal" as update_internal_url %}
-{% url 'coursebackend:course:update' course_slug=cs slug=es field="nr_weeks" as update_weeks_url %}
-{% url 'coursebackend:course:update' course_slug=cs slug=es field="start_date" as update_start_url %}
-{% url 'coursebackend:course:update' course_slug=cs slug=es field="video_url" as update_video_url %}
-{% url 'coursebackend:course:update' course_slug=cs slug=es field="format" as update_format_url %}
+{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="max_participants" as update_particpants_url %}
+{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="title" as update_title_url %}
+{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="excerpt" as update_excerpt_url %}
+{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="target_group" as update_target_group_url %}
+{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="prerequisites" as update_prerequisites_url %}
+{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="text" as update_text_url %}
+{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="project" as update_project_url %}
+{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="structure" as update_structure_url %}
+{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="workload" as update_work_url %}
+{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="event_type" as update_type_url %}
+{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="status_internal" as update_internal_url %}
+{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="nr_weeks" as update_weeks_url %}
+{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="start_date" as update_start_url %}
+{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="video_url" as update_video_url %}
+{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="format" as update_format_url %}
 
 
 <div class="ui header huge">
@@ -29,7 +29,7 @@ for detail
 
 <h3 class="ui header">
     Titel
-    <a href="{{ title_url }}" class= "item">
+    <a href="{{ update_title_url }}" class= "item">
        <i class="write blue icon"></i>
     </a>
 </h3>

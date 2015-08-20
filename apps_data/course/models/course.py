@@ -67,23 +67,24 @@ class Course(TimeStampedModel):
     )
     project = models.TextField(
         verbose_name=_("Teilnehmerprojekt"),
-        help_text=_('What do the participants take away from your course?'),
+        help_text=_('Was nehmen Teilnehmer aus Deinem Kurs für sich mit?'),
         blank=True
     )
     structure = models.TextField(
         verbose_name=_("Gliederung"),
-        help_text=_('Provide the structure of your course.'),
+        help_text=_('Gib eine Gliederung Deines Kurses an'),
         blank=True
     )
     text = models.TextField(
         verbose_name=_('Kursbeschreibung'),
-        help_text=_('Here you can give a detailed description of your course.'),
+        help_text=_('Hier kannst Du Deinen Kurs ausführlich beschreiben.'),
         blank=True
     )
     # Email Account for the course
     email = models.EmailField(
         verbose_name=_("email Addresse für den Kurs"),
-        help_text=_("email des Kursleiters"),
+        help_text=_("""Die email-Adresse des Kursleiters oder eine Mentoki-Adresse. Bitte
+        stimme diese Adresse mit Mentoki ab."""),
         default=DEFAULT_COURSE_FROM_EMAIL
     )
 

@@ -4,14 +4,10 @@
     {% recursetree nodes %}
 
         <div class="item">
-            {% include 'coursebackend/classlesson/fragments/_instance_node_icon.html' %}
+            {% include 'coursebackend/classlesson/fragments/_icon_node.html' %}
             <div class="content">
 
-                <a
-                    {% include 'coursebackend/classlesson/fragments/_instance_node_href.html' %}
-                >
-                     {{ node.title }}
-                </a>
+                {{ node.title }}
 
                 {% if node.published %}
                     <i class="icon checkmark green"></i>
