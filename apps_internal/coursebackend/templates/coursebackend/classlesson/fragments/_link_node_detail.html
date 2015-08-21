@@ -1,0 +1,11 @@
+{% url 'coursebackend:classlesson:block'  course_slug=cs slug=es pk=node.pk as blockdetail_url %}
+{% url 'coursebackend:classlesson:lesson'  course_slug=cs slug=es pk=node.pk as lessondetail_url%}
+{% url 'coursebackend:classlesson:step'   course_slug=cs slug=es pk=node.pk as stepdetail_url%}
+
+{% if node.is_block %}
+    href="{{ blockdetail_url }}"
+{% elif node.is_lesson %}
+    href="{{ lessondetail_url }}"
+{% elif node.is_step %}
+    href="{{ stepdetail_url }}"
+{% endif %}

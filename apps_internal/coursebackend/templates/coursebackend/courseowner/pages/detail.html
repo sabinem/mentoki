@@ -1,11 +1,28 @@
 {% extends "coursebackend/base_course.html" %}
 
+{% block course_menu_items %}
+    {% url 'coursebackend:courseowner:update' course_slug=cs pk=courseowner.pk as owner_update_url %}
+
+    <a href="{{ owner_update_url }}" class="item" >
+        <i class="write icon blue"></i>bearbeiten
+    </a>
+
+{% endblock %}
+
 {% block page_content %}
 
     <div class="row coursebackend_course">
         <div class="sixteen wide column">
 
-            {% include 'coursebackend/courseowner/fragments/_breadcrumb.html' %}
+            <div class="ui large breadcrumb" id ="page-breadcrumb">
+
+                {% include 'coursebackend/courseowner/fragments/_breadcrumb.html' %}
+
+                <a class="item">
+                    EinzelAnsicht
+                </a>
+
+            </div>
 
         </div>
     </div>

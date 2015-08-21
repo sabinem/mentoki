@@ -47,36 +47,6 @@ class ClassLessonManager(LessonManager):
                            level=1,
                            )
 
-    def get_next_sibling(self):
-        """
-        for blocks the mptt method get_next_sibling needs to be overwritten, so that
-        it stays within the courseevent
-        :return: None or next mptt-sibiling
-        """
-        next = super(BaseLesson, self).get_next_sibling()
-        try:
-            if next.course_id == self.courseevent_id:
-                return next
-            else:
-                return None
-        except:
-            return None
-
-    def get_previous_sibling(self):
-        """
-        for blocks the mptt method get_previous_sibling needs to be overwritten, so that
-        it stays within the courseevent
-        :return: None or previous mptt-sibiling
-        """
-        previous = super(BaseLesson, self).get_previous_sibling()
-        try:
-            if previous.course_id == self.courseevent_id:
-                return previous
-            else:
-                return None
-        except:
-            return None
-
 
 class ClassLesson(BaseLesson):
     """
@@ -119,3 +89,38 @@ class ClassLesson(BaseLesson):
             return False
         else:
             return True
+
+    def get_breadcrumbs_with_self_published(self):
+        return self.get_ancestors(include_self=True).filter(published=True)
+
+    @property
+    def get_previous_sibling_published(self):
+        previous = self.get_previous_sibling()
+        if previous:
+            if previous.published == True:
+                return previous
+        return None
+
+    @property
+    def get_next_sibling_published(self):
+        next = self.get_next_sibling()
+        if next:
+            if next.published == True:
+                return next
+        return None
+
+    @property
+    def get_previous_sibling_in_courseevent(self):
+        previous = self.get_previous_sibling()
+        if previous:
+            if previous.courseevent == self.courseevent:
+                return previous
+        return None
+
+    @property
+    def get_next_sibling_in_courseevent(self):
+        next = self.get_next_sibling()
+        if next:
+            if next.courseevent == self.courseevent:
+                return next
+        return None

@@ -13,11 +13,11 @@ urlpatterns = patterns('',
         {'template':'classroom/classlesson/pages/start.html'}, name='start'),
 
     url(r'^block/(?P<pk>\d+)$', ClassLessonBlockDetailView.as_view(),
-        {'template':'classroom/classlesson/pages/lessonblock.html'}, name='classlessonblock_detail'),
+        {'template':'classroom/classlesson/pages/lessonblock.html'}, name='block'),
 
     url(r'^lektion/(?P<pk>\d+)$', ClassLessonDetailView.as_view(),
-        {'template': 'classroom/classlesson/pages/lesson.html'}, name='classlesson_detail'),
+        {'template': 'classroom/classlesson/pages/lesson.html'}, name='lesson'),
 
     url(r'^abschnitt/(?P<pk>\d+)$', ClassLessonStepDetailView.as_view(),
-        {'template':'classroom/classlesson/pages/lessonstep.html'}, name='classlessonstep_detail'),
+        {'template':'classroom/classlesson/pages/lessonstep.html'}, name='step'),
 )

@@ -1,49 +1,56 @@
 <table class="ui table stackable">
-  <thead>
-    <tr>
-      <th class="three wide">Kopieren</th>
-      <th class="three wide">Vorlage</th>
-      <th class="three wide">im Kurs</th>
-    </tr>
-  </thead>
-  <tbody>
-  {% for lesson in lessons %}
-    <tr>
 
-      <td>
-          <p>
-             {% if lesson.id in copied_lesson_ids %}
-                 bereits kopiert
-                  <a class="ui button"
-                     href="{% url 'coursebackend:classlesson:lessoncopy' slug=courseevent.slug course_slug=course.slug pk=lesson.pk %}">
-                     überschreiben?
-                  </a>
-             {% else %}
-                  <a class="ui button"
-                     href="{% url 'lesson:copy_block' courseevent_pk=courseevent.pk lesson_pk=lesson.pk %}">
-                     jetzt Kopieren
-                  </a>
-             {% endif %}
+    <thead>
+        <tr>
+            <th class="three wide">Kopieren</th>
+            <th class="three wide">Vorlage</th>
+            <th class="three wide">im Kurs</th>
+        </tr>
+    </thead>
 
-          </p>
-      </td>
+    <tbody>
 
-      <td>
+        {% for lesson in lessons %}
 
-          <a href="{% url 'coursebackend:lesson:lesson' pk=lesson.pk course_slug=course.slug %}">
-          {{ lesson }}
-          </a>
-      </td>
-      <td>
-          {% if lesson.id in copied_lesson_ids %}
-          <a href="{% url 'coursebackend:classlesson:start' slug=courseevent.slug course_slug=course.slug %}">
-              <i class="icon unhide"></i>zum Kurs-Unterricht
-          </a>
-          {% endif %}
-      </td>
+            {% url 'coursebackend:lesson:lesson' pk=lesson.pk course_slug=cs as lesson_url%}
+            {% url 'lesson:copy_block' courseevent_pk=courseevent.pk lesson_pk=lesson.pk as copyall_url%}
+            {% url 'coursebackend:classlesson:lessoncopy' slug=es course_slug=cs pk=lesson.pk as copypart_url %}
+            {% url 'coursebackend:classlesson:lesson' slug=es course_slug=cs slug=es as classlesson_url%}
+            <tr>
 
-    </tr>
-  {% endfor %}
+                <td>
+                    <p>
+                        {% if lesson.id in copied_lesson_ids %}
+                            bereits kopiert
+                            <a href="{{ copypart_url }}" class="ui button">
+                                überschreiben?
+                            </a>
+                        {% else %}
+                            <a href="{{ copyall_url }}" class="ui button">
+                                jetzt Kopieren
+                            </a>
+                        {% endif %}
 
-  </tbody>
+                    </p>
+                </td>
+
+                <td>
+                    <a href="{{ lesson_url }}">
+                        {{ lesson }}
+                    </a>
+                </td>
+                <td>
+                    {% if lesson.id in copied_lesson_ids %}
+                        <a href="{{ classlesson_url }}">
+                            <i class="icon unhide"></i>zum Kurs-Unterricht
+                        </a>
+                    {% endif %}
+                </td>
+
+            </tr>
+
+        {% endfor %}
+
+    </tbody>
+
 </table>

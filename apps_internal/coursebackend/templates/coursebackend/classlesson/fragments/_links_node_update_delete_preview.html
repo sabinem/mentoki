@@ -1,0 +1,30 @@
+{% url 'coursebackend:classlesson:blockupdate'  course_slug=cs slug=es pk=node.pk as blockupdate_url %}
+{% url 'coursebackend:classlesson:lessonupdate'  course_slug=cs slug=es pk=node.pk as lessonupdate_url %}
+{% url 'coursebackend:classlesson:stepupdate'  course_slug=cs slug=es pk=node.pk as stepupdate_url %}
+{% url 'coursebackend:classlesson:delete'  course_slug=cs slug=es pk=node.pk as delete_url %}
+{% url 'classroom:classlesson:lesson' slug=es pk=node.pk as class_url %}
+
+{% if node.is_block %}
+    <a href="{{ blockupdate_url }}">
+       <i class="icon write"></i>
+    </a>
+{% elif node.is_lesson %}
+    <a href="{{ lessonupdate_url }}">
+       <i class="icon write"></i>
+    </a>
+{% else %}
+    <a href="{{ stepupdate_url }}">
+       <i class="icon write"></i>
+    </a>
+{% endif %}
+
+<a href="{{ delete_url }}">
+   <i class="icon trash"></i>
+</a>
+{% if node.published %}
+    veröffentlicht
+    <i class="icon checkmark green"></i>
+    <a href="{{ class_url }}">
+        <i class="icon unhide green"></i>
+    </a>
+{% endif %}

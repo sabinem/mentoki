@@ -2,10 +2,18 @@
 
 {% block page_content %}
 
-    <div class="row coursebackend_background">
+    <div class="row coursebackend_course">
         <div class="sixteen wide column">
 
-            {% include 'coursebackend/material/fragments/_breadcrumb.html' %}
+            <div class="ui large breadcrumb" id ="page-breadcrumb">
+
+                {% include 'coursebackend/material/fragments/_breadcrumbs.html' %}
+
+                <a class="item">
+                    Einzelansicht
+                </a>
+
+            </div>
 
         </div>
     </div>

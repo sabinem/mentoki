@@ -93,7 +93,7 @@ class AnnouncementCreateView(
     model = Announcement
     form_class = AnnouncementForm
     context_object_name ='announcement'
-    form_valid_message="Die Ankündigung wurde gespeichert!"
+    form_valid_message="Die Ankündigung wurde an die Teilnehmer geschickt oder gespeichert!"
 
     def form_valid(self, form):
         courseevent = get_object_or_404(CourseEvent, slug=self.kwargs['slug'])
@@ -104,6 +104,5 @@ class AnnouncementCreateView(
             published=form.cleaned_data['published'])
 
         return HttpResponseRedirect(self.get_success_url())
-
 
 

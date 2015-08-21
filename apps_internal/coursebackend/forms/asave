@@ -1,0 +1,124 @@
+# -*- coding: utf-8 -*-
+
+from __future__ import unicode_literals
+
+import floppyforms.__future__ as forms
+
+from django.template.loader import get_template
+from django.template import Context
+
+from froala_editor.widgets import FroalaEditor
+
+from mailqueue.models import MailerMessage
+
+from apps_data.courseevent.models.announcement import Announcement
+from apps_data.courseevent.models.courseevent import CourseEventParticipation
+from apps_data.course.models.course import CourseOwner
+from mentoki.settings import MENTOKI_INFO_EMAIL
+
+
+class AnnouncementForm(forms.ModelForm):
+    text = forms.CharField(widget=FroalaEditor)
+
+    class Meta:
+        model = Announcement
+        fields = ('title', 'text', 'published')
+
+    CONTACT_EMAIL=MENTOKI_INFO_EMAIL
+
+    def __init__(self, *args, **kwargs):
+        super(AnnouncementForm, self).__init__(*args, **kwargs)
+
+    def send_email_visitor(self):
+        # send email to requesting email
+        # this method is called with cleaned from data
+        subject = "Deine Nachricht an Mentoki"
+        to = [self.cleaned_data['email']]
+        from_mail = 'info@mentoki.com'
+
+        # prepare template
+        context = {
+            'name': self.cleaned_data['name'],
+            'email': self.cleaned_data['email'],
+            'message': self.cleaned_data['message'],
+            'betreff': "Deine Nachricht",
+        }
+        message = get_template('email/contact/to_customer.html').render(Context(context))
+        #msg = EmailMessage(subject, message, to=to, from_email=from_mail)
+        #msg.content_subtype = 'html'
+        #msg.send()
+
+        to_customer = MailerMessage()
+        to_customer.subject = "Deine Nachricht an Mentoki"
+        to_customer.to_address = self.cleaned_data['email']
+        to_customer.from_address = ContactForm.CONTACT_EMAIL
+        to_customer.content = ContactForm.OUTGOING
+        to_customer.html_content = message
+        to_customer.reply_to = ContactForm.CONTACT_EMAIL
+        to_customer.app = self.__module__
+        to_customer.save()
+
+
+    def send_email_self(self):
+        # send email to self
+        #subject = "Beantworten: Nachricht an Mentoki"
+        #to = ['info@mentoki.com']
+        #from_mail = self.cleaned_data['email']
+        context = {
+            'name': self.cleaned_data['name'],
+            'email': self.cleaned_data['email'],
+            'message': self.cleaned_data['message'],
+            'betreff': "Nachricht an Mentoki",
+        }
+        message = get_template('email/contact/to_mentoki.html').render(Context(context))
+
+    def send_announcement(self):
+
+        participants = \
+            CourseEventParticipation.objects.\
+                filter(courseevent=context['courseevent'].id).select_related('user')
+        teachers = self.instance.courseevent.teachers.email
+            CourseOwner.objects.filter(course=context['course'].id).select_related('user')
+
+        to_mentoki = MailerMessage()
+        to_mentoki.subject = "Neue Nachricht von %s" % self.instance.courseevent.title
+        to_mentoki.to_address = ContactForm.CONTACT_EMAIL
+        to_mentoki.from_address = self.cleaned_data['email']
+        to_mentoki.content = ContactForm.INTERNAL
+        to_mentoki.html_content = message
+        to_mentoki.reply_to = self.cleaned_data['email']
+        to_mentoki.app = self.__module__
+        to_mentoki.save()
+
+        form.instance.courseevent = context['courseevent']
+        if form.instance.published == True:
+
+            form.instance.published_at_date = datetime.datetime.now()
+
+            participants = CourseEventParticipation.objects.filter(courseevent=context['courseevent'].id).select_related('user')
+            owners = CourseOwner.objects.filter(course=context['course'].id).select_related('user')
+
+            # send email to requesting email
+            subject = "Neue Nachricht von Mentoki %s" % context['courseevent'].title
+            to_list = []
+            for participant in participants:
+                to_list.append(participant.user.email)
+            for owner in owners:
+                to_list.append(owner.user.email)
+            to = to_list
+            from_mail = context['course'].email
+
+            context = {
+                'courseevent': context['courseevent'],
+                'title': form.cleaned_data['title'],
+                'text': form.cleaned_data['text'],
+                'owners': owners,
+                'betreff': subject,
+            }
+            message = get_template('email/announcement.html').render(Context(context))
+            msg = EmailMessage(subject, message, to=to, from_email=from_mail)
+            msg.content_subtype = 'html'
+            msg.send()
+            self.messages.success(u"Die Ank\u00fcndigung wurde an die Teilnehmer %s verschickt." % to )
+        else:
+            self.messages.success(u"Die Ank\u00fcndigung wurde als Entwurf gespeichert." )

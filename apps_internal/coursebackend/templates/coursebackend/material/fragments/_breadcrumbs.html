@@ -1,0 +1,19 @@
+{% comment %}
+
+the breadcrumb for materials
+
+for list/update/detail/create/delete
+
+{% endcomment %}
+
+{% url 'coursebackend:material:list' course_slug=cs as list_url %}
+
+<div class="ui large breadcrumb" id ="page-breadcrumb">
+
+    <a href="{{ list_url }}" class="item">
+        Material {{ course.title }}
+    </a>
+
+    <i class="right chevron icon divider"></i>
+
+</div>

@@ -192,7 +192,7 @@ class LessonDeleteView(
 
     def get_context_data(self, **kwargs):
         context = super(LessonDeleteView, self).get_context_data(**kwargs)
-        context['nodes'] = context['object'].get_breadcrumbs_with_self
+        context['nodes'] = context['object'].get_delete_tree
         return context
 
 

@@ -5,7 +5,15 @@
     <div class="row coursebackend_course">
         <div class="sixteen wide column">
 
-            {% include 'coursebackend/courseevent/fragments/_breadcrumb.html' %}
+            <div class="ui large breadcrumb" id ="page-breadcrumb">
+
+                {% include 'coursebackend/course/fragments/_breadcrumbs.html' %}
+
+                <a class="item">
+                    Kurseereignisse
+                </a>
+
+            </div>
 
         </div>
     </div>
@@ -13,7 +21,7 @@
     <div class="row classroombackend_white">
         <div class="sixteen wide column">
 
-            {% include 'coursebackend/courseevent/fragments/_list_courseevents_table.html' %}
+            {% include 'coursebackend/course/fragments/_list_courseevents_table.html' %}
 
         </div>
     </div>

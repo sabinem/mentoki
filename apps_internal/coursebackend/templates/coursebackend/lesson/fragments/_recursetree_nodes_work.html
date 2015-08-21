@@ -4,21 +4,26 @@
     {% recursetree nodes %}
 
         <div class="item">
-            {% include 'coursebackend/lesson/fragments/_instance_node_icon.html' %}
+        
+            {% include 'coursebackend/lesson/fragments/_icon_node.html' %}
+
             <div class="content">
 
                 <a
-                    {% include 'coursebackend/lesson/fragments/_instance_node_href.html' %}
+                    {% include 'coursebackend/lesson/fragments/_link_node_detail.html' %}
                 >
                      {{ node.title }}
                 </a>
 
-                {% include 'coursebackend/lesson/fragments/_instance_node_worklinks.html' %}
+                {% include 'coursebackend/lesson/fragments/_links_node_update_delete.html' %}
 
                 {% if node.materials.all %}
                     {% for material in node.materials.all %}
+
+                        {% url 'coursebackend:material:update' course_slug=cs pk=material.pk as updatematerial_url %}
+
                         <i class="icon file outline "></i> {{ material }}
-                        <a href="{% url 'coursebackend:material:update' course_slug=course.slug pk=material.pk %}">
+                        <a href="{{ updatematerial_url }}">
                         <i class="icon write"></i>
                         </a>
                     {% endfor %}

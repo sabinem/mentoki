@@ -1,7 +1,7 @@
 {% extends "coursebackend/base_courseevent.html" %}
 
 {% block course_menu_items %}
-    {% include 'coursebackend/classlesson/fragments/_link_worklinks.html' %}
+    {% include 'coursebackend/classlesson/fragments/_link_copy.html' %}
 {% endblock %}
 
 {% block page_content %}
@@ -9,7 +9,14 @@
     <div class="row coursebackend_background">
         <div class="sixteen wide column">
 
-            {% include 'coursebackend/classlesson/fragments/_breadcrumbs.html' %}
+            <div class="ui large breadcrumb" id ="page-breadcrumb">
+
+                {% include 'coursebackend/classlesson/fragments/_breadcrumbs.html' %}
+                <a class="item">
+                    Lektionen übernehmen
+                </a>
+
+            </div>
 
         </div>
     </div>

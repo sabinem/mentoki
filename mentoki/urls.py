@@ -25,6 +25,8 @@ urlpatterns = i18n_patterns('',
     # admin urls
     url(r'^admin/',
         include(admin.site.urls)),
+
+    (r'^mail-queue/', include('mailqueue.urls')),
 )
 
 

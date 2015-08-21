@@ -53,6 +53,9 @@ INSTALLED_APPS = (
     'activelink',
     'floppyforms',
     'froala_editor',
+    #'djmail',
+    #'mailer'
+    'mailqueue',
 
     'pagedown',
     'django_markdown',
@@ -205,22 +208,17 @@ IGNORABLE_404_URLS = (
     re.compile(r'^/apple-touch-icon.*\.png$'),
     re.compile(r'^/favicon\.ico$'),
     re.compile(r'^/robots\.txt$'),
-)    
+)
 
-# Email
-#if LOCAL_ENVIRONMENT:
-#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-EMAIL_HOST = os.environ.get('EMAIL_HOST')
-EMAIL_PORT = os.environ.get('EMAIL_PORT')
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-EMAIL_SUBJECT_PREFIX = os.environ.get('EMAIL_SUBJECT_PREFIX')
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'info@mentoki.com'
+EMAIL_HOST_PASSWORD = 'Island2015'
+EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-SERVER_EMAIL = EMAIL_HOST_USER
 
-DEFAULT_COURSE_FROM_EMAIL = u'info@mentoki.com'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+MENTOKI_INFO_EMAIL = u'info@mentoki.com'
 
 
 CACHES = {
