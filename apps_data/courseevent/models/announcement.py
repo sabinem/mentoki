@@ -5,14 +5,16 @@ from __future__ import unicode_literals, absolute_import
 from django.db import models
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
-from django.utils.functional import cached_property
+from django.template.loader import get_template
+from django.template import Context
 
 from model_utils.models import TimeStampedModel
-from model_utils.fields import MonitorField, StatusField
-from model_utils import Choices
+from model_utils.fields import MonitorField
+
+from mailqueue.models import MailerMessage
 
 
-from apps_data.courseevent.models.courseevent import CourseEvent
+from apps_data.courseevent.models.courseevent import CourseEvent, CourseEventParticipation
 
 
 class AnnouncementManager(models.Manager):
@@ -30,6 +32,38 @@ class AnnouncementManager(models.Manager):
                                     published=published)
         announcement.save()
         return announcement
+
+def send_announcement(announcement, courseevent, module):
+    participants_emails = \
+        CourseEventParticipation.objects.learners_emails(courseevent=courseevent)
+    send_to_class = ",".join(participants_emails)
+    print "============================="
+    print send_to_class
+    sent_to_test = "maennel@me.com , sabine.maennel@gmail.com"
+    courseemail = courseevent.email
+    print "=========="
+    print courseemail
+    sent_to_test2="sabine@mentoki.com"
+    context = {
+        'courseevent': courseevent,
+        'title': announcement.title,
+        'text': announcement.text,
+        'owners': courseevent.teachers,
+        'betreff':  "Neue Nachricht von Mentoki %s" % courseevent.title
+    }
+    message = get_template('email/announcement/announcement.html').render(Context(context))
+
+    to_mentoki = MailerMessage()
+
+    to_mentoki.subject = "Neue Nachricht von %s" % courseevent.title
+    to_mentoki.bcc_address = courseemail
+    to_mentoki.to_address = send_to_class
+    to_mentoki.from_address = courseemail
+    to_mentoki.content = "Neue Nachricht von %s and die Teilnehmer" % courseevent.title
+    to_mentoki.html_content = message
+    to_mentoki.reply_to = courseemail
+    to_mentoki.app = module
+    to_mentoki.save()
 
 
 class Announcement(TimeStampedModel):
@@ -63,4 +97,12 @@ class Announcement(TimeStampedModel):
                        kwargs={'course_slug':self.course_slug,
                                'slug':self.slug,
                                'pk':self.pk})
+
+    def save(self, *args, **kwargs):
+        module = self.__module__
+        courseevent = self.courseevent
+        if self.published:
+            send_announcement( announcement=self, courseevent=courseevent, module=module,)
+
+        super(Announcement, self).save(*args, **kwargs)
 

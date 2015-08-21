@@ -14,7 +14,7 @@ from model_utils.models import TimeStampedModel
 
 from autoslug import AutoSlugField
 
-from mentoki.settings import DEFAULT_COURSE_FROM_EMAIL
+from mentoki.settings import MENTOKI_INFO_EMAIL
 
 
 class CourseManager(models.Manager):
@@ -85,7 +85,7 @@ class Course(TimeStampedModel):
         verbose_name=_("email Addresse für den Kurs"),
         help_text=_("""Die email-Adresse des Kursleiters oder eine Mentoki-Adresse. Bitte
         stimme diese Adresse mit Mentoki ab."""),
-        default=DEFAULT_COURSE_FROM_EMAIL
+        default=MENTOKI_INFO_EMAIL
     )
 
     objects = CourseManager()
@@ -104,6 +104,13 @@ class Course(TimeStampedModel):
         they should be displayed
         """
         return self.owners.all().order_by('courseowner__display_nr')
+
+    def teachers_emails(self):
+        """
+        Returns all the accounts of users who are involved with teaching that course sorted by the order in which
+        they should be displayed
+        """
+        return self.owners.all().prefetch_related('user').values('courseowner__user__email')
 
     def teachersrecord(self):
         """

@@ -22,8 +22,8 @@ from model_utils import Choices
 from apps_data.course.models.course import Course
 
 
-class CourseEventQuerySet(QuerySet):
-#class CourseEventManager(models.Manager):
+#class CourseEventQuerySet(QuerySet):
+class CourseEventManager(models.Manager):
 
     def courseevents_for_course(self, course):
         return self.filter(course=course)
@@ -36,13 +36,6 @@ class CourseEventQuerySet(QuerySet):
 
     def get_courseevent_or_404_from_slug(self, slug):
         return get_object_or_404(self, slug=slug)
-
-    def studying(self, user):
-        study_courseevent_ids = \
-            ParticipationQuerySet.learning(user=self.request.user).\
-                values_list('courseevent_id', flat=True)
-        return self.select_related('course').\
-                filter(id__in=study_courseevent_ids).order_by('start_date')
 
     def is_teacher(self, user):
         if user in self.teachers:
@@ -144,8 +137,8 @@ class CourseEvent(TimeStampedModel):
         default=True
     )
 
-    objects = PassThroughManager.for_queryset_class(CourseEventQuerySet)()
-    #objects = CourseEvent.Manager()
+    #objects = PassThroughManager.for_queryset_class(CourseEventQuerySet)()
+    objects = CourseEventManager()
     public_ready_for_booking = QueryManager(status_external=STATUS_EXTERNAL.booking)
     public_ready_for_preview = QueryManager(status_external=STATUS_EXTERNAL.preview)
 
@@ -155,6 +148,14 @@ class CourseEvent(TimeStampedModel):
     @cached_property
     def teachers(self):
         return self.course.teachers
+
+    @cached_property
+    def teachers_emails(self):
+        return self.course.teachers.email
+
+    @property
+    def email(self):
+        return self.course.email
 
     @cached_property
     def teachersrecord(self):
@@ -168,7 +169,7 @@ class CourseEvent(TimeStampedModel):
         """
         calculate the end date form the startdate and the number of weeks if a startdate is given.
         """
-        if self.start_date:
+        if self.start_date and self.nr_weeks:
            end_date = self.start_date + datetime.timedelta(days=7*self.nr_weeks)
            return end_date
 
@@ -194,13 +195,17 @@ class CourseEvent(TimeStampedModel):
                                'slug':self.slug})
 
 
-class ParticipationManager(QuerySet):
+class ParticipationManager(models.Manager):
 
     def learning(self, user):
         return self.filter(user=user)
 
     def learners(self, courseevent):
         return self.filter(courseevent=courseevent).select_related('user')
+
+    def learners_emails(self, courseevent):
+        return self.filter(courseevent=courseevent).select_related('user').\
+            values_list('user__email', flat=True)
 
     def active(self,courseevent):
         return self.filter(courseevent=courseevent, hidden=False).select_related('user')

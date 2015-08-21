@@ -16,7 +16,7 @@ class CourseAdmin(admin.ModelAdmin):
     courses are time independent collections of teaching material, that are
     set up and owned by teachers.
     """
-    list_display = ('id', 'title', 'modified', 'created', 'teachers', 'email')
+    list_display = ('id', 'title', 'modified', 'created', 'teachers', 'email', 'teachers_emails')
     list_filter = ('modified',)
     list_display_links = ('id',)
 

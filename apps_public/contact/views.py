@@ -8,11 +8,11 @@ from django.utils.safestring import mark_safe
 
 from braces.views import MessageMixin
 
+from apps_core.core.mixins import TemplateMixin
+
 from .forms import ContactForm
 
-
-class ContactView(MessageMixin, FormView):
-    template_name = 'contact/contact.html'
+class ContactView(TemplateMixin, MessageMixin, FormView):
     form_class = ContactForm
 
     def form_valid(self, form):
@@ -20,6 +20,8 @@ class ContactView(MessageMixin, FormView):
         # It should return an HttpResponse.
         form.send_email_visitor()
         form.send_email_self()
+
+        # prepare message for Thank you Page
         name = form.cleaned_data['name']
         message = mark_safe("""<h1>Hallo %s! </h1><p>Danke für Dein Interesse an Mentoki.</p><p>
                   Du hörst von uns innerhalb der nächsten 48 Stunden.</p>""") % name
@@ -32,6 +34,5 @@ class ContactView(MessageMixin, FormView):
         )
 
 
-class AnswerView(TemplateView):
-
-    template_name = 'contact_answer/answer.html'
+class AnswerView(TemplateMixin, TemplateView):
+    pass

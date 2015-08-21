@@ -10,7 +10,7 @@
     {% url 'coursebackend:courseevent:detail' course_slug=cs slug=es as courseevent_url %}
     {% url 'coursebackend:participant:list' course_slug=cs slug=es as participants_url %}
     {% url 'coursebackend:forum:list' course_slug=cs slug=es as forum_url %}
-    {% url 'coursebackend:announcement:list' course_slug=es slug=es as announcements_url %}
+    {% url 'coursebackend:announcement:list' course_slug=cs slug=es as announcements_url %}
     {% url 'coursebackend:homework:list' course_slug=cs slug=es as homeworks_url %}
     {% url 'coursebackend:menu:list' course_slug=cs slug=es as menu_url %}
     {% url "coursebackend:lesson_courseevent:start" course_slug=cs slug=es as lesson_url %}
