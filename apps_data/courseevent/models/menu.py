@@ -8,6 +8,7 @@ from django.core.validators import ValidationError
 
 from model_utils import Choices
 from model_utils.models import TimeStampedModel
+from model_utils.managers import QueryManager
 
 from apps_data.lesson.models.classlesson import ClassLesson
 
@@ -32,22 +33,57 @@ def switch_start_item(menuitem):
 def switch_item_object_published_status(menuitem, publish):
     if menuitem.item_type ==  menuitem.MENU_ITEM_TYPE.forum_item:
         forum = Forum.objects.get(pk=menuitem.forum_id)
-        forum.published = publish
-        forum.save()
+        if publish == True:
+            forum.publish()
+        else:
+            forum.unpublish()
+
     elif menuitem.item_type ==  menuitem.MENU_ITEM_TYPE.lesson_item:
         classlesson = ClassLesson.objects.get(pk=menuitem.classlesson_id)
-        classlesson.published = publish
-        classlesson.save()
+        if publish == True:
+            classlesson.publish()
+        else:
+            classlesson.unpublish()
+
     elif menuitem.item_type ==  menuitem.MENU_ITEM_TYPE.homework_item:
-        homework = Homework.objects.get(pk=menuitem.forum_id)
-        homework.published = publish
-        homework.save()
+        homework = Homework.objects.get(pk=menuitem.homework_id)
+        if publish == True:
+            homework.publish()
+        else:
+            homework.unpublish()
 
 
 class ClassroomMenuItemManager(models.Manager):
 
     def all_for_courseevent(self, courseevent):
         return self.filter(courseevent=courseevent).order_by('display_nr')
+
+    def homeworks_for_courseevent(self, courseevent):
+        return self.filter(courseevent=courseevent,
+                           item_type='homework'
+                           ).order_by('display_nr')
+
+    def lessons_for_courseevent(self, courseevent):
+        return self.filter(courseevent=courseevent,
+                           item_type='lesson'
+                           ).order_by('display_nr')
+
+    def forums_for_courseevent(self, courseevent):
+        return self.filter(courseevent=courseevent,
+                           item_type='forum'
+                           ).order_by('display_nr')
+
+    def listlinks_for_courseevent(self, courseevent):
+        return self.filter(courseevent=courseevent,
+                           item_type__in = [
+                               'last_posts',
+                               'participants',
+                               'announcements',
+                           ]
+                           ).order_by('display_nr')
+
+    def active_for_courseevent(self, courseevent):
+        return self.filter(courseevent=courseevent, active=True).order_by('display_nr')
 
     def get_startitem_from_slug(self, slug):
         return self.get(courseevent__slug=slug, is_start_item=True )
@@ -109,7 +145,11 @@ class ClassroomMenuItem(TimeStampedModel):
         choices=MENU_ITEM_TYPE,
         max_length=15)
 
-    active = models.BooleanField(default=True)
+    active = models.BooleanField(
+        verbose_name='aktiv',
+        help_text="""bestimmt, ob der Menüpunkt im Kurzmenü des Klassenzimmers
+            angezeigt werden soll.""",
+        default=True)
 
     display_nr = models.IntegerField(
         verbose_name="Reihenfolge Nummer",
@@ -123,6 +163,8 @@ class ClassroomMenuItem(TimeStampedModel):
             erstes angesprungen werden?""")
 
     objects = ClassroomMenuItemManager()
+    forums = QueryManager(item_type=MENU_ITEM_TYPE.forum_item).order_by('display_nr')
+    lessons = QueryManager(item_type=MENU_ITEM_TYPE.lesson_item).order_by('display_nr')
 
     unique_together=('display_title', 'courseevent')
 

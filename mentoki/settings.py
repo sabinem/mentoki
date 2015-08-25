@@ -33,7 +33,6 @@ SITE_ID = 1
 # Application definition
 INSTALLED_APPS = (
 
-    #'suit',
     'django.contrib.admin',
     'django.contrib.admindocs',
     'django.contrib.auth',
@@ -43,9 +42,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.sites',
 
-    #future?
-    #'email_extras',
-
     'braces',
     'model_utils',
     'mptt',
@@ -53,8 +49,9 @@ INSTALLED_APPS = (
     'activelink',
     'floppyforms',
     'froala_editor',
-    #'djmail',
-    #'mailer'
+    'django_prices',
+    'extra_views',
+
     'mailqueue',
 
     'pagedown',
@@ -78,18 +75,14 @@ INSTALLED_APPS = (
     'apps_public.home',
     'apps_public.courseoffer',
 
-    # delete?
-    #'crispy_forms',
-    #'django_coverage',
-
     # needed?
     'apps_core.upload',
 
     #old will be deleted after data-transfer
     'apps.forum',
 
-    #'apps.core',
 )
+
 
 if DEBUG:
     INSTALLED_APPS += (
@@ -113,7 +106,6 @@ ROOT_URLCONF = 'mentoki.urls'
 WSGI_APPLICATION = 'mentoki.wsgi.application'
 
 # Database
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -142,7 +134,6 @@ LANGUAGE_CODE = 'de_DE'
 LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),
     os.path.join(BASE_DIR, 'locale','apps_internal','classroom'),
-
 )
 
 TIME_ZONE = 'Europe/Zurich'
@@ -155,8 +146,6 @@ USE_TZ = True
 
 DATE_FORMAT = 'd.m.Y'
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
@@ -170,9 +159,6 @@ else:
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    # Put strings here, like "/home/html/static" or "C:/www/django/static".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
     os.path.join(BASE_DIR, 'static'),
 )
 
@@ -232,7 +218,7 @@ CACHES = {
 if LOCAL_ENVIRONMENT:
     LOGGING = {
         'version': 1,
-        'disable_existing_loggers': False,
+        'disable_existing_loggers': True,
         'formatters': {
             'verbose': {
                 'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
@@ -244,7 +230,7 @@ if LOCAL_ENVIRONMENT:
         },
         'handlers': {
             'file': {
-                'level': 'DEBUG',
+                'level': 'INFO',
                 'class': 'logging.FileHandler',
                 'filename': 'netteachers.log',
                 'formatter': 'verbose'
@@ -254,11 +240,7 @@ if LOCAL_ENVIRONMENT:
                 'class':'logging.StreamHandler',
                 'formatter': 'simple'
             },
-            'handler_for_my_apps': {
-                'level': 'DEBUG',
-                'class': 'logging.StreamHandler',
-                'formatter': 'simple'
-            },
+
         },
         'loggers': {
             'apps.forum': {
@@ -293,10 +275,10 @@ if LOCAL_ENVIRONMENT:
     for logger in LOGGING['loggers']:
         LOGGING['loggers'][logger]['handlers'] = ['console']
 
-# Set your DSN value
-#RAVEN_CONFIG = {
-#    'dsn': os.environ.get('SENTRY_DSN'),
-#}
+#Set your DSN value
+RAVEN_CONFIG = {
+    'dsn': os.environ.get('SENTRY_DSN'),
+}
 
 # Markdown
 MARKDOWN_EDITOR_SKIN = 'simple'
@@ -311,16 +293,8 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10
 }
 
-#FROALA_INCLUDE_JQUERY = False
-
-
-# Use nose to run all tests
-#TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
-
-# Tell nose to measure coverage on the 'foo' and 'bar' apps
-#NOSE_ARGS = [
-#    '--with-coverage',
-#    '--cover-package=apps_data/course/models',
-#]
-
-MENTOKI_TEST_VIEWS_AND_DATA = True
+BRAINTREE = {
+    'merchant_id': "7wm3vzggc9cqyyt8",
+    'public_key': "qzqfmvkbjcwbf73m",
+    'private_key': "8888fe3713e334e3621f4360ea1c7c4f"
+}

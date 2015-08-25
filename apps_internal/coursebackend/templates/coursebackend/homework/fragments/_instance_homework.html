@@ -1,24 +1,18 @@
-<div class="segment raised ui">
-    <div class="ui header medium">
-        Aufgabe:
-    </div>
+{% url 'coursebackend:homework:update'  course_slug=cs slug=es pk=homework.pk as update_url %}
 
-    <div class="ui header medium">{{ homework.title }}</div>
-    <p>
-        Abgabedatum: {{ homework.due_date | date:'d.m.Y' }},
-    </p>
-    <p>
-        bezieht sich auf Lektion:
-        <a href="">
-            {{ homework.lesson.title }}
+<div class="ui header medium">
+    {{ homework.title }}
+    {% if request.resolver_match.url_name == 'detail' %}
+        <a href="{{ update_url }}">
+           <i class="icon write"></i>
         </a>
-    </p>
-    <p>
-        {% if homework.published %}
-            {{ homework.published_at_date |date:'d.m.Y' }}
-        {% else %}
-            unveröffentlicht
-        {% endif %}
-    </p>
-    <p>{{ homework.text | safe }}</p>
+    {% endif %}
 </div>
+
+{% if homework.due_date %}
+    <p>
+        Abgabedatum: {{ homework.due_date | date:'d.m.Y' }}
+    </p>
+{% endif %}
+
+{{ homework.text | safe }}

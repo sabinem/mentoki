@@ -1,11 +1,40 @@
 {% extends "coursebackend/base_courseevent.html" %}
 
+{% block courseevent_menu_items %}
+
+    {% url 'coursebackend:menu:list' course_slug=cs slug=es as list_url %}
+
+    <a class="item" href="{{ list_url }}">
+        <i class="list icon blue"></i>Link-Liste
+    </a>
+
+{% endblock %}
+
 {% block page_content %}
 
+    <div class="row coursebackend_background">
+
+        <div class="sixteen wide column">
+
+            <div class="ui large breadcrumb" id ="page-breadcrumb">
+
+                {% include 'coursebackend/menu/fragments/_breadcrumbs.html' %}
+
+                <a class="item">
+                    Menüpunkt löschen
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
     <div class="row coursebackend_white">
+
         <div class="eight wide column">
 
-            {% include 'coursebackend/menu/fragments/_instance_classroommenuitem.html' %}
+            {% include 'coursebackend/menu/fragments/_instance_classroommenuitem_for_delete.html' %}
 
             {% include 'coursebackend/forms/delete/_menuitem.html' %}
 

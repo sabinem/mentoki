@@ -16,13 +16,21 @@
     {% url 'coursebackend:menu:create' course_slug=cs slug=es as create_url %}
 
     <div class="row coursebackend_background">
+
         <div class="sixteen wide column">
 
-            <a class="item">
-                <i class="unhide icon blue"></i><i class="write icon blue"></i>Vorschau
-            </a>
+            <div class="ui large breadcrumb" id ="page-breadcrumb">
+
+                {% include 'coursebackend/menu/fragments/_breadcrumbs.html' %}
+
+                <a class="item">
+                    Vorschau auf das Menü
+                </a>
+
+            </div>
 
         </div>
+
     </div>
 
     <div class="row coursebackend_white">
@@ -35,13 +43,13 @@
 
         <div class="eight wide column">
 
-            <div class="ui center aligned header medium">Menü in der Vorschau</div>
+            {% include 'coursebackend/menu/fragments/_legend.html' %}
 
-                <a href="{{ create_url }}">
-                    <i class="write plus icon blue"></i>Neuen Menüpunkt anlegen
-                </a>
+            <a href="{{ create_url }}">
+                <i class="write plus icon blue"></i>Neuen Menüpunkt anlegen
+            </a>
 
-                {% include 'base/fragments/_messages.html' %}
+            {% include 'base/fragments/_messages.html' %}
 
         </div>
 

@@ -9,6 +9,7 @@ from django.db import models
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.utils.functional import cached_property
+from django.core.validators import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
 from model_utils.models import TimeStampedModel
@@ -51,6 +52,7 @@ class ForumManager(TreeManager):
         forum.save()
 
         return forum
+
 
 class Forum(MPTTModel, TimeStampedModel):
 
@@ -148,6 +150,18 @@ class Forum(MPTTModel, TimeStampedModel):
                        kwargs={'course_slug':self.course_slug,
                                'slug':self.slug,
                                'pk':self.pk})
+
+    def publish(self):
+        descendants = self.get_descendants(include_self=True)
+        for descendant in descendants:
+            descendant.published = True
+            descendant.save()
+
+    def unpublish(self):
+        descendants = self.get_descendants(include_self=True)
+        for descendant in descendants:
+            descendant.published = False
+            descendant.save()
 
 
 class ForumContributionModel(TimeStampedModel):

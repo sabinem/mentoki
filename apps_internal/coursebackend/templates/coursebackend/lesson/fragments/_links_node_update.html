@@ -1,0 +1,21 @@
+{% url 'coursebackend:lesson:blockupdate'  course_slug=cs pk=node.pk as blockupdate_url %}
+{% url 'coursebackend:lesson:lessonupdate'  course_slug=cs pk=node.pk as lessonupdate_url %}
+{% url 'coursebackend:lesson:stepupdate'  course_slug=cs pk=node.pk as stepupdate_url %}
+{% url 'coursebackend:lesson:delete'  course_slug=cs pk=node.pk as delete_url %}
+
+{% if node.is_block %}
+    <a href="{{ blockupdate_url }}">
+       <i class="icon write"></i>
+    </a>
+{% elif node.is_lesson %}
+    <a href="{{ lessonupdate_url }}">
+       <i class="icon write"></i>
+    </a>
+{% else %}
+    <a href="{{ stepupdate_url }}">
+       <i class="icon write"></i>
+    </a>
+{% endif %}
+
+
+

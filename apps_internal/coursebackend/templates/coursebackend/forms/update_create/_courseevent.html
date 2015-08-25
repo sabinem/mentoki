@@ -21,11 +21,20 @@
             {% endif %}
 
             {% if exampletext %}
-                <div class="ui segment message">
-                    <div class="ui header">{{ form.text.label_tag }} Das ist der entsprechende Text aus der Kursvorlage:</div>
-                    {{ exampletext | safe }}
+                <div class="ui styled fluid accordion">
+
+                    <div class="title">
+                        <i class="dropdown icon"></i>
+
+                        {{ form.text.label_tag }} Vorlage ansehen?
+
+                    </div>
+                    <div class="content">
+
+                        {{ exampletext | safe }}
+
+                    </div>
                 </div>
-                <p></p>
             {% endif %}
 
             {% if field.errors %}

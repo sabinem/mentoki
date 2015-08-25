@@ -27,4 +27,4 @@ class HomeworkForm(forms.ModelForm):
         super(HomeworkForm, self).__init__(*args, **kwargs)
 
         self.fields["classlesson"].queryset = \
-            ClassLesson.objects.lessons_for_courseevent(courseevent=self.courseevent)
+            ClassLesson.objects.lessonsteps_for_courseevent(courseevent=self.courseevent)

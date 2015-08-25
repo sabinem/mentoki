@@ -497,6 +497,9 @@ object.htmlembed {
 #coursebackend .ui.menu .active.item.active {
   background: #ebc7a6;
 }
+#coursebackend .published_in_class {
+  background: greenyellow;
+}
 /* --------------------------------------  */
 /*    plain data                           */
 /* --------------------------------------- */
@@ -544,12 +547,8 @@ object.htmlembed {
   background: #f7fafe;
   padding-bottom: 100px;
 }
-#coursebackend #classroom_preview_menu a.item {
-  font-size: 1.2em;
-}
 #coursebackend #classroom_preview_menu .header.item {
   background: #ebc7a6;
-  font-size: 1.5em;
 }
 #coursebackend #classroom_preview_menu a.item.active {
   background: #8b452c;

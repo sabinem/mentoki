@@ -1,0 +1,68 @@
+{% comment %}
+
+This fragment is a list of the objects attached to menu items
+
+for list
+
+{% endcomment %}
+
+<table class="ui table">
+
+    <thead>
+        <tr>
+            <tr>
+                <th class="six wide">Eintrag</th>
+                <th class="five wide">Forum im Klassenzimmer</th>
+                <th class="five wide">Forum im Backend</th>
+            </tr>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        {% for item in forumitems %}
+
+            {% url 'coursebackend:menu:update' pk=item.pk course_slug=cs slug=es as update_url %}
+            {% url 'coursebackend:menu:delete' pk=item.pk course_slug=cs slug=es as delete_url %}
+            {% url 'coursebackend:forum:detail' pk=item.forum_id course_slug=cs slug=es as work_url %}
+            {% url 'classroom:forum:detail' pk=item.forum_id slug=es as class_url %}
+
+            <tr>
+
+                <td>
+                    {{ item.display_title }}
+
+                    <a href="{{ update_url }}">
+                        <i class="write icon"></i>
+                    </a>
+                    <a href="{{ delete_url }}">
+                        <i class="trash icon"></i>
+                    </a>
+
+                </td>
+
+                <td>
+                    <a href="{{ class_url }}">
+                        <i class="icon student"></i>
+                    </a>
+                    {% if item.is_start_item %}
+                        <i class="icon circle red"></i>
+                    {% endif %}
+                    {% if item.active %}
+                        <i class="icon circle green"></i>
+                    {% endif %}
+                </td>
+
+                <td>
+                    <a href="{{ work_url }}">
+                        {{ item.forum }}
+                    </a>
+                </td>
+
+            </tr>
+
+        {% endfor %}
+
+    </tbody>
+
+</table>

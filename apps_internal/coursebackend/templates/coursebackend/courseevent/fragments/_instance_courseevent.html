@@ -81,7 +81,11 @@ for detail
        <i class="write blue icon"></i>
     </a>
 </h3>
-{{ courseevent.start_date }}
+{% if courseevent.start_date %}
+    {{ courseevent.start_date }}
+{% else %}
+    -
+{% endif %}
 
 <div class="ui fitted divider"></div>
 

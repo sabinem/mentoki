@@ -1,28 +1,42 @@
 <table class="ui table">
     <thead>
             <tr>
-                <th>veröffentlicht?</th>
-                <th>Titel</th>
+                <th>Lernabschnitt veröffentlicht?</th>
+                <th>Aufgabe veröffentlicht?</th>
                 <th>Abgabedatum</th>
-                <th>Lektion</th>
-                <th>im Klassenzimmer</th>
+                <th>Links</th>
             </tr>
     </thead>
     <tbody>
-        {% for homework in homeworks_unpublished %}
+        {% for homework in homeworks %}
+
+            {% url 'coursebackend:homework:update' course_slug=cs slug=es pk=homework.pk as update_url %}
+            {% url 'coursebackend:homework:delete' course_slug=cs slug=es pk=homework.pk as delete_url %}
+            {% url 'coursebackend:homework:detail' course_slug=cs slug=es pk=homework.pk as detail_url %}
+            {% url 'classroom:homework:list' slug=cs pk=homework.pk as class_url %}
+            {% url 'coursebackend:classlesson:step' course_slug=cs slug=es pk=homework.classlesson_id as lesson_url %}
+            {% url 'coursebackend:menu:create' course_slug=cs slug=es as menu_url %}
             <tr>
                 <td>
-                    <a href="{% url 'coursebackend:homework:update' course_slug=course.slug slug=courseevent.slug pk=homework.pk %}">
-                        <i class="icon write blue"></i>
+                    <a href="{{ lesson_url }}">
+                        {{ homework.classlesson }}
                     </a>
-                    <a href="{% url 'coursebackend:homework:delete' course_slug=course.slug slug=courseevent.slug pk=homework.pk %}">
-                        <i class="icon trash blue"></i>
-                    </a>
+                    {% if homework.classlesson.published %}
+                        <i class="checkmark green icon"></i>
+                    {% else %}
+                        <i class="remove icon"></i>
+                    {% endif %}
                 </td>
                 <td>
-                    <a href="{% url 'coursebackend:homework:detail' course_slug=course.slug slug=courseevent.slug pk=homework.pk %}">
-                        {{ homework.title }}
+                    <a href="{{ detail_url }}">
+                        {{ homework }}
                     </a>
+
+                    {% if homework.published %}
+                        <i class="checkmark green icon"></i>
+                    {% else %}
+                        <i class="remove icon"></i>
+                    {% endif %}
                 </td>
                 <td>
                     {% if homework.due_date %}
@@ -32,48 +46,25 @@
                     {% endif %}
                 </td>
                 <td>
-                    {% if homework.lesson %}
-                        <a href="">
-                            {{ homework.lesson.title }}
-                        </a>
-                    {% else %}
-                        -
-                    {% endif %}
-                </td>
-               <td>-</td>
-            </tr>
-        {% endfor %}
-        {% for homework in homeworks_published %}
-            <tr>
-                <td>
-                    <a href="{% url 'coursebackend:homework:update' course_slug=course.slug slug=courseevent.slug pk=homework.pk %}">
+                    <a href="{{ update_url }}">
                         <i class="icon write blue"></i>
                     </a>
-                    <i class="icon checkmark green"></i>
-                </td>
-                <td>
-                    <a href="{% url 'coursebackend:homework:detail' course_slug=course.slug slug=courseevent.slug pk=homework.pk %}">
-                        {{ homework.title }}
+                    <a href="{{ delete_url }}">
+                        <i class="icon trash blue"></i>
                     </a>
-                </td>
-                <td>
-                    {{ homework.due_date | date:'d.m.Y'  }}
-                </td>
-                <td>
-                    {% if homework.lesson %}
-                        <a href="">
-                            {{ homework.lesson }}
+                    <a href="{{ menu_url }}">
+                        jetzt veröffentlichen
+                    </a>
+                    {% if homework.published %}
+                        <a href="{{ class_url }}">
+                            <i class="icon trash blue"></i>
                         </a>
-                    {% else %}
-                        -
                     {% endif %}
                 </td>
-                <td>
-                    <a href="{% url 'classroom:homework:list' slug=courseevent.slug pk=homework.pk %}">
-                        {{ homework.lesson.title }}
-                    </a>
-                </td>
             </tr>
+
         {% endfor %}
+
     </tbody>
+
 </table>

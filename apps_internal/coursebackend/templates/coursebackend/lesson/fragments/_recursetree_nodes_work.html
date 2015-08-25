@@ -8,31 +8,29 @@
             {% include 'coursebackend/lesson/fragments/_icon_node.html' %}
 
             <div class="content">
-
+                <div class="header">
                 <a
                     {% include 'coursebackend/lesson/fragments/_link_node_detail.html' %}
                 >
                      {{ node.title }}
                 </a>
 
-                {% include 'coursebackend/lesson/fragments/_links_node_update_delete.html' %}
+                {% include 'coursebackend/lesson/fragments/_links_node_update.html' %}
 
                 {% if node.materials.all %}
                     {% for material in node.materials.all %}
 
-                        {% url 'coursebackend:material:update' course_slug=cs pk=material.pk as updatematerial_url %}
+                        {% url 'coursebackend:material:detail' course_slug=cs pk=material.pk as material_url %}
 
-                        <i class="icon file outline "></i> {{ material }}
-                        <a href="{{ updatematerial_url }}">
+                        <i class="icon file outline "></i>
+                        <a href="{{ material_url }}">
                         <i class="icon write"></i>
                         </a>
                     {% endfor %}
                 {% endif %}
-
+                </div>
                 {% if node.decription != "" %}
-                    <p>
-                        {{ node.description }}
-                    </p>
+                    {{ node.description }}
                 {% endif %}
 
                 {% if not is_leaf %}

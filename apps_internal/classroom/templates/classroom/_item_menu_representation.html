@@ -5,7 +5,7 @@
 {% url 'classroom:homework:list' slug=es pk=item.homework_id as homework_url %}
 {% url 'classroom:forum:newposts' slug=es as newposts_url %}
 {% url 'classroom:studentswork:list' slug=es as private_url %}
-{% url 'classroom:classlesson:lesson_detail' slug=es pk=item.classlesson_id as lesson_url %}
+{% url 'classroom:classlesson:lesson' slug=es pk=item.classlesson_id as lesson_url %}
 {% url 'classroom:participant:list' slug=es as participants_url %}
 
 {% if item.item_type == item.MENU_ITEM_TYPE.announcements_item %}
@@ -37,7 +37,7 @@
         <i class="find icon"></i>{{ item.display_title }}
     </a>
 
-{% elif item.item_type == item.MENU_ITEM_TYPE.student_private %}
+{% elif item.item_type == item.MENU_ITEM_TYPE.private_item %}
     <a class="item
     {% ifstartswith private_url %}active{% endifstartswith %}"
     href="{{ private_url }}">

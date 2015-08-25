@@ -57,7 +57,8 @@ class ClassroomMenuMixin(AuthMixin):
             context['es'] = context['courseevent'].slug
             context['cs'] = context['course'].slug
 
-        if not 'menu' in context:
+        if not 'menu_items' in context:
             context['menu_items'] = ClassroomMenuItem.objects.all_for_courseevent(courseevent=context['courseevent'])
+            context['menu_items_active'] = ClassroomMenuItem.objects.active_for_courseevent(courseevent=context['courseevent'])
 
         return context

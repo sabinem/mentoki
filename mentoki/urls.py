@@ -66,7 +66,10 @@ urlpatterns += i18n_patterns('',
 
     # user handling urls
     url(r'^accounts/',
-        include('userauth.urls')),
+        include('accounts.urls')),
+
+    url(r'^customer/',
+        include('customer.urls')),
 )
 
 # Data urls
@@ -129,10 +132,3 @@ if settings.DEBUG:
         (r'^media/(?P<path>.*)$', 'django.views.static.serve', {
         'document_root': settings.MEDIA_ROOT}))
 
-
-from django.conf import settings
-
-if 'rosetta' in settings.INSTALLED_APPS:
-    urlpatterns += patterns('',
-        url(r'^rosetta/', include('rosetta.urls')),
-    )

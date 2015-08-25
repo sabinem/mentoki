@@ -6,6 +6,7 @@ from django.db import models
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.utils.functional import cached_property
+from django.core.validators import ValidationError
 from mentoki import settings
 
 from model_utils.models import TimeStampedModel
@@ -20,20 +21,22 @@ from .courseevent import CourseEvent
 class HomeworkManager(models.Manager):
 
     def homeworks_for_courseevent(self, courseevent):
-        return self.filter(courseevent=courseevent)
-
-    def published_homework_for_courseevent(self, courseevent):
-        return self.filter(courseevent=courseevent, published=True).\
-            order_by('due_date').\
+        return self.filter(courseevent=courseevent).\
+            order_by('published', 'due_date').\
             select_related('classlesson')
 
-    def unpublished_per_courseevent(self, courseevent):
-        return self.filter(courseevent=courseevent, published=False).\
-            order_by('published', 'due_date').select_related('classlesson')
+    #def published_homework_for_courseevent(self, courseevent):
+    #    return self.filter(courseevent=courseevent, published=True).\
+    #        order_by('due_date').\
+    #        select_related('classlesson')
 
-    def create(self, courseevent, text, title, due_date=None, lesson=None):
+    #def unpublished_per_courseevent(self, courseevent):
+    #    return self.filter(courseevent=courseevent, published=False).\
+    #        order_by('published', 'due_date').select_related('classlesson')
+
+    def create(self, courseevent, text, title, due_date=None, classlesson=None):
         homework = Homework(courseevent=courseevent,
-                                classlesson=lesson,
+                                classlesson=classlesson,
                                 text=text,
                                 title=title,
                                 published=False,
@@ -76,8 +79,8 @@ class Homework(TimeStampedModel):
 
     def get_absolute_url(self):
         return reverse('coursebackend:homework:detail',
-                       kwargs={'course_slug':self.course_slug,
-                               'slug':self.slug,
+                       kwargs={'course_slug':self.courseevent.course.slug,
+                               'slug':self.courseevent.slug,
                                'pk':self.pk})
 
     def can_be_pulled_from_classroom(self):
@@ -85,6 +88,18 @@ class Homework(TimeStampedModel):
             return False
         else:
             return True
+
+    def publish(self):
+        if not self.classlesson.published:
+            raise ValidationError('Zuerst muss die dazugehörige Lektion veröffentlicht werden.')
+        self.publish = True
+        self.save()
+
+    def unpublish(self):
+        if not self.studentswork_set:
+            raise ValidationError('Es gibt schon Schülerarbeiten dazu!')
+        self.publish = False
+        self.save()
 
 
 class StudentsWorkManager(models.Manager):

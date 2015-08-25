@@ -9,15 +9,15 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext_lazy as _
-from django.db.models.query import QuerySet
 from django.shortcuts import get_object_or_404
 from django.core.validators import ValidationError
 
 from model_utils.models import TimeStampedModel
 from model_utils.managers import QueryManager
-from model_utils.managers import PassThroughManager
 from model_utils.fields import MonitorField
 from model_utils import Choices
+
+from django_prices.models import PriceField
 
 from apps_data.course.models.course import Course
 
@@ -60,6 +60,7 @@ class CourseEvent(TimeStampedModel):
 
     start_date = models.DateField(
         verbose_name=_("Startdatum"),
+        help_text=_('im Format Tag.Monat.Jahr angeben'),
         null=True, blank=True)
 
     nr_weeks = models.IntegerField(
@@ -79,10 +80,10 @@ class CourseEvent(TimeStampedModel):
                         )
     event_type  =  models.CharField(max_length=12, choices=EVENT_TYPE, default=EVENT_TYPE.selflearn)
 
-    STATUS_EXTERNAL = Choices(('0', 'not_public', _('not public')),
-                              ('1', 'booking', _('open for booking')),
-                              ('1', 'booking_closed', _('booking closed')),
-                              ('2', 'preview', _('open for preview'))
+    STATUS_EXTERNAL = Choices(('0', 'not_public', _('nicht öffentlich')),
+                              ('1', 'booking', _('zur Buchung geöffnet')),
+                              ('1', 'booking_closed', _('Buchung abgeschlossen')),
+                              ('2', 'preview', _('Vorschau'))
                              )
     status_external =  models.CharField(max_length=2, choices=STATUS_EXTERNAL, default=STATUS_EXTERNAL.not_public)
     published_at = MonitorField(monitor='status_external', when=['booking'])
@@ -90,9 +91,9 @@ class CourseEvent(TimeStampedModel):
 
     active = models.BooleanField(default=True)
 
-    STATUS_INTERNAL = Choices(('0', 'draft', _('not public')),
-                              ('1', 'review', _('open for booking')),
-                              ('a', 'accepted', _('open for preview'))
+    STATUS_INTERNAL = Choices(('0', 'draft', _('nicht veröffentlicht')),
+                              ('1', 'review', _('offen zur Buchung')),
+                              ('a', 'accepted', _('Vorschau'))
                              )
     status_internal =  models.CharField(max_length=2, choices=STATUS_INTERNAL, default=STATUS_INTERNAL.draft)
     accepted_at = MonitorField(
@@ -129,6 +130,8 @@ class CourseEvent(TimeStampedModel):
     prerequisites = models.TextField(
         verbose_name=_("Voraussetzungen"),
         blank=True)
+
+    price = PriceField('Price', currency='ECU', max_digits=12, decimal_places=2, null=True, blank=True)
 
     #participants
     participation = models.ManyToManyField(settings.AUTH_USER_MODEL, through="CourseEventParticipation", related_name='participation')
@@ -193,6 +196,10 @@ class CourseEvent(TimeStampedModel):
         return reverse('coursebackend:courseevent:detail',
                        kwargs={'course_slug':self.course_slug,
                                'slug':self.slug})
+
+    def clean(self):
+        if not self.start_date > datetime.date.today():
+            raise ValidationError('Startdatum muss in der Zukunft liegen!')
 
 
 class ParticipationManager(models.Manager):

@@ -4,6 +4,7 @@ from __future__ import unicode_literals, absolute_import
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.core.validators import ValidationError
 
 from model_utils.fields import MonitorField
 
@@ -47,6 +48,12 @@ class ClassLessonManager(LessonManager):
                            level=1,
                            )
 
+    def lessonsteps_for_courseevent(self, courseevent):
+        return self.filter(courseevent=courseevent,
+                           level=2,
+                           )
+
+
 
 class ClassLesson(BaseLesson):
     """
@@ -61,7 +68,9 @@ class ClassLesson(BaseLesson):
     # original lesson cannot be deleted aslong as it is employed in some classroom
     original_lesson = models.ForeignKey(
         Lesson,
-        on_delete=models.PROTECT
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
     )
 
     published = models.BooleanField(
@@ -124,3 +133,32 @@ class ClassLesson(BaseLesson):
             if next.courseevent == self.courseevent:
                 return next
         return None
+
+    @property
+    def published_homework(self):
+        steps = self.get_children()
+        for step in steps:
+            if step.homework_set.filter(published=True):
+                return True
+        return False
+
+    def publish(self):
+        if not self.is_lesson():
+            raise ValidationError('Nur Lektionen können veröffentlicht werden.')
+        descendants = self.get_descendants(include_self=True)
+        for descendant in descendants:
+            descendant.published = True
+            descendant.save()
+
+    def unpublish(self):
+        if not self.classlesson.published:
+            raise ValidationError('Es gibt schon veröffentlichte Aufgaben dazu!')
+        descendants = self.get_descendants(include_self=True)
+        for descendant in descendants:
+            descendant.published = False
+            descendant.save()
+
+    def delete(self):
+        if self.published:
+            raise ValidationError('Lektion wurde bereits veröffentlicht!')
+        super(ClassLesson, self).delete()

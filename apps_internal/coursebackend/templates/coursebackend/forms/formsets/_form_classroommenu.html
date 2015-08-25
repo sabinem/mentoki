@@ -1,0 +1,22 @@
+{{ form.media }}
+<form class="ui form" method="post" action="" enctype="multipart/form-data">{% csrf_token %}
+
+         {% include 'coursebackend/forms/fragments/_form_non_field_errors.html' %}
+
+         {% for form in formset %}
+
+             {% include 'coursebackend/forms/form_fields/_form_field_loop_flat.html' %}
+
+         {% endfor %}
+
+    <button type="submit" value="post" class="ui button">
+        speichern
+    </button>
+
+    <a class="ui button" href="{% url 'coursebackend:material:list' course_slug=course.slug %}">
+        Abbrechen
+    </a>
+
+</form>
+
+

@@ -1,0 +1,15 @@
+{% comment %}
+
+the breadcrumb for classroommenu
+
+for list/update/detail/create/delete
+
+{% endcomment %}
+
+{% url 'coursebackend:menu:list' course_slug=cs slug=es as list_url %}
+
+<a href="{{ list_url }}" class="item">
+    Klassenzimmer-Menü {{ course.title }}
+</a>
+
+<i class="right chevron icon divider"></i>

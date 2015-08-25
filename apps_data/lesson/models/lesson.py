@@ -2,6 +2,8 @@
 
 from __future__ import unicode_literals, absolute_import
 
+from model_utils.fields import MonitorField
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -81,6 +83,9 @@ class LessonManager(BaseLessonManager):
         for item in materials:
             step.materials.add(item)
         return step
+
+    def blocks_for_delete(self, courseevent):
+        return self.objects.all()
 
 
 class Lesson(BaseLesson):

@@ -4,18 +4,10 @@
 {% block page_section_css_id %}coursebackend{% endblock %}
 
 {% block page_header %}Kurs {{ course.title }}: {{ course.teachersrecord }}{% endblock %}
-
-{% block top_attached_menu %}
-
-    {% url 'coursebackend:course:detail' course_slug=cs as course_url %}
-    {% url 'coursebackend:courseowner:list' course_slug=cs as courseowner_url %}
-    {% url 'coursebackend:courseevents:list' course_slug=cs as courseevents_url %}
-    {% url "coursebackend:lesson:start" course_slug=cs as lesson_url %}
-    {% url 'coursebackend:material:list' course_slug=course.slug as material_url %}
-
-    <div class="ui top attached menu fluid">
-
         <!-- menu button  -->
+{% block stackable_menu %}
+
+    <div class="ui stackable menu">
 
         <a class="item" id="sidebar_button">
             <i class="sidebar icon"></i>
@@ -27,67 +19,14 @@
             <i class="dropdown icon"></i>
         </a>
 
-        <div class="ui popup bottom left transition hidden"
-             style="top: 555px; left: 1px; bottom: auto; right: auto; width: 300px;">
-
-            <div class="ui one column relaxed divided grid">
-
-                <div class="column">
-
-                    <h4 class="ui header" id="coursebackend_menu_header">Kursvorlage</h4>
-
-                    <div class="ui link list">
-
-                        <a href="{{ course_url }}" class="item
-                            {% ifstartswith course_url %}active{% endifstartswith %}">
-                            Kursvorlage
-                        </a>
-
-                        <a href="{{ courseowner_url }}" class="item
-                            {% ifstartswith courseowner_url %}active{% endifstartswith %}">
-                            Kursleitung
-                        </a>
-
-                        <a href="{{ courseevents_url }}" class="item
-                            {% ifstartswith courseevents_url %}active{% endifstartswith %}">
-                            Liste der Kurseereignisse
-                        </a>
-
-                        <a href="{{ lesson_url }}" class="item
-                            {% ifstartswith lesson_url %}active{% endifstartswith %}">
-                            Unterricht
-                        </a>
-
-                        <a href="{{ material_url }}" class="item
-                            {% ifstartswith material_url %}active{% endifstartswith %}">
-                            Materialien
-                        </a>
-
-                        <div class="ui divider"></div>
-
-                        {% for ce in courseevents %}
-
-                        <!-- Link -->
-                            {% url 'coursebackend:classlesson:start' slug=ce.slug course_slug=cs as courseevent_url %}
-
-                            <a href="{{ courseevent_url }}" class="item">
-                                {{ ce }}<i class="icon external"></i>
-                            </a>
-                        {% endfor %}
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
+        {% include 'coursebackend/_popup_menu_course.html' %}
 
         {% block course_menu_items %}{% endblock %}
 
     </div>
 
 {% endblock %}
+
 
 {% block sidebar_menu %}
 

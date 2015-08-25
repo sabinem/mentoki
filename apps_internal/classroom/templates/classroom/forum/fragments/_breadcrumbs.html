@@ -1,0 +1,12 @@
+{% url 'classroom:forum:detail' slug=ce pk=breadcrumb.pk as forum_url %}
+
+{% for breadcrumb in breadcrumbs %}
+
+    <a href="{{ forum_url }}" class="section">
+        {{ breadcrumb.title }}
+    </a>
+    <i class="right chevron icon divider"></i>
+
+{% endfor %}
+
+<div class="section active">{{ forum.title }}</div>

@@ -5,12 +5,27 @@
     <div class="row coursebackend_background">
         <div class="sixteen wide column">
 
-            {% include 'coursebackend/homework/fragments/_breadcrumb.html' %}
+            <div class="ui large breadcrumb" id ="page-breadcrumb">
+
+                {% include 'coursebackend/homework/fragments/_breadcrumb.html' %}
+                <a class="item">
+                    {{ homework.title  }}
+                </a>
+
+            </div>
 
         </div>
     </div>
 
     <div class="row coursebackend_background">
+        <div class="sixteen wide column">
+
+            {% include 'coursebackend/homework/fragments/_instance_classlesson.html' %}
+
+        </div>
+    </div>
+
+    <div class="row coursebackend_white">
         <div class="sixteen wide column">
 
             {% include 'coursebackend/homework/fragments/_instance_homework.html' %}

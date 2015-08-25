@@ -6,7 +6,56 @@
 
     {% include 'coursebackend/forms/fragments/_form_non_field_errors.html' %}
 
-    {% include 'coursebackend/forms/form_fields/_form_field_loop.html' %}
+    <div class="fields inline">
+        <div class="field sixteen wide">
+            {{ form.classlesson.label_tag }}
+            <p>{{ form.classlesson.help_text }}</p>
+
+            {% if form.classlesson.errors %}
+                <div class="ui negative floating message">
+                    {{ form.classlesson.errors }}
+                </div>
+            {% endif %}
+            <br>
+
+            {{ form.classlesson }}
+
+        </div>
+    </div>
+
+    <div class="fields inline">
+        <div class="field sixteen wide">
+            {{ form.title.label_tag }}
+            <p>{{ form.title.help_text }}</p>
+
+            {% if form.title.errors %}
+                <div class="ui negative floating message">
+                    {{ form.title.errors }}
+                </div>
+            {% endif %}
+            <br>
+
+            {{ form.title }}
+
+        </div>
+    </div>
+
+    <div class="fields inline">
+        <div class="field sixteen wide">
+            {{ form.text.label_tag }}
+            <p>{{ form.text.help_text }}</p>
+
+            {% if form.text.errors %}
+                <div class="ui negative floating message">
+                    {{ form.text.errors }}
+                </div>
+            {% endif %}
+            <br>
+
+            {{ form.text }}
+
+        </div>
+    </div>
 
     <button type="submit" value="post" class="ui button">
         Speichern

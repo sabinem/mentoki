@@ -21,6 +21,8 @@ class HomeworkRedirectMixin(object):
        """
        for create update and delete view
        """
+       print "i am here"
+       print object
        return reverse_lazy('coursebackend:homework:list',
                            kwargs={'slug': self.kwargs['slug'],
                                    'course_slug': self.kwargs['course_slug']})
@@ -35,10 +37,8 @@ class HomeworkListView(
     def get_context_data(self, **kwargs):
         context = super(HomeworkListView, self).get_context_data(**kwargs)
 
-        context['homeworks_published'] = \
-            Homework.objects.published_homework_for_courseevent(courseevent=context['courseevent'])
-        context['homeworks_unpublished'] = \
-            Homework.objects.unpublished_per_courseevent(courseevent=context['courseevent'])
+        context['homeworks'] = \
+            Homework.objects.homeworks_for_courseevent(courseevent=context['courseevent'])
 
         return context
 
@@ -100,7 +100,7 @@ class HomeworkCreateView(
         courseevent = get_object_or_404(CourseEvent, slug=self.kwargs['slug'])
         Homework.objects.create(
             courseevent=courseevent,
-            lesson=form.cleaned_data['lesson'],
+            classlesson=form.cleaned_data['classlesson'],
             text=form.cleaned_data['text'],
             title=form.cleaned_data['title'],
             due_date=form.cleaned_data['due_date'],

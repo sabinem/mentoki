@@ -26,9 +26,8 @@ for update / insert and detail and preview
                 {% if menuitem.pk != object.pk %}
                     <i class="write blue icon"></i>
                 {% endif %}
-
+                ({{ menuitem.display_nr }})
                 {{ menuitem.display_title }}
-                {{ menuitem.item_type }}
 
             </a>
 
@@ -41,11 +40,33 @@ for update / insert and detail and preview
                     <i class="write blue icon"></i>
                 {% endif %}
 
-                {{ menuitem.get_item_type_display }}: {{ menuitem.display_title }}
+                {{ menuitem.display_title }}
 
                 {% if menuitem.is_start_item %}
                     <i class="red icon circle"></i>
                 {% endif %}
+
+                {% if menuitem.active %}
+                    <i class="green icon circle outline"></i>
+                {% endif %}
+
+                <div class="meta" style="font-size:0.9em;">
+                    ({{ menuitem.display_nr }}:
+                    {{ menuitem.get_item_type_display }})
+                    <br>
+                    {% if menuitem.is_object_link %}
+
+                        {% if menuitem.item_type == menuitem.MENU_ITEM_TYPE.forum_item %}
+                            {{ menuitem.forum }}
+                        {% elif menuitem.item_type == menuitem.MENU_ITEM_TYPE.lesson_item %}
+                            {{ menuitem.classlesson }}
+                        {% elif menuitem.item_type == menuitem.MENU_ITEM_TYPE.homework_item %}
+                            {{ menuitem.homework }}
+                        {% endif %}
+
+                    {% endif %}
+
+                </div>
 
             </a>
 

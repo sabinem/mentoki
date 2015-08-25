@@ -6,10 +6,14 @@
 
 {% block page_content %}
 
-    <div class="row classroom_background">
+    <div class="row coursebackend_background">
         <div class="sixteen wide column">
 
-            {% include 'coursebackend/forum/fragments/_breadcrumbs.html' %}
+            <div class="ui large breadcrumb" id ="page-breadcrumb">
+
+                {% include 'coursebackend/forum/fragments/_breadcrumbs.html' %}
+
+            </div>
 
         </div>
     </div>
@@ -24,4 +28,3 @@
     </div>
 
 {% endblock %}
-{% block rows %}{% endblock %}

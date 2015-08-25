@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 from django.conf.urls import patterns, url
 
 from ..views.menu import MenuListView, MenuItemCreateView, MenuItemDeleteView,\
-   MenuItemUpdateView, MenuPreView
+   MenuItemUpdateView, MenuPreView, MenuUpdateView
 
 
 urlpatterns = patterns('',
@@ -25,4 +25,6 @@ urlpatterns = patterns('',
     url(r'^punkt/(?P<pk>\d{1,4})/loeschen$', MenuItemDeleteView.as_view(),
         {'template':'coursebackend/menu/pages/delete.html'}, name='delete'),
 
+    url(r'^umsortieren$', MenuUpdateView.as_view(),
+        {'template':'coursebackend/menu/pages/sort.html'}, name='sort'),
     )

@@ -11,8 +11,9 @@
     </a>
 </div>
 
-{{ lesson.text | safe }}
+<div class="froala-view">
+   {{ lesson.text | safe }}
+</div>
 
-
-
+<p>{{ lesson.lesson_nr }}. {{ lesson.title }}</p>
 

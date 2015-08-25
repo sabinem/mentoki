@@ -6,6 +6,14 @@ from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView, UpdateView, FormView, DeleteView
+from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
+from django.http import HttpResponse
+from django.template import loader
+from django.forms.models import modelformset_factory
+from django.template import Context
+from extra_views import FormSetView, ModelFormSetView
+
 
 from braces.views import FormValidMessageMixin
 
@@ -43,9 +51,15 @@ class MenuListView(
     def get_context_data(self, **kwargs):
         context = super(MenuListView, self).get_context_data(**kwargs)
 
-        context['classroommenuitems'] = \
-            ClassroomMenuItem.objects.all_for_courseevent(courseevent=context['courseevent'])
-
+        context['lessonitems'] = \
+            ClassroomMenuItem.objects.lessons_for_courseevent(courseevent=context['courseevent'])
+        context['homeworkitems'] = \
+            ClassroomMenuItem.objects.homeworks_for_courseevent(courseevent=context['courseevent'])
+        context['forumitems'] = \
+            ClassroomMenuItem.objects.forums_for_courseevent(courseevent=context['courseevent'])
+        context['listitems'] = \
+            ClassroomMenuItem.objects.listlinks_for_courseevent(courseevent=context['courseevent'])
+        print context
         return context
 
 
@@ -109,10 +123,67 @@ class MenuItemCreateView(
             display_nr=form.cleaned_data['display_nr'],
             item_type=form.cleaned_data['item_type'],
             is_start_item=form.cleaned_data['is_start_item'],
-            active=True
+            active=form.cleaned_data['active']
         )
 
         return HttpResponseRedirect(self.get_success_url())
 
 
+class MenuUpdateView(CourseMenuMixin, FormSetView):
+    """
+    Classroom Menu Items List Update
+    """
+    model = ClassroomMenuItem
+    fields = ('display_nr', 'display_title', 'item_type' )
+    readonly = ('link',)
+    #template_name = 'myformset.html'
+    #form_class = MyForm
+    #success_url = 'success/'
+    extra = 2
+    max_num = None
+    can_order = False
+    can_delete = False
+    can_order = True
+
+    def get_context_data(self, **kwargs):
+        context = super(MenuUpdateView, self).get_context_data(**kwargs)
+
+        context['classroommenuitems'] = \
+            ClassroomMenuItem.objects.all_for_courseevent(courseevent=context['courseevent'])
+
+        return context
+
+    def get_queryset(self):
+        courseevent = get_object_or_404(CourseEvent, slug=self.kwargs['slug'])
+        return ClassroomMenuItem.objects.all_for_courseevent(courseevent=courseevent)
+
+    def formset_valid(self, formset):
+        pass
+
+
+@login_required
+def reorder_datatypes(request):
+    t = loader.get_template('admin/reorder.html')
+    # can change what fields you can edit within the drag and drop items, like name
+    DataTypeFormSet = modelformset_factory(ClassroomMenuItem, extra = 0,
+        fields=('display_name', 'code_name', 'order'))
+
+    if request.method == "POST":
+        formset = DataTypeFormSet(request.POST)
+
+        if formset.is_valid():
+            formset.save()
+            # reset the order to what's been saved
+            formset = DataTypeFormSet(queryset=ClassroomMenuItem.objects.order_by('order'))
+    else:
+        formset = DataTypeFormSet(queryset=ClassroomMenuItem.objects.order_by('order'))
+
+    c = Context({
+        'title': 'Data Type Order',
+        'formset': formset,
+        # change this to the admin add link of the item you are reordering
+        'new_item_url': reverse('admin:MyApp_datatype_add'),
+    })
+
+    return HttpResponse(t.render(c))
 

@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 from django.forms.models import modelform_factory
 
-from django.views.generic import DetailView, TemplateView
+from django.views.generic import DetailView, TemplateView, FormView
 
 from apps_data.courseevent.models.courseevent import CourseEvent
 from apps_data.course.models.course import CourseOwner
@@ -42,3 +42,5 @@ class CourseOfferDetailView(DetailView):
         context['teachersinfo'] = CourseOwner.objects.teachers_courseinfo_display(course=context['courseevent'].course)
 
         return context
+
+

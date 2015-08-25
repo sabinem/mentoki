@@ -143,6 +143,13 @@ class Material(TimeStampedModel):
         if self.unitmaterial:
             return self.unitmaterial.id
 
+    def is_used(self):
+        if self.classlesson_set.all():
+            return True
+        elif self.lesson_set.all():
+            return True
+        return False
+
     def get_file_slug(instance):
         """
         creates a unique slug for a file from the material-title and the course-slug

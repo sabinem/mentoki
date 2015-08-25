@@ -10,7 +10,6 @@ for list
     <thead>
         <tr>
             <tr>
-                <th>aktiv?</th>
                 <th>Titel</th>
                 <th>Kursformat</th>
                 <th>Dauer</th>
@@ -26,16 +25,6 @@ for list
             {% url 'coursebackend:courseevent:detail' course_slug=cs slug=courseevent.slug as detail_url %}
 
             <tr>
-                <td>
-                    {% if courseevent.active %}
-                        <i class="icon checkmark green" ></i>
-                    {% else %}
-                        <i class="icon remove" ></i>
-                    {% endif %}
-                    <a href="{{ detail_url }}">
-                        <i class="icon write"></i><i class="icon unhide"></i>
-                    </a>
-                </td>
                 <td>
                     <a href="{{ detail_url }}">
                         {{ courseevent.title  }}
@@ -59,7 +48,13 @@ for list
                         {{ courseevent.start_date }}
                     {% endif %}
                 </td>
-
+                <td>
+                    {% if courseevent.price %}
+                        {{ courseevent.price }}
+                    {% else %}
+                        noch nicht bestimmt
+                    {% endif %}
+                </td>
             </tr>
         {% endfor %}
     </tbody>

@@ -57,34 +57,38 @@
             {{ form.classlesson.errors }}
         </div>
     {% endif %}
+    <div class="field">
+        <label>{{ form.classlesson.label_tag }}</label>
+        {{ form.classlesson }}
+    </div>
+
     {% if form.homework.errors %}
         <div class="ui negative floating message">
             {{ form.homework.errors }}
         </div>
     {% endif %}
+    <div class="field">
+        <label>{{ form.homework.label_tag }}</label>
+        {{ form.homework }}
+    </div>
+
     {% if form.forum.errors %}
         <div class="ui negative floating message">
             {{ form.forum.errors }}
         </div>
     {% endif %}
-
-    <div class="fields">
-      <div class="field">
-          <label>{{ form.classlesson.label_tag }}</label>
-          {{ form.classlesson }}
-      </div>
-      <div class="field">
-          <label>{{ form.homework.label_tag }}</label>
-          {{ form.homework }}
-      </div>
-      <div class="field">
-          <label>{{ form.forum.label_tag }}</label>
-          {{ form.forum }}
-      </div>
+    <div class="field">
+        <label>{{ form.forum.label_tag }}</label>
+        {{ form.forum }}
     </div>
 
 <div class="ui dividing large header">Startitem wählen:</div>
-    <p>{{ form.is_start_item.help_text }}</p>
+
+    {% if form.active.errors %}
+        <div class="ui negative floating message">
+            {{ form.active.errors }}
+        </div>
+    {% endif %}
 
     {% if form.is_start_item.errors %}
         <div class="ui negative floating message">
@@ -92,21 +96,21 @@
         </div>
     {% endif %}
 
-    <div class="inline fields">
-      <div class="field sixteen wide">
+      <div class="field eigth wide">
           <label>{{ form.is_start_item.label_tag }}</label>
+          {{ form.is_start_item.help_text }}
           {{ form.is_start_item }}
       </div>
-    </div>
+
+      <div class="field eigth wide">
+          <label>{{ form.active.label_tag }}</label>
+          {{ form.active.help_text }}
+          {{ form.active }}
+      </div>
 
     <button type="submit" value="post" class="ui button">
         Speichern
     </button>
-    {% if object %}
-        <a class="ui button" href="{{ delete_url }}">
-            Löschen
-        </a>
-    {% endif %}
 
     <a href="{{ back_url }}" class="ui button" >
         Abbrechen

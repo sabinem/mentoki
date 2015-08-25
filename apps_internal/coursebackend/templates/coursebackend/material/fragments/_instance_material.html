@@ -1,7 +1,10 @@
 {% url 'download' slug=material.slug as download_url %}
+{% url 'coursebackend:material:delete' course_slug=cs pk=material.pk as delete_url %}
+{% url 'coursebackend:material:update' course_slug=cs pk=material.pk as update_url %}
 
 <div class="ui header large">
     {{ material.title }}
+    {% include 'coursebackend/material/fragments/_material_update_delete.html' %}
 </div>
 
 <div class="ui dividing medium header">Speicherort</div>

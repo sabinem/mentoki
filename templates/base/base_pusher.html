@@ -13,11 +13,13 @@
     {% include 'base/fragments/menu/_favicon.html' %}
 
     {% include 'base/fragments/vendor/_jquery.html' %}
+    {% include 'base/fragments/vendor/_froala_head.html' %}
 
 {% endblock %}
 
 {% block bottom_js %}
     {% include 'base/fragments/vendor/_semantic_js.html' %}
+    {% include 'base/fragments/vendor/_froala.html' %}
     {% include 'base/fragments/custom/_custom_js.html' %}
 {% endblock %}
 
@@ -44,40 +46,14 @@
                 <div class="content ui column sixteen wide">
 
                     <h3></h3>
-                    <h2>{% block page_header %}{% endblock %}</h2>
-
-                    <!-- top attached  -->
-                    {% block top_attached_menu %}
-
-                    <div class="ui top attached menu">
-
-                        <!-- menu button  -->
-
-                        <a class="item" id="sidebar_button">
-                          <i class="sidebar icon"></i>
-                          Menu
-                        </a>
-
-
-                        <!-- BLOCK: Subsection of the page in the top -->
-
-                        {% block page_subsection %}{% endblock %}
-
-                        <!-- BLOCK: Controls in the top -->
-
-                        {% block controls %}{% endblock %}
-
+                    <h2 style="padding:20px; margin:0px -20px;">{% block page_header %}{% endblock %}</h2>
+                    <div style="padding-bottom:40px;  margin:0px -20px;">
+                        {% block stackable_menu %}{% endblock %}
                     </div>
 
-                    {% endblock %}
+                    <div class="ui vertical grid white" style="background:white;margin-bottom:50px;">
 
-                    <div class="ui bottom attached segment" id="{% block page_subsection_css_id %}{% endblock %}" >
-
-                        <div class="ui vertical grid">
-
-                            {% block page_content %}{% endblock %}
-
-                        </div>
+                        {% block page_content %}{% endblock %}
 
                     </div>
 

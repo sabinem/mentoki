@@ -1,4 +1,6 @@
-<a class="item" href="{% url 'coursebackend:forum:create'  course_slug=course.slug slug=courseevent.slug %}">
+{% url 'coursebackend:forum:create'  course_slug=cs slug=es as create_link %}
+
+<a href="{{ create_link }}" class="item" >
     <i class="plus icon blue"></i>Forum
 </a>
 

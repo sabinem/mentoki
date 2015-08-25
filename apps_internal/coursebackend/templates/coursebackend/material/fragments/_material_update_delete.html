@@ -1,0 +1,11 @@
+{% url 'coursebackend:material:update' course_slug=cs pk=material.pk as material_update_url %}
+{% url 'coursebackend:material:delete' course_slug=cs pk=material.pk as material_delete_url %}
+
+<a href="{{ material_update_url }}">
+    <i class="write blue icon"></i>
+</a>
+{% if not material.is_used %}
+    <a href="{{ material_delete_url }}">
+        <i class="trash blue icon"></i>
+    </a>
+{% endif %}

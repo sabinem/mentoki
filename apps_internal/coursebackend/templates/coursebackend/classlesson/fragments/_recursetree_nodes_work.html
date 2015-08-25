@@ -6,11 +6,15 @@
         <div class="item">
             {% include 'coursebackend/classlesson/fragments/_icon_node.html' %}
             <div class="content">
-
+                <div class="header">
                 <a
                     {% include 'coursebackend/classlesson/fragments/_link_node_detail.html' %}
                 >
-                     {{ node.title }}
+                     <span
+                         {% if node.published %}class="published_in_class"{% endif %}
+                             >
+                         {{ node.title }}
+                     </span>
                 </a>
 
                 {% include 'coursebackend/classlesson/fragments/_links_node_update_delete_preview.html' %}
@@ -21,11 +25,9 @@
                         {% if not for_loop.last %}, {% endif %}
                     {% endfor %}
                 {% endif %}
-
+                </div>
                 {% if node.decription != "" %}
-                    <p>
-                        {{ node.description }}
-                    </p>
+                    {{ node.description }}
                 {% endif %}
 
                 {% if not is_leaf %}

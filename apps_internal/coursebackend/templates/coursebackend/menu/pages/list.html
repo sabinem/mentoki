@@ -5,7 +5,7 @@
     {% url 'coursebackend:menu:preview' course_slug=cs slug=es as preview_url %}
 
     <a class="item" href="{{ preview_url }}">
-        <i class="unhide icon blue"></i><i class="write icon blue"></i>Vorschau
+        <i class="unhide icon blue"></i><i class="write icon blue"></i>Menü bearbeiten
     </a>
 
 {% endblock %}
@@ -15,11 +15,18 @@
     <div class="row coursebackend_background">
         <div class="sixteen wide column">
 
-            <a class="item">
-                <i class="list icon blue"></i>Link-Liste
-            </a>
+            <div class="ui large breadcrumb" id ="page-breadcrumb">
+
+                {% include 'coursebackend/menu/fragments/_breadcrumbs.html' %}
+
+                <a class="item">
+                    im Klassenzimmer sichtbare Links
+                </a>
+
+            </div>
 
         </div>
+
     </div>
 
     <div class="row coursebackend_white">
@@ -27,7 +34,11 @@
 
             {% include 'base/fragments/_messages.html' %}
 
-            {% include 'coursebackend/menu/fragments/_list_classroommenuitems_table.html' %}
+            {% include 'coursebackend/menu/fragments/_lessonitems_table.html' %}
+
+            {% include 'coursebackend/menu/fragments/_homeworkitems_table.html' %}
+            {% include 'coursebackend/menu/fragments/_forumitems_table.html' %}
+            {% include 'coursebackend/menu/fragments/_listitems_table.html' %}
 
         </div>
     </div>

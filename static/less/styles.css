@@ -497,6 +497,9 @@ object.htmlembed {
 #coursebackend .ui.menu .active.item.active {
   background: #ebc7a6;
 }
+#coursebackend .published_in_class {
+  background: greenyellow;
+}
 /* --------------------------------------  */
 /*    plain data                           */
 /* --------------------------------------- */
@@ -544,18 +547,34 @@ object.htmlembed {
   background: #f7fafe;
   padding-bottom: 100px;
 }
-#coursebackend #classroom_preview_menu a.item {
-  font-size: 1.2em;
-}
 #coursebackend #classroom_preview_menu .header.item {
   background: #ebc7a6;
-  font-size: 1.5em;
 }
 #coursebackend #classroom_preview_menu a.item.active {
   background: #8b452c;
   background: #b48368;
   color: white;
 }
-/* --------------------------------------  */
-/*    sidebar menu                          */
-/* --------------------------------------- */
+/* ------------------------------------------------------------------------  */
+/*    from http://davidwalsh.name/mootools-drag-ajax                         */
+/* ------------------------------------------------------------------------- */
+#sortable-list {
+  padding: 0;
+}
+#sortable-list li {
+  padding: 4px 8px;
+  color: #000;
+  cursor: move;
+  list-style: none;
+  width: 500px;
+  background: #ddd;
+  margin: 10px 0;
+  border: 1px solid #999;
+}
+#message-box {
+  background: #fffea1;
+  border: 2px solid #fc0;
+  padding: 4px 8px;
+  margin: 0 0 14px 0;
+  width: 500px;
+}

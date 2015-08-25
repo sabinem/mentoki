@@ -1,0 +1,45 @@
+{% url 'coursebackend:classlesson:stepupdate'  course_slug=cs slug=es pk=classlessonstep.pk as stepupdate_url %}
+{% url 'coursebackend:classlesson:delete'  course_slug=cs slug=es pk=classlessonstep.pk as delete_url %}
+
+<div class="ui header medium">
+    {{ classlessonstep.lesson_nr }}
+    <span {% if classlessonstep.published %}class="published_in_class"{% endif %} >
+        {{ classlessonstep.title }}
+    </span>
+    <a href="{{ stepupdate_url }}">
+       <i class="icon write"></i>
+    </a>
+    {% if not classlessonstep.published %}
+        <a href="{{ delete_url }}">
+           <i class="icon trash"></i>
+        </a>
+    {% endif %}
+</div>
+{{ classlessonstep.text | safe }}
+
+{% for material in classlessonstep.materials.all %}
+
+    <div class="ui header large">
+        {{ material.title }}
+
+        {% if material.file %}
+            <a href="{{ material.file.url }}">
+                <i class="icon file"></i>
+            </a>
+
+            {% if material.pdf_download_link %}
+                <a href="{% url 'download' slug=material.slug %}">
+                    <i class="download icon blue"></i>
+                </a>
+            {% endif %}
+
+        {% endif %}
+
+    </div>
+
+    {% if material.pdf_viewer %}
+        <object data="{{ material.file.url }}" type="application/pdf" width="100%" height="800px">
+        </object>
+    {% endif %}
+
+{% endfor %}

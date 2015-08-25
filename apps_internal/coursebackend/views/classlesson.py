@@ -4,7 +4,9 @@ from __future__ import unicode_literals, absolute_import
 
 from django.core.urlresolvers import reverse_lazy
 
-from django.views.generic import DetailView, TemplateView, UpdateView, DeleteView, FormView
+from django.views.generic import DetailView, TemplateView, UpdateView, \
+    DeleteView, FormView
+from django.core.validators import ValidationError
 
 from braces.views import FormValidMessageMixin
 
@@ -16,7 +18,6 @@ from apps_data.lesson.models.lesson import Lesson
 
 from apps_data.lesson.utils.lessoncopy import copy_lesson_selected
 
-
 from .mixins.base import CourseMenuMixin, FormCourseKwargsMixin
 
 
@@ -24,20 +25,24 @@ class CopyLessonListView(
     CourseMenuMixin,
     TemplateView):
     """
-    Lists all lessons and provide the option to copy them as classlessons for a courseevent
+    Lists all lessons and provide the option to copy them as classlessons
+    for a courseevent
     :param slug: of courseevent
     :param course_slug: slug of course
     :return: lessons: all lessons of the course
-    :return: copied_lesson_ids: ids of all lessons of the course that have already been copied
+             copied_lesson_ids: ids of all lessons of the course that have
+             already been copied
     """
+
     def get_context_data(self, **kwargs):
         context = super(CopyLessonListView, self).get_context_data(**kwargs)
 
         context['copied_lesson_ids'] = \
-            ClassLesson.objects.copied_lesson_ids(courseevent=context['courseevent'])
+            ClassLesson.objects.copied_lesson_ids(
+                courseevent=context['courseevent'])
         context['lessons'] = \
             Lesson.objects.lessons_for_course(course=context['course'])
-        print context
+
         return context
 
 
@@ -50,11 +55,13 @@ class ClassLessonStartView(
     :param course_slug: slug of course
     :return: nodes: complete tree for the courseevent including blocks and material
     """
+
     def get_context_data(self, **kwargs):
         context = super(ClassLessonStartView, self).get_context_data(**kwargs)
 
         context['nodes'] = \
-            ClassLesson.objects.complete_tree_for_courseevent(courseevent=context['courseevent'])
+            ClassLesson.objects.complete_tree_for_courseevent(
+                courseevent=context['courseevent'])
 
         return context
 
@@ -74,7 +81,7 @@ class ClassBlockDetailView(
     :return: nodes: tree underneath of block instance without material
     """
     model = ClassLesson
-    context_object_name ='lessonblock'
+    context_object_name = 'classlessonblock'
 
     def get_context_data(self, **kwargs):
         context = super(ClassBlockDetailView, self).get_context_data(**kwargs)
@@ -82,7 +89,8 @@ class ClassBlockDetailView(
         lessonblock = context['lessonblock']
 
         context['next_node'] = lessonblock.get_next_sibling_in_courseevent
-        context['previous_node'] = lessonblock.get_previous_sibling_in_courseevent
+        context[
+            'previous_node'] = lessonblock.get_previous_sibling_in_courseevent
         context['breadcrumbs'] = lessonblock.get_breadcrumbs_with_self
 
         context['nodes'] = lessonblock.get_tree_without_self_without_material
@@ -105,18 +113,19 @@ class ClassLessonDetailView(
     :return: nodes: tree underneath of lesson instance with material
     """
     model = ClassLesson
-    context_object_name ='lesson'
+    context_object_name = 'classlesson'
 
     def get_context_data(self, **kwargs):
         context = super(ClassLessonDetailView, self).get_context_data(**kwargs)
 
-        lesson = context['lesson']
+        classlesson = context['classlesson']
 
-        context['next_node'] = lesson.get_next_sibling_in_courseevent
-        context['previous_node'] = lesson.get_previous_sibling_in_courseevent
-        context['breadcrumbs'] = lesson.get_breadcrumbs_with_self
+        context['next_node'] = classlesson.get_next_sibling_in_courseevent
+        context[
+            'previous_node'] = classlesson.get_previous_sibling_in_courseevent
+        context['breadcrumbs'] = classlesson.get_breadcrumbs_with_self
 
-        context['nodes'] = lesson.get_tree_without_self_with_material
+        context['nodes'] = classlesson.get_tree_without_self_with_material
         print context
         return context
 
@@ -134,16 +143,16 @@ class ClassStepDetailView(
     :return: breadcrumbs: ancestors including lessonstep instance
     """
     model = ClassLesson
-    context_object_name ='lessonstep'
+    context_object_name = 'classlessonstep'
 
     def get_context_data(self, **kwargs):
         context = super(ClassStepDetailView, self).get_context_data(**kwargs)
 
-        lessonstep = context['lessonstep']
+        classlessonstep = context['classlessonstep']
 
-        context['next_node'] = lessonstep.get_next_sibling()
-        context['previous_node'] = lessonstep.get_previous_sibling()
-        context['breadcrumbs'] = lessonstep.get_breadcrumbs_with_self
+        context['next_node'] = classlessonstep.get_next_sibling()
+        context['previous_node'] = classlessonstep.get_previous_sibling()
+        context['breadcrumbs'] = classlessonstep.get_breadcrumbs_with_self
 
         return context
 
@@ -152,19 +161,24 @@ class ClassLessonSuccessUrlMixin(object):
     """
     redirect to the list view of classlessons
     """
+
     def get_success_url(self):
-       return reverse_lazy('coursebackend:classlesson:start',
-                           kwargs={'course_slug': self.kwargs['course_slug'],
-                                   'slug': self.kwargs['slug']})
+        return reverse_lazy('coursebackend:classlesson:start',
+                            kwargs={'course_slug': self.kwargs['course_slug'],
+                                    'slug': self.kwargs['slug']})
+
 
 class ClassLessonBreadcrumbMixin(object):
     """
     get breadcrumbs for object
     """
+
     def get_context_data(self, **kwargs):
-        context = super(ClassLessonBreadcrumbMixin, self).get_context_data(**kwargs)
+        context = super(ClassLessonBreadcrumbMixin, self).get_context_data(
+            **kwargs)
         if 'object' in context:
-            context['breadcrumbs'] = context['object'].get_breadcrumbs_with_self
+            context['breadcrumbs'] = context[
+                'object'].get_breadcrumbs_with_self
         return context
 
 
@@ -179,7 +193,7 @@ class ClassLessonUpdateView(
     """
     form_class = ClassLessonForm
     model = ClassLesson
-    context_object_name ='lesson'
+    context_object_name = 'classlesson'
     form_valid_message = "Die Lektion wurde geändert!"
 
 
@@ -195,7 +209,7 @@ class ClassLessonStepUpdateView(
     """
     form_class = ClassLessonStepForm
     model = ClassLesson
-    context_object_name ='lessonstep'
+    context_object_name = 'classlessonstep'
     form_valid_message = "Der Lernabschnitt wurde geändert!"
 
 
@@ -207,9 +221,14 @@ class ClassLessonDeleteView(
     """
     Delete a classlesson
     """
-    model=ClassLesson
-    context_object_name = 'lesson'
+    model = ClassLesson
+    context_object_name = 'classlesson'
     form_valid_message = "Der Lernschritt wurde gelöscht!"
+
+    def get_context_data(self, **kwargs):
+        context = super(ClassLessonDeleteView, self).get_context_data(**kwargs)
+        context['nodes'] = context['object'].get_delete_tree
+        return context
 
 
 class CopyLessonView(
@@ -225,19 +244,21 @@ class CopyLessonView(
     def get_form_kwargs(self):
         lesson_pk = self.kwargs['pk']
         kwargs = super(CopyLessonView, self).get_form_kwargs()
-        kwargs['lesson_pk']=lesson_pk
+        kwargs['lesson_pk'] = lesson_pk
         return kwargs
 
     def get_success_url(self):
         return reverse_lazy('coursebackend:classlesson:start',
-                           kwargs={'course_slug': self.kwargs['course_slug'],
-                                   'slug': self.kwargs['slug']})
+                            kwargs={'course_slug': self.kwargs['course_slug'],
+                                    'slug': self.kwargs['slug']})
 
     def form_valid(self, form):
         copied = copy_lesson_selected(self,
-            lesson=form.lesson,
-            lessonsteps=form.cleaned_data['copy_lessonsteps'],
-            copy_lesson=form.cleaned_data['copy_lesson']
-        )
+                                      lesson=form.lesson,
+                                      lessonsteps=form.cleaned_data[
+                                          'copy_lessonsteps'],
+                                      copy_lesson=form.cleaned_data[
+                                          'copy_lesson']
+                                      )
 
         return super(CopyLessonView, self).form_valid(form)

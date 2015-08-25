@@ -5,11 +5,9 @@
 
 {% block page_header %}Kurs {{ courseevent.title }}: {{ courseevent.teachersrecord }}{% endblock %}
 
-{% block top_attached_menu %}
+{% block stackable_menu %}
 
-    <div class="ui top attached menu">
-
-        <!-- menu button  -->
+    <div class="ui stackable menu">
 
         <a class="item" id="sidebar_button">
             <i class="sidebar icon"></i>
@@ -17,36 +15,13 @@
         </a>
 
         <a class="browse item">
-            Menu aktiv
+            Klassenzimmer
             <i class="dropdown icon"></i>
         </a>
 
-        <div class="ui popup bottom left transition hidden"
-             style="top: 555px; left: 1px; bottom: auto; right: auto; width: 300px;">
+        {% include 'classroom/_popup_menu_classroom.html' %}
 
-            <div class="ui one column relaxed divided grid">
-
-                <div class="column">
-
-                    <h4 class="ui header" id="coursebackend_menu_header">Kursereignis {{ courseevent }}</h4>
-
-                    <div class="ui link list">
-
-                        {% for item in active_menu_items %}
-
-                             {% include 'classroom/_item_menu_representation.html' %}
-
-                        {% endfor %}
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-       {% block courseevent_menu_items %}{% endblock %}
+        {% block classroom_menu_items %}{% endblock %}
 
     </div>
 
