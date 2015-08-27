@@ -289,4 +289,6 @@ LOGIN_URL = reverse_lazy("login")
 LOGIN_REDIRECT_URL = reverse_lazy("desk:start")
 LOGOUT_URL = reverse_lazy("home:home")
 
+ACTIVATION_KEY = 'Eif1hsgbcC10obc=='
+
 
