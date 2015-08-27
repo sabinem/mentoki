@@ -49,7 +49,7 @@ INSTALLED_APPS = (
     'activelink',
     'floppyforms',
     'froala_editor',
-    'django_prices',
+    #'django_prices',
     'extra_views',
 
     'mailqueue',
