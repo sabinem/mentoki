@@ -14,12 +14,14 @@
 
     {% include 'base/fragments/vendor/_jquery.html' %}
     {% include 'base/fragments/vendor/_froala_head.html' %}
+    <script>
+        $.Editable.DEFAULTS.key = 'Eif1hsgbcC10obc==';
+    </script>
 
 {% endblock %}
 
 {% block bottom_js %}
     {% include 'base/fragments/vendor/_semantic_js.html' %}
-    {% include 'base/fragments/vendor/_froala.html' %}
     {% include 'base/fragments/custom/_custom_js.html' %}
 {% endblock %}
 
