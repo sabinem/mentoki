@@ -17,7 +17,7 @@ from model_utils.managers import QueryManager
 from model_utils.fields import MonitorField
 from model_utils import Choices
 
-from django_prices.models import PriceField
+#from django_prices.models import PriceField
 
 from apps_data.course.models.course import Course
 
@@ -131,8 +131,8 @@ class CourseEvent(TimeStampedModel):
         verbose_name=_("Voraussetzungen"),
         blank=True)
 
-    price = PriceField('Price', currency='ECU', max_digits=12, decimal_places=2, null=True, blank=True)
-
+    #price = PriceField('Price', currency='ECU', max_digits=12, decimal_places=2, null=True, blank=True)
+    price = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
     #participants
     participation = models.ManyToManyField(settings.AUTH_USER_MODEL, through="CourseEventParticipation", related_name='participation')
 
