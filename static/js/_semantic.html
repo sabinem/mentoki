@@ -1,0 +1,223 @@
+<script type="text/javascript">
+// I don't think this makes any difference
+//$(window).load(function() {
+//  $("body").removeClass("preload");
+//});
+//
+//window.addEventListener('load', function load() {
+//  window.removeEventListener('load', load, false);
+//  document.body.classList.remove('load');
+//}, false);
+
+$(document).ready(function(){
+
+// add ui class
+    $("#ui_textdisplay table").addClass("ui celled compact table");
+    $("#ui_textdisplay img").addClass("ui img");
+    $("#ui_textdisplay ul").addClass("ui list");
+    $("#ui_textdisplay ol").addClass("ui list");
+
+// This first part is for all pages in the Courses Section of the site
+// checkboxes are special in Semantic UI
+    $('.ui.checkbox')
+      .checkbox()
+    ;
+
+// dropdown menu
+    $('.ui.dropdown')
+      .dropdown()
+    ;
+
+// tabs
+    $('.menu .item')
+      .tab()
+    ;
+
+// accordion
+    $('.ui.accordion')
+       .accordion()
+    ;
+
+
+// This section is only for course-work
+
+// this checkbox can be turned on and off and shows the status of the parts of the course
+    if ($('#status').checkbox('is unchecked')){
+       $('.accomplishment').hide();
+    }
+    $('#status').change(function(){
+       if ($('#status').checkbox('is checked')){
+           $('.accomplishment').fadeIn();
+       }
+    });
+    $('#status').change(function(){
+       if ($('#status').checkbox('is unchecked')){
+           $('.accomplishment').fadeOut();
+       }
+    });
+
+// this checkbox displays the links to work on the courseparts
+    if ($('#worklinks').checkbox('is unchecked')){
+//       $('.worklink').hide();
+    }
+    $('#worklinks').change(function(){
+       if ($('#worklinks').checkbox('is unchecked')){
+           $('.worklink').fadeOut();
+       }
+    });
+    $('#worklinks').change(function(){
+       if ($('#worklinks').checkbox('is checked')){
+           $('.worklink').fadeIn();
+       }
+    });
+
+// Thsi section is only for work on the course lessons
+
+// This part is for the block section
+// this checkbox shows the short contentdescriptions beneath the titles of the course parts
+    if ($('#showdescriptions').checkbox('is unchecked')){
+       $('.contentdescription').hide();
+    }
+    $('#showdescriptions').change(function(){
+       if ($('#showdescriptions').checkbox('is unchecked')){
+           $('.contentdescription').fadeOut();
+       }
+    });
+    $('#showdescriptions').change(function(){
+       if ($('#showdescriptions').checkbox('is checked')){
+           $('.contentdescription').fadeIn();
+       }
+    });
+
+
+// This part is for the block section
+// this checkbox shows the full content
+    if ($('#expandcontent').checkbox('is unchecked')){
+       $('.fullcontent').hide();
+    }
+    $('#expandcontent').change(function(){
+       if ($('#expandcontent').checkbox('is unchecked')){
+           $('.fullcontent').fadeOut();
+          // $('.halfcontent').fadeIn();
+       }
+    });
+    $('#expandcontent').change(function(){
+       if ($('#expandcontent').checkbox('is checked')){
+           $('.fullcontent').fadeIn();
+           //$('.halfcontent').fadeOut();
+       }
+    });
+
+
+// This part is for the block section
+// this checkbox shows the full content
+//    if ($('#expandpage').checkbox('is unchecked')){
+//       $('.widepage').hide();
+//    }
+//    $('#expandpage').change(function(){
+//       if ($('#expandpage').checkbox('is unchecked')){
+//           $('.widepage').hide();
+        //   $('.regularpage').fadeIn();
+//       }
+//    });
+//    $('#expandpage').change(function(){
+//       if ($('#expandpage').checkbox('is checked')){
+//           $('.widepage').fadeIn();
+        //   $('.regularpage').fadeOut();
+//       }
+//    });
+
+
+// This part is for the block section
+// this checkbox shows the links to work on the lesson parts
+    if ($('#workonlessons').checkbox('is unchecked')){
+       $('.lessonlinks').hide();
+    }
+    $('#workonlessons').change(function(){
+       if ($('#workonlessons').checkbox('is unchecked')){
+           $('.lessonlinks').hide();
+       }
+    });
+    $('#workonlessons').change(function(){
+       if ($('#workonlessons').checkbox('is checked')){
+           $('.lessonlinks').fadeIn();
+       }
+    });
+
+
+// This part is for the block section
+// this checkbox shows the links to work on the lesson parts
+    if ($('#showdisplaynr').checkbox('is unchecked')){
+       $('.displaynr').hide();
+    }
+    $('#showdisplaynr').change(function(){
+       if ($('#showdisplaynr').checkbox('is unchecked')){
+           $('.displaynr').hide();
+       }
+    });
+    $('#showdisplaynr').change(function(){
+       if ($('#showdisplaynr').checkbox('is checked')){
+           $('.displaynr').fadeIn();
+       }
+    });
+
+// This part is for the block section
+// this checkbox shows the links to work on the lesson parts
+    if ($('#showpublished').checkbox('is unchecked')){
+       $('.publishinfo').hide();
+    }
+    $('#showpublished').change(function(){
+       if ($('#showpublished').checkbox('is unchecked')){
+           $('.publishinfo').fadeOut();
+       }
+    });
+    $('#showpublished').change(function(){
+       if ($('#showpublished').checkbox('is checked')){
+           $('.publishinfo').fadeIn();
+       }
+    });
+
+// This part is for the help
+// this checkbox shows the links to get help
+    if ($('#ineedhelp').checkbox('is unchecked')){
+       $('#helpinstructions').hide();
+    }
+    $('#ineedhelp').change(function(){
+       if ($('#ineedhelp').checkbox('is unchecked')){
+           $('#helpinstructions').hide();
+           $('#coursemenu').fadeIn();
+       }
+    });
+    $('#ineedhelp').change(function(){
+       if ($('#ineedhelp').checkbox('is checked')){
+           $('#helpinstructions').fadeIn();
+           $('#coursemenu').fadeOut();
+       }
+    });
+
+
+// Mobile button for sidebar
+   $('#mobile_button').on('click', function(){
+       $('#mobile_menu').sidebar('toggle', 'overlay');
+   });
+
+   // Header fade in
+   $('#frontheader').hide();
+   $('#frontheader').slideDown('slow');
+
+// Button for sidebar
+   $('#sidebar_button').on('click', function(){
+       $('#coursemenu').sidebar('toggle', 'overlay');
+   });
+
+    // showing multiple
+    $('.context.example .ui.sidebar')
+      .sidebar({
+        context: $('.context.example .bottom.segment')
+      })
+      .sidebar('attach events', '.context.example .menu .item')
+    ;
+
+});
+
+</script>

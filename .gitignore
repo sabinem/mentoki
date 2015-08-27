@@ -36,27 +36,13 @@ static/Semantic-UI-2.0.7_2/**
 static/img-reserve/**
 tmp/**
 
-static/**
-Semantic-UI-1.12.2/example/**
-Semantic-UI-1.12.2/node_modules/**
-Semantic-UI-1.12.2/src/_site/**
-Semantic-UI-1.12.2/src/definitions/**
-Semantic-UI-1.12.2/src/themes/**
-Semantic-UI-1.12.2/tasks/**
-Semantic-UI-1.12.2/test/**
-Semantic-UI-1.12.2/*.json
-Semantic-UI-1.12.2/*.log
-Semantic-UI-1.12.2/*.md
-Semantic-UI-1.12.2/*.example
-Semantic-UI-1.12.2/*.png
-Semantic-UI-1.12.2/*.js
-Semantic-UI-1.12.2/.csslintrc
-Semantic-UI-1.12.2/.jshinrc
-Semantic-UI-1.12.2/*.swp
-Semantic-UI-1.12.2/*.gitignore
+static/Semantic-UI-1.12.2/**
+static/font-awesome-4.4.0/**
 
-redactor/**
+static/pdfjs
+
+static/redactor/**
 steel*/**
 
-deadsimple-less-watch-compiler-master/**
-static/froala_editor/**
+static/deadsimple-less-watch-compiler-master/**
+
