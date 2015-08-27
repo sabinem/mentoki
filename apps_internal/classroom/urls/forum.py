@@ -15,7 +15,7 @@ urlpatterns = patterns('',
     url(r'^(?P<pk>\d+)/beitrag/anlegen$', ThreadCreateView.as_view(),
         {'template':'classroom/forum/pages/createthread.html'}, name='thread_create'),
 
-    url(r'^$', ForumStartView.as_view(),
+    url(r'^start$', ForumStartView.as_view(),
         {'template':'classroom/forum/pages/start.html'}, name='start'),
 
     url(r'^(?P<pk>\d+)$', ForumDetailView.as_view(),

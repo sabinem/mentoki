@@ -1,0 +1,22 @@
+{% url 'coursebackend:homework:update'  course_slug=cs slug=es pk=homework.pk as update_url %}
+{% url 'classroom:homework:list'  slug=es pk=homework.pk as class_url %}
+
+<div class="ui header medium">
+    {% if homework.published %}
+        <span class="published_in_class">
+        {{ homework.title }}
+        </span>
+        <a href="{{ class_url }}"><i class="icon student"></i></a>
+    {% endif %}
+    <a href="{{ update_url }}">
+       <i class="icon write"></i>
+    </a>
+</div>
+
+{% if homework.due_date %}
+    <p>
+        Abgabedatum: {{ homework.due_date | date:'d.m.Y' }}
+    </p>
+{% endif %}
+
+{{ homework.text | safe }}

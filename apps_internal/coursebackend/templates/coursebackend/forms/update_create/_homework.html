@@ -57,6 +57,23 @@
         </div>
     </div>
 
+    <div class="fields inline">
+        <div class="field sixteen wide">
+            {{ form.due_date.label_tag }}
+            <p>{{ form.due_date.help_text }}</p>
+
+            {% if form.due_date.errors %}
+                <div class="ui negative floating message">
+                    {{ form.due_date.errors }}
+                </div>
+            {% endif %}
+            <br>
+
+            {{ form.due_date }}
+
+        </div>
+    </div>
+
     <button type="submit" value="post" class="ui button">
         Speichern
     </button>

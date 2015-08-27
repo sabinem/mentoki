@@ -1,24 +1,43 @@
 {% for studentswork in studentsworks %}
 
-    <div class="row classroom_emphasis">
-        <div class="sixteen wide column">
+    {% url 'classroom:studentswork:detail' slug=es pk=studentswork.pk as detail_url %}
+    {% url 'classroom:studentswork:update' slug=es pk=studentswork.pk as update_url %}
+    {% url 'classroom:studentswork:delete' slug=es pk=studentswork.pk as delete_url %}
+    {% url 'classroom:studentswork:addteam' slug=es pk=studentswork.pk as addteam_url %}
+    {% url 'classroom:homework:list' slug=es pk=studentswork.homework.pk as homework_url %}
 
-            <div class="ui raised segment">
+    <div class="ui raised segment">
 
-                <h3 class="ui header">
-                    <a href="{% url 'classroom:studentswork:detail' slug=courseevent.slug pk=studentswork.pk %}">
-                        {{ studentswork.title }}
-                    </a>
-                    {%  include 'classroom/studentswork/fragments/_links_update_delete_addteam.html' %}
-                </h3>
-                {%  include 'classroom/studentswork/fragments/_instance_studentswork_meta.html' %}
-                <div class="fullcontent">
-                    <div class="fullcontent">{{ studentswork.text | safe }}</div>
-                </div>
+        <h3 class="ui header">
+            <a href="{{ detail_url }}">
+                {{ studentswork.title }}
+            </a>
+            {% if not studentswork.published %}
+                <a href="{{ update_url }}">
+                    <i class="write icon blue"></i>
+                </a>
+                <a href="{{ delete_url }}">
+                    <i class="trash blue icon"></i>
+                </a>
+                <a href="{{ addteam_url }}">
+                    <i class="add user icon blue"></i>
+                </a>
+            {% endif %}
 
-            </div>
+        </h3>
+        <p>zu  <a href="{{ homework_url }}">
+                {{ studentswork.homework }}
+            </a></p>
+        <p>
+            {% if studentswork.published %}
+                {{ studentswork.published | yesno:"abgegeben, " }}: {{ studentswork.published_at | date:'d.m.Y' }}
+                <i class="green icon check"></i>
+            {% else %}
+                Entwurf
+            {% endif %}
 
-        </div>
+            , Team: {{ studentswork.team | join:', ' }}
+        </p>
     </div>
 
 {% endfor %}

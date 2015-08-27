@@ -106,7 +106,6 @@ class MaterialCreateView(
             title=form.cleaned_data['title'],
             description=form.cleaned_data['description'],
             document_type=form.cleaned_data['document_type'],
-            pdf_link=form.cleaned_data['pdf_link'],
             pdf_download_link=form.cleaned_data['pdf_download_link'],
             pdf_viewer=form.cleaned_data['pdf_viewer'],
             file=self.request.FILES['file']

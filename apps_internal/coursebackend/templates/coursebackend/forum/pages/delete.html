@@ -2,7 +2,23 @@
 
 {% block page_content %}
 
-    <div class="row classroom_emphasis">
+    <div class="row coursebackend_background">
+        <div class="sixteen wide column">
+
+            <div class="ui large breadcrumb" id ="page-breadcrumb">
+
+                {% include 'coursebackend/forum/fragments/_breadcrumbs.html' %}
+                <i class="right chevron icon divider"></i>
+                <a class="item">
+                    löschen
+                </a>
+
+            </div>
+                
+        </div>
+    </div>
+
+    <div class="row coursebackend_white">
         <div class="sixteen wide column">
 
             {% include 'coursebackend/forum/fragments/_recursetree_nodes.html' %}
@@ -10,8 +26,12 @@
         </div>
     </div>
 
-    <div class="row classroom_white">
+    <div class="row coursebackend_white">
         <div class="sixteen wide column">
+
+            <div class="ui message warning">
+                Vorsicht: Der gesamte abgebildetet Baum wird bei dieser Aktion gelöscht!
+            </div>
 
             {% include 'coursebackend/forms/delete/_forum.html' %}
 

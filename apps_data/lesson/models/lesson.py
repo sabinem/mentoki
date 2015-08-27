@@ -59,7 +59,7 @@ class LessonManager(BaseLessonManager):
         lesson.save()
         return lesson
 
-    def create_step(self, nr, title, text, description, course, parent, materials):
+    def create_step(self, nr, title, text, description, course, parent, material):
         """
         creates a step
         :param nr:
@@ -76,12 +76,11 @@ class LessonManager(BaseLessonManager):
                        description=description,
                        text=text,
                        nr=nr,
-                       lesson_nr=lesson_nr_step(nr=nr, parent_nr=parent.nr)
+                       lesson_nr=lesson_nr_step(nr=nr, parent_nr=parent.nr),
+                       material=material,
                        )
         step.insert_at(parent)
         step.save()
-        for item in materials:
-            step.materials.add(item)
         return step
 
     def blocks_for_delete(self, courseevent):

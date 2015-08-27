@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView
 
 from apps_data.courseevent.models.forum import Forum, Thread, CourseEvent
+from apps_data.courseevent.models.menu import ClassroomMenuItem
 
 from .mixins.base import ClassroomMenuMixin
 
@@ -20,8 +21,9 @@ class ForumStartView(
     def get_context_data(self, **kwargs):
         context = super(ForumStartView, self).get_context_data(**kwargs)
 
-        context['nodes'] = \
-            Forum.objects.forums_published_in_courseevent(courseevent=context['courseevent'])
+        context['forum_items'] = \
+            ClassroomMenuItem.objects.forums_for_courseevent(
+                courseevent=context['courseevent'])
 
         return context
 
@@ -38,7 +40,7 @@ class ForumDetailView(
         forum = get_object_or_404(Forum, pk=self.kwargs['pk'])
 
         context['forum'] = forum
-        context['breadcrumbs'] = forum.get_ancestors()
+        context['breadcrumbs'] = forum.get_published_breadcrumbs_with_self
         context['nodes'] = forum.get_descendants()
 
         if forum.can_have_threads:
@@ -55,5 +57,6 @@ class ForumRecentView(
     def get_context_data(self, **kwargs):
         context = super(ForumRecentView, self).get_context_data(**kwargs)
 
-        context['contributions'] = Thread.objects.recent_contributions(courseevent=context['courseevent'])
+        context['contributions'] = Thread.objects.recent_published_contributions(
+            courseevent=context['courseevent'])
         return context

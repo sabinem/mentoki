@@ -35,7 +35,7 @@ class ClassLessonManager(LessonManager):
         :return: complete tree for courseevent
         """
         return self.filter(course=courseevent.course, courseevent=courseevent, level=0).\
-            get_descendants(include_self=True).order_by('nr').prefetch_related('materials')
+            get_descendants(include_self=True).order_by('nr').select_related('material')
 
     def complete_tree_uncopied(self, courseevent):
         course_blocks = self.filter(course=courseevent.course, level=0).\
@@ -53,6 +53,8 @@ class ClassLessonManager(LessonManager):
                            level=2,
                            )
 
+    def classlessons_published_in_courseevent(self, courseevent):
+        return self.filter(courseevent=courseevent, published=True)
 
 
 class ClassLesson(BaseLesson):
@@ -104,18 +106,21 @@ class ClassLesson(BaseLesson):
 
     @property
     def get_previous_sibling_published(self):
-        previous = self.get_previous_sibling()
-        if previous:
-            if previous.published == True:
-                return previous
+        previous = self
+        while previous:
+            previous = previous.get_previous_sibling()
+            if previous:
+                if previous.published == True:
+                    return previous
         return None
 
-    @property
     def get_next_sibling_published(self):
-        next = self.get_next_sibling()
-        if next:
-            if next.published == True:
-                return next
+        next = self
+        while next:
+            next = next.get_next_sibling()
+            if next:
+                if next.published == True:
+                   return next
         return None
 
     @property
@@ -134,6 +139,9 @@ class ClassLesson(BaseLesson):
                 return next
         return None
 
+    def get_published_breadcrumbs_with_self(self):
+        return self.get_ancestors(include_self=True).filter(published=True)
+
     @property
     def published_homework(self):
         steps = self.get_children()
@@ -141,6 +149,10 @@ class ClassLesson(BaseLesson):
             if step.homework_set.filter(published=True):
                 return True
         return False
+
+    @property
+    def homework(self):
+        return self.homework_set.all()
 
     def publish(self):
         if not self.is_lesson():
@@ -151,8 +163,8 @@ class ClassLesson(BaseLesson):
             descendant.save()
 
     def unpublish(self):
-        if not self.classlesson.published:
-            raise ValidationError('Es gibt schon veröffentlichte Aufgaben dazu!')
+        if not self.self.is_lesson():
+            raise ValidationError('Nur Lektionen können zurückgezogen werden.')
         descendants = self.get_descendants(include_self=True)
         for descendant in descendants:
             descendant.published = False

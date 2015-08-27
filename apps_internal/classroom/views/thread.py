@@ -28,7 +28,7 @@ class ThreadCreateView(
         forum = get_object_or_404(Forum, pk=self.kwargs['pk'])
 
         context['forum'] = forum
-        context['breadcrumbs'] = forum.get_ancestors()
+        context['breadcrumbs'] = forum.get_published_breadcrumbs_with_self
 
         return context
 

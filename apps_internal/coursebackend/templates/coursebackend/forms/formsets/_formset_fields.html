@@ -1,0 +1,14 @@
+<div class="inline fields">
+
+    {% for hidden in form.hidden_fields %}
+       {{ hidden }}
+    {% endfor %}
+
+    <div class="four wide field">
+      {{ form.display_nr }}
+    </div>
+    <div class="four wide field">
+      {{ form.display_title }}
+    </div>
+</div>
+

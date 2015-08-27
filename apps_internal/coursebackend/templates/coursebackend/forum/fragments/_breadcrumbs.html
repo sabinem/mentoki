@@ -1,27 +1,21 @@
-<div class="ui large breadcrumb" id ="page-breadcrumb">
+{% url 'coursebackend:forum:list' slug=es course_slug=cs as list_url %}
+{% url 'coursebackend:forum:detail' slug=es course_slug=cs pk=breadcrumb.pk as detail_url %}
 
-        <a href="{% url 'coursebackend:forum:list' slug=courseevent.slug course_slug=course.slug %}"
-           class="section">
-            Forum {{ courseevent.title }}
-        </a>
+<a href="{{ list_url }}"
+   class="section">
+    Forum
+</a>
 
-    {% for breadcrumb in breadcrumbs %}
+{% for breadcrumb in breadcrumbs %}
 
-        <i class="right chevron icon divider"></i>
+    {% url 'coursebackend:forum:detail' slug=es course_slug=cs pk=breadcrumb.pk as detail_url %}
 
+    <i class="right chevron icon divider"></i>
 
-        <a href="{% url 'coursebackend:forum:detail' slug=courseevent.slug course_slug=course.slug pk=breadcrumb.pk %}"
-           class="section">
-            {{ breadcrumb.title }}
-        </a>
+    <a href="{{ detail_url }}"
+       class="section">
+        {{ breadcrumb.title }}
+    </a>
 
-    {% empty %}
+{% endfor %}
 
-    {% endfor %}
-    {% if forum %}
-         <i class="right chevron icon divider"></i>
-    {% endif %}
-
-    <div class="section active">{{ forum.title }}</div>
-
-</div>

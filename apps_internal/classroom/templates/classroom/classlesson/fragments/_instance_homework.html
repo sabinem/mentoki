@@ -1,0 +1,18 @@
+{% url 'classroom:homework:list' pk=lessonstep.homework.pk slug=es as homework_url %}
+
+<div class="ui header medium">
+    <a href="{{ homework_url }}">
+    <span style="color:teal;">{{ lessonstep.homework.title }}</span>
+    </a>
+</div>
+
+{% if lessonstep.homework.due_date %}
+    <p>
+        Abgabedatum: {{ lessonstep.homework.due_date | date:'d.m.Y' }}
+    </p>
+{% endif %}
+<div class="froala-view">
+{{ lessonstep.homework.text | safe }}
+</div>
+
+<

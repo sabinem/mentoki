@@ -1,11 +1,14 @@
-{{ form.media }}
-<form class="ui form" method="post" action="" enctype="multipart/form-data">{% csrf_token %}
+
+
+
+<form class="ui form" method="post" action="">{% csrf_token %}
 
          {% include 'coursebackend/forms/fragments/_form_non_field_errors.html' %}
 
-         {% for form in formset %}
+         {{ formset.management_form }}
 
-             {% include 'coursebackend/forms/form_fields/_form_field_loop_flat.html' %}
+         {% for form in formset %}
+             {% include 'coursebackend/forms/formsets/_formset_fields.html' %}
 
          {% endfor %}
 
@@ -13,7 +16,7 @@
         speichern
     </button>
 
-    <a class="ui button" href="{% url 'coursebackend:material:list' course_slug=course.slug %}">
+    <a class="ui button" href="{% url 'coursebackend:menu:preview' slug=es course_slug=cs %}">
         Abbrechen
     </a>
 

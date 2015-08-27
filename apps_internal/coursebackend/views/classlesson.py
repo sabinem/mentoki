@@ -223,7 +223,7 @@ class ClassLessonDeleteView(
     """
     model = ClassLesson
     context_object_name = 'classlesson'
-    form_valid_message = "Der Lernschritt wurde gelöscht!"
+    form_valid_message = "Der Unterricht wurde gelöscht!"
 
     def get_context_data(self, **kwargs):
         context = super(ClassLessonDeleteView, self).get_context_data(**kwargs)

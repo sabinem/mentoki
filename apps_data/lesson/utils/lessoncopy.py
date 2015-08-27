@@ -57,12 +57,18 @@ def copy_lesson_for_courseevent(self, lesson_pk, courseevent_pk):
     try:
         classblock = ClassLesson.objects.get(original_lesson_id=lessonblock.id)
     except:
-        classblock = _copy_any_level_lesson(lesson=lessonblock, courseevent=courseevent, parent=None)
+        classblock = _copy_any_level_lesson(lesson=lessonblock,
+                                            courseevent=courseevent,
+                                            parent=None)
 
-    classlesson= _copy_any_level_lesson(lesson=lesson, courseevent=courseevent, parent=classblock)
+    classlesson= _copy_any_level_lesson(lesson=lesson,
+                                        courseevent=courseevent,
+                                        parent=classblock)
 
     for step in lessonsteps:
-        _copy_any_level_lesson(lesson=step, courseevent=courseevent, parent=classlesson)
+        _copy_any_level_lesson(lesson=step,
+                               courseevent=courseevent,
+                               parent=classlesson)
 
     ClassLesson.objects.rebuild()
 
@@ -79,12 +85,11 @@ def _copy_any_level_lesson(lesson, courseevent, parent):
         course=lesson.course,
         description=lesson.description,
         courseevent=courseevent,
+        material=lesson.material,
         original_lesson=lesson
     )
     classlesson.insert_at(parent)
     classlesson.save()
-    for item in lesson.materials.all():
-        classlesson.materials.add(item)
 
     return classlesson
 
@@ -110,12 +115,9 @@ def _update_or_create_lessonstep(lessonstep, classlesson):
         classlessonstep.nr=lessonstep.nr
         classlessonstep.course=lessonstep.course
         classlessonstep.description=lessonstep.description
+        classlessonstep.material=lessonstep.material
         classlessonstep.courseevent=classlesson.courseevent
         classlessonstep.save()
-        for item in classlessonstep.materials.all():
-            classlesson.materials.remove(item)
-        for item in lessonstep.materials.all():
-            classlesson.materials.add(item)
 
     except ObjectDoesNotExist:
         classlessonstep = _copy_any_level_lesson(

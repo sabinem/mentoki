@@ -1,0 +1,30 @@
+{% url 'classroom:forum:detail' slug=es pk=node.pk as class_url %}
+{% url "coursebackend:forum:detail" course_slug=cs slug=es pk=node.pk as detail_url %}
+{% url "coursebackend:forum:delete" course_slug=cs slug=es pk=node.pk as delete_url %}
+{% url "coursebackend:forum:update" course_slug=cs slug=es pk=node.pk as update_url %}
+{% if node.published %}
+    <a href="{{ class_url }}">
+         <span class="published_in_class">
+             {{ node.title }}
+         </span>
+         <i class="icon student"></i>
+    </a>
+{% else %}
+    <a href="{{ detail_url }}">
+       {{ node.title }}
+    </a>
+{% endif %}
+{% if node.can_have_threads %}
+    <div class="ui circular label">
+        {{ node.thread_count }}
+    </div>
+{% endif %}
+
+<a class= "item"
+   href="{{ update_url }}">
+    <i class="write blue icon"></i>
+</a>
+<a class= "item"
+   href="{{ delete_url }}">
+    <i class="trash blue icon"></i>
+</a>

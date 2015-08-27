@@ -1,12 +1,19 @@
-{% url 'classroom:forum:detail' slug=ce pk=breadcrumb.pk as forum_url %}
+{% url 'classroom:forum:start' slug=es as list_url %}
+
+<a href="{{ list_url }}"
+   class="section">
+    <span style="color:teal;">Forum</span>
+</a>
 
 {% for breadcrumb in breadcrumbs %}
 
-    <a href="{{ forum_url }}" class="section">
-        {{ breadcrumb.title }}
-    </a>
+    {% url 'classroom:forum:detail' slug=es pk=breadcrumb.pk as detail_url %}
+
     <i class="right chevron icon divider"></i>
 
-{% endfor %}
+    <a href="{{ detail_url }}"
+       class="section">
+        {{ breadcrumb.title }}
+    </a>
 
-<div class="section active">{{ forum.title }}</div>
+{% endfor %}

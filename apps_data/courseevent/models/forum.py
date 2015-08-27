@@ -99,6 +99,7 @@ class Forum(MPTTModel, TimeStampedModel):
         editable=False
     )
     publish_status_changed = MonitorField(monitor='published')
+    has_published_decendants = models.BooleanField(default=False)
 
     oldforum = models.ForeignKey(OldForum, blank=True, null=True)
     oldsubforum = models.ForeignKey(OldSubForum, blank=True, null=True, related_name="Unterforum_alt")
@@ -142,8 +143,20 @@ class Forum(MPTTModel, TimeStampedModel):
         except:
             return None
 
+    def get_breadcrumbs_with_self(self):
+        return self.get_ancestors(include_self=True)
+
+    def get_published_breadcrumbs_with_self(self):
+        return self.get_ancestors(include_self=True).filter(published=True)
+
+    @property
     def thread_count(self):
         return Thread.objects.filter(forum=self).count()
+
+    @property
+    def decendants_thread_count(self):
+        decendants_ids = self.get_descendants(include_self=True).values_list('id', flat=True)
+        return Thread.objects.filter(forum__in=decendants_ids).count()
 
     def get_absolute_url(self):
         return reverse('coursebackend:forum:detail',
@@ -153,15 +166,34 @@ class Forum(MPTTModel, TimeStampedModel):
 
     def publish(self):
         descendants = self.get_descendants(include_self=True)
+        ancestors = self.get_ancestors(include_self=False)
         for descendant in descendants:
             descendant.published = True
             descendant.save()
+        for ancestor in ancestors:
+            ancestor.has_published_decendants = True
+            ancestor.save()
 
     def unpublish(self):
         descendants = self.get_descendants(include_self=True)
         for descendant in descendants:
             descendant.published = False
             descendant.save()
+        ancestors = self.get_ancestors(include_self=False)
+        for ancestor in ancestors:
+            published_decendants = ancestor.get_decendants.filter(published=True)
+            if not published_decendants:
+                ancestor.published=False
+                ancestor.save()
+
+    def clean(self):
+        if not self.can_have_threads:
+            print "------------"
+            print self
+            print self.id
+            print self.can_have_threads
+            if self.published and self.thread_count > 0:
+                raise ValidationError('Dieses Forum hat bereits Beiträge.')
 
 
 class ForumContributionModel(TimeStampedModel):
@@ -192,6 +224,19 @@ class ThreadManager(models.Manager):
             filter(courseevent=courseevent, hidden=False).\
             order_by('-modified')[0:50]
         posts = Post.objects.filter(courseevent=courseevent).\
+            select_related('thread','author').order_by('-modified')[0:50]
+        contributions = sorted(
+            chain(threads, posts),
+            key=attrgetter('modified'))
+        return contributions
+
+
+    def recent_published_contributions(self, courseevent):
+        threads = self.select_related('author').\
+            filter(courseevent=courseevent, forum__published=True).\
+            order_by('-modified')[0:50]
+        posts = Post.objects.filter(courseevent=courseevent,
+                                    thread__forum__published=True).\
             select_related('thread','author').order_by('-modified')[0:50]
         contributions = sorted(
             chain(threads, posts),

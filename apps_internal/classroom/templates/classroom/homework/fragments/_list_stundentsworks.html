@@ -1,10 +1,6 @@
 {% for studentswork in studentsworks %}
     <div class="ui segment raised">
-        <h3 class="ui header">
-            <a href="{% url 'classroom:homework:studentswork' slug=courseevent.slug pk=homework.pk work_pk=studentswork.pk %}">
-                {{ studentswork.title }}
-            </a>
-        </h3>
+
         <p>
             {% if studentswork.published %}
                 {{ studentswork.published | yesno:"abgegeben, " }}: {{ studentswork.published_at | date:'d.m.Y' }}
@@ -12,11 +8,14 @@
             {% else %}
                 <i class="red icon warning"></i>
             {% endif %}
+            , Team: {{ studentswork.team | join:', ' }}
         </p>
-        <p>
-            Team: {{ studentswork.team | join:', ' }}
-        </p>
-        <div class="fullcontent">
+        <h3 class="ui header">
+            <a href="{% url 'classroom:homework:studentswork' slug=courseevent.slug pk=homework.pk work_pk=studentswork.pk %}">
+                {{ studentswork.title }}
+            </a>
+        </h3>
+        <div >
             {{ studentswork.text | safe }}
         </div>
     </div>

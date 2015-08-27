@@ -3,9 +3,13 @@
 {% block courseevent_menu_items %}
 
     {% url 'coursebackend:menu:list' course_slug=cs slug=es as list_url %}
+    {% url 'coursebackend:menu:sort' course_slug=cs slug=es as sort_url %}
 
     <a class="item" href="{{ list_url }}">
-        <i class="list icon blue"></i>Link-Liste
+        <i class="list icon blue"></i>Veröffentlicht?
+    </a>
+    <a class="item" href="{{ sort_url }}">
+        <i class="share icon blue"></i>Sortieren
     </a>
 
 {% endblock %}
@@ -42,8 +46,6 @@
         </div>
 
         <div class="eight wide column">
-
-            {% include 'coursebackend/menu/fragments/_legend.html' %}
 
             <a href="{{ create_url }}">
                 <i class="write plus icon blue"></i>Neuen Menüpunkt anlegen

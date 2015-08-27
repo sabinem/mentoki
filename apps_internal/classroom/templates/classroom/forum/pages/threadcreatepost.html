@@ -1,24 +1,18 @@
 {% extends "classroom/base.html" %}
 
-{% block page_subsection %}
-    {% include 'classroom/forum/fragments/_link_subsection.html' %}
-{% endblock %}
-
-{% block page_subsection_css_id %}forum{% endblock %}
-
 {% block page_content %}
 
-    <div class="row classroom_emphasis">
+    <div class="row classroom_background">
         <div class="sixteen wide column">
 
             <div class="ui large breadcrumb" id="page-breadcrumb">
-                {% include 'classroom/forum/fragments/_list_breadcrumbs_instance_thread.html' %}
+                {% include 'classroom/forum/fragments/_breadcrumbs.html' %}
             </div>
 
         </div>
     </div>
 
-    <div class="row classroom_background">
+    <div class="row classroom_white">
         <div class="sixteen wide column">
 
             {% include 'classroom/forum/fragments/_instance_thread.html' %}
@@ -26,7 +20,7 @@
         </div>
     </div>
 
-    <div class="row classroom_background">
+    <div class="row classroom_white">
         <div class="sixteen wide column">
 
             {% include 'classroom/forum/fragments/_list_posts.html' %}
@@ -47,4 +41,3 @@
     </div>
 
 {% endblock %}
-{% block rows %}{% endblock %}

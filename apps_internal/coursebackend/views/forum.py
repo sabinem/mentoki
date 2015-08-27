@@ -42,13 +42,13 @@ class ForumDetailView(
         forum = get_object_or_404(Forum, pk=self.kwargs['pk'])
 
         context['forum'] = forum
-        context['breadcrumbs'] = forum.get_ancestors()
+        context['breadcrumbs'] = forum.get_breadcrumbs_with_self
         context['nodes'] = forum.get_descendants()
 
         return context
 
 
-class ForumRedirectMixin(object):
+class ForumRedirectandBreadcrumbMixin(object):
     def get_success_url(self):
        """
        for create update and delete view
@@ -57,9 +57,18 @@ class ForumRedirectMixin(object):
                            kwargs={'slug': self.kwargs['slug'],
                                    'course_slug':self.kwargs['course_slug']})
 
+    def get_context_data(self, **kwargs):
+        context = super(ForumRedirectandBreadcrumbMixin, self).get_context_data(**kwargs)
+
+        if not 'forum' in context:
+            forum = get_object_or_404(Forum, pk=self.kwargs['pk'])
+
+        context['breadcrumbs'] = context['forum'].get_breadcrumbs_with_self
+        return context
+
 
 class ForumUpdateView(
-    ForumRedirectMixin,
+    ForumRedirectandBreadcrumbMixin,
     FormValidMessageMixin,
     FormCourseEventKwargsMixin,
     CourseMenuMixin,
@@ -74,7 +83,7 @@ class ForumUpdateView(
 
 
 class ForumDeleteView(
-    ForumRedirectMixin,
+    ForumRedirectandBreadcrumbMixin,
     FormValidMessageMixin,
     CourseMenuMixin,
     DeleteView):
@@ -92,7 +101,7 @@ class ForumDeleteView(
 
 
 class ForumCreateView(
-    ForumRedirectMixin,
+    ForumRedirectandBreadcrumbMixin,
     FormCourseEventKwargsMixin,
     FormValidMessageMixin,
     CourseMenuMixin,

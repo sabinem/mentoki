@@ -1,12 +1,22 @@
 {% load activelink %}
 
 {% url 'classroom:announcement:list' slug=es as announcements_url %}
-{% url 'classroom:forum:detail' slug=es pk=item.forum_id as forum_url %}
-{% url 'classroom:homework:list' slug=es pk=item.homework_id as homework_url %}
 {% url 'classroom:forum:newposts' slug=es as newposts_url %}
 {% url 'classroom:studentswork:list' slug=es as private_url %}
-{% url 'classroom:classlesson:lesson' slug=es pk=item.classlesson_id as lesson_url %}
 {% url 'classroom:participant:list' slug=es as participants_url %}
+{% url 'classroom:forum:start' slug=es as forum_url %}
+{% url 'classroom:classlesson:start' slug=es as lesson_url %}
+{% url 'classroom:homework:start' slug=es as homework_url %}
+
+
+{% if item.is_forumlink %}
+    {% url 'classroom:forum:detail' slug=es pk=item.forum_id as forum_url %}
+{% elif item.is_lessonlink %}
+    {% url 'classroom:classlesson:lesson' slug=es pk=item.classlesson_id as lesson_url %}
+{% elif item.is_homeworklink %}
+    {% url 'classroom:homework:list' slug=es pk=item.homework_id as homework_url %}
+{% endif %}
+
 
 {% if item.item_type == item.MENU_ITEM_TYPE.announcements_item %}
     <a class="item
@@ -23,7 +33,7 @@
         <i class="comments outline icon"></i>{{ item.display_title }}
     </a>
 
-{% elif item.item_type == item.MENU_ITEM_TYPE.homework %}
+{% elif item.item_type == item.MENU_ITEM_TYPE.homework_item %}
     <a class="item
     {% ifstartswith homework_url %}active{% endifstartswith %}"
     href="{{ homework_url }}">
@@ -51,7 +61,7 @@
         <i class="student icon"></i>{{ item.display_title }}
     </a>
 
-{% elif item.item_type == item.MENU_ITEM_TYPE.participants_list %}
+{% elif item.item_type == item.MENU_ITEM_TYPE.participants_item %}
     <a class="item
     {% ifstartswith participants_url %}active{% endifstartswith %}"
     href="{{ participants_url }}">

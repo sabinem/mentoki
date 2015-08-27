@@ -54,7 +54,6 @@ class MaterialManager(models.Manager):
                             file=file,
                             description=description,
                             document_type=document_type,
-                            pdf_link=pdf_link,
                             pdf_download_link=pdf_download_link,
                             pdf_viewer=pdf_viewer)
         material.save()
@@ -109,12 +108,6 @@ class Material(TimeStampedModel):
         help_text=_("""Bei Dateityp pdf: Das pdf-Datei ist durch einen Pdf-
         Viewer ind die Webseite integriert, falls das möglich ist (auf dem PC
         zum Beispiel)."""),
-        default=False
-    )
-    pdf_link = models.BooleanField(
-        verbose_name=_('Link anbieten?'),
-        help_text=_("""Bei Dateityp pdf: das pdf-file ist über einen Link
-        erreichbar."""),
         default=False
     )
     file = ContentTypeRestrictedFileField(
@@ -172,5 +165,4 @@ class Material(TimeStampedModel):
         no_file: Material cannot be stored without a file to upload
         """
         if self.document_type == self.DOCTYPE.zip:
-            if (self.pdf_viewer or self.pdf_link):
-                forms.ValidationError(_('zip file kann nicht angezeigt werden.'), code='no_zip')
+             forms.ValidationError(_('zip file kann nicht angezeigt werden.'), code='no_zip')

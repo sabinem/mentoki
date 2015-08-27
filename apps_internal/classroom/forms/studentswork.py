@@ -6,15 +6,22 @@ import floppyforms.__future__ as forms
 
 from froala_editor.widgets import FroalaEditor
 
-from apps_data.courseevent.models.homework import StudentsWork
+from apps_data.courseevent.models.homework import StudentsWork, Comment
 
-
-class StudentWorkForm(forms.ModelForm):
+class StudentWorkCreateForm(forms.ModelForm):
     text = forms.CharField(widget=FroalaEditor)
 
     class Meta:
         model = StudentsWork
-        fields = ('homework', 'title', 'text', 'published')
+        fields = ('homework', 'title', 'text' )
+
+
+class StudentWorkUpdateForm(forms.ModelForm):
+    text = forms.CharField(widget=FroalaEditor)
+
+    class Meta:
+        model = StudentsWork
+        fields = ('title', 'text', 'published')
 
 
 class StudentWorkAddTeamForm(forms.ModelForm):
@@ -31,8 +38,8 @@ class StudentWorkAddTeamForm(forms.ModelForm):
 
 
 class StudentWorkCommentForm(forms.ModelForm):
-    comments = forms.CharField(widget=FroalaEditor)
+    text = forms.CharField(widget=FroalaEditor)
 
     class Meta:
-        model = StudentsWork
-        fields = ('comments',)
+        model = Comment
+        fields = ('title', 'text')

@@ -25,15 +25,6 @@ class HomeworkManager(models.Manager):
             order_by('published', 'due_date').\
             select_related('classlesson')
 
-    #def published_homework_for_courseevent(self, courseevent):
-    #    return self.filter(courseevent=courseevent, published=True).\
-    #        order_by('due_date').\
-    #        select_related('classlesson')
-
-    #def unpublished_per_courseevent(self, courseevent):
-    #    return self.filter(courseevent=courseevent, published=False).\
-    #        order_by('published', 'due_date').select_related('classlesson')
-
     def create(self, courseevent, text, title, due_date=None, classlesson=None):
         homework = Homework(courseevent=courseevent,
                                 classlesson=classlesson,
@@ -52,9 +43,9 @@ class Homework(TimeStampedModel):
 
     courseevent = models.ForeignKey(CourseEvent)
 
-    classlesson = models.ForeignKey(ClassLesson,
+    classlesson = models.OneToOneField(ClassLesson,
                                verbose_name="Bezug auf einen Lernabschnitt?",
-                               null=True, blank=True)
+                               )
 
     title = models.CharField(verbose_name="Überschrift", max_length=100)
     text = models.TextField(verbose_name="Text")
@@ -71,23 +62,20 @@ class Homework(TimeStampedModel):
         default=False)
     hidden_status_changed = MonitorField(monitor='hidden')
 
-    due_date = models.DateField(blank=True, null=True)
+    due_date = models.DateField(
+        verbose_name='Abgabedatum',
+        blank=True,
+        null=True)
     objects = HomeworkManager()
 
     def __unicode__(self):
-        return self.title
+        return '%s: %s' %(self.classlesson, self.title)
 
     def get_absolute_url(self):
         return reverse('coursebackend:homework:detail',
                        kwargs={'course_slug':self.courseevent.course.slug,
                                'slug':self.courseevent.slug,
                                'pk':self.pk})
-
-    def can_be_pulled_from_classroom(self):
-        if self.studentswork_set:
-            return False
-        else:
-            return True
 
     def publish(self):
         if not self.classlesson.published:
@@ -122,7 +110,9 @@ class StudentsWorkManager(models.Manager):
 class StudentsWork(TimeStampedModel):
 
     courseevent = models.ForeignKey(CourseEvent)
-    workers = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='teammembers')
+    workers = models.ManyToManyField(settings.AUTH_USER_MODEL,
+                                     verbose_name="Team",
+                                     related_name='teammembers')
     homework = models.ForeignKey(Homework)
 
     title = models.CharField(verbose_name="Titel", max_length=100)
@@ -143,7 +133,40 @@ class StudentsWork(TimeStampedModel):
         """
         return self.workers.all().order_by('username').prefetch_related('teammembers')
 
+    def team_size(self):
+        return self.team.count()
+
     def get_absolute_url(self):
         return reverse('classroom:studentswork:detail',
                        kwargs={'slug':self.slug,
                                'pk':self.pk})
+
+
+class CommentManager(models.Manager):
+
+    def comment_to_studentswork(self, studentswork):
+        return self.filter(studentswork=studentswork).order_by('created')
+
+    def create_comment(self, courseevent, text, title, author, studentswork):
+        comment = Comment(
+            courseevent=courseevent, studentswork=studentswork,
+            text=text, title=title, author=author)
+        comment.save()
+        return comment
+
+
+
+class Comment(TimeStampedModel):
+
+    courseevent = models.ForeignKey(CourseEvent)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True)
+    studentswork = models.ForeignKey(StudentsWork)
+
+    title = models.CharField(verbose_name="Titel", max_length=100)
+    text = models.TextField(verbose_name="Text")
+
+    objects = CommentManager()
+
+    def __unicode__(self):
+        return self.title
+

@@ -53,11 +53,6 @@
             {{ form.pdf_download_link.errors }}
         </div>
     {% endif %}
-    {% if form.pdf_link.errors %}
-        <div class="ui negative floating message">
-            {{ form.pdf_link.errors }}
-        </div>
-    {% endif %}
     <div class="inline fields">
       <div class="field">
           <label>{{ form.document_type.label_tag }}</label>
@@ -70,10 +65,6 @@
       <div class="field">
           <label>{{ form.pdf_viewer.label_tag }}</label>
           {{ form.pdf_viewer }}
-      </div>
-      <div class="field">
-          <label>{{ form.pdf_link.label_tag }}</label>
-          {{ form.pdf_link }}
       </div>
     </div>
     <div class="ui info floating message">

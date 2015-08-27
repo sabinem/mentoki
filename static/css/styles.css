@@ -498,7 +498,10 @@ object.htmlembed {
   background: #ebc7a6;
 }
 #coursebackend .published_in_class {
-  background: greenyellow;
+  color: #19aaa6;
+}
+#coursebackend #page-breadcrumb {
+  font-size: 1em;
 }
 /* --------------------------------------  */
 /*    plain data                           */
@@ -555,6 +558,6 @@ object.htmlembed {
   background: #b48368;
   color: white;
 }
-/* --------------------------------------  */
-/*    sidebar menu                          */
-/* --------------------------------------- */
+/* ------------------------------------------------------------------------  */
+/*    from http://davidwalsh.name/mootools-drag-ajax                         */
+/* ------------------------------------------------------------------------- */

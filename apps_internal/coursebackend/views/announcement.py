@@ -7,13 +7,13 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.views.generic import DetailView, TemplateView, UpdateView, DeleteView, FormView
 
-from braces.views import FormValidMessageMixin
+from braces.views import FormValidMessageMixin, MessageMixin
 
-from apps_data.courseevent.models.announcement import Announcement
+from apps_data.courseevent.models.announcement import Announcement, send_announcement
 from apps_data.courseevent.models.courseevent import CourseEvent
 
 from .mixins.base import CourseMenuMixin
-from ..forms.announcement import AnnouncementForm
+from ..forms.announcement import AnnouncementUpdateForm, AnnouncementCreateForm
 
 
 class AnnouncementListView(
@@ -55,20 +55,6 @@ class AnnouncementDetailView(
     context_object_name ='announcement'
 
 
-class AnnouncementUpdateView(
-    CourseMenuMixin,
-    FormValidMessageMixin,
-    AnnouncementRedirectMixin,
-    UpdateView):
-    """
-    Announcement Update
-    """
-    model = Announcement
-    form_class = AnnouncementForm
-    context_object_name ='announcement'
-    form_valid_message="Die Ankündigung wurde geändert!"
-
-
 class AnnouncementDeleteView(
     CourseMenuMixin,
     FormValidMessageMixin,
@@ -82,27 +68,62 @@ class AnnouncementDeleteView(
     form_valid_message="Die Ankündigung wurde gelöscht!"
 
 
+class AnnouncementUpdateView(
+    CourseMenuMixin,
+    MessageMixin,
+    AnnouncementRedirectMixin,
+    UpdateView):
+    """
+    Announcement Update
+    """
+    model = Announcement
+    form_class = AnnouncementUpdateForm
+    context_object_name ='announcement'
+    form_valid_message="Die Ankündigung wurde geändert!"
+
+    def form_valid(self, form):
+        courseevent = get_object_or_404(CourseEvent, slug=self.kwargs['slug'])
+        if form.cleaned_data['published']:
+            message = send_announcement(
+                announcement=form.instance,
+                module=self.__module__,
+                courseevent=courseevent,
+            )
+            self.messages.success(message)
+        else:
+            self.messages.success('Die Ankündigung wurde gespeichert.')
+
+        return super(AnnouncementUpdateView, self).form_valid(form)
+
+
 class AnnouncementCreateView(
     CourseMenuMixin,
-    FormValidMessageMixin,
+    MessageMixin,
     AnnouncementRedirectMixin,
     FormView):
     """
     Announcement Create
     """
     model = Announcement
-    form_class = AnnouncementForm
+    form_class = AnnouncementCreateForm
     context_object_name ='announcement'
-    form_valid_message="Die Ankündigung wurde an die Teilnehmer geschickt oder gespeichert!"
 
     def form_valid(self, form):
         courseevent = get_object_or_404(CourseEvent, slug=self.kwargs['slug'])
-        Announcement.objects.create(
+        announcement = Announcement.objects.create(
             courseevent=courseevent,
             text=form.cleaned_data['text'],
             title=form.cleaned_data['title'],
             published=form.cleaned_data['published'])
+        if form.cleaned_data['published']:
+            message = send_announcement(
+                announcement=announcement,
+                module=self.__module__,
+                courseevent=courseevent,
+            )
+            self.messages.success(message)
+        else:
+            self.messages.success('Die Ankündigung wurde gespeichert.')
 
         return HttpResponseRedirect(self.get_success_url())
-
 

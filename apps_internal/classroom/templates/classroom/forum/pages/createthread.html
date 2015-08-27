@@ -1,14 +1,8 @@
 {% extends "classroom/base.html" %}
 
-{% block page_subsection %}
-    {% include 'classroom/forum/fragments/_link_subsection.html' %}
-{% endblock %}
-
-{% block page_subsection_css_id %}forum{% endblock %}
-
 {% block page_content %}
 
-    <div class="row classroom_emphasis">
+    <div class="row classroom_background">
         <div class="sixteen wide column">
 
             <div class="ui large breadcrumb" id ="page-breadcrumb">
@@ -20,7 +14,7 @@
         </div>
     </div>
 
-    <div class="row classroom_background">
+    <div class="row classroom_white">
         <div class="sixteen wide column">
 
             <div class="ui header huge">
@@ -46,6 +40,6 @@
     </div>
 
 {% endblock %}
-{% block rows %}{% endblock %}
+
 
 

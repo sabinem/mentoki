@@ -1,0 +1,39 @@
+{{ form.media }}
+{% url 'classroom:homework:studentswork' slug=es pk=homework.pk work_pk=studentswork.pk as back_url %}
+<form class="ui form" method="post" action="" >{% csrf_token %}
+
+    {% include 'classroom/forms/form_fields/_form_non_field_errors.html' %}
+
+    <div class="field sixteen wide">
+
+        {% if form.title.errors %}
+            <div class="ui negative floating message">
+                {{ form.title.errors }}
+            </div>
+        {% endif %}
+        <br>
+
+        {{ form.title }}
+
+    </div>
+
+    <div class="field sixteen wide">
+        {% if form.text.errors %}
+            <div class="ui negative floating message">
+                {{ form.text.errors }}
+            </div>
+        {% endif %}
+        <br>
+
+        {{ form.text }}
+
+    </div>
+
+    <button type="submit" value="post" class="ui button">
+        Speichern
+    </button>
+    <a class="ui button" href="{{ back_url }}">
+        Zurück
+    </a>
+
+</form>

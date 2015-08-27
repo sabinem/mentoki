@@ -16,5 +16,5 @@ urlpatterns = patterns('',
         {'template':'classroom/homework/pages/studentswork.html'}, name='studentswork'),
 
     url(r'^(?P<pk>\d{1,4})/student/(?P<work_pk>\d{1,4})/kommentieren$', StudentsWorkCommentView.as_view(),
-        {'template':'classroom/homework/pages/comment.html'}, name='comments'),
+        {'template':'classroom/homework/pages/comment.html'}, name='comment'),
     )

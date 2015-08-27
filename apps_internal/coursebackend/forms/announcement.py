@@ -17,21 +17,17 @@ from apps_data.course.models.course import CourseOwner
 from mentoki.settings import MENTOKI_INFO_EMAIL
 
 
-class AnnouncementForm(forms.ModelForm):
+class AnnouncementCreateForm(forms.ModelForm):
     text = forms.CharField(widget=FroalaEditor)
 
     class Meta:
         model = Announcement
         fields = ('title', 'text', 'published')
 
-    CONTACT_EMAIL=MENTOKI_INFO_EMAIL
 
-    def __init__(self, *args, **kwargs):
-        super(AnnouncementForm, self).__init__(*args, **kwargs)
+class AnnouncementUpdateForm(forms.ModelForm):
+    text = forms.CharField(widget=FroalaEditor)
 
-    def send_announcement(self):
-
-        print "============================"
-        print self.instance
-        print self.data
-        return
+    class Meta:
+        model = Announcement
+        fields = ('title', 'text', 'published', 'archive')

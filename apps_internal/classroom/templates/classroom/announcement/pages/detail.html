@@ -1,14 +1,21 @@
 {% extends "classroom/base.html" %}
 
-{% block page_subsection %}
-    {% include 'classroom/announcement/fragments/_link_subsection.html' %}
-{% endblock %}
-
-{% block page_subsection_css_id %}forum{% endblock %}
 
 {% block page_content %}
 
     <div class="row classroom_background">
+        <div class="sixteen wide column">
+
+            <div class="ui large breadcrumb" id ="page-breadcrumb">
+
+                {% include 'classroom/announcement/fragments/_breadcrumbs.html' %}
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row classroom_white">
         <div class="sixteen wide column">
 
             {% include 'classroom/announcement/fragments/_instance_announcement.html' %}

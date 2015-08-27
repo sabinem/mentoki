@@ -6,7 +6,13 @@
 
     {% include 'coursebackend/forms/fragments/_form_non_field_errors.html' %}
 
-    <div class="ui dividing large header">Forum anlegen / ändern </div>
+    <div class="ui dividing large header">Forum </div>
+
+    {% if form.instance.published %}
+         <div class="ui info floating message">
+             <p>Dieses Forum ist bereits im Klassenzimmer veröffentlicht! </p>
+         </div>
+    {% endif %}
 
     <div class="fields inline">
         <div class="field twelve wide">
@@ -27,7 +33,7 @@
 
     <div class="fields inline">
 
-        <div class="field four wide">
+        <div class="field six wide">
             {{ form.display_nr.label_tag }}
 
             {% if form.display_nr.errors %}
@@ -41,7 +47,7 @@
 
         </div>
 
-        <div class="field twelve wide">
+        <div class="field ten wide">
 
             {{ form.title.label_tag }}
 
@@ -86,6 +92,21 @@
         {{ form.text }}
 
     </div>
+
+    <div class="ui dividing medium header">Beiträge?</div>
+
+    {% if form.can_have_threads.errors %}
+        <div class="ui negative floating message">
+            {{ form.can_have_threads.errors }}
+        </div>
+    {% endif %}
+
+      <div class="field eigth wide">
+
+          <label>{{ form.can_have_threads.label_tag }}</label>
+          <p>{{ form.can_have_threads.help_text }}</p>
+          {{ form.can_have_threads }}
+      </div>
 
     <button type="submit" value="post" class="ui button">
         Speichern

@@ -8,10 +8,22 @@
 
 {% block page_content %}
 
+    <div class="row classroom_background">
+        <div class="sixteen wide column">
+
+            <div class="ui large breadcrumb" id ="page-breadcrumb">
+
+                {% include 'classroom/studentswork/fragments/_breadcrumbs.html' %}
+
+            </div>
+
+        </div>
+    </div>
+
     <div class="row classroom_white">
         <div class="sixteen wide column">
 
-            {% include 'classroom/forms/_form_studenswork.html' %}
+            {% include 'classroom/forms/_form_studentswork.html' %}
 
         </div>
     </div>

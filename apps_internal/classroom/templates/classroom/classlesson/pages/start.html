@@ -1,20 +1,25 @@
 {% extends "classroom/base.html" %}
 
-{% block page_subsection %}
-    {% include 'classroom/classlesson/fragments/_link_subsection.html' %}
-{% endblock %}
-
-{% block page_subsection_css_id %}lesson{% endblock %}
-
 {% block page_content %}
+
+    <div class="row classroom_background">
+        <div class="sixteen wide column">
+
+            <div class="ui large breadcrumb" id ="page-breadcrumb">
+
+                {% include 'classroom/classlesson/fragments/_breadcrumbs.html' %}
+
+            </div>
+
+        </div>
+    </div>
 
     <div class="row classroom_white">
         <div class="sixteen wide column">
 
-            {% include 'classroom/classlesson/fragments/_recursetree_nodes_start.html' %}
+            {% include 'classroom/classlesson/fragments/_lesson_items.html' %}
 
         </div>
     </div>
 
 {% endblock %}
-{% block rows %}{% endblock %}

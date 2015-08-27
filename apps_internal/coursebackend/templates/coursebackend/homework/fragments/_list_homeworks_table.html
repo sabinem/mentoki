@@ -1,10 +1,9 @@
 <table class="ui table">
     <thead>
             <tr>
-                <th>Lernabschnitt veröffentlicht?</th>
-                <th>Aufgabe veröffentlicht?</th>
+                <th>zum Lernabschnitt</th>
+                <th>zur Aufgabe</th>
                 <th>Abgabedatum</th>
-                <th>Links</th>
             </tr>
     </thead>
     <tbody>
@@ -18,24 +17,37 @@
             {% url 'coursebackend:menu:create' course_slug=cs slug=es as menu_url %}
             <tr>
                 <td>
-                    <a href="{{ lesson_url }}">
-                        {{ homework.classlesson }}
-                    </a>
                     {% if homework.classlesson.published %}
-                        <i class="checkmark green icon"></i>
+                        <a href="{{ lesson_url }}" class="published_in_class" >
+                            {{ homework.classlesson }}
+                        </a>
                     {% else %}
-                        <i class="remove icon"></i>
+                        <a href="{{ lesson_url }}" >
+                            {{ homework.classlesson }}
+                        </a>
                     {% endif %}
                 </td>
                 <td>
-                    <a href="{{ detail_url }}">
-                        {{ homework }}
-                    </a>
-
-                    {% if homework.published %}
-                        <i class="checkmark green icon"></i>
+                    {% if homework.classlesson.published %}
+                        <a href="{{ detail_url }}" class="published_in_class">
+                            {{ homework }}
+                        </a>
+                        <a href="{{ update_url }}">
+                            <i class="icon write blue"></i>
+                        </a>
+                        <a href="{{ class_url }}">
+                            <i class="icon student blue"></i>
+                        </a>
                     {% else %}
-                        <i class="remove icon"></i>
+                        <a href="{{ detail_url }}">
+                            {{ homework }}
+                        </a>
+                        <a href="{{ update_url }}">
+                            <i class="icon write blue"></i>
+                        </a>
+                        <a href="{{ delete_url }}">
+                            <i class="icon trash blue"></i>
+                        </a>
                     {% endif %}
                 </td>
                 <td>
@@ -43,22 +55,6 @@
                         {{ homework.due_date | date:'d.m.Y'  }}
                     {% else %}
                         -
-                    {% endif %}
-                </td>
-                <td>
-                    <a href="{{ update_url }}">
-                        <i class="icon write blue"></i>
-                    </a>
-                    <a href="{{ delete_url }}">
-                        <i class="icon trash blue"></i>
-                    </a>
-                    <a href="{{ menu_url }}">
-                        jetzt veröffentlichen
-                    </a>
-                    {% if homework.published %}
-                        <a href="{{ class_url }}">
-                            <i class="icon trash blue"></i>
-                        </a>
                     {% endif %}
                 </td>
             </tr>

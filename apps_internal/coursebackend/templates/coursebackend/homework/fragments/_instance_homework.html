@@ -1,4 +1,5 @@
 {% url 'coursebackend:homework:update'  course_slug=cs slug=es pk=homework.pk as update_url %}
+{% url 'classroom:homework:list' slug=es pk=homework.pk as class_url %}
 
 <div class="ui header medium">
     {{ homework.title }}
@@ -6,7 +7,12 @@
         <a href="{{ update_url }}">
            <i class="icon write"></i>
         </a>
+        <a href="{{ class_url }}">
+            <i class="icon student">
+            </i>
+        </a>
     {% endif %}
+
 </div>
 
 {% if homework.due_date %}

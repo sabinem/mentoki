@@ -11,17 +11,20 @@
     <div class="row classroom_background">
         <div class="sixteen wide column">
 
-            {% include 'classroom/studentswork/fragments/_instance_homework.html' %}
+            <div class="ui large breadcrumb" id ="page-breadcrumb">
+
+                {% include 'classroom/studentswork/fragments/_breadcrumbs.html' %}
+
+            </div>
 
         </div>
     </div>
 
-    <div class="row classroom_emphasis">
+    <div class="row classroom_white">
         <div class="sixteen wide column">
 
-            <div class="ui piled segment">
-                {% include 'classroom/studentswork/fragments/_instance_studentswork.html' %}
-            </div>
+                {% include 'classroom/studentswork/fragments/_instance_studentswork_delete.html' %}
+
 
         </div>
     </div>

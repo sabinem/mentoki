@@ -24,11 +24,10 @@ class ClassLessonForm(forms.ModelForm):
 
 class ClassLessonStepForm(forms.ModelForm):
     text = forms.CharField(widget=FroalaEditor, required=False)
-    materials = forms.CheckboxSelectMultiple()
 
     class Meta:
         model = ClassLesson
-        fields = ('nr', 'title', 'description', 'text', 'materials' )
+        fields = ('nr', 'title', 'description', 'text', 'material' )
 
     def __init__(self, *args, **kwargs):
         course_slug = kwargs.pop('course_slug', None)
@@ -36,5 +35,4 @@ class ClassLessonStepForm(forms.ModelForm):
 
         super(ClassLessonStepForm, self).__init__(*args, **kwargs)
 
-        self.fields['materials'].widget = CheckboxSelectMultiple()
-        self.fields['materials'].queryset = Material.objects.filter(course=self.course)
+        self.fields['material'].queryset = Material.objects.filter(course=self.course)

@@ -22,7 +22,7 @@ class BaseLessonManager(TreeManager):
         :return: all nodes with material for a course in tree order
         """
         return self.filter(course=course, level=0).\
-            get_descendants(include_self=True).prefetch_related('materials')
+            get_descendants(include_self=True).select_related('material')
 
     def lessons_for_course(self, course):
         """
@@ -111,10 +111,11 @@ class BaseLesson(MPTTModel, TimeStampedModel):
         max_length=200,
         blank=True)
 
-    materials = models.ManyToManyField(Material,
+    material = models.ForeignKey(Material,
         verbose_name="Kursmaterial",
         help_text="Material der Lektion",
-        blank=True)
+        blank=True,
+        null=True)
 
     objects = BaseLessonManager()
 
@@ -191,7 +192,7 @@ class BaseLesson(MPTTModel, TimeStampedModel):
             return u'%s %s' % (self.lesson_nr, self.title)
 
     def get_delete_tree(self):
-        return self.get_descendants(include_self=True).prefetch_related('materials')
+        return self.get_descendants(include_self=True).select_related('material')
 
     def get_next_sibling(self):
         """
@@ -231,7 +232,7 @@ class BaseLesson(MPTTModel, TimeStampedModel):
         gets real decendants and materials of a node
         :return: real decendants with material
         """
-        return self.get_descendants(include_self=False).prefetch_related('materials')
+        return self.get_descendants(include_self=False).select_related('material')
 
     def get_tree_without_self_without_material(self):
         """

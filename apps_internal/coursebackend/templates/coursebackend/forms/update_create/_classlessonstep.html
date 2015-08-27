@@ -70,16 +70,16 @@
     <div class="ui dividing large header">Zugeordnetes Lernmaterial</div>
 
     <div class="field sixteen wide">
-        {{ form.materials.label_tag }}
-        {{ form.materials.help_text }}
-        {% if form.materials.errors %}
+        {{ form.material.label_tag }}
+        {{ form.material.help_text }}
+        {% if form.material.errors %}
             <div class="ui negative floating message">
-                {{ form.materials.errors }}
+                {{ form.material.errors }}
             </div>
         {% endif %}
         <br>
 
-        {{ form.materials }}
+        {{ form.material }}
 
     </div>
 

@@ -24,6 +24,18 @@
             {% include 'base/fragments/_messages.html' %}
             {% include 'coursebackend/classlesson/fragments/_instance_classlessonstep.html' %}
 
+            {% if classlessonstep.homework_set.all %}
+
+                <h4 class="ui horizontal divider header">
+                     <i class="users icon"></i>
+                </h4>
+
+                {% for homework in classlessonstep.homework %}
+                    {% include 'coursebackend/classlesson/fragments/_instance_homework.html' %}
+                {% endfor %}
+            {% endif  %}
+
+
         </div>
     </div>
 

@@ -1,0 +1,49 @@
+{% url 'coursebackend:classlesson:stepupdate'  course_slug=cs slug=es pk=classlessonstep.pk as stepupdate_url %}
+{% url 'coursebackend:classlesson:delete'  course_slug=cs slug=es pk=classlessonstep.pk as delete_url %}
+{% url 'classroom:classlesson:step'  slug=es pk=classlessonstep.pk as class_url %}
+
+<div class="ui header medium">
+    {{ classlessonstep.lesson_nr }}
+    <span {% if classlessonstep.published %}class="published_in_class"{% endif %} >
+
+        {{ classlessonstep.title }}
+        <a href="{{ class_url }}"><i class="icon student"></i></a>
+
+    </span>
+    <a href="{{ stepupdate_url }}">
+       <i class="icon write"></i>
+    </a>
+
+    {% if classlessonstep.material %}
+        <a href="{{ classlessonstep.material.file.url }}">
+            <i class="icon file"></i>
+        </a>
+
+        {% if classlessonstep.material.pdf_download_link %}
+            <a href="{% url 'download' slug=classlessonstep.material.slug %}">
+                <i class="download icon blue"></i>
+            </a>
+        {% endif %}
+    {% endif %}
+
+</div>
+
+<div class="froala-view">
+
+    {{ classlessonstep.text | safe }}
+</div>
+
+{% if classlessonstep.material %}
+
+    {% with material=classlessonstep.material %}
+
+        {% if classlessonstep.material.pdf_viewer %}
+            <object data="{{ classlessonstep.material.file.url }}"
+                    type="application/pdf" width="100%" height="800px">
+            </object>
+        {% endif %}
+
+    {% endwith %}
+
+{% endif %}
+

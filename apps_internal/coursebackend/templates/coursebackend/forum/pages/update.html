@@ -5,8 +5,16 @@
     <div class="row classroom_background">
         <div class="sixteen wide column">
 
-            {% include 'coursebackend/forum/fragments/_breadcrumbs.html' %}
+            <div class="ui large breadcrumb" id ="page-breadcrumb">
 
+                {% include 'coursebackend/forum/fragments/_breadcrumbs.html' %}
+                <i class="right chevron icon divider"></i>
+                <a class="item">
+                    ändern
+                </a>
+
+            </div>
+                
         </div>
     </div>
 
@@ -14,7 +22,9 @@
         <div class="sixteen wide column">
 
             {% include 'coursebackend/forms/update_create/_forum.html' %}
-
+                <a class="item">
+                    ändern
+                </a>
         </div>
     </div>
 

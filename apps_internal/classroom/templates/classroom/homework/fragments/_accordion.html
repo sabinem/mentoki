@@ -1,0 +1,45 @@
+
+{{ classlessonstep.lesson_nr }}
+<div class="ui styled fluid accordion">
+  <div class="title">
+        <i class="dropdown icon"></i>
+        <a href="{{ lesson_url }}">
+       {{ classlessonstep.lesson_nr }}
+       {{ classlessonstep.title }}
+        </a>
+      </div>
+  <div class="content">
+    {% if classlessonstep.material %}
+        <a href="{{ classlessonstep.material.file.url }}">
+            <i class="icon file"></i>
+        </a>
+
+        {% if classlessonstep.material.pdf_download_link %}
+            <a href="{% url 'download' slug=classlessonstep.material.slug %}">
+                <i class="download icon blue"></i>
+            </a>
+        {% endif %}
+        <div class="froala-view">
+
+            {{ classlessonstep.text | safe }}
+        </div>
+
+    {% endif %}
+
+{% if classlessonstep.material %}
+
+    {% with material=classlessonstep.material %}
+
+        {% if classlessonstep.material.pdf_viewer %}
+            <object data="{{ classlessonstep.material.file.url }}"
+                    type="application/pdf" width="100%" height="800px">
+            </object>
+        {% endif %}
+
+    {% endwith %}
+
+{% endif %}
+
+  </div>
+
+</div>

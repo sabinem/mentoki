@@ -20,10 +20,14 @@ from apps_data.courseevent.models.courseevent import CourseEvent, CourseEventPar
 class AnnouncementManager(models.Manager):
 
     def published(self, courseevent):
-        return self.filter(courseevent=courseevent, published=True).order_by('published_at')
+        return self.filter(courseevent=courseevent,
+                           published=True,
+                           archive=False
+                           ).order_by('-published_at')
 
     def unpublished(self, courseevent):
-        return self.filter(courseevent=courseevent, published=False).order_by('created')
+        return self.filter(courseevent=courseevent, published=False).\
+            order_by('-created')
 
     def create(self, courseevent, text, title, published=False):
         announcement = Announcement(courseevent=courseevent,
@@ -36,14 +40,8 @@ class AnnouncementManager(models.Manager):
 def send_announcement(announcement, courseevent, module):
     participants_emails = \
         CourseEventParticipation.objects.learners_emails(courseevent=courseevent)
-    send_to_class = ",".join(participants_emails)
-    print "============================="
-    print send_to_class
-    sent_to_test = "maennel@me.com , sabine.maennel@gmail.com"
+    send_to_class = ", ".join(participants_emails)
     courseemail = courseevent.email
-    print "=========="
-    print courseemail
-    sent_to_test2="sabine@mentoki.com"
     context = {
         'courseevent': courseevent,
         'title': announcement.title,
@@ -64,6 +62,10 @@ def send_announcement(announcement, courseevent, module):
     to_mentoki.reply_to = courseemail
     to_mentoki.app = module
     to_mentoki.save()
+
+    message = u"""Die Ank\u00fcndigung wurde an die Teilnehmer: %s verschickt. Ausserdem ging
+    eine Kopie an die Kursleitung: %s verschickt.""" % (send_to_class, courseemail)
+    return message
 
 
 class Announcement(TimeStampedModel):
@@ -86,6 +88,9 @@ class Announcement(TimeStampedModel):
         verbose_name=_("veröffentlicht am"),
         monitor='published',
         when=[True])
+    archive=models.BooleanField(
+        verbose_name=_("archivieren"),
+        default=False)
 
     objects = AnnouncementManager()
 
@@ -98,11 +103,4 @@ class Announcement(TimeStampedModel):
                                'slug':self.slug,
                                'pk':self.pk})
 
-    def save(self, *args, **kwargs):
-        module = self.__module__
-        courseevent = self.courseevent
-        if self.published:
-            send_announcement( announcement=self, courseevent=courseevent, module=module,)
-
-        super(Announcement, self).save(*args, **kwargs)
 

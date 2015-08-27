@@ -68,8 +68,8 @@ urlpatterns += i18n_patterns('',
     url(r'^accounts/',
         include('accounts.urls')),
 
-    url(r'^customer/',
-        include('customer.urls')),
+    #url(r'^customer/',
+    #    include('customers.urls')),
 )
 
 # Data urls

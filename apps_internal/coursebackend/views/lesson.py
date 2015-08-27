@@ -268,7 +268,7 @@ class LessonStepCreateView(
             title=form.cleaned_data['title'],
             description=form.cleaned_data['description'],
             text=form.cleaned_data['text'],
-            materials=form.cleaned_data['materials'],
+            material=form.cleaned_data['material'],
             nr=form.cleaned_data['nr'],
             parent=form.cleaned_data['parent']
         )

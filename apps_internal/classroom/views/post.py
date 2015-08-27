@@ -39,7 +39,7 @@ class PostCreateView(
         forum = get_object_or_404(Forum, pk=thread.forum_id)
 
         context['thread'] = thread
-        context['breadcrumbs'] = forum.get_ancestors(include_self=True)
+        context['breadcrumbs'] = forum.get_published_breadcrumbs_with_self
         context['posts'] = Post.objects.filter(thread_id=self.kwargs['pk'])
 
         return context

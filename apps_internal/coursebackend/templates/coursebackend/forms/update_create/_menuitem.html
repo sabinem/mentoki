@@ -7,50 +7,72 @@
 
   {% include 'coursebackend/forms/fragments/_form_non_field_errors.html' %}
 
+  <div class="ui dividing medium header">Menüeintrags-Art</div>
     {% if form.item_type.errors %}
         <div class="ui negative floating message">
             {{ form.item_type.errors }}
         </div>
     {% endif %}
+    <div class="ui list">
+      <div class="item">
+        <i class="users icon"></i>
+        <div class="content">
+          Link zur Teilnehmerliste
+        </div>
+      </div>
+      <div class="item">
+        <i class="announcement icon"></i>
+        <div class="content">
+          Link zu den Ankündigungen
+        </div>
+      </div>
+      <div class="item">
+        <i class="write icon"></i>
+        <div class="content">
+          Link zu einer Aufgabe
+        </div>
+      </div>
+      <div class="item">
+        <i class="privacy icon"></i>
+        <div class="content">
+          Link zum Privatbereich der Teilnehmer
+        </div>
+      </div>
+      <div class="item">
+        <i class="sidebar icon"></i>
+        <div class="content">
+          Link zu den neuesten Forumsbeiträgen
+        </div>
+      </div>
+      <div class="item">
+        <i class="share icon"></i><i class="student icon"></i>
+        <div class="content">
+          <span class="published_in_class">Lektion veröffentlichen</span>
+        </div>
+      </div>
+      <div class="item">
+        <i class="share icon"></i> <i class="comment outline icon"></i>
+        <div class="content">
+          <span class="published_in_class">Forum veröffentlichen</span>
+        </div>
+      </div>
+      <div class="item">
 
-  <div class="inline fields">
+        <div class="content">
+          Überschrift (ohne Link!)
+        </div>
+      </div>
+
+    </div>
+
     <div class="field sixteen wide">
-      <label>{{ form.item_type.label_tag }}</label>
-      {{ form.item_type.help_text }}
       {{ form.item_type }}
     </div>
-  </div>
 
-    {% if form.display_nr.errors %}
-        <div class="ui negative floating message">
-            {{ form.display_nr.errors }}
-        </div>
-    {% endif %}
 
-  <div class="inline fields">
-    <div class="field sixteen wide">
-      <label>{{ form.dispaly_nr.label_tag }}</label>
-      {{ form.display_nr.help_text }}
-      {{ form.display_nr}}
-    </div>
-  </div>
+<div class="ui dividing medium header">Link zu:</div>
 
-<div class="ui dividing large header">Menüeintrag</div>
-
-    {% if form.display_title.errors %}
-        <div class="ui negative floating message">
-            {{ form.display_title.errors }}
-        </div>
-    {% endif %}
-
-    <div class="inline fields">
-      <div class="field sixteen wide">
-          <label>{{ form.display_title.label_tag }}</label>
-          {{ form.display_title }}
-      </div>
-    </div>
-
-<div class="ui dividing large header">Link zu:</div>
+<p>In Abhängigkeit zur Eintragsart auswählen!</p>
 
     {% if form.classlesson.errors %}
         <div class="ui negative floating message">
@@ -58,18 +80,8 @@
         </div>
     {% endif %}
     <div class="field">
-        <label>{{ form.classlesson.label_tag }}</label>
+        <p>Lektion, wenn die Eintragsart "Lektion veröffentlichen" ist</p>
         {{ form.classlesson }}
-    </div>
-
-    {% if form.homework.errors %}
-        <div class="ui negative floating message">
-            {{ form.homework.errors }}
-        </div>
-    {% endif %}
-    <div class="field">
-        <label>{{ form.homework.label_tag }}</label>
-        {{ form.homework }}
     </div>
 
     {% if form.forum.errors %}
@@ -78,39 +90,82 @@
         </div>
     {% endif %}
     <div class="field">
-        <label>{{ form.forum.label_tag }}</label>
+        <p>Forum, wenn die Eintragsart "Forum veröffentlichen" ist</p>
         {{ form.forum }}
     </div>
 
-<div class="ui dividing large header">Startitem wählen:</div>
-
-    {% if form.active.errors %}
+    {% if form.homework.errors %}
         <div class="ui negative floating message">
-            {{ form.active.errors }}
+            {{ form.homework.errors }}
         </div>
     {% endif %}
+    <div class="field">
+        <p>Aufgabe, wenn die Eintragsart "Link zu Aufgabe" ist.
+        Aufgaben sind Teil einer Lektion und auch ohne Einzellink im Klassenzimmer
+        zugänglich.
+        </p>
+        {{ form.homework }}
+    </div>
+
+    <div class="ui dividing medium header">Beschriftung des Eintrags und Anzeigeposition</div>
+
+    {% if form.display_nr.errors %}
+        <div class="ui negative floating message">
+            {{ form.display_nr.errors }}
+        </div>
+    {% endif %}
+    {% if form.display_title.errors %}
+        <div class="ui negative floating message">
+            {{ form.display_title.errors }}
+        </div>
+    {% endif %}
+
+  <div class="inline fields">
+    <div class="field five wide">
+      {{ form.display_nr }}
+    </div>
+    <div class="field eleven wide">
+      {{ form.display_title }}
+    </div>
+  </div>
+
+
+<div class="ui dividing large header">Bedeutung des Links</div>
 
     {% if form.is_start_item.errors %}
         <div class="ui negative floating message">
             {{ form.is_start_item.errors }}
         </div>
     {% endif %}
-
-      <div class="field eigth wide">
-          <label>{{ form.is_start_item.label_tag }}</label>
-          {{ form.is_start_item.help_text }}
+    <div class="fields inline">
+      <div class="field sixteen wide">
+          Soll der Eintrag zum Startpunkt im Klassenzimmer werden? (maximal 1 Eintrag)
           {{ form.is_start_item }}
       </div>
+    </div>
 
-      <div class="field eigth wide">
-          <label>{{ form.active.label_tag }}</label>
-          {{ form.active.help_text }}
-          {{ form.active }}
+    {% if form.is_shortlink.errors %}
+        <div class="ui negative floating message">
+            {{ form.is_shortlink.errors }}
+        </div>
+    {% endif %}
+    <div class="fields inline">
+      <div class="field sixteen wide">
+          Soll der Eintrag im Kurzmenü verfügbar sein (maximal 8 Einträge?)
+          {{ form.is_shortlink }}
       </div>
+    </div>
 
     <button type="submit" value="post" class="ui button">
         Speichern
     </button>
+    {% if form.instance.delete_possible %}
+
+        <a href="{{ delete_url }}" class="ui button" >
+            Löschen
+        </a>
+
+    {% endif %}
 
     <a href="{{ back_url }}" class="ui button" >
         Abbrechen

@@ -1,31 +1,34 @@
 <div class="ui header medium">
     {{ lessonstep.lesson_nr }} {{ lessonstep.title }}
-</div>
-{{ lessonstep.text | safe }}
 
-{% for material in lessonstep.materials.all %}
+    {% if lessonstep.material %}
+        <a href="{{ lessonstep.material.file.url }}">
+            <i class="icon file"></i>
+        </a>
 
-    <div class="ui header large">
-        {{ material.title }}
-
-        {% if material.file %}
-            <a href="{{ material.file.url }}">
-                <i class="icon file"></i>
+        {% if lessonstep.material.pdf_download_link %}
+            <a href="{% url 'download' slug=lessonstep.material.slug %}">
+                <i class="download icon blue"></i>
             </a>
-
-            {% if material.pdf_download_link %}
-                <a href="{% url 'download' slug=material.slug %}">
-                    <i class="download icon blue"></i>
-                </a>
-            {% endif %}
-
         {% endif %}
-
-    </div>
-
-    {% if material.pdf_viewer %}
-        <object data="{{ material.file.url }}" type="application/pdf" width="100%" height="800px">
-        </object>
     {% endif %}
 
-{% endfor %}
+</div>
+
+<div class="froala-view">
+{{ lessonstep.text | safe }}
+</div>
+
+{% if lessonstep.material %}
+
+    {% with material=lessonstep.material %}
+
+        {% if lessonstep.material.pdf_viewer %}
+            <object data="{{ lessonstep.material.file.url }}"
+                    type="application/pdf" width="100%" height="800px">
+            </object>
+        {% endif %}
+
+    {% endwith %}
+
+{% endif %}

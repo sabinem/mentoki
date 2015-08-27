@@ -50,7 +50,7 @@ class ClassroomStartView(
 
         elif startitem.item_type == ClassroomMenuItem.MENU_ITEM_TYPE.lesson_item:
             kwargs['pk'] = startitem.classlesson_id
-            url = reverse('classroom:lesson:lesson_detail', args=args, kwargs=kwargs)
+            url = reverse('classroom:classlesson:lesson', args=args, kwargs=kwargs)
             return url
 
         elif startitem.item_type == ClassroomMenuItem.MENU_ITEM_TYPE.participants_item:

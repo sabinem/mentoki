@@ -13,7 +13,7 @@ class MaterialForm(forms.ModelForm):
 
     class Meta:
         model = Material
-        fields = ('title', 'description', 'document_type', 'pdf_download_link', 'pdf_viewer', 'pdf_link', 'file')
+        fields = ('title', 'description', 'document_type', 'pdf_download_link', 'pdf_viewer', 'file')
 
     def clean_document_type(self):
         document_type = self.cleaned_data["document_type"]

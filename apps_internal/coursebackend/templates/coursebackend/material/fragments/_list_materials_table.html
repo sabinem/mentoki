@@ -39,12 +39,7 @@ for list
                 </td>
 
                 <td>
-                    {% comment %}
-                    {{ material.file  }}<br>
-                    <a href="{{ download_url }}">
-                        {{ material.slug  }}
-                    </a><br>
-                    {% endcomment %}
+
                     {% if material.file %}
 
                         <p>
@@ -75,18 +70,21 @@ for list
 
                         {% for lesson in material.lesson_set.all %}
 
-                          {% url 'coursebackend:lesson:step' course_slug=cs pk=lesson.pk as lesson_update_url %}
+                              {% url 'coursebackend:lesson:step' course_slug=cs pk=lesson.pk as lesson_url %}
 
-                          {% if not lesson.courseevent_id %}
-
-                              <a href="{{ lesson_update_url }}" class="item">
+                              <a href="{{ lesson_url }}" class="item">
                                   {{ lesson.lesson_nr }} {{ lesson.title }}
                               </a>
+                        {% endfor %}
 
-                          {% endif %}
+                        {% for classlesson in material.classlesson_set.all %}
 
-                        {% empty %}
-                          -
+                              {% url 'coursebackend:classlesson:step' course_slug=cs slug=classlesson.courseevent.slug pk=classlesson.pk as classlesson_url %}
+
+                              <a href="{{ classlesson_url }}" class="item published_in_class">
+                                  {{ classlesson.lesson_nr }} {{ classlesson.title }}
+                              </a>
+
                         {% endfor %}
 
                     </div>

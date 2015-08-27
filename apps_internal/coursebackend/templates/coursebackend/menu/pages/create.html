@@ -1,15 +1,5 @@
 {% extends "coursebackend/base_courseevent.html" %}
 
-{% block courseevent_menu_items %}
-
-    {% url 'coursebackend:menu:list' course_slug=cs slug=es as list_url %}
-
-    <a class="item" href="{{ list_url }}">
-        <i class="list icon blue"></i>Link-Liste
-    </a>
-
-{% endblock %}
-
 {% block page_content %}
 
     <div class="row coursebackend_background">

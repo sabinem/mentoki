@@ -25,5 +25,5 @@ class ClassLessonAdmin(admin.ModelAdmin):
     ClassLessons are copied into the courseevent from a lesson
     They can be further adapted in the courseevent.
     """
-    list_display = ('id', 'courseevent', 'lesson_nr', 'title', 'published', 'org_lesson_id', 'modified', 'created', 'lesson_type', 'level')
+    list_display = ('id', 'courseevent', 'lesson_nr', 'title', 'published', 'modified', 'created', 'lesson_type', 'level')
     list_filter = ('courseevent', 'level', 'modified')

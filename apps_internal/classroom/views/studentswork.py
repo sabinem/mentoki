@@ -11,7 +11,7 @@ from apps_data.courseevent.models.homework import StudentsWork
 from apps_data.courseevent.models.courseevent import CourseEvent
 
 from .mixins.base import ClassroomMenuMixin
-from ..forms.studentswork import StudentWorkForm, StudentWorkAddTeamForm
+from ..forms.studentswork import StudentWorkCreateForm, StudentWorkAddTeamForm, StudentWorkUpdateForm
 
 
 class StudentsWorkRedirectMixin(
@@ -56,7 +56,7 @@ class StudentsWorkUpdateView(
     updates a students work object
     """
     model = StudentsWork
-    form_class = StudentWorkForm
+    form_class = StudentWorkUpdateForm
     context_object_name ='studentswork'
 
 
@@ -79,7 +79,7 @@ class StudentsWorkCreateView(
     creates a students work object
     """
     model = StudentsWork
-    form_class = StudentWorkForm
+    form_class = StudentWorkCreateForm
     context_object_name ='studentswork'
 
     def form_valid(self, form):

@@ -1,0 +1,30 @@
+
+<div class="ui divided list">
+
+    {% for item in forum_items %}
+
+        {% url "classroom:forum:detail" slug=es pk=item.forum_id as forum_url %}
+
+        <div class="item">
+            <i class="top aligned folder outline icon"></i>
+            <div class="content">
+                <div class="header">
+                <a href="{{ forum_url }}">
+                   {{ item.forum.title }}
+                    {% if item.forum.can_have_threads %}
+                        <div class="ui circular label">
+                            {{ item.forum.thread_count }}
+                        </div>
+                    {% endif %}
+                </a>
+                </div>
+                <div class="description">
+                    {{ item.forum.description }}
+                </div>
+
+            </div>
+        </div>
+
+    {% endfor %}
+
+</div>

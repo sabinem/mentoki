@@ -58,6 +58,7 @@ INSTALLED_APPS = (
     'django_markdown',
 
     'accounts',
+    #'customers',
 
     'apps_core.core',
 
@@ -288,13 +289,4 @@ LOGIN_URL = reverse_lazy("login")
 LOGIN_REDIRECT_URL = reverse_lazy("desk:start")
 LOGOUT_URL = reverse_lazy("home:home")
 
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
-    'PAGE_SIZE': 10
-}
 
-BRAINTREE = {
-    'merchant_id': "7wm3vzggc9cqyyt8",
-    'public_key': "qzqfmvkbjcwbf73m",
-    'private_key': "8888fe3713e334e3621f4360ea1c7c4f"
-}

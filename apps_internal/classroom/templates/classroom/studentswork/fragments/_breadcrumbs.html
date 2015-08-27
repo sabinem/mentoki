@@ -1,0 +1,16 @@
+
+{% url 'classroom:studentswork:list' slug=es as start_url %}
+
+<a class="item" href="{{ start_url }}">
+    <span style="color:teal;">Privater Arbeitsbereich</span>
+</a>
+
+
+<i class="right chevron icon divider"></i>
+{% if studentswork.pk %}
+<a class="item">
+    {{ studentswork.homework }}
+</a>
+
+<i class="right chevron icon divider"></i>
+{% endif %}

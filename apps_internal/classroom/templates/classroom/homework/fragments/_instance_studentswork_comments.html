@@ -1,9 +1,37 @@
+{% url 'classroom:homework:comment' slug=es pk=homework.pk work_pk=studentswork.pk as comment_url %}
+
 <h4 class="ui horizontal divider header">
     <i class="comments outline icon"></i>
-    Der Kommentar
+    Kommentare
 </h4>
-{{ studentswork.comments | safe }}
-<a class="ui button"
-    href="{% url 'classroom:homework:comments' slug=courseevent.slug pk=homework.pk work_pk=studentswork.pk  %}">
+
+
+<div class="ui comments">
+
+    {% for comment in comments %}
+
+        <div class="comment">
+
+            <div class="content">
+
+                <a class="author">{{ comment.author }}: {{ comment.title }}</a>
+
+                <div class="metadata">
+                    <span class="date">{{ comment.created }}</span>
+                </div>
+
+                <div class="text">
+                    {{ comment.text | safe }}
+                </div>
+
+            </div>
+
+        </div>
+
+    {% endfor %}
+
+</div>
+
+<a href="{{ comment_url }}" class="ui button">
     <i class="write icon blue"></i>Kommentar anfügen?
 </a>

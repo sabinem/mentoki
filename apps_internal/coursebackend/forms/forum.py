@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import get_object_or_404
+from django.core.validators import ValidationError
 
 import floppyforms.__future__ as forms
 
@@ -27,3 +28,10 @@ class ForumForm(forms.ModelForm):
 
         self.fields["parent"].queryset = \
             Forum.objects.forums_for_courseevent(courseevent=self.courseevent)
+
+    def clean_can_have_threads(self):
+        if not self.cleaned_data['can_have_threads']:
+            if self.instance.pk and self.instance.thread_count > 0:
+                raise ValidationError('''Dieses Forum hat bereits Beiträge,
+                deshalb müssen Beiträge erlaubt bleiben.''')
+        return self.cleaned_data['can_have_threads']

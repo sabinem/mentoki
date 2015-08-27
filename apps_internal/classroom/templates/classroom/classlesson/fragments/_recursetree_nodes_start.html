@@ -3,22 +3,23 @@
 
     {% recursetree nodes %}
 
+        {% url "classroom:classlesson:lesson" slug=cs pk=node.pk as lesson_url %}
+        {% url "classroom:classlesson:step" slug=cs pk=node.pk as lessonstep_url %}
+
         <div class="item">
-            {% if node.level == 1 %}
-                <i class="ui header medium top aligned icon">{{ node.lesson_nr }}</i>
-            {% else %}
-                <i class="top aligned icon">{{ node.lesson_nr }}</i>
-            {% endif %}
+
+            <i class="top aligned icon">{{ node.lesson_nr }}</i>
+
             <div class="content">
 
                 {% if node.level == 1 %}
                     <a class="ui medium header"
-                       href="{% url "classroom:lesson:lesson_detail" slug=courseevent.slug pk=node.pk %}">
+                       href="{{ lesson_url }}">
                        {{ node.title }}
                     </a>
-                {% else %}
+                {% elif node.level == 2 %}
                     <a class="header"
-                       href="{% url "classroom:lesson:lesson_detail" slug=courseevent.slug pk=node.pk %}">
+                       href="{{ lessonstep_url }}">
                        {{ node.title }}
                     </a>
                 {% endif %}

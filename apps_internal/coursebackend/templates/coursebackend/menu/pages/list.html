@@ -3,9 +3,14 @@
 {% block courseevent_menu_items %}
 
     {% url 'coursebackend:menu:preview' course_slug=cs slug=es as preview_url %}
+    {% url 'coursebackend:menu:sort' course_slug=cs slug=es as sort_url %}
 
     <a class="item" href="{{ preview_url }}">
-        <i class="unhide icon blue"></i><i class="write icon blue"></i>Menü bearbeiten
+        <i class="unhide icon blue"></i>Bearbeiten
+    </a>
+
+    <a class="item" href="{{ sort_url }}">
+        <i class="share icon blue"></i>Sortieren
     </a>
 
 {% endblock %}
@@ -33,13 +38,12 @@
         <div class="sixteen wide column">
 
             {% include 'base/fragments/_messages.html' %}
-
+            <div class="ui info floating message">
+            <p>Das Menü steuert welche Foren und Lektionen im Klassenzimmer
+               sichtbar sind. Diese Liste gibt einen schnellen Überblick darüber:</p>
+            </div>
             {% include 'coursebackend/menu/fragments/_lessonitems_table.html' %}
-
-            {% include 'coursebackend/menu/fragments/_homeworkitems_table.html' %}
             {% include 'coursebackend/menu/fragments/_forumitems_table.html' %}
-            {% include 'coursebackend/menu/fragments/_listitems_table.html' %}
-
         </div>
     </div>
 

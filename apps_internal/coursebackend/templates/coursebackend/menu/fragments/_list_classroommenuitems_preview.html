@@ -15,25 +15,24 @@ for update / insert and detail and preview
 
     {% for menuitem in classroommenuitems %}
 
-        {% url 'coursebackend:menu:update' pk=menuitem.pk course_slug=cs slug=es as list_update_url %}
-        {% url 'coursebackend:menu:delete' pk=menuitem.pk course_slug=cs slug=es as list_delete_url %}
+        {% url 'coursebackend:menu:update' pk=menuitem.pk course_slug=cs slug=es as update_url %}
+        {% url 'coursebackend:menu:delete' pk=menuitem.pk course_slug=cs slug=es as delete_url %}
 
         {% if menuitem.item_type == menuitem.MENU_ITEM_TYPE.header_item %}
 
-            <a href="{{ list_update_url }}" class="item header
+            <a href="{{ update_url }}" class="item header
             {% if menuitem.pk == object.pk %}active{% endif %}">
 
                 {% if menuitem.pk != object.pk %}
                     <i class="write blue icon"></i>
                 {% endif %}
-                ({{ menuitem.display_nr }})
-                {{ menuitem.display_title }}
 
+                {{ menuitem.display_title }}
             </a>
 
         {% else %}
 
-            <a href="{{ list_update_url }}" class="item
+            <a href="{{ update_url }}" class="item
             {% if menuitem.pk == object.pk %}active{% endif %}">
 
                 {% if menuitem.pk != object.pk %}
@@ -46,27 +45,25 @@ for update / insert and detail and preview
                     <i class="red icon circle"></i>
                 {% endif %}
 
-                {% if menuitem.active %}
-                    <i class="green icon circle outline"></i>
+                {% if menuitem.is_shortlink %}
+                    <i class="teal icon circle outline"></i>
                 {% endif %}
 
-                <div class="meta" style="font-size:0.9em;">
-                    ({{ menuitem.display_nr }}:
-                    {{ menuitem.get_item_type_display }})
-                    <br>
-                    {% if menuitem.is_object_link %}
-
-                        {% if menuitem.item_type == menuitem.MENU_ITEM_TYPE.forum_item %}
-                            {{ menuitem.forum }}
-                        {% elif menuitem.item_type == menuitem.MENU_ITEM_TYPE.lesson_item %}
-                            {{ menuitem.classlesson }}
-                        {% elif menuitem.item_type == menuitem.MENU_ITEM_TYPE.homework_item %}
-                            {{ menuitem.homework }}
-                        {% endif %}
-
-                    {% endif %}
-
-                </div>
+               {% if menuitem.item_type == menuitem.MENU_ITEM_TYPE.forum_item %}
+                    <i class="icon comments outline"></i>
+               {% elif menuitem.item_type == menuitem.MENU_ITEM_TYPE.lesson_item %}
+                    <i class="icon student"></i>
+               {% elif menuitem.item_type == menuitem.MENU_ITEM_TYPE.participants_item %}
+                    <i class="icon users"></i>
+               {% elif menuitem.item_type == menuitem.MENU_ITEM_TYPE.homework_item %}
+                    <i class="icon write"></i>
+               {% elif menuitem.item_type == menuitem.MENU_ITEM_TYPE.last_posts_item %}
+                    <i class="icon sidebar"></i>
+               {% elif menuitem.item_type == menuitem.MENU_ITEM_TYPE.announcements_item %}
+                    <i class="icon announcement"></i>
+               {% elif menuitem.item_type == menuitem.MENU_ITEM_TYPE.private_item %}
+                    <i class="icon privacy"></i>
+               {% endif %}
 
             </a>
 

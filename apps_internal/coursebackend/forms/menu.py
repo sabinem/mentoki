@@ -20,7 +20,7 @@ class MenuItemForm(forms.ModelForm):
         model = ClassroomMenuItem
         fields = ('display_nr', 'display_title', 'item_type',
                   'classlesson', 'forum', 'homework',
-                  'is_start_item', 'active')
+                  'is_start_item', 'is_shortlink')
 
     def __init__(self, *args, **kwargs):
         courseevent_slug = kwargs.pop('courseevent_slug', None)

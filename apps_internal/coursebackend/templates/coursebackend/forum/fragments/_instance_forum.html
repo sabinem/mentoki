@@ -1,2 +1,15 @@
-<div class="ui header">{{ forum.title }}</div>
+{% url 'classroom:forum:detail' slug=es pk=forum.pk as class_url %}
+
+<div class="ui header">
+   {% include 'coursebackend/forum/fragments/_instance_hode_header.html' with node=forum %}
+</div>
+
 {{ forum.text | safe }}
+
+<div class="ui dividing medium header">Beiträge </div>
+
+{% if forum.can_have_threads %}
+    <p>Beiträge sind in diesem Forum erlaubt.</p>
+{% else %}
+    <p>Dieses Forum wurde als Strukturelement angelegt, das keine eigenen Beiträge hat.</p>
+{% endif %}

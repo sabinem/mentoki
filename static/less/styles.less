@@ -13,6 +13,7 @@
 @classroom_backend_active_color:#aeb3a4;
 
 @classroom_active_color:#d3bba5;
+@mentoki_green:#19AAA6;
 @classroom_lightblue_color:#f6fafd;
 @homepage_toolbox_background_color: #ece9e4;
 
@@ -609,9 +610,12 @@ object.htmlembed {
   .coursebackend_background {background:#ebdfd7; background:#cbd5ef;background:#f7fafe;}
   .coursebackend_emphasis {background:@classroom_backend_active_color;}
   .ui.menu .active.item.active{background:#ebc7a6;}
+
   .published_in_class{
-      background:greenyellow;
-  }
+      color:@mentoki_green;}
+
+  #page-breadcrumb{
+      font-size:1em;}
 }
 /* --------------------------------------  */
 /*    plain data                           */
@@ -669,10 +673,3 @@ object.htmlembed {
 /* ------------------------------------------------------------------------  */
 /*    from http://davidwalsh.name/mootools-drag-ajax                         */
 /* ------------------------------------------------------------------------- */
-#sortable-list		{ padding:0; }
-#sortable-list li	{ padding:4px 8px; color:#000;
-    cursor:move; list-style:none;
-    width:500px; background:#ddd; margin:10px 0; border:1px solid #999; }
-#message-box		{ background:#fffea1;
-    border:2px solid #fc0;
-    padding:4px 8px; margin:0 0 14px 0; width:500px; }

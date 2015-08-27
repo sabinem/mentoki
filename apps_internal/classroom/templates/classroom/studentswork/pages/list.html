@@ -1,20 +1,24 @@
 {% extends "classroom/base.html" %}
 
-{% block controls %}
-    {% include 'classroom/_control_fulltext.html' %}
-    {% include 'classroom/_control_worklinks.html' %}
+{% block classroom_menu_items %}
     {% include 'classroom/studentswork/fragments/_link_create_studentswork.html' %}
 {% endblock %}
-
-{% block page_subsection %}
-    {% include 'classroom/studentswork/fragments/_link_subsection.html' %}
-{% endblock %}
-
-{% block page_subsection_css_id %}studentswork{% endblock %}
 
 {% block page_content %}
 
     <div class="row classroom_background">
+        <div class="sixteen wide column">
+
+            <div class="ui large breadcrumb" id ="page-breadcrumb">
+
+                {% include 'classroom/studentswork/fragments/_breadcrumbs.html' %}
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row classroom_white">
         <div class="sixteen wide column">
 
             {% include 'classroom/studentswork/fragments/_list_studentsworks.html' %}

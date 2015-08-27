@@ -1,17 +1,16 @@
 {% load activelink %}
 
-<div class="ui popup bottom left transition hidden"
-     style="top: 555px; left: 1px; bottom: auto; right: auto; width: 300px;">
+<div class="ui popup bottom fluid left transition hidden">
 
-    <div class="ui one column relaxed divided grid">
+    <div class="ui one column relaxed grid">
 
-        <div class="column">
+        <div class="column sixteen wide">
 
             <h4 class="ui header" id="coursebackend_menu_header">Kursereignis {{ courseevent }}</h4>
 
             <div class="ui link list">
 
-                {% for item in menu_items_active %}
+                {% for item in menu_items_shortlinks %}
 
                      {% include 'classroom/_item_menu_representation.html' %}
 

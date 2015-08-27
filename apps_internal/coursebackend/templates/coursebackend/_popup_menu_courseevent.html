@@ -15,8 +15,7 @@
 {% url 'coursebackend:material:list' course_slug=cs as material_url %}
 {% url 'classroom:start' slug=es as classroom_url %}
 
-<div class="ui popup bottom left transition hidden"
-     style="top: 555px; left: 1px; bottom: auto; right: auto; width: 500px;">
+<div class="ui popup bottom fluid left transition hidden">
 
     <div class="ui one column relaxed divided grid">
 
@@ -60,10 +59,6 @@
 
                 <a href="{{ classlesson_url }}" class="item" >
                     Unterricht
-                </a>
-
-                <a href="{{ lessoncopy_url }}" class="item" >
-                    Kopieren
                 </a>
 
                 <a href="{{ lesson_url }}" class="item" >

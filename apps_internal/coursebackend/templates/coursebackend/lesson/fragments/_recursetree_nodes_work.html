@@ -1,4 +1,5 @@
 {% load mptt_tags %}
+
 <div class="ui divided list">
 
     {% recursetree nodes %}
@@ -9,25 +10,20 @@
 
             <div class="content">
                 <div class="header">
-                <a
-                    {% include 'coursebackend/lesson/fragments/_link_node_detail.html' %}
-                >
-                     {{ node.title }}
-                </a>
+                    <a
+                        {% include 'coursebackend/lesson/fragments/_link_node_detail.html' %}
+                    >
+                         {{ node.title }}
+                    </a>
 
-                {% include 'coursebackend/lesson/fragments/_links_node_update.html' %}
+                    {% include 'coursebackend/lesson/fragments/_links_node_update.html' %}
+                    {% if node.material %}
 
-                {% if node.materials.all %}
-                    {% for material in node.materials.all %}
-
-                        {% url 'coursebackend:material:detail' course_slug=cs pk=material.pk as material_url %}
-
-                        <i class="icon file outline "></i>
+                        {% url 'coursebackend:material:update' course_slug=cs pk=node.material_id as material_url %}
                         <a href="{{ material_url }}">
-                        <i class="icon write"></i>
+                            <i class="icon file outline"></i>
                         </a>
-                    {% endfor %}
-                {% endif %}
+                    {% endif %}
                 </div>
                 {% if node.decription != "" %}
                     {{ node.description }}
