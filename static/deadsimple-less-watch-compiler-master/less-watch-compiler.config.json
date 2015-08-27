@@ -1,6 +1,0 @@
-{
-    "defaults": {
-        "watchFolder": "tests/less",
-        "outputFolder": "tests/css"
-    }
-}

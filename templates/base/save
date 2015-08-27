@@ -1,0 +1,42 @@
+{% extends "base/base.html" %}
+
+{% block head %}
+
+    <!-- Meta information -->
+    {% include 'base/fragments/meta/_meta.html' %}
+
+    <!-- CSS -->
+    {% include 'base/fragments/vendor/_semantic_css.html' %}
+    {% include 'base/fragments/custom/_custom_css.html' %}
+
+    <!-- favicon -->
+    {% include 'base/fragments/menu/_favicon.html' %}
+
+
+    {% include 'base/fragments/vendor/_froala_head.html' %}
+
+
+{% endblock %}
+
+{% block bottom_js %}
+    {% include 'base/fragments/vendor/_semantic_js.html' %}
+    {% include 'base/fragments/custom/_custom_js.html' %}
+
+    <!-- Include jQuery. -->
+    <script src="http://code.jquery.com/jquery-1.11.0.js"></script>
+
+    <!-- Include JS files. -->
+    <script src="/static/froala_editor/js/froala_editor.min.js"></script>
+
+    <script>
+        $.Editable.DEFAULTS.key = 'Eif1hsgbcC10obc==';
+    </script>
+    <!-- Initialize the editor. -->
+    <script>
+      $(function() {
+          $('#edit').editable({inlineMode: false})
+      });
+    </script>
+
+
+{% endblock %}
