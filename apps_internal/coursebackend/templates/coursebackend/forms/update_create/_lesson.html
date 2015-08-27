@@ -1,6 +1,10 @@
 {% url 'coursebackend:lesson:start' course_slug=cs as back_url %}
 
 {{ form.media }}
+<script>
+    $.Editable.DEFAULTS.key = 'Eif1hsgbcC10obc==';
+</script>
+
 
 <form class="ui form" method="post" action="#target" onsubmit="return checkForm(this);">
 
