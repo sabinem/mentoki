@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-import django_prices.models
+
 import django.utils.timezone
 from django.conf import settings
 import model_utils.fields
@@ -73,7 +73,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='courseevent',
             name='price',
-            field=django_prices.models.PriceField(decimal_places=2, currency='ECU', max_digits=12, blank=True, null=True, verbose_name='Price'),
+            field=models.DecimalField(null=True, max_digits=12, decimal_places=2, blank=True),
         ),
         migrations.AddField(
             model_name='forum',
