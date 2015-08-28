@@ -17,9 +17,10 @@
             <div class="ui large breadcrumb" id ="page-breadcrumb">
 
                 {% include 'coursebackend/courseowner/fragments/_breadcrumb.html' %}
+                <i class="right chevron icon divider"></i>
 
                 <a class="item">
-                    EinzelAnsicht
+                    {{ courseowner.user.get_full_name }}
                 </a>
 
             </div>

@@ -32,7 +32,7 @@ class MaterialManager(models.Manager):
         :param course:
         :return: all material for a course
         """
-        return self.filter(course=course)
+        return self.filter(course=course).order_by('modified')
 
     def create(self, course, title, file, document_type, description="",
                pdf_download_link=True,
@@ -101,14 +101,14 @@ class Material(TimeStampedModel):
     pdf_download_link = models.BooleanField(
         verbose_name=_('Download-Link anbieten?'),
         help_text=_("""Es wird ein Download-Link angeboten."""),
-        default=False
+        default=True
     )
     pdf_viewer = models.BooleanField(
         verbose_name='Pdf-Viewer anbieten?',
         help_text=_("""Bei Dateityp pdf: Das pdf-Datei ist durch einen Pdf-
         Viewer ind die Webseite integriert, falls das möglich ist (auf dem PC
         zum Beispiel)."""),
-        default=False
+        default=True
     )
     file = ContentTypeRestrictedFileField(
         upload_to=lesson_material_name, verbose_name="Datei",
@@ -130,7 +130,7 @@ class Material(TimeStampedModel):
         verbose_name_plural=_("Materialien")
 
     def __unicode__(self):
-        return u'%s' % (self.file)
+        return u'%s' % (self.title)
 
     def um_id(self):
         if self.unitmaterial:

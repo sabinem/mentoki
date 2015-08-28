@@ -59,6 +59,6 @@ class LessonStepForm(forms.ModelForm):
         self.fields['parent'] = TreeNodeChoiceField(
             queryset=Lesson.objects.lessons_for_course(course=self.course),
             level_indicator=u'+--')
-        self.fields['material'].queryset = Material.objects.filter(course=self.course)
+        self.fields['material'].queryset = Material.objects.materials_for_course(course=self.course)
 
 

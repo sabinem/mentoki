@@ -76,7 +76,7 @@ class CourseEvent(TimeStampedModel):
 
     EVENT_TYPE = Choices(('guided', 'guidedgroup', _('geführter Gruppenkurs')),
                          ('selflearn', 'selflearn', _('Selbstlernen')),
-                         ('coached', 'coached', _('with coaching'))
+                         ('coached', 'coached', _('Selbstlernen mit Unterstützung'))
                         )
     event_type  =  models.CharField(max_length=12, choices=EVENT_TYPE, default=EVENT_TYPE.selflearn)
 
@@ -198,8 +198,9 @@ class CourseEvent(TimeStampedModel):
                                'slug':self.slug})
 
     def clean(self):
-        if not self.start_date > datetime.date.today():
-            raise ValidationError('Startdatum muss in der Zukunft liegen!')
+        if self.start_date:
+            if not self.start_date > datetime.date.today():
+                raise ValidationError('Startdatum muss in der Zukunft liegen!')
 
 
 class ParticipationManager(models.Manager):

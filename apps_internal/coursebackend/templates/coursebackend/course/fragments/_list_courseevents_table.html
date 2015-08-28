@@ -36,16 +36,28 @@ for list
                 <td>
                     {% if courseevent.nr_weeks %}
                        {{ courseevent.nr_weeks }} Wochen
+                    {% elif not courseevent.event_type == courseevent.EVENT_TYPE.guidedgroup %}
+                        n/a
+                    {% else %}
+                        -
                     {% endif %}
                 </td>
                 <td>
-                    {% if courseevent.nr_weeks %}
-                        {{ courseevent.max_participants }} Teilnehmer
+                    {% if courseevent.max_participants %}
+                       {{ courseevent.max_participants }} Teilnehmer
+                    {% elif not courseevent.event_type == courseevent.EVENT_TYPE.guidedgroup %}
+                        n/a
+                    {% else %}
+                        -
                     {% endif %}
                 </td>
                 <td>
                     {% if courseevent.start_date %}
-                        {{ courseevent.start_date }}
+                       {{ courseevent.start_date }}
+                    {% elif not courseevent.event_type == courseevent.EVENT_TYPE.guidedgroup %}
+                        n/a
+                    {% else %}
+                        -
                     {% endif %}
                 </td>
                 <td>

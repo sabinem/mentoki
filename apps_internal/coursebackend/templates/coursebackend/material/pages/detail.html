@@ -1,5 +1,9 @@
 {% extends "coursebackend/base_course.html" %}
 
+{% block course_menu_items %}
+   {% include 'coursebackend/material/fragments/_material_create.html' %}
+{% endblock %}
+
 {% block page_content %}
 
     <div class="row coursebackend_course">
@@ -8,9 +12,9 @@
             <div class="ui large breadcrumb" id ="page-breadcrumb">
 
                 {% include 'coursebackend/material/fragments/_breadcrumbs.html' %}
-
+                {% include 'base/fragments/_messages.html' %}
                 <a class="item">
-                    Einzelansicht
+                    {{ material }}
                 </a>
 
             </div>

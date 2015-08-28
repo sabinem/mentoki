@@ -34,8 +34,9 @@ class MaterialRedirectMixin(object):
        """
        for create update and delete view
        """
-       return reverse_lazy('coursebackend:material:list',
-                           kwargs={'course_slug': self.kwargs['course_slug']})
+       return reverse_lazy('coursebackend:material:detail',
+                           kwargs={'course_slug': self.kwargs['course_slug'],
+                                   'pk': self.object.pk })
 
 
 class MaterialListView(
@@ -101,7 +102,7 @@ class MaterialCreateView(
     def form_valid(self, form):
 
         course = get_object_or_404(Course, slug=self.kwargs['course_slug'])
-        material = Material.objects.create(
+        self.object = Material.objects.create(
             course=course,
             title=form.cleaned_data['title'],
             description=form.cleaned_data['description'],

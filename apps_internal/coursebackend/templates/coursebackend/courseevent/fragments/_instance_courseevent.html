@@ -22,13 +22,49 @@ for detail
 {% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="video_url" as update_video_url %}
 {% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="format" as update_format_url %}
 
+<div class="ui large header">
+   {{ courseevent.title }}
+</div>
 
-<div class="ui header huge">
-    Kurs {{ courseevent.title }}
+<div class="ui list">
+  <div class="item">
+    <i class="icon">Kursart: </i>
+    <div class="content">
+      {{ courseevent.get_event_type_display }}
+    </div>
+  </div>
+  <div class="item">
+    <i class="icon">Status:</i>
+    <div class="content">
+    Interner Status
+    <a href="{{ update_internal_url }}" class="item">
+       <i class="write blue icon"></i>
+    </a>
+    </div>
+  </div>
+  <div class="item">
+    <i class="icon">Preis</i>
+    <div class="content">
+      {{ courseevent.price }}
+    </div>
+  </div>
+
+  <div class="item">
+    <i class="marker icon"></i>
+    <div class="content">
+      Maximale Teilnehmerzahl
+    </div>
+  </div>
+  <div class="item">
+    <i class="mail icon"></i>
+    <div class="content">
+      Kursart
+    </div>
+  </div>
 </div>
 
 <h3 class="ui header">
-    Titel
+    Wochenanzahl
     <a href="{{ update_title_url }}" class= "item">
        <i class="write blue icon"></i>
     </a>

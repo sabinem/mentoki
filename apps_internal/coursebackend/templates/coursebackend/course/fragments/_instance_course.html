@@ -14,21 +14,18 @@ for detail
 {% url 'coursebackend:course:update' course_slug=cs field="project" as update_project_url %}
 {% url 'coursebackend:course:update' course_slug=cs field="structure" as update_structure_url %}
 
-<div class="ui header huge">
-    Kursvorlage {{ course.title }}
-</div>
-
-<div class="ui fitted divider"></div>
-
-<h3 class="ui header">
-    Titel:
-    {{ course.title |safe  }}
+<div class="ui header large">
+    Kursvorlage zum Thema: {{ course.title }}
     <a href="{{ update_title_url }}" class= "worklink item">
         <i class="write blue icon"></i>
     </a>
-</h3>
+</div>
 
-<div class="ui fitted divider"></div>
+<div class="ui dividing medium header">Vorlage für die Beschreibung Deiner Kurse</div>
+<div class="ui info floating message">
+    <p>Was Du hier aufschreibst, kannst Du später in Deine Kurse als Vorlage kopieren. Es
+    wird aber nicht direkt für Deine Kursausschreibungen verwendet.</p>
+</div>
 
 <h3 class="ui header">
     Abstrakt:

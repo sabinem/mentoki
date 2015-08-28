@@ -8,15 +8,18 @@ $(document).ready(function(){
  * correct ui classes for user input through editor
  */
     // add ui class
-    $("#mentoki table").addClass("ui celled compact table");
-    $("#mentoki img").addClass("ui img");
-    $("#mentoki ul").addClass("ui list");
-    $("#mentoki ol").addClass("ui list");
+    // $("#mentoki table").addClass("ui celled compact table");
+    // $("#mentoki img").addClass("ui img");
+    // $("#mentoki ul").addClass("ui list");
+    // $("#mentoki ol").addClass("ui list");
 
 // accordion
     $('.ui.accordion')
        .accordion()
     ;
+
+// embed you tube
+    $('.url.example .ui.embed').embed();
 
 /**
  * Sidebar and pusher functionality: the button opens a sidebar in Semantic UI

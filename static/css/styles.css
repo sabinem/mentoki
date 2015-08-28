@@ -485,6 +485,8 @@ object.htmlembed {
 }
 #coursebackend .coursebackend_course {
   background: #eee2da;
+  background: #dbdae5;
+  background: #f4ebe6;
 }
 #coursebackend .coursebackend_background {
   background: #ebdfd7;
@@ -558,6 +560,97 @@ object.htmlembed {
   background: #b48368;
   color: white;
 }
-/* ------------------------------------------------------------------------  */
-/*    from http://davidwalsh.name/mootools-drag-ajax                         */
-/* ------------------------------------------------------------------------- */
+/* ------------------------- */
+/*          homepage         */
+/* ------------------------- */
+/* logo as main header on the homepage */
+#logo_homepage_header {
+  height: 100px;
+  width: auto;
+}
+/* the computer and tablet version: background img */
+#page-grid-homepage-top-pc {
+  background-image: url('/static/img/homepage.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+  height: 800px;
+}
+/* the computer and tablet version: header */
+#page-grid-homepage-top-pc h1 {
+  opacity: 0.8;
+  background: white;
+  margin-top: 50px;
+  padding-top: 50px;
+  border: 5px solid #aeb3a4;
+}
+/* the mobile version: upper grid with background image */
+#page-grid-homepage-top-mobile-1 {
+  background-image: url('/static/img/homepage.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+  height: 500px;
+}
+/* overwriting semantic css for mobiles: gets rid of some padding */
+.ui.grid + .grid {
+  margin-top: 0rem;
+}
+#vertical-segment-homepage-toolbox .ui.image {
+  height: 300px;
+}
+#home #base_page {
+  padding-top: 0;
+  margin-top: 0;
+}
+@media only screen and (min-width: 992px) {
+  /* desktop */
+  #mobile_menu,
+  #mobile_navbar {
+    display: none;
+  }
+  #content {
+    padding-top: 40px;
+  }
+  #whitepaper {
+    padding-left: 100px;
+    padding-right: 100px;
+  }
+}
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  /* tablets */
+  #mobile_menu,
+  #mobile_navbar {
+    display: none;
+  }
+  #pc_navbar .item {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  #content {
+    padding-top: 40px;
+  }
+  #whitepaper {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+}
+@media only screen and (max-width: 767px) {
+  /* phones */
+  #pc_navbar {
+    display: none;
+  }
+  #home .divider_header.ui.header {
+    font-size: 1.5em;
+  }
+  #content {
+    padding-top: 0px;
+  }
+}
+#whitepaper {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+#home .ui.button {
+  background: teal;
+  color: black;
+  font-weight: normal;
+}

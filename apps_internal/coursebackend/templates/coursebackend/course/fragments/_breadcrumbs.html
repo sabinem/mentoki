@@ -6,10 +6,9 @@ for detail/update
 
 {% endcomment %}
 
-{% url 'coursebackend:courseevent:detail' course_slug=cs as course_url %}
+{% url 'coursebackend:course:detail' course_slug=cs as course_url %}
 
 <a href="{{ course_url }}"
     class="item">Kursvorlage {{ course.title }}
 </a>
 
-<i class="right chevron icon divider"></i>

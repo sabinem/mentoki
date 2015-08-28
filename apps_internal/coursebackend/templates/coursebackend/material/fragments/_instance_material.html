@@ -7,28 +7,47 @@
     {% include 'coursebackend/material/fragments/_material_update_delete.html' %}
 </div>
 
-<div class="ui dividing medium header">Speicherort</div>
+<div class="ui dividing medium header">Wird angeboten als:</div>
 
-<p>Speicherort:
+    {% if material.file %}
 
-    <a href="{{ material.file.url }}">
-        {{ material.file.url }}
-    </a>
+    <div class="ui list">
+      <div class="item">
+        <i class="icon file"></i>
+        <div class="content">
 
-</p>
+          Link zur Datei: (Standard, funktioniert auch auf IPads oder
+                Handys)
+          <a href="{{ material.file.url }}">
+            {{ material.file.url }}
+           </a>
+        </div>
+      </div>
+      {% if material.pdf_viewer %}
+          <div class="item">
+            <i class="unhide icon"></i>
+            <div class="content">
 
-<div class="ui dividing large header">Download</div>
+              PDF-Viewer (siehe unten)
+            </div>
+          </div>
+      {% endif %}
+      {% if material.pdf_download_link %}
+      <div class="item">
+        <i class="download icon"></i>
+        <div class="content">
+          Download-Link:
+            <a href={{ download_url }}>
+                {{ material.slug  }}
+            </a>
+        </div>
+      </div>
+      {% endif %}
+    </div>
 
-<p>
-    Download möglich über:
+    {% endif %}
 
-    <a href={{ download_url }}>
-        {{ material.slug  }}
-    </a>
-
-</p>
-
-<div class="ui dividing large header">Verwendet in Lernabschnitten</div>
+<div class="ui dividing medium header">Verwendet in Lernabschnitten</div>
 
 <div class="ui list bulleted">
 

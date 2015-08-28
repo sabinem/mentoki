@@ -51,6 +51,7 @@ class CourseOwnerUpdateView(
     form_valid_message="Das Kursleiterprofil wurde geändert!"
 
     def get_success_url(self):
-        return reverse_lazy('coursebackend:courseowner:list',
-                            kwargs={"course_slug": self.kwargs['course_slug'],})
+        return reverse_lazy('coursebackend:courseowner:detail',
+                            kwargs={"course_slug": self.kwargs['course_slug'],
+                                    'pk' : self.kwargs['pk']})
 

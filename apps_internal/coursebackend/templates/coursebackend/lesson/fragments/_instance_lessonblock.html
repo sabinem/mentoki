@@ -13,6 +13,8 @@
         </a>
     </div>
 </div>
+{% if lessonblock.text != '' %}
 <div class="froala-view">
    {{ lessonblock.text | safe }}
 </div>
+{% endif %}

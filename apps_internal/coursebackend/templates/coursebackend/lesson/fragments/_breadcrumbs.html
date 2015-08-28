@@ -1,15 +1,17 @@
 {% url 'coursebackend:lesson:start' course_slug=cs as start_url %}
 
-<a href="{{ start_url }}" class="section">
-    Unterricht {{ course.title }}
-</a>
-
-<i class="right chevron icon divider"></i>
+{% if object.is_block %}
+    <a href="{{ start_url }}">
+    Unterricht
+    </a>
+{% endif %}
 
 {% for breadcrumb in breadcrumbs %}
 
     {% if not forloop.first %}
-        <i class="right chevron icon divider"></i>
+        <a href="{{ start_url }}">
+        Unterricht
+        </a>
     {% endif %}
 
     {% if forloop.last %}
@@ -32,6 +34,7 @@
          <a
          {% include 'coursebackend/lesson/fragments/_link_node_detail.html' %}
          class="section">
+             {% if node.is_block %}<i class="icon cube"></i>{% endif %}
              {{ node.breadcrumb }}
          </a>
     {% endwith %}

@@ -119,9 +119,19 @@ class LessonRedirectMixin(object):
     redirect after successful database operation
     """
     def get_success_url(self):
-       return reverse_lazy('coursebackend:lesson:start',
-                           kwargs={'course_slug': self.kwargs['course_slug']})
-
+       print self.context_object_name
+       if self.context_object_name == 'lessonblock':
+           return reverse_lazy('coursebackend:lesson:block',
+                               kwargs={'course_slug': self.kwargs['course_slug'],
+                                       'pk': self.object.pk})
+       elif self.context_object_name == 'lesson':
+           return reverse_lazy('coursebackend:lesson:lesson',
+                               kwargs={'course_slug': self.kwargs['course_slug'],
+                                       'pk': self.object.pk})
+       elif self.context_object_name == 'lessonstep':
+           return reverse_lazy('coursebackend:lesson:step',
+                               kwargs={'course_slug': self.kwargs['course_slug'],
+                                       'pk': self.object.pk})
 
 class LessonContextMixin(CourseMenuMixin):
     """
@@ -211,7 +221,7 @@ class BlockCreateView(
 
     def form_valid(self, form):
         course = get_object_or_404(Course, slug=self.kwargs['course_slug'])
-        lesson = Lesson.objects.create(
+        self.object = Lesson.objects.create(
             course=course,
             title=form.cleaned_data['title'],
             description=form.cleaned_data['description'],
@@ -236,7 +246,7 @@ class LessonCreateView(
 
     def form_valid(self, form):
         course = get_object_or_404(Course, slug=self.kwargs['course_slug'])
-        lesson = Lesson.objects.create(
+        self.object = Lesson.objects.create(
             course=course,
             title=form.cleaned_data['title'],
             description=form.cleaned_data['description'],
@@ -263,7 +273,7 @@ class LessonStepCreateView(
     def form_valid(self, form):
         course = get_object_or_404(Course, slug=self.kwargs['course_slug'])
 
-        lesson = Lesson.objects.create_step(
+        self.object = Lesson.objects.create_step(
             course=course,
             title=form.cleaned_data['title'],
             description=form.cleaned_data['description'],
