@@ -4,6 +4,7 @@
 
 $(document).ready(function(){
 
+    $('.ui.form').editable({key: 'tckD-17B1ewrwA-7sekA2ys=='});
 /**
  * correct ui classes for user input through editor
  */
@@ -82,5 +83,7 @@ $(document).ready(function(){
       this.form.submit()
     });
 
+
 });
+
 
