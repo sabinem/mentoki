@@ -292,7 +292,8 @@ LOGOUT_URL = reverse_lazy("home:home")
 ACTIVATION_KEY = 'Eif1hsgbcC10obc=='
 
 FROALA_EDITOR_OPTIONS = {
-    'key': 'tckD-17B1ewrwA-7sekA2ys=='
+    'key': 'tckD-17B1ewrwA-7sekA2ys==',
+    'allowedTags': ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
 }
 
 

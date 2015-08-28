@@ -4,10 +4,6 @@
 
 $(document).ready(function(){
 
-    $(function() {
-        $('#edit').editable({key: 'tckD-17B1ewrwA-7sekA2ys=='});
-    });
-
 /**
  * correct ui classes for user input through editor
  */
