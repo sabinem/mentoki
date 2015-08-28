@@ -293,7 +293,11 @@ ACTIVATION_KEY = 'Eif1hsgbcC10obc=='
 
 FROALA_EDITOR_OPTIONS = {
     'key': 'tckD-17B1ewrwA-7sekA2ys==',
-    'allowedTags': ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+    'allowedTags': ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'span', 'strong',
+                    'pre', 'table', 'ul', 'li', 'a', 'iframe', 'img',
+                    'tbody', 'tr', 'td',
+                    'blockquote'],
+    'allowedAttrs': ['title', 'href', 'alt', 'src', 'style', 'width']
 }
 
 
