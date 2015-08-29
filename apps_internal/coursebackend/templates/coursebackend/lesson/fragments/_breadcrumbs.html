@@ -9,9 +9,7 @@
 {% for breadcrumb in breadcrumbs %}
 
     {% if not forloop.first %}
-        <a href="{{ start_url }}">
-        Unterricht
-        </a>
+         <i class="right chevron icon divider"></i>
     {% endif %}
 
     {% if forloop.last %}

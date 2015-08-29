@@ -9,13 +9,22 @@
     {% include 'coursebackend/forms/fragments/_form_non_field_errors.html' %}
 
     <div class="ui dividing large header">Unterichtsblock</div>
-
-    <p>Blöcke dienen der Internen Organisation Deiner Lektionen. Der Unterricht etwa
-    ist ein Block, der Unterricht für einen neuen Kurs könnte ein weiterer Block sein.
-    Material zum Kursstart könnte auch ein Block sein.</p>
-
-    <p>Im Unterrichtsraum werden nur Lektionen veröffentlicht, nicht Blöcke.</p>
-
+    <div class="ui info floating message">
+        <div class="ui list">
+            <div class="item">
+                <i class="info icon"></i>
+                <div class="content">
+                Blöcke dienen der Internen Organisation Deiner Lektionen.
+                </div>
+            </div>
+            <div class="item">
+                <i class="info icon"></i>
+                <div class="content">
+                Im Unterrichtsraum werden nur Lektionen veröffentlicht, nicht Blöcke.
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="fields inline">
 
         <div class="field two wide">
