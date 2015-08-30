@@ -4,7 +4,9 @@
 {% block page_section_css_id %}coursebackend{% endblock %}
 
 {% block page_header %}Kurs {{ course.title }}: {{ course.teachersrecord }}{% endblock %}
-        <!-- menu button  -->
+
+{% block css_breadcrumbs %}coursebackend_course{% endblock %}
+
 {% block stackable_menu %}
 
     <div class="ui stackable menu">

@@ -8,7 +8,27 @@ for detail/update
 
 {% url 'coursebackend:course:detail' course_slug=cs as course_url %}
 
-<a href="{{ course_url }}"
-    class="item">Kursvorlage {{ course.title }}
-</a>
+<div class="ui large breadcrumb" id ="page-breadcrumb">
 
+    {% if url_name == 'detail' %}
+        <div class="section active">
+            Kurs-Vorlage {{ course.title }}
+        </div>
+    {% else %}
+        <a href="{{ course_url }}" class="section">
+            Kurs-Vorlage {{ course.title }}
+        </a>
+        <i class="right chevron icon divider"></i>
+    {% endif %}
+
+    {% if url_name == 'update' %}
+        <div class="section active">
+            bearbeiten
+        </div>
+    {% elif url_name == 'list' %}
+        <div class="section active">
+            Kurs-Ereignisse
+        </div>
+    {% endif %}
+
+</div>

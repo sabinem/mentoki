@@ -100,7 +100,7 @@ class CourseEvent(TimeStampedModel):
     active = models.BooleanField(default=True)
 
     STATUS_INTERNAL = Choices(('0', 'draft', _('nicht veröffentlicht')),
-                              ('1', 'review', _('offen zur Buchung')),
+                              ('1', 'review', _('offen')),
                               ('a', 'accepted', _('Vorschau'))
                              )
     status_internal =  models.CharField(

@@ -4,20 +4,11 @@
    {% include 'coursebackend/material/fragments/_material_create.html' %}
 {% endblock %}
 
+{% block breadcrumbs %}
+    {% include 'coursebackend/material/fragments/_breadcrumbs.html' %}
+{% endblock %}
+
 {% block page_content %}
-
-    <div class="row coursebackend_course">
-        <div class="sixteen wide column">
-
-            <div class="ui large breadcrumb" id ="page-breadcrumb">
-
-                <div class="section active">
-                    Material {{ course.title }}
-                </div>
-            </div>
-
-        </div>
-    </div>
 
     <div class="row coursebackend_white">
         <div class="sixteen wide column">

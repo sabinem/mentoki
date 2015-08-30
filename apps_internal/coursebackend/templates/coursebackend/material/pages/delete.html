@@ -1,32 +1,15 @@
 {% extends "coursebackend/base_course.html" %}
 
+{% block breadcrumbs %}
+    {% include 'coursebackend/material/fragments/_breadcrumbs.html' %}
+{% endblock %}
 
 {% block page_content %}
-
-    <div class="row coursebackend_course">
-        <div class="sixteen wide column">
-
-            <div class="ui large breadcrumb" id ="page-breadcrumb">
-
-                {% include 'coursebackend/material/fragments/_breadcrumbs.html' %}
-                {% url 'coursebackend:material:detail' pk=material.pk course_slug=cs as detail_url %}
-                <a href="{{ detail_url }}" class="section">
-                    {{ material }}
-                </a>
-                <i class="right chevron icon divider"></i>
-                <div class="section active">
-                    löschen
-                </div>
-
-            </div>
-
-        </div>
-    </div>
 
     <div class="row coursebackend_white">
         <div class="sixteen wide column">
 
-            {% include 'coursebackend/material/fragments/_instance_material.html' %}
+            {% include 'coursebackend/material/fragments/_instance_material_delete.html' %}
 
             {% include 'coursebackend/forms/delete/_material.html' %}
 

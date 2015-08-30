@@ -45,11 +45,20 @@
 
                     <h3></h3>
                     <h2 style="padding:20px; margin:0px -20px;">{% block page_header %}{% endblock %}</h2>
+
                     <div style="padding-bottom:40px;  margin:0px -20px;">
                         {% block stackable_menu %}{% endblock %}
                     </div>
 
                     <div class="ui stackable vertical grid white" style="background:white;margin-bottom:50px;">
+
+                        <div class="row {% block css_breadcrumbs %}{% endblock %}">
+                            <div class="sixteen wide column">
+
+                                {% block breadcrumbs %}{% endblock %}
+
+                            </div>
+                        </div>
 
                         {% block page_content %}{% endblock %}
 

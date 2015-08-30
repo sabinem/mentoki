@@ -1,24 +1,10 @@
 {% extends "coursebackend/base_course.html" %}
 
+{% block breadcrumbs %}
+    {% include 'coursebackend/lesson/fragments/_breadcrumbs.html' %}
+{% endblock %}
+
 {% block page_content %}
-
-
-    <div class="row coursebackend_course">
-        <div class="sixteen wide column">
-
-            <div class="ui large breadcrumb" id ="page-breadcrumb">
-
-                {% include 'coursebackend/lesson/fragments/_breadcrumbs.html' %}
-                <i class="right chevron icon divider"></i>
-                <i class="right chevron icon divider"></i>
-                <div class="section active">
-                    ändern
-                </div>
-
-            </div>
-
-        </div>
-    </div>
 
     <div class="row coursebackend_white">
         <div class="sixteen wide column">
