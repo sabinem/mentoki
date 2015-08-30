@@ -7,6 +7,7 @@ from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.template.loader import get_template
 from django.template import Context
+from django.shortcuts import get_object_or_404
 
 from model_utils.models import TimeStampedModel
 from model_utils.fields import MonitorField
@@ -51,17 +52,20 @@ def send_announcement(announcement, courseevent, module):
     }
     message = get_template('email/announcement/announcement.html').render(Context(context))
 
-    to_mentoki = MailerMessage()
+    mail_message = MailerMessage()
 
-    to_mentoki.subject = "Neue Nachricht von %s" % courseevent.title
-    to_mentoki.bcc_address = courseemail
-    to_mentoki.to_address = send_to_class
-    to_mentoki.from_address = courseemail
-    to_mentoki.content = "Neue Nachricht von %s and die Teilnehmer" % courseevent.title
-    to_mentoki.html_content = message
-    to_mentoki.reply_to = courseemail
-    to_mentoki.app = module
-    to_mentoki.save()
+    mail_message.subject = "Neue Nachricht von %s" % courseevent.title
+    mail_message.bcc_address = courseemail
+    mail_message.to_address = send_to_class
+    mail_message.from_address = courseemail
+    mail_message.content = "Neue Nachricht von %s and die Teilnehmer" % courseevent.title
+    mail_message.html_content = message
+    mail_message.reply_to = courseemail
+    mail_message.app = module
+    mail_message = mail_message.save()
+    announcement = get_object_or_404(Announcement, pk=announcement.pk)
+    announcement.mailer_message = mail_message
+    announcement.save()
 
     message = u"""Die Ank\u00fcndigung wurde an die Teilnehmer: %s verschickt. Ausserdem ging
     eine Kopie an die Kursleitung: %s verschickt.""" % (send_to_class, courseemail)
@@ -88,6 +92,9 @@ class Announcement(TimeStampedModel):
         verbose_name=_("veröffentlicht am"),
         monitor='published',
         when=[True])
+
+    mailer_message = models.ForeignKey(MailerMessage, null=True, blank=True)
+
     archive=models.BooleanField(
         verbose_name=_("archivieren"),
         default=False)
@@ -96,6 +103,10 @@ class Announcement(TimeStampedModel):
 
     def __unicode__(self):
         return self.title
+
+    def was_send_to(self):
+        MailerMessage.objects
+
 
     def get_absolute_url(self):
         return reverse('coursebackend:announcement:detail',

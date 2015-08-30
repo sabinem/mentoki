@@ -14,19 +14,11 @@
 
 {% endblock %}
 
+{% block breadcrumbs %}
+    {% include 'coursebackend/announcement/fragments/_breadcrumbs.html' %}
+{% endblock %}
+
 {% block page_content %}
-
-    <div class="row coursebackend_background">
-        <div class="sixteen wide column">
-
-            <div class="ui large breadcrumb" id ="page-breadcrumb">
-
-                {% include 'coursebackend/announcement/fragments/_breadcrumbs.html' %}
-
-            </div>
-
-        </div>
-    </div>
 
     <div class="row classroom_background">
         <div class="sixteen wide column">

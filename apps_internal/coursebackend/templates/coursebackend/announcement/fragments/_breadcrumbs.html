@@ -6,13 +6,50 @@ for list/update/detail/create/delete
 
 {% endcomment %}
 
-{% url 'coursebackend:announcement:list' course_slug=event.slug slug=es as announcements_url %}
+{% url 'coursebackend:announcement:list' course_slug=cs slug=es as list_url %}
+{% url 'coursebackend:announcement:detail' course_slug=cs slug=es pk=announcement.pk as detail_url %}
 
 <div class="ui large breadcrumb" id ="page-breadcrumb">
 
-    <a href="{{ announcements_url }}"  class="item">
-         Ankündigungen {{ courseevent.title }}
-    </a>
-    <i class="right chevron icon divider"></i>
+    {% if url_name == 'list' %}
+        <div class="section active">
+            Ankündigungen
+        </div>
+    {% else %}
+        <a href="{{ list_url }}" class="section">
+            Ankündigungen
+        </a>
+        <i class="right chevron icon divider"></i>
+        {% if url_name == 'detail' %}
+
+            <div class="section active">
+                {{ announcement }}
+            </div>
+
+        {% elif url_name == 'create' %}
+
+            <div class="section active">
+                anlegen
+            </div>
+
+        {% else %}
+
+            <a href="{{ detail_url }}" class="section">
+                {{ announcement }}
+            </a>
+            <i class="right chevron icon divider"></i>
+
+            {% if url_name == 'update' %}
+                <div class="section active">
+                    ändern<i class="icon warning"></i>
+                </div>
+            {% elif url_name == 'delete' %}
+                <div class="section active">
+                    löschen<i class="icon warning"></i>
+                </div>
+            {% endif %}
+
+        {% endif %}
+    {% endif %}
 
 </div>

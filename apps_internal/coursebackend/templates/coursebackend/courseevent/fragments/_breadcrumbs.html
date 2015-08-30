@@ -10,19 +10,18 @@ for detail/list/update
 
 <div class="ui large breadcrumb" id ="page-breadcrumb">
 
-    {% if url_name == 'list' %}
+    {% if url_name == 'detail' %}
         <div class="section active">
             Kursereignis {{ courseevent.title }}
         </div>
     {% else %}
-        <a href="{{ courseevent_url }}" class="section">
+        <a href="{{ course_url }}" class="section">
             Kursereignis {{ courseevent.title }}
         </a>
+        <i class="right chevron icon divider"></i>
     {% endif %}
 
-    <i class="right chevron icon divider"></i>
-
-    {% if url_name != 'list' %}
+    {% if url_name == 'update' %}
         <div class="section active">
             bearbeiten
         </div>

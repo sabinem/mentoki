@@ -6,14 +6,30 @@ for detail/delete
 
 {% endcomment %}
 
-<div class="segment raised ui">
+
+<div class="ui card fluid">
+  <div class="content">
+    <div class="header">
+        {{ announcement.title }}
+        {% if not announcement.published and url_name == "detail" %}
+        <a href="update_url">
+            <i class="icon write"></i>
+        </a>
+        <a href="delete_url">
+            <i class="icon trash"></i>
+        </a>
+        {% endif %}
+    </div>
+    <div class="meta">
     {% if announcement.published %}
-        {{ announcement.published_at_date |date:'d.m.Y' }}
+        wurde am {{ announcement.published_at |date:'d.m.Y' }} verschickt an:
+
     {% else %}
         unveröffentlicht
     {% endif %}
-    <h3 class="ui header">
-        {{ announcement.title }}
-    </h3>
-    <div>{{ announcement.text | safe }}</div>
+    </div>
+    <div class="description">
+      <p>{{ announcement.text | safe }}</p>
+    </div>
+  </div>
 </div>

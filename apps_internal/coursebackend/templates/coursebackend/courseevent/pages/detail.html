@@ -10,15 +10,11 @@
 
 {% endblock %}
 
+{% block breadcrumbs %}
+    {% include 'coursebackend/courseevent/fragments/_breadcrumbs.html' %}
+{% endblock %}
+
 {% block page_content %}
-
-     <div class="row coursebackend_background">
-        <div class="sixteen wide column">
-
-            {% include 'coursebackend/courseevent/fragments/_breadcrumbs.html' %}
-
-        </div>
-    </div>
 
     <div class="row classroombackend_white">
         <div class="sixteen wide column" id="whitepaper">

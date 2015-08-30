@@ -293,6 +293,9 @@ ACTIVATION_KEY = 'Eif1hsgbcC10obc=='
 
 FROALA_EDITOR_OPTIONS = {
     'key': 'tckD-17B1ewrwA-7sekA2ys==',
+    'inlineMode': False,
+    'toolbarFixed': False,
+    'minHeight': 500
 }
 
 

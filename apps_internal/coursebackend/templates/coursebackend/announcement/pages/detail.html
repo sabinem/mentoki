@@ -1,22 +1,26 @@
 {% extends "coursebackend/base_courseevent.html" %}
 
+
+{% block courseevent_menu_items %}
+
+    {% url 'coursebackend:announcement:create' course_slug=cs slug=es as announcement_create_url %}
+    {% url 'classroom:announcement:list' slug=es as announcement_class_url %}
+
+    <a href="{{ announcement_create_url }}" class="item">
+        <i class="plus icon blue"></i>Ankündigung
+    </a>
+    <a href="{{ announcement_class_url }}" class="item" >
+        <i class="unhide icon blue"></i>Klassenzimmer
+    </a>
+
+{% endblock %}
+
+
+{% block breadcrumbs %}
+    {% include 'coursebackend/announcement/fragments/_breadcrumbs.html' %}
+{% endblock %}
+
 {% block page_content %}
-
-    <div class="row coursebackend_background">
-        <div class="sixteen wide column">
-
-            <div class="ui large breadcrumb" id ="page-breadcrumb">
-
-                {% include 'coursebackend/announcement/fragments/_breadcrumbs.html' %}
-
-                <a class="item">
-                    ansehen
-                </a>
-
-            </div>
-
-        </div>
-    </div>
 
     <div class="row coursebackend_white">
         <div class="sixteen wide column">
