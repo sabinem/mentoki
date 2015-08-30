@@ -8,12 +8,8 @@ for list/update/detail/create/delete
 
 {% url 'coursebackend:material:list' course_slug=cs as list_url %}
 
-<div class="ui large breadcrumb" id ="page-breadcrumb">
+<a href="{{ list_url }}" class="section">
+    Material {{ course.title }}
+</a>
 
-    <a href="{{ list_url }}" class="item">
-        Material {{ course.title }}
-    </a>
-
-    <i class="right chevron icon divider"></i>
-
-</div>
+<i class="right chevron icon divider"></i>

@@ -33,16 +33,18 @@ class AnnouncementListView(
         return context
 
 
-class AnnouncementRedirectMixin(object):
-    """
-    redirects to the list page
-    """
+class AnnouncementRedirectListMixin(object):
     def get_success_url(self):
-       """
-       for create update and delete view
-       """
        return reverse_lazy('coursebackend:announcement:list',
                            kwargs={'course_slug': self.kwargs['course_slug'], 'slug': self.kwargs['slug']})
+
+
+class AnnouncementRedirectDetailMixin(object):
+    def get_success_url(self):
+       return reverse_lazy('coursebackend:announcement:detail',
+                           kwargs={'pk': self.object.pk,
+                                   'course_slug': self.kwargs['course_slug'],
+                                   'slug': self.kwargs['slug']})
 
 
 class AnnouncementDetailView(
@@ -58,7 +60,7 @@ class AnnouncementDetailView(
 class AnnouncementDeleteView(
     CourseMenuMixin,
     FormValidMessageMixin,
-    AnnouncementRedirectMixin,
+    AnnouncementRedirectListMixin,
     DeleteView):
     """
     Announcement Delete
@@ -71,7 +73,7 @@ class AnnouncementDeleteView(
 class AnnouncementUpdateView(
     CourseMenuMixin,
     MessageMixin,
-    AnnouncementRedirectMixin,
+    AnnouncementRedirectDetailMixin,
     UpdateView):
     """
     Announcement Update
@@ -99,7 +101,7 @@ class AnnouncementUpdateView(
 class AnnouncementCreateView(
     CourseMenuMixin,
     MessageMixin,
-    AnnouncementRedirectMixin,
+    AnnouncementRedirectDetailMixin,
     FormView):
     """
     Announcement Create
@@ -110,14 +112,14 @@ class AnnouncementCreateView(
 
     def form_valid(self, form):
         courseevent = get_object_or_404(CourseEvent, slug=self.kwargs['slug'])
-        announcement = Announcement.objects.create(
+        self.object = Announcement.objects.create(
             courseevent=courseevent,
             text=form.cleaned_data['text'],
             title=form.cleaned_data['title'],
             published=form.cleaned_data['published'])
         if form.cleaned_data['published']:
             message = send_announcement(
-                announcement=announcement,
+                announcement=self.object,
                 module=self.__module__,
                 courseevent=courseevent,
             )

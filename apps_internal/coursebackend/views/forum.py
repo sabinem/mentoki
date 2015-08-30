@@ -48,15 +48,7 @@ class ForumDetailView(
         return context
 
 
-class ForumRedirectandBreadcrumbMixin(object):
-    def get_success_url(self):
-       """
-       for create update and delete view
-       """
-       return reverse_lazy('coursebackend:forum:list',
-                           kwargs={'slug': self.kwargs['slug'],
-                                   'course_slug':self.kwargs['course_slug']})
-
+class ForumContextMixin(object):
     def get_context_data(self, **kwargs):
         context = super(ForumRedirectandBreadcrumbMixin, self).get_context_data(**kwargs)
 
@@ -66,10 +58,30 @@ class ForumRedirectandBreadcrumbMixin(object):
         context['breadcrumbs'] = context['forum'].get_breadcrumbs_with_self
         return context
 
+class ForumRedirectListMixin(object):
+    def get_success_url(self):
+       """
+       for create update and delete view
+       """
+       return reverse_lazy('coursebackend:forum:list',
+                           kwargs={'slug': self.kwargs['slug'],
+                                   'course_slug':self.kwargs['course_slug']})
+
+
+class ForumRedirectDetailMixin(object):
+    def get_success_url(self):
+       """
+       for create update and delete view
+       """
+       return reverse_lazy('coursebackend:forum:list',
+                           kwargs={'slug': self.kwargs['slug'],
+                                   'course_slug':self.kwargs['course_slug']})
+
 
 class ForumUpdateView(
-    ForumRedirectandBreadcrumbMixin,
+    ForumContextMixin,
     FormValidMessageMixin,
+    ForumRedirectListMixin,
     FormCourseEventKwargsMixin,
     CourseMenuMixin,
     UpdateView):
@@ -83,8 +95,9 @@ class ForumUpdateView(
 
 
 class ForumDeleteView(
-    ForumRedirectandBreadcrumbMixin,
+    ForumContextMixin,
     FormValidMessageMixin,
+    ForumRedirectListMixin,
     CourseMenuMixin,
     DeleteView):
     """
@@ -101,9 +114,10 @@ class ForumDeleteView(
 
 
 class ForumCreateView(
-    ForumRedirectandBreadcrumbMixin,
+    ForumContextMixin,
     FormCourseEventKwargsMixin,
     FormValidMessageMixin,
+    ForumRedirectListMixin,
     CourseMenuMixin,
     FormView):
     """
@@ -115,7 +129,7 @@ class ForumCreateView(
 
     def form_valid(self, form):
         courseevent = get_object_or_404(CourseEvent, slug=self.kwargs['course_slug'])
-        forum = Forum.objects.create(
+        self.object = Forum.objects.create(
             courseevent=courseevent,
             title=form.cleaned_data['title'],
             description=form.cleaned_data['description'],

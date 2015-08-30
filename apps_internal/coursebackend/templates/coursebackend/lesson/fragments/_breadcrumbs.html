@@ -1,9 +1,11 @@
 {% url 'coursebackend:lesson:start' course_slug=cs as start_url %}
 
 {% if object.is_block %}
-    <a href="{{ start_url }}">
-    Unterricht
+    <a href="{{ start_url }}" class="section">
+    Startseite Unterricht
     </a>
+
+    <i class="right chevron icon divider"></i>
 {% endif %}
 
 {% for breadcrumb in breadcrumbs %}
@@ -13,8 +15,6 @@
     {% endif %}
 
     {% if forloop.last %}
-
-        <a class="item">
 
         {% if previous_node %}
             {% with node=previous_node %}
@@ -29,12 +29,19 @@
     {% endif %}
 
     {% with node=breadcrumb %}
+        {% if forloop.last %}
+             <div class="section active">
+                 {% if node.is_block %}<i class="icon cube"></i>{% endif %}
+                 {{ node.breadcrumb }}
+             </div>
+        {% else %}
          <a
          {% include 'coursebackend/lesson/fragments/_link_node_detail.html' %}
          class="section">
              {% if node.is_block %}<i class="icon cube"></i>{% endif %}
              {{ node.breadcrumb }}
          </a>
+        {% endif %}
     {% endwith %}
 
     {% if forloop.last %}

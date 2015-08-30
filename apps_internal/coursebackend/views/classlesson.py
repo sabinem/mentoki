@@ -157,11 +157,21 @@ class ClassStepDetailView(
         return context
 
 
-class ClassLessonSuccessUrlMixin(object):
-    """
-    redirect to the list view of classlessons
-    """
+class ClassLessonRedirectDetailMixin(object):
+    def get_success_url(self):
+       if self.context_object_name == 'classlesson':
+           return reverse_lazy('coursebackend:classlesson:lesson',
+                               kwargs={'course_slug': self.kwargs['course_slug'],
+                                       'slug': self.kwargs['slug'],
+                                       'pk': self.object.pk})
+       elif self.context_object_name == 'classlessonstep':
+           return reverse_lazy('coursebackend:classlesson:step',
+                               kwargs={'course_slug': self.kwargs['course_slug'],
+                                       'slug': self.kwargs['slug'],
+                                       'pk': self.object.pk})
 
+
+class ClassLessonRedirectListMixin(object):
     def get_success_url(self):
         return reverse_lazy('coursebackend:classlesson:start',
                             kwargs={'course_slug': self.kwargs['course_slug'],
@@ -186,7 +196,7 @@ class ClassLessonUpdateView(
     CourseMenuMixin,
     ClassLessonBreadcrumbMixin,
     FormValidMessageMixin,
-    ClassLessonSuccessUrlMixin,
+    ClassLessonRedirectDetailMixin,
     UpdateView):
     """
     Update a classlesson
@@ -202,7 +212,7 @@ class ClassLessonStepUpdateView(
     ClassLessonBreadcrumbMixin,
     FormValidMessageMixin,
     FormCourseKwargsMixin,
-    ClassLessonSuccessUrlMixin,
+    ClassLessonRedirectDetailMixin,
     UpdateView):
     """
     Update a classlesson step
@@ -216,7 +226,7 @@ class ClassLessonStepUpdateView(
 class ClassLessonDeleteView(
     CourseMenuMixin,
     FormValidMessageMixin,
-    ClassLessonSuccessUrlMixin,
+    ClassLessonRedirectListMixin,
     DeleteView):
     """
     Delete a classlesson
@@ -234,6 +244,7 @@ class ClassLessonDeleteView(
 class CopyLessonView(
     CourseMenuMixin,
     FormValidMessageMixin,
+    ClassLessonRedirectListMixin,
     FormView):
     """
     Copy (and update or create) parts of a lesson into the class as classlesson
@@ -246,11 +257,6 @@ class CopyLessonView(
         kwargs = super(CopyLessonView, self).get_form_kwargs()
         kwargs['lesson_pk'] = lesson_pk
         return kwargs
-
-    def get_success_url(self):
-        return reverse_lazy('coursebackend:classlesson:start',
-                            kwargs={'course_slug': self.kwargs['course_slug'],
-                                    'slug': self.kwargs['slug']})
 
     def form_valid(self, form):
         copied = copy_lesson_selected(self,

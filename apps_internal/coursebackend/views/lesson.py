@@ -114,12 +114,11 @@ class StepDetailView(CourseMenuMixin, DetailView):
         return context
 
 
-class LessonRedirectMixin(object):
+class LessonRedirectDetailMixin(object):
     """
     redirect after successful database operation
     """
     def get_success_url(self):
-       print self.context_object_name
        if self.context_object_name == 'lessonblock':
            return reverse_lazy('coursebackend:lesson:block',
                                kwargs={'course_slug': self.kwargs['course_slug'],
@@ -132,6 +131,12 @@ class LessonRedirectMixin(object):
            return reverse_lazy('coursebackend:lesson:step',
                                kwargs={'course_slug': self.kwargs['course_slug'],
                                        'pk': self.object.pk})
+
+class LessonRedirectListMixin(object):
+    def get_success_url(self):
+           return reverse_lazy('coursebackend:lesson:start',
+                               kwargs={'course_slug': self.kwargs['course_slug'],
+                                       })
 
 class LessonContextMixin(CourseMenuMixin):
     """
@@ -146,7 +151,7 @@ class LessonContextMixin(CourseMenuMixin):
 
 class BlockUpdateView(
     LessonContextMixin,
-    LessonRedirectMixin,
+    LessonRedirectDetailMixin,
     FormValidMessageMixin,
     UpdateView):
     """
@@ -161,7 +166,7 @@ class BlockUpdateView(
 class LessonUpdateView(
     LessonContextMixin,
     FormCourseKwargsMixin,
-    LessonRedirectMixin,
+    LessonRedirectDetailMixin,
     FormValidMessageMixin,
     UpdateView):
     """
@@ -175,7 +180,7 @@ class LessonUpdateView(
 
 class LessonStepUpdateView(
     LessonContextMixin,
-    LessonRedirectMixin,
+    LessonRedirectDetailMixin,
     FormCourseKwargsMixin,
     FormValidMessageMixin,
     UpdateView):
@@ -190,7 +195,7 @@ class LessonStepUpdateView(
 
 class LessonDeleteView(
     LessonContextMixin,
-    LessonRedirectMixin,
+    LessonRedirectListMixin,
     FormValidMessageMixin,
     DeleteView):
     """
@@ -208,7 +213,7 @@ class LessonDeleteView(
 
 class BlockCreateView(
     CourseMenuMixin,
-    LessonRedirectMixin,
+    LessonRedirectDetailMixin,
     FormValidMessageMixin,
     FormView):
     """
@@ -233,7 +238,7 @@ class BlockCreateView(
 class LessonCreateView(
     CourseMenuMixin,
     FormCourseKwargsMixin,
-    LessonRedirectMixin,
+    LessonRedirectDetailMixin,
     FormValidMessageMixin,
     FormView):
     """
@@ -259,7 +264,7 @@ class LessonCreateView(
 class LessonStepCreateView(
     CourseMenuMixin,
     FormCourseKwargsMixin,
-    LessonRedirectMixin,
+    LessonRedirectDetailMixin,
     FormValidMessageMixin,
     FormView):
     """

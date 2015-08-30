@@ -9,10 +9,14 @@
             <div class="ui large breadcrumb" id ="page-breadcrumb">
 
                 {% include 'coursebackend/material/fragments/_breadcrumbs.html' %}
-
-                <a class="item">
-                    löschen
+                {% url 'coursebackend:material:detail' pk=material.pk course_slug=cs as detail_url %}
+                <a href="{{ detail_url }}" class="section">
+                    {{ material }}
                 </a>
+                <i class="right chevron icon divider"></i>
+                <div class="section active">
+                    löschen
+                </div>
 
             </div>
 

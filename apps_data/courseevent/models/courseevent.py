@@ -78,14 +78,22 @@ class CourseEvent(TimeStampedModel):
                          ('selflearn', 'selflearn', _('Selbstlernen')),
                          ('coached', 'coached', _('Selbstlernen mit Unterstützung'))
                         )
-    event_type  =  models.CharField(max_length=12, choices=EVENT_TYPE, default=EVENT_TYPE.selflearn)
+    event_type  =  models.CharField(
+        verbose_name="Kursart",
+        max_length=12,
+        choices=EVENT_TYPE,
+        default=EVENT_TYPE.selflearn)
 
     STATUS_EXTERNAL = Choices(('0', 'not_public', _('nicht öffentlich')),
                               ('1', 'booking', _('zur Buchung geöffnet')),
                               ('1', 'booking_closed', _('Buchung abgeschlossen')),
                               ('2', 'preview', _('Vorschau'))
                              )
-    status_external =  models.CharField(max_length=2, choices=STATUS_EXTERNAL, default=STATUS_EXTERNAL.not_public)
+    status_external =  models.CharField(
+        verbose_name="externer Status",
+        max_length=2,
+        choices=STATUS_EXTERNAL,
+        default=STATUS_EXTERNAL.not_public)
     published_at = MonitorField(monitor='status_external', when=['booking'])
     booking_closed_at = MonitorField(monitor='status_external', when=['booking_closed'])
 
@@ -95,7 +103,11 @@ class CourseEvent(TimeStampedModel):
                               ('1', 'review', _('offen zur Buchung')),
                               ('a', 'accepted', _('Vorschau'))
                              )
-    status_internal =  models.CharField(max_length=2, choices=STATUS_INTERNAL, default=STATUS_INTERNAL.draft)
+    status_internal =  models.CharField(
+        verbose_name="interner Status",
+        max_length=2,
+        choices=STATUS_INTERNAL,
+        default=STATUS_INTERNAL.draft)
     accepted_at = MonitorField(
         monitor='status_external',
         when=['accepted'])
@@ -192,6 +204,7 @@ class CourseEvent(TimeStampedModel):
         """
         return self.participation.all().prefetch_related('participation').order_by('username')
 
+
     def get_absolute_url(self):
         return reverse('coursebackend:courseevent:detail',
                        kwargs={'course_slug':self.course_slug,
@@ -210,6 +223,9 @@ class ParticipationManager(models.Manager):
 
     def learners(self, courseevent):
         return self.filter(courseevent=courseevent).select_related('user')
+
+    def active_learners(self, courseevent):
+        return self.filter(courseevent=courseevent, hidden=False).select_related('user')
 
     def learners_emails(self, courseevent):
         return self.filter(courseevent=courseevent).select_related('user').\
@@ -233,7 +249,13 @@ class CourseEventParticipation(TimeStampedModel):
     def __unicode__(self):
         return u'%s / %s' % (self.courseevent, self.user)
 
+    def hide(self):
+        self.hidden = True
+        self.save()
 
+    def unhide(self):
+        self.hidden = False
+        self.save()
 
 
 

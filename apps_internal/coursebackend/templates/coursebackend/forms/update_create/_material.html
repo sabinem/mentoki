@@ -1,4 +1,8 @@
-{% url 'coursebackend:material:list' course_slug=cs as back_url %}
+{% if material %}
+    {% url 'coursebackend:material:detail' pk=material.pk course_slug=cs as back_url %}
+{% else %}
+    {% url 'coursebackend:material:list' course_slug=cs as back_url %}
+{% endif %}
 
 {{ form.media }}
 

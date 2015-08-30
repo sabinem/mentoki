@@ -645,10 +645,6 @@ object.htmlembed {
     padding-top: 0px;
   }
 }
-#whitepaper {
-  padding-top: 30px;
-  padding-bottom: 30px;
-}
 #home .ui.button {
   background: teal;
   color: black;

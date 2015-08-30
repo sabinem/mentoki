@@ -12,19 +12,20 @@
             <div class="ui large breadcrumb" id ="page-breadcrumb">
 
                 {% include 'coursebackend/material/fragments/_breadcrumbs.html' %}
-                {% include 'base/fragments/_messages.html' %}
-                <a class="item">
+
+                <div class="section active">
                     {{ material }}
-                </a>
+                </div>
 
             </div>
 
         </div>
     </div>
 
-    <div class="row coursebackend_background">
+    <div class="row coursebackend_white" id="whitepaper">
         <div class="sixteen wide column">
 
+            {% include 'base/fragments/_messages.html' %}
             {% include 'coursebackend/material/fragments/_instance_material.html' %}
 
         </div>

@@ -29,15 +29,18 @@ class CourseFormMixin(CourseMenuMixin):
         return super(CourseFormMixin, self).form_valid(form)
 
 
-class MaterialRedirectMixin(object):
+class MaterialRedirectDetailMixin(object):
     def get_success_url(self):
-       """
-       for create update and delete view
-       """
        return reverse_lazy('coursebackend:material:detail',
                            kwargs={'course_slug': self.kwargs['course_slug'],
                                    'pk': self.object.pk })
 
+
+class MaterialRedirectListMixin(object):
+    def get_success_url(self):
+       return reverse_lazy('coursebackend:material:list',
+                           kwargs={'course_slug': self.kwargs['course_slug'],
+                                 })
 
 class MaterialListView(
     CourseMenuMixin,
@@ -64,7 +67,7 @@ class MaterialDetailView(
 
 class MaterialUpdateView(
     CourseMenuMixin,
-    MaterialRedirectMixin,
+    MaterialRedirectDetailMixin,
     UpdateView):
     """
     Update Material
@@ -77,7 +80,7 @@ class MaterialUpdateView(
 
 class MaterialDeleteView(
     CourseMenuMixin,
-    MaterialRedirectMixin,
+    MaterialRedirectListMixin,
     DeleteView):
     """
     Delete Material
@@ -89,7 +92,7 @@ class MaterialDeleteView(
 
 class MaterialCreateView(
     CourseMenuMixin,
-    MaterialRedirectMixin,
+    MaterialRedirectDetailMixin,
     FormView):
     """
     Create Material

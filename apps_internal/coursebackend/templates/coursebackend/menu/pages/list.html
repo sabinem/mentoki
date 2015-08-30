@@ -6,7 +6,7 @@
     {% url 'coursebackend:menu:sort' course_slug=cs slug=es as sort_url %}
 
     <a class="item" href="{{ preview_url }}">
-        <i class="unhide icon blue"></i>Bearbeiten
+        <i class="write icon blue"></i>Bearbeiten
     </a>
 
     <a class="item" href="{{ sort_url }}">
@@ -44,6 +44,7 @@
             </div>
             {% include 'coursebackend/menu/fragments/_lessonitems_table.html' %}
             {% include 'coursebackend/menu/fragments/_forumitems_table.html' %}
+            {% include 'coursebackend/menu/fragments/_listitems_table.html' %}
         </div>
     </div>
 

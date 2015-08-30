@@ -26,7 +26,7 @@ class CourseEventParticipationAdmin(admin.ModelAdmin):
     """
     users as participants in a courseevent
     """
-    list_display = ('id', 'user', 'courseevent')
+    list_display = ('id', 'user', 'courseevent', 'hidden')
     list_filter = ('user', 'courseevent')
 
 

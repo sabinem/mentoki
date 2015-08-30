@@ -59,6 +59,8 @@ class CourseMenuMixin(AuthMixin):
                 context['courseevent'] = get_object_or_404(CourseEvent, slug=self.kwargs['slug'])
             context['es'] = context['courseevent'].slug
 
+        context['url_name'] = self.request.resolver_match.url_name
+
         return context
 
 class FormCourseKwargsMixin(object):

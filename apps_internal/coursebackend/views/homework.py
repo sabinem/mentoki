@@ -16,16 +16,18 @@ from .mixins.base import CourseMenuMixin, FormCourseEventKwargsMixin
 from ..forms.homework import HomeworkForm
 
 
-class HomeworkRedirectMixin(object):
+class HomeworkRedirectListMixin(object):
     def get_success_url(self):
-       """
-       for create update and delete view
-       """
-       print "i am here"
-       print object
        return reverse_lazy('coursebackend:homework:list',
                            kwargs={'slug': self.kwargs['slug'],
                                    'course_slug': self.kwargs['course_slug']})
+
+class HomeworkRedirectDetailMixin(object):
+    def get_success_url(self):
+       return reverse_lazy('coursebackend:homework:list',
+                           kwargs={'slug': self.kwargs['slug'],
+                                   'course_slug': self.kwargs['course_slug'],
+                                   'pk': self.object.pk})
 
 
 class HomeworkListView(
@@ -57,7 +59,7 @@ class HomeworkUpdateView(
     CourseMenuMixin,
     FormCourseEventKwargsMixin,
     FormValidMessageMixin,
-    HomeworkRedirectMixin,
+    HomeworkRedirectDetailMixin,
     UpdateView):
     """
     Homework Update
@@ -71,7 +73,7 @@ class HomeworkUpdateView(
 class HomeworkDeleteView(
     CourseMenuMixin,
     FormValidMessageMixin,
-    HomeworkRedirectMixin,
+    HomeworkRedirectListMixin,
     DeleteView):
     """
     Homework Delete
@@ -85,7 +87,7 @@ class HomeworkCreateView(
     CourseMenuMixin,
     FormCourseEventKwargsMixin,
     FormValidMessageMixin,
-    HomeworkRedirectMixin,
+    HomeworkRedirectDetailMixin,
     FormView):
     """
     Homework Create
@@ -98,7 +100,7 @@ class HomeworkCreateView(
 
     def form_valid(self, form):
         courseevent = get_object_or_404(CourseEvent, slug=self.kwargs['slug'])
-        Homework.objects.create(
+        self.object = Homework.objects.create(
             courseevent=courseevent,
             classlesson=form.cleaned_data['classlesson'],
             text=form.cleaned_data['text'],

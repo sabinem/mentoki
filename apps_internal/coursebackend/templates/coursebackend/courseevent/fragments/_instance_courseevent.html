@@ -23,107 +23,123 @@ for detail
 {% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="format" as update_format_url %}
 
 <div class="ui large header">
-   {{ courseevent.title }}
+   Kurs: {{ courseevent.title }}
 </div>
 
-<div class="ui list">
-  <div class="item">
-    <i class="icon">Kursart: </i>
-    <div class="content">
-      {{ courseevent.get_event_type_display }}
-    </div>
-  </div>
-  <div class="item">
-    <i class="icon">Status:</i>
-    <div class="content">
-    Interner Status
-    <a href="{{ update_internal_url }}" class="item">
-       <i class="write blue icon"></i>
-    </a>
-    </div>
-  </div>
-  <div class="item">
-    <i class="icon">Preis</i>
-    <div class="content">
-      {{ courseevent.price }}
-    </div>
-  </div>
+<div class="ui two column doubling page grid">
+<div class="column">
+    <div class="ui large relaxed divided list">
 
-  <div class="item">
-    <i class="marker icon"></i>
-    <div class="content">
-      Maximale Teilnehmerzahl
+    <div class="item">
+        <i class="middle aligned icon info"></i>
+        <div class="content">
+            <div class="header">Kursart</div>
+            <div class="description">
+                {{ courseevent.get_event_type_display }}
+                <a href="{{ update_type_url }}" class="item">
+                    <i class="write blue icon"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="item">
+        <i class=" middle aligned icon label tag"></i>
+        <div class="content">
+            <div class="header">Preis</div>
+            <div class="description">
+                {% if courseevent.price %}
+                    {{ courseevent.price }}
+                {% else %}
+                    noch nicht bestimmt
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="item">
+        <i class=" middle aligned icon info"></i>
+        <div class="content">
+            <div class="header">Interner Status</div>
+            <div class="description">
+                {{ courseevent.get_status_internal_display }}
+                <a href="{{ update_internal_url }}" class="item">
+                   <i class="write blue icon"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="item">
+        <i class=" middle aligned icon info"></i>
+        <div class="content">
+            <div class="header">Externer Status</div>
+            <div class="description">
+                {{ courseevent.get_status_external_display }}
+            </div>
+        </div>
+    </div>
     </div>
   </div>
-  <div class="item">
-    <i class="mail icon"></i>
-    <div class="content">
-      Kursart
-    </div>
-  </div>
+   <div class="column">
+
+    {% if courseevent.event_type == courseevent.EVENT_TYPE.guidedgroup %}
+       <div class="ui large relaxed divided list">
+        <div class="item">
+            <i class=" middle aligned icon users"></i>
+            <div class="content">
+                <div class="header">Maximale Teilnehmeranzahl</div>
+                <div class="description">
+                    {% if courseevent.max_participants  %}
+                        {{ courseevent.max_participants }}
+                    {% else %}
+                        -
+                    {% endif %}
+                    <a href="{{ update_particpants_url }}" class="item">
+                       <i class="write blue icon"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <i class="middle aligned icon sidebar "></i>
+            <div class="content">
+                <div class="header">Wochenanzahl</div>
+                <div class="description">
+                    {% if courseevent.nr_weeks  %}
+                        {{ courseevent.nr_weeks }}
+                    {% else %}
+                        -
+                    {% endif %}
+                     <a href="{{ update_weeks_url }}" class="item">
+                       <i class="write blue icon"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <i class=" middle aligned icon calendar "></i>
+            <div class="content">
+                <div class="header">Startdatum</div>
+                <div class="description">
+                    {% if courseevent.start_date  %}
+                        {{ courseevent.start_date }}
+                    {% else %}
+                        -
+                    {% endif %}
+                    <a href="{{ update_start_url }}" class="item">
+                       <i class="write blue icon"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        </div>
+    {% endif %}
+</div>
 </div>
 
-<h3 class="ui header">
-    Wochenanzahl
-    <a href="{{ update_title_url }}" class= "item">
-       <i class="write blue icon"></i>
-    </a>
-</h3>
-{{ courseevent.title }}
 
-<h3 class="ui header">
-    Maximale Teilnehmerzahl
-    <a href="{{ update_particpants_url }}" class= "item">
-       <i class="write blue icon"></i>
-    </a>
-</h3>
-{{ courseevent.max_participants }}
-
-<div class="ui fitted divider"></div>
-
-<h3 class="ui header">
-    Wochenanzahl
-    <a href="{{ update_weeks_url }}" class="item">
-       <i class="write blue icon"></i>
-    </a>
-</h3>
-{{ courseevent.nr_weeks }}
-
-<div class="ui fitted divider"></div>
-
-<h3 class="ui header">
-    Interner Status
-    <a href="{{ update_internal_url }}" class="item">
-       <i class="write blue icon"></i>
-    </a>
-</h3>
-{{ courseevent.get_status_internal_display }}
-
-<div class="ui fitted divider"></div>
-
-<h3 class="ui header">
-    Kursart
-    <a href="{{ update_type_url }}" class="item">
-       <i class="write blue icon"></i>
-    </a>
-</h3>
-{{ courseevent.get_event_type_display }}
-
-<div class="ui fitted divider"></div>
-
-<h3 class="ui header">
-    Startdatum
-    <a href="{{ update_start_url }}" class="item">
-       <i class="write blue icon"></i>
-    </a>
-</h3>
-{% if courseevent.start_date %}
-    {{ courseevent.start_date }}
-{% else %}
-    -
-{% endif %}
-
-<div class="ui fitted divider"></div>
+<div class="ui dividing large header">Kursbeschreibung</div>
 
 <h3 class="ui header">
     Abstrakt
@@ -132,8 +148,6 @@ for detail
     </a>
 </h3>
 {{ courseevent.excerpt | safe }}
-
-<div class="ui fitted divider"></div>
 
 <h3 class="ui header">
     Video:
@@ -161,8 +175,6 @@ for detail
 
 {% endif %}
 
-<div class="ui fitted divider"></div>
-
 <h3 class="ui header">
     Zielgruppe:
     <a href="{{ update_target_group_url }}" class="item">
@@ -171,7 +183,6 @@ for detail
 </h3>
 {{ courseevent.target_group | safe }}
 
-<div class="ui fitted divider"></div>
 
 <h3 class="ui header">
     Voraussetzungen:
@@ -181,7 +192,6 @@ for detail
 </h3>
 {{ courseevent.prerequisites | safe }}
 
-<div class="ui fitted divider"></div>
 
 <h3 class="ui header">
     Was nimmt der Teilnehmer aus dem Kurs mit:
@@ -191,7 +201,6 @@ for detail
 </h3>
 {{ courseevent.project | safe }}
 
-<div class="ui fitted divider"></div>
 
 <h3 class="ui header">
     Gliederung:
@@ -201,7 +210,6 @@ for detail
 </h3>
 {{ courseevent.structure | safe  }}
 
-<div class="ui fitted divider"></div>
 
 <h3 class="ui header">
     Freie Kursbeschreibung:
@@ -211,7 +219,6 @@ for detail
 </h3>
 {{ courseevent.text | safe }}
 
-<div class="ui fitted divider"></div>
 
 <h3 class="ui header">
     Kursformat:
@@ -221,7 +228,6 @@ for detail
 </h3>
 {{ courseevent.format | safe }}
 
-<div class="ui fitted divider"></div>
 
 <h3 class="ui header">
     Arbeitsbelastung:
