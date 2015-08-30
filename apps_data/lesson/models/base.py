@@ -50,6 +50,7 @@ def lesson_nr_block():
     computed field in model: lesson_nr for blocks
     :return: empty for blocks
     """
+
     return ""
 
 def lesson_nr_lesson(nr):
@@ -151,6 +152,7 @@ class BaseLesson(MPTTModel, TimeStampedModel):
         """
         lesson_nr is calculated and stored in the database for performance
         """
+        print self.level
         if self.level:
             if self.level == 0:
                 self.lesson_nr = lesson_nr_block()

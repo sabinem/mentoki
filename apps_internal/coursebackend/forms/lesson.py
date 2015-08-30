@@ -23,6 +23,10 @@ class LessonBlockForm(forms.ModelForm):
         model = Lesson
         fields = ('title', 'description', 'text', 'nr')
 
+    def __init__(self, *args, **kwargs):
+        super(LessonBlockForm, self).__init__(*args, **kwargs)
+        self.fields['text'].required = False
+
 
 class LessonForm(forms.ModelForm):
     text = forms.CharField(widget=FroalaEditor, required=False)

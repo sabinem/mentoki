@@ -4,67 +4,81 @@
 
     {% if url_name == 'start' %}
         <div class="section active">
-        Startseite Unterricht
+        Unterricht
         </div>
 
-    {% elif object.is_block %}
+    {% else %}
 
         <a href="{{ start_url }}" class="section">
-        Startseite Unterricht
+        Unterricht
         </a>
 
         <i class="right chevron icon divider"></i>
+        {% if url_name == 'blockcreate' %}
+            <div class="section active">
+                Block anlegen
+            </div>
+        {% elif url_name == 'blockcreate' %}
+            <div class="section active">
+                Lektion anlegen
+            </div>
+        {% elif url_name == 'blockcreate' %}
+            <div class="section active">
+                Lernschritt anlegen
+            </div>
+        {% else %}
+
+            {% for breadcrumb in breadcrumbs %}
+
+                {% if not forloop.first %}
+                     <i class="right chevron icon divider"></i>
+                {% endif %}
+
+                {% if forloop.last %}
+
+                    {% if previous_node %}
+                        {% with node=previous_node %}
+                            <a
+                                {% include 'coursebackend/lesson/fragments/_link_node_detail.html' %}
+                            >
+                                <i class="icon angle double left"></i>
+                            </a>
+                        {% endwith %}
+                    {% endif %}
+
+                {% endif %}
+
+                {% with node=breadcrumb %}
+                    {% if forloop.last %}
+                         <div class="section active">
+                             {% if node.is_block %}<i class="icon cube"></i>{% endif %}
+                             {{ node.breadcrumb }}
+                         </div>
+                    {% else %}
+                     <a
+                     {% include 'coursebackend/lesson/fragments/_link_node_detail.html' %}
+                     class="section">
+                         {% if node.is_block %}<i class="icon cube"></i>{% endif %}
+                         {{ node.breadcrumb }}
+                     </a>
+                    {% endif %}
+                {% endwith %}
+
+                {% if forloop.last %}
+
+                    {% if next_node %}
+                        {% with node=next_node %}
+                            <a
+                            {% include 'coursebackend/lesson/fragments/_link_node_detail.html' %}
+                            >
+                                <i class="icon angle double right"></i>
+                            </a>
+                        {% endwith %}
+                    {% endif %}
+
+                {% endif %}
+
+            {% endfor %}
+        {% endif %}
     {% endif %}
-
-    {% for breadcrumb in breadcrumbs %}
-
-        {% if not forloop.first %}
-             <i class="right chevron icon divider"></i>
-        {% endif %}
-
-        {% if forloop.last %}
-
-            {% if previous_node %}
-                {% with node=previous_node %}
-                    <a
-                        {% include 'coursebackend/lesson/fragments/_link_node_detail.html' %}
-                    >
-                        <i class="icon angle double left"></i>
-                    </a>
-                {% endwith %}
-            {% endif %}
-
-        {% endif %}
-
-        {% with node=breadcrumb %}
-            {% if forloop.last %}
-                 <div class="section active">
-                     {% if node.is_block %}<i class="icon cube"></i>{% endif %}
-                     {{ node.breadcrumb }}
-                 </div>
-            {% else %}
-             <a
-             {% include 'coursebackend/lesson/fragments/_link_node_detail.html' %}
-             class="section">
-                 {% if node.is_block %}<i class="icon cube"></i>{% endif %}
-                 {{ node.breadcrumb }}
-             </a>
-            {% endif %}
-        {% endwith %}
-
-        {% if forloop.last %}
-
-            {% if next_node %}
-                {% with node=next_node %}
-                    <a
-                    {% include 'coursebackend/lesson/fragments/_link_node_detail.html' %}
-                    >
-                        <i class="icon angle double right"></i>
-                    </a>
-                {% endwith %}
-            {% endif %}
-
-        {% endif %}
-
-    {% endfor %}
 </div>

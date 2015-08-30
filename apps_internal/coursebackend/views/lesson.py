@@ -224,13 +224,15 @@ class BlockCreateView(
     context_object_name ='lessonblock'
     form_valid_message = "Der Block wurde angelegt!"
 
+
     def form_valid(self, form):
         course = get_object_or_404(Course, slug=self.kwargs['course_slug'])
-        self.object = Lesson.objects.create(
+        self.object = Lesson.objects.create_block(
             course=course,
             title=form.cleaned_data['title'],
             description=form.cleaned_data['description'],
-            text=form.cleaned_data['text']
+            text=form.cleaned_data['text'],
+            nr=form.cleaned_data['nr'],
         )
         return super(BlockCreateView, self).form_valid(form)
 
@@ -251,13 +253,15 @@ class LessonCreateView(
 
     def form_valid(self, form):
         course = get_object_or_404(Course, slug=self.kwargs['course_slug'])
-        self.object = Lesson.objects.create(
+        self.object = Lesson.objects.create_lesson(
             course=course,
             title=form.cleaned_data['title'],
             description=form.cleaned_data['description'],
             text=form.cleaned_data['text'],
-            parent=form.cleaned_data['parent']
+            parent=form.cleaned_data['parent'],
+            nr=form.cleaned_data['nr'],
         )
+        print "______________in form valid after create"
         return super(LessonCreateView, self).form_valid(form)
 
 

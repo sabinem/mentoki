@@ -31,8 +31,7 @@ class LessonCopyForm(forms.Form):
     def clean(self):
         if self.cleaned_data['copy_lesson']:
             if self.cleaned_data['copy_lessonsteps']:
-                print "======"
-                print self.cleaned_data['copy_lessonsteps']
+
                 raise ValidationError('''Wenn die Lektion erneuert wird,
                 werden auch alle Unterlektionen neu geholt: Also entweder Lektion
                 oder Unterlektionen auswählen!''')
