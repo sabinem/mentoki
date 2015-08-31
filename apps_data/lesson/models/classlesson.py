@@ -2,10 +2,13 @@
 
 from __future__ import unicode_literals, absolute_import
 
+import datetime
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.core.validators import ValidationError
 
+from model_utils.models import TimeStampedModel
 from model_utils.fields import MonitorField
 
 from apps_data.courseevent.models.courseevent import CourseEvent
@@ -76,6 +79,9 @@ class ClassLesson(BaseLesson):
     )
     is_original_lesson = models.BooleanField(default=True)
 
+    created = models.DateTimeField(default=datetime.datetime.now)
+    modified = models.DateTimeField(default=datetime.datetime.now)
+
     published = models.BooleanField(
         verbose_name=_('veröffentlicht'),
         default=False,
@@ -105,8 +111,10 @@ class ClassLesson(BaseLesson):
     def get_breadcrumbs_with_self_published(self):
         return self.get_ancestors(include_self=True).filter(published=True)
 
-    def up_to_date(self):
-        if self.modified <= self.original_lesson.modified:
+    def outdated(self):
+        if self.created < self.original_lesson.modified:
+            print self.created
+            print self.original_lesson.modified
             return True
         else:
             return False
@@ -188,7 +196,8 @@ class ClassLesson(BaseLesson):
             raise ValidationError('Lektion wurde bereits veröffentlicht!')
         super(ClassLesson, self).delete()
 
-    def save(self):
-        if not self.pk:
+    def save(self, copy=False):
+        if not copy:
             self.is_original_lesson = False
+            self.modified = datetime.datetime.now()
         super(ClassLesson, self).save()

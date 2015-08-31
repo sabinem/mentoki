@@ -3,6 +3,7 @@
 from __future__ import unicode_literals, absolute_import
 
 from model_utils.fields import MonitorField
+from model_utils.models import TimeStampedModel
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -87,7 +88,7 @@ class LessonManager(BaseLessonManager):
         return self.objects.all()
 
 
-class Lesson(BaseLesson):
+class Lesson(BaseLesson, TimeStampedModel):
     #just for the data_migration: refers to old data-structure (oldcourseparts),
     # will be deleted after data-transfer
     courseblock = models.ForeignKey(CourseBlock, null=True, blank=True, related_name="lessonblock")

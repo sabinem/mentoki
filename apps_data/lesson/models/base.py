@@ -6,7 +6,6 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from mptt.models import MPTTModel, TreeForeignKey, TreeManager
 
-from model_utils.models import TimeStampedModel
 from model_utils.choices import Choices
 
 from apps_data.course.models.course import Course
@@ -68,7 +67,7 @@ def lesson_nr_step(nr, parent_nr):
     return u'%s.%s' % (str(parent_nr), str(nr))
 
 
-class BaseLesson(MPTTModel, TimeStampedModel):
+class BaseLesson(MPTTModel):
     """
     Base Lessons is an abstract model and a blueprint for both
     Lessons an ClassLessons. It depends on course.

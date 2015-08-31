@@ -518,6 +518,12 @@ object.htmlembed {
   font-weight: normal;
   sont-size: 0.8em;
 }
+#coursebackend .meta_data .not_original {
+  color: #19aaa6;
+}
+#coursebackend .meta_data .outdated {
+  color: mediumpurple;
+}
 #coursebackend #plain_mode {
   padding-left: 300px;
 }

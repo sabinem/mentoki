@@ -2,6 +2,8 @@
 
 from __future__ import unicode_literals, absolute_import
 
+import datetime
+
 from django.shortcuts import get_object_or_404
 from django.core.urlresolvers import reverse
 from django.core.validators import ValidationError
@@ -23,7 +25,6 @@ def copy_lesson_selected(self, lesson, lessonsteps, copy_lesson):
     """
     if copy_lesson:
         classlesson=_update_lesson(lesson)
-        lessonsteps = lesson.get_children()
     else:
         classlesson = ClassLesson.objects.get(original_lesson=lesson)
 
@@ -77,6 +78,7 @@ def copy_lesson_for_courseevent(self, lesson_pk, courseevent_pk):
 
 
 def _copy_any_level_lesson(lesson, courseevent, parent):
+    now = datetime.datetime.now()
     classlesson = ClassLesson(
         title=lesson.title,
         text=lesson.text,
@@ -86,10 +88,13 @@ def _copy_any_level_lesson(lesson, courseevent, parent):
         description=lesson.description,
         courseevent=courseevent,
         material=lesson.material,
-        original_lesson=lesson
+        original_lesson=lesson,
+        modified=now,
+        created=now,
+        is_original_lesson=True
     )
     classlesson.insert_at(parent)
-    classlesson.save()
+    classlesson.save(copy=True)
 
     return classlesson
 
@@ -102,7 +107,13 @@ def _update_lesson(lesson):
     classlesson.nr=lesson.nr
     classlesson.course=lesson.course
     classlesson.description=lesson.description
-    classlesson.save()
+    classlesson.is_original_lesson = True
+
+    now = datetime.datetime.now()
+    classlesson.created = now
+    classlesson.modified = now
+
+    classlesson.save(copy=True)
     return classlesson
 
 
@@ -110,14 +121,20 @@ def _update_or_create_lessonstep(lessonstep, classlesson):
     try:
         classlessonstep = ClassLesson.objects.get(original_lesson=lessonstep)
         classlessonstep.title=lessonstep.title
-        classlessonstep.text=lessonstep.text,
+        classlessonstep.text=lessonstep.text
         classlessonstep.lesson_nr=lessonstep.lesson_nr
         classlessonstep.nr=lessonstep.nr
         classlessonstep.course=lessonstep.course
         classlessonstep.description=lessonstep.description
         classlessonstep.material=lessonstep.material
         classlessonstep.courseevent=classlesson.courseevent
-        classlessonstep.save()
+        classlessonstep.is_original_lesson = True
+
+        now = datetime.datetime.now()
+        classlessonstep.created = now
+        classlessonstep.modified = now
+
+        classlessonstep.save(copy=True)
 
     except ObjectDoesNotExist:
         classlessonstep = _copy_any_level_lesson(

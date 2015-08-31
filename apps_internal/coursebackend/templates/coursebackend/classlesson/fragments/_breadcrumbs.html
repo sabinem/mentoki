@@ -12,6 +12,7 @@
         <a href="{{ start_url }}" class="section">
         Unterricht
         </a>
+        <i class="right chevron icon divider"></i>
 
         {% if url_name == 'copy' %}
             <div class="section active">
@@ -24,8 +25,6 @@
                 Letzte Änderung
             </div>
         {% else %}
-
-            <i class="right chevron icon divider"></i>
 
             {% for breadcrumb in breadcrumbs %}
 

@@ -29,15 +29,9 @@ class LessonCopyForm(forms.Form):
         self.fields['copy_lessonsteps'].queryset = self.lesson.get_children()
 
     def clean(self):
-        if self.cleaned_data['copy_lesson']:
-            if self.cleaned_data['copy_lessonsteps']:
-
-                raise ValidationError('''Wenn die Lektion erneuert wird,
-                werden auch alle Unterlektionen neu geholt: Also entweder Lektion
-                oder Unterlektionen auswählen!''')
-        else:
-            if self.cleaned_data['copy_lessonsteps'] == []:
-                raise ValidationError('''Es wurde nichts ausgewählt! Bitte etwas auswählen!''')
+        if not self.cleaned_data['copy_lesson']:
+            if (self.cleaned_data['copy_lessonsteps'] == []):
+                raise ValidationError('''Bitte etwas zum Kopieren auswählen!''')
 
 
 
