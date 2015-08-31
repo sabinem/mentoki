@@ -188,6 +188,8 @@ class CourseEvent(TimeStampedModel):
            end_date = self.start_date + datetime.timedelta(days=7*self.nr_weeks)
            return end_date
 
+
+
     @property
     def days_to_start(self):
         today = datetime.date.today()
@@ -203,6 +205,12 @@ class CourseEvent(TimeStampedModel):
         Returns all the accounts of users who are students in the courseevent
         """
         return self.participation.all().prefetch_related('participation').order_by('username')
+
+    def is_student(self, user):
+        if user in self.students():
+           return True
+        else:
+            return False
 
 
     def get_absolute_url(self):

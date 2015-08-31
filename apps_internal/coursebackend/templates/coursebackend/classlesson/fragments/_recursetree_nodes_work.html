@@ -16,9 +16,7 @@
                          {{ node.title }}
                      </span>
                 </a>
-
                 {% include 'coursebackend/classlesson/fragments/_links_node_update_delete_preview.html' %}
-
                 {% if node.material.all %}
                     {% for material in node.material.all %}
                         <i class="icon file outline "></i> {{ material }}
@@ -26,6 +24,37 @@
                     {% endfor %}
                 {% endif %}
                 </div>
+
+                <div class="description meta_data">
+                 {% if url_name == 'meta' %}
+                     <div class="ui list">
+                     {% if not node.is_block %}
+                         <div class="item">
+                             angelegt {{ node.created |date:'d.m.Y' }},
+                         </div>
+                         <div class="item">
+                             letzte Änderung: {{ node.modified |date:'d.m.Y' }},
+                         </div>
+                         {%  if node.original_lesson %}
+                             <div class="item">
+                                 <strong>Original:</strong>
+                                     <a href="{{ original_url }}">
+                                     {{ node.original_lesson }}
+                                     </a>
+                             </div>
+                             <div class="item">
+                                 <strong>
+                                 letzte Änderung :{{ node.original_lesson.modified |date:'d.m.Y'}}
+                                 </strong>
+                             </div>
+                         {% endif %}
+                     {% endif %}
+                     </div>
+                 {% endif %}
+                </div>
+
+
+
                 {% if node.decription != "" %}
                     {{ node.description }}
                 {% endif %}

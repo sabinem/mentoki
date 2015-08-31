@@ -74,6 +74,7 @@ class ClassLesson(BaseLesson):
         null=True,
         on_delete=models.SET_NULL,
     )
+    is_original_lesson = models.BooleanField(default=True)
 
     published = models.BooleanField(
         verbose_name=_('veröffentlicht'),
@@ -103,6 +104,18 @@ class ClassLesson(BaseLesson):
 
     def get_breadcrumbs_with_self_published(self):
         return self.get_ancestors(include_self=True).filter(published=True)
+
+    def up_to_date(self):
+        if self.modified <= self.original_lesson.modified:
+            return True
+        else:
+            return False
+
+    def original_modified(self):
+        if self.modified > self.created:
+            return True
+        else:
+            return False
 
     @property
     def get_previous_sibling_published(self):
@@ -174,3 +187,8 @@ class ClassLesson(BaseLesson):
         if self.published:
             raise ValidationError('Lektion wurde bereits veröffentlicht!')
         super(ClassLesson, self).delete()
+
+    def save(self):
+        if not self.pk:
+            self.is_original_lesson = False
+        super(ClassLesson, self).save()
