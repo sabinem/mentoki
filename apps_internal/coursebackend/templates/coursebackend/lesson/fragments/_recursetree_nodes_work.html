@@ -24,9 +24,12 @@
                             <i class="icon file outline"></i>
                         </a>
                     {% endif %}
+
                 </div>
-                {% if node.decription != "" %}
-                    {{ node.description }}
+                {% if url_name == 'meta' %}
+                    <p style="font-size: 0.9em; color:grey; font-weight:normal;">
+                       angelegt: {{ node.created |date:'d.m.Y' }}, letzte Änderung: {{ node.modified |date:'d.m.Y' }}
+                    </p>
                 {% endif %}
 
                 {% if not is_leaf %}

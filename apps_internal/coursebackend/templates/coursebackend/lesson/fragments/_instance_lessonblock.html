@@ -11,6 +11,9 @@
         <a href="{{ delete_url }}">
            <i class="icon trash"></i>
         </a>
+        <p style="font-size: 0.6em; color:grey; font-weight:normal;">
+           (zuletzt geändert {{ lessonblock.modified |date:'d.m.Y' }})
+        </p>
     </div>
 </div>
 {% if lessonblock.text != '' %}

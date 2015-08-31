@@ -14,6 +14,9 @@ urlpatterns = patterns('',
     url(r'^$', LessonStartView.as_view(),
         {'template':'coursebackend/lesson/pages/work.html'}, name='start'),
 
+    url(r'^meta$', LessonStartView.as_view(),
+        {'template':'coursebackend/lesson/pages/work.html'}, name='meta'),
+
     url(r'^block/(?P<pk>\d+)$', BlockDetailView.as_view(),
         {'template':'coursebackend/lesson/pages/lessonblock.html'}, name='block'),
 

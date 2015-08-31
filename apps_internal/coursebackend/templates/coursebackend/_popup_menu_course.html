@@ -4,6 +4,7 @@
 {% url 'coursebackend:courseowner:list' course_slug=cs as courseowner_url %}
 {% url 'coursebackend:courseevents:list' course_slug=cs as courseevents_url %}
 {% url "coursebackend:lesson:start" course_slug=cs as lesson_url %}
+{% url "coursebackend:lesson:meta" course_slug=cs as lessonmeta_url %}
 {% url 'coursebackend:material:list' course_slug=course.slug as material_url %}
 
 <div class="ui popup bottom fluid left transition hidden" style="max-width:350px;">
@@ -34,6 +35,11 @@
                 <a href="{{ lesson_url }}" class="item
                     {% ifstartswith lesson_url %}active{% endifstartswith %}">
                     Unterricht
+                </a>
+
+                <a href="{{ lessonmeta_url }}" class="item
+                    {% ifstartswith lessonmeta_url %}active{% endifstartswith %}">
+                    Unterricht (letzte Änderung)
                 </a>
 
                 <a href="{{ material_url }}" class="item

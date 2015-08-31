@@ -6,6 +6,9 @@
     {{ material.title }}
     {% include 'coursebackend/material/fragments/_material_update_delete.html' %}
 </div>
+<p style="font-size: 0.9em; color:grey; font-weight:normal;">
+   angelegt: {{ material.created |date:'d.m.Y' }}, letzte Änderung: {{ material.modified |date:'d.m.Y' }}
+</p>
 
 <div class="ui dividing medium header">Wird angeboten als:</div>
 

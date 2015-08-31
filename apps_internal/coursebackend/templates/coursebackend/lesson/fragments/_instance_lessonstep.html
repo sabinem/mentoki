@@ -12,6 +12,10 @@
        <i class="icon trash"></i>
     </a>
 
+    <p style="font-size: 0.6em; color:grey; font-weight:normal;">
+       (zuletzt geändert {{ lessonstep.modified |date:'d.m.Y' }})
+    </p>
+
     {% if lessonstep.material %}
         <a href="{{ lessonstep.material.file.url }}">
             <i class="icon file"></i>
