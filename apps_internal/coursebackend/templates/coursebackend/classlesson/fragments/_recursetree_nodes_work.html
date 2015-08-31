@@ -58,9 +58,10 @@
                 </div>
 
 
-
+                {% if not url_name == 'meta' %}
                 {% if node.decription != "" %}
                     {{ node.description }}
+                {% endif %}
                 {% endif %}
 
                 {% if not is_leaf %}
