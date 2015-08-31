@@ -86,14 +86,14 @@ class ClassBlockDetailView(
     def get_context_data(self, **kwargs):
         context = super(ClassBlockDetailView, self).get_context_data(**kwargs)
 
-        lessonblock = context['lessonblock']
+        classlessonblock = context['classlessonblock']
 
-        context['next_node'] = lessonblock.get_next_sibling_in_courseevent
+        context['next_node'] = classlessonblock.get_next_sibling_in_courseevent
         context[
-            'previous_node'] = lessonblock.get_previous_sibling_in_courseevent
-        context['breadcrumbs'] = lessonblock.get_breadcrumbs_with_self
+            'previous_node'] = classlessonblock.get_previous_sibling_in_courseevent
+        context['breadcrumbs'] = classlessonblock.get_breadcrumbs_with_self
 
-        context['nodes'] = lessonblock.get_tree_without_self_without_material
+        context['nodes'] = classlessonblock.get_tree_without_self_without_material
 
         return context
 

@@ -1,22 +1,14 @@
 {% extends "coursebackend/base_courseevent.html" %}
 
-{% block course_menu_items %}
+{% block courseevent_menu_items %}
     {% include 'coursebackend/classlesson/fragments/_link_copy.html' %}
 {% endblock %}
 
+{% block breadcrumbs %}
+    {% include 'coursebackend/classlesson/fragments/_breadcrumbs.html' %}
+{% endblock %}
+
 {% block page_content %}
-
-    <div class="row coursebackend_background">
-        <div class="sixteen wide column">
-
-            <div class="ui large breadcrumb" id ="page-breadcrumb">
-
-                {% include 'coursebackend/classlesson/fragments/_breadcrumbs.html' %}
-
-            </div>
-
-        </div>
-    </div>
 
     <div class="row coursebackend_white">
         <div class="sixteen wide column">
