@@ -36,6 +36,7 @@ class LessonManager(BaseLessonManager):
                        )
         block.insert_at(None)
         block.save()
+        Lesson.objects.rebuild()
         return block
 
     def create_lesson(self, nr, title, text, description, course, parent):
@@ -58,6 +59,7 @@ class LessonManager(BaseLessonManager):
                        )
         lesson.insert_at(parent)
         lesson.save()
+        Lesson.objects.rebuild()
         return lesson
 
     def create_step(self, nr, title, text, description, course, parent, material):
@@ -82,6 +84,7 @@ class LessonManager(BaseLessonManager):
                        )
         step.insert_at(parent)
         step.save()
+        Lesson.objects.rebuild()
         return step
 
     def blocks_for_delete(self, courseevent):

@@ -1,7 +1,16 @@
 {% extends "coursebackend/base_courseevent.html" %}
 
 {% block courseevent_menu_items %}
-    {% include 'coursebackend/classlesson/fragments/_link_copy.html' %}
+    {% url 'coursebackend:classlesson:start'  slug=es course_slug=cs as start_url %}
+    {% url 'coursebackend:classlesson:meta'  slug=es course_slug=cs as meta_url %}
+
+    <a href="{{ start_url }}" class="item">
+        <i class="icon sidebar blue"></i>Unterricht
+    </a>
+
+    <a href="{{ meta_url }}" class="item">
+        <i class="icon calendar  blue"></i>Letzte Änderung
+    </a>
 {% endblock %}
 
 {% block breadcrumbs %}
