@@ -1,13 +1,24 @@
 {% for announcement in announcements %}
 
-    <div class="ui raised segment">
-        {{ announcement.published_at |date:'d.m.Y' }}
-        <h3 class="ui header">
-            <a href="{% url 'classroom:announcement:detail' slug=courseevent.slug pk=announcement.pk %}">
-                {{ announcement.title }}
+    {% url 'classroom:announcement:detail' slug=es pk=announcement.pk as detail_url %}
+
+    <div class="ui card fluid">
+      <div class="content">
+        <div class="header">
+            <a href="{{ detail_url }}">
+            {{ announcement.title }}
             </a>
-        </h3>
-        <div class="fullcontent">{{ announcement.text | safe }}</div>
+        </div>
+        <div class="meta">
+           vom {{ announcement.published_at |date:'d.m.Y' }}
+        </div>
+        {% if forloop.first %}
+            <div class="description">
+                {{ announcement.text | safe }}
+            </div>
+        {% endif %}
+      </div>
     </div>
 
 {% endfor %}
+

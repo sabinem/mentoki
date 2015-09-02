@@ -16,7 +16,8 @@ class AnnouncementListView(ClassroomMenuMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(AnnouncementListView, self).get_context_data(**kwargs)
 
-        context ['announcements'] = Announcement.objects.published(courseevent = context['courseevent'])
+        context ['announcements'] = \
+            Announcement.objects.classroom(courseevent = context['courseevent'])
 
         return context
 

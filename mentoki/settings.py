@@ -206,6 +206,7 @@ EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 MENTOKI_INFO_EMAIL = u'info@mentoki.com'
+MENTOKI_COURSE_EMAIL = u'kurse@mentoki.com'
 
 
 CACHES = {

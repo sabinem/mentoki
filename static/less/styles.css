@@ -247,21 +247,12 @@ object.htmlembed {
 /* ------------------------- */
 /*         classroom         */
 /* ------------------------- */
-#classroommenu a.item {
-  color: black;
-}
 #classroommenu {
   background: #dee3e5;
 }
 #classroom_page_grid {
   margin-top: 60px;
   margin-bottom: 60px;
-}
-#classroom .active {
-  background: #c0a999;
-  background: #f6d9c1;
-  background: #d3bba5;
-  color: black!important;
 }
 #classroom .ui.button a,
 #classroom .ui.button a:hover,
@@ -352,9 +343,6 @@ object.htmlembed {
   background-image: url("/static/img/30520566_l_lighter.jpg");
   background-size: cover;
   background-attachment: fixed;
-}
-#classroom a {
-  color: black;
 }
 #classroom h2 {
   color: black;

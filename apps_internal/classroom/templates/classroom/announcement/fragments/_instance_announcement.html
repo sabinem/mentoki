@@ -1,7 +1,13 @@
-<div class="segment raised ui">
-    {{ announcement.published_at_date |date:'d.m.Y' }}
-    <h3 class="ui header">
+<div class="ui card fluid">
+  <div class="content">
+    <div class="header">
         {{ announcement.title }}
-    </h3>
-    <div>{{ announcement.text | safe }}</div>
+    </div>
+    <div class="meta">
+       vom {{ announcement.published_at |date:'d.m.Y' }}
+    </div>
+    <div class="description">
+        {{ announcement.text | safe }}
+    </div>
+  </div>
 </div>

@@ -12,8 +12,9 @@ for list
         <tr>
             <tr>
                 <th>veröffentlicht?</th>
-                <th>wann?</th>
+                <th>archivieren?</th>
                 <th>Titel</th>
+
             </tr>
         </tr>
     </thead>
@@ -43,13 +44,17 @@ for list
         {% for announcement in announcements_published %}
 
             {% url 'coursebackend:announcement:detail' course_slug=cs slug=es pk=announcement.pk as detail_url %}
+            {% url 'coursebackend:announcement:archive' course_slug=cs slug=es pk=announcement.pk as archive_url %}
 
             <tr>
                 <td>
+                    {{ announcement.published_at | date:'d.m.Y'  }}
                     <i class="icon checkmark green"></i>
                 </td>
                 <td>
-                    {{ announcement.published_at | date:'d.m.Y'  }}
+                    <a href="{{ archive_url }}">
+                        archivieren
+                    </a>
                 </td>
                 <td>
                     <a href="{{ detail_url }}">
@@ -57,6 +62,25 @@ for list
                     </a>
                 </td>
             </tr>
+        {% endfor %}
+        {% for announcement in announcements_archived %}
+
+            {% url 'coursebackend:announcement:unarchive' course_slug=cs slug=es pk=announcement.pk as unarchive_url %}
+            <div class="meta:data">
+                <td><span class="meta_data">
+                    {{ announcement.published_at | date:'d.m.Y'  }}</span>
+                </td>
+                <td>
+                    <a href="{{ unarchive_url }}">
+                        <i class="unhide icon"></i>
+                    </a>
+                </td>
+                <td>
+                    <span class="meta_data">
+                        {{ announcement.title }}</span>
+                </td>
+            </tr>
+            </div>
         {% endfor %}
     </tbody>
 </table>

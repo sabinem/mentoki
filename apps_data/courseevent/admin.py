@@ -32,7 +32,8 @@ class CourseEventParticipationAdmin(admin.ModelAdmin):
 
 @admin.register(Announcement)
 class AnnouncementAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'courseevent', 'published_at', 'published', 'modified', 'created')
+    list_display = ('id', 'title', 'courseevent', 'published_at', 'published',
+                    'mail_distributor', 'modified', 'created')
     list_filter = ('courseevent', 'published')
 
 

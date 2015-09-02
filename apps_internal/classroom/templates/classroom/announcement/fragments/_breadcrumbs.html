@@ -1,4 +1,21 @@
-<a class="section">
-    <span style="color:teal;">Ankündigungen</span>
-</a>
+{% url 'classroom:announcement:list' slug=es as list_url %}
 
+<div class="ui large breadcrumb" id ="page-breadcrumb">
+
+    {% if url_name == 'list' %}
+        <div class="section active">
+            Ankündigungen
+        </div>
+    {% else %}
+        <a href="{{ list_url }}" class="section">
+            Ankündigungen
+        </a>
+        <i class="right chevron icon divider"></i>
+
+        <div class="section active">
+            {{ announcement }}
+        </div>
+
+    {% endif %}
+
+</div>

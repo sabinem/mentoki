@@ -155,6 +155,17 @@ class CourseOwnerManager(models.Manager):
     def other_teachers_for_display(self, course, user):
         return self.filter(course=course, display=True).exclude(user=user)
 
+    def teachers_emails(self, course):
+        print "=========???"
+        print course
+        print self.filter(course=course)
+        print self.filter(course=course).values_list('user')
+        print self.filter(course=course).values_list('user__email')
+
+        return self.filter(course=course).select_related('user').\
+            values_list('user__email', flat=True)
+
+
 def foto_location(instance, filename):
         return '/'.join([instance.course.slug, filename])
 

@@ -14,34 +14,55 @@ from model_utils.fields import MonitorField
 
 from mailqueue.models import MailerMessage
 
+from mentoki.settings import MENTOKI_COURSE_EMAIL
 
 from apps_data.courseevent.models.courseevent import CourseEvent, CourseEventParticipation
+from apps_data.course.models.course import CourseOwner
 
 
 class AnnouncementManager(models.Manager):
 
+    def archived(self, courseevent):
+        return self.filter(courseevent=courseevent,
+                           is_archived=True
+                           ).order_by('-published_at')
+
     def published(self, courseevent):
         return self.filter(courseevent=courseevent,
                            published=True,
-                           archive=False
+                           is_archived=False
+                           ).order_by('-published_at')
+
+    def classroom(self, courseevent):
+        return self.filter(courseevent=courseevent,
+                           published=True,
+                           is_archived=False
                            ).order_by('-published_at')
 
     def unpublished(self, courseevent):
         return self.filter(courseevent=courseevent, published=False).\
             order_by('-created')
 
-    def create(self, courseevent, text, title, published=False):
+    def create(self, courseevent, text, title, mail_distributor="", published=False):
         announcement = Announcement(courseevent=courseevent,
                                     text=text,
                                     title=title,
-                                    published=published)
+                                    published=published,
+                                    mail_distributor=mail_distributor)
         announcement.save()
         return announcement
 
 def send_announcement(announcement, courseevent, module):
     participants_emails = \
-        CourseEventParticipation.objects.learners_emails(courseevent=courseevent)
+        list(CourseEventParticipation.objects.learners_emails(courseevent=courseevent))
+    teachers_emails = \
+        list(CourseOwner.objects.teachers_emails(course=courseevent.course))
+    all_emails = participants_emails + teachers_emails
+
     send_to_class = ", ".join(participants_emails)
+    send_all = ", ".join(all_emails)
+    send_teachers = ", ".join(teachers_emails)
+
     courseemail = courseevent.email
     context = {
         'courseevent': courseevent,
@@ -55,21 +76,18 @@ def send_announcement(announcement, courseevent, module):
     mail_message = MailerMessage()
 
     mail_message.subject = "Neue Nachricht von %s" % courseevent.title
-    mail_message.bcc_address = courseemail
-    mail_message.to_address = send_to_class
-    mail_message.from_address = courseemail
+    mail_message.bcc_address = MENTOKI_COURSE_EMAIL
+    mail_message.to_address = send_all
+    mail_message.from_address = MENTOKI_COURSE_EMAIL
     mail_message.content = "Neue Nachricht von %s and die Teilnehmer" % courseevent.title
     mail_message.html_content = message
-    mail_message.reply_to = courseemail
+    mail_message.reply_to = send_all
     mail_message.app = module
-    mail_message = mail_message.save()
-    announcement = get_object_or_404(Announcement, pk=announcement.pk)
-    announcement.mailer_message = mail_message
-    announcement.save()
 
-    message = u"""Die Ank\u00fcndigung wurde an die Teilnehmer: %s verschickt. Ausserdem ging
-    eine Kopie an die Kursleitung: %s verschickt.""" % (send_to_class, courseemail)
-    return message
+    mail_distributer = send_all
+    print mail_distributer
+    mail_message = mail_message.save()
+    return mail_distributer
 
 
 class Announcement(TimeStampedModel):
@@ -87,25 +105,27 @@ class Announcement(TimeStampedModel):
 
     published = models.BooleanField(
         verbose_name=_("veröffentlichen?"),
+        help_text=_("""Beim Veröffentlichen wird die Ankündigung an alle Kursteilnehmer
+        und Lehrer verschickt:
+        """),
         default=False)
     published_at = MonitorField(
         verbose_name=_("veröffentlicht am"),
         monitor='published',
         when=[True])
 
-    mailer_message = models.ForeignKey(MailerMessage, null=True, blank=True)
-
-    archive=models.BooleanField(
+    is_archived=models.BooleanField(
         verbose_name=_("archivieren"),
+        help_text=_("""Archivierte Veröffentlichungen sind im Klassenzimmer nicht mehr zu sehen.
+        """),
         default=False)
+
+    mail_distributor = models.TextField(MailerMessage, null=True, blank=True)
 
     objects = AnnouncementManager()
 
     def __unicode__(self):
         return self.title
-
-    def was_send_to(self):
-        MailerMessage.objects
 
 
     def get_absolute_url(self):
@@ -114,4 +134,10 @@ class Announcement(TimeStampedModel):
                                'slug':self.slug,
                                'pk':self.pk})
 
+    def archive(self):
+        self.is_archived = True
+        self.save()
 
+    def unarchive(self):
+        self.is_archived = False
+        self.save()

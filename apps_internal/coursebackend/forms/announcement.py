@@ -30,4 +30,4 @@ class AnnouncementUpdateForm(forms.ModelForm):
 
     class Meta:
         model = Announcement
-        fields = ('title', 'text', 'published', 'archive')
+        fields = ('title', 'text', 'published')

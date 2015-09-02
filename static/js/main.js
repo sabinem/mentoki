@@ -9,7 +9,7 @@ $(document).ready(function(){
  */
     // add ui class
     // $("#mentoki table").addClass("ui celled compact table");
-    // $("#mentoki img").addClass("ui img");
+    $("#mentoki img").addClass("ui image");
     // $("#mentoki ul").addClass("ui list");
     // $("#mentoki ol").addClass("ui list");
 

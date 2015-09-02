@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 
 from django.views.generic import TemplateView
-from django.http import Http404, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404

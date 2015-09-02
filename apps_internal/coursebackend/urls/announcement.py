@@ -5,7 +5,8 @@ from __future__ import unicode_literals
 from django.conf.urls import patterns, url
 
 from ..views.announcement import AnnouncementListView, AnnouncementDetailView,\
-   AnnouncementDeleteView, AnnouncementUpdateView, AnnouncementCreateView
+   AnnouncementDeleteView, AnnouncementUpdateView, AnnouncementCreateView, \
+    archive_announcement, unarchive_announcement
 
 
 urlpatterns = patterns('',
@@ -25,4 +26,9 @@ urlpatterns = patterns('',
     url(r'^(?P<pk>\d{1,4})/loeschen$', AnnouncementDeleteView.as_view(),
         {'template':'coursebackend/announcement/pages/delete.html'}, name='delete'),
 
+    url(r'^(?P<pk>\d+)/archive$', archive_announcement,
+        name='archive'),
+
+    url(r'^(?P<pk>\d+)/unarchive$', unarchive_announcement,
+        name='unarchive'),
     )
