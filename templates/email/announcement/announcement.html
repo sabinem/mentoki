@@ -1,8 +1,15 @@
-{% extends "email/base_customer.html" %}
-{% block email_content %}
+{% extends "email/test/test5.html" %}
 
-<h3>An die Teilnehmer des Mentoki Kurses "{{ courseevent.title }}"</h3>
-<h3>{{ title }}</h3>
-<p>{{ text | safe}}</p>
+{% block email_to %}
+    An die Teilnehmer des Mentoki Kurses "{{ courseevent.title }}":
+{% endblock %}
 
-             {% endblock %}
+{% block email_title %}
+    {{ title }}
+{% endblock %}
+
+{% block email_text %}
+    {{ text | safe}}
+{% endblock %}
+
+

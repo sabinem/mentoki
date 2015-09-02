@@ -205,8 +205,8 @@ EMAIL_USE_TLS = True
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-MENTOKI_INFO_EMAIL = u'info@mentoki.com'
-MENTOKI_COURSE_EMAIL = u'kurse@mentoki.com'
+MENTOKI_INFO_EMAIL = u'mentoki@mentoki.com'
+MENTOKI_COURSE_EMAIL = u'mentoki@mentoki.com'
 
 
 CACHES = {
@@ -296,7 +296,7 @@ FROALA_EDITOR_OPTIONS = {
     'key': 'tckD-17B1ewrwA-7sekA2ys==',
     'inlineMode': False,
     'toolbarFixed': False,
-    'minHeight': 500
+    'minHeight': 300
 }
 
 

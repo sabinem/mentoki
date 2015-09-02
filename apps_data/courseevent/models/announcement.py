@@ -58,12 +58,8 @@ def send_announcement(announcement, courseevent, module):
     teachers_emails = \
         list(CourseOwner.objects.teachers_emails(course=courseevent.course))
     all_emails = participants_emails + teachers_emails
-
-    send_to_class = ", ".join(participants_emails)
     send_all = ", ".join(all_emails)
-    send_teachers = ", ".join(teachers_emails)
 
-    courseemail = courseevent.email
     context = {
         'courseevent': courseevent,
         'title': announcement.title,
