@@ -20,7 +20,7 @@
 
 {% if item.item_type == item.MENU_ITEM_TYPE.announcements_item %}
     <a class="item
-    {% ifstartswith announcements_url %}active{% endifstartswith %}"
+    {% ifstartswith announcements_url %}active{% endifstartswith %}"  style="font-size:1.1em;"
     href="{{ announcements_url }}">
         <i class="announcement icon"></i>
         {{ item.display_title }}
@@ -28,42 +28,42 @@
 
 {% elif item.item_type == item.MENU_ITEM_TYPE.forum_item %}
     <a class="item
-    {% ifstartswith forum_url %}active{% endifstartswith %}"
+    {% ifstartswith forum_url %}active{% endifstartswith %}" style="font-size:1.1em;"
     href="{{ forum_url }}">
         <i class="comments outline icon"></i>{{ item.display_title }}
     </a>
 
 {% elif item.item_type == item.MENU_ITEM_TYPE.homework_item %}
     <a class="item
-    {% ifstartswith homework_url %}active{% endifstartswith %}"
+    {% ifstartswith homework_url %}active{% endifstartswith %}" style="font-size:1.1em;"
     href="{{ homework_url }}">
         <i class="write icon"></i>{{ item.display_title }}
     </a>
 
 {% elif item.item_type == item.MENU_ITEM_TYPE.last_posts_item %}
     <a class="item
-    {% ifstartswith newposts_url %}active{% endifstartswith %}"
+    {% ifstartswith newposts_url %}active{% endifstartswith %}" style="font-size:1.1em;"
     href="{{ newposts_url }}">
         <i class="find icon"></i>{{ item.display_title }}
     </a>
 
 {% elif item.item_type == item.MENU_ITEM_TYPE.private_item %}
     <a class="item
-    {% ifstartswith private_url %}active{% endifstartswith %}"
+    {% ifstartswith private_url %}active{% endifstartswith %}" style="font-size:1.1em;"
     href="{{ private_url }}">
         <i class="privacy icon"></i>{{ item.display_title }}
     </a>
 
 {% elif item.item_type == item.MENU_ITEM_TYPE.lesson_item %}
     <a class="item
-    {% ifstartswith lesson_url %}active{% endifstartswith %}"
+    {% ifstartswith lesson_url %}active{% endifstartswith %}" style="font-size:1.1em;"
     href="{{ lesson_url }}">
         <i class="student icon"></i>{{ item.display_title }}
     </a>
 
 {% elif item.item_type == item.MENU_ITEM_TYPE.participants_item %}
     <a class="item
-    {% ifstartswith participants_url %}active{% endifstartswith %}"
+    {% ifstartswith participants_url %}active{% endifstartswith %}" style="font-size:1.1em;"
     href="{{ participants_url }}">
         <i class="users icon"></i>{{ item.display_title }}
     </a>

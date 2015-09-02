@@ -11,11 +11,11 @@
     <div class="header item huge" style="font-size:1.5em;">
         Hallo {{ user.username }}!
     </div>
-    <a  href="{% url 'desk:start' %}" class="item">
+    <a  href="{% url 'desk:start' %}" class="item" style="font-size:1.1em;">
         Zurück zum Schreibtisch
     </a>
 
-    <a href="{% url "logout" %}" class="item">
+    <a href="{% url "logout" %}" class="item" style="font-size:1.1em;">
         Ausloggen
     </a>
 
@@ -26,31 +26,31 @@
 
     <a class="item
         {% ifstartswith course_url %}active {% endifstartswith %}
-        " href="{{ course_url }}">
+        " href="{{ course_url }}" style="font-size:1.1em;">
         Kursvorlage
     </a>
 
     <a class="item completed
         {% ifstartswith courseowner_url %}active {% endifstartswith %}
-        " href="{{ courseowner_url }}">
+        " href="{{ courseowner_url }}" style="font-size:1.1em;">
         Kursleitung
     </a>
 
     <a class="item completed
         {% ifstartswith courseevents_url %}active {% endifstartswith %}
-        " href="{{ courseevents_url }}">
+        " href="{{ courseevents_url }}" style="font-size:1.1em;">
         Kursereignisse
     </a>
 
     <a class="item
         {% ifstartswith lesson_url %}active {% endifstartswith %}
-        " href="{{ lesson_url }}">
+        " href="{{ lesson_url }}" style="font-size:1.1em;">
         <i class="list icon"></i>Unterricht
     </a>
 
     <a class="item
         {% ifstartswith material_url %}active {% endifstartswith %}
-        " href="{{ material_url }}">
+        " href="{{ material_url }}" style="font-size:1.1em;">
         <i class="list icon"></i>Material
     </a>
 
@@ -69,37 +69,37 @@
             Klassenzimmer {{ courseevent }}
         </div>
 
-        <a href="{{ classroom_url }}" class="item">
+        <a href="{{ classroom_url }}" class="item" style="font-size:1.1em;">
             <i class="icon student blue"></i>ins Klassenzimmer gehen
         </a>
 
         <a href="{{ participants_url }}" class="item
-            {% ifactive participants_url %}active{% endifactive %}">
+            {% ifactive participants_url %}active{% endifactive %}" style="font-size:1.1em;">
             <i class="list icon"></i>Teilnehmerliste ansehen
         </a>
 
         <a href="{{ forum_url }}" class="item
-            {% ifactive forum_url %}active{% endifactive %}">
+            {% ifactive forum_url %}active{% endifactive %}" style="font-size:1.1em;">
             <i class="list icon"></i>Forum
         </a>
 
         <a href="{{ announcements_url }}" class="item
-            {% ifactive announcements_url %}active{% endifactive %}" >
+            {% ifactive announcements_url %}active{% endifactive %}" style="font-size:1.1em;" >
             <i class="list icon"></i>Ankündigungen
         </a>
 
         <a href="{{ homeworks_url }}" class="item
-            {% ifactive homeworks_url %}active{% endifactive %}" >
+            {% ifactive homeworks_url %}active{% endifactive %}" style="font-size:1.1em;" >
             <i class="list icon"></i>Aufgaben
         </a>
 
         <a href="{{ menu_url }}" class="item
-            {% ifactive menu_url %}active{% endifactive %}" >
+            {% ifactive menu_url %}active{% endifactive %}" style="font-size:1.1em;" >
             <i class="list icon"></i>Klassenzimmer-Menü
         </a>
 
         <a href="{{ material_url }}" class="item
-            {% ifactive material_url %}active{% endifactive %}" >
+            {% ifactive material_url %}active{% endifactive %}"  style="font-size:1.1em;">
             <i class="list icon"></i>Unterricht
         </a>
 
