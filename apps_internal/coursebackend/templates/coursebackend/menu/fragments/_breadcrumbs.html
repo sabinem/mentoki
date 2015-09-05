@@ -10,22 +10,22 @@ for list/update/detail/create/delete
 
 <div class="ui large breadcrumb" id ="page-breadcrumb">
 
-    <a href="{{ list_url }}" class="item">
-        Klassenzimmer-Menü {{ course.title }}
+    <a href="{{ list_url }}" class="section">
+        Klassenzimmer-Menü
     </a>
 
     <i class="right chevron icon divider"></i>
    {% if url_name == 'list' %}
-    <a class="item">
+    <div class="section">
         veröffentlicht
-    </a>
+    </div>
     {% elif url_name == 'preview' %}
-    <a class="item">
+    <div class="section">
         Menü bearbeiten
-    </a>
+    </div>
     {% elif url_name == 'sort' %}
-    <a class="item">
+    <div class="section">
         Menüpunkte sortieren
-    </a>
+    </div>
     {% endif %}
 </div>
