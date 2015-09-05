@@ -1,0 +1,51 @@
+{% comment %}
+
+the breadcrumb for classroommenu
+
+for list/update/detail/create/delete
+
+{% endcomment %}
+
+{% url 'coursebackend:homework:list' course_slug=cs slug=es as list_url %}
+
+<div class="ui large breadcrumb" id ="page-breadcrumb">
+
+    {% if url_name == 'list' %}
+        <div class="section active">
+            Aufgaben {{ courseevents.title }}
+        </div>
+    {% else %}
+        <a href="{{ list_url }}" class="section">
+            Aufgaben {{ courseevents.title }}
+        </a>
+        <i class="right chevron icon divider"></i>
+        {% if url_name == 'detail' %}
+            <div class="section">
+                {{ homework.title }}
+            </div>
+        {% elif url_name == 'create' %}
+            <div class="section active">
+                Aufgabe anlegen
+            </div>
+        {% else %}
+            <a href="{{ list_url }}" class="section">
+                {{ homework.title }}
+            </a>
+            <i class="right chevron icon divider"></i>
+             {% if url_name == 'delete' %}
+                <div class="section active">
+                    löschen
+                </div>
+             {% elif url_name == 'update active' %}
+                <div class="section">
+                    ändern
+                </div>
+             {% endif %}
+
+        {% endif %}
+    {% endif %}
+
+
+</div>
+
+

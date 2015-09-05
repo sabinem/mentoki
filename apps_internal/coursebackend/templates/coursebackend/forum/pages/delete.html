@@ -1,22 +1,10 @@
 {% extends "coursebackend/base_courseevent.html" %}
 
+{% block breadcrumbs %}
+    {% include 'coursebackend/forum/fragments/_breadcrumbs.html' %}
+{% endblock %}
+
 {% block page_content %}
-
-    <div class="row coursebackend_background">
-        <div class="sixteen wide column">
-
-            <div class="ui large breadcrumb" id ="page-breadcrumb">
-
-                {% include 'coursebackend/forum/fragments/_breadcrumbs.html' %}
-                <i class="right chevron icon divider"></i>
-                <a class="item">
-                    löschen
-                </a>
-
-            </div>
-                
-        </div>
-    </div>
 
     <div class="row coursebackend_white">
         <div class="sixteen wide column">

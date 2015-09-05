@@ -1,5 +1,7 @@
 {% url 'coursebackend:classlesson:lessonupdate'  course_slug=cs slug=es pk=classlesson.pk as lessonupdate_url %}
 {% url 'coursebackend:classlesson:delete'  course_slug=cs slug=es pk=classlesson.pk as delete_url %}
+{% url 'classroom:classlesson:lesson'  slug=es pk=classlesson.pk as class_url %}
+
 
 <div class="ui header medium">
     {{ classlesson.lesson_nr }}.
@@ -13,6 +15,11 @@
     {% if not classlesson.published %}
         <a href="{{ delete_url }}">
            <i class="icon trash"></i>
+        </a>
+    {% endif %}
+    {% if not classlesson.published %}
+        <a href="{{ class_url }}">
+           <i class="icon student"></i>
         </a>
     {% endif %}
 </div>

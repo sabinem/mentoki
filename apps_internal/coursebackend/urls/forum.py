@@ -5,13 +5,16 @@ from __future__ import unicode_literals
 from django.conf.urls import patterns, url
 
 from ..views.forum import ForumListView, ForumDetailView, ForumDeleteView,\
-   ForumCreateView, ForumUpdateView
+   ForumCreateView, ForumUpdateView, ThreadDetailView
 
 
 urlpatterns = patterns('',
 
     url(r'^$', ForumListView.as_view(),
         {'template':'coursebackend/forum/pages/list.html'}, name='list'),
+
+    url(r'^beitrag/(?P<pk>\d{1,4})$', ThreadDetailView.as_view(),
+        {'template':'coursebackend/forum/pages/thread.html'}, name='thread'),
 
     url(r'^(?P<pk>\d{1,4})$', ForumDetailView.as_view(),
         {'template':'coursebackend/forum/pages/detail.html'}, name='detail'),

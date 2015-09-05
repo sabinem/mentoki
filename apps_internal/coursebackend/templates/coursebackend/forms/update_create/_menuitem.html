@@ -7,6 +7,29 @@
 
   {% include 'coursebackend/forms/fragments/_form_non_field_errors.html' %}
 
+    <div class="ui dividing medium header">Beschriftung des Eintrags und Anzeigeposition</div>
+
+    {% if form.display_nr.errors %}
+        <div class="ui negative floating message">
+            {{ form.display_nr.errors }}
+        </div>
+    {% endif %}
+    {% if form.display_title.errors %}
+        <div class="ui negative floating message">
+            {{ form.display_title.errors }}
+        </div>
+    {% endif %}
+
+  <div class="inline fields">
+    <div class="field five wide">
+      {{ form.display_nr }}
+    </div>
+    <div class="field eleven wide">
+      {{ form.display_title }}
+    </div>
+  </div>
+
+
   <div class="ui dividing medium header">Menüeintrags-Art</div>
     {% if form.item_type.errors %}
         <div class="ui negative floating message">
@@ -47,7 +70,7 @@
       <div class="item">
         <i class="share icon"></i><i class="student icon"></i>
         <div class="content">
-          <span class="published_in_class">Lektion veröffentlichen</span>
+          <span class="published_in_class"><strong>Lektion</strong> veröffentlichen</span>
         </div>
       </div>
       <div class="item">
@@ -80,7 +103,7 @@
         </div>
     {% endif %}
     <div class="field">
-        <p>Lektion, wenn die Eintragsart "Lektion veröffentlichen" ist</p>
+        <p><strong><span class="published_in_class">Lektion</span></strong>, wenn die Eintragsart "Lektion veröffentlichen" ist</p>
         {{ form.classlesson }}
     </div>
 
@@ -90,7 +113,8 @@
         </div>
     {% endif %}
     <div class="field">
-        <p>Forum, wenn die Eintragsart "Forum veröffentlichen" ist</p>
+        <p><strong><span class="published_in_class">Forum</span></strong>,
+            wenn die Eintragsart "Forum veröffentlichen" ist</p>
         {{ form.forum }}
     </div>
 
@@ -100,34 +124,14 @@
         </div>
     {% endif %}
     <div class="field">
-        <p>Aufgabe, wenn die Eintragsart "Link zu Aufgabe" ist.
+        <p><strong><span class="published_in_class">Aufgabe</span></strong>,
+        wenn die Eintragsart "Link zu Aufgabe" ist.
         Aufgaben sind Teil einer Lektion und auch ohne Einzellink im Klassenzimmer
         zugänglich.
         </p>
         {{ form.homework }}
     </div>
 
-    <div class="ui dividing medium header">Beschriftung des Eintrags und Anzeigeposition</div>
-
-    {% if form.display_nr.errors %}
-        <div class="ui negative floating message">
-            {{ form.display_nr.errors }}
-        </div>
-    {% endif %}
-    {% if form.display_title.errors %}
-        <div class="ui negative floating message">
-            {{ form.display_title.errors }}
-        </div>
-    {% endif %}
-
-  <div class="inline fields">
-    <div class="field five wide">
-      {{ form.display_nr }}
-    </div>
-    <div class="field eleven wide">
-      {{ form.display_title }}
-    </div>
-  </div>
 
 
 <div class="ui dividing large header">Bedeutung des Links</div>

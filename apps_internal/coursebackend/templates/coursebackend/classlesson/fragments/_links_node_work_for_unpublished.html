@@ -1,0 +1,34 @@
+{% url 'coursebackend:classlesson:blockupdate'  course_slug=cs slug=es pk=node.pk as blockupdate_url %}
+{% url 'coursebackend:classlesson:lessonupdate'  course_slug=cs slug=es pk=node.pk as lessonupdate_url %}
+{% url 'coursebackend:classlesson:stepupdate'  course_slug=cs slug=es pk=node.pk as stepupdate_url %}
+
+{% url 'coursebackend:classlesson:delete'  course_slug=cs slug=es pk=node.pk as delete_url %}
+
+{% url 'coursebackend:classlesson:lesson' course_slug=cs slug=es pk=node.pk as classlesson_url %}
+{% url 'coursebackend:classlesson:step' course_slug=cs slug=es pk=node.pk as classlessonstep_url %}
+
+{% url 'coursebackend:classlesson:block'  course_slug=cs slug=es pk=node.pk as blockdetail_url %}
+<a
+    {% if node.is_block %}
+        href="{{ blockdetail_url }}"
+    {% elif node.is_lesson %}
+        href="{{ classlesson_url }}"
+    {% elif node.is_step %}
+        href="{{ classlessonstep_url }}"
+    {% endif %}>
+    {{ node.title }}
+</a>
+{% if node.is_lesson %}
+    <a href="{{ lessonupdate_url }}">
+       <i class="icon write"></i>
+    </a>
+{% elif node.is_step %}
+    <a href="{{ stepupdate_url }}">
+       <i class="icon write"></i>
+    </a>
+{% endif %}
+{% if not node.is_block %}
+    <a href="{{ delete_url }}">
+       <i class="icon trash"></i>
+    </a>
+{% endif %}

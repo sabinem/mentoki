@@ -7,8 +7,32 @@
     <div class="four wide field">
       {{ form.display_nr }}
     </div>
-    <div class="four wide field">
+
+   {% if form.instance.item_type == form.instance.MENU_ITEM_TYPE.forum_item %}
+        <i class="icon comments outline"></i>
+   {% elif form.instance.item_type == form.instance.MENU_ITEM_TYPE.lesson_item %}
+        <i class="icon student"></i>
+   {% elif form.instance.item_type == form.instance.MENU_ITEM_TYPE.participants_item %}
+        <i class="icon users"></i>
+   {% elif form.instance.item_type == form.instance.MENU_ITEM_TYPE.homework_item %}
+        <i class="icon write"></i>
+   {% elif form.instance.item_type == form.instance.MENU_ITEM_TYPE.last_posts_item %}
+        <i class="icon sidebar"></i>
+   {% elif form.instance.item_type == form.instance.MENU_ITEM_TYPE.announcements_item %}
+        <i class="icon announcement"></i>
+   {% elif form.instance.item_type == form.instance.MENU_ITEM_TYPE.private_item %}
+        <i class="icon privacy"></i>
+   {% elif form.instance.item_type == form.instance.MENU_ITEM_TYPE.header_item %}
+        <i class="icon">Ü</i>
+   {% endif %}
+
+    <div class="four wide field"
+            {% if form.instance.item_type == form.instance.MENU_ITEM_TYPE.header_item %}
+               style="font-type:bold; background:yellow; border:2px solid teal;"
+            {% endif %}
+            >
       {{ form.display_title }}
     </div>
+
 </div>
 

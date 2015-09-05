@@ -7,16 +7,11 @@
             {% include 'coursebackend/classlesson/fragments/_icon_node.html' %}
             <div class="content">
                 <div class="header">
-                <a
-                    {% include 'coursebackend/classlesson/fragments/_link_node_detail.html' %}
-                >
-                     <span
-                         {% if node.published %}class="published_in_class"{% endif %}>
-
-                         {{ node.title }}
-                     </span>
-                </a>
-                {% include 'coursebackend/classlesson/fragments/_links_node_update_delete_preview.html' %}
+                {% if node.published %}
+                      {% include 'coursebackend/classlesson/fragments/_links_node_work_for_published.html' %}
+                {% else %}
+                      {% include 'coursebackend/classlesson/fragments/_links_node_work_for_unpublished.html' %}
+                {% endif %}
                 {% if node.material.all %}
                     {% for material in node.material.all %}
                         <i class="icon file outline "></i> {{ material }}

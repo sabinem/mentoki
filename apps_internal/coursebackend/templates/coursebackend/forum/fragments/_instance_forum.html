@@ -6,10 +6,25 @@
 
 {{ forum.text | safe }}
 
+<div class="ui dividing medium header">Unterforen </div>
+
+{% if nodes %}
+
+    {%  include 'coursebackend/forum/fragments/_recursetree_nodes.html' %}
+{% else %}
+    keine
+{% endif %}
+
 <div class="ui dividing medium header">Beiträge </div>
 
-{% if forum.can_have_threads %}
-    <p>Beiträge sind in diesem Forum erlaubt.</p>
-{% else %}
+{% if not forum.can_have_threads %}
     <p>Dieses Forum wurde als Strukturelement angelegt, das keine eigenen Beiträge hat.</p>
+{% else %}
+    {% if not threads %}
+        <p>Beiträge sind in diesem Forum erlaubt, aber noch nicht vorhanden.</p>
+    {% else %}
+        {% include 'coursebackend/forum/fragments/_list_threads.html' %}
+    {% endif %}
 {% endif %}
+
+

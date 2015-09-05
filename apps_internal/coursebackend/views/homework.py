@@ -24,10 +24,15 @@ class HomeworkRedirectListMixin(object):
 
 class HomeworkRedirectDetailMixin(object):
     def get_success_url(self):
-       return reverse_lazy('coursebackend:homework:list',
-                           kwargs={'slug': self.kwargs['slug'],
-                                   'course_slug': self.kwargs['course_slug'],
-                                   'pk': self.object.pk})
+       if self.object.classlesson.published:
+           return reverse_lazy('classroom:homework:list',
+                               kwargs={'slug': self.kwargs['slug'],
+                                       'pk': self.object.pk})
+       else:
+           return reverse_lazy('coursebackend:homework:list',
+                               kwargs={'slug': self.kwargs['slug'],
+                                       'course_slug': self.kwargs['course_slug'],
+                                       'pk': self.object.pk})
 
 
 class HomeworkListView(

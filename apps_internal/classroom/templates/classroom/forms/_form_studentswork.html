@@ -5,7 +5,18 @@
 
     {% include 'classroom/forms/form_fields/_form_field_homework.html' %}
 
-    {% include 'classroom/forms/form_fields/_form_field_title.html' %}
+    <div class="field sixteen wide">
+
+        {% if form.title.errors %}
+            <div class="ui negative floating message">
+                {{ form.title.errors }}
+            </div>
+        {% endif %}
+        <br>
+
+        {{ form.title }}
+
+    </div>
 
     {% include 'classroom/forms/form_fields/_form_field_text.html' %}
 

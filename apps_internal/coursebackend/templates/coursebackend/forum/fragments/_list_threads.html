@@ -1,0 +1,48 @@
+
+<div class="ui comments" id="forum_thread_comments">
+
+    {% for thread in threads %}
+
+    {% url 'coursebackend:forum:thread' slug=es course_slug=cs pk=thread.pk as thread_url %}
+
+    <div class="comment">
+
+        <a class="avatar">
+
+            <img src="{{ thread.author.profile_image.url }}">
+
+        </a>
+
+        <div class="content">
+
+            <a href="{{ thread_url }}" class="author">
+
+                {{ thread.author }}: {{ thread.title }}
+
+            </a>
+
+            <div class="metadata">
+
+                {% if thread.post_count > 0 %}
+                    <div class="ui circular label">
+                        {{ thread.post_count }}
+                    </div>
+                {% endif %}
+
+                <span class="date">{{ thread.modified | date:"D d M" }}, </span>
+
+                letzter Post: <span class="date">{{ thread.created | date:"D d M" }}</span>
+                    von <span class="author">{{ thread.last_author }}</span>
+            </div>
+
+
+            <p>{{ thread.text | safe | truncatewords:10 }}</p>
+
+        </div>
+
+    </div>
+
+
+    {% endfor %}
+
+</div>

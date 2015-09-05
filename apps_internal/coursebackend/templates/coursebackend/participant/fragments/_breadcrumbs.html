@@ -5,15 +5,16 @@ the breadcrumb for classroommenu
 for list/update/detail/create/delete
 
 {% endcomment %}
-
-{% url 'coursebackend:participant:list' course_slug=cs slug=ce as list_url %}
-
 <div class="ui large breadcrumb" id ="page-breadcrumb">
 
-    <a href="{{ list_url }}" class="item">
-        Teilnehmerliste {{ courseevent.title }}
-    </a>
+    {% url 'coursebackend:participant:list' course_slug=cs slug=ce as list_url %}
 
-    <i class="right chevron icon divider"></i>
+    <div class="ui large breadcrumb" id ="page-breadcrumb">
+
+        <div class="section">
+            Teilnehmerliste {{ courseevent.title }}
+        </div>
+
+    </div>
 
 </div>

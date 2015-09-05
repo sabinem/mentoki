@@ -160,15 +160,25 @@ class ClassStepDetailView(
 class ClassLessonRedirectDetailMixin(object):
     def get_success_url(self):
        if self.context_object_name == 'classlesson':
-           return reverse_lazy('coursebackend:classlesson:lesson',
-                               kwargs={'course_slug': self.kwargs['course_slug'],
-                                       'slug': self.kwargs['slug'],
-                                       'pk': self.object.pk})
+           if self.object.published:
+               return reverse_lazy('classroom:classlesson:lesson',
+                                   kwargs={'slug': self.kwargs['slug'],
+                                           'pk': self.object.pk})
+           else:
+               return reverse_lazy('coursebackend:classlesson:lesson',
+                                   kwargs={'course_slug': self.kwargs['course_slug'],
+                                           'slug': self.kwargs['slug'],
+                                           'pk': self.object.pk})
        elif self.context_object_name == 'classlessonstep':
-           return reverse_lazy('coursebackend:classlesson:step',
-                               kwargs={'course_slug': self.kwargs['course_slug'],
-                                       'slug': self.kwargs['slug'],
-                                       'pk': self.object.pk})
+           if self.object.published:
+               return reverse_lazy('classroom:classlesson:step',
+                                   kwargs={'slug': self.kwargs['slug'],
+                                           'pk': self.object.pk})
+           else:
+               return reverse_lazy('coursebackend:classlesson:step',
+                                   kwargs={'course_slug': self.kwargs['course_slug'],
+                                           'slug': self.kwargs['slug'],
+                                           'pk': self.object.pk})
 
 
 class ClassLessonRedirectListMixin(object):

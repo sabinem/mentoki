@@ -1,0 +1,23 @@
+{% url 'classroom:classlesson:lesson' slug=es pk=node.pk as classlesson_url %}
+{% url 'classroom:classlesson:step' slug=es pk=node.pk as classlessonstep_url %}
+{% url 'coursebackend:classlesson:lessonupdate'  course_slug=cs slug=es pk=node.pk as lessonupdate_url %}
+{% url 'coursebackend:classlesson:stepupdate'  course_slug=cs slug=es pk=node.pk as stepupdate_url %}
+
+<a class="published_in_class"
+    {% if node.is_lesson %}
+        href="{{ classlesson_url }}"
+    {% elif node.is_step %}
+        href="{{ classlessonstep_url }}"
+    {% endif %}>
+    {{ node.title }}<i class="icon student"></i>
+</a>
+
+{% if node.is_lesson %}
+    <a href="{{ lessonupdate_url }}">
+       <i class="icon write"></i>
+    </a>
+{% elif node.is_step %}
+    <a href="{{ stepupdate_url }}">
+       <i class="icon write"></i>
+    </a>
+{% endif %}

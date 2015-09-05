@@ -10,25 +10,11 @@
 
 {% endblock %}
 
+{% block breadcrumbs %}
+    {% include 'coursebackend/menu/fragments/_breadcrumbs.html' %}
+{% endblock %}
+
 {% block page_content %}
-
-    <div class="row coursebackend_background">
-
-        <div class="sixteen wide column">
-
-            <div class="ui large breadcrumb" id ="page-breadcrumb">
-
-                {% include 'coursebackend/menu/fragments/_breadcrumbs.html' %}
-
-                <a class="item">
-                    Menüpunkt löschen
-                </a>
-
-            </div>
-
-        </div>
-
-    </div>
 
     <div class="row coursebackend_white">
 

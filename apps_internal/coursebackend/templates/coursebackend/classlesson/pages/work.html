@@ -3,6 +3,7 @@
 {% block courseevent_menu_items %}
     {% url 'coursebackend:classlesson:copy'  slug=es course_slug=cs as copy_url %}
     {% url 'coursebackend:classlesson:start'  slug=es course_slug=cs as start_url %}
+    {% url 'coursebackend:classlesson:meta'  slug=es course_slug=cs as meta_url %}
 
     <a href="{{ copy_url }}" class="item">
         <i class="copy icon blue"></i>Kopieren

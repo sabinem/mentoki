@@ -1,14 +1,18 @@
 {% extends "coursebackend/base_courseevent.html" %}
 
+{% block courseevent_menu_items %}
+        {% url 'classroom:participant:list' slug=es as back_link %}
+
+        <a href="{{ back_link }}" class="item" >
+            <i class="student icon blue"></i>
+        </a>
+{% endblock %}
+
+{% block breadcrumbs %}
+    {% include 'coursebackend/participant/fragments/_breadcrumbs.html' %}
+{% endblock %}
+
 {% block page_content %}
-
-    <div class="row coursebackend_background">
-        <div class="sixteen wide column">
-
-            {% include 'coursebackend/participant/fragments/_breadcrumbs.html' %}
-
-        </div>
-    </div>
 
     <div class="row coursebackend_white">
         <div class="sixteen wide column">

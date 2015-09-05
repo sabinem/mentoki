@@ -1,55 +1,83 @@
-{% url 'classroom:classlesson:start' slug=es as start_url %}
 
-<a href="{{ start_url }}" class="section">
-    <span style="color:teal;">Unterricht</span>
-</a>
+{% url 'classroom:classlesson:start' slug=cs as start_url %}
 
-<i class="right chevron icon divider"></i>
+<div class="ui large breadcrumb" id ="page-breadcrumb">
 
-{% for breadcrumb in breadcrumbs %}
+    {% if url_name == 'start' %}
+        <div class="section active">
+        Unterricht
+        </div>
 
-    {% if not forloop.first %}
-        <i class="right chevron icon divider"></i>
-    {% endif %}
+    {% else %}
 
-    {% if forloop.last %}
-
-        <a class="item">
-
-        {% if previous_node %}
-            {% with node=previous_node %}
-                <a
-                    {% include 'classroom/classlesson/fragments/_link_node_detail.html' %}
-                >
-                    <i class="icon angle double left"></i>
-                </a>
-            {% endwith %}
-        {% endif %}
-
-    {% endif %}
-
-    {% with node=breadcrumb %}
-         <a
-         {% include 'classroom/classlesson/fragments/_link_node_detail.html' %}
-         class="section">
-             {{ node.breadcrumb }}
-         </a>
-    {% endwith %}
-
-    {% if forloop.last %}
-
-        {% if next_node %}
-            {% with node=next_node %}
-                <a
-                {% include 'classroom/classlesson/fragments/_link_node_detail.html' %}
-                >
-                    <i class="icon angle double right"></i>
-                </a>
-            {% endwith %}
-        {% endif %}
-
+        <a href="{{ start_url }}" class="section">
+        Unterricht
         </a>
+        <i class="right chevron icon divider"></i>
 
+        {% if url_name == 'copy' %}
+            <div class="section active">
+                Lektionen kopieren
+            </div>
+
+
+        {% elif  url_name == 'meta'%}
+            <div class="section active">
+                Letzte Änderung
+            </div>
+        {% else %}
+
+            {% for breadcrumb in breadcrumbs %}
+
+                {% if not forloop.first %}
+                     <i class="right chevron icon divider"></i>
+                {% endif %}
+
+                {% if forloop.last %}
+
+                    {% if previous_node %}
+                        {% with node=previous_node %}
+                            <a
+                                {% include 'classroom/classlesson/fragments/_link_node_detail.html' %}
+                            >
+                                <i class="icon angle double left"></i>
+                            </a>
+                        {% endwith %}
+                    {% endif %}
+
+                {% endif %}
+
+                {% with node=breadcrumb %}
+                    {% if forloop.last %}
+                         <div class="section active">
+                             {% if node.is_block %}<i class="icon cube"></i>{% endif %}
+                             {{ node.breadcrumb }}
+                         </div>
+                    {% else %}
+                     <a
+                     {% include 'classroom/classlesson/fragments/_link_node_detail.html' %}
+                     class="section">
+                         {% if node.is_block %}<i class="icon cube"></i>{% endif %}
+                         {{ node.breadcrumb }}
+                     </a>
+                    {% endif %}
+                {% endwith %}
+
+                {% if forloop.last %}
+
+                    {% if next_node %}
+                        {% with node=next_node %}
+                            <a
+                            {% include 'classroom/classlesson/fragments/_link_node_detail.html' %}
+                            >
+                                <i class="icon angle double right"></i>
+                            </a>
+                        {% endwith %}
+                    {% endif %}
+
+                {% endif %}
+
+            {% endfor %}
+        {% endif %}
     {% endif %}
-
-{% endfor %}
+</div>

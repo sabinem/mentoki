@@ -8,7 +8,7 @@ from django.views.generic import TemplateView, UpdateView, DeleteView, FormView
 
 from braces.views import FormValidMessageMixin
 
-from apps_data.courseevent.models.forum import Forum
+from apps_data.courseevent.models.forum import Forum, Thread, Post
 from apps_data.courseevent.models.courseevent import CourseEvent
 
 from ..forms.forum import ForumForm
@@ -44,19 +44,22 @@ class ForumDetailView(
         context['forum'] = forum
         context['breadcrumbs'] = forum.get_breadcrumbs_with_self
         context['nodes'] = forum.get_descendants()
+        if forum.can_have_threads:
+            context['threads'] = Thread.objects.filter(forum=forum)
 
         return context
 
 
 class ForumContextMixin(object):
     def get_context_data(self, **kwargs):
-        context = super(ForumRedirectandBreadcrumbMixin, self).get_context_data(**kwargs)
+        context = super(ForumContextMixin, self).get_context_data(**kwargs)
 
         if not 'forum' in context:
             forum = get_object_or_404(Forum, pk=self.kwargs['pk'])
 
         context['breadcrumbs'] = context['forum'].get_breadcrumbs_with_self
         return context
+
 
 class ForumRedirectListMixin(object):
     def get_success_url(self):
@@ -114,7 +117,6 @@ class ForumDeleteView(
 
 
 class ForumCreateView(
-    ForumContextMixin,
     FormCourseEventKwargsMixin,
     FormValidMessageMixin,
     ForumRedirectListMixin,
@@ -139,3 +141,24 @@ class ForumCreateView(
             display_nr=form.cleaned_data['display_nr']
         )
         return super(ForumCreateView, self).form_valid(form)
+
+
+class ThreadDetailView(
+    CourseMenuMixin,
+    TemplateView):
+    """
+    Lists a thread with posts underneath and provides a form to create a new post
+    """
+    def get_context_data(self, **kwargs):
+
+        context = super(ThreadDetailView, self).get_context_data(**kwargs)
+
+        thread = get_object_or_404(Thread, pk=self.kwargs['pk'])
+        forum = get_object_or_404(Forum, pk=thread.forum_id)
+
+        context['thread'] = thread
+        context['breadcrumbs'] = forum.get_breadcrumbs_with_self
+        context['posts'] = Post.objects.filter(thread_id=self.kwargs['pk'])
+
+        return context
+

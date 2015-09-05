@@ -148,7 +148,7 @@ class ClassroomMenuItem(TimeStampedModel):
         verbose_name='Kurzlink',
         help_text="""die wichtigsten Links werden als Kurzlinks angezeigt.
         Es sollte nicht mehr als 10 Kurzlinks geben""",
-        default=True)
+        default=False)
 
     is_publishlink = models.BooleanField(
         verbose_name='publishlink',
@@ -241,8 +241,12 @@ class ClassroomMenuItem(TimeStampedModel):
         return False
 
     def delete(self):
-        if not self.delete_possible():
-            raise ValidationError('Löschung nicht möglich')
+        #if not self.delete_possible():
+        #    raise ValidationError('Löschung nicht möglich')
+        if self.forum:
+            self.forum.unpublish()
+        if self.classlesson:
+            self.classlesson.unpublish()
         super(ClassroomMenuItem, self).delete()
 
     def clean(self):

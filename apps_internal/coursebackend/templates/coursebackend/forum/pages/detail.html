@@ -4,26 +4,17 @@
     {% include 'coursebackend/forum/fragments/_link_worklinks.html' %}
 {% endblock %}
 
+{% block breadcrumbs %}
+    {% include 'coursebackend/forum/fragments/_breadcrumbs.html' %}
+{% endblock %}
+
 {% block page_content %}
-
-    <div class="row coursebackend_background">
-        <div class="sixteen wide column">
-
-            <div class="ui large breadcrumb" id ="page-breadcrumb">
-
-                {% include 'coursebackend/forum/fragments/_breadcrumbs.html' %}
-
-            </div>
-
-        </div>
-    </div>
 
     <div class="row coursebackend_white">
         <div class="sixteen wide column">
 
             {% include 'base/fragments/_messages.html' %}
             {% include 'coursebackend/forum/fragments/_instance_forum.html' %}
-            {% include 'coursebackend/forum/fragments/_recursetree_nodes.html' %}
 
         </div>
     </div>

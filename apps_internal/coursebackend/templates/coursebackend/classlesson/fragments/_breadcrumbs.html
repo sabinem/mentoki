@@ -34,7 +34,7 @@
 
                 {% if forloop.last %}
 
-                    {% if previous_node %}
+                    {% if previous_node and not previous_node.published %}
                         {% with node=previous_node %}
                             <a
                                 {% include 'coursebackend/classlesson/fragments/_link_node_detail.html' %}
@@ -64,7 +64,7 @@
 
                 {% if forloop.last %}
 
-                    {% if next_node %}
+                    {% if next_node and not next_node.published %}
                         {% with node=next_node %}
                             <a
                             {% include 'coursebackend/classlesson/fragments/_link_node_detail.html' %}

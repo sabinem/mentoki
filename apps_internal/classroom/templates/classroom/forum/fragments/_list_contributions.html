@@ -44,6 +44,11 @@
                         {% endif %}
                     ">
                         <i class="icon comments outline"></i>
+                        {% if contribution.thread_id %}
+                            {{ contribution.thread.title }}
+                        {% else %}
+                            {{ contribution.title }}
+                        {% endif %}
                     </a>
                 </td>
             </tr>

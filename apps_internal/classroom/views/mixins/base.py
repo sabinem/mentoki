@@ -61,4 +61,8 @@ class ClassroomMenuMixin(AuthMixin):
             context['menu_items'] = ClassroomMenuItem.objects.all_for_courseevent(courseevent=context['courseevent'])
             context['menu_items_shortlinks'] = ClassroomMenuItem.objects.shortlinks_for_courseevent(courseevent=context['courseevent'])
 
+        context['url_name'] = self.request.resolver_match.url_name
+
+        print context['url_name']
+
         return context

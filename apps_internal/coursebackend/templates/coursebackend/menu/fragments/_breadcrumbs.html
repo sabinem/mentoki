@@ -8,8 +8,24 @@ for list/update/detail/create/delete
 
 {% url 'coursebackend:menu:list' course_slug=cs slug=es as list_url %}
 
-<a href="{{ list_url }}" class="item">
-    Klassenzimmer-Menü {{ course.title }}
-</a>
+<div class="ui large breadcrumb" id ="page-breadcrumb">
 
-<i class="right chevron icon divider"></i>
+    <a href="{{ list_url }}" class="item">
+        Klassenzimmer-Menü {{ course.title }}
+    </a>
+
+    <i class="right chevron icon divider"></i>
+   {% if url_name == 'list' %}
+    <a class="item">
+        veröffentlicht
+    </a>
+    {% elif url_name == 'preview' %}
+    <a class="item">
+        Menü bearbeiten
+    </a>
+    {% elif url_name == 'sort' %}
+    <a class="item">
+        Menüpunkte sortieren
+    </a>
+    {% endif %}
+</div>

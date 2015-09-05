@@ -1,19 +1,52 @@
 {% url 'classroom:forum:start' slug=es as list_url %}
 
-<a href="{{ list_url }}"
-   class="section">
-    <span style="color:teal;">Forum</span>
-</a>
+<div class="ui large breadcrumb" id ="page-breadcrumb">
+    {% if url_name == 'start' %}
+        <div class="section">
+            Forum
+        </div>
+    {% else %}
+        <a href="{{ list_url }}"
+           class="section">
+            Forum
+        </a>
+        {% if url_name == 'newposts' %}
+            <i class="right chevron icon divider"></i>
+            <div class="section">
+                Neueste Beiträge
+            </div>
 
-{% for breadcrumb in breadcrumbs %}
+        {% else %}
+            {% for breadcrumb in breadcrumbs %}
 
-    {% url 'classroom:forum:detail' slug=es pk=breadcrumb.pk as detail_url %}
+                {% url 'classroom:forum:detail' slug=es pk=breadcrumb.pk as detail_url %}
 
-    <i class="right chevron icon divider"></i>
+                <i class="right chevron icon divider"></i>
+                {% if forloop.last and url_name == 'detail' %}
+                    <div class="section">
+                        {{ breadcrumb.title }}
+                    </div>
+                {% else %}
+                    <a href="{{ detail_url }}" class="section">
+                       {{ breadcrumb.title }}
+                    </a>
 
-    <a href="{{ detail_url }}"
-       class="section">
-        {{ breadcrumb.title }}
-    </a>
+                    {% if url_name == 'thread_create' %}
+                        <i class="right chevron icon divider"></i>
+                        <div class="section">
+                            neuen Beitrag anlegen
+                        </div>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
 
-{% endfor %}
+                    {% if url_name == 'thread' %}
+                        <i class="right chevron icon divider"></i>
+                        <div class="section">
+                            Beitrag "{{ thread.title }}"
+                        </div>
+                    {% endif %}
+
+        {% endif %}
+    {% endif %}
+</div>

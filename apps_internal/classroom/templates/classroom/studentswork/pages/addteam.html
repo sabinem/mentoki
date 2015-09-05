@@ -1,23 +1,10 @@
 {% extends "classroom/base.html" %}
 
+{% block breadcrumbs %}
+   {% include 'classroom/studentswork/fragments/_breadcrumbs.html' %}
+{% endblock %}
+
 {% block page_content %}
-
-    <div class="row classroom_background">
-        <div class="sixteen wide column">
-
-            <div class="ui large breadcrumb" id ="page-breadcrumb">
-
-                {% include 'classroom/studentswork/fragments/_breadcrumbs.html' %}
-
-                <a class="item">
-                    Team ändern
-                </a>
-
-            </div>
-
-        </div>
-    </div>
-
 
     <div class="row classroom_white">
         <div class="sixteen wide column">

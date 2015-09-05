@@ -5,15 +5,14 @@ This fragment is a list of the objects attached to menu items
 for list
 
 {% endcomment %}
-
+{% if listitems %}
 <table class="ui table">
 
     <thead>
         <tr>
             <tr>
-                <th class="six wide">Eintrag</th>
-                <th class="five wide">Liste im Klassenzimmer</th>
-                <th class="five wide">Liste im Backend</th>
+                <th class="six wide">Andere Links: Menü-Eintrag</th>
+                <th class="five wide">im Klassenzimmer</th>
             </tr>
         </tr>
     </thead>
@@ -52,13 +51,6 @@ for list
                     <a href="{{ delete_url }}">
                         <i class="trash icon"></i>
                     </a>
-
-                </td>
-
-                <td>
-                    <a href="{{ class_url }}">
-                        <i class="icon student"></i>
-                    </a>
                     {% if item.is_start_item %}
                         <i class="icon circle red"></i>
                     {% endif %}
@@ -68,8 +60,8 @@ for list
                 </td>
 
                 <td>
-                    <a href="{{ work_url }}">
-                        <i class="icon wrench"></i>
+                    <a href="{{ class_url }}" class="published_in_class">
+                        {{ item.display_title }}
                     </a>
                 </td>
 
@@ -80,3 +72,4 @@ for list
     </tbody>
 
 </table>
+{% endif %}

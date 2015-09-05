@@ -1,0 +1,23 @@
+{% comment %}
+
+the breadcrumb for classroommenu
+
+for list/update/detail/create/delete
+
+{% endcomment %}
+
+{% url 'classroom:classlesson:step' pk=homework.classlesson.pk slug=es as lessonstep_url %}
+
+<div class="ui large breadcrumb" id ="page-breadcrumb">
+
+    <a class="section active" href="{{ lessonstep_url }}">
+        {{ homework.classlesson }}
+    </a>
+
+    <i class="right chevron icon divider"></i>
+
+    <div class="section active">
+        Aufgabe
+    </div>
+
+</div>

@@ -50,6 +50,7 @@ class ForumManager(TreeManager):
                       can_have_threads=can_have_threads)
         forum.insert_at(parent)
         forum.save()
+        Forum.objects.rebuild()
 
         return forum
 

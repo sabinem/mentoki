@@ -1,27 +1,10 @@
 {% extends "coursebackend/base_courseevent.html" %}
 
+{% block breadcrumbs %}
+    {% include 'coursebackend/homework/fragments/_breadcrumbs.html' %}
+{% endblock %}
+
 {% block page_content %}
-
-    {% url 'coursebackend:homework:list' course_slug=cs slug=es pk=homework.pk as detail_url %}
-
-    <div class="row coursebackend_background">
-        <div class="sixteen wide column">
-
-            <div class="ui large breadcrumb" id ="page-breadcrumb">
-
-                {% include 'coursebackend/homework/fragments/_breadcrumb.html' %}
-                <a href="{{ detail_url }}" class="item">
-                    {{ homework.title  }}
-                </a>
-                <i class="right chevron icon divider"></i>
-                <a class="item">
-                    Löschen
-                </a>
-
-            </div>
-
-        </div>
-    </div>
 
     <div class="row coursebackend_background">
         <div class="sixteen wide column">

@@ -15,24 +15,11 @@
 
 {% endblock %}
 
+{% block breadcrumbs %}
+    {% include 'coursebackend/menu/fragments/_breadcrumbs.html' %}
+{% endblock %}
+
 {% block page_content %}
-
-    <div class="row coursebackend_background">
-        <div class="sixteen wide column">
-
-            <div class="ui large breadcrumb" id ="page-breadcrumb">
-
-                {% include 'coursebackend/menu/fragments/_breadcrumbs.html' %}
-
-                <a class="item">
-                    im Klassenzimmer sichtbare Links
-                </a>
-
-            </div>
-
-        </div>
-
-    </div>
 
     <div class="row coursebackend_white">
         <div class="sixteen wide column">
@@ -40,7 +27,7 @@
             {% include 'base/fragments/_messages.html' %}
             <div class="ui info floating message">
             <p>Das Menü steuert welche Foren und Lektionen im Klassenzimmer
-               sichtbar sind. Diese Liste gibt einen schnellen Überblick darüber:</p>
+               veröffentlicht sind. Diese Liste gibt einen schnellen Überblick darüber:</p>
             </div>
             {% include 'coursebackend/menu/fragments/_lessonitems_table.html' %}
             {% include 'coursebackend/menu/fragments/_forumitems_table.html' %}

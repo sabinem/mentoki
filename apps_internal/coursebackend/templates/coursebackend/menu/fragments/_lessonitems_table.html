@@ -5,7 +5,7 @@ This fragment is a list of the objects attached to menu items
 for list
 
 {% endcomment %}
-
+{% if lessonitems %}
 <table class="ui table">
 
     <thead>
@@ -13,7 +13,6 @@ for list
             <tr>
                 <th class="six wide">Eintrag</th>
                 <th class="five wide">Lektion im Klassenzimmer</th>
-                <th class="five wide">Lektion im Backend</th>
             </tr>
         </tr>
     </thead>
@@ -24,7 +23,6 @@ for list
 
             {% url 'coursebackend:menu:update' pk=item.pk course_slug=cs slug=es as update_url %}
             {% url 'coursebackend:menu:delete' pk=item.pk course_slug=cs slug=es as delete_url %}
-            {% url 'coursebackend:classlesson:lesson' pk=item.classlesson_id course_slug=cs slug=es as work_url %}
             {% url 'classroom:classlesson:lesson' pk=item.classlesson_id slug=es as class_url %}
 
             <tr>
@@ -44,21 +42,12 @@ for list
                 </td>
 
                 <td>
-                    <a href="{{ class_url }}">
-                        <i class="icon student"></i>
-                    </a>
-                    {% if item.is_start_item %}
-                        <i class="icon circle red"></i>
-                    {% endif %}
-                    {% if item.active %}
-                        <i class="icon circle green"></i>
-                    {% endif %}
-                </td>
-
-                <td>
-                    <a href="{{ work_url }}">
+                    {% if item.classlesson.published %}
+                    <a href="{{ class_url }}" class="published_in_class">
                         {{ item.classlesson }}
                     </a>
+                    {% endif %}
+
                 </td>
 
             </tr>
@@ -68,3 +57,4 @@ for list
     </tbody>
 
 </table>
+{% endif %}
