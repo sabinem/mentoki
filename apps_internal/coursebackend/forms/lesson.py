@@ -51,7 +51,7 @@ class LessonStepForm(forms.ModelForm):
 
     class Meta:
         model = Lesson
-        fields = ('parent', 'nr', 'title', 'description', 'text', 'material' )
+        fields = ('parent', 'nr', 'title', 'description', 'text', 'material', 'is_homework' )
 
     def __init__(self, *args, **kwargs):
         course_slug = kwargs.pop('course_slug', None)

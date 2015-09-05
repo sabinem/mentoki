@@ -8,7 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 
 from apps_data.lesson.models.classlesson import ClassLesson
-from apps_data.courseevent.models.homework import StudentsWork, Homework
+from apps_data.courseevent.models.homework import StudentsWork
 from apps_data.courseevent.models.menu import ClassroomMenuItem
 
 from .mixins.base import ClassroomMenuMixin

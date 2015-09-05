@@ -43,6 +43,11 @@ class BaseLessonManager(TreeManager):
                            level=0,
                            )
 
+    def homeworks(self, course):
+        return self.filter(course=course,
+                           is_homework=True,
+                           )
+
 
 def lesson_nr_block():
     """
@@ -116,6 +121,8 @@ class BaseLesson(MPTTModel):
         help_text="Material der Lektion",
         blank=True,
         null=True)
+
+    is_homework = models.BooleanField(default=False)
 
     objects = BaseLessonManager()
 

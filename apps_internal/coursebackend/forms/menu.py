@@ -9,7 +9,6 @@ import floppyforms.__future__ as forms
 
 from apps_data.courseevent.models.menu import ClassroomMenuItem
 from apps_data.courseevent.models.courseevent import CourseEvent
-from apps_data.courseevent.models.homework import Homework
 from apps_data.courseevent.models.forum import Forum
 from apps_data.lesson.models.classlesson import ClassLesson
 
@@ -27,9 +26,12 @@ class MenuItemForm(forms.ModelForm):
         self.courseevent = get_object_or_404(CourseEvent, slug=courseevent_slug)
 
         super(MenuItemForm, self).__init__(*args, **kwargs)
-        self.fields['classlesson'].queryset = ClassLesson.objects.lessons_for_courseevent(courseevent=self.courseevent)
-        self.fields['homework'].queryset = Homework.objects.filter(courseevent=self.courseevent)
-        self.fields['forum'].queryset = Forum.objects.filter(courseevent=self.courseevent)
+        self.fields['classlesson'].queryset = \
+            ClassLesson.objects.lessons_for_courseevent(courseevent=self.courseevent)
+        self.fields['homework'].queryset = \
+            ClassLesson.objects.published_homeworks(courseevent=self.courseevent)
+        self.fields['forum'].queryset = \
+            Forum.objects.filter(courseevent=self.courseevent)
 
 
     def clean_display_title(self):

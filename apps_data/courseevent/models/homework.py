@@ -5,89 +5,15 @@ from __future__ import unicode_literals, absolute_import
 from django.db import models
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
-from django.utils.functional import cached_property
-from django.core.validators import ValidationError
+
 from mentoki import settings
 
 from model_utils.models import TimeStampedModel
-from model_utils.fields import MonitorField, StatusField
-from model_utils import Choices
+from model_utils.fields import MonitorField
 
 from apps_data.lesson.models.classlesson import ClassLesson
 
 from .courseevent import CourseEvent
-
-
-class HomeworkManager(models.Manager):
-
-    def homeworks_for_courseevent(self, courseevent):
-        return self.filter(courseevent=courseevent).\
-            order_by('published', 'due_date').\
-            select_related('classlesson')
-
-    def create(self, courseevent, text, title, due_date=None, classlesson=None):
-        homework = Homework(courseevent=courseevent,
-                                classlesson=classlesson,
-                                text=text,
-                                title=title,
-                                published=False,
-                                due_date=due_date)
-        homework.save()
-        return homework
-
-def limit_courseevent_choice():
-    return
-
-
-class Homework(TimeStampedModel):
-
-    courseevent = models.ForeignKey(CourseEvent)
-
-    classlesson = models.OneToOneField(ClassLesson,
-                               verbose_name="Bezug auf einen Lernabschnitt?",
-                               )
-
-    title = models.CharField(verbose_name="Überschrift", max_length=100)
-    text = models.TextField(verbose_name="Text")
-
-    published = models.BooleanField(
-        verbose_name="veröffentlichen",
-        default=False,
-        editable=False
-    )
-    publish_status_changed = MonitorField(monitor='published')
-
-    hidden = models.BooleanField(
-        verbose_name=_('versteckt'),
-        default=False)
-    hidden_status_changed = MonitorField(monitor='hidden')
-
-    due_date = models.DateField(
-        verbose_name='Abgabedatum',
-        blank=True,
-        null=True)
-    objects = HomeworkManager()
-
-    def __unicode__(self):
-        return '%s: %s' %(self.classlesson, self.title)
-
-    def get_absolute_url(self):
-        return reverse('coursebackend:homework:detail',
-                       kwargs={'course_slug':self.courseevent.course.slug,
-                               'slug':self.courseevent.slug,
-                               'pk':self.pk})
-
-    def publish(self):
-        if not self.classlesson.published:
-            raise ValidationError('Zuerst muss die dazugehörige Lektion veröffentlicht werden.')
-        self.publish = True
-        self.save()
-
-    def unpublish(self):
-        if not self.studentswork_set:
-            raise ValidationError('Es gibt schon Schülerarbeiten dazu!')
-        self.publish = False
-        self.save()
 
 
 class StudentsWorkManager(models.Manager):
@@ -113,7 +39,7 @@ class StudentsWork(TimeStampedModel):
     workers = models.ManyToManyField(settings.AUTH_USER_MODEL,
                                      verbose_name="Team",
                                      related_name='teammembers')
-    homework = models.ForeignKey(Homework)
+    homework = models.ForeignKey(ClassLesson)
 
     title = models.CharField(verbose_name="Titel", max_length=100)
     text = models.TextField(verbose_name="Text")

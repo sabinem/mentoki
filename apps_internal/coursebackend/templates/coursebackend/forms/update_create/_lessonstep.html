@@ -98,6 +98,18 @@
 
     </div>
 
+    <div class="ui dividing medium header">Aufgabe?</div>
+
+    {% if form.is_homework.errors %}
+        <div class="ui negative floating message">
+            {{ form.is_homework.errors }}
+        </div>
+    {% endif %}
+     <p>Handelt es sich bei diesem Lernabschnitt um eine Aufgabe?</p>
+    {{ form.is_homework }}
+    <p></p>
+
+
     <button type="submit" value="post" name="onlyOnceButton" class="ui button" id="formsubmit_button"
             action="#target">
         Speichern

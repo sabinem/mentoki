@@ -14,12 +14,13 @@ from django.forms.models import modelformset_factory
 from django.template import Context
 from extra_views import FormSetView, ModelFormSetView
 
-
 from braces.views import FormValidMessageMixin
 
 from apps_data.courseevent.models.menu import ClassroomMenuItem
 
 from apps_data.courseevent.models.courseevent import CourseEvent
+
+from apps_data.lesson.models.classlesson import ClassLesson
 
 from .mixins.base import CourseMenuMixin, FormCourseEventKwargsMixin
 from ..forms.menu import MenuItemForm
@@ -53,8 +54,6 @@ class MenuListView(
 
         context['lessonitems'] = \
             ClassroomMenuItem.objects.lessons_for_courseevent(courseevent=context['courseevent'])
-        context['homeworkitems'] = \
-            ClassroomMenuItem.objects.homeworks_for_courseevent(courseevent=context['courseevent'])
         context['forumitems'] = \
             ClassroomMenuItem.objects.forums_for_courseevent(courseevent=context['courseevent'])
         context['listitems'] = \

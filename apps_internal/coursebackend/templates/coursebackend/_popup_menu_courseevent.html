@@ -4,9 +4,9 @@
 {% url 'coursebackend:participant:list' course_slug=cs slug=es as participants_url %}
 {% url 'coursebackend:forum:list' course_slug=cs slug=es as forum_url %}
 {% url 'coursebackend:announcement:list' course_slug=cs slug=es as announcements_url %}
-{% url 'coursebackend:homework:list' course_slug=cs slug=es as homeworks_url %}
+{% url 'coursebackend:classhomework:list' course_slug=cs slug=es as homeworks_url %}
 {% url 'coursebackend:menu:list' course_slug=cs slug=es as menu_url %}
-{% url "coursebackend:lesson_courseevent:start" course_slug=cs slug=es as lesson_url %}
+{% url "coursebackend:classlesson:start" course_slug=cs slug=es as lesson_url %}
 {% url "coursebackend:material:list" course_slug=cs slug=es as material_url %}
 {% url 'coursebackend:classlesson:start' course_slug=cs slug=es as classlesson_url %}
 {% url 'coursebackend:classlesson:copy' course_slug=cs slug=es as lessoncopy_url %}
@@ -37,29 +37,32 @@
                     Ankündigungen
                 </a>
 
-                <a href="{{ forum_url }}" class="item
-                    {% ifstartswith forum_url %}active{% endifstartswith %}">
-                    Forum
+                <a href="{{ menu_url }}" class="item
+                    {% ifstartswith menu_url %}active{% endifstartswith %}">
+                    Klassenzimmer-Menü
                 </a>
 
+
+                <a href="{{ classlesson_url }}" class="item
+                    {% ifstartswith classlesson_url %}active{% endifstartswith %}">
+                    Unterricht
+                </a>
                 <a href="{{ homeworks_url }}" class="item
                     {% ifstartswith homeworks_url %}active{% endifstartswith %}">
                     Aufgaben
                 </a>
 
-                <a href="{{ menu_url }}" class="item
-                    {% ifstartswith menu_url %}active{% endifstartswith %}">
-                    Klassenzimmer-Menü
+                <a href="{{ forum_url }}" class="item
+                    {% ifstartswith forum_url %}active{% endifstartswith %}">
+                    Forum
                 </a>
+
 
                 <a href="{{ participants_url }}" class="item
                     {% ifstartswith participants_url %}active{% endifstartswith %}">
                     Teilnehmer
                 </a>
 
-                <a href="{{ classlesson_url }}" class="item" >
-                    Unterricht
-                </a>
 
                 <a href="{{ lesson_url }}" class="item" >
                     Unterricht (Vorlage) <i class="icon external"></i>

@@ -66,3 +66,4 @@ class ClassroomMenuMixin(AuthMixin):
         print context['url_name']
 
         return context
+

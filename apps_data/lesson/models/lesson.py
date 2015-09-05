@@ -62,7 +62,7 @@ class LessonManager(BaseLessonManager):
         Lesson.objects.rebuild()
         return lesson
 
-    def create_step(self, nr, title, text, description, course, parent, material):
+    def create_step(self, nr, title, text, description, course, parent, material, is_homework):
         """
         creates a step
         :param nr:
@@ -81,6 +81,7 @@ class LessonManager(BaseLessonManager):
                        nr=nr,
                        lesson_nr=lesson_nr_step(nr=nr, parent_nr=parent.nr),
                        material=material,
+                       is_homework=is_homework,
                        )
         step.insert_at(parent)
         step.save()

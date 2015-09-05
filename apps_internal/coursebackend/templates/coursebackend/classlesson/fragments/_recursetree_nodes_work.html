@@ -12,6 +12,7 @@
                 {% else %}
                       {% include 'coursebackend/classlesson/fragments/_links_node_work_for_unpublished.html' %}
                 {% endif %}
+
                 {% if node.material.all %}
                     {% for material in node.material.all %}
                         <i class="icon file outline "></i> {{ material }}

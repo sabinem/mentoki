@@ -59,6 +59,17 @@ class ClassLessonManager(LessonManager):
     def classlessons_published_in_courseevent(self, courseevent):
         return self.filter(courseevent=courseevent, published=True)
 
+    def homeworks(self, courseevent):
+        return self.filter(courseevent=courseevent,
+                           is_homework=True,
+                           ).order_by('created')
+
+    def published_homeworks(self, courseevent):
+        return self.filter(courseevent=courseevent,
+                           is_homework=True,
+                           published=True,
+                           ).order_by('created')
+
 
 class ClassLesson(BaseLesson):
     """
@@ -78,6 +89,16 @@ class ClassLesson(BaseLesson):
         on_delete=models.SET_NULL,
     )
     is_original_lesson = models.BooleanField(default=True)
+
+    due_date = models.DateField(
+        verbose_name='Abgabedatum',
+        blank=True,
+        null=True)
+
+    extra_text = models.TextField(
+        verbose_name="Anhang Aufgabe",
+        help_text="Anhang zu Aufgaben",
+        blank=True)
 
     created = models.DateTimeField(default=datetime.datetime.now)
     modified = models.DateTimeField(default=datetime.datetime.now)

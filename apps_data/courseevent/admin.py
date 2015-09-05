@@ -8,7 +8,7 @@ from .models.announcement import Announcement
 from .models.courseevent import CourseEvent, CourseEventParticipation
 from .models.forum import Forum, Thread, Post
 from .models.menu import ClassroomMenuItem
-from .models.homework import Homework, StudentsWork
+from .models.homework import StudentsWork
 
 
 @admin.register(CourseEvent)
@@ -43,13 +43,6 @@ class ClassroomMenuItemAdmin(admin.ModelAdmin):
                     'item_type', 'is_shortlink', 'is_publishlink', 'forum', 'classlesson',
                     'is_start_item', )
     list_filter = ('courseevent', )
-
-
-
-@admin.register(Homework)
-class HomeworkAdmin(admin.ModelAdmin):
-    list_display = ('id', 'courseevent', 'title', 'due_date', 'published', 'classlesson' )
-    list_filter = ('courseevent', 'published')
 
 
 @admin.register(StudentsWork)

@@ -1,5 +1,9 @@
 {% extends "classroom/base.html" %}
 
+{% block classroom_menu_items %}
+    {% include 'classroom/studentswork/fragments/_link_create_studentswork.html' %}
+{% endblock %}
+
 {% block breadcrumbs %}
    {% include 'classroom/studentswork/fragments/_breadcrumbs.html' %}
 {% endblock %}

@@ -3,19 +3,51 @@
 
 <div class="ui large breadcrumb" id ="page-breadcrumb">
 
-    <a class="section" href="{{ start_url }}">
-        Privater Arbeitsbereich
-    </a>
+    {% if url_name == 'list' %}
+        <div class="section active" href="{{ start_url }}">
+            Privater Arbeitsbereich
+        </div>
 
+    {% else %}
+        <a class="section" href="{{ start_url }}">
+            Privater Arbeitsbereich
+        </a>
+        <i class="right chevron icon divider"></i>
+        {% if url_name == 'create' %}
 
-    <i class="right chevron icon divider"></i>
-    {% if studentswork.pk %}
-    <a class="item">
-        {{ studentswork.homework }}
-    </a>
+            <div class="section active">
+                Neue Arbeit anlegen
+            </div>
 
-    <i class="right chevron icon divider"></i>
-{% endif %}
+        {% else %}
+
+            <div class="section">
+                {{ studentswork.homework }}
+            </div>
+            <i class="right chevron icon divider"></i>
+            {% if url_name == 'detail' %}
+                <div class="section active">
+                    {{ studentswork.title }}
+                </div>
+            {% else %}
+
+                <a class="section">
+                    {{ studentswork.title }}
+                </a>
+                <i class="right chevron icon divider"></i>
+                {% if url_name == 'addteam' %}
+                    <div class="section active">
+                        Team bearbeiten
+                    </div>
+                {% else %}
+                    <div class="section active">
+                        bearbeiten
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    {% endif %}
+
 
 </div>
 

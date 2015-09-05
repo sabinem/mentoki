@@ -33,19 +33,20 @@ for list
                     <a href="{{ update_url }}">
                         <i class="write icon"></i>
                     </a>
-                    {% if not item.classlesson.published_homework %}
-                        <a href="{{ delete_url }}">
-                            <i class="trash icon"></i>
-                        </a>
-                    {% endif %}
+                    <a href="{{ delete_url }}">
+                        <i class="trash icon"></i>
+                    </a>
 
                 </td>
 
                 <td>
-                    {% if item.classlesson.published %}
+
                     <a href="{{ class_url }}" class="published_in_class">
                         {{ item.classlesson }}
                     </a>
+
+                    {% if item.classlesson.is_homework %}
+                         <a><i class="icon lab orange"></i></a>
                     {% endif %}
 
                 </td>

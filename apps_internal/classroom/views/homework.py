@@ -7,8 +7,9 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView, FormView, DetailView
 from django.http import HttpResponseRedirect
 
-from apps_data.courseevent.models.homework import StudentsWork, Homework, Comment
+from apps_data.courseevent.models.homework import StudentsWork,Comment
 from apps_data.courseevent.models.courseevent import CourseEvent
+from apps_data.lesson.models.classlesson import ClassLesson
 
 from .mixins.base import ClassroomMenuMixin
 from ..forms.studentswork import StudentWorkCommentForm
@@ -21,7 +22,7 @@ class HomeWorkContextMixin(object):
     def get_context_data(self, **kwargs):
         context = super(HomeWorkContextMixin, self).get_context_data(**kwargs)
 
-        context['homework'] = get_object_or_404(Homework, pk=self.kwargs['pk'])
+        context['homework'] = get_object_or_404(ClassLesson, pk=self.kwargs['pk'])
         return context
 
 

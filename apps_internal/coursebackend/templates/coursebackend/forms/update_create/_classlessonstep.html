@@ -81,6 +81,42 @@
 
     </div>
 
+    {% if form.instance.is_homework %}
+    <div class="ui dividing large header">Aufgabe: Ergänzungen/Abgabedatum</div>
+
+
+
+        <div class="field eight wide">
+            {{ form.due_date.label_tag }}
+            <p>{{ form.due_date.help_text }}</p>
+
+            {% if form.due_date.errors %}
+                <div class="ui negative floating message">
+                    {{ form.due_date.errors }}
+                </div>
+            {% endif %}
+            <br>
+
+            {{ form.due_date }}
+
+        </div>
+
+        <div class="field sixteen wide">
+        <p>Hier kann noch Zusatztext eingegeben werden: Hinweise, Teamzuordung, etc.</p>
+        {% if form.extra_text.errors %}
+            <div class="ui negative floating message">
+                {{ form.extra_text.errors }}
+            </div>
+        {% endif %}
+
+        {{ form.extra_text }}
+
+    </div>
+
+
+
+    {% endif %}
+
     <button type="submit" value="post" name="onlyOnceButton" class="ui button" id="formsubmit_button"
             action="#target">
         Speichern

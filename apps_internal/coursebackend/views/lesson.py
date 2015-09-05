@@ -33,6 +33,21 @@ class LessonStartView(
         return context
 
 
+class HomeworkListView(
+    CourseMenuMixin,
+    TemplateView):
+    """
+    List everything for a course: get the complete tree with material
+    :param course_slug: slug of course
+    :return: nodes: all complete trees for course
+    """
+    def get_context_data(self, **kwargs):
+        context = super(HomeworkListView, self).get_context_data(**kwargs)
+
+        context['homeworks'] = Lesson.objects.homeworks(course=context['course'])
+
+        return context
+
 class BlockDetailView(
     CourseMenuMixin,
     DetailView):
@@ -289,6 +304,7 @@ class LessonStepCreateView(
             text=form.cleaned_data['text'],
             material=form.cleaned_data['material'],
             nr=form.cleaned_data['nr'],
-            parent=form.cleaned_data['parent']
+            parent=form.cleaned_data['parent'],
+            is_homework = form.cleaned_data['is_homework'],
         )
         return super(LessonStepCreateView, self).form_valid(form)

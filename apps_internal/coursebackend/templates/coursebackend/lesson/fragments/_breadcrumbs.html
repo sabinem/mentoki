@@ -6,7 +6,10 @@
         <div class="section active">
         Unterricht
         </div>
-
+    {% elif url_name == 'list' %}
+        <div class="section active">
+        Aufgaben
+        </div>
     {% else %}
 
         <a href="{{ start_url }}" class="section">

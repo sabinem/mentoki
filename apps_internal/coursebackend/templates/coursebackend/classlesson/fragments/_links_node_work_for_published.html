@@ -11,7 +11,9 @@
     {% endif %}>
     {{ node.title }}<i class="icon student"></i>
 </a>
-
+{% if node.is_homework %}
+    <i class="icon lab orange"></i>
+{% endif %}
 {% if node.is_lesson %}
     <a href="{{ lessonupdate_url }}">
        <i class="icon write"></i>

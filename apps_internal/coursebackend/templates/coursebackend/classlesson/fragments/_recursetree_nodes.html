@@ -7,12 +7,12 @@
             {% include 'coursebackend/classlesson/fragments/_icon_node.html' %}
             <div class="content">
 
-                {{ node.title }}
-
-                {% if node.published %}
-                    <i class="icon checkmark green"></i>
+                <span {% if node.published %}
+                    class="published_in_class"
+                {% endif %}>{{ node.title }}</span>
+                {% if node.is_homework %}
+                    <i class="icon lab orange"></i>
                 {% endif %}
-
                 {% if node.decription != "" %}
                     <p>
                         {{ node.description }}

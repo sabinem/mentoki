@@ -14,7 +14,6 @@ from apps_data.lesson.models.classlesson import ClassLesson
 
 from .courseevent import CourseEvent
 from .forum import Forum
-from .homework import Homework
 
 
 def switch_start_item(menuitem):
@@ -113,7 +112,8 @@ class ClassroomMenuItem(TimeStampedModel):
         ClassLesson,
         blank=True,
         null=True,
-        on_delete=models.PROTECT
+        on_delete=models.PROTECT,
+        related_name="lesson"
     )
     forum = models.ForeignKey(
         Forum,
@@ -122,10 +122,11 @@ class ClassroomMenuItem(TimeStampedModel):
         on_delete=models.PROTECT
     )
     homework = models.ForeignKey(
-        Homework,
+        ClassLesson,
         blank=True,
         null=True,
-        on_delete=models.PROTECT
+        on_delete=models.PROTECT,
+        related_name="homework"
     )
 
 
@@ -291,7 +292,7 @@ class ClassroomMenuItem(TimeStampedModel):
             if self.classlesson or self.forum:
                 raise ValidationError('''Bei diesem Eintragstyp bitte nur eine Aufgabe als
                                       Link-Objekt auswählen.''')
-            if not self.homework.classlesson.published:
+            if not self.homework.published:
                 raise ValidationError('''Bitte zuerst die Lektion veröffentlichen,
                 auf die sich die Aufgabe bezieht.''')
 

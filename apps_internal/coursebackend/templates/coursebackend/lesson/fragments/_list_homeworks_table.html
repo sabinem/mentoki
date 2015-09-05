@@ -1,61 +1,26 @@
+{% if homeworks %}
 <table class="ui table">
     <thead>
             <tr>
-                <th>zum Lernabschnitt</th>
-                <th>zur Aufgabe</th>
-                <th>Abgabedatum</th>
+                <th>Lernabschnitt in Lektion</th>
             </tr>
     </thead>
     <tbody>
         {% for homework in homeworks %}
 
-            {% url 'coursebackend:homework:update' course_slug=cs slug=es pk=homework.pk as update_url %}
-            {% url 'coursebackend:homework:delete' course_slug=cs slug=es pk=homework.pk as delete_url %}
-            {% url 'coursebackend:homework:detail' course_slug=cs slug=es pk=homework.pk as detail_url %}
-            {% url 'classroom:homework:list' slug=cs pk=homework.pk as class_url %}
-            {% url 'coursebackend:classlesson:step' course_slug=cs slug=es pk=homework.classlesson_id as lesson_url %}
-            {% url 'coursebackend:menu:create' course_slug=cs slug=es as menu_url %}
+            {% url 'coursebackend:lesson:stepupdate' course_slug=cs pk=homework.pk as update_url %}
+            {% url 'coursebackend:lesson:step' course_slug=cs pk=homework.pk as detail_url %}
             <tr>
                 <td>
-                    {% if homework.classlesson.published %}
-                        <a href="{{ lesson_url }}" class="published_in_class" >
-                            {{ homework.classlesson }}
-                        </a>
-                    {% else %}
-                        <a href="{{ lesson_url }}" >
-                            {{ homework.classlesson }}
-                        </a>
-                    {% endif %}
-                </td>
-                <td>
-                    {% if homework.classlesson.published %}
-                        <a href="{{ detail_url }}" class="published_in_class">
-                            {{ homework }}
-                        </a>
-                        <a href="{{ update_url }}">
-                            <i class="icon write blue"></i>
-                        </a>
-                        <a href="{{ class_url }}">
-                            <i class="icon student blue"></i>
-                        </a>
-                    {% else %}
-                        <a href="{{ detail_url }}">
-                            {{ homework }}
-                        </a>
-                        <a href="{{ update_url }}">
-                            <i class="icon write blue"></i>
-                        </a>
-                        <a href="{{ delete_url }}">
-                            <i class="icon trash blue"></i>
-                        </a>
-                    {% endif %}
-                </td>
-                <td>
-                    {% if homework.due_date %}
-                        {{ homework.due_date | date:'d.m.Y'  }}
-                    {% else %}
-                        -
-                    {% endif %}
+                    <a href="{{ detail_url }}">
+                        {{ homework }}
+                        <i class="icon lab orange"></i>
+                    </a>
+                    <a href="{{ update_url }}">
+                        <i class="icon write blue"></i>
+                    </a>
+                    in
+                    {{ homework.parent }}
                 </td>
             </tr>
 
@@ -64,3 +29,4 @@
     </tbody>
 
 </table>
+{% endif %}

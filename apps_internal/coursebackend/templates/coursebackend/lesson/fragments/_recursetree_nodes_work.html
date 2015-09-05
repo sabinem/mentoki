@@ -15,6 +15,9 @@
                     >
                          {{ node.title }}
                     </a>
+                    {% if node.is_homework %}
+                         <a><i class="icon lab orange"></i></a>
+                    {% endif %}
 
                     {% include 'coursebackend/lesson/fragments/_links_node_update.html' %}
                     {% if node.material %}

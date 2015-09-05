@@ -9,6 +9,7 @@ from django.views.generic import TemplateView, DetailView, UpdateView, FormView,
 
 from apps_data.courseevent.models.homework import StudentsWork
 from apps_data.courseevent.models.courseevent import CourseEvent
+from apps_internal.coursebackend.views.mixins.base import FormCourseEventKwargsMixin
 
 from .mixins.base import ClassroomMenuMixin
 from ..forms.studentswork import StudentWorkCreateForm, StudentWorkAddTeamForm, StudentWorkUpdateForm
@@ -73,6 +74,7 @@ class StudentsWorkDeleteView(
 
 class StudentsWorkCreateView(
     ClassroomMenuMixin,
+    FormCourseEventKwargsMixin,
     StudentsWorkRedirectMixin,
     FormView):
     """

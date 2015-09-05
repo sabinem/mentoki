@@ -91,6 +91,7 @@ def _copy_any_level_lesson(lesson, courseevent, parent):
         original_lesson=lesson,
         modified=now,
         created=now,
+        is_homework=lesson.is_homework,
         is_original_lesson=True
     )
     classlesson.insert_at(parent)
@@ -127,6 +128,7 @@ def _update_or_create_lessonstep(lessonstep, classlesson):
         classlessonstep.course=lessonstep.course
         classlessonstep.description=lessonstep.description
         classlessonstep.material=lessonstep.material
+        classlessonstep.is_homework=lessonstep.is_homework
         classlessonstep.courseevent=classlesson.courseevent
         classlessonstep.is_original_lesson = True
 
