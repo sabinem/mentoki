@@ -29,7 +29,7 @@ def copy_lesson_selected(self, lesson, lessonsteps, copy_lesson):
         classlesson = ClassLesson.objects.get(original_lesson=lesson)
 
     for lessonstep in lessonsteps:
-        _update_or_create_lessonstep(lessonstep, classlesson)
+        _update_or_create_lessonstep(lessonstep, classlesson, published=classlesson.published)
 
     ClassLesson.objects.rebuild()
     return classlesson
@@ -118,7 +118,7 @@ def _update_lesson(lesson):
     return classlesson
 
 
-def _update_or_create_lessonstep(lessonstep, classlesson):
+def _update_or_create_lessonstep(lessonstep, classlesson, published=False):
     try:
         classlessonstep = ClassLesson.objects.get(original_lesson=lessonstep)
         classlessonstep.title=lessonstep.title
@@ -131,6 +131,7 @@ def _update_or_create_lessonstep(lessonstep, classlesson):
         classlessonstep.is_homework=lessonstep.is_homework
         classlessonstep.courseevent=classlesson.courseevent
         classlessonstep.is_original_lesson = True
+        classlessonstep.published = published
 
         now = datetime.datetime.now()
         classlessonstep.created = now

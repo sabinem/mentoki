@@ -13,7 +13,7 @@ class LessonAdmin(admin.ModelAdmin):
     """
     Lessons are stored for the course as templates for the actual courseevents
     """
-    list_display = ('id', 'course', 'lesson_nr', 'title', 'modified', 'created', 'lesson_type', 'level',
+    list_display = ('id', 'course', 'lesson_nr', 'has_published_classlesson', 'title', 'modified', 'created', 'lesson_type', 'level',
                     'cb_id', 'u_id', 'um_id' )
     list_filter = ('course', 'level', 'modified')
 

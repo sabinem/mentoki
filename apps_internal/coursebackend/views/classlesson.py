@@ -10,7 +10,7 @@ from django.core.validators import ValidationError
 
 from braces.views import FormValidMessageMixin
 
-from ..forms.classlesson import ClassLessonForm, ClassLessonStepForm, ClassLessonHomeworkForm
+from ..forms.classlesson import ClassLessonForm, ClassLessonStepForm
 from ..forms.lessoncopy import LessonCopyForm
 
 from apps_data.lesson.models.classlesson import ClassLesson
@@ -157,22 +157,6 @@ class ClassStepDetailView(
         return context
 
 
-class HomeworkListView(
-    CourseMenuMixin,
-    TemplateView):
-    """
-    List everything for a course: get the complete tree with material
-    :param course_slug: slug of course
-    :return: nodes: all complete trees for course
-    """
-    def get_context_data(self, **kwargs):
-        context = super(HomeworkListView, self).get_context_data(**kwargs)
-
-        context['homeworks'] = ClassLesson.objects.homeworks(courseevent=context['courseevent'])
-
-        return context
-
-
 class ClassLessonRedirectDetailMixin(object):
     def get_success_url(self):
        if self.context_object_name == 'classlesson':
@@ -243,38 +227,11 @@ class ClassLessonStepUpdateView(
     """
     Update a classlesson step
     """
-    model = ClassLesson
-    context_object_name = 'classlessonstep'
     form_class = ClassLessonStepForm
-    form_valid_message = "Der Lernabschnitt wurde geändert!"
-
-    def get_form_class(self):
-        if self.object.is_homework:
-            return ClassLessonHomeworkForm
-        else:
-            return ClassLessonStepForm
-
-
-class ClassLessonHomeworkUpdateView(
-    CourseMenuMixin,
-    ClassLessonBreadcrumbMixin,
-    FormValidMessageMixin,
-    FormCourseKwargsMixin,
-    ClassLessonRedirectDetailMixin,
-    UpdateView):
-    """
-    Update a classlesson step
-    """
     model = ClassLesson
     context_object_name = 'classlessonstep'
-    form_class = ClassLessonHomeworkForm
     form_valid_message = "Der Lernabschnitt wurde geändert!"
 
-    def get_form_class(self):
-        if self.object.is_homework:
-            return ClassLessonHomeworkForm
-        else:
-            return ClassLessonStepForm
 
 class ClassLessonDeleteView(
     CourseMenuMixin,

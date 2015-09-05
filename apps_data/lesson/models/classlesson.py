@@ -205,7 +205,7 @@ class ClassLesson(BaseLesson):
             descendant.save()
 
     def unpublish(self):
-        if not self.self.is_lesson():
+        if not self.is_lesson():
             raise ValidationError('Nur Lektionen können zurückgezogen werden.')
         descendants = self.get_descendants(include_self=True)
         for descendant in descendants:

@@ -182,7 +182,7 @@ class Forum(MPTTModel, TimeStampedModel):
             descendant.save()
         ancestors = self.get_ancestors(include_self=False)
         for ancestor in ancestors:
-            published_decendants = ancestor.get_decendants.filter(published=True)
+            published_decendants = ancestor.get_descendants.filter(published=True)
             if not published_decendants:
                 ancestor.published=False
                 ancestor.save()
