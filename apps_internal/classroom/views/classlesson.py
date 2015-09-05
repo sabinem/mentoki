@@ -67,13 +67,9 @@ class ClassLessonStepDetailView(
         context['next_node'] = lessonstep.get_next_sibling()
         context['previous_node'] = lessonstep.get_previous_sibling()
 
-        try:
-            homework = lessonstep.homework
-            context['homework'] = homework
-            if homework:
+        if lessonstep.is_homework:
                 context['studentsworks'] = \
-                    StudentsWork.objects.turnedin_homework(homework=homework)
-        except ObjectDoesNotExist:
-            context['homework'] = None
+                    StudentsWork.objects.turnedin_homework(homework=lessonstep)
+
 
         return context

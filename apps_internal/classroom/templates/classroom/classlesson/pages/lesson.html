@@ -3,7 +3,7 @@
 {% block classroom_menu_items %}
     {% if request.user in course.teachers or request.user.is_superuser %}
         {% url 'coursebackend:classlesson:start' course_slug=cs slug=es as back_link %}
-        {% url 'coursebackend:menu:preview' course_slug=cs slug=es as back_link %}
+        {% url 'coursebackend:menu:preview' course_slug=cs slug=es as menu_link %}
 
         <a href="{{ back_link }}" class="item" >
             <i class="wrench icon blue"></i>
