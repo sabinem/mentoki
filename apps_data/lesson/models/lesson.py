@@ -118,7 +118,7 @@ class Lesson(BaseLesson, TimeStampedModel):
             return self.unitmaterial.id
 
     def has_published_classlesson(self):
-        if self.classlesson_set():
+        if self.classlesson_set.filter(published=True):
             return True
         else:
             return False

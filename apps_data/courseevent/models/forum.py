@@ -171,21 +171,27 @@ class Forum(MPTTModel, TimeStampedModel):
         for descendant in descendants:
             descendant.published = True
             descendant.save()
-        for ancestor in ancestors:
-            ancestor.has_published_decendants = True
-            ancestor.save()
+        #for ancestor in ancestors:
+        #    ancestor.has_published_decendants = True
+        #    ancestor.save()
 
     def unpublish(self):
         descendants = self.get_descendants(include_self=True)
+        print "***********************"
+        print descendants
         for descendant in descendants:
-            descendant.published = False
-            descendant.save()
-        ancestors = self.get_ancestors(include_self=False)
-        for ancestor in ancestors:
-            published_decendants = ancestor.get_descendants.filter(published=True)
-            if not published_decendants:
-                ancestor.published=False
-                ancestor.save()
+            if not descendant.classroommenuitem_set:
+               print "================"
+               print descendant
+               print "================="
+               descendant.published = False
+               descendant.save()
+        #ancestors = self.get_ancestors(include_self=False)
+        #for ancestor in ancestors:
+        #    published_decendants = ancestor.get_descendants.filter(published=True)
+        #    if not published_decendants:
+        #        ancestor.published=False
+        #        ancestor.save()
 
     def clean(self):
         if not self.can_have_threads:
