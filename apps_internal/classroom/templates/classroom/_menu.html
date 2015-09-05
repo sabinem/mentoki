@@ -40,7 +40,11 @@
     {% for item in menu_items %}
 
          {% include 'classroom/_item_menu_representation.html' %}
-
+         {% if item.item_type == item.MENU_ITEM_TYPE.header_item %}
+            <div class="header huge item" style="font-size:1.2em;">
+                {{ item.display_title }}
+            </div>
+         {% endif %}
     {% endfor %}
 
 </div>

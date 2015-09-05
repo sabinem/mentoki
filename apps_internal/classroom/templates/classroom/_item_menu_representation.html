@@ -61,16 +61,5 @@
         <i class="student icon"></i>{{ item.display_title }}
     </a>
 
-{% elif item.item_type == item.MENU_ITEM_TYPE.participants_item %}
-    <a class="item
-    {% ifstartswith participants_url %}active{% endifstartswith %}" style="font-size:1.1em;"
-    href="{{ participants_url }}">
-        <i class="users icon"></i>{{ item.display_title }}
-    </a>
-
-{% elif item.item_type == item.MENU_ITEM_TYPE.header_item %}
-    <div class="header huge item" style="font-size:1.2em;">
-        {{ item.display_title }}
-    </div>
 
 {% endif %}
