@@ -31,7 +31,7 @@ class MenuItemForm(forms.ModelForm):
         self.fields['homework'].queryset = \
             ClassLesson.objects.published_homeworks(courseevent=self.courseevent)
         self.fields['forum'].queryset = \
-            Forum.objects.filter(courseevent=self.courseevent)
+            Forum.objects.classroom_menu(courseevent=self.courseevent)
 
 
     def clean_display_title(self):

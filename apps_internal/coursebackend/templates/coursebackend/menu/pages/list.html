@@ -4,7 +4,7 @@
 
     {% url 'coursebackend:menu:preview' course_slug=cs slug=es as preview_url %}
     {% url 'coursebackend:menu:sort' course_slug=cs slug=es as sort_url %}
-
+    {% url 'classroom:start' slug=es as class_url %}
     <a class="item" href="{{ preview_url }}">
         <i class="write icon blue"></i>Bearbeiten
     </a>
@@ -12,7 +12,9 @@
     <a class="item" href="{{ sort_url }}">
         <i class="share icon blue"></i>Sortieren
     </a>
-
+    <a class="item" href="{{ class_url }}">
+        <i class="student icon blue"></i>Klassenzimmer
+    </a>
 {% endblock %}
 
 {% block breadcrumbs %}

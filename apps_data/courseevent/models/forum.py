@@ -32,6 +32,9 @@ class ForumManager(TreeManager):
         return self.filter(courseevent=courseevent, level=0).\
             get_descendants(include_self=True)
 
+    def classroom_menu(self, courseevent):
+        return self.filter(courseevent=courseevent, level=0)
+
     def active_forums_for_courseevent(self, courseevent):
         return self.filter(courseevent=courseevent, level=0, hidden=False).\
             get_descendants(include_self=True)
@@ -180,7 +183,6 @@ class Forum(MPTTModel, TimeStampedModel):
         print "***********************"
         print descendants
         for descendant in descendants:
-            if not descendant.classroommenuitem_set:
                print "================"
                print descendant
                print "================="
