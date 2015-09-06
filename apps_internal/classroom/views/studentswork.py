@@ -98,6 +98,7 @@ class StudentsWorkCreateView(
 
 class StudentsWorkAddTeamView(
     ClassroomMenuMixin,
+    FormCourseEventKwargsMixin,
     StudentsWorkRedirectMixin,
     UpdateView):
     """

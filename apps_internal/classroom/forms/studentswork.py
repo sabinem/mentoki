@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 import floppyforms.__future__ as forms
 
 from django.shortcuts import get_object_or_404
-from django.db.models import Q
+from mentoki.settings import AUTH_USER_MODEL
 
 from froala_editor.widgets import FroalaEditor
 
@@ -47,9 +47,11 @@ class StudentWorkAddTeamForm(forms.ModelForm):
         widgets = {'workers': forms.CheckboxSelectMultiple}
 
     def __init__(self, *args, **kwargs):
+        courseevent_slug = kwargs.pop('courseevent_slug', None)
+        self.courseevent = get_object_or_404(CourseEvent, slug=courseevent_slug)
         super(StudentWorkAddTeamForm, self).__init__(*args, **kwargs)
         studentswork = kwargs['instance']
-        self.fields['workers'].queryset = studentswork.courseevent.workers()
+        self.fields['workers'].queryset = self.courseevent.workers()
 
 
 class StudentWorkCommentForm(forms.ModelForm):

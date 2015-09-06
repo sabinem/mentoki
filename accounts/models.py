@@ -28,6 +28,11 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
+    def workers(self, courseevent):
+        students = self.courseeventpartcipation_set()
+        owners = self.courseowners.all()
+        return students
+
     #obj.course_set.all(): gets all the courses for the account, where he teaches
 
 
