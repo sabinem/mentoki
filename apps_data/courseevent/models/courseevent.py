@@ -206,6 +206,14 @@ class CourseEvent(TimeStampedModel):
         """
         return self.participation.all().prefetch_related('participation').order_by('username')
 
+    def workers(self):
+        students = self.students
+        teachers = self.teachers
+        workers = []
+        workers.append(teachers)
+        workers.append(students)
+        return workers
+
     def is_student(self, user):
         if user in self.students():
            return True

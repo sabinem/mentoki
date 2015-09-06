@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 import floppyforms.__future__ as forms
 
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
 
 from froala_editor.widgets import FroalaEditor
 
@@ -48,7 +49,7 @@ class StudentWorkAddTeamForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(StudentWorkAddTeamForm, self).__init__(*args, **kwargs)
         studentswork = kwargs['instance']
-        self.fields['workers'].queryset = studentswork.courseevent.students()
+        self.fields['workers'].queryset = studentswork.courseevent.workers()
 
 
 class StudentWorkCommentForm(forms.ModelForm):

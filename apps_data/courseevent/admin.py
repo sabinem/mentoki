@@ -16,7 +16,7 @@ class CourseEventAdmin(admin.ModelAdmin):
     """
     courseevents
     """
-    list_display = ('id', 'slug', 'title', 'course', 'modified', 'created',
+    list_display = ('id', 'slug', 'title', 'course','students', 'teachers', 'workers', 'modified', 'created',
                     'event_type', 'status_external', 'status_internal')
     list_filter =  ('course',)
 
