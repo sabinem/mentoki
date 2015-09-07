@@ -24,4 +24,3 @@ class Customer(models.Model):
 
     def __unicode__(self):
         return 'Customer: %s' % self.user
-

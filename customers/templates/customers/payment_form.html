@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment</title>
+</head>
+<body>
+
+<h1>Braintree Payment Form</h1>
+
+<form id="checkout-form" method="post">
+  {% csrf_token %}
+  {{ form.first_name.errors }}
+  {{ form.first_name.label_tag }}
+  {{ form.first_name }}
+  {{ form.last_name.errors }}
+  {{ form.last_name.label_tag }}
+  {{ form.last_name }}
+  <br>
+  {{ form.amount.errors }}
+  {{ form.amount.label_tag }}
+  {{ form.amount }}
+  <div id="dropin-container"></div>
+  <input type="submit" value="Pay $10">
+</form>
+
+<script src="https://js.braintreegateway.com/v2/braintree.js"></script>
+
+<script type="text/javascript">
+    // Execute on DOM Ready ($(function(){}))
+    braintree.setup("{{ client_token }}", "dropin", {
+      container: "dropin-container",  // id of the container div
+      form: "checkout-form"  // id of the form
+    });
+</script>
+
+</body>
+</html>
