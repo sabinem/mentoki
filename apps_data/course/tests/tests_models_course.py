@@ -23,12 +23,13 @@ class CourseCreateTest(TestCase):
         Asserts that a course exists after the creation
         """
         self.course = Course(title='title1')
+        self.Site.create()
         self.course.save()
         # retrieve exactly one course
         self.assertEqual(Course.objects.all().count(), 1)
 
 
-class CourseAttributesTest(TestCase):
+class CourseandCourseOwnerTest(TestCase):
     """
     Test the methods and attributes of course
     """
@@ -72,7 +73,7 @@ class CourseAttributesTest(TestCase):
         """
         Teachers should be showed as a record with main teacher appearing first
         """
-        self.assertEqual(self.course.teachersrecord(),
+        self.assertEqual(self.course.teachersrecord,
                          "firstname1 lastname1 und firstname2 lastname2")
 
     def test_course_property_teachers(self):
@@ -82,7 +83,7 @@ class CourseAttributesTest(TestCase):
         self.assertQuerysetEqual(self.course.teachers,
                                  [repr(self.user1), repr(self.user2)])
 
-    def test_course_property_is_owner(self):
+    def test_course_method_is_owner(self):
         """
         Teachers should be the user records in the appropriate order
         """
@@ -90,7 +91,7 @@ class CourseAttributesTest(TestCase):
         self.assertEqual(self.course.is_owner(self.user2), True)
         self.assertEqual(self.course.is_owner(self.user3), False)
 
-    def test_get_absolute_url(self):
+    def test_course_method_get_absolute_url(self):
         """
         The course should be fetched from the slug
         """
@@ -98,3 +99,4 @@ class CourseAttributesTest(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
+    def

@@ -120,6 +120,7 @@ class Course(TimeStampedModel):
         """
         return self.owners.all().order_by('courseowner__display_nr')
 
+    @property
     def teachersrecord(self):
         """
         Returns the teachers of the course as a string ready for display.
