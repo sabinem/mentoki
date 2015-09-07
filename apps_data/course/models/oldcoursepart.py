@@ -1,5 +1,9 @@
 # coding: utf-8
 
+"""
+This is an old module taht will be deleted soon.
+"""
+
 # old models will be deleted after data have been transferred
 from __future__ import unicode_literals, absolute_import
 

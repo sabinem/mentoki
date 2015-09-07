@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
 
     'braces',
+    'braintree',
     'model_utils',
     'mptt',
     'autoslug',
@@ -58,7 +59,7 @@ INSTALLED_APPS = (
     'django_markdown',
 
     'accounts',
-    #'customers',
+    'customers',
 
     'apps_core.core',
 
@@ -98,8 +99,10 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
 )
 
 ROOT_URLCONF = 'mentoki.urls'
@@ -299,4 +302,8 @@ FROALA_EDITOR_OPTIONS = {
     'minHeight': 300
 }
 
-
+BRAINTREE = {
+    'merchant_id':os.environ.get('BRAINTREE_MERCHANT_ID'),
+    'public_key':os.environ.get('BRAINTREE_PUBLIC_KEY'),
+    'private_key':os.environ.get('BRAINTREE_PRIVATE_KEY'),
+}

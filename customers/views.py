@@ -15,6 +15,7 @@ import logging
 from .models import Customer
 
 from .forms import BraintreeForm
+
 logger = logging.getLogger(__name__)
 
 
@@ -35,11 +36,22 @@ class PaymentView(FormView):
     This view contains the payment form.
     """
 
-    template_name = 'payment_form.html'
+    template_name = 'customers/payment_form.html'
     form_class = BraintreeForm
 
     def get_context_data(self, **kwargs):
+        print "i am here"
         cx = super(PaymentView, self).get_context_data(**kwargs)
+        print "now here"
+        braintree.Configuration.configure(
+            environment=bt_env,
+            merchant_id=settings.BRAINTREE['merchant_id'],
+            public_key=settings.BRAINTREE['public_key'],
+            private_key=settings.BRAINTREE['private_key']
+        )
+        self.merchant_id = settings.BRAINTREE['merchant_id']
+        print settings.BRAINTREE['merchant_id']
+
         cx['client_token'] = braintree.ClientToken.generate()
         return cx
 
@@ -127,4 +139,4 @@ class SuccessView(TemplateView):
     """
     This view is called if the payment has been successful.
     """
-    template_name = 'payment_successful.html'
+    template_name = 'customers/payment_sucessful.html'

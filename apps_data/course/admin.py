@@ -1,22 +1,24 @@
 # coding: utf-8
 
+"""
+Admin for Course and its relation to User: CourseOwner
+"""
+
 from __future__ import unicode_literals, absolute_import
 
 from django.contrib import admin
 
 from .models.course import Course, CourseOwner
 
-# old models: will be deleted as soon as the data has been transfered
-from .models.oldcoursepart import CourseBlock, CourseUnit, CourseMaterialUnit
 
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
     """
-    courses are time independent collections of teaching material, that are
+    Courses are time independent collections of teaching material, that are
     set up and owned by teachers.
     """
-    list_display = ('id', 'title', 'modified', 'created', 'teachers', 'email', 'teachers_emails')
+    list_display = ('id', 'title', 'modified', 'created', 'teachers', 'email')
     list_filter = ('modified',)
     list_display_links = ('id',)
 
@@ -24,13 +26,17 @@ class CourseAdmin(admin.ModelAdmin):
 @admin.register(CourseOwner)
 class CourseOwnerAdmin(admin.ModelAdmin):
     """
-    owners (teachers) of the course along with their profiles that go with the course
+    Owners (teachers) of the course along with their profiles that
+    go with the course
     """
     list_display = ('id', 'course', 'user', 'modified', 'created')
     list_filter = ('modified', 'course', 'user')
     list_display_links = ('id',)
 
-# old data: admis will be deleted
+
+
+# old models: will be deleted as soon as the data has been transfered
+from .models.oldcoursepart import CourseBlock, CourseUnit, CourseMaterialUnit
 
 @admin.register(CourseBlock)
 class CourseBlockAdmin(admin.ModelAdmin):
