@@ -98,5 +98,3 @@ class CourseandCourseOwnerTest(TestCase):
         url = self.course.get_absolute_url()
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-
-    def
