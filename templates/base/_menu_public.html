@@ -1,0 +1,88 @@
+
+    <div class="ui menu bound top sticky center aligned stackable fluid">
+
+    <a class="item browse"
+         href="{% url 'courseoffer:list' %}">
+        Mentoki
+    </a>
+    <div class="ui popup bottom fluid left transition hidden" style="max-width:200px;">
+
+        <div class="ui one column relaxed divided grid">
+
+            <div class="column">
+
+                <div class="ui link list">
+                    <a href="{{ course_url }}" class="item">
+                        über uns
+                    </a>
+
+                    <a href="{{ courseowner_url }}" class="item">
+                        was uns antreibt
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <a class="item browse"
+       style="color:grey; border:none;
+        " href="{% url 'courseoffer:list' %}">
+        Kurse
+        <i class="dropdown icon"></i>
+    </a>
+    <div class="ui popup bottom fluid left transition hidden" style="max-width:200px;">
+
+        <div class="ui one column relaxed divided grid">
+
+            <div class="column">
+
+                <div class="ui link list">
+                    <h4 class="ui header">im Angebot</h4>
+
+
+                    <a href="{{ course_url }}" class="item">
+                        Selbstführung
+                    </a>
+
+                    <a href="{{ courseowner_url }}" class="item">
+                        Schreibwerkstatt
+                    </a>
+                    <a href="{{ courseowner_url }}" class="item">
+                        Integrationskurs Deutsch
+                    </a>
+                    <a href="{{ courseowner_url }}" class="item">
+                        Alle unsere Kurse
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    </a>
+    <a class="item
+        " href="{% url 'courseoffer:list' %}">
+        Bildungsmentoring
+    </a>
+    <a class="item
+        " href="{% url 'courseoffer:list' %}">
+        Unterrichten
+    </a>
+    <a class="item
+        " href="{% url 'courseoffer:list' %}">
+        und mehr ...
+    </a>
+
+    <div class="right menu">
+        <a class="item
+            " href="{% url 'courseoffer:list' %}">
+            Kontakt
+        </a>
+        <a class="item" href="{% url 'login' %}" >
+            <i class="icon sign in"></i>
+        </a>
+    </div>
+ </div>

@@ -5,6 +5,23 @@
 $(document).ready(function(){
 
 /**
+ * dropdown menu for public pages
+ */
+
+    $('.ui.dropdown')
+      .dropdown()
+    ;
+
+/**
+ * dropdown menu for public pages
+ */
+    $('.ui.sticky')
+      .sticky({
+        context: '#context'
+    })
+    ;
+
+/**
  * correct ui classes for user input through editor
  */
     // add ui class
@@ -37,6 +54,11 @@ $(document).ready(function(){
       })
       .sidebar('attach events', '.context.example .menu .item')
     ;
+
+
+    $('.menu .courses')
+
+
 
 /**
  * Pop up menu in the classroom and coursebackend

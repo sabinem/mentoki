@@ -98,3 +98,36 @@ class CourseandCourseOwnerTest(TestCase):
         url = self.course.get_absolute_url()
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
+
+    def test_course_unicode(self):
+        pass
+
+    def test_courseownermanager_qs_teachers_courseinfo_display(self):
+        courseowners_qs = CourseOwner.objects.\
+            teachers_courseinfo_display(self, self.course)
+        self.assertQuerysetEqual(courseowners_qs, [repr(self.user1)])
+
+    def test_courseownermanager_qs_teachers_courseinfo_all(self):
+        courseowners_qs = CourseOwner.objects.\
+            teachers_courseinfo_display(self, self.course)
+        self.assertQuerysetEqual(courseowners_qs, [repr(self.user1), repr(self.user2)])
+
+    def test_courseownermanager_qs_teachers_emails(self):
+        courseowners_qs = CourseOwner.objects.\
+            teachers_emails(self, self.course)
+        self.assertQuerysetEqual(courseowners_qs, ['u1@gmail.com', 'u1@gmail.com'])
+
+    def test_foto_location(self):
+        instance = self.course
+        filename = 'x'
+        #foto_location(instance, filename)
+
+    def test_courseowner_method_get_absolute_url(self):
+        pass
+
+    def test_courseowner_method_clean(self):
+        pass
+
+    def test_courseowner_unicode(self):
+        pass
+

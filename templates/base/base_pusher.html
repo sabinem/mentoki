@@ -1,24 +1,12 @@
 {% extends "base/base.html" %}
 
-{% block head %}
+{% block head_extra_tools %}
 
-    <!-- Meta information -->
-    {% include 'base/fragments/meta/_meta.html' %}
+        <!-- Froala Editor: editor and styles and font awesome -->
+        <link href="/static/font-awesome-4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <link href="/static/froala_editor/css/froala_editor.min.css" rel="stylesheet" type="text/css" />
+        <link href="/static/froala_editor/css/froala_style.min.css" rel="stylesheet" type="text/css" />
 
-    <!-- CSS -->
-    {% include 'base/fragments/vendor/_semantic_css.html' %}
-    {% include 'base/fragments/custom/_custom_css.html' %}
-
-    <!-- favicon -->
-    {% include 'base/fragments/menu/_favicon.html' %}
-
-    {% include 'base/fragments/vendor/_jquery.html' %}
-    {% include 'base/fragments/vendor/_froala_head.html' %}
-{% endblock %}
-
-{% block bottom_js %}
-    {% include 'base/fragments/vendor/_semantic_js.html' %}
-    {% include 'base/fragments/custom/_custom_js.html' %}
 {% endblock %}
 
 {% block sidebar %}

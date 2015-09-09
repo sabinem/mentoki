@@ -1,0 +1,60 @@
+{% extends "base/base.html" %}
+
+{% block meta %}
+
+    <!-- BLOCK: Meta description -->
+    <meta name="description" content="{% block meta_description %}{% endblock %}">
+
+    <!-- BLOCK: Meta keywords -->
+    <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
+
+    <!-- BLOCK: Meta title -->
+    <title>{% block meta_title %}{% endblock %}</title>
+
+{% endblock %}
+
+
+<!-- BLOCK: Navbar -->
+
+{% block page %}
+
+    <div class="ui top attached fluid center aligned segment">
+        <div class="ui grid centered">
+            <div class="ui column" style="width:400px;">
+                <img class="ui image fluid" src="/static/img/mentoki_logo_untertitel.jpg">
+            </div>
+        </div>
+    </div>
+    <div class="ui sticky">
+        {% include 'base/_menu_public.html' %}
+    </div>
+
+    <div id="context" style="padding-top:0px;">
+
+        {% block main_content %}{% endblock %}
+
+        <div class="ui bottom attached menu fluid three item">
+            <a class="item"  href="{% url 'contact:contact' %}">AGB</a>
+            <a class="item"  href="{% url 'home:team' %}">
+                Team
+            </a>
+            <a class="item"  href="{% url 'home:impressum' %}">Impressum</a>
+        </div>
+
+
+    </div>
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+

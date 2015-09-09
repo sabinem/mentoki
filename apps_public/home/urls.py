@@ -1,10 +1,10 @@
 from django.conf.urls import patterns, url
 
 from .views import HomePageView, TeachPageView, TeamPageView, ImpressumPageView, \
-    NewsLetterView, WebinarView
+    NewsLetterView, WebinarView, NewHomePageView
 
 urlpatterns = patterns("",
-    url(r'^$', HomePageView.as_view(), name='home'),
+    url(r'^$', NewHomePageView.as_view(), name='home'),
     url(r'^team$', TeamPageView.as_view(), name='team'),
     url(r'^impressum$', ImpressumPageView.as_view(), name='impressum'),
     url(r'^newsletters$', NewsLetterView.as_view(), name='newsletter'),

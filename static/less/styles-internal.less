@@ -1,0 +1,799 @@
+/* ------------------------- */
+/* Variables                 */
+/* ------------------------- */
+
+@base-url: "/static/img";
+@standard_public_page_background_1_img: url("@{base-url}/homepage.jpg");
+@standard_public_page_background_2_img: url('@{base-url}/12052071_ml.jpg');
+@classroom_background_img: url("@{base-url}/30520566_l_lighter.jpg");
+@desk_background_img: url("@{base-url}/normaldesk.jpg");
+@courseevent_public_background_img: url("@{base-url}/30019719_l.jpg");
+
+@desk_header_color:#aeb3a4;
+@classroom_backend_active_color:#aeb3a4;
+@teal: #00B5AD;
+
+@classroom_active_color:#d3bba5;
+@mentoki_green:#19AAA6;
+@classroom_lightblue_color:#f6fafd;
+@homepage_toolbox_background_color: #ece9e4;
+
+
+/* ------------------------- */
+/*          homepage         */
+/* ------------------------- */
+
+/* logo as main header on the homepage */
+#logo_homepage_header {
+    height:100px; width:auto;
+}
+
+/* the computer and tablet version: background img */
+#page-grid-homepage-top-pc {
+    background-image: url('/static/img/homepage.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    height:800px;
+}
+
+/* the computer and tablet version: header */
+#page-grid-homepage-top-pc h1 {
+    opacity: 0.8;
+    background:white;
+    margin-top:50px;
+    padding-top:50px;
+    border:5px solid #aeb3a4;
+}
+
+/* the mobile version: upper grid with background image */
+#page-grid-homepage-top-mobile-1 {
+    background-image: url('/static/img/homepage.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    height:500px;
+}
+
+/* overwriting semantic css for mobiles: gets rid of some padding */
+.ui.grid+.grid {
+  margin-top: 0rem;
+}
+
+/* the mobile version: lower grid with logo */
+#page-grid-homepage-top-mobile-2 .column {
+    background: white;
+}
+
+#page-grid-homepage-top-mobile-2 h1 {
+    background:white;
+    margin:0;
+    padding:0;
+}
+
+/* homepage part about learning */
+#angebote {
+    padding-top:80px;
+    background:white;
+}
+
+/* homepage part about teaching */
+#vertical-segment-homepage-teach {
+    background:rgba(127, 195, 154, 0.2);
+}
+
+/* homepage part about newsletter */
+#vertical-segment-homepage-newsletter {
+    background:white;
+}
+
+/* homepage part about toolbox */
+#vertical-segment-homepage-toolbox {
+    background:#ece9e4;
+
+}
+
+#vertical-segment-homepage-toolbox .ui.image {
+    height:300px;
+}
+
+/* ------------------------- */
+/*       teach-page          */
+/* ------------------------- */
+
+#page_grid_teach_video {
+    background:#b2becc;
+    background:#f1dfd1;
+    background:#ecdbcb;
+    background:#f9f4ee;
+    padding-top:60px;
+    padding-bottom:30px;
+}
+
+#starterkursdetails {
+    background:white;
+    padding-bottom:40px;
+    margin-bottom:1em;
+    padding-top:60px;
+}
+
+#starterkursdetails .row {
+    margin:0;
+}
+
+#testimonials {
+    background: rgba(127, 195, 154, 0.2);
+    padding-top:60px;
+    margin-top:0px;
+    padding-bottom:50px;
+}
+
+#testimonials blockquote h3 {
+    font-family: 'Helvetica Neue Light', 'HelveticaNeue-Light', 'Helvetica Neue', Calibri, Helvetica, Arial;
+    font-weight:normal;
+}
+
+#testimonials .accordion.field {
+    padding-left:40px;
+}
+
+#webinarinfo {
+    padding-top: 60px;
+    background: white;
+    padding-bottom: 60px;
+}
+
+/* ------------------------- */
+/*         classroom         */
+/* ------------------------- */
+
+
+/* -------------------- */
+/* until here  checked  */
+/* -------------------- */
+
+#pagestart {
+    padding-top:100px;
+}
+
+#pagetop {
+    background:#aeb3a4;
+}
+
+/* ------------------------- */
+/*     courselistpage        */
+/* ------------------------- */
+#publiclist {
+    background-image: url('/static/img/30019719_l.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+#publiclist .segment {
+
+}
+
+#publiclist #courselist_menu .header {
+    background:  #aeb3a4;
+    color:white;
+    /* background: hsla(300,4%,2%,0.1); */
+
+}
+
+#publiclist #mainheader {
+    margin-top:-1em;
+    color:white;
+    background: #aeb3a4;
+    opacity: 0.9;
+}
+
+ #publiclist #mainheader div {
+
+ }
+
+#publiclist #mainheader, #publiclist #mainheader a {
+    color:white;
+}
+
+#publiclist #courselist_menu  {
+    /* opacity: 0.9; /* CSS3 Standard */
+        opacity: 1;
+}
+
+#publiclist #courselist_menu a  {
+    color:black;
+}
+
+
+
+/* ------------------------- */
+/*     newsletter            */
+/* ------------------------- */
+
+#newsletter {
+    background:rgba(127, 195, 154, 0.2);
+}
+
+#newsletter .ui.button {
+    background:#7fc39a;
+    color:white;
+}
+
+#newsletter #mainheader {
+    opacity: 0.8;
+}
+
+/* ------------------------- */
+/*     contact               */
+/* ------------------------- */
+#contact {
+    background-image: url('/static/img/12052071_ml.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+#contact_page_grid {
+    min-height: 800px;
+}
+
+#application {
+  background-color:rgba(127, 195, 154, 0.2);
+}
+
+#application #formsubmit {
+    background-color:teal;
+    color:white;
+}
+
+#prebook {
+  background-color:#7fc39a;
+}
+
+
+
+
+
+/* ------------------------- */
+/*     team and impressum    */
+/* ------------------------- */
+
+
+#teamcard {
+    background: white;
+}
+
+#team #mainheader, #impressum #mainheader {
+    opacity:0.8;
+}
+
+#team #mainheader {
+    padding-top:60px;
+}
+
+#impressum #maingrid{
+    padding-top:100px;
+    padding-bottom: 100px;
+}
+
+
+/* ------------------------- */
+/*         backend           */
+/* ------------------------- */
+/* Select radio boxes on the top of the page */
+#pageselects {
+    float:right
+}
+
+/* Prevent images from being too large */
+.img {
+    max-width: 600px;
+}
+
+
+/* embeding pdf files */
+object.htmlembed {
+    max-width: 600px;
+    height: 900px;
+}
+
+#helpinstructions, .displaynr, .publishinfo, .lessonlinks, .contentdescription {
+    display:none;
+}
+
+.accomplishment {
+    display:none;
+}
+
+.last_modified {
+    color:grey;
+}
+
+#backendheader {
+    padding-top:40px;
+    padding-left:20px;
+    background:white;
+    opacity:0.8;
+}
+
+#classroombackend .active {
+    background:#f6d9c1;
+    color:black;
+}
+
+
+#classroombackend .ui.breadcrumb {
+    background:white;
+    padding:10px;
+}
+
+#classroombackend .ui.breadcrumb .active {
+    padding:10px;
+}
+
+#classroombackend  .ui.piled.segment {
+    margin-top:0;
+}
+/* ------------------------- */
+/*         classroom         */
+/* ------------------------- */
+
+
+#classroommenu a.item {
+
+
+}
+
+#classroommenu {
+    background: #dee3e5;
+}
+
+
+
+#classroom_page_grid {
+    margin-top:60px;
+    margin-bottom:60px;
+}
+
+#classroom .active {
+    // background:#c0a999;
+    // background:#f6d9c1;
+    // background:#d3bba5;
+    // color:black!important;
+}
+
+
+#classroom .ui.button a, #classroom .ui.button a:hover,  #classroom .ui.button {
+    color:black;
+}
+
+#classroom  .header.item {
+    background:#edf5fb;
+}
+
+/* ------------------------- */
+/* Mixins                    */
+/* ------------------------- */
+
+.fixed-background-image (@url) {
+    background-image: @url;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+/* ------------------------- */
+/* base_semantic/base_page   */
+/* ------------------------- */
+
+/* the menu button on the mobile should stay white */
+#mobile_button:hover {
+    background: white;
+    color:black
+}
+
+/* --------------------------------- */
+/* base_semantic/_logo_mobile_menu   */
+/* --------------------------------- */
+
+/* logo on top of the mobile menu in the sidebar */
+#logo_mobile_menu {
+    padding:2px;
+    margin:0;
+    background:white;
+    text-align: center;
+}
+
+/* size of logo img in the navbar */
+#logo_img_mobile {
+    height:50px; width:auto;
+}
+
+/* --------------------------------- */
+/* base_semantic/_pc_logo            */
+/* --------------------------------- */
+
+/* logo in the navbar in the pc version: tablet and computer */
+#logo_navbar_pc {
+    padding:0;
+    margin:0;
+    padding-left:30px;
+}
+
+/* size of logo img in the navbar */
+#logo_img_navbar {
+    height:50px; width:auto;
+}
+
+/* ------------------------- */
+/* base_semantic/footer      */
+/* ------------------------- */
+
+#footer {
+    padding-bottom:0;
+    margin-bottom:0;
+    padding-top:0px;
+    margin-top:0px;
+    .column {
+        padding:0;
+        margin:0;
+    }
+}
+
+/* ------------------------- */
+/* base_semantic/base_page   */
+/* ------------------------- */
+
+#base_page {
+    padding-top:70px;
+    min-height:800px;
+}
+
+/* ---------------------- */
+/* general pages          */
+/* ---------------------- */
+
+#standard_public_page_body_1 {
+    .fixed-background-image(@standard_public_page_background_1_img);
+}
+
+#standard_public_page_body_2 {
+    .fixed-background-image(@standard_public_page_background_2_img);
+}
+
+/* ---------------------- */
+/* classroom page         */
+/* ---------------------- */
+
+#classroom {
+    min-height: 800px;
+    .fixed-background-image(@classroom_background_img);
+    a {
+
+    }
+    h2 {
+      color:black;
+      opacity:0.5;
+      background:white;
+    }
+}
+
+
+
+/* ------------------------- */
+/* desk page                 */
+/* ------------------------- */
+
+#desk {
+  .fixed-background-image(@desk_background_img);
+  h2 {
+      background: @desk_header_color;
+      color:white;
+  }
+
+}
+
+/* ------------------------- */
+/* classroom backend page    */
+/* ------------------------- */
+
+#coursebackend {
+  min-height: 800px;
+  .fixed-background-image(@desk_background_img);
+  h2 {
+      background:white;
+      opacity:0.8;
+  }
+  .ui .checkbox {
+      padding-right:30px;
+  }
+  #page-header {
+      padding:0;
+      margin:0;
+  }
+  #page-breadcrumb {
+      padding:0;
+      margin:0;
+  }
+}
+
+/* ------------------------- */
+/*     Newsletter            */
+/* ------------------------- */
+
+#newsletter_admin {
+  .fixed-background-image(@desk_background_img);
+}
+
+#newsletter_public {
+  background: @homepage_toolbox_background_color;
+}
+
+/* ------------------------- */
+/*     coursedetailpage      */
+/* ------------------------- */
+
+#courseevent_public {
+   .fixed-background-image(@courseevent_public_background_img);
+}
+
+#courseowner_img {
+    max-width:350px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto
+}
+
+/* ------------------------- */
+/*     thankyou page         */
+/* ------------------------- */
+
+#logo_answer_page {
+    height:100px;
+    width:auto;
+}
+
+/* ------------------------- */
+/*     home page         */
+/* ------------------------- */
+
+#home {
+    background: @homepage_toolbox_background_color;
+}
+
+#teach_page_body {
+    background: white;
+}
+
+/* ------------------------- */
+/*     page load             */
+/* ------------------------- */
+.preload * {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -ms-transition: none !important;
+  -o-transition: none !important;
+}
+
+.load * {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -ms-transition: none !important;
+  -o-transition: none !important;
+}
+
+/* ------------------------- */
+/*     classroom             */
+/* ------------------------- */
+
+#classroom_header {
+  background:@classroom_active_color;
+}
+
+#forum_thread_comments {
+  max-width:none;
+}
+
+
+/* --------------------------------------  */
+/*    base_pusher content rows             */
+/* --------------------------------------- */
+#classroom {
+  .classroom_background {background:@classroom_lightblue_color;}
+  .classroom_white {background:white;}
+  .classroom_breadcrumb {background:@classroom_active_color;}
+  .classroom_emphasis {background:@classroom_active_color;}
+
+  i.icon.header:before{
+    content:"";
+  }
+}
+
+#coursebackend {
+  .coursebackend_white {background:white;}
+  .coursebackend_course{background:#eee2da;background:#dbdae5;background:#f4ebe6;}
+  .coursebackend_background {background:#ebdfd7; background:#cbd5ef;background:#f7fafe;}
+  .coursebackend_emphasis {background:@classroom_backend_active_color;}
+  .ui.menu .active.item.active{background:#ebc7a6;}
+
+  .published_in_class{
+      color:@mentoki_green;}
+
+  #page-breadcrumb{
+      font-size:1em;}
+
+  .meta_data {
+      color:grey; font-weight:normal; sont-size:0.8em;
+  .not_original {color:@mentoki_green;}
+  .outdated {color:mediumpurple;}
+}
+/* --------------------------------------  */
+/*    plain data                           */
+/* --------------------------------------- */
+
+#plain_mode {padding-left:300px;}
+
+
+/* --------------------------------------  */
+/*    sidebar menu                          */
+/* --------------------------------------- */
+#coursebackend_menu {
+  a.item {font-size:1.2em;}
+  background:#f7fafe;
+  .header.item {
+    background:#ebc7a6;
+    font-size:1.5em;
+  }
+  a.item.active, a.item:hover {
+    background:#8b452c;
+    background:#b48368;
+    color:white;
+  }
+  padding-bottom:100px;
+}
+
+#classroom_menu  {
+  a.item {font-size:1.2em;}
+  background:#f7fafe;
+  .header.item {
+    background:#ebc7a6;
+    font-size:1.5em;
+  }
+  a.item.active, a.item:hover{
+    background:#8b452c;
+    background:#b48368;
+    color:white;
+  }
+  padding-bottom:100px;
+  }
+
+}
+
+#coursebackend #classroom_preview_menu  {
+  background:#f7fafe;
+  .header.item {
+    background:#f2eae6;
+  }
+  a.item.active {
+    background:#8b452c;
+    background:#b48368;
+    color:white;
+  }
+  padding-bottom:100px;
+}
+
+
+/* ------------------------- */
+/*          homepage         */
+/* ------------------------- */
+
+/* logo as main header on the homepage */
+#logo_homepage_header {
+    height:100px; width:auto;
+}
+
+/* the computer and tablet version: background img */
+#page-grid-homepage-top-pc {
+    background-image: url('/static/img/homepage.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    height:800px;
+}
+
+/* the computer and tablet version: header */
+#page-grid-homepage-top-pc h1 {
+    opacity: 0.8;
+    background:white;
+    margin-top:50px;
+    padding-top:50px;
+    border:5px solid #aeb3a4;
+}
+
+/* the mobile version: upper grid with background image */
+#page-grid-homepage-top-mobile-1 {
+    background-image: url('/static/img/homepage.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    height:500px;
+}
+
+/* overwriting semantic css for mobiles: gets rid of some padding */
+.ui.grid+.grid {
+  margin-top: 0rem;
+}
+
+#vertical-segment-homepage-toolbox .ui.image {
+    height:300px;
+}
+
+#home #base_page {
+  padding-top:0;
+  margin-top:0;
+}
+
+@media only screen and (min-width: 992px) {
+    /* desktop */
+    #mobile_menu, #mobile_navbar {
+      display:none;
+    }
+    #content {
+      padding-top:40px;
+    }
+
+    #whitepaper {
+        padding-left:100px;
+        padding-right:100px;
+    }
+
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    /* tablets */
+    #mobile_menu, #mobile_navbar {
+      display:none;
+    }
+    #pc_navbar .item {
+      padding-left:10px;
+      padding-right:10px;
+    }
+    #content {
+      padding-top:40px;
+    }
+
+    #whitepaper {
+        padding-left:30px;
+        padding-right:30px;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    /* phones */
+    #pc_navbar {
+      display:none;
+    }
+    #home .divider_header.ui.header {
+      font-size:1.5em
+    }
+    #content {
+      padding-top:0px;
+    }
+
+}
+
+/* ---------------------------------- */
+/*     background in coursebackend    */
+/*     for main page content          */
+/* ---------------------------------- */
+
+#whitepaper {
+    }
+
+#home .ui.button {
+  background: teal;
+  color:black;
+  font-weight: normal;
+}
+/* ---------------------------------- */
+/*     sticky content                 */
+/* ---------------------------------- */
+.ui.fixed.sticky + p {
+  margin-top: 39px;
+}
+
+

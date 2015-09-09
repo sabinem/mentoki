@@ -38,3 +38,6 @@ class NewsLetterView(TemplateView):
 class WebinarView(RedirectView):
     permanent = True
     url = '/unterrichten#webinarinfo'
+
+class NewHomePageView(TemplateView):
+    template_name = "public/home/homepage.html"
