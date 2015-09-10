@@ -53,8 +53,12 @@ class StudentsWorkAdmin(admin.ModelAdmin):
 
 @admin.register(Forum)
 class ForumAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'courseevent', 'published', 'parent', 'decendants_thread_count', 'has_published_decendants' )
-    list_filter = ( 'courseevent', 'published')
+    list_display = ( 'title', 'display_nr', 'tree_id','lft', 'rght', 'level' )
+
+    #list_display = ('id', 'title', 'courseevent', 'published', 'parent', 'decendants_thread_count', 'has_published_decendants' )
+    list_filter = ( 'courseevent', 'published', 'level')
+
+
 
 
 @admin.register(Thread)

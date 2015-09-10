@@ -29,6 +29,10 @@ class LessonStartView(
         context = super(LessonStartView, self).get_context_data(**kwargs)
 
         context['nodes'] = Lesson.objects.start_tree_for_course(course=context['course'])
+        for node in context['nodes']:
+            if node.level == 0:
+                print node.block_sort
+                print node.tree_id
 
         return context
 

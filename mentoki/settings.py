@@ -43,7 +43,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
 
     'braces',
-    'braintree',
+    #'braintree',
     'model_utils',
     'mptt',
     'autoslug',
@@ -59,7 +59,7 @@ INSTALLED_APPS = (
     'django_markdown',
 
     'accounts',
-    'customers',
+    #'customers',
 
     'apps_core.core',
 

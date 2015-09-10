@@ -20,8 +20,9 @@ class BaseLessonManager(TreeManager):
         :param course
         :return: all nodes with material for a course in tree order
         """
-        return self.filter(course=course, level=0).\
-            get_descendants(include_self=True).select_related('material')
+        return self.filter(course=course, level=0)\
+            .order_by('block_sort')\
+            .get_descendants(include_self=True).select_related('material')
 
     def lessons_for_course(self, course):
         """
@@ -29,9 +30,7 @@ class BaseLessonManager(TreeManager):
         :param course
         :return: all lessons for the course
         """
-        return self.filter(course=course,
-                           level=1,
-                           )
+        return self.filter(course=course, level=1).order_by('block_sort')
 
     def blocks_for_course(self, course):
         """
@@ -39,9 +38,8 @@ class BaseLessonManager(TreeManager):
         :param course
         :return: all blocks for the course
         """
-        return self.filter(course=course,
-                           level=0,
-                           )
+        return self.filter(course=course, level=0)\
+            .order_by('block_sort')
 
     def homeworks(self, course):
         return self.filter(course=course,
@@ -93,6 +91,8 @@ class BaseLesson(MPTTModel):
     nr = models.IntegerField(
         verbose_name=_('Nr.'),
         default=1)
+
+    block_sort = models.IntegerField(default=1)
 
     # this field is derived from nr and and parent.nr depending on the level
     # see save_method
