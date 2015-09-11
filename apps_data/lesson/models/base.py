@@ -40,7 +40,7 @@ class BaseLessonManager(TreeManager):
         :return: all blocks for the course
         """
         return self.filter(course=course, level=1)\
-            .order_by('block_sort')
+            .order_by('nr')
 
     def homeworks(self, course):
         return self.filter(course=course,
