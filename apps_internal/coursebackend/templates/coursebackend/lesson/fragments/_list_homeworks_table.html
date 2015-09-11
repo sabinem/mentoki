@@ -1,32 +1,44 @@
 {% if homeworks %}
-<table class="ui table">
-    <thead>
-            <tr>
-                <th>Lernabschnitt in Lektion</th>
-            </tr>
-    </thead>
-    <tbody>
-        {% for homework in homeworks %}
 
-            {% url 'coursebackend:lesson:stepupdate' course_slug=cs pk=homework.pk as update_url %}
-            {% url 'coursebackend:lesson:step' course_slug=cs pk=homework.pk as detail_url %}
-            <tr>
-                <td>
-                    <a href="{{ detail_url }}">
-                        {{ homework }}
-                        <i class="icon lab orange"></i>
-                    </a>
-                    <a href="{{ update_url }}">
-                        <i class="icon write blue"></i>
-                    </a>
-                    in
-                    {{ homework.parent }}
-                </td>
-            </tr>
+    <table class="ui table">
 
-        {% endfor %}
+        <thead>
+                <tr>
+                    <th>Lernabschnitt in Lektion</th>
+                </tr>
+        </thead>
 
-    </tbody>
+        <tbody>
 
-</table>
+            {% for homework in homeworks %}
+
+                {% url 'coursebackend:lesson:stepupdate' course_slug=cs pk=homework.pk as update_url %}
+                {% url 'coursebackend:lesson:step' course_slug=cs pk=homework.pk as detail_url %}
+
+                <tr>
+                    <td>
+
+                        <!-- title -->
+                        <a href="{{ detail_url }}">
+                            {{ homework }}
+                            <i class="icon lab orange"></i>
+                        </a>
+
+                        <!-- update -->
+                        <a href="{{ update_url }}">
+                            <i class="icon write blue"></i>
+                        </a>
+
+                        <!-- lesson -->
+                        in {{ homework.parent }}
+
+                    </td>
+                </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
 {% endif %}

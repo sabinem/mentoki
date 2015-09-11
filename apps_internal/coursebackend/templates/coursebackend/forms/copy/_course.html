@@ -1,0 +1,24 @@
+{% url 'coursebackend:courseevent:detail' slug=es course_slug=cs as back_url %}
+{% url 'courseevent:copydescription' courseevent_pk=courseevent.pk as copy_url %}
+<div class="ui warning message">
+    <p>
+        Vorsicht! Durch diese Aktion werden alle Beschreibungstexte
+        im Kurs durch diejenigen aus der Kursvorlage überschreiben.
+    </p>
+    <div class="ui header small">Kopiert werden:</div>
+    <div class="ui list bulleted">
+        <div class="item">Abstrakt</div>
+        <div class="item">Zielgruppe</div>
+        <div class="item">Voraussetzungen</div>
+        <div class="item">Was nimmt der Teilnehmer aus dem Kurs mit</div>
+        <div class="item">Gliederung</div>
+        <div class="item">Freie Kursbeschreibung</div>
+    </div>
+</div>
+<a href="{{ copy_url }}" class="ui button">
+    ja, bitte aus der Vorlage kopieren
+</a>
+
+<a href="{{ back_url }}" class="ui button">
+    nein, abbrechen!
+</a>

@@ -278,6 +278,7 @@ class ClassLessonHomeworkUpdateView(
 
 class ClassLessonDeleteView(
     CourseMenuMixin,
+    ClassLessonBreadcrumbMixin,
     FormValidMessageMixin,
     ClassLessonRedirectListMixin,
     DeleteView):

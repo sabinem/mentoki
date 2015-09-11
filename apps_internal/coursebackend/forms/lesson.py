@@ -21,7 +21,7 @@ class LessonBlockForm(forms.ModelForm):
 
     class Meta:
         model = Lesson
-        fields = ('title', 'description', 'text', 'block_sort')
+        fields = ('title', 'description', 'text', 'nr')
 
     def __init__(self, *args, **kwargs):
         super(LessonBlockForm, self).__init__(*args, **kwargs)

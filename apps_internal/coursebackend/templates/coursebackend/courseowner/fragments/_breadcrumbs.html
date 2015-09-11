@@ -1,40 +1,29 @@
-{% comment %}
-
-the breadcrumb for courseowner
-
-for detail/list/update
-
-{% endcomment %}
-
 {% url 'coursebackend:courseowner:list' course_slug=cs as list_url %}
 {% url 'coursebackend:courseowner:detail' pk=courseowner.user.pk course_slug=cs as detail_url %}
 
 <div class="ui large breadcrumb" id ="page-breadcrumb">
 
     {% if url_name == 'list' %}
+
+        <!-- section active -->
         <div class="section active">
             Kurs-Leitung {{ course.title }}
         </div>
+
     {% else %}
+
+        <!-- section link -->
         <a href="{{ list_url }}" class="section">
             Kurs-Leitung {{ course.title }}
         </a>
+
         <i class="right chevron icon divider"></i>
 
-        {% if url_name == 'detail' %}
-            <div class="section active">
-                {{ courseowner.user.get_full_name }}
-            </div>
-        {% elif url_name == 'update' %}
-            <a href="{{ detail_url }}" class="section">
-                {{ courseowner.user.get_full_name }}
-            </a>
-            <i class="right chevron icon divider"></i>
-           <div class="section active">
-                bearbeiten
-            </div>
+        <!-- profile active -->
+        <div class="section active">
+            {{ courseowner.user.get_full_name }}
+        </div>
 
-        {% endif %}
     {% endif %}
 
 </div>

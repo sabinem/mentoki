@@ -1,11 +1,3 @@
-{% comment %}
-
-the breadcrumb for classroommenu
-
-for list/update/detail/create/delete
-
-{% endcomment %}
-
 {% url 'coursebackend:menu:list' course_slug=cs slug=es as list_url %}
 
 <div class="ui large breadcrumb" id ="page-breadcrumb">
@@ -16,15 +8,15 @@ for list/update/detail/create/delete
 
     <i class="right chevron icon divider"></i>
    {% if url_name == 'list' %}
-    <div class="section">
+    <div class="section active">
         veröffentlicht
     </div>
     {% elif url_name == 'preview' %}
-    <div class="section">
+    <div class="section active">
         Menü bearbeiten
     </div>
     {% elif url_name == 'sort' %}
-    <div class="section">
+    <div class="section active">
         Menüpunkte sortieren
     </div>
     {% endif %}

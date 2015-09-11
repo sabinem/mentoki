@@ -3,23 +3,35 @@
 
     {% recursetree nodes %}
 
+        {% url 'classroom:forum:detail' slug=es pk=node.pk as detail_url %}
         <div class="item">
+
             <i class="top aligned folder outline icon"></i>
+
             <div class="content">
 
-                <a href="{% url "classroom:forum:detail" slug=courseevent.slug pk=node.pk %}">
-                   {{ node.title }}
+                <div class="header">
+
+                    <a href="{{ detail_url }}" class="published_in_class">
+                        {{ node.title }}<i class="icon student"></i>
+                    </a>
+
                     {% if node.can_have_threads %}
                         <div class="ui circular label">
                             {{ node.thread_count }}
                         </div>
                     {% endif %}
-                </a>
 
-                <div class="fullcontent">
-                    {{ node.text | safe }}
                 </div>
 
+                <div class="description">
+                {% if node.decription != "" %}
+                    <p>
+                        {{ node.description }}
+                    </p>
+                {% endif %}
+
+                </div>
                 {% if not is_leaf %}
                     <div class="list">
                         {{ children }}

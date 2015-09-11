@@ -20,30 +20,17 @@
 {% block page_content %}
 
     <div class="row classroom_white">
-        <div class="sixteen wide column">
+        <div class="sixteen wide column" id="whitepaper">
 
             {% include 'classroom/forum/fragments/_instance_forum.html' %}
 
-        </div>
-    </div>
-
-    <div class="row classroom_white">
-        <div class="sixteen wide column">
-
             {% include 'classroom/forum/fragments/_recursetree_nodes.html' %}
 
+            {% if forum.can_have_threads %}
+                 {% include 'classroom/forum/fragments/_list_threads.html' %}
+            {% endif %}
+
         </div>
     </div>
 
-    {% if forum.can_have_threads %}
-        <div class="row classroom_white">
-            <div class="sixteen wide column">
-
-                    {% include 'classroom/forum/fragments/_list_threads.html' %}
-
-            </div>
-        </div>
-    {% endif %}
-
 {% endblock %}
-{% block rows %}{% endblock %}

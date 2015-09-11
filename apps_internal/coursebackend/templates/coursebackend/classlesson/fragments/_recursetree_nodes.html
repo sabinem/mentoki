@@ -4,15 +4,30 @@
     {% recursetree nodes %}
 
         <div class="item">
-            {% include 'coursebackend/classlesson/fragments/_icon_node.html' %}
+
+            <!-- icon -->
+            {% if node.is_block %}
+                <i class="top aligned cube icon">{{ node.lesson_nr }}</i>
+            {% elif not node.is_root_node %}
+                <i class="top aligned icon">{{ node.lesson_nr }}</i>
+            {% endif %}
+
             <div class="content">
 
-                <span {% if node.published %}
-                    class="published_in_class"
-                {% endif %}>{{ node.title }}</span>
+                <!-- published -->
+                <span
+                    {% if node.published %}
+                        class="published_in_class"
+                    {% endif %}>
+                    {{ node.title }}
+                </span>
+
+                <!-- homework -->
                 {% if node.is_homework %}
                     <i class="icon lab orange"></i>
                 {% endif %}
+
+                <!-- description -->
                 {% if node.decription != "" %}
                     <p>
                         {{ node.description }}

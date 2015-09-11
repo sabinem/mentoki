@@ -2,6 +2,8 @@
 
 from __future__ import unicode_literals, absolute_import
 
+from django.shortcuts import get_object_or_404
+
 from model_utils.fields import MonitorField
 from model_utils.models import TimeStampedModel
 
@@ -27,14 +29,15 @@ class LessonManager(BaseLessonManager):
         :param course:
         :return: created block
         """
+        lessonroot= get_object_or_404(Lesson, course=course, level=0)
         block = Lesson(course=course,
                        title=title,
                        description=description,
                        text=text,
                        nr=nr,
-                       lesson_nr=lesson_nr_block()
+                       lesson_nr=lesson_nr_block(nr=nr)
                        )
-        block.insert_at(None)
+        block.insert_at(lessonroot)
         block.save()
         Lesson.objects.rebuild()
         return block

@@ -15,7 +15,7 @@ urlpatterns = patterns('',
         {'template':'coursebackend/classlesson/pages/work.html'}, name='start'),
 
     url(r'^meta$', ClassLessonStartView.as_view(),
-        {'template':'coursebackend/classlesson/pages/work.html'}, name='meta'),
+        {'template':'coursebackend/classlesson/pages/meta.html'}, name='meta'),
 
     url(r'^kopieren$', CopyLessonListView.as_view(),
         {'template':'coursebackend/classlesson/pages/copy.html'}, name='copy'),

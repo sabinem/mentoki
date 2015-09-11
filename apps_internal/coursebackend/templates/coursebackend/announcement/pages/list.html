@@ -1,17 +1,7 @@
 {% extends "coursebackend/base_courseevent.html" %}
 
 {% block courseevent_menu_items %}
-
-    {% url 'coursebackend:announcement:create' course_slug=cs slug=es as announcement_create_url %}
-    {% url 'classroom:announcement:list' slug=es as announcement_class_url %}
-
-    <a href="{{ announcement_create_url }}" class="item">
-        <i class="plus icon blue"></i>Ankündigung
-    </a>
-    <a href="{{ announcement_class_url }}" class="item" >
-        <i class="unhide icon blue"></i>Klassenzimmer
-    </a>
-
+    {% include 'coursebackend/announcement/fragments/_top_links.html' %}
 {% endblock %}
 
 {% block breadcrumbs %}
@@ -23,7 +13,10 @@
     <div class="row classroom_background">
         <div class="sixteen wide column">
 
+            <!-- messages -->
             {% include 'base/fragments/_messages.html' %}
+
+            <!-- list -->
             {% include 'coursebackend/announcement/fragments/_list_announcements_table.html' %}
 
         </div>

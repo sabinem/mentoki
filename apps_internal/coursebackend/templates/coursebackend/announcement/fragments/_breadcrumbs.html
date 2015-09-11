@@ -1,55 +1,32 @@
-{% comment %}
-
-the breadcrumb for announcements
-
-for list/update/detail/create/delete
-
-{% endcomment %}
-
 {% url 'coursebackend:announcement:list' course_slug=cs slug=es as list_url %}
 {% url 'coursebackend:announcement:detail' course_slug=cs slug=es pk=announcement.pk as detail_url %}
 
 <div class="ui large breadcrumb" id ="page-breadcrumb">
 
     {% if url_name == 'list' %}
+
+        <!-- section active -->
         <div class="section active">
             Ankündigungen
         </div>
+
     {% else %}
+
+        <!-- section link -->
         <a href="{{ list_url }}" class="section">
             Ankündigungen
         </a>
         <i class="right chevron icon divider"></i>
-        {% if url_name == 'detail' %}
+
+        <!-- announcement active -->
+        {% if announcement %}
 
             <div class="section active">
                 {{ announcement }}
             </div>
-
-        {% elif url_name == 'create' %}
-
-            <div class="section active">
-                neue Ankündigung schreiben
-            </div>
-
-        {% else %}
-
-            <a href="{{ detail_url }}" class="section">
-                {{ announcement }}
-            </a>
-            <i class="right chevron icon divider"></i>
-
-            {% if url_name == 'update' %}
-                <div class="section active">
-                    ändern<i class="icon warning"></i>
-                </div>
-            {% elif url_name == 'delete' %}
-                <div class="section active">
-                    löschen<i class="icon warning"></i>
-                </div>
-            {% endif %}
 
         {% endif %}
+
     {% endif %}
 
 </div>

@@ -4,6 +4,8 @@ from __future__ import unicode_literals, absolute_import
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.shortcuts import get_object_or_404
+
 from mptt.models import MPTTModel, TreeForeignKey, TreeManager
 
 from model_utils.choices import Choices
@@ -21,7 +23,6 @@ class BaseLessonManager(TreeManager):
         :return: all nodes with material for a course in tree order
         """
         return self.filter(course=course, level=0)\
-            .order_by('block_sort')\
             .get_descendants(include_self=True).select_related('material')
 
     def lessons_for_course(self, course):
@@ -30,7 +31,7 @@ class BaseLessonManager(TreeManager):
         :param course
         :return: all lessons for the course
         """
-        return self.filter(course=course, level=1).order_by('block_sort')
+        return self.filter(course=course, level=2)
 
     def blocks_for_course(self, course):
         """
@@ -38,7 +39,7 @@ class BaseLessonManager(TreeManager):
         :param course
         :return: all blocks for the course
         """
-        return self.filter(course=course, level=0)\
+        return self.filter(course=course, level=1)\
             .order_by('block_sort')
 
     def homeworks(self, course):
@@ -47,13 +48,12 @@ class BaseLessonManager(TreeManager):
                            )
 
 
-def lesson_nr_block():
+def lesson_nr_block(nr):
     """
     computed field in model: lesson_nr for blocks
     :return: empty for blocks
     """
-
-    return ""
+    return u'(%s)' % str(nr)
 
 def lesson_nr_lesson(nr):
     """
@@ -91,8 +91,6 @@ class BaseLesson(MPTTModel):
     nr = models.IntegerField(
         verbose_name=_('Nr.'),
         default=1)
-
-    block_sort = models.IntegerField(default=1)
 
     # this field is derived from nr and and parent.nr depending on the level
     # see save_method
@@ -148,23 +146,24 @@ class BaseLesson(MPTTModel):
         :return: self representation
         """
         if self.level == 0:
-            return u'Block: %s' % (self.title)
+            return u'Unterricht %s' % (self.course.title)
         elif self.level == 1:
+            return u'Block: %s' % (self.title)
+        elif self.level == 2:
             return u'%s: %s. %s' % (self.parent.title, self.lesson_nr, self.title)
-        elif self.is_step:
+        elif self.level == 3:
             return u'%s %s' % (self.lesson_nr, self.title)
 
     def save(self, *args, **kwargs):
         """
         lesson_nr is calculated and stored in the database for performance
         """
-        print self.level
         if self.level:
-            if self.level == 0:
-                self.lesson_nr = lesson_nr_block()
-            elif self.level == 1 :
-                self.lesson_nr = lesson_nr_lesson(nr=self.nr)
+            if self.level == 1:
+                self.lesson_nr = lesson_nr_block(nr=self.nr)
             elif self.level == 2 :
+                self.lesson_nr = lesson_nr_lesson(nr=self.nr)
+            elif self.level == 3 :
                 self.lesson_nr = lesson_nr_step(nr=self.nr, parent_nr=self.parent.nr)
         super(BaseLesson, self).save(*args, **kwargs)
 
@@ -175,14 +174,13 @@ class BaseLesson(MPTTModel):
         see above.
         :return: lesson_type: block, lesson or step
         """
-        if self.level == 0 :
+        if self.level == 1 :
             return self.LESSON_TYPE.block
-        elif self.level == 1 :
-            return self.LESSON_TYPE.lesson
         elif self.level == 2 :
+            return self.LESSON_TYPE.lesson
+        elif self.level == 3 :
             return self.LESSON_TYPE.step
-        else:
-            raise ValueError('unexpected lesson level')
+
 
     def breadcrumb(self):
         """
@@ -192,11 +190,11 @@ class BaseLesson(MPTTModel):
         lessonstep: <lesson_nr> <title>
         :return: representation in breadcrumbs
         """
-        if self.level == 0:
+        if self.level == 1:
             return u'%s' % (self.title)
-        elif self.level == 1:
+        elif self.level == 2:
             return u'%s. %s' % (self.lesson_nr, self.title)
-        elif self.is_step:
+        elif self.level == 3:
             return u'%s %s' % (self.lesson_nr, self.title)
 
     def get_delete_tree(self):
@@ -233,7 +231,7 @@ class BaseLesson(MPTTModel):
             return None
 
     def get_breadcrumbs_with_self(self):
-        return self.get_ancestors(include_self=True)
+        return self.get_ancestors(include_self=True).exclude(level=0)
 
     def get_tree_without_self_with_material(self):
         """
@@ -254,7 +252,7 @@ class BaseLesson(MPTTModel):
         bool that decides wether a lesson is a block
         :return: bool
         """
-        if self.get_level() == 0:
+        if self.get_level() == 1:
             return True
         else:
             return False
@@ -264,7 +262,7 @@ class BaseLesson(MPTTModel):
         bool that decides wether a lesson is a lesson
         :return: bool
         """
-        if self.get_level() == 1:
+        if self.get_level() == 2:
             return True
         else:
             return False
@@ -274,7 +272,7 @@ class BaseLesson(MPTTModel):
         bool that decides wether a lesson is a step
         :return: bool
         """
-        if self.get_level() == 2:
+        if self.get_level() == 3:
             return True
         else:
             return False

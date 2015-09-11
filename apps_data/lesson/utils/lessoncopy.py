@@ -19,9 +19,6 @@ from ..models.classlesson import ClassLesson
 def copy_lesson_selected(self, lesson, lessonsteps, copy_lesson):
     """
     copies selected parts of a lesson from Lesson (in course) to ClassLesson (in a courseevent)
-    :param lesson_pk:
-    :param courseevent_pk:
-    :return: Redirects to the ClassLesson start page in the Coursebackend
     """
     if copy_lesson:
         classlesson=_update_lesson(lesson)
@@ -38,9 +35,6 @@ def copy_lesson_selected(self, lesson, lessonsteps, copy_lesson):
 def copy_lesson_for_courseevent(self, lesson_pk, courseevent_pk):
     """
     copies a complete lesson from Lesson (in course) to ClassLesson (in a courseevent)
-    :param lesson_pk: id of the lesson that should be copied
-    :param courseevent_pk: id of the courseevent to which the lesson should be copied
-    :return: Redirects to the ClassLesson start page in the Coursebackend
     """
     try:
         lesson=get_object_or_404(Lesson, pk=lesson_pk)
@@ -52,20 +46,30 @@ def copy_lesson_for_courseevent(self, lesson_pk, courseevent_pk):
     if not lesson.is_lesson:
         raise ValidationError('Das ist keine Lektion. Nur Lektionen können kopiert werden.')
 
-    courseevent=get_object_or_404(CourseEvent, pk=courseevent_pk)
-    lessonblock=get_object_or_404(Lesson, pk=lesson.parent_id)
+    courseevent = get_object_or_404(CourseEvent, pk=courseevent_pk)
+    lessonblock = get_object_or_404(Lesson, pk=lesson.parent_id)
+    lessonroot = get_object_or_404(Lesson, level=0, course=courseevent.course)
 
+    # establish class root
+    try:
+        classlessonroot = ClassLesson.objects.get(original_lesson_id=lessonroot.id)
+    except:
+        classlessonroot = _copy_any_level_lesson(lesson=lessonroot,
+                                            courseevent=courseevent,
+                                            parent=None)
+    # establish block
     try:
         classblock = ClassLesson.objects.get(original_lesson_id=lessonblock.id)
     except:
         classblock = _copy_any_level_lesson(lesson=lessonblock,
                                             courseevent=courseevent,
-                                            parent=None)
-
-    classlesson= _copy_any_level_lesson(lesson=lesson,
+                                            parent=classlessonroot)
+    # copy lesson
+    classlesson = _copy_any_level_lesson(lesson=lesson,
                                         courseevent=courseevent,
                                         parent=classblock)
 
+    # copy lessonsteps
     for step in lessonsteps:
         _copy_any_level_lesson(lesson=step,
                                courseevent=courseevent,

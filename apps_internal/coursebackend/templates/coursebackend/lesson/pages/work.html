@@ -11,8 +11,12 @@
 {% block page_content %}
 
     <div class="row coursebackend_white">
-        <div class="sixteen wide column">
+        <div class="sixteen wide column"  id="whitepaper">
+
+            <!-- messages -->
             {% include 'base/fragments/_messages.html' %}
+
+            <!-- nodetree -->
             {% include 'coursebackend/lesson/fragments/_recursetree_nodes_work.html' %}
 
         </div>

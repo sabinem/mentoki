@@ -7,6 +7,7 @@ import datetime
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.core.validators import ValidationError
+from django.shortcuts import get_object_or_404
 
 from model_utils.models import TimeStampedModel
 from model_utils.fields import MonitorField
@@ -48,12 +49,12 @@ class ClassLessonManager(LessonManager):
 
     def lessons_for_courseevent(self, courseevent):
         return self.filter(courseevent=courseevent,
-                           level=1,
+                           level=2,
                            )
 
     def lessonsteps_for_courseevent(self, courseevent):
         return self.filter(courseevent=courseevent,
-                           level=2,
+                           level=3,
                            )
 
     def classlessons_published_in_courseevent(self, courseevent):

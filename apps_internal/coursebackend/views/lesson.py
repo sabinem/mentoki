@@ -29,10 +29,6 @@ class LessonStartView(
         context = super(LessonStartView, self).get_context_data(**kwargs)
 
         context['nodes'] = Lesson.objects.start_tree_for_course(course=context['course'])
-        for node in context['nodes']:
-            if node.level == 0:
-                print node.block_sort
-                print node.tree_id
 
         return context
 
@@ -75,7 +71,7 @@ class BlockDetailView(
 
         context['next_node'] = lessonblock.get_next_sibling()
         context['previous_node'] = lessonblock.get_previous_sibling()
-        context['breadcrumbs'] = lessonblock.get_breadcrumbs_with_self
+        context['breadcrumbs'] = lessonblock.get_breadcrumbs_with_self()
         context['nodes'] = lessonblock.get_tree_without_self_without_material
         return context
 

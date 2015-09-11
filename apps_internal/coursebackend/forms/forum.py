@@ -28,6 +28,7 @@ class ForumForm(forms.ModelForm):
 
         self.fields["parent"].queryset = \
             Forum.objects.forums_for_courseevent(courseevent=self.courseevent)
+        self.fields['parent'].empty_label = None
 
     def clean_can_have_threads(self):
         if not self.cleaned_data['can_have_threads']:

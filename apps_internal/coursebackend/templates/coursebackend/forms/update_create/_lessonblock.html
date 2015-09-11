@@ -28,17 +28,17 @@
     <div class="fields inline">
 
         <div class="field four wide">
-            {{ form.block_sort.label_tag }}
-            <p>{{ form.block_sort.help_text }}</p>
+            {{ form.nr.label_tag }}
+            <p>{{ form.nr.help_text }}</p>
 
-            {% if form.block_sort.errors %}
+            {% if form.nr.errors %}
                 <div class="ui negative floating message">
-                    {{ form.block_sort.errors }}
+                    {{ form.nr.errors }}
                 </div>
             {% endif %}
             <br>
 
-            {{ form.block_sort }}
+            {{ form.nr }}
 
         </div>
 
