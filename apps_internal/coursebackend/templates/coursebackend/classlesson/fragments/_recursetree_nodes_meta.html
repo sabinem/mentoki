@@ -1,0 +1,96 @@
+{% load mptt_tags %}
+
+<div class="ui divided list">
+
+    {% recursetree nodes %}
+
+        <div class="item">
+        
+            <!-- icon -->
+            {% if node.is_block %}
+                <i class="top aligned cube icon">{{ node.lesson_nr }}</i>
+            {% elif not node.is_root_node %}
+                <i class="top aligned icon">{{ node.lesson_nr }}</i>
+            {% endif %}
+
+            <div class="content">
+
+                <div class="header">
+
+                    <!-- root node -->
+                    {% if node.is_root_node %}
+
+                        <div class="ui header large">{{ node.title }}</div>
+
+                    {% else %}
+
+                        <!-- title with detail link -->
+                        {% if node.is_published %}
+                            <span class="published_in_class">
+                                {{ node.title }}<i class="icon student"></i>
+                            </span>
+                        {% else %}
+                            {{ node.title }}
+                        {% endif %}
+
+                        <!-- homework icon -->
+                        {% if node.is_homework %}
+                            <i class="icon lab orange"></i>
+                        {% endif %}
+
+                    {% endif %}
+
+                </div>
+
+                <!-- meta -->
+
+                <div class="ui list" style="padding-top:0px; color:grey;">
+
+                    {% if not node.is_block %}
+
+                        <!-- created -->
+                        <div class="item">
+                            angelegt {{ node.created |date:'d.m.Y' }},
+                            {{ node.created |time:"H:i"  }},
+                        </div>
+
+                        <!-- modified -->
+                        <div class="item">
+                            {% if not node.modified == node.created %}
+                                <span class="not_original">
+                                    geändert: {{ node.modified |date:'d.m.Y' }},
+                                    {{ node.modified |time:"H:i"  }}
+                                </span>
+                            {% endif %}
+                        </div>
+
+                        <!-- orginal lesson deleted -->
+                        <div class="item">
+                            {%  if not node.original_lesson %}
+                                 Original wurde gelöscht!
+                            {% elif node.outdated %}
+                                 <span class="outdated">
+                                     Original wurde aktualisert:
+                                     {{ node.original_lesson.modified |date:'d.m.Y'}},
+                                     {{ node.original_lesson.modified|time:"H:i" }}
+                                 </span>
+                            {% endif %}
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+                {% if not is_leaf %}
+                    <div class="list">
+                        {{ children }}
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+
+    {% endrecursetree %}
+
+</div>

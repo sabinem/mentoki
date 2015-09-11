@@ -1,30 +1,9 @@
-{% comment %}
-
-the breadcrumb for courseevent
-
-for detail/list/update
-
-{% endcomment %}
-
 {% url 'coursebackend:courseevent:detail' course_slug=cs slug=es as courseevent_url %}
 
 <div class="ui large breadcrumb" id ="page-breadcrumb">
 
-    {% if url_name == 'detail' %}
-        <div class="section active">
-            Kursereignis {{ courseevent.title }}
-        </div>
-    {% else %}
-        <a href="{{ course_url }}" class="section">
-            Kursereignis {{ courseevent.title }}
-        </a>
-        <i class="right chevron icon divider"></i>
-    {% endif %}
-
-    {% if url_name == 'update' %}
-        <div class="section active">
-            bearbeiten
-        </div>
-    {% endif %}
+    <div class="section active">
+        Kursereignis {{ courseevent.title }}
+    </div>
 
 </div>

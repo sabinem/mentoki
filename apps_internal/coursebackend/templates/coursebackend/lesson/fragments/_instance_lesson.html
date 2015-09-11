@@ -1,21 +1,49 @@
 {% url 'coursebackend:lesson:lessonupdate'  course_slug=cs pk=lesson.pk as lessonupdate_url %}
 {% url 'coursebackend:lesson:delete'  course_slug=cs pk=lesson.pk as delete_url %}
+{% url 'coursebackend:lesson:lesson' course_slug=cs pk=next_node.pk as forward_url %}
+{% url 'coursebackend:lesson:lesson' course_slug=cs pk=previous_node.pk as backward_url %}
+
+<!-- forward -->
+{% if next_node %}
+    <a href="{{ forward_url }}" class="ui button basic right floated">
+        {{ next_node.lesson_nr }}.<i class="right arrow icon"></i>
+    </a>
+{% endif %}
+
+<!-- back -->
+{% if previous_node %}
+    <a href="{{ backward_url }}" class="ui button basic right floated">
+        <i class="left arrow icon"></i>{{ previous_node.lesson_nr }}.
+    </a>
+{% endif %}
 
 <div class="ui header medium">
+
+    <!-- title -->
     {{ lesson.lesson_nr }}. {{ lesson.title }}
+
+    <!-- update -->
     <a href="{{ lessonupdate_url }}">
        <i class="icon write"></i>
     </a>
+
+    <!-- delete -->
     <a href="{{ delete_url }}">
        <i class="icon trash"></i>
     </a>
-    <p style="font-size: 0.6em; color:grey; font-weight:normal;">
-       (zuletzt geändert {{ lesson.modified |date:'d.m.Y' }})
-    </p>
+
 </div>
 
-<div class="froala-view">
-   {{ lesson.text | safe }}
-</div>
+<!-- meta -->
+<p style="color:grey">
+   (zuletzt geändert {{ lesson.modified |date:'d.m.Y' }})
+</p>
 
+{% if lesson.text != '' %}
 
+    <!-- froala -->
+    <div class="froala-view">
+       {{ lesson.text | safe }}
+    </div>
+
+{% endif %}

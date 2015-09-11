@@ -25,7 +25,6 @@ class ForumListView(
         context = super(ForumListView, self).get_context_data(**kwargs)
 
         context['nodes'] = Forum.objects.forums_for_courseevent(courseevent=context['courseevent'])
-        print context['nodes']
 
         return context
 

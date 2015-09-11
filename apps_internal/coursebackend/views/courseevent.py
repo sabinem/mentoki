@@ -5,13 +5,16 @@ from __future__ import unicode_literals
 from django.forms.models import modelform_factory
 from django.forms.models import model_to_dict
 from django.forms.widgets import NumberInput, DateInput,TextInput, Select
-from django.views.generic import DetailView, UpdateView
+from django.views.generic import DetailView, UpdateView, TemplateView
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404
 
 from braces.views import FormValidMessageMixin
 
 from froala_editor.widgets import FroalaEditor
 
 from apps_data.courseevent.models.courseevent import CourseEvent
+from apps_data.course.models.course import Course
 
 from .mixins.base import CourseMenuMixin
 
@@ -64,13 +67,10 @@ class CourseEventUpdateView(
         return modelform_factory(CourseEvent, fields=(field_name,),
                                  widgets={ field_name: widget })
 
-    def get_context_data(self, **kwargs):
-        context = super(CourseEventUpdateView, self).get_context_data(**kwargs)
 
-        course_dict = model_to_dict(context['course'])
-        if self.kwargs['field'] in course_dict:
-            context['exampletext'] = course_dict[self.kwargs['field']]
-
-        return context
-
-
+class CopyCourseDescriptionView(
+    CourseMenuMixin,
+    TemplateView):
+    """
+    Update the course one field at a time
+    """

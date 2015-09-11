@@ -7,20 +7,16 @@
 {% block page_content %}
 
     <div class="row classroom_emphasis">
-        <div class="sixteen wide column">
+        <div class="sixteen wide column" id="whitepaper">
 
             <div class="ui message warning">
                 Vorsicht: Der gesamte abgebildetet Baum wird bei dieser Aktion gelöscht!
             </div>
 
+            <!-- nodetree -->
             {% include 'coursebackend/lesson/fragments/_recursetree_nodes.html' %}
 
-        </div>
-    </div>
-
-    <div class="row classroom_white">
-        <div class="sixteen wide column">
-
+            <!-- delete form -->
             {% include 'coursebackend/forms/delete/_lesson.html' %}
 
         </div>

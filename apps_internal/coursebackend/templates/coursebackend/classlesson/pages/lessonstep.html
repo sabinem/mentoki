@@ -1,16 +1,7 @@
 {% extends "coursebackend/base_courseevent.html" %}
 
 {% block courseevent_menu_items %}
-    {% url 'coursebackend:classlesson:copy'  slug=es course_slug=cs as copy_url %}
-    {% url 'coursebackend:classlesson:meta'  slug=es course_slug=cs as meta_url %}
-
-    <a href="{{ copy_url }}" class="item">
-        <i class="copy icon blue"></i>Kopieren
-    </a>
-
-    <a href="{{ meta_url }}" class="item">
-        <i class="icon calendar  blue"></i>Letzte Änderung
-    </a>
+    {% include 'coursebackend/classlesson/fragments/_top_links.html' %}
 {% endblock %}
 
 {% block breadcrumbs %}
@@ -20,12 +11,16 @@
 {% block page_content %}
 
     <div class="row coursebackend_white">
-        <div class="sixteen wide column">
+        <div class="sixteen wide column" id="whitepaper">
 
+            <!-- messages -->
             {% include 'base/fragments/_messages.html' %}
+
+            <!-- lessonstep -->
             {% include 'coursebackend/classlesson/fragments/_instance_classlessonstep.html' %}
 
-            {% if classlessonstep.homework_set.all %}
+            <!-- homework -->
+            {% if classlessonstep.is_homework %}
 
                 <h4 class="ui horizontal divider header">
                      <i class="users icon"></i>
@@ -35,7 +30,6 @@
                     {% include 'coursebackend/classlesson/fragments/_instance_homework.html' %}
                 {% endfor %}
             {% endif  %}
-
 
         </div>
     </div>

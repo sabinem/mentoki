@@ -495,6 +495,13 @@ object.htmlembed {
 #coursebackend .ui.menu .active.item.active {
   background: #ebc7a6;
 }
+#coursebackend #published_in_class {
+  color: #19aaa6;
+}
+#coursebackend #published_in_class a,
+#coursebackend #published_in_class div {
+  color: #19aaa6;
+}
 #coursebackend .published_in_class {
   color: #19aaa6;
 }

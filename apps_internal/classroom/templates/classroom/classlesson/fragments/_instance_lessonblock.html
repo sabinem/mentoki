@@ -1,8 +1,0 @@
-<div class="ui header huge">
-    <a href="{% url "classroom:lesson:lessonblock_detail" slug=courseevent.slug pk=lesson.pk %}">
-        {{ lessonblock.title }}
-    </a>
-</div>
-<div class="froala-view">
-{{ lesson.text | safe }}
-</div>

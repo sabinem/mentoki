@@ -1,34 +1,60 @@
+{% url 'classroom:classlesson:step' slug=es pk=next_node.pk as forward_url %}
+{% url 'classroom:classlesson:step' slug=es pk=previous_node.pk as backward_url %}
+<!-- forward -->
+{% if next_node %}
+    <a href="{{ forward_url }}" class="ui button basic right floated">
+        {{ next_node.lesson_nr }}.<i class="right arrow icon"></i>
+    </a>
+{% endif %}
+
+<!-- back -->
+{% if previous_node %}
+    <a href="{{ backward_url }}" class="ui button basic right floated">
+        <i class="left arrow icon"></i>{{ previous_node.lesson_nr }}.
+    </a>
+{% endif %}
+
 <div class="ui header medium">
+
+    <!-- title -->
     {{ lessonstep.lesson_nr }} {{ lessonstep.title }}
 
+    <!-- material links -->
     {% if lessonstep.material %}
+
+        <!-- link to file -->
         <a href="{{ lessonstep.material.file.url }}">
             <i class="icon file"></i>
         </a>
 
+        <!-- download-link -->
         {% if lessonstep.material.pdf_download_link %}
             <a href="{% url 'download' slug=lessonstep.material.slug %}">
                 <i class="download icon blue"></i>
             </a>
         {% endif %}
+
     {% endif %}
 
 </div>
 
-<div class="froala-view">
-{{ lessonstep.text | safe }}
-</div>
+{% if classlessonstep.text != '' %}
 
-{% if lessonstep.material %}
-
-    {% with material=lessonstep.material %}
-
-        {% if lessonstep.material.pdf_viewer %}
-            <object data="{{ lessonstep.material.file.url }}"
-                    type="application/pdf" width="100%" height="800px">
-            </object>
-        {% endif %}
-
-    {% endwith %}
+    <!-- froala -->
+    <div class="froala-view">
+       {{ lessonstep.text | safe }}
+    </div>
 
 {% endif %}
+
+<!-- material viewer -->
+{% if lessonstep.material %}
+
+    {% if lessonstep.material.pdf_viewer %}
+        <object data="{{ lessonstep.material.file.url }}"
+                type="application/pdf" width="100%" height="800px">
+        </object>
+    {% endif %}
+
+{% endif %}
+

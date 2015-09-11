@@ -1,0 +1,25 @@
+{% url 'coursebackend:classlesson:copy'  slug=es course_slug=cs as copy_url %}
+{% url 'coursebackend:classlesson:meta'  slug=es course_slug=cs as meta_url %}
+{% url 'coursebackend:classlesson:start'  slug=es course_slug=cs as start_url %}
+
+<!-- meta data -->
+{% if url_name != 'start' %}
+    <a href="{{ start_url }}" class="item">
+        <i class="icon home blue"></i>
+    </a>
+{% endif %}
+
+<!-- copy lessons -->
+{% if url_name != 'copy' %}
+    <a href="{{ copy_url }}" class="item">
+        <i class="icon copy  blue"></i>Kopieren
+    </a>
+{% endif %}
+
+<!-- meta data -->
+{% if url_name != 'meta' %}
+    <a href="{{ meta_url }}" class="item">
+        <i class="icon calendar  blue"></i>Letzte Änderung
+    </a>
+{% endif %}
+

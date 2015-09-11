@@ -75,9 +75,12 @@ urlpatterns += i18n_patterns('',
 # Data urls
 urlpatterns += i18n_patterns('',
 
-    # user handling urls
+    # lesson data urls
     url(r'^lesson/',
         include('apps_data.lesson.urls', namespace='lesson')),
+
+    url(r'^courseevent/',
+        include('apps_data.courseevent.urls', namespace='courseevent')),
 )
 
 

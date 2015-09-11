@@ -20,23 +20,6 @@
                  <p>{{ field.help_text }}</p>
             {% endif %}
 
-            {% if exampletext %}
-                <div class="ui styled fluid accordion">
-
-                    <div class="title">
-                        <i class="dropdown icon"></i>
-
-                        {{ form.text.label_tag }} Vorlage ansehen?
-
-                    </div>
-                    <div class="content">
-
-                        {{ exampletext | safe }}
-
-                    </div>
-                </div>
-            {% endif %}
-
             {% if field.errors %}
                 <div class="ui negative floating message">
                     {{ field.errors }}

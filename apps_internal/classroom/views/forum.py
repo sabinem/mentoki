@@ -24,6 +24,8 @@ class ForumStartView(
         context['forum_items'] = \
             ClassroomMenuItem.objects.forums_for_courseevent(
                 courseevent=context['courseevent'])
+        context['nodes'] = Forum.objects.forums_published_in_courseevent(courseevent=context['courseevent'])
+
 
         return context
 

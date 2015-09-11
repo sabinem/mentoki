@@ -1,11 +1,3 @@
-{% comment %}
-
-announcement detail
-
-for detail/delete
-
-{% endcomment %}
-
 {% url 'coursebackend:announcement:update' pk=announcement.pk course_slug=cs slug=es as update_url %}
 {% url 'coursebackend:announcement:delete' course_slug=cs slug=es as delete_url %}
 
@@ -32,7 +24,8 @@ for detail/delete
                  noch unveröffentlicht
          {% endif %}
     </div>
-    <div class="description">
+
+      <div class="description">
         {{ announcement.text | safe }}
     </div>
 

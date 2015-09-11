@@ -1,22 +1,7 @@
 {% extends "coursebackend/base_courseevent.html" %}
 
 {% block courseevent_menu_items %}
-    {% url 'coursebackend:classlesson:copy'  slug=es course_slug=cs as copy_url %}
-    {% url 'coursebackend:classlesson:start'  slug=es course_slug=cs as start_url %}
-    {% url 'coursebackend:classlesson:meta'  slug=es course_slug=cs as meta_url %}
-
-    <a href="{{ copy_url }}" class="item">
-        <i class="copy icon blue"></i>Kopieren
-    </a>
-    {% if url_name == 'meta' %}
-        <a href="{{ start_url }}" class="item">
-            <i class="icon sidebar blue"></i>Unterricht
-        </a>
-    {% elif url_name == 'start' %}
-        <a href="{{ meta_url }}" class="item">
-            <i class="icon calendar  blue"></i>Letzte Änderung
-        </a>
-    {% endif %}
+    {% include 'coursebackend/classlesson/fragments/_top_links.html' %}
 {% endblock %}
 
 {% block breadcrumbs %}
@@ -26,9 +11,12 @@
 {% block page_content %}
 
     <div class="row coursebackend_white">
-        <div class="sixteen wide column">
+        <div class="column" id="whitepaper">
 
+            <!-- homework-list -->
             {% include 'base/fragments/_messages.html' %}
+
+            <!-- nodetree -->
             {% include 'coursebackend/classlesson/fragments/_recursetree_nodes_work.html' %}
 
         </div>

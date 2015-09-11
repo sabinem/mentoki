@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 from django.conf.urls import patterns, url
 
-from ..views.courseevent import CourseEventDetailView, CourseEventUpdateView
+from ..views.courseevent import CourseEventDetailView, CourseEventUpdateView, CopyCourseDescriptionView
 
 
 urlpatterns = patterns('',
@@ -18,4 +18,7 @@ urlpatterns = patterns('',
         CourseEventUpdateView.as_view(),
         {'template':'coursebackend/courseevent/pages/update.html'}, name='update'),
 
+    url(r'^(?P<slug>[a-z0-9_-]+)/kopieren$',
+        CopyCourseDescriptionView.as_view(),
+        {'template':'coursebackend/courseevent/pages/copy.html'}, name='copy'),
 )

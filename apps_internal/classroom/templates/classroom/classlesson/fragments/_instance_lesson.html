@@ -1,6 +1,34 @@
+{% url 'classroom:classlesson:lesson' slug=es pk=next_node.pk as forward_url %}
+{% url 'classroom:classlesson:lesson' slug=es pk=previous_node.pk as backward_url %}
+{% url 'classroom:classlesson:lesson' slug=es pk=classlesson.pk as detail_url %}
+
+<!-- forward -->
+{% if next_node %}
+    <a href="{{ forward_url }}" class="ui button basic right floated">
+        {{ next_node.lesson_nr }}.<i class="right arrow icon"></i>
+    </a>
+{% endif %}
+
+<!-- back -->
+{% if previous_node %}
+    <a href="{{ backward_url }}" class="ui button basic right floated">
+        <i class="left arrow icon"></i>{{ previous_node.lesson_nr }}.
+    </a>
+{% endif %}
+
 <div class="ui header medium">
+
+    <!-- title -->
     {{ lesson.lesson_nr }}. {{ lesson.title }}
+
 </div>
-<div class="froala-view">
-{{ lesson.text | safe }}
-</div>
+
+{% if lesson.text != '' %}
+
+    <!-- froala -->
+    <div class="froala-view">
+       {{ lesson.text | safe }}
+    </div>
+
+{% endif %}
+

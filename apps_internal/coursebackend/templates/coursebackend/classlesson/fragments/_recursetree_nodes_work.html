@@ -1,63 +1,90 @@
 {% load mptt_tags %}
+
 <div class="ui divided list">
 
     {% recursetree nodes %}
 
+        <!-- get urls: block/lesson or step; published or unpublished -->
+        {% if node.is_block %}
+            {% url 'coursebackend:classlesson:block' slug=es course_slug=cs pk=node.pk as detail_url %}
+        {% elif node.is_lesson %}
+            {% if node.published %}
+                {% url 'classroom:classlesson:lesson' slug=es pk=node.pk as class_url %}
+            {% endif %}
+            {% url 'coursebackend:classlesson:lesson' slug=es course_slug=cs pk=node.pk as detail_url%}
+            {% url 'coursebackend:classlesson:lessonupdate' slug=es course_slug=cs pk=node.pk as update_url %}
+        {% elif node.is_step %}
+            {% if node.published %}
+                {% url 'classroom:classlesson:step' slug=es pk=node.pk as class_url %}
+            {% endif %}
+            {% url 'coursebackend:classlesson:step' slug=es course_slug=cs pk=node.pk as detail_url%}
+            {% url 'coursebackend:classlesson:stepupdate' slug=es course_slug=cs pk=node.pk as update_url %}
+        {% endif %}
+        {% url 'coursebackend:classlesson:delete'  course_slug=cs pk=node.pk as delete_url %}
+        {% url 'coursebackend:material:update' course_slug=cs pk=node.material_id as material_url %}
+
         <div class="item">
-            {% include 'coursebackend/classlesson/fragments/_icon_node.html' %}
+        
+            <!-- icon -->
+            {% if node.is_block %}
+                <i class="top aligned cube icon">{{ node.lesson_nr }}</i>
+            {% elif not node.is_root_node %}
+                <i class="top aligned icon">{{ node.lesson_nr }}</i>
+            {% endif %}
+
             <div class="content">
-                <div class="header">
-                {% if node.published %}
-                      {% include 'coursebackend/classlesson/fragments/_links_node_work_for_published.html' %}
-                {% else %}
-                      {% include 'coursebackend/classlesson/fragments/_links_node_work_for_unpublished.html' %}
-                {% endif %}
 
-                {% if node.material.all %}
-                    {% for material in node.material.all %}
-                        <i class="icon file outline "></i> {{ material }}
-                        {% if not for_loop.last %}, {% endif %}
-                    {% endfor %}
-                {% endif %}
+                <div class="header"
+                    {% if node.published %}
+                         id="published_in_class"
+                    {% endif %}
+                    >
+
+                    <!-- root node -->
+                    {% if node.is_root_node %}
+
+                        <div class="ui header large">{{ node.title }}</div>
+
+                    {% else %}
+
+                        <!-- title with detail link -->
+                        <a href="{{ detail_url }}">
+                            {{ node.title }}
+                        </a>
+
+                        <!-- homework icon -->
+                        {% if node.is_homework %}
+                            <i class="icon lab orange"></i>
+                        {% endif %}
+
+                        <!-- update -->
+                        {% if not node.is_root_node %}
+                            <a href="{{ update_url }}">
+                               <i class="icon write"></i>
+                            </a>
+                        {% endif %}
+
+                        <!-- material -->
+                        {% if node.material %}
+                            <a href="{{ material_url }}">
+                                <i class="icon file outline"></i>
+                            </a>
+                        {% endif %}
+
+                        <!-- class link -->
+                        {% if node.published %}
+                            <a href="{{ class_url }}">
+                                <i class="icon large student"></i>
+                            </a>
+                        {% endif %}
+
+                    {% endif %}
+
                 </div>
 
-                <div class="description meta_data">
-                 {% if url_name == 'meta' %}
-                     <div class="ui list">
-                     {% if not node.is_block %}
-                         <div class="item">
-                             angelegt {{ node.created |date:'d.m.Y' }},
-                             {{ node.created |time:"H:i"  }},
-                         </div>
-                         <div class="item">
-                         {% if not node.modified == node.created %}
-                            <span class="not_original">
-                             geändert: {{ node.modified |date:'d.m.Y' }},
-                             {{ node.modified |time:"H:i"  }}
-                            </span>
-                         {% endif %}
-                         </div>
-                         <div class="item">
-                         {%  if not node.original_lesson %}
-                             Original wurde gelöscht!
-                         {% elif node.outdated %}
-                             <span class="outdated">
-                             Original wurde aktualisert:
-                             {{ node.original_lesson.modified |date:'d.m.Y'}},
-                             {{ node.original_lesson.modified|time:"H:i" }}
-                             </span>
-                         {% endif %}
-                         </div>
-                     {% endif %}
-                     </div>
-                 {% endif %}
-                </div>
-
-
-                {% if not url_name == 'meta' %}
+                <!-- description -->
                 {% if node.decription != "" %}
                     {{ node.description }}
-                {% endif %}
                 {% endif %}
 
                 {% if not is_leaf %}
@@ -72,4 +99,3 @@
     {% endrecursetree %}
 
 </div>
-
