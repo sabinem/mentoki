@@ -146,7 +146,7 @@ class BaseLesson(MPTTModel):
         :return: self representation
         """
         if self.level == 0:
-            return u'Unterricht %s' % (self.course.title)
+            return u'Unterricht %s' % (self.title)
         elif self.level == 1:
             return u'Block: %s' % (self.title)
         elif self.level == 2:
