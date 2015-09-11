@@ -121,8 +121,7 @@ class ClassLessonDetailView(
         classlesson = context['classlesson']
 
         context['next_node'] = classlesson.get_next_sibling_in_courseevent
-        context[
-            'previous_node'] = classlesson.get_previous_sibling_in_courseevent
+        context['previous_node'] = classlesson.get_previous_sibling_in_courseevent
         context['breadcrumbs'] = classlesson.get_breadcrumbs_with_self
 
         context['nodes'] = classlesson.get_tree_without_self_with_material

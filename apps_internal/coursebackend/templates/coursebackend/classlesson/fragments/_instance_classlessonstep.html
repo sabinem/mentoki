@@ -88,5 +88,20 @@
 
 {% endif %}
 
+<!-- homework -->
+{% if classlessonstep.is_homework %}
+
+    <h4 class="ui horizontal divider header">
+         <i class="users icon"></i>
+    </h4>
+
+    {% if classlessonstep.due_date %}
+        <p>
+            Abgabedatum: {{ classlessonstep.due_date | date:'d.m.Y' }}
+        </p>
+    {% endif %}
+
+    {{ classlessonstep.extra_text | safe }}
+{% endif %}
 
 

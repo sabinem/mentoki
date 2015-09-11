@@ -59,10 +59,8 @@ class LessonStepForm(forms.ModelForm):
 
         super(LessonStepForm, self).__init__(*args, **kwargs)
 
-        self.fields['parent'].empty_label = None
         self.fields['parent'] = TreeNodeChoiceField(
-            queryset=Lesson.objects.lessons_for_course(course=self.course),
-            level_indicator=u'+--')
+            queryset=Lesson.objects.lessons_for_course(course=self.course))
         self.fields['material'].queryset = Material.objects.materials_for_course(course=self.course)
-
+        self.fields['parent'].empty_label = None
 
