@@ -38,7 +38,7 @@
 
 </div>
 
-{% if classlessonstep.text != '' %}
+{% if lessonstep.text != '' %}
 
     <!-- froala -->
     <div class="froala-view">
@@ -55,6 +55,34 @@
                 type="application/pdf" width="100%" height="800px">
         </object>
     {% endif %}
+
+{% endif %}
+
+<!-- homework -->
+{% if lessonstep.is_homework %}
+
+    <h4 class="ui horizontal divider header">
+         <i class="users icon"></i>
+    </h4>
+
+    {% if lessonstep.due_date %}
+        <p>
+            Abgabedatum: {{ lessonstep.due_date | date:'d.m.Y' }}
+        </p>
+    {% endif %}
+
+    <!-- froala -->
+    <div class="froala-view">
+        {{ lessonstep.extra_text | safe }}
+    </div>
+
+    <a href="{{ homework_url }}" class="ui button">
+         <i class="users icon"></i>Zu den abgegebenen Aufgaben
+    </a>
+
+    <a href="{{ private_url }}" class="ui button">
+         <i class="write icon"></i>Zur Deinem Arbeitsbereich?
+    </a>
 
 {% endif %}
 

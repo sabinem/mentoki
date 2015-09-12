@@ -17,5 +17,5 @@ urlpatterns = patterns('',
         {'template': 'classroom/classlesson/pages/lesson.html'}, name='lesson'),
 
     url(r'^abschnitt/(?P<pk>\d+)$', ClassLessonStepDetailView.as_view(),
-        {'template':'classroom/classlesson/pages/lessonstep.html'}, name='step'),
+        {'template':'classroom/csslesson/pages/lessonstep.html'}, name='step'),
 )
