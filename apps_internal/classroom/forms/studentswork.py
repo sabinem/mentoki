@@ -50,7 +50,6 @@ class StudentWorkAddTeamForm(forms.ModelForm):
         courseevent_slug = kwargs.pop('courseevent_slug', None)
         self.courseevent = get_object_or_404(CourseEvent, slug=courseevent_slug)
         super(StudentWorkAddTeamForm, self).__init__(*args, **kwargs)
-        studentswork = kwargs['instance']
         self.fields['workers'].queryset = self.courseevent.workers()
 
 

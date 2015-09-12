@@ -11,6 +11,7 @@ from django.utils.functional import cached_property
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import get_object_or_404
 from django.core.validators import ValidationError
+from django.db.models import Q
 
 from model_utils.models import TimeStampedModel
 from model_utils.managers import QueryManager
@@ -207,8 +208,8 @@ class CourseEvent(TimeStampedModel):
         return self.participation.all().prefetch_related('participation').order_by('username')
 
     def workers(self):
-        return self.participation.all() | \
-               self.course.owners.all()
+        workers =  self.participation.all() | self.course.owners.all()
+        return workers.distinct()
 
     def is_student(self, user):
         if user in self.students():
