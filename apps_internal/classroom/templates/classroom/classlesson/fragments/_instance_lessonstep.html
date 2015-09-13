@@ -36,6 +36,11 @@
 
     {% endif %}
 
+    <!-- homework -->
+    {% if lessonstep.is_homework %}
+       <i class="icon lab orange"></i>
+    {% endif %}
+
 </div>
 
 {% if lessonstep.text != '' %}
@@ -75,10 +80,6 @@
     <div class="froala-view">
         {{ lessonstep.extra_text | safe }}
     </div>
-
-    <a href="{{ homework_url }}" class="ui button">
-         <i class="users icon"></i>Zu den abgegebenen Aufgaben
-    </a>
 
     <a href="{{ private_url }}" class="ui button">
          <i class="write icon"></i>Zur Deinem Arbeitsbereich?

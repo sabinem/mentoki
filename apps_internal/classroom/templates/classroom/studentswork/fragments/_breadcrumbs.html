@@ -1,51 +1,37 @@
 
 {% url 'classroom:studentswork:list' slug=es as start_url %}
+{% url 'classroom:classlesson:step' slug=es as step_url %}
 
 <div class="ui large breadcrumb" id ="page-breadcrumb">
 
-    {% if url_name == 'list' %}
+    {% if url_name == 'list' or url_name == 'create' %}
+        <!-- section active -->
         <div class="section active" href="{{ start_url }}">
             Privater Arbeitsbereich
         </div>
 
     {% else %}
+
+        <!-- section active -->
         <a class="section" href="{{ start_url }}">
             Privater Arbeitsbereich
         </a>
-        <i class="right chevron icon divider"></i>
-        {% if url_name == 'create' %}
 
-            <div class="section active">
-                Neue Arbeit anlegen
-            </div>
-
-        {% else %}
-
-            <div class="section">
-                {{ studentswork.homework }}
-            </div>
+        {%  if studentswork %}
             <i class="right chevron icon divider"></i>
-            {% if url_name == 'detail' %}
-                <div class="section active">
-                    {{ studentswork.title }}
-                </div>
-            {% else %}
 
-                <a class="section">
-                    {{ studentswork.title }}
-                </a>
-                <i class="right chevron icon divider"></i>
-                {% if url_name == 'addteam' %}
-                    <div class="section active">
-                        Team bearbeiten
-                    </div>
-                {% else %}
-                    <div class="section active">
-                        bearbeiten
-                    </div>
-                {% endif %}
-            {% endif %}
+            <!-- homework link -->
+            <a class="section" href="{{ step_url }}">
+                {{ studentswork.homework }}
+            </a>
+            <i class="right chevron icon divider"></i>
+
+            <!-- work title -->
+            <div class="section active">
+                {{ studentswork.title }}
+            </div>
         {% endif %}
+
     {% endif %}
 
 

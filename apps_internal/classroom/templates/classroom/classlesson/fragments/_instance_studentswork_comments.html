@@ -1,0 +1,36 @@
+{% url 'classroom:classlesson:comment' slug=es pk=lessonstep.pk work_pk=studentswork.pk as comment_url %}
+
+<h4 class="ui horizontal divider header">
+    <i class="comments outline icon"></i>
+    Kommentare
+</h4>
+
+<div class="ui comments">
+
+    {% for comment in comments %}
+
+        <div class="comment">
+
+            <div class="content">
+
+                <a class="author">{{ comment.author }}: {{ comment.title }}</a>
+
+                <div class="metadata">
+                    <span class="date">{{ comment.created }}</span>
+                </div>
+
+                <div class="text">
+                    {{ comment.text | safe }}
+                </div>
+
+            </div>
+
+        </div>
+
+    {% endfor %}
+
+</div>
+
+<a href="{{ comment_url }}" class="ui button">
+    <i class="write icon blue"></i>Kommentar anfügen?
+</a>

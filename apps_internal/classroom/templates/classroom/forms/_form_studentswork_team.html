@@ -2,7 +2,18 @@
 
     {% include 'classroom/forms/form_fields/_form_non_field_errors.html' %}
 
-    {% include 'classroom/forms/form_fields/_form_field_loop.html' %}
+    <div class="field sixteen wide">
+
+        {% if form.workers.errors %}
+            <div class="ui negative floating message">
+                {{ form.workers.errors }}
+            </div>
+        {% endif %}
+        <br>
+
+        {{ form.workers }}
+
+    </div>
 
     <button type="submit" value="post" class="ui button">
         Speichern

@@ -12,7 +12,13 @@
                 <div class="header">
                     <a href="{{ step_url }}" class="header">
                        {{ lessonstep.title }}
+                        <!-- homework -->
+                        {% if lessonstep.is_homework %}
+                           <i class="icon lab orange"></i>
+                        {% endif %}
+
                     </a>
+
                 </div>
                 <div>
                     {{ lessonstep.description }}

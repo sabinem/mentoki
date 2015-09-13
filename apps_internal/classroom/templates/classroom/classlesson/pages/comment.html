@@ -1,0 +1,28 @@
+{% extends "classroom/base.html" %}
+
+{% block classroom_menu_items %}
+    {% include 'classroom/classlesson/fragments/_top_links.html' %}
+{% endblock %}
+
+{% block breadcrumbs %}
+   {% include 'classroom/classlesson/fragments/_breadcrumbs.html' %}
+{% endblock %}
+
+{% block page_content %}
+
+    <div class="row classroom_white">
+        <div class="sixteen wide column">
+
+            {% include 'classroom/classlesson/fragments/_instance_stundentswork_work.html' %}
+
+            <h4 class="ui horizontal divider header">
+                <i class="comments outline icon"></i>
+                Neuen Kommentar schreiben
+            </h4>
+
+            {% include 'classroom/forms/_form_studentswork_comment.html' %}
+
+        </div>
+    </div>
+
+{% endblock %}

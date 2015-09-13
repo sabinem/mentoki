@@ -38,7 +38,7 @@
 
                  <i class="right chevron icon divider"></i>
 
-                {% if forloop.last %}
+                {% if forloop.last and url_name == 'step' %}
 
                      <!-- active breadcrumb -->
                      <div class="section active">
@@ -51,9 +51,21 @@
                      <a href="{{ detail_url }}" class="section">
                          {{ breadcrumb.breadcrumb }}
                      </a>
+
                 {% endif %}
 
         {% endfor %}
+
+        {% if studentswork %}
+
+            <i class="right chevron icon divider"></i>
+
+             <!-- active breadcrumb -->
+             <div class="section active">
+                 {{ studentswork.title }}
+             </div>
+
+        {% endif %}
 
     {% endif %}
 

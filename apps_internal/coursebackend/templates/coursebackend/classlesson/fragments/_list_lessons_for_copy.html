@@ -20,9 +20,7 @@
 
                 <td>
                     <p>
-                        {% if lesson.has_published_classlesson %}
-                            schon veröffentlicht
-                        {% elif lesson.id in copied_lesson_ids %}
+                        {% if lesson.id in copied_lesson_ids %}
                             bereits kopiert
                             <a href="{{ copypart_url }}" class="ui button">
                                 überschreiben?
@@ -38,11 +36,7 @@
 
                 <td>
                     <a
-                        {% if lesson.has_published_classlesson %}
-                            class="published_in_class"
-                        {% else %}
                             href="{{ lesson_url }}"
-                        {% endif %}
                     >
                             {{ lesson }}
                     </a>

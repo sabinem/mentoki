@@ -3,6 +3,7 @@
 from __future__ import unicode_literals, absolute_import
 
 from django.core.urlresolvers import reverse_lazy
+from django.shortcuts import get_object_or_404
 
 from django.views.generic import DetailView, TemplateView, UpdateView, \
     DeleteView, FormView
@@ -15,6 +16,7 @@ from ..forms.lessoncopy import LessonCopyForm
 
 from apps_data.lesson.models.classlesson import ClassLesson
 from apps_data.lesson.models.lesson import Lesson
+from apps_data.courseevent.models.courseevent import CourseEvent
 
 from apps_data.lesson.utils.lessoncopy import copy_lesson_selected
 
@@ -62,7 +64,8 @@ class ClassLessonStartView(
         context['nodes'] = \
             ClassLesson.objects.complete_tree_for_courseevent(
                 courseevent=context['courseevent'])
-
+        print context['nodes']
+        print context['courseevent']
         return context
 
 
@@ -175,25 +178,15 @@ class HomeworkListView(
 class ClassLessonRedirectDetailMixin(object):
     def get_success_url(self):
        if self.context_object_name == 'classlesson':
-           if self.object.published:
-               return reverse_lazy('classroom:classlesson:lesson',
-                                   kwargs={'slug': self.kwargs['slug'],
-                                           'pk': self.object.pk})
-           else:
-               return reverse_lazy('coursebackend:classlesson:lesson',
-                                   kwargs={'course_slug': self.kwargs['course_slug'],
-                                           'slug': self.kwargs['slug'],
-                                           'pk': self.object.pk})
+           return reverse_lazy('coursebackend:classlesson:lesson',
+                               kwargs={'course_slug': self.kwargs['course_slug'],
+                                       'slug': self.kwargs['slug'],
+                                       'pk': self.object.pk})
        elif self.context_object_name == 'classlessonstep':
-           if self.object.published:
-               return reverse_lazy('classroom:classlesson:step',
-                                   kwargs={'slug': self.kwargs['slug'],
-                                           'pk': self.object.pk})
-           else:
-               return reverse_lazy('coursebackend:classlesson:step',
-                                   kwargs={'course_slug': self.kwargs['course_slug'],
-                                           'slug': self.kwargs['slug'],
-                                           'pk': self.object.pk})
+           return reverse_lazy('coursebackend:classlesson:step',
+                               kwargs={'course_slug': self.kwargs['course_slug'],
+                                       'slug': self.kwargs['slug'],
+                                       'pk': self.object.pk})
 
 
 class ClassLessonRedirectListMixin(object):
@@ -312,12 +305,14 @@ class CopyLessonView(
         return kwargs
 
     def form_valid(self, form):
+        courseevent = get_object_or_404(CourseEvent, slug=self.kwargs['slug'])
         copied = copy_lesson_selected(self,
                                       lesson=form.lesson,
                                       lessonsteps=form.cleaned_data[
                                           'copy_lessonsteps'],
                                       copy_lesson=form.cleaned_data[
-                                          'copy_lesson']
+                                          'copy_lesson'],
+                                      courseevent=courseevent
                                       )
 
         return super(CopyLessonView, self).form_valid(form)

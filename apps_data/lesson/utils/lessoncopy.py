@@ -16,17 +16,19 @@ from ..models.lesson import Lesson
 from ..models.classlesson import ClassLesson
 
 
-def copy_lesson_selected(self, lesson, lessonsteps, copy_lesson):
+def copy_lesson_selected(self, lesson, lessonsteps, copy_lesson, courseevent):
     """
     copies selected parts of a lesson from Lesson (in course) to ClassLesson (in a courseevent)
     """
     if copy_lesson:
-        classlesson=_update_lesson(lesson)
+        classlesson=_update_lesson(lesson=lesson, courseevent=courseevent)
     else:
-        classlesson = ClassLesson.objects.get(original_lesson=lesson)
+        classlesson = ClassLesson.objects.get(original_lesson=lesson, courseevent=courseevent)
 
     for lessonstep in lessonsteps:
-        _update_or_create_lessonstep(lessonstep, classlesson, published=classlesson.published)
+        _update_or_create_lessonstep(lessonstep=lessonstep,
+                                     classlesson=classlesson, courseevent=courseevent,
+                                     published=classlesson.published)
 
     ClassLesson.objects.rebuild()
     return classlesson
@@ -38,10 +40,15 @@ def copy_lesson_for_courseevent(self, lesson_pk, courseevent_pk):
     """
     try:
         lesson=get_object_or_404(Lesson, pk=lesson_pk)
+        print "---lesson---"
+        print lesson
     except ObjectDoesNotExist:
          raise ValidationError('Die Lektion wurde nicht gefunden')
 
     lessonsteps = lesson.get_children()
+    print "---lessonsteps---"
+    print lessonsteps
+
 
     if not lesson.is_lesson:
         raise ValidationError('Das ist keine Lektion. Nur Lektionen können kopiert werden.')
@@ -52,14 +59,19 @@ def copy_lesson_for_courseevent(self, lesson_pk, courseevent_pk):
 
     # establish class root
     try:
-        classlessonroot = ClassLesson.objects.get(original_lesson_id=lessonroot.id)
+        classlessonroot = ClassLesson.objects.get(original_lesson_id=lessonroot.id, courseevent=courseevent)
+        print "---- root found"
+        print classlessonroot
     except:
+        print "no root found"
         classlessonroot = _copy_any_level_lesson(lesson=lessonroot,
                                             courseevent=courseevent,
                                             parent=None)
+        print classlessonroot
+        print "====================="
     # establish block
     try:
-        classblock = ClassLesson.objects.get(original_lesson_id=lessonblock.id)
+        classblock = ClassLesson.objects.get(original_lesson_id=lessonblock.id, courseevent=courseevent)
     except:
         classblock = _copy_any_level_lesson(lesson=lessonblock,
                                             courseevent=courseevent,
@@ -104,8 +116,8 @@ def _copy_any_level_lesson(lesson, courseevent, parent):
     return classlesson
 
 
-def _update_lesson(lesson):
-    classlesson = ClassLesson.objects.get(original_lesson=lesson)
+def _update_lesson(lesson, courseevent):
+    classlesson = ClassLesson.objects.get(original_lesson=lesson, courseevent=courseevent)
     classlesson.title=lesson.title
     classlesson.text=lesson.text
     classlesson.lesson_nr=lesson.lesson_nr
@@ -122,12 +134,13 @@ def _update_lesson(lesson):
     return classlesson
 
 
-def _update_or_create_lessonstep(lessonstep, classlesson, published=False):
+def _update_or_create_lessonstep(lessonstep, classlesson, courseevent, published=False):
     try:
-        classlessonstep = ClassLesson.objects.get(original_lesson=lessonstep)
+        classlessonstep = ClassLesson.objects.get(original_lesson=lessonstep, courseevent=courseevent)
         classlessonstep.title=lessonstep.title
         classlessonstep.text=lessonstep.text
         classlessonstep.lesson_nr=lessonstep.lesson_nr
+        classlessonstep.courseevent=courseevent
         classlessonstep.nr=lessonstep.nr
         classlessonstep.course=lessonstep.course
         classlessonstep.description=lessonstep.description

@@ -6,6 +6,7 @@ import floppyforms.__future__ as forms
 
 from django.shortcuts import get_object_or_404
 from mentoki.settings import AUTH_USER_MODEL
+from django.core.validators import ValidationError
 
 from froala_editor.widgets import FroalaEditor
 

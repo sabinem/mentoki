@@ -38,7 +38,7 @@ class ClassLessonManager(LessonManager):
         :param courseevent
         :return: complete tree for courseevent
         """
-        return self.filter(course=courseevent.course, courseevent=courseevent, level=0).\
+        return self.filter(courseevent=courseevent, level=0).\
             get_descendants(include_self=True).order_by('nr').select_related('material')
 
     def complete_tree_uncopied(self, courseevent):

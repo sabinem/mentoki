@@ -2,16 +2,18 @@
 
 from __future__ import unicode_literals, absolute_import
 
+from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import get_object_or_404
-from django.views.generic import TemplateView
-from django.core.exceptions import ObjectDoesNotExist
+from django.views.generic import TemplateView, FormView, DetailView
+from django.http import HttpResponseRedirect
 
-
-from apps_data.lesson.models.classlesson import ClassLesson
-from apps_data.courseevent.models.homework import StudentsWork
+from apps_data.courseevent.models.homework import StudentsWork,Comment
 from apps_data.courseevent.models.menu import ClassroomMenuItem
+from apps_data.courseevent.models.courseevent import CourseEvent
+from apps_data.lesson.models.classlesson import ClassLesson
 
 from .mixins.base import ClassroomMenuMixin
+from ..forms.studentswork import StudentWorkCommentForm
 
 
 class ClassLessonStartView(
@@ -51,8 +53,24 @@ class ClassLessonDetailView(
         return context
 
 
+class LessonStepContextMixin(object):
+    """
+    adds the homework to the context
+    """
+    def get_context_data(self, **kwargs):
+        context = super(LessonStepContextMixin, self).get_context_data(**kwargs)
+
+        lessonstep = get_object_or_404(ClassLesson, pk=self.kwargs['pk'])
+        context['lessonstep'] = lessonstep
+        context['breadcrumbs'] = lessonstep.get_published_breadcrumbs_with_self
+        context['next_node'] = lessonstep.get_next_sibling()
+        context['previous_node'] = lessonstep.get_previous_sibling()
+        return context
+
+
 class ClassLessonStepDetailView(
     ClassroomMenuMixin,
+    LessonStepContextMixin,
     TemplateView):
     """
     Shows one classlesson-step
@@ -60,16 +78,61 @@ class ClassLessonStepDetailView(
     def get_context_data(self, **kwargs):
         context = super(ClassLessonStepDetailView, self).get_context_data(**kwargs)
 
-        lessonstep = get_object_or_404(ClassLesson, pk=self.kwargs['pk'])
-
-        context['lessonstep'] = lessonstep
-        context['breadcrumbs'] = lessonstep.get_published_breadcrumbs_with_self
-        context['next_node'] = lessonstep.get_next_sibling()
-        context['previous_node'] = lessonstep.get_previous_sibling()
-
-        if lessonstep.is_homework:
+        if context['lessonstep'].is_homework:
                 context['studentsworks'] = \
-                    StudentsWork.objects.turnedin_homework(homework=lessonstep)
-
+                    StudentsWork.objects.turnedin_homework(homework=context['lessonstep'])
 
         return context
+
+
+class StudentsWorkDetailView(
+    ClassroomMenuMixin,
+    LessonStepContextMixin,
+    DetailView):
+    """
+    shows detail of a students work, that is published in the homework section
+    """
+    model = StudentsWork
+    pk_url_kwarg = 'work_pk'
+    context_object_name ='studentswork'
+
+    def get_context_data(self, **kwargs):
+        context = super(StudentsWorkDetailView, self).get_context_data(**kwargs)
+        context['comments'] = \
+            Comment.objects.comment_to_studentswork(studentswork=context['studentswork'])
+
+        return context
+
+
+class StudentsWorkCommentView(
+    ClassroomMenuMixin,
+    LessonStepContextMixin,
+    FormView):
+    """
+    provides a form for the rest of the class and the teacher to comment on a students work
+    """
+    form_class = StudentWorkCommentForm
+
+    def form_valid(self, form):
+        courseevent = get_object_or_404(CourseEvent, slug=self.kwargs['slug'])
+        studentswork = get_object_or_404(StudentsWork, pk=self.kwargs['work_pk'])
+        Comment.objects.create_comment(courseevent=courseevent,
+                               text=form.cleaned_data['text'],
+                               title=form.cleaned_data['title'],
+                               studentswork=studentswork,
+                               author=self.request.user)
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_context_data(self, **kwargs):
+
+        context = super(StudentsWorkCommentView, self).get_context_data(**kwargs)
+        studentswork = get_object_or_404(StudentsWork, pk=self.kwargs['work_pk'])
+        context['studentswork'] = studentswork
+
+        return context
+
+    def get_success_url(self):
+       return reverse_lazy('classroom:homework:studentswork',
+                           kwargs={'slug': self.kwargs['slug'], 'pk':self.kwargs['pk'],
+                                   'work_pk':self.kwargs['work_pk']})
+
