@@ -10,7 +10,7 @@
 
     <div class="fields inline">
 
-        <div class="field two wide">
+        <div class="field four wide">
             {{ form.nr.label_tag }}
             <p>{{ form.nr.help_text }}</p>
 
@@ -112,8 +112,17 @@
         {{ form.extra_text }}
 
     </div>
+    {% else %}
+    <div class="ui dividing large header">In eine Aufgabe umwandeln?</div>
 
-
+    {% if form.is_homework.errors %}
+        <div class="ui negative floating message">
+            {{ form.is_homework.errors }}
+        </div>
+    {% endif %}
+     <p>Soll der Lernabschnitt in eine Aufgabe umgewandelt werden?</p>
+    {{ form.is_homework }}
+    <p></p>
 
     {% endif %}
 

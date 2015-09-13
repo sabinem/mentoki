@@ -132,7 +132,7 @@ class StudentsWorkCommentView(
         return context
 
     def get_success_url(self):
-       return reverse_lazy('classroom:homework:studentswork',
+       return reverse_lazy('classroom:classlesson:studentswork',
                            kwargs={'slug': self.kwargs['slug'], 'pk':self.kwargs['pk'],
                                    'work_pk':self.kwargs['work_pk']})
 

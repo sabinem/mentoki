@@ -4,6 +4,7 @@
 
     {% include 'classroom/forms/form_fields/_form_non_field_errors.html' %}
 
+    <div class="fields inline">
     <div class="field sixteen wide">
 
         {% if form.title.errors %}
@@ -11,10 +12,11 @@
                 {{ form.title.errors }}
             </div>
         {% endif %}
-        <br>
+        <label>{{ form.title.label_tag }}</label>
 
         {{ form.title }}
 
+    </div>
     </div>
 
     <div class="field sixteen wide">

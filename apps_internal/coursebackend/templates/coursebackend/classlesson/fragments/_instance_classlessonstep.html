@@ -29,7 +29,7 @@
 
     <!-- homework -->
     {% if classlessonstep.is_homework %}
-       <i class="icon lab orange"></i>
+       <a><i class="icon lab orange"></i></a>
     {% endif %}
 
     <!-- update -->
@@ -90,10 +90,7 @@
 
 <!-- homework -->
 {% if classlessonstep.is_homework %}
-
-    <h4 class="ui horizontal divider header">
-         <i class="users icon"></i>
-    </h4>
+    
 
     {% if classlessonstep.due_date %}
         <p>

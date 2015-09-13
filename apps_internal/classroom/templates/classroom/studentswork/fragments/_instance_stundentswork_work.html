@@ -1,0 +1,45 @@
+
+    {% url 'classroom:classlesson:studentswork' slug=es work_pk=studentswork.pk pk=lessonstep.pk as work_url %}
+
+    <div class="ui card fluid">
+      <div class="content">
+        <div class="header">
+        <a href="{{ work_url }}">{{ studentswork.title }}</a>
+            {% if not studentswork.published %}
+                <a href="{{ update_url }}">
+                    <i class="write icon blue"></i>
+                </a>
+                <a href="{{ delete_url }}">
+                    <i class="trash blue icon"></i>
+                </a>
+                <a href="{{ addteam_url }}">
+                    <i class="add user icon blue"></i>
+                </a>
+            {% endif %}
+
+        </div>
+
+        <div class="meta">
+          <span class="right time">abgegeben am {{ studentswork.published_at | date:'d.m.Y' }}</span>
+        </div>
+        <div class="description">
+          <span class="category">von: {{ studentswork.team | join:', ' }}</span>
+        </div>
+        <div class="content">
+          <span class="category">zu: {{ studentswork.homework }}</span>
+        </div>
+      <div class="extra content">
+
+          <h4 class="ui horizontal divider header">
+             <i class="comments write icon"></i>
+             Die Arbeit
+          </h4>
+
+            <h3 class="ui header">
+                {{ studentswork.title }}
+            </h3>
+            {{ studentswork.text | safe }}
+
+      </div>
+   </div>
+</div>

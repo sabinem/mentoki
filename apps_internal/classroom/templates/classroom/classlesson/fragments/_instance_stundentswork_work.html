@@ -3,7 +3,7 @@
 
     <div class="ui card fluid">
       <div class="content">
-        <a href="{{ work_url }}" class="header">"{{ studentswork.title }}"</a>
+        <a href="{{ work_url }}" class="header">{{ studentswork.title }}</a>
         <div class="meta">
           <span class="right time">abgegeben am {{ studentswork.published_at | date:'d.m.Y' }}</span>
         </div>
@@ -16,14 +16,11 @@
       <div class="extra content">
 
           <h4 class="ui horizontal divider header">
-             <i class="comments write icon"></i>
-             Die Arbeit
           </h4>
 
-            <h3 class="ui header">
-                {{ studentswork.title }}
-            </h3>
+          <div class="froala-view">
             {{ studentswork.text | safe }}
+          </div>
 
       </div>
    </div>

@@ -1,17 +1,20 @@
 {% for studentswork in studentsworks %}
 
-    {% url 'classroom:studentswork:detail' slug=es pk=studentswork.pk as detail_url %}
+    {% if not studentswork.published %}
+        {% url 'classroom:studentswork:detail' slug=es pk=studentswork.pk as detail_url %}
+    {% else %}
+        {% url 'classroom:classlesson:studentswork' slug=es pk=studentswork.homework_id work_pk=studentswork.pk as detail_url %}
+    {% endif %}
+    {% url 'classroom:classlesson:step' slug=es pk=studentswork.homework_id as step_url %}
     {% url 'classroom:studentswork:update' slug=es pk=studentswork.pk as update_url %}
     {% url 'classroom:studentswork:delete' slug=es pk=studentswork.pk as delete_url %}
     {% url 'classroom:studentswork:addteam' slug=es pk=studentswork.pk as addteam_url %}
     {% url 'classroom:homework:list' slug=es pk=studentswork.homework.pk as homework_url %}
 
-    <div class="ui raised segment">
-
-        <h3 class="ui header">
-            <a href="{{ detail_url }}">
-                {{ studentswork.title }}
-            </a>
+<div class="ui card fluid">
+  <div class="content">
+    <div class="header">
+    <a href="{{ detail_url }}">{{ studentswork.title }}</a>
             {% if not studentswork.published %}
                 <a href="{{ update_url }}">
                     <i class="write icon blue"></i>
@@ -23,21 +26,22 @@
                     <i class="add user icon blue"></i>
                 </a>
             {% endif %}
-
-        </h3>
-        <p>zu  <a href="{{ homework_url }}">
-                {{ studentswork.homework }}
-            </a></p>
-        <p>
-            {% if studentswork.published %}
-                {{ studentswork.published | yesno:"abgegeben, " }}: {{ studentswork.published_at | date:'d.m.Y' }}
-                <i class="green icon check"></i>
-            {% else %}
-                Entwurf
-            {% endif %}
-
-            , Team: {{ studentswork.team | join:', ' }}
-        </p>
+      zu Lernschritt
+      <a href="{{ step_url }}">
+        {{ studentswork.homework }}
+      </a>
     </div>
+    <div class="meta">
+      <span class="right time">abgegeben am {{ studentswork.published_at | date:'d.m.Y' }}</span>
+    </div>
+    <div class="description">
+      <span class="category">von: {{ studentswork.team | join:', ' }}</span>
+    </div>
+  <div class="extra content">
+
+  </div>
+</div>
+</div>
+
 
 {% endfor %}

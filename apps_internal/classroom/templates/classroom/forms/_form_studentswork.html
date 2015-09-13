@@ -3,8 +3,24 @@
 
     {% include 'classroom/forms/form_fields/_form_non_field_errors.html' %}
 
-    {% include 'classroom/forms/form_fields/_form_field_homework.html' %}
+     <div class="ui dividing medium header">Zu welchem Lernabschnitt?</div>
 
+    <div class="fields inline">
+    <div class="field sixteen wide">
+
+        {% if form.homework.errors %}
+            <div class="ui negative floating message">
+                {{ form.homework.errors }}
+            </div>
+        {% endif %}
+        <label>{{ form.homework.label_tag }}</label>
+
+        {{ form.homework }}
+
+    </div>
+    </div>
+
+    <div class="fields inline">
     <div class="field sixteen wide">
 
         {% if form.title.errors %}
@@ -12,15 +28,44 @@
                 {{ form.title.errors }}
             </div>
         {% endif %}
-        <br>
+        <label>{{ form.title.label_tag }}</label>
 
         {{ form.title }}
 
     </div>
+    </div>
 
-    {% include 'classroom/forms/form_fields/_form_field_text.html' %}
+    <div class="field sixteen wide">
+        {% if form.text.errors %}
+            <div class="ui negative floating message">
+                {{ form.text.errors }}
+            </div>
+        {% endif %}
+        <br>
 
-    {% include 'classroom/forms/form_fields/_form_field_publish.html' %}
+        {{ form.text }}
+
+    </div>
+
+    {% if url_name == 'update' %}
+
+    <div class="ui dividing medium header">Diese Arbeit veröffentlichen?</div>
+
+    {% if form.published.errors %}
+        <div class="ui negative floating message">
+            {{ form.published.errors }}
+        </div>
+    {% endif %}
+
+      <div class="field eigth wide">
+
+          <label>{{ form.published.label_tag }}</label>
+
+          {{ form.published }}
+
+      </div>
+
+    {% endif %}
 
     <button type="submit" value="post" class="ui button">
         Speichern

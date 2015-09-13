@@ -1,10 +1,10 @@
-<p>
-    {% if studentswork.published %}
-        {{ studentswork.published | yesno:"abgegeben, " }}: {{ studentswork.published_at | date:'d.m.Y' }}
-        <i class="green icon check"></i>
-    {% else %}
-        Entwurf
-    {% endif %}
-
-    , Team: {{ studentswork.team | join:', ' }}
-</p>
+<div class="ui card fluid">
+  <div class="content">
+    <div class="description">
+      <span class="category">Team: {{ studentswork.team | join:', ' }}</span>
+    </div>
+    <div class="meta">
+      Entwurf
+    </div>
+</div>
+</div>
