@@ -6,7 +6,7 @@
 {% url 'classroom:participant:list' slug=es as participants_url %}
 {% url 'classroom:forum:start' slug=es as forum_url %}
 {% url 'classroom:classlesson:start' slug=es as lesson_url %}
-{% url 'classroom:homework:start' slug=es as homework_url %}
+
 
 
 {% if item.is_forumlink %}
@@ -14,7 +14,7 @@
 {% elif item.is_lessonlink %}
     {% url 'classroom:classlesson:lesson' slug=es pk=item.classlesson_id as lesson_url %}
 {% elif item.is_homeworklink %}
-    {% url 'classroom:homework:list' slug=es pk=item.homework_id as homework_url %}
+    {% url 'classroom:classlesson:step' slug=es pk=item.homework_id as  homework_url %}
 {% endif %}
 
 
