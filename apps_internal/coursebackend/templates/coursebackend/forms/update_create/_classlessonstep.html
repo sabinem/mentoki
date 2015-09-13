@@ -81,10 +81,19 @@
 
     </div>
 
-    {% if form.instance.is_homework %}
+    <div class="ui dividing large header">Aufgabe?</div>
+
+    {% if form.is_homework.errors %}
+        <div class="ui negative floating message">
+            {{ form.is_homework.errors }}
+        </div>
+    {% endif %}
+     <p>Beinhaltet dieser Lernabschnitt eine Aufgabe?</p>
+    {{ form.is_homework }}
+    <p></p>
+
     <div class="ui dividing large header">Aufgabe: Ergänzungen/Abgabedatum</div>
-
-
+    <p>Diesen Bereich bitte nur ausfüllen, wenn es sich um eine Aufgabe handelt</p>
 
         <div class="field eight wide">
             {{ form.due_date.label_tag }}
@@ -112,19 +121,7 @@
         {{ form.extra_text }}
 
     </div>
-    {% else %}
-    <div class="ui dividing large header">In eine Aufgabe umwandeln?</div>
 
-    {% if form.is_homework.errors %}
-        <div class="ui negative floating message">
-            {{ form.is_homework.errors }}
-        </div>
-    {% endif %}
-     <p>Soll der Lernabschnitt in eine Aufgabe umgewandelt werden?</p>
-    {{ form.is_homework }}
-    <p></p>
-
-    {% endif %}
 
     <button type="submit" value="post" name="onlyOnceButton" class="ui button" id="formsubmit_button"
             action="#target">

@@ -11,7 +11,7 @@ from django.core.validators import ValidationError
 
 from braces.views import FormValidMessageMixin
 
-from ..forms.classlesson import ClassLessonForm, ClassLessonStepForm, ClassLessonHomeworkForm
+from ..forms.classlesson import ClassLessonForm, ClassLessonStepForm
 from ..forms.lessoncopy import LessonCopyForm
 
 from apps_data.lesson.models.classlesson import ClassLesson
@@ -240,12 +240,6 @@ class ClassLessonStepUpdateView(
     form_class = ClassLessonStepForm
     form_valid_message = "Der Lernabschnitt wurde geändert!"
 
-    def get_form_class(self):
-        if self.object.is_homework:
-            return ClassLessonHomeworkForm
-        else:
-            return ClassLessonStepForm
-
 
 class ClassLessonHomeworkUpdateView(
     CourseMenuMixin,
@@ -259,14 +253,9 @@ class ClassLessonHomeworkUpdateView(
     """
     model = ClassLesson
     context_object_name = 'classlessonstep'
-    form_class = ClassLessonHomeworkForm
+    form_class = ClassLessonStepForm
     form_valid_message = "Der Lernabschnitt wurde geändert!"
 
-    def get_form_class(self):
-        if self.object.is_homework:
-            return ClassLessonHomeworkForm
-        else:
-            return ClassLessonStepForm
 
 class ClassLessonDeleteView(
     CourseMenuMixin,
