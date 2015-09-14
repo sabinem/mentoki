@@ -1,0 +1,38 @@
+        for owner in courseowner:
+            people_in_thread.append(owner)
+        print "2 people in thread = %s" % people_in_thread
+        people_in_thread.append(self.request.user.id)
+        print "3 people in thread = %s" % people_in_thread
+        people_in_thread.append(context['thread']['thread'].author_id)
+        people_in_thread = list(set(people_in_thread))
+        print "4 people in thread = %s" % people_in_thread
+        users_in_thread = User.objects.filter(id__in=people_in_thread)
+        print "-------- outgoing emails:"
+        print users_in_thread
+        course = Course.objects.get(id=courseevent['course_id'])
+        # send email to requesting email
+
+        subject = "Neuer Post zum Beitrag %s" % context['thread']['thread'].title
+        to_list = []
+        for user in users_in_thread:
+            to_list.append(user.email)
+        to = to_list
+        from_mail = course.email
+        site = Site.objects.get(id=1)
+        context = {
+                'courseevent_title': context['courseevent']['courseevent_title'],
+                'title': context['thread']['thread'].title,
+                'text': form.cleaned_data['text'],
+                'author': form.instance.author,
+                'thread': form.instance.thread_id,
+                'slug': self.kwargs['slug'],
+                'subforum':self.kwargs['subforum'],
+                'betreff': subject,
+                'site':site
+        }
+        message = get_template('email/newpost.html').render(Context(context))
+        msg = EmailMessage(subject, message, to=to, from_email=from_mail)
+        msg.content_subtype = 'html'
+        msg.send()
+        self.messages.success(u"Wow, vielen Dank, %s, dass Du etwas gepostet hast." % form.instance.author )
+        return super(ThreadListPostCreateView, self).form_valid(form)

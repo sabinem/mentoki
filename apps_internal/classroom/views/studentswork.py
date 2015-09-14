@@ -8,6 +8,7 @@ from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView, DetailView, UpdateView, FormView, DeleteView
 
 from apps_data.courseevent.models.homework import StudentsWork
+from apps_core.email.utils.homework import send_work_published_notification
 from apps_data.courseevent.models.courseevent import CourseEvent
 from apps_internal.coursebackend.views.mixins.base import FormCourseEventKwargsMixin
 
@@ -60,6 +61,16 @@ class StudentsWorkUpdateView(
     form_class = StudentWorkUpdateForm
     context_object_name ='studentswork'
 
+    def form_valid(self, form):
+        # make email to all people participating in the work
+        mail_distributor = send_work_published_notification(
+                studentswork = form.instance,
+                courseevent=form.instance.courseevent,
+                module=self.__module__,
+            )
+        print mail_distributor
+        return super(StudentsWorkUpdateView, self).form_valid(form)
+
 
 class StudentsWorkDeleteView(
     ClassroomMenuMixin,
@@ -86,13 +97,19 @@ class StudentsWorkCreateView(
 
     def form_valid(self, form):
         courseevent = get_object_or_404(CourseEvent, slug=self.kwargs['slug'])
-        StudentsWork.objects.create(
+        studentswork = StudentsWork.objects.create(
             courseevent=courseevent,
             homework=form.cleaned_data['homework'],
             text=form.cleaned_data['text'],
             title=form.cleaned_data['title'],
             user=self.request.user)
-
+        # make email to all people participating
+        mail_distributor = send_work_published_notification(
+                studentswork = studentswork,
+                courseevent=studentswork.courseevent,
+                module=self.__module__,
+            )
+        print mail_distributor
         return HttpResponseRedirect(self.get_success_url())
 
 

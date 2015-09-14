@@ -62,6 +62,7 @@ INSTALLED_APPS = (
     #'customers',
 
     'apps_core.core',
+    'apps_core.email',
 
     'apps_data.course',
     'apps_data.courseevent',
@@ -299,7 +300,17 @@ FROALA_EDITOR_OPTIONS = {
     'key': 'tckD-17B1ewrwA-7sekA2ys==',
     'inlineMode': False,
     'toolbarFixed': False,
-    'minHeight': 300
+    'minHeight': 300,
+    'buttons': ['bold', 'italic', 'underline',
+                        'strikeThrough', 'subscript',
+                        'superscript', 'fontFamily', 'fontSize',
+                        'color', 'formatBlock', 'blockStyle',
+                        'inlineStyle', 'align', 'insertOrderedList',
+                        'insertUnorderedList', 'outdent', 'indent',
+                        'selectAll', 'createLink', 'insertImage',
+                        'insertVideo', 'table', 'undo',
+                        'redo', 'html',
+                        'insertHorizontalRule']
 }
 
 BRAINTREE = {

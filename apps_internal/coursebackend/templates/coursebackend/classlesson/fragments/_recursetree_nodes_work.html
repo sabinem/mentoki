@@ -48,9 +48,13 @@
                     {% else %}
 
                         <!-- title with detail link -->
-                        <a href="{{ detail_url }}">
-                            {{ node.title }}
-                        </a>
+                        {% if node.is_block %}
+                                {{ node.title }}
+                        {% else %}
+                            <a href="{{ detail_url }}">
+                                {{ node.title }}
+                            </a>
+                        {% endif %}
 
                         <!-- homework icon -->
                         {% if node.is_homework %}
@@ -58,7 +62,7 @@
                         {% endif %}
 
                         <!-- update -->
-                        {% if not node.is_root_node %}
+                        {% if not node.is_root_node and not node.is_block %}
                             <a href="{{ update_url }}">
                                <i class="icon write"></i>
                             </a>

@@ -8,6 +8,7 @@ from django.core.urlresolvers import reverse
 from django.template.loader import get_template
 from django.template import Context
 from django.shortcuts import get_object_or_404
+from django.contrib.sites.models import Site
 
 from model_utils.models import TimeStampedModel
 from model_utils.fields import MonitorField
@@ -61,9 +62,9 @@ def send_announcement(announcement, courseevent, module):
     send_all = ", ".join(all_emails)
 
     context = {
+        'site': Site.objects.get_current(),
         'courseevent': courseevent,
-        'title': announcement.title,
-        'text': announcement.text,
+        'announcement': announcement,
         'owners': courseevent.teachers,
         'betreff':  "Neue Nachricht von Mentoki %s" % courseevent.title
     }
@@ -102,7 +103,7 @@ class Announcement(TimeStampedModel):
     published = models.BooleanField(
         verbose_name=_("veröffentlichen?"),
         help_text=_("""Beim Veröffentlichen wird die Ankündigung an alle Kursteilnehmer
-        und Lehrer verschickt:
+        und Mentoren verschickt:
         """),
         default=False)
     published_at = MonitorField(
@@ -136,4 +137,9 @@ class Announcement(TimeStampedModel):
 
     def unarchive(self):
         self.is_archived = False
+        self.save()
+
+    def publish(self, mail_distributor):
+        self.mail_distributor = mail_distributor
+        self.published = True
         self.save()

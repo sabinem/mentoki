@@ -1,0 +1,19 @@
+{% extends "email/base_internal_email.html" %}
+
+{% block email_to %}
+    An die Teilnehmer des Mentoki Kurses "{{ courseevent.title }}":
+{% endblock %}
+
+{% block email_title %}
+    Es gibt einen neunen Beitrag von {{ thread.author }} im Forum {{ forum.title }}.
+{% endblock %}
+
+{% block email_text %}
+    <p>Du erhältst diese Nachricht, weil Du ein Kursleiter bist.</p>
+    <hr>
+    <h2>{{ thread.title }}</h2>
+    <p>{{ thread.text | safe}}</p>
+    <a href="http://{{ site }}{%  url 'classroom:forum:thread' pk=thread.pk slug=courseevent.slug %}">
+        Link zum Beitrag im Klassenzimmer
+    </a>
+{% endblock %}

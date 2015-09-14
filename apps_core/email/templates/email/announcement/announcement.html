@@ -1,0 +1,18 @@
+{% extends "email/base_internal_email.html" %}
+
+{% block email_to %}
+    An die Teilnehmer des Mentoki Kurses: {{ courseevent.title }}
+{% endblock %}
+
+{% block email_title %}
+    {{ announcement.title }}
+{% endblock %}
+
+{% block email_text %}
+    {{ announcement.text | safe}}
+    <a href="http://{{ site }}{%  url 'classroom:announcement:detail' pk=announcement.pk slug=courseevent.slug %}">
+        Link zur Ankündigung im Klassenzimmer
+    </a>
+{% endblock %}
+
+

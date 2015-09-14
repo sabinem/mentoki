@@ -11,6 +11,7 @@ from apps_data.courseevent.models.homework import StudentsWork,Comment
 from apps_data.courseevent.models.menu import ClassroomMenuItem
 from apps_data.courseevent.models.courseevent import CourseEvent
 from apps_data.lesson.models.classlesson import ClassLesson
+from apps_core.email.utils.comment import send_work_comment_notification
 
 from .mixins.base import ClassroomMenuMixin
 from ..forms.studentswork import StudentWorkCommentForm
@@ -116,11 +117,19 @@ class StudentsWorkCommentView(
     def form_valid(self, form):
         courseevent = get_object_or_404(CourseEvent, slug=self.kwargs['slug'])
         studentswork = get_object_or_404(StudentsWork, pk=self.kwargs['work_pk'])
-        Comment.objects.create_comment(courseevent=courseevent,
+        comment = Comment.objects.create_comment(courseevent=courseevent,
                                text=form.cleaned_data['text'],
                                title=form.cleaned_data['title'],
                                studentswork=studentswork,
                                author=self.request.user)
+        # make email to all people participating
+        mail_distributor = send_work_comment_notification(
+                studentswork = comment.studentswork,
+                courseevent=comment.courseevent,
+                comment = comment,
+                module=self.__module__,
+            )
+        print mail_distributor
         return HttpResponseRedirect(self.get_success_url())
 
     def get_context_data(self, **kwargs):

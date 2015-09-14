@@ -52,11 +52,11 @@
 
           <label>{{ form.published.label_tag }}</label>
           <p><i class="icon mail"></i>{{ form.published.help_text }}<br>
-         (Teilnehmer:
+         (
               {% for email in participants_emails %}
                   {{ email }},
               {% endfor %}<br>
-              Lehrer:
+
               {% for email in teachers_emails %}
                   {{ email }}
                   {% if not forloop.last %}, {% else %}){% endif %}

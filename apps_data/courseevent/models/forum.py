@@ -7,23 +7,31 @@ from operator import attrgetter
 
 from django.db import models
 from django.conf import settings
-from django.core.urlresolvers import reverse
-from django.utils.functional import cached_property
 from django.core.validators import ValidationError
 from django.utils.translation import ugettext_lazy as _
+from django.db import models
+from django.core.urlresolvers import reverse
+from django.template.loader import get_template
+from django.template import Context
+from django.shortcuts import get_object_or_404
+from django.contrib.sites.models import Site
 
 from model_utils.models import TimeStampedModel
 from model_utils.managers import QueryManager
 from model_utils.fields import MonitorField
-
 from mptt.models import MPTTModel, TreeForeignKey, TreeManager
-
-from .courseevent import CourseEvent
+from mailqueue.models import MailerMessage
 
 from apps.forum.models import Forum as OldForum
 from apps.forum.models import SubForum as OldSubForum
 from apps.forum.models import Post as OldPost
 from apps.forum.models import Thread as OldThread
+
+
+from mentoki.settings import MENTOKI_COURSE_EMAIL
+
+from apps_data.courseevent.models.courseevent import CourseEvent
+from apps_data.course.models.course import CourseOwner
 
 
 class ForumManager(TreeManager):
@@ -287,6 +295,10 @@ class PostManager(models.Manager):
         post = Post(courseevent=courseevent, thread=thread, text=text, title=title, author=author)
         post.save()
         return post
+
+    def contributors_emails(self, thread):
+        return set(self.filter(thread=thread).select_related('author')\
+            .values_list('author__email', flat=True))
 
 
 class Post(ForumContributionModel):

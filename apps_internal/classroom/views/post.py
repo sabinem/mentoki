@@ -7,7 +7,9 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.views.generic import FormView
 
-from apps_data.courseevent.models.forum import Post, CourseEvent, Thread, Forum
+from apps_data.courseevent.models.forum import Post, CourseEvent, Thread, \
+    Forum
+from apps_core.email.utils.post import send_post_notification
 from apps_data.courseevent.models.courseevent import CourseEvent
 
 from ..forms.post import StudentPostForm
@@ -25,11 +27,22 @@ class PostCreateView(
     def form_valid(self, form):
         courseevent = get_object_or_404(CourseEvent, slug=self.kwargs['slug'])
         thread = get_object_or_404(Thread, pk=self.kwargs['pk'])
-        Post.objects.create_new_post(courseevent=courseevent, thread=thread,
+        post = Post.objects.create_new_post(courseevent=courseevent, thread=thread,
                                      text=form.cleaned_data['text'],
                                      title=form.cleaned_data['title'],
                                      author=self.request.user)
+
+        # make email to all people participating in the thread
+        mail_distributor = send_post_notification(
+                post=post,
+                thread=thread,
+                module=self.__module__,
+                courseevent=courseevent
+            )
+        print mail_distributor
+
         return HttpResponseRedirect(self.get_success_url())
+
 
     def get_context_data(self, **kwargs):
 

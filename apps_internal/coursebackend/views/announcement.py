@@ -13,7 +13,8 @@ from braces.views import FormValidMessageMixin, MessageMixin
 
 from mailqueue.models import MailerMessage
 
-from apps_data.courseevent.models.announcement import Announcement, send_announcement
+from apps_data.courseevent.models.announcement import Announcement
+from apps_core.email.utils.announcements import send_announcement
 from apps_data.courseevent.models.courseevent import CourseEvent, CourseEventParticipation
 from apps_data.course.models.course import CourseOwner
 
@@ -130,23 +131,23 @@ class AnnouncementCreateView(
     def form_valid(self, form):
         if not hasattr(self, 'courseevent'):
             self.courseevent = get_object_or_404(CourseEvent, slug=self.kwargs['slug'])
+
+        announcement = Announcement.objects.create(
+            courseevent=self.courseevent,
+            text=form.cleaned_data['text'],
+            title=form.cleaned_data['title']
+        )
+        self.object = announcement
+
         if form.cleaned_data['published']:
             mail_distributor = send_announcement(
-                announcement=form.instance,
+                announcement=announcement,
                 module=self.__module__,
                 courseevent=self.courseevent,
             )
             self.messages.success(u'Die Ank\u00fcndigung wurde verschickt.')
         else:
             self.messages.success(u'Der Entwurf wurde gespeichert.')
-            mail_distributor=""
-
-        self.object = Announcement.objects.create(
-            courseevent=self.courseevent,
-            text=form.cleaned_data['text'],
-            title=form.cleaned_data['title'],
-            published=form.cleaned_data['published'],
-            mail_distributor=mail_distributor)
 
         return super(AnnouncementCreateView, self).form_valid(form)
 
