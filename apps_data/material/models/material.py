@@ -20,9 +20,6 @@ from autoslug import AutoSlugField
 from apps_core.core.fields import ContentTypeRestrictedFileField
 from apps_data.course.models.course import Course
 
-# still a Foreignkey on a old table: this will be deleted after the data-transfer
-from apps_data.course.models.oldcoursepart import CourseMaterialUnit
-
 
 class MaterialManager(models.Manager):
 
@@ -116,10 +113,6 @@ class Material(TimeStampedModel):
         max_upload_size=5242880,
     )
     slug = AutoSlugField(populate_from='get_file_slug', unique=True, always_update=True)
-
-    #just for the data_migration: refers to old data-structure (oldcourseparts),
-    # will be deleted after data-transfer
-    unitmaterial = models.ForeignKey(CourseMaterialUnit, null=True, blank=True, related_name="unitmaterial")
 
     unique_together=('course', 'title')
 

@@ -74,19 +74,3 @@ class PostAdmin(admin.ModelAdmin):
     list_display = ( 'id', 'courseevent', 'thread', 'id', 'title', 'author', 'modified', 'created')
     list_filter = ( 'courseevent', 'author' )
 
-
-#old delete later on
-from .models.xmodelsold import CourseEventPubicInformation, CourseeventUnitPublish
-
-
-@admin.register(CourseEventPubicInformation)
-class CourseEventPubicInformationAdmin(admin.ModelAdmin):
-    list_display = ('id', 'courseevent',)
-    list_filter = ('courseevent',)
-
-
-@admin.register(CourseeventUnitPublish)
-class CourseeventUnitPublishAdmin(admin.ModelAdmin):
-    list_display = ('unit', 'courseevent')
-    list_filter = ('unit', 'courseevent')
-

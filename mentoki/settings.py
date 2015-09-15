@@ -77,13 +77,6 @@ INSTALLED_APPS = (
     'apps_public.contact',
     'apps_public.home',
     'apps_public.courseoffer',
-
-    # needed?
-    'apps_core.upload',
-
-    #old will be deleted after data-transfer
-    'apps.forum',
-
 )
 
 

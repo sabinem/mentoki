@@ -5,33 +5,18 @@ from __future__ import unicode_literals, absolute_import
 from itertools import chain
 from operator import attrgetter
 
-from django.db import models
 from django.conf import settings
 from django.core.validators import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from django.core.urlresolvers import reverse
-from django.template.loader import get_template
-from django.template import Context
-from django.shortcuts import get_object_or_404
-from django.contrib.sites.models import Site
 
 from model_utils.models import TimeStampedModel
 from model_utils.managers import QueryManager
 from model_utils.fields import MonitorField
 from mptt.models import MPTTModel, TreeForeignKey, TreeManager
-from mailqueue.models import MailerMessage
-
-from apps.forum.models import Forum as OldForum
-from apps.forum.models import SubForum as OldSubForum
-from apps.forum.models import Post as OldPost
-from apps.forum.models import Thread as OldThread
-
-
-from mentoki.settings import MENTOKI_COURSE_EMAIL
 
 from apps_data.courseevent.models.courseevent import CourseEvent
-from apps_data.course.models.course import CourseOwner
 
 
 class ForumManager(TreeManager):
@@ -97,7 +82,6 @@ class Forum(MPTTModel, TimeStampedModel):
         help_text="""Steuert, ob Beiträge in diesem Unterforum gemacht werden können,
                   oder ob es nur zur Gliederung dient.""",
         default=True)
-    #thread_count = models.IntegerField(default=0)
 
     hidden = models.BooleanField(
         verbose_name=_('versteckt'),
@@ -112,9 +96,6 @@ class Forum(MPTTModel, TimeStampedModel):
     )
     publish_status_changed = MonitorField(monitor='published')
     has_published_decendants = models.BooleanField(default=False)
-
-    oldforum = models.ForeignKey(OldForum, blank=True, null=True)
-    oldsubforum = models.ForeignKey(OldSubForum, blank=True, null=True, related_name="Unterforum_alt")
 
     objects = ForumManager()
     forum = QueryManager(level=0)
@@ -259,9 +240,6 @@ class Thread(ForumContributionModel):
     last_author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="last_post_author", blank=True, null=True)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="thread_author")
 
-    # delete later on
-    oldthread = models.ForeignKey(OldThread, blank=True, null=True)
-
     objects = ThreadManager()
 
     class Meta:
@@ -314,9 +292,6 @@ class Post(ForumContributionModel):
         related_name="post_author",
         on_delete=models.PROTECT
     )
-
-    # will be deleted later on
-    oldpost = models.ForeignKey(OldPost, blank=True, null=True)
 
     objects = PostManager()
 

@@ -13,9 +13,6 @@ from django.utils.translation import ugettext_lazy as _
 from .base import BaseLesson, BaseLessonManager
 from .base import lesson_nr_block, lesson_nr_lesson, lesson_nr_step
 
-# for datatransefer
-from apps_data.course.models.oldcoursepart import CourseBlock, CourseMaterialUnit, CourseUnit
-
 
 class LessonManager(BaseLessonManager):
 
@@ -96,11 +93,6 @@ class LessonManager(BaseLessonManager):
 
 
 class Lesson(BaseLesson, TimeStampedModel):
-    #just for the data_migration: refers to old data-structure (oldcourseparts),
-    # will be deleted after data-transfer
-    courseblock = models.ForeignKey(CourseBlock, null=True, blank=True, related_name="lessonblock")
-    unit = models.ForeignKey(CourseUnit, null=True, blank=True, related_name="lessonunit")
-    unitmaterial = models.ForeignKey(CourseMaterialUnit, null=True, blank=True, related_name="lessonmaterial")
 
     objects = LessonManager()
 
