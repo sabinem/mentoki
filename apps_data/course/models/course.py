@@ -31,13 +31,6 @@ from autoslug import AutoSlugField
 from mentoki.settings import MENTOKI_INFO_EMAIL
 
 
-class CourseManager(models.Manager):
-    """
-    has no methods yet
-    """
-    use_for_related_fields = True
-
-
 class Course(TimeStampedModel):
     """
     Courses are the central model of the Application. They gather all the
@@ -102,8 +95,6 @@ class Course(TimeStampedModel):
         default=MENTOKI_INFO_EMAIL
     )
 
-    objects = CourseManager()
-
     class Meta:
         verbose_name = _("Kursvorlage")
         verbose_name_plural = _("Kursvorlagen")
@@ -124,7 +115,7 @@ class Course(TimeStampedModel):
     def teachersrecord(self):
         """
         Returns the teachers of the course as a string ready for display.
-        RETURN: string of teachers
+        RETURN: string of teachers names
         """
         teachers = self.teachers
         namesstring = ""
@@ -170,7 +161,7 @@ class CourseOwnerManager(models.Manager):
 
     def teachers_courseinfo_all(self, course):
         """
-        get all teachers of a course including their user data
+        get all teachers ownershiprecords of a course including their user data
         IN: Course
         RETURN: CourseOwner-queryset
         """
@@ -180,13 +171,13 @@ class CourseOwnerManager(models.Manager):
 
     def other_teachers_for_display(self, course, user):
         """
-        get all teachers of a course, that should be displayed on its public
-        profile, excluding the given user
+        check whether there are teachers records from other users then the
+        given user for the course.
         IN: Course, User
         RETURN: CourseOwner-queryset
         """
-        return self\
-            .filter(course=course, display=True)\
+        return self \
+            .filter(course=course, display=True) \
             .exclude(user=user)
 
     def teachers_emails(self, course):

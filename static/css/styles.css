@@ -468,6 +468,9 @@ object.htmlembed {
 #classroom i.icon.header:before {
   content: "";
 }
+#classroom .ui.comments {
+  max-width: none;
+}
 #coursebackend {
   /* --------------------------------------  */
   /*    plain data                           */

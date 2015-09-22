@@ -86,27 +86,10 @@ $(document).ready(function(){
  * copied from the internet, which source?
  */
 
-  function checkForm(form) // Submit button clicked
-  {
-    //
-    // check form input values
-    //
-    form.onlyOnceButton.disabled = true;
-    form.onlyOnceButton.value = "Bitte warten ...";
-    return true;
-  }
-
-  function resetForm(form) // Reset button clicked
-  {
-    form.onlyOnceButton.disabled = false;
-    form.onlyOnceButton.value = "Speichern";
-  }
-
-  $('#formsubmit_button').on('click', function(){
-      this.disabled=true,
-      this.form.submit()
+    $('#formsubmitonce').on('click', function(){
+        this.disabled=true;
+        this.form.submit();
     });
-
 
 });
 

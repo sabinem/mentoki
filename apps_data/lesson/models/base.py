@@ -8,6 +8,8 @@ from django.shortcuts import get_object_or_404
 
 from mptt.models import MPTTModel, TreeForeignKey, TreeManager
 
+from fontawesome.fields import IconField
+
 from model_utils.choices import Choices
 
 from apps_data.course.models.course import Course
@@ -91,7 +93,9 @@ class BaseLesson(MPTTModel):
     nr = models.IntegerField(
         verbose_name=_('Nr.'),
         default=1)
-
+    icon = IconField(
+        verbose_name="Icon",
+        help_text="Neben dem Menüeintrag kann ein Icon angezeigt werden.")
     # this field is derived from nr and and parent.nr depending on the level
     # see save_method
     lesson_nr = models.CharField(

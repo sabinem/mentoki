@@ -8,23 +8,9 @@
       {{ form.display_nr }}
     </div>
 
-   {% if form.instance.item_type == form.instance.MENU_ITEM_TYPE.forum_item %}
-        <i class="icon comments outline"></i>
-   {% elif form.instance.item_type == form.instance.MENU_ITEM_TYPE.lesson_item %}
-        <i class="icon student"></i>
-   {% elif form.instance.item_type == form.instance.MENU_ITEM_TYPE.participants_item %}
-        <i class="icon users"></i>
-   {% elif form.instance.item_type == form.instance.MENU_ITEM_TYPE.homework_item %}
-        <i class="icon lab"></i>
-   {% elif form.instance.item_type == form.instance.MENU_ITEM_TYPE.last_posts_item %}
-        <i class="icon sidebar"></i>
-   {% elif form.instance.item_type == form.instance.MENU_ITEM_TYPE.announcements_item %}
-        <i class="icon announcement"></i>
-   {% elif form.instance.item_type == form.instance.MENU_ITEM_TYPE.private_item %}
-        <i class="icon privacy"></i>
-   {% elif form.instance.item_type == form.instance.MENU_ITEM_TYPE.header_item %}
-        <i class="icon">Ü</i>
-   {% endif %}
+    {% if form.instance.icon %}
+        {{ form.instance.icon.as_html }}
+    {% endif %}
 
     <div class="four wide field"
             {% if form.instance.item_type == form.instance.MENU_ITEM_TYPE.header_item %}

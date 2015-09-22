@@ -8,8 +8,23 @@
 
     {% include 'coursebackend/forms/fragments/_form_non_field_errors.html' %}
 
-    <div class="ui dividing large header">Lektion nachbearbeiten</div>
+    <div class="ui dividing large header">Lektion</div>
 
+    <div class="fields inline">
+        <div class="field sixteen wide">
+            einhängen unter
+
+            {% if form.parent.errors %}
+                <div class="ui negative floating message">
+                    {{ form.parent.errors }}
+                </div>
+            {% endif %}
+            <br>
+
+            {{ form.parent }}
+
+        </div>
+    </div>
     <div class="fields inline">
 
         <div class="field four wide">
@@ -69,14 +84,9 @@
 
     </div>
 
-    <button type="submit" value="post" name="onlyOnceButton" class="ui button" id="formsubmit_button"
-            action="#target">
+    <button type="submit" value="post" class="ui button" id="formsubmitonce">
         Speichern
     </button>
-    <button class="ui button" value="Reset Button" onclick="resetForm(this.form);">
-        Reset
-    </button>
-
     <a href="{{ back_url }}" class="ui button">
         Abbruch
     </a>

@@ -19,7 +19,7 @@
 {% endif %}
 
 <div class="ui header medium"
-    {% if classlessonstep.published %}
+    {% if classlessonstep.is_visible_in_classroom %}
          id="published_in_class"
     {% endif %}
     >
@@ -60,7 +60,7 @@
     {% endif %}
 
     <!-- class -->
-    {% if classlessonstep.published %}
+    {% if classlessonstep.is_visible_in_classroom %}
         <a href="{{ class_url }}">
            <i class="icon large student"></i>
         </a>

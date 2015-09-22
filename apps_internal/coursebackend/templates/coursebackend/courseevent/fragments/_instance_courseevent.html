@@ -22,13 +22,15 @@ for detail
 {% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="video_url" as update_video_url %}
 {% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="format" as update_format_url %}
 {% url 'coursebackend:courseevent:copy' course_slug=cs slug=es as copy_url %}
+{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="email_greeting" as update_email_greeting_url %}
+{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="you_okay" as update_you_okay_url %}
+{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="pricemodel" as update_pricemodel_url %}
 
-<div class="ui large header">
-   Kurs: {{ courseevent.title }}
+<div class="ui huge header">
+   {{ courseevent.title }}
 </div>
-<a href="{{ copy_url }}" class="ui button">
-    <i class="icon copy  blue"></i>Beschreibungen aus der Kursvorlage kopieren
-</a>
+
+<div class="ui dividing large header">Öffentliche Kursparamenter</div>
 
 <div class="ui two column doubling page grid">
 <div class="column">
@@ -57,19 +59,6 @@ for detail
                 {% else %}
                     noch nicht bestimmt
                 {% endif %}
-            </div>
-        </div>
-    </div>
-
-    <div class="item">
-        <i class=" middle aligned icon info"></i>
-        <div class="content">
-            <div class="header">Interner Status</div>
-            <div class="description">
-                {{ courseevent.get_status_internal_display }}
-                <a href="{{ update_internal_url }}" class="item">
-                   <i class="write blue icon"></i>
-                </a>
             </div>
         </div>
     </div>
@@ -143,7 +132,73 @@ for detail
 </div>
 
 
+<div class="ui dividing large header">Interne Kursparamenter</div>
+
+<div class="ui two column doubling page grid">
+<div class="column">
+    <div class="ui large relaxed divided list">
+
+    <div class="item">
+        <i class="middle aligned icon comment outline"></i>
+        <div class="content">
+            <div class="header">Ansprache</div>
+            <div class="description">
+                {{ courseevent.you_okay | yesno:"'Du','Sie'" }}
+                <a href="{{ update_you_okay_url }}" class="item">
+                    <i class="write blue icon"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="item">
+        <i class=" middle aligned mail outline icon"></i>
+        <div class="content">
+            <div class="header">Email Betreff</div>
+            <div class="description">
+                {{ courseevent.email_greeting }}
+                <a href="{{ update_email_greeting_url }}" class="item">
+                    <i class="write blue icon"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="column">
+    <div class="ui large relaxed divided list">
+    <div class="item">
+        <i class=" middle aligned icon info"></i>
+        <div class="content">
+            <div class="header">Interner Status</div>
+            <div class="description">
+                {{ courseevent.get_status_internal_display }}
+                <a href="{{ update_internal_url }}" class="item">
+                   <i class="write blue icon"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+</div>
+
+<h3 class="ui header">
+    Wunsch-Preimodell
+    <a href="{{ update_pricemodel_url }}" class="item">
+       <i class="write blue icon"></i>
+    </a>
+</h3>
+{{ courseevent.pricemodel | safe }}
+
+
 <div class="ui dividing large header">Kursbeschreibung</div>
+<p>Die öffentliche Ausschreibung des Kurses</p>
+<a href="{{ copy_url }}" class="ui button">
+    <i class="icon copy  blue"></i>Beschreibungen aus der Kursvorlage kopieren
+</a>
 
 <h3 class="ui header">
     Abstrakt

@@ -9,10 +9,10 @@
 
     <tbody>
 
-        {% for lesson in lessons %}
+        {% for block in blocks %}
 
-            {% url 'coursebackend:lesson:lesson' pk=lesson.pk course_slug=cs as lesson_url%}
-            {% url 'lesson:copy_block' courseevent_pk=courseevent.pk lesson_pk=lesson.pk as copyall_url%}
+            {% url 'coursebackend:lesson:lesson' pk=block.pk course_slug=cs as block_url%}
+            {% url 'lesson:copy_block' courseevent_pk=courseevent.pk block_pk=block.pk as copyall_url%}
             {% url 'coursebackend:classlesson:lessoncopy' slug=es course_slug=cs pk=lesson.pk as copypart_url %}
             {% url 'coursebackend:classlesson:lesson' slug=es course_slug=cs pk=lesson.classlesson.pk as class_url %}
             {% url 'coursebackend:classlesson:lessoncopy' slug=es course_slug=cs pk=lesson.classlesson.pk as classlesson_url %}
@@ -20,25 +20,17 @@
 
                 <td>
                     <p>
-                        {% if lesson.id in copied_lesson_ids %}
-                            bereits kopiert
-                            <a href="{{ copypart_url }}" class="ui button">
-                                überschreiben?
-                            </a>
-                        {% else %}
-                            <a href="{{ copyall_url }}" class="ui button">
-                                jetzt Kopieren
-                            </a>
-                        {% endif %}
-
+                        <a href="{{ copyall_url }}" class="ui button">
+                            jetzt Kopieren
+                        </a>
                     </p>
                 </td>
 
                 <td>
                     <a
-                            href="{{ lesson_url }}"
+                            href="{{ block_url }}"
                     >
-                            {{ lesson }}
+                            {{ block }}
                     </a>
                 </td>
             </tr>

@@ -129,7 +129,9 @@ class StudentsWorkCommentView(
                 comment = comment,
                 module=self.__module__,
             )
-        print mail_distributor
+        print "------------"
+        print "sending mail %s" % (mail_distributor)
+        print "_______________"
         return HttpResponseRedirect(self.get_success_url())
 
     def get_context_data(self, **kwargs):

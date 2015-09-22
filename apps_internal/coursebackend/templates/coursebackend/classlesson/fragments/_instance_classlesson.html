@@ -19,7 +19,7 @@
 {% endif %}
 
 <div class="ui header medium"
-    {% if classlesson.published %}
+    {% if classlesson.is_visible_in_classroom %}
          id="published_in_class"
     {% endif %}
     >
@@ -38,7 +38,7 @@
     </a>
 
     <!-- class -->
-    {% if classlesson.published %}
+    {% if classlesson.is_visible_in_classroom %}
         <a href="{{ class_url }}">
            <i class="icon large student"></i>
         </a>

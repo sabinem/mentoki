@@ -39,8 +39,8 @@ class AnnouncementAdmin(admin.ModelAdmin):
 
 @admin.register(ClassroomMenuItem)
 class ClassroomMenuItemAdmin(admin.ModelAdmin):
-    list_display = ('id', 'display_nr', 'display_title','is_forumlink',
-                    'item_type', 'is_shortlink', 'is_publishlink', 'forum', 'classlesson',
+    list_display = ('id', 'display_nr', 'display_title',
+                    'item_type', 'is_shortlink', 'forum', 'classlesson',
                     'is_start_item', )
     list_filter = ('courseevent', )
 
@@ -56,7 +56,7 @@ class ForumAdmin(admin.ModelAdmin):
     list_display = ( 'title', 'display_nr', 'tree_id','lft', 'rght', 'level' )
 
     #list_display = ('id', 'title', 'courseevent', 'published', 'parent', 'decendants_thread_count', 'has_published_decendants' )
-    list_filter = ( 'courseevent', 'published', 'level')
+    list_filter = ( 'courseevent','level')
 
 
 

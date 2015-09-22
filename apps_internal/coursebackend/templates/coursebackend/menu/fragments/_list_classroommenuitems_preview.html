@@ -26,6 +26,9 @@ for update / insert and detail and preview
                 {% if menuitem.pk != object.pk %}
                     <i class="write blue icon"></i>
                 {% endif %}
+                {% if menuitem.icon %}
+                    {{ menuitem.icon.as_html }}
+                {% endif %}
 
                 {{ menuitem.display_title }}
             </a>
@@ -38,8 +41,11 @@ for update / insert and detail and preview
                 {% if menuitem.pk != object.pk %}
                     <i class="write blue icon"></i>
                 {% endif %}
-
+                {% if menuitem.icon %}
+                    {{ menuitem.icon.as_html }}
+                {% endif %}
                 {{ menuitem.display_title }}
+
 
                 {% if menuitem.is_start_item %}
                     <i class="red icon circle"></i>
@@ -48,22 +54,6 @@ for update / insert and detail and preview
                 {% if menuitem.is_shortlink %}
                     <i class="teal icon circle outline"></i>
                 {% endif %}
-
-               {% if menuitem.item_type == menuitem.MENU_ITEM_TYPE.forum_item %}
-                    <i class="icon comments outline"></i>
-               {% elif menuitem.item_type == menuitem.MENU_ITEM_TYPE.lesson_item %}
-                    <i class="icon student"></i>
-               {% elif menuitem.item_type == menuitem.MENU_ITEM_TYPE.participants_item %}
-                    <i class="icon users"></i>
-               {% elif menuitem.item_type == menuitem.MENU_ITEM_TYPE.homework_item %}
-                    <i class="icon lab"></i>
-               {% elif menuitem.item_type == menuitem.MENU_ITEM_TYPE.last_posts_item %}
-                    <i class="icon sidebar"></i>
-               {% elif menuitem.item_type == menuitem.MENU_ITEM_TYPE.announcements_item %}
-                    <i class="icon announcement"></i>
-               {% elif menuitem.item_type == menuitem.MENU_ITEM_TYPE.private_item %}
-                    <i class="icon privacy"></i>
-               {% endif %}
 
             </a>
 

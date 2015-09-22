@@ -28,6 +28,16 @@ class ForumManager(TreeManager):
     def classroom_menu(self, courseevent):
         return self.filter(courseevent=courseevent, level=1)
 
+    def published_forum_ids(self, courseevent):
+        # fetched here in order to avoid circular import
+        from apps_data.courseevent.models.menu import ClassroomMenuItem
+        published_forum_ids = \
+            ClassroomMenuItem.objects.forums_for_courseevent(
+                courseevent=courseevent).values_list('forum_id', flat=True)
+        return self.filter(id__in=published_forum_ids).\
+            get_descendants().values_list('id', flat=True)
+
+
     def active_forums_for_courseevent(self, courseevent):
         return self.filter(courseevent=courseevent, level=0, hidden=False).\
             get_descendants(include_self=True)
@@ -35,13 +45,12 @@ class ForumManager(TreeManager):
     def forums_published_in_courseevent(self, courseevent):
         return self.filter(courseevent=courseevent, published=True)
 
-    def create(self, courseevent, text, title, description, display_nr, can_have_threads=False,
-               parent=None):
+    def create(self, courseevent, title, display_nr,
+               parent,  can_have_threads=True, text="", description=""):
         forum = Forum(courseevent=courseevent,
                       text=text,
                       title=title,
                       description=description,
-                      published=False,
                       display_nr=display_nr,
                       can_have_threads=can_have_threads)
         forum.insert_at(parent)
@@ -82,20 +91,6 @@ class Forum(MPTTModel, TimeStampedModel):
         help_text="""Steuert, ob Beiträge in diesem Unterforum gemacht werden können,
                   oder ob es nur zur Gliederung dient.""",
         default=True)
-
-    hidden = models.BooleanField(
-        verbose_name=_('versteckt'),
-        default=False)
-    hidden_status_changed = MonitorField(monitor='hidden')
-
-    published = models.BooleanField(
-        verbose_name="veröffentlicht",
-        help_text="""Zeigt an, ob das Forum im Klassenzimmer sichtbar ist.""",
-        default=False,
-        editable=False
-    )
-    publish_status_changed = MonitorField(monitor='published')
-    has_published_decendants = models.BooleanField(default=False)
 
     objects = ForumManager()
     forum = QueryManager(level=0)
@@ -140,7 +135,7 @@ class Forum(MPTTModel, TimeStampedModel):
         return self.get_ancestors(include_self=True)
 
     def get_published_breadcrumbs_with_self(self):
-        return self.get_ancestors(include_self=True).filter(published=True)
+        return self.get_ancestors(include_self=True).filter(level__gt=0)
 
     @property
     def thread_count(self):
@@ -157,19 +152,24 @@ class Forum(MPTTModel, TimeStampedModel):
                                'slug':self.slug,
                                'pk':self.pk})
 
-    def publish(self):
-        descendants = self.get_descendants(include_self=True)
-        ancestors = self.get_ancestors(include_self=False)
-        for descendant in descendants:
-            descendant.published = True
-            descendant.save()
-
-
-    def unpublish(self):
-        descendants = self.get_descendants(include_self=True)
-        for descendant in descendants:
-               descendant.published = False
-               descendant.save()
+    @property
+    def is_visible_in_classroom(self):
+        """
+        decides whether forum is visible in classroom
+        """
+        # fetched here in order to avoid circular import
+        if self.level == 1:
+            level1_forum = self
+        else:
+            level1_forum = self.get_ancestors().get(level=1)
+        # fetched here in order to avoid circular import
+        from apps_data.courseevent.models.menu import ClassroomMenuItem
+        menuitems = \
+            ClassroomMenuItem.objects.forum_ids_published_in_class(courseevent=self.courseevent)
+        if level1_forum.id in menuitems:
+            return True
+        else:
+            return False
 
     def clean(self):
         if not self.can_have_threads:
@@ -201,8 +201,9 @@ class ThreadManager(models.Manager):
         return thread
 
     def recent_contributions(self, courseevent):
+
         threads = self.select_related('author').\
-            filter(courseevent=courseevent, hidden=False).\
+            filter(courseevent=courseevent).\
             order_by('-modified')[0:50]
         posts = Post.objects.filter(courseevent=courseevent).\
             select_related('thread','author').order_by('-modified')[0:50]
@@ -213,11 +214,12 @@ class ThreadManager(models.Manager):
 
 
     def recent_published_contributions(self, courseevent):
+        published_forum_ids = Forum.objects.published_forum_ids(courseevent=courseevent)
         threads = self.select_related('author').\
-            filter(courseevent=courseevent, forum__published=True).\
-            order_by('-modified')[0:50]
+            filter(courseevent=courseevent, forum_id__in=published_forum_ids).\
+            order_by('-modified')[0:20]
         posts = Post.objects.filter(courseevent=courseevent,
-                                    thread__forum__published=True).\
+                                    thread__forum_id__in=published_forum_ids).\
             select_related('thread','author').order_by('-modified')[0:50]
         contributions = sorted(
             chain(threads, posts),

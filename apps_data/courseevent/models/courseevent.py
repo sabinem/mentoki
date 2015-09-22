@@ -38,12 +38,6 @@ class CourseEventManager(models.Manager):
     def get_courseevent_or_404_from_slug(self, slug):
         return get_object_or_404(self, slug=slug)
 
-    def is_teacher(self, user):
-        if user in self.teachers:
-            return True
-        else:
-            return False
-
 
 class CourseEvent(TimeStampedModel):
 
@@ -58,6 +52,12 @@ class CourseEvent(TimeStampedModel):
         verbose_name=_("Kurstitel"),
         help_text=_("Kurstitel unter dem dieser Kurs ausgeschrieben wird."),
         max_length=100)
+
+    email_greeting = models.CharField(
+        verbose_name="Email Betreff",
+        help_text="""Was soll im Betreff Feld stehen, wenn im Kurs
+        automatische Nachrichten für diesen Kurs abgesetzt werden?""",
+        max_length=200)
 
     start_date = models.DateField(
         verbose_name=_("Startdatum"),
@@ -143,6 +143,11 @@ class CourseEvent(TimeStampedModel):
     prerequisites = models.TextField(
         verbose_name=_("Voraussetzungen"),
         blank=True)
+    pricemodel = models.TextField(
+        verbose_name=_("Preis Modell"),
+        help_text=_("""Skizziere Dein Wunsch-Preis-Modell für diesen Kurs."""),
+        blank=True)
+
 
     #price = PriceField('Price', currency='ECU', max_digits=12, decimal_places=2, null=True, blank=True)
     price = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
@@ -150,6 +155,8 @@ class CourseEvent(TimeStampedModel):
     participation = models.ManyToManyField(settings.AUTH_USER_MODEL, through="CourseEventParticipation", related_name='participation')
 
     you_okay = models.BooleanField(
+        verbose_name="Ansprache",
+        help_text="Ist Duzen als Ansprache in Ordung in diesem Kurs?",
         default=True
     )
 

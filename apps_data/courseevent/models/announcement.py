@@ -22,29 +22,48 @@ from apps_data.course.models.course import CourseOwner
 
 
 class AnnouncementManager(models.Manager):
+    """
+    Querysets for Announcements
+    """
 
     def archived(self, courseevent):
+        """
+        get all archived announcements
+        """
         return self.filter(courseevent=courseevent,
                            is_archived=True
                            ).order_by('-published_at')
 
     def published(self, courseevent):
+        """
+        get all announcements that are published but not archived
+        """
         return self.filter(courseevent=courseevent,
                            published=True,
                            is_archived=False
                            ).order_by('-published_at')
 
     def classroom(self, courseevent):
+        """
+        get all announcements that should be displayed in class: these
+        are all announcements that are published but not archived
+        """
         return self.filter(courseevent=courseevent,
                            published=True,
                            is_archived=False
                            ).order_by('-published_at')
 
     def unpublished(self, courseevent):
+        """
+        get all announcements that are only drafts yet
+        """
         return self.filter(courseevent=courseevent, published=False).\
             order_by('-created')
 
     def create(self, courseevent, text, title, mail_distributor="", published=False):
+        """
+        create an announcement
+        """
         announcement = Announcement(courseevent=courseevent,
                                     text=text,
                                     title=title,
@@ -54,6 +73,11 @@ class AnnouncementManager(models.Manager):
         return announcement
 
 def send_announcement(announcement, courseevent, module):
+    """
+    send an announcement: it is send to the teachers and the particpants.
+    Mentoki is set on cc. Sending uses django-mailqueue, so that send out
+    emails are als stored in the database.
+    """
     participants_emails = \
         list(CourseEventParticipation.objects.learners_emails(courseevent=courseevent))
     teachers_emails = \
@@ -89,8 +113,8 @@ def send_announcement(announcement, courseevent, module):
 
 class Announcement(TimeStampedModel):
     """
-    Announcements are send out as emails to the class, therefor they can not be deleted or changed
-    once send
+    Announcements are send out as emails to the class, therefore they can not
+    be deleted or changed once send
     """
     courseevent = models.ForeignKey(CourseEvent, related_name="courseeventnews")
 

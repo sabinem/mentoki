@@ -34,21 +34,16 @@ def copy_lesson_selected(self, lesson, lessonsteps, copy_lesson, courseevent):
     return classlesson
 
 
-def copy_lesson_for_courseevent(self, lesson_pk, courseevent_pk):
+def copy_block_for_courseevent(self, block_pk, courseevent_pk):
     """
     copies a complete lesson from Lesson (in course) to ClassLesson (in a courseevent)
     """
     try:
-        lesson=get_object_or_404(Lesson, pk=lesson_pk)
-        print "---lesson---"
-        print lesson
+        lesson=get_object_or_404(Lesson, pk=block_pk)
     except ObjectDoesNotExist:
          raise ValidationError('Die Lektion wurde nicht gefunden')
 
     lessonsteps = lesson.get_children()
-    print "---lessonsteps---"
-    print lessonsteps
-
 
     if not lesson.is_lesson:
         raise ValidationError('Das ist keine Lektion. Nur Lektionen können kopiert werden.')

@@ -100,18 +100,6 @@ class Lesson(BaseLesson, TimeStampedModel):
         verbose_name = "Lektion (Vorlage)"
         verbose_name_plural = "Lektionen (Vorlage)"
 
-    def cb_id(self):
-        if self.courseblock:
-            return self.courseblock.id
-
-    def u_id(self):
-        if self.unit:
-            return self.unit.id
-
-    def um_id(self):
-        if self.unitmaterial:
-            return self.unitmaterial.id
-
     def has_published_classlesson(self):
         if self.classlesson_set.filter(published=True):
             return True

@@ -8,7 +8,17 @@
           <span class="right time">abgegeben am {{ studentswork.published_at | date:'d.m.Y' }}</span>
         </div>
         <div class="description">
-          <span class="category">von: {{ studentswork.team | join:', ' }}</span>
+
+          <div class="ui horizontal list">
+              {% for worker in studentswork.workers.all %}
+                  <div class="item">
+                     <img class="ui mini image" src="{{ worker.profile_image.url }}">
+                    <div class="content">
+                      <div class="header">{{ worker.username }}</div>
+                    </div>
+                  </div>
+              {% endfor %}
+          </div>
         </div>
         <div class="content">
           <span class="category">zu: {{ lessonstep.title }}</span>

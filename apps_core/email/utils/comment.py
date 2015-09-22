@@ -22,7 +22,7 @@ def send_work_comment_notification(studentswork, comment, courseevent, module):
         list(studentswork.workers_emails())
     teachers_emails = \
         list(CourseOwner.objects.teachers_emails(course=courseevent.course))
-    all_emails = commenters_emails + workers_emails + teachers_emails
+    all_emails = set(commenters_emails + workers_emails + teachers_emails)
     send_all = ", ".join(all_emails)
     context = {
         'site': Site.objects.get_current(),
@@ -30,13 +30,13 @@ def send_work_comment_notification(studentswork, comment, courseevent, module):
         'studentswork': studentswork,
         'homework': studentswork.homework,
         'comment': comment,
-        'betreff':  "Neue Nachricht von Mentoki %s" % courseevent.title
+        'betreff':  courseevent.email_greeting
     }
-    message = get_template('email/homework/newhomework.html').render(Context(context))
+    message = get_template('email/homework/newcomment.html').render(Context(context))
 
     mail_message = MailerMessage()
 
-    mail_message.subject = "Neue Nachricht von %s" % courseevent.title
+    mail_message.subject = courseevent.email_greeting
     mail_message.bcc_address = MENTOKI_COURSE_EMAIL
     mail_message.to_address = send_all
     mail_message.from_address = MENTOKI_COURSE_EMAIL

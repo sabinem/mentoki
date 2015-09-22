@@ -42,7 +42,7 @@
 
                         <!-- homework -->
                         {% if node.is_homework %}
-                             <a><i class="icon lab orange"></i></a>
+                             <a class="ui orange label">interaktiv</a>
                         {% endif %}
 
                     {% endif %}
@@ -51,6 +51,11 @@
                     {% if not node.is_root_node %}
                         <a href="{{ update_url }}">
                            <i class="icon write"></i>
+                        </a>
+
+                        <!-- delete -->
+                        <a href="{{ delete_url }}">
+                           <i class="icon trash"></i>
                         </a>
                     {% endif %}
 
@@ -68,6 +73,12 @@
                 <p style="font-size: 0.9em; color:grey; font-weight:normal;">
                    angelegt: {{ node.created |date:'d.m.Y' }}, letzte Änderung: {{ node.modified |date:'d.m.Y' }}
                 </p>
+                <!-- description -->
+                {% if node.decription != "" %}
+                    <p>
+                        {{ node.description }}
+                    </p>
+                {% endif %}
 
                 {% if not is_leaf %}
                     <div class="list">

@@ -5,7 +5,7 @@
     {% url "coursebackend:forum:delete" course_slug=cs slug=es pk=node.pk as delete_url %}
     {% url "coursebackend:forum:update" course_slug=cs slug=es pk=node.pk as update_url %}
 
-    {% if node.published %}
+    {% if node.is_visible_in_classroom %}
         <a href="{{ class_url }}" class="published_in_class">
             {{ node.title }}<i class="icon student"></i>
         </a>
@@ -27,7 +27,7 @@
        href="{{ update_url }}">
         <i class="write blue icon"></i>
     </a>
-    {% if not node.published %}
+    {% if not node.is_visible_in_classroom %}
         <a class= "item"
            href="{{ delete_url }}">
             <i class="trash blue icon"></i>
@@ -36,7 +36,7 @@
 
 {% else %}
 
-    {% if node.published %}
+    {% if node.is_visible_in_classroom %}
          <span class="published_in_class">
              {{ node.title }}
          </span>
