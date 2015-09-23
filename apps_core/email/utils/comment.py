@@ -32,7 +32,7 @@ def send_work_comment_notification(studentswork, comment, courseevent, module):
         'comment': comment,
         'betreff':  "Neue Nachricht von Mentoki %s" % courseevent.title
     }
-    message = get_template('email/homework/newhomework.html').render(Context(context))
+    message = get_template('email/homework/newcomment.html').render(Context(context))
 
     mail_message = MailerMessage()
 
