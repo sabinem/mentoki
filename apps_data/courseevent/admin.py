@@ -47,7 +47,7 @@ class ClassroomMenuItemAdmin(admin.ModelAdmin):
 
 @admin.register(StudentsWork)
 class StudentsWorkAdmin(admin.ModelAdmin):
-    list_display = ('id', 'courseevent', 'published_at', 'published', 'title', 'homework')
+    list_display = ('id', 'courseevent', 'publish_count', 'republished_at', 'published_at', 'published', 'title', 'homework')
     list_filter = ('courseevent', 'homework', 'published')
 
 

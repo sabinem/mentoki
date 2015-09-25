@@ -10,6 +10,7 @@ from django.core.validators import ValidationError
 
 from froala_editor.widgets import FroalaEditor
 
+from apps_data.courseevent.models.menu import ClassroomMenuItem
 from apps_data.courseevent.models.courseevent import CourseEvent
 from apps_data.courseevent.models.homework import StudentsWork, Comment
 from apps_data.lesson.models.classlesson import ClassLesson
@@ -19,7 +20,7 @@ class StudentWorkCreateForm(forms.ModelForm):
 
     class Meta:
         model = StudentsWork
-        fields = ('homework', 'title', 'text' )
+        fields = ('homework', 'title', 'text', 'published')
 
     def __init__(self, *args, **kwargs):
         courseevent_slug = kwargs.pop('courseevent_slug', None)
@@ -28,11 +29,20 @@ class StudentWorkCreateForm(forms.ModelForm):
         super(StudentWorkCreateForm, self).__init__(*args, **kwargs)
 
         self.fields["homework"].queryset = \
-            ClassLesson.objects.published_homeworks(courseevent=self.courseevent)
+            ClassroomMenuItem.objects.homeworks_published_in_class(courseevent=self.courseevent)
         self.fields['homework'].empty_label = None
 
 
-class StudentWorkUpdateForm(forms.ModelForm):
+class StudentWorkUpdatePublicForm(forms.ModelForm):
+    text = forms.CharField(widget=FroalaEditor)
+    republish = forms.BooleanField(required=False)
+
+    class Meta:
+        model = StudentsWork
+        fields = ('title', 'text')
+
+
+class StudentWorkUpdatePrivateForm(forms.ModelForm):
     text = forms.CharField(widget=FroalaEditor)
 
     class Meta:

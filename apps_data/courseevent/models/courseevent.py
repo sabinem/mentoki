@@ -11,7 +11,6 @@ from django.utils.functional import cached_property
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import get_object_or_404
 from django.core.validators import ValidationError
-from django.db.models import Q
 
 from model_utils.models import TimeStampedModel
 from model_utils.managers import QueryManager
@@ -174,11 +173,7 @@ class CourseEvent(TimeStampedModel):
 
     @cached_property
     def teachers_emails(self):
-        return self.course.teachers.email
-
-    @property
-    def email(self):
-        return self.course.email
+        return self.course.teachers.emai
 
     @cached_property
     def teachersrecord(self):

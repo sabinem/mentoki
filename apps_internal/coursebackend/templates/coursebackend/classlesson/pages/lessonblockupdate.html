@@ -1,0 +1,20 @@
+{% extends "coursebackend/base_courseevent.html" %}
+
+{% block breadcrumbs %}
+    {% include 'coursebackend/classlesson/fragments/_breadcrumbs.html' %}
+{% endblock %}
+
+{% block page_content %}
+
+    <div class="row coursebackend_white">
+        <div class="sixteen wide column" id="whitepaper">
+
+            <!-- update form -->
+            {% include 'coursebackend/forms/update_create/_classlessonblock.html' %}
+
+        </div>
+    </div>
+
+{% endblock %}
+
+

@@ -1,8 +1,10 @@
-{% url 'coursebackend:forum:create'  course_slug=cs slug=es as create_link %}
-
-<a href="{{ create_link }}" class="item" >
+{% url 'coursebackend:forum:create'  course_slug=cs slug=es as create_url %}
+{% url 'classroom:forum:start'  slug=es as class_url %}
+<a href="{{ create_url }}" class="item" >
     <i class="plus icon blue"></i>Forum
 </a>
-
+<a href="{{ class_url }}" class="item" >
+    <i class="student icon blue"></i>
+</a>
 
 

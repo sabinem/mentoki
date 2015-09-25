@@ -19,14 +19,17 @@ from apps_data.lesson.models.classlesson import ClassLesson
 from apps_data.lesson.models.lesson import Lesson
 from apps_data.courseevent.models.courseevent import CourseEvent
 
-from apps_data.lesson.utils.lessoncopy import copy_lesson_selected
-
 from .mixins.base import CourseMenuMixin, FormCourseEventKwargsMixin, FormCourseKwargsMixin
 
 
 class ClassLessonRedirectDetailMixin(object):
     def get_success_url(self):
-       if self.context_object_name == 'classlesson':
+       if self.context_object_name == 'classlessonblock':
+           return reverse_lazy('coursebackend:classlesson:block',
+                               kwargs={'course_slug': self.kwargs['course_slug'],
+                                       'slug': self.kwargs['slug'],
+                                       'pk': self.object.pk})
+       elif self.context_object_name == 'classlesson':
            return reverse_lazy('coursebackend:classlesson:lesson',
                                kwargs={'course_slug': self.kwargs['course_slug'],
                                        'slug': self.kwargs['slug'],
@@ -125,6 +128,31 @@ class ClassLessonDeleteView(
         context = super(ClassLessonDeleteView, self).get_context_data(**kwargs)
         context['nodes'] = context['object'].get_delete_tree
         return context
+
+
+class ClassLessonBlockCreateView(
+    CourseMenuMixin,
+    ClassLessonRedirectDetailMixin,
+    FormValidMessageMixin,
+    FormView):
+    """
+    create lesson
+    """
+    form_class = ClassLessonBlockForm
+    model = ClassLesson
+    context_object_name ='classlessonblock'
+    form_valid_message = "Der Block wurde angelegt!"
+
+    def form_valid(self, form):
+        courseevent = get_object_or_404(CourseEvent, slug=self.kwargs['course_slug'])
+        self.object = ClassLesson.objects.create_classlessonblock(
+            courseevent=courseevent,
+            title=form.cleaned_data['title'],
+            description=form.cleaned_data['description'],
+            text=form.cleaned_data['text'],
+            nr=form.cleaned_data['nr'],
+        )
+        return HttpResponseRedirect(self.get_success_url())
 
 
 class ClassLessonCreateView(

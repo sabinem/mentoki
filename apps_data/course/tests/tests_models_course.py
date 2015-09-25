@@ -7,6 +7,7 @@ should I test __unicode__ method and get_absolute_url?
 from __future__ import unicode_literals, absolute_import
 
 from django.contrib.auth import get_user_model
+from django.core.validators import ValidationError
 
 from django.test import TestCase, Client
 
@@ -50,19 +51,23 @@ class CourseandCourseOwnerTest(TestCase):
         """
         self.client = Client()
         self.slug = "slug"
+        self.title = "title"
+        self.email1 = "u1@gmail.com"
+        self.email2 = "u2@gmail.com"
         self.domain = '127.0.0.1:8000'
         self.site = SiteFactory.create(name='localhost', domain=self.domain)
-        self.course = CourseFactory.create(title="title", slug=self.slug)
+        self.course = CourseFactory.create(title=self.title, slug=self.slug)
+        self.course2 = CourseFactory.create(title="ttile2", slug="slug2")
         self.user1 = get_user_model().objects.create(
             username='testuser1',
             first_name="firstname1",
             last_name="lastname1",
-            email="u1@gmail.com")
+            email=self.email1)
         self.user2 = get_user_model().objects.create(
             username='testuser2',
             first_name="firstname2",
             last_name="lastname2",
-            email="u2@gmail.com")
+            email=self.email2)
         self.user3 = get_user_model().objects.create(
             username='testuser3',
             first_name="firstname3",
@@ -74,6 +79,9 @@ class CourseandCourseOwnerTest(TestCase):
         self.ownership2 = CourseOwner(course=self.course, user=self.user2,
                                  display_nr=2, display=False)
         self.ownership2.save()
+        self.ownership3 = CourseOwner(course=self.course2, user=self.user3,
+                                 display_nr=1, display=True)
+        self.ownership3.save()
 
     def test_course_property_teachersrecord(self):
         """
@@ -92,6 +100,8 @@ class CourseandCourseOwnerTest(TestCase):
         """
         self.assertQuerysetEqual(self.course.teachers,
                                  [repr(self.user1), repr(self.user2)])
+        self.assertQuerysetEqual(self.course2.teachers,
+                                 [repr(self.user3)])
 
     def test_course_method_is_owner(self):
         """
@@ -110,8 +120,7 @@ class CourseandCourseOwnerTest(TestCase):
         test absolute_url of course
         """
         url = self.course.get_absolute_url()
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(url, '/de-de/slug/kursvorbereitung/vorlage/')
 
     def test_courseownermanager_qs_teachers_courseinfo_display(self):
         """
@@ -132,7 +141,8 @@ class CourseandCourseOwnerTest(TestCase):
         """
         courseowners_qs = CourseOwner.objects.\
             teachers_courseinfo_all(self.course)
-        self.assertQuerysetEqual(courseowners_qs, [repr(self.ownership1), repr(self.ownership2)])
+        self.assertQuerysetEqual(courseowners_qs, [repr(self.ownership1),
+                                                   repr(self.ownership2)])
 
     def test_courseownermanager_qs_teachers_emails(self):
         """
@@ -143,8 +153,8 @@ class CourseandCourseOwnerTest(TestCase):
         """
         courseowners_qs = CourseOwner.objects.\
             teachers_emails(self.course)
-        print courseowners_qs
-        self.assertQuerysetEqual(courseowners_qs, ['u1@gmail.com', 'u2@gmail.com'])
+        self.assertQuerysetEqual(courseowners_qs, [repr(self.email1),
+                                                   repr(self.email2)])
 
     def test_courseownermanager_qs_other_teachers_for_display(self):
         """
@@ -156,7 +166,9 @@ class CourseandCourseOwnerTest(TestCase):
         courseowners_qs = CourseOwner.objects.\
             other_teachers_for_display(self.course, self.user2)
         self.assertQuerysetEqual(courseowners_qs, [repr(self.ownership1)])
-
+        courseowners_qs = CourseOwner.objects.\
+            other_teachers_for_display(self.course2, self.user3)
+        self.assertQuerysetEqual(courseowners_qs, [])
 
     def test_foto_location(self):
         """
@@ -171,11 +183,38 @@ class CourseandCourseOwnerTest(TestCase):
         self.assertEqual(foto_location(instance, filename), 'slug/filename')
 
     def test_courseowner_method_get_absolute_url(self):
-        pass
+        """
+        courseowner.get_absolute_url
+        --------------------------------
+        test absolute_url of course
+        """
+        url = self.ownership1.get_absolute_url()
+        self.assertEqual(url, '/de-de/slug/kursvorbereitung/leitung/1')
 
     def test_courseowner_method_clean(self):
-        pass
+        """
+        courseowner.clean
+        --------------------------------
+        test clean method of model CourseOwner
+        expected: one teacher of the course must be displayed on the public
+        page
+        """
+        with self.assertRaises(ValidationError):
+            self.ownership1.display = False
+            self.ownership1.save()
+
+    def test_course_unicode(self):
+        """
+        course.__unicode__
+        --------------------------------------
+        self representation of Course
+        """
+        self.assertEqual(repr(self.course), '<Course: title>')
 
     def test_courseowner_unicode(self):
-        pass
-
+        """
+        courseowner.__unicode__
+        --------------------------------------
+        self representation of CourseOwner
+        """
+        self.assertEqual(repr(self.ownership1), '<CourseOwner: title testuser1>')

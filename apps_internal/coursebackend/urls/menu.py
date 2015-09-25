@@ -4,14 +4,11 @@ from __future__ import unicode_literals
 
 from django.conf.urls import patterns, url
 
-from ..views.menu import MenuListView, MenuItemCreateView, MenuItemDeleteView,\
+from ..views.menu import MenuItemCreateView, MenuItemDeleteView,\
    MenuItemUpdateView, MenuPreView, MenuUpdateView
 
 
 urlpatterns = patterns('',
-
-    url(r'^$', MenuListView.as_view(),
-        {'template':'coursebackend/menu/pages/list.html'}, name='list'),
 
     url(r'^vorschau$', MenuPreView.as_view(),
         {'template':'coursebackend/menu/pages/preview.html'}, name='preview'),

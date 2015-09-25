@@ -1,38 +1,132 @@
+<div class="ui header medium">
+    Unabhängige Blöcke
+</div>
 <table class="ui table stackable">
-
     <thead>
         <tr>
-            <th class="eight wide">Kopieren</th>
             <th class="eight wide">Vorlage</th>
+            <th class="eight wide">Kurs</th>
         </tr>
     </thead>
 
     <tbody>
 
-        {% for block in blocks %}
+        {% for block in independent_blocks %}
 
             {% url 'coursebackend:lesson:lesson' pk=block.pk course_slug=cs as block_url%}
-            {% url 'lesson:copy_block' courseevent_pk=courseevent.pk block_pk=block.pk as copyall_url%}
+            {% url 'lesson:copy_block' courseevent_pk=courseevent.pk block_pk=block.pk as copyall_url %}
             {% url 'coursebackend:classlesson:lessoncopy' slug=es course_slug=cs pk=lesson.pk as copypart_url %}
             {% url 'coursebackend:classlesson:lesson' slug=es course_slug=cs pk=lesson.classlesson.pk as class_url %}
             {% url 'coursebackend:classlesson:lessoncopy' slug=es course_slug=cs pk=lesson.classlesson.pk as classlesson_url %}
             <tr>
 
                 <td>
+                    <a
+                            href="{{ block_url }}"
+                    >
+                            -
+                    </a>
+                </td>
+                <td>
+                    <a
+                            href="{{ block_url }}"
+                    >
+                            <i class="icon cube"></i>(Kurs): {{ block.title }}
+                    </a>
+                </td>
+                <td>
                     <p>
-                        <a href="{{ copyall_url }}" class="ui button">
-                            jetzt Kopieren
-                        </a>
+
+
+
                     </p>
                 </td>
+
+
+            </tr>
+
+        {% endfor %}
+
+        {% for block in copied_blocks %}
+{% url 'coursebackend:classlesson:unlock' slug=es course_slug=cs pk=block.pk as unlock_url %}
+{% url 'lesson:copy_block' courseevent_pk=courseevent.pk block_pk=block.original_lesson_id as copy_url %}
+{% url 'coursebackend:classlesson:block' slug=es course_slug=cs pk=block.pk as unhide_url %}
+
+{% url 'coursebackend:lesson:lesson' pk=block.original_lesson_id course_slug=cs as block_url %}
+            <tr>
 
                 <td>
                     <a
                             href="{{ block_url }}"
                     >
-                            {{ block }}
+                            <i class="icon cube"></i>(Vorlage/Kurs): {{ block.title }}
+                        <i class="icon lock purple"></i>
+                <!-- meta -->
+                <p style="font-size: 0.9em; color:grey; font-weight:normal;">
+                   {% if not block.original_lesson and not block.original_lesson_id %}
+                       angelegt: {{ block.created |date:'d.m.Y' }}, letzte Änderung: {{ block.modified |date:'d.m.Y' }}
+
+                   {% elif block.outdated %}
+                                 {%  if not block.original_lesson %}
+                                     Original wurde gelöscht!
+                                 {% endif %}
+                                 <span class="outdated" >
+                                     Original wurde aktualisert:
+                                     {{ block.original_lesson.modified |date:'d.m.Y'}},
+                                     {{ block.original_lesson.modified|time:"H:i" }}
+
+
+                                 </span>
+                   {% endif %}
+                </p>
+
                     </a>
                 </td>
+
+                <td>
+                    <p>
+                        <a class="ui button" href="{{ unlock_url }}">
+                            <i class="icon blue unlock"></i>abkoppeln?
+                        </a>
+                        <a class="ui button" href="{{ copy_url }}">
+                            <i class="icon blue copy"></i>neu übernehmen?
+                        </a>
+
+                        <a href="{{ unhide_url }}">
+                            <i class="icon blue unhide"></i>
+                        </a>
+                    </p>
+                </td>
+
+
+            </tr>
+
+        {% endfor %}
+        {% for block in uncopied_blocks %}
+{% url 'lesson:copy_block' courseevent_pk=courseevent.pk block_pk=block.id as copy_url %}
+
+            <tr>
+
+                <td>
+                    <a
+                            href="{{ block_url }}"
+                    >
+                            <i class="icon cube"></i>(Vorlage): {{ block.title }}
+
+                    </a>
+                </td>
+
+                <td>
+                    <p>
+
+                        <a class="ui button" href="{{ copy_url }}">
+                            <i class="icon blue copy"></i>kopieren?
+                        </a>
+
+                    </p>
+                </td>
+
+
             </tr>
 
         {% endfor %}
@@ -40,4 +134,5 @@
     </tbody>
 
 </table>
+
 

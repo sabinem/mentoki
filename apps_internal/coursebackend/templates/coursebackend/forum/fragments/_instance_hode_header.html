@@ -27,11 +27,13 @@
        href="{{ update_url }}">
         <i class="write blue icon"></i>
     </a>
-    {% if not node.is_visible_in_classroom %}
-        <a class= "item"
-           href="{{ delete_url }}">
-            <i class="trash blue icon"></i>
-        </a>
+    {% if not node.is_root_node %}
+        {% if not node.is_visible_in_classroom %}
+            <a class= "item"
+               href="{{ delete_url }}">
+                <i class="trash blue icon"></i>
+            </a>
+        {% endif %}
     {% endif %}
 
 {% else %}

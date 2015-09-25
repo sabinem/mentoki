@@ -1,5 +1,6 @@
 {% url 'classroom:classlesson:step' slug=es pk=next_node.pk as forward_url %}
 {% url 'classroom:classlesson:step' slug=es pk=previous_node.pk as backward_url %}
+
 <!-- forward -->
 {% if next_node %}
     <a href="{{ forward_url }}" class="ui button basic right floated">
@@ -38,10 +39,14 @@
 
     <!-- homework -->
     {% if lessonstep.is_homework %}
-       <i class="icon lab orange"></i>
+         <a class="ui orange label">interaktiv</a>
     {% endif %}
 
 </div>
+
+{% if lessonstep.is_homework %}
+    {% include 'classroom/classlesson/fragments/_menu_work.html' %}
+{% endif %}
 
 {% if lessonstep.text != '' %}
 
@@ -67,10 +72,6 @@
 <!-- homework -->
 {% if lessonstep.is_homework %}
 
-<h4 class="ui horizontal divider header">
-     <i class="lab icon"></i>
-</h4>
-
     {% if lessonstep.due_date %}
         <p>
             Abgabedatum: {{ lessonstep.due_date | date:'d.m.Y' }}
@@ -81,15 +82,6 @@
     <div class="froala-view">
         {{ lessonstep.extra_text | safe }}
     </div>
-
-    <a href="{{ private_url }}" class="ui button">
-         <i class="write icon"></i>Zur Deinem Arbeitsbereich?
-    </a>
-
-
-    <h4 class="ui horizontal divider header">
-         <i class="users icon"></i>
-    </h4>
 
 
 {% endif %}

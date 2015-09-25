@@ -21,9 +21,9 @@
 <div class="ui header medium">
 
     <!-- icon -->
-    <i class="top aligned cube icon"></i>{{ lessonblock.lesson_nr }}
-
-        {{ lessonblock.title }}
+    <i class="cube icon"></i>
+    <div class="content">
+        {{ lessonblock.lesson_nr }} {{ lessonblock.title }}
 
         <!-- update -->
         <a href="{{ blockupdate_url }}">
@@ -34,7 +34,7 @@
         <a href="{{ delete_url }}">
            <i class="icon trash"></i>
         </a>
-
+    </div>
 </div>
 
 <!-- meta -->

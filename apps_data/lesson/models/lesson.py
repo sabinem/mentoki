@@ -91,6 +91,27 @@ class LessonManager(BaseLessonManager):
     def blocks_for_delete(self, courseevent):
         return self.objects.all()
 
+    def uncopied_blocks(self,courseevent):
+        """
+        this fetches the ids of all lessons for a courseevent, that
+        are related to lessons in the course
+        """
+        from .classlesson import ClassLesson
+        copied_ids_list = ClassLesson.objects.copied_block_ids(courseevent=courseevent)
+        return self.filter(course=courseevent.course, level=1).exclude(
+                           pk__in=copied_ids_list)
+
+    def copied_blocks(self,courseevent):
+        """
+        this fetches the ids of all lessons for a courseevent, that
+        are related to lessons in the course
+        """
+        from .classlesson import ClassLesson
+        copied_ids_list = ClassLesson.objects.copied_block_ids(courseevent=courseevent)
+        return self.filter(course=courseevent.course, level=1,
+                           pk__in=copied_ids_list)
+
+
 
 class Lesson(BaseLesson, TimeStampedModel):
 

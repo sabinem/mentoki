@@ -5,7 +5,7 @@
 {% elif item.item_type == item.MENU_ITEM_TYPE.lesson_item %}
     {% url 'classroom:classlesson:lesson' slug=es pk=item.classlesson_id as item_url %}
 {% elif item.item_type == item.MENU_ITEM_TYPE.lessonstep_item %}
-    {% url 'classroom:classlesson:step' slug=es pk=item.homework_id as item_url %}
+    {% url 'classroom:classlesson:step' slug=es pk=item.classlesson_id as item_url %}
 {% elif item.item_type == item.MENU_ITEM_TYPE.announcements_item %}
     {% url 'classroom:announcement:list' slug=es as item_url %}
 {% elif item.item_type == item.MENU_ITEM_TYPE.participants_item %}

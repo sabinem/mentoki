@@ -50,35 +50,6 @@ class MenuContextPreviewMixin(CourseMenuMixin):
         return context
 
 
-class MenuListView(
-    CourseMenuMixin,
-    TemplateView):
-    """
-    This views shows the links of menuitem seperated by the item type.
-    There are 4 lists so far:
-    1. Lessons: Lessons are published by being linked by a menu item
-    2. Forums: only level 1 Forums can be menu items
-    3. Lessonsteps: Lessonsteps can be published separately, they may
-    or may not be part of a published lesson
-    """
-    def get_context_data(self, **kwargs):
-        context = super(MenuListView, self).get_context_data(**kwargs)
-
-        context['lessonitems'] = \
-            ClassroomMenuItem.objects.lessons_for_courseevent(
-                courseevent=context['courseevent'])
-        context['forumitems'] = \
-            ClassroomMenuItem.objects.forums_for_courseevent(
-                courseevent=context['courseevent'])
-        context['homeworkitems'] = \
-            ClassroomMenuItem.objects.lessonsteps_for_courseevent(
-                courseevent=context['courseevent'])
-        context['listitems'] = \
-            ClassroomMenuItem.objects.listlinks_for_courseevent(
-                courseevent=context['courseevent'])
-        return context
-
-
 class MenuPreView(
     MenuContextPreviewMixin,
     TemplateView):

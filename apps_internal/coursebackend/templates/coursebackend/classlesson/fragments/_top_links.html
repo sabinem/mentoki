@@ -2,13 +2,6 @@
 {% url 'coursebackend:classlesson:meta'  slug=es course_slug=cs as meta_url %}
 {% url 'coursebackend:classlesson:start'  slug=es course_slug=cs as start_url %}
 
-<!-- meta data -->
-{% if url_name != 'start' %}
-    <a href="{{ start_url }}" class="item">
-        <i class="icon home blue"></i>
-    </a>
-{% endif %}
-
 <!-- copy lessons -->
 {% if url_name != 'copy' %}
     <a href="{{ copy_url }}" class="item">
@@ -16,12 +9,27 @@
     </a>
 {% endif %}
 
-<!-- meta data -->
-{% if url_name != 'meta' %}
-    <a href="{{ meta_url }}" class="item">
-        <i class="icon calendar  blue"></i>Letzte Änderung
-    </a>
-{% endif %}
+{% url 'coursebackend:classlesson:blockcreate'  course_slug=cs slug=es as createblock_url %}
+{% url 'coursebackend:classlesson:lessoncreate'  course_slug=cs slug=es  as createlesson_url %}
+{% url 'coursebackend:classlesson:stepcreate'  course_slug=cs slug=es  as createstep_url %}
+{% url 'coursebackend:material:create' course_slug=cs as material_create_url %}
+
+<!-- insert block -->
+<a href="{{ createblock_url }}" class="item" >
+    <i class="plus icon blue"></i>Block
+</a>
+
+<!-- insert lesson -->
+<a href="{{ createlesson_url }}" class="item" >
+    <i class="plus icon blue"></i>Lektion
+</a>
+
+<!-- insert lessonstep -->
+<a href="{{ createstep_url }}" class="item" >
+    <i class="plus icon blue"></i>Lernabschnitt
+</a>
+
+
 
 
 

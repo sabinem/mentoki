@@ -34,25 +34,6 @@ class LessonCopyForm(forms.Form):
                 raise ValidationError('''Bitte etwas zum Kopieren auswählen!''')
 
 
-class LessonStepsCopyForm(forms.Form):
-    copy_lessonsteps = forms.ModelMultipleChoiceField(
-        queryset=None,
-        widget=CheckboxSelectMultiple,
-        required=False
-    )
-
-    def __init__(self, *args, **kwargs):
-        lesson_pk = kwargs.pop('lesson_pk', None)
-        self.lesson = get_object_or_404(Lesson, pk=lesson_pk)
-
-        super(LessonStepsCopyForm, self).__init__(*args, **kwargs)
-        self.fields['copy_lessonsteps'].queryset = self.lesson.get_children()
-
-    def clean(self):
-        if (self.cleaned_data['copy_lessonsteps'] == []):
-            raise ValidationError('''Bitte etwas zum Kopieren auswählen!''')
-
-
 
 
 

@@ -1,18 +1,10 @@
 # coding: utf-8
 
 """
-Courses are the timeindependent representation of Courses.
+Courses are the timeindependent representation of Lessons.
 In this file there are two classes: the database representation of Courses
 and the many-to-many relationship of Courses to Owners: these are the teachers
 teaching the courses, that are the only persons eligible to change their data.
-
-TODO:
-1. is the email account for the course still needed?
-2. Course Attribute "teachers_emails" seems to deliver the same result as
-   CourseOwner queryset "teachers_emails"?
-3. CourseOwner queryset "other_teachers_for_display" should be replaced by a
-   count.
-
 """
 from __future__ import unicode_literals, absolute_import
 
@@ -28,14 +20,12 @@ from model_utils.models import TimeStampedModel
 
 from autoslug import AutoSlugField
 
-from mentoki.settings import MENTOKI_INFO_EMAIL
-
 
 class Course(TimeStampedModel):
     """
     Courses are the central model of the Application. They gather all the
-    material for teaching the subject without any regards to the actual event
-    of teaching that material to students.
+    material for teaching the subject. Courseevents draw from here for the
+    actual teaching.
     """
 
     title = models.CharField(
@@ -87,13 +77,6 @@ class Course(TimeStampedModel):
         help_text=_('Hier kannst Du Deinen Kurs ausführlich beschreiben.'),
         blank=True
     )
-    email = models.EmailField(
-        verbose_name=_("email Addresse für den Kurs"),
-        help_text=_("""Die email-Adresse des Kursleiters oder eine
-                    Mentoki-Adresse. Bitte stimme diese Adresse mit
-                    Mentoki ab."""),
-        default=MENTOKI_INFO_EMAIL
-    )
 
     class Meta:
         verbose_name = _("Kursvorlage")
@@ -105,7 +88,7 @@ class Course(TimeStampedModel):
     @cached_property
     def teachers(self):
         """
-        Returns all the accounts of users who are involved with teaching that
+        Returns all the accounts of users, who are involved with teaching that
         course sorted by the order in which they should be displayed;
         RETURN: queryset of Users
         """
@@ -150,10 +133,11 @@ class CourseOwnerManager(models.Manager):
     """
     def teachers_courseinfo_display(self, course):
         """
-        gets all teachers that are selected for showing their profiles
-        on the public page of the course; includes user-data
+        gets all the teachers ownershiprecords, of teachers, whoes profiles
+        should be displayed on the public page of the course; includes
+        user-data
         IN: Course
-        RETURN: CourseOwner-queryset
+        RETURN: CourseOwner-queryset; with user data
         """
         return self\
             .filter(course=course, display=True).select_related('user')\
@@ -161,9 +145,10 @@ class CourseOwnerManager(models.Manager):
 
     def teachers_courseinfo_all(self, course):
         """
-        get all teachers ownershiprecords of a course including their user data
+        gets all teachers ownershiprecords for a course including their user
+        data
         IN: Course
-        RETURN: CourseOwner-queryset
+        RETURN: CourseOwner-queryset; with user data
         """
         return self\
             .filter(course=course).select_related('user')\
@@ -171,8 +156,8 @@ class CourseOwnerManager(models.Manager):
 
     def other_teachers_for_display(self, course, user):
         """
-        check whether there are teachers records from other users then the
-        given user for the course.
+        checks whether there are teachers records other from the given users
+        for this course.
         IN: Course, User
         RETURN: CourseOwner-queryset
         """
@@ -252,22 +237,22 @@ class CourseOwner(TimeStampedModel):
     def __unicode__(self):
         """
         The courseownership is shown as <course> <user>
-        RETURN: string
+        RETURN: ownership record representation
         """
         return u'%s %s' % (self.course, self.user)
 
     def get_absolute_url(self):
         """
         absolute url for courseownership relation
-        RETURN: string
+        RETURN: relative url
         """
         return reverse('coursebackend:course:detail',
-                       kwargs={'course_slug': self.course_slug, 'pk': self.pk})
+                       kwargs={'course_slug': self.course.slug, 'pk': self.pk})
 
     def clean(self):
         """
-        at least on user profile must have display=True, so that it is
-        displayed on the public page of the course
+        at least on user profile must have display=True, so that there is a
+        user profile available for the public page of the course
         """
         if not self.display:
             if not CourseOwner.objects.other_teachers_for_display(

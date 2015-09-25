@@ -31,7 +31,7 @@ class MaterialManager(models.Manager):
 
     def create(self, course, title, file, document_type, description="",
                pdf_download_link=True,
-               pdf_link=True, pdf_viewer=True):
+               pdf_viewer=True):
         """
         creates a new material for course
         """
@@ -138,5 +138,5 @@ class Material(TimeStampedModel):
         no_zip: zip files are not accepted so far
         no_file: Material cannot be stored without a file to upload
         """
-        if self.document_type == self.DOCTYPE.zip:
-             forms.ValidationError(_('zip file kann nicht angezeigt werden.'), code='no_zip')
+        #if self.document_type == self.DOCTYPE.zip:
+        #     forms.ValidationError(_('zip file kann nicht angezeigt werden.'), code='no_zip')

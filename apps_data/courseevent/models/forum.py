@@ -37,13 +37,24 @@ class ForumManager(TreeManager):
         return self.filter(id__in=published_forum_ids).\
             get_descendants().values_list('id', flat=True)
 
+    def published_forums(self, courseevent):
+        # fetched here in order to avoid circular import
+        from apps_data.courseevent.models.menu import ClassroomMenuItem
+        published_forum_ids = \
+            ClassroomMenuItem.objects.forums_for_courseevent(
+                courseevent=courseevent).values_list('forum_id', flat=True)
+        print "========================"
+        print published_forum_ids
+        return self.filter(id__in=published_forum_ids).\
+            get_descendants(include_self=True)
+
 
     def active_forums_for_courseevent(self, courseevent):
         return self.filter(courseevent=courseevent, level=0, hidden=False).\
             get_descendants(include_self=True)
 
     def forums_published_in_courseevent(self, courseevent):
-        return self.filter(courseevent=courseevent, published=True)
+        return self.filter(courseevent=courseevent)
 
     def create(self, courseevent, title, display_nr,
                parent,  can_have_threads=True, text="", description=""):
@@ -173,7 +184,7 @@ class Forum(MPTTModel, TimeStampedModel):
 
     def clean(self):
         if not self.can_have_threads:
-            if self.published and self.thread_count > 0:
+            if self.thread_count > 0:
                 raise ValidationError('Dieses Forum hat bereits Beiträge.')
 
 

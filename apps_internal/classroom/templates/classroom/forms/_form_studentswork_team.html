@@ -1,4 +1,7 @@
+{% url 'classroom:classlesson:privatelist' slug=es pk=lessonstep.pk as back_url %}
+
 <form class="ui form" method="post" action="" >{% csrf_token %}
+
 
     {% include 'classroom/forms/form_fields/_form_non_field_errors.html' %}
 
@@ -9,7 +12,8 @@
                 {{ form.workers.errors }}
             </div>
         {% endif %}
-        <br>
+        <p>Wer bearbeitet das Dokument mit Dir zusammen?</p>
+
 
         {{ form.workers }}
 
@@ -18,7 +22,7 @@
     <button type="submit" value="post" class="ui button" id="formsubmitonce">
         Speichern
     </button>
-    <a class="ui button" href="{% url 'classroom:studentswork:detail' slug=courseevent.slug pk=studentswork.pk %}">
+    <a class="ui button" href="{{ back_url }}">
         Zurück
     </a>
 

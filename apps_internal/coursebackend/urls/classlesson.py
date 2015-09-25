@@ -8,23 +8,19 @@ from ..views.classlesson import ClassBlockDetailView, ClassLessonStartView,\
     ClassLessonDetailView, ClassStepDetailView
 from ..views.classlessonupdate import ClassLessonStepUpdateView, \
     ClassLessonUpdateView, ClassLessonDeleteView, ClassLessonBlockUpdateView, \
-    ClassLessonCreateView, ClassLessonStepCreateView
-from ..views.lesson_to_classlesson import CopyLessonView, CopyBlockListView, \
-    ClassLessonBLockUnlockView
+    ClassLessonCreateView, ClassLessonStepCreateView, ClassLessonBlockCreateView
+from ..views.lesson_to_classlesson import ClassLessonBLockUnlockView, CopyBlockListView
 
 
 urlpatterns = patterns('',
     url(r'^$', ClassLessonStartView.as_view(),
         {'template':'coursebackend/classlesson/pages/work.html'}, name='start'),
 
-    url(r'^meta$', ClassLessonStartView.as_view(),
-        {'template':'coursebackend/classlesson/pages/meta.html'}, name='meta'),
+    url(r'^block/(?P<pk>\d+)/entsperren$', ClassLessonBLockUnlockView.as_view(),
+        {'template':'coursebackend/classlesson/pages/unlock.html'}, name='unlock'),
 
     url(r'^kopieren$', CopyBlockListView.as_view(),
         {'template':'coursebackend/classlesson/pages/copy.html'}, name='copy'),
-
-    url(r'^block/(?P<pk>\d+)/entsperren$', ClassLessonBLockUnlockView.as_view(),
-        {'template':'coursebackend/classlesson/pages/unlock.html'}, name='unlock'),
 
     url(r'^block/(?P<pk>\d+)$', ClassBlockDetailView.as_view(),
         {'template':'coursebackend/classlesson/pages/lessonblock.html'}, name='block'),
@@ -51,6 +47,9 @@ urlpatterns += patterns('',
 
 urlpatterns += patterns('',
 
+    url(r'^anlegen/block$', ClassLessonBlockCreateView.as_view(),
+        {'template':'coursebackend/classlesson/pages/lessonblockupdate.html'}, name='blockcreate'),
+
     url(r'^anlegen/lektion$', ClassLessonCreateView.as_view(),
         {'template':'coursebackend/classlesson/pages/lessonupdate.html'}, name='lessoncreate'),
 
@@ -62,11 +61,4 @@ urlpatterns += patterns('',
 urlpatterns += patterns('',
     url(r'^(?P<pk>\d+)/loeschen$', ClassLessonDeleteView.as_view(),
         {'template':'coursebackend/classlesson/pages/delete.html'}, name='delete'),
-)
-
-urlpatterns += patterns('',
-
-    url(r'^(?P<pk>\d+)/kopieren$', CopyLessonView.as_view(),
-        {'template':'coursebackend/classlesson/pages/lessoncopy.html'}, name='lessoncopy'),
-
 )

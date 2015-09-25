@@ -10,25 +10,23 @@
             {% url 'coursebackend:classlesson:unlock' slug=es course_slug=cs pk=node.pk as unlock_url %}
             {% url 'coursebackend:classlesson:blockupdate' slug=es course_slug=cs pk=node.pk as update_url %}
             {% url 'coursebackend:lesson:block' course_slug=cs pk=node.original_lesson_id as course_url %}
-            {% url 'coursebackend:lesson:blockcopy' course_slug=cs pk=node.original_lesson_id as copy_url %}
+            {% url 'lesson:copy_block' courseevent_pk=courseevent.pk block_pk=node.original_lesson_id as copy_url %}
+
         {% elif node.is_lesson %}
             {% url 'classroom:classlesson:lesson' slug=es pk=node.pk as class_url %}
             {% url 'coursebackend:classlesson:lesson' slug=es course_slug=cs pk=node.pk as detail_url%}
             {% url 'coursebackend:classlesson:lessonupdate' slug=es course_slug=cs pk=node.pk as update_url %}
             {% url 'coursebackend:lesson:lesson' course_slug=cs pk=node.original_lesson_id as course_url %}
-            {% url 'coursebackend:lesson:blockcopy' course_slug=cs pk=node.original_lesson_id as copy_url %}
         {% elif node.is_step %}
             {% url 'classroom:classlesson:step' slug=es pk=node.pk as class_url %}
             {% url 'coursebackend:classlesson:step' slug=es course_slug=cs pk=node.pk as detail_url%}
             {% url 'coursebackend:classlesson:stepupdate' slug=es course_slug=cs pk=node.pk as update_url %}
             {% url 'coursebackend:lesson:step' course_slug=cs pk=node.original_lesson_id as course_url %}
-            {% url 'coursebackend:lesson:blockcopy' course_slug=cs pk=node.original_lesson_id as copy_url %}
         {% endif %}
         {% url 'coursebackend:classlesson:delete'  course_slug=cs slug=es pk=node.pk as delete_url %}
         {% url 'coursebackend:material:update' course_slug=cs pk=node.material_id as material_url %}
 
         <div class="item">
-        
             <!-- icon -->
             {% if node.is_block %}
                 <i class="top aligned cube icon">{{ node.lesson_nr }}</i>
@@ -79,21 +77,11 @@
                         {% endif %}
 
                         <!-- class link -->
-                        {% if node.original_lesson %}
-                            {% if node.is_block %}
-                                <a href="{{ unlock_url }}">
-                                    <i class="icon blue unlock"></i>
-                                </a>
-                            {% endif %}
-                            <a href="{{ copy_url }}">
-                                <i class="icon blue copy"></i>
-                            </a>
-                            <a href="{{ course_url }}">
-                                <i class="icon blue external"></i>
-                            </a>
-                        {% else %}
+                        {% if not  node.original_lesson %}
                         <!-- update -->
+
                             {% if not node.is_root_node %}
+
                                 <a href="{{ update_url }}">
                                    <i class="icon blue write"></i>
                                 </a>
@@ -103,14 +91,50 @@
                                 </a>
                                 {% endif %}
                             {% endif %}
+                        {% else %}
+                            {% if not node.is_root_node %}
+                                 <i class="icon purple lock"></i>
+                            {% endif %}
                         {% endif %}
 
                     {% endif %}
 
                 </div>
+                {% if node.original_lesson %}
+                    {% if node.is_block %}
+                        <a class="ui button" href="{{ unlock_url }}">
+                            <i class="icon blue unlock"></i>abkoppeln?
+                        </a>
+                        <a class="ui button" href="{{ copy_url }}">
+                            <i class="icon blue copy"></i>neu übernehmen?
+                        </a>
+                                {% if not node.is_visible_in_classroom  %}
+                                <a href="{{ delete_url }}">
+                                   <i class="icon blue trash"></i>
+                                </a>
+                                {% endif %}
+                    {% endif %}
+                {% endif %}
                 <!-- meta -->
                 <p style="font-size: 0.9em; color:grey; font-weight:normal;">
-                   angelegt: {{ node.created |date:'d.m.Y' }}, letzte Änderung: {{ node.modified |date:'d.m.Y' }}
+                   {% if not node.original_lesson and not node.original_lesson_id %}
+                       angelegt: {{ node.created |date:'d.m.Y' }}, letzte Änderung: {{ node.modified |date:'d.m.Y' }}
+
+                   {% elif node.outdated %}
+                                 {%  if not node.original_lesson %}
+                                     Original wurde gelöscht!
+                                 {% endif %}
+                                 <span class="outdated" >
+                                     Original wurde aktualisert:
+                                     {{ node.original_lesson.modified |date:'d.m.Y'}},
+                                     {{ node.original_lesson.modified|time:"H:i" }}
+                                    <a href="{{ course_url }}">
+                                        <i class="icon blue external"></i>
+                                    </a>
+
+
+                                 </span>
+                   {% endif %}
                 </p>
 
                 <!-- description -->

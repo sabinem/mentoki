@@ -13,7 +13,7 @@ from model_utils.fields import MonitorField
 
 from apps_data.courseevent.models.courseevent import CourseEvent
 
-from .base import BaseLesson, lesson_nr_lesson, lesson_nr_step
+from .base import BaseLesson, lesson_nr_lesson, lesson_nr_step, lesson_nr_block
 from .lesson import Lesson, LessonManager
 
 
@@ -27,6 +27,26 @@ class ClassLessonManager(LessonManager):
     or block. But he can also leave the master at the course and continue to
     changes over to the courseevent.
     """
+    def create_classlessonblock(self, nr, title, text, description, courseevent):
+        """
+        this creates a classlesson
+        """
+        classlessonroot = ClassLesson.objects.get(
+            level=0,
+            courseevent=courseevent)
+        classlesson = ClassLesson(course=courseevent.course,
+                       courseevent=courseevent,
+                       title=title,
+                       description=description,
+                       text=text,
+                       nr=nr,
+                       lesson_nr=lesson_nr_block(nr=nr)
+                       )
+        classlesson.insert_at(classlessonroot)
+        classlesson.save()
+        ClassLesson.objects.rebuild()
+        return classlesson
+
     def create_classlesson(self, nr, title, text, description, courseevent, parent):
         """
         this creates a classlesson
@@ -70,8 +90,34 @@ class ClassLessonManager(LessonManager):
         this fetches the ids of all lessons for a courseevent, that
         are related to lessons in the course
         """
-        return self.filter(courseevent=courseevent).\
+        return self.filter(courseevent=courseevent, original_lesson__isnull=False).\
             values_list('original_lesson_id', flat=True)
+
+    def copied_block_ids(self,courseevent):
+        """
+        this fetches the ids of all lessons for a courseevent, that
+        are related to lessons in the course
+        """
+        return self.filter(courseevent=courseevent,
+                           original_lesson__isnull=False,
+                           level=1).\
+            values_list('original_lesson_id', flat=True)
+
+    def copied_blocks(self,courseevent):
+        """
+        this fetches the ids of all lessons for a courseevent, that
+        are related to lessons in the course
+        """
+        return self.filter(courseevent=courseevent,
+                           original_lesson__isnull=False, level=1)
+
+    def independent_blocks(self,courseevent):
+        """
+        this fetches the ids of all lessons for a courseevent, that
+        are related to lessons in the course
+        """
+        return self.filter(courseevent=courseevent, level=1,
+                           original_lesson=None)
 
     def complete_tree_for_courseevent(self, courseevent):
         """
@@ -106,8 +152,12 @@ class ClassLessonManager(LessonManager):
                            ).order_by('created')
 
     def published_homeworks(self, courseevent):
+        from apps_data.courseevent.models.menu import ClassroomMenuItem
+        ids = ClassroomMenuItem.objects.lesson_ids_published_in_class()
+
         return self.filter(courseevent=courseevent,
-                           is_homework=True
+                           is_homework=True,
+
                            ).order_by('created')
 
 
@@ -157,8 +207,8 @@ class ClassLesson(BaseLesson):
         return self.get_ancestors(include_self=True).filter(published=True)
 
     def outdated(self):
-        if self.created < self.original_lesson.modified:
-            print self.created
+        if self.modified < self.original_lesson.modified:
+            print self.modified
             print self.original_lesson.modified
             return True
         else:

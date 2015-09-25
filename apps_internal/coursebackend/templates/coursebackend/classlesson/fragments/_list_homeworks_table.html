@@ -12,9 +12,9 @@
 
             {% url 'coursebackend:classlesson:stepupdate' course_slug=cs slug=es pk=homework.pk as update_url %}
             {% url 'coursebackend:classlesson:step' course_slug=cs slug=es pk=homework.pk as detail_url %}
-            {% if homework.published %}
-                 {% url 'classroom:classlesson:step' slug=es pk=homework.pk as detail_url %}
-            {% endif %}
+
+                 {% url 'classroom:classlesson:step' slug=es pk=homework.pk as class_url %}
+
             <tr>
                 <td>
                     {% if homework.due_date %}
@@ -25,17 +25,26 @@
 
                 </td>
                 <td>
-                    <a href="{{ detail_url }}"
-                    {% if homework.published %}class="published_in_class"{% endif %}>
+
+                    <a href="{{ class_url }}"
+                    {% if homework.is_visible_in_classroom %}class="published_in_class"{% endif %}>
                         {{ homework }}
-                        <i class="icon lab orange"></i>
+                            <a class="ui orange label">interaktiv</a>
+
+
                     </a>
+                        {% if homework.is_visible_in_classroom %}
+                            <a href="{{ class_url }}">
+                                <i class="icon blue student"></i>
+                            </a>
+                        {% endif %}
 
                     <a href="{{ update_url }}">
                         <i class="icon write blue"></i>
                     </a>
                     in
                     {{ homework.parent }}
+
                 </td>
 
             </tr>

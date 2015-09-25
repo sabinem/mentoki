@@ -1,0 +1,33 @@
+
+{% url 'classroom:classlesson:publiclist' slug=es pk=lessonstep.pk as public_url %}
+{% url 'classroom:classlesson:step' slug=es pk=lessonstep.pk as step_url %}
+{% url 'classroom:classlesson:privatelist' slug=es pk=lessonstep.pk as private_url %}
+<div class="ui three item menu">
+  {% if url_name == 'step' %}
+      <a class="item active">
+  {% else %}
+      <a class="item" href="{{ step_url }}">
+  {% endif %}
+      Lernschritt
+  </a>
+  {% if url_name == 'publiclist' %}
+      <a class="item active">
+  {% elif studentswork and studentswork.publish_count != 0 %}
+      <a class="item active" href="{{ public_url }}">
+  {% elif url_name == 'comment' or url_name == 'updatepublic' %}
+      <a class="item active" href="{{ public_url }}">
+  {% else %}
+      <a class="item" href="{{ public_url }}">
+  {% endif %}
+      veröffentlicht*
+  </a>
+  {% if url_name == 'privatelist' or url_name == 'updateprivate' or url_name == 'create' %}
+      <a class="item active">
+  {% elif studentswork and studentswork.publish_count == 0 %}
+      <a class="item active" href="{{ private_url }}">
+  {% else %}
+      <a class="item" href="{{ private_url }}">
+  {% endif %}
+      Entwürfe (privat)*
+  </a>
+</div>

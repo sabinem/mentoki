@@ -48,8 +48,18 @@ class ClassroomMenuItemManager(models.Manager):
         get flat list of lesson ids that are published in class
         """
         return self.filter(courseevent=courseevent,
-                           item_type__in=['homework', 'lesson'],
+                           item_type__in=['lessonstep', 'lesson'],
                            ).values_list('classlesson_id', flat=True)
+
+    def homeworks_published_in_class(self, courseevent):
+        """
+        get flat list of lesson ids that are published in class
+        """
+        ids = self.filter(courseevent=courseevent,
+                           item_type__in=['lessonstep', 'lesson'],
+                           ).values_list('classlesson_id', flat=True)
+        return ClassLesson.objects.filter(id__in=ids).get_descendants(include_self=True).\
+            filter(level=3, is_homework=True)
 
     def forum_ids_published_in_class(self, courseevent):
         """
@@ -65,7 +75,7 @@ class ClassroomMenuItemManager(models.Manager):
         get all homeworks that are published in class
         """
         return self.filter(courseevent=courseevent,
-                           item_type='homework'
+                           item_type='lessonstep'
                            ).order_by('display_nr')
 
     def lessons_for_courseevent(self, courseevent):

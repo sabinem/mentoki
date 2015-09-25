@@ -19,8 +19,6 @@ from apps_data.lesson.models.classlesson import ClassLesson
 from apps_data.lesson.models.lesson import Lesson
 from apps_data.courseevent.models.courseevent import CourseEvent
 
-from apps_data.lesson.utils.lessoncopy import copy_lesson_selected
-
 from .mixins.base import CourseMenuMixin, FormCourseEventKwargsMixin, FormCourseKwargsMixin
 
 

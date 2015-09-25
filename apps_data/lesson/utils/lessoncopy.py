@@ -10,28 +10,11 @@ from django.core.validators import ValidationError
 from django.http import HttpResponseRedirect
 from django.core.exceptions import ObjectDoesNotExist
 
+from braces.views import MessageMixin
 from apps_data.courseevent.models.courseevent import CourseEvent
 
 from ..models.lesson import Lesson
 from ..models.classlesson import ClassLesson
-
-
-def copy_lesson_selected(self, lesson, lessonsteps, copy_lesson, courseevent):
-    """
-    copies selected parts of a lesson from Lesson (in course) to ClassLesson (in a courseevent)
-    """
-    if copy_lesson:
-        classlesson=_update_lesson(lesson=lesson, courseevent=courseevent)
-    else:
-        classlesson = ClassLesson.objects.get(original_lesson=lesson, courseevent=courseevent)
-
-    for lessonstep in lessonsteps:
-        _update_or_create_lessonstep(lessonstep=lessonstep,
-                                     classlesson=classlesson, courseevent=courseevent,
-                                     published=classlesson.published)
-
-    ClassLesson.objects.rebuild()
-    return classlesson
 
 
 def copy_block_for_courseevent(self, block_pk, courseevent_pk):
@@ -39,122 +22,85 @@ def copy_block_for_courseevent(self, block_pk, courseevent_pk):
     copies a complete lesson from Lesson (in course) to ClassLesson (in a courseevent)
     """
     try:
-        lesson=get_object_or_404(Lesson, pk=block_pk)
+        lessonblock=get_object_or_404(Lesson, pk=block_pk)
     except ObjectDoesNotExist:
-         raise ValidationError('Die Lektion wurde nicht gefunden')
+         raise ValidationError('Der Unterrichtsblock wurde nicht gefunden')
 
-    lessonsteps = lesson.get_children()
-
-    if not lesson.is_lesson:
-        raise ValidationError('Das ist keine Lektion. Nur Lektionen können kopiert werden.')
+    if not lessonblock.is_block:
+        raise ValidationError('Das ist kein Block. Nur Blöcke können kopiert werden.')
 
     courseevent = get_object_or_404(CourseEvent, pk=courseevent_pk)
-    lessonblock = get_object_or_404(Lesson, pk=lesson.parent_id)
     lessonroot = get_object_or_404(Lesson, level=0, course=courseevent.course)
+    classlessonroot = ClassLesson.objects.get(
+            original_lesson_id=lessonroot.id,
+            courseevent=courseevent)
 
-    # establish class root
-    try:
-        classlessonroot = ClassLesson.objects.get(original_lesson_id=lessonroot.id, courseevent=courseevent)
-        print "---- root found"
-        print classlessonroot
-    except:
-        print "no root found"
-        classlessonroot = _copy_any_level_lesson(lesson=lessonroot,
-                                            courseevent=courseevent,
-                                            parent=None)
-        print classlessonroot
-        print "====================="
-    # establish block
-    try:
-        classblock = ClassLesson.objects.get(original_lesson_id=lessonblock.id, courseevent=courseevent)
-    except:
-        classblock = _copy_any_level_lesson(lesson=lessonblock,
-                                            courseevent=courseevent,
-                                            parent=classlessonroot)
+    # copy block
+    classblock = _copy_any_level_lesson(lesson=lessonblock,
+                                        courseevent=courseevent,
+                                        parent=classlessonroot)
     # copy lesson
-    classlesson = _copy_any_level_lesson(lesson=lesson,
+    lessons = lessonblock.get_children()
+    lessonsteps_moved = []
+    for lesson in lessons:
+        classlesson = _copy_any_level_lesson(lesson=lesson,
                                         courseevent=courseevent,
                                         parent=classblock)
 
-    # copy lessonsteps
-    for step in lessonsteps:
-        _copy_any_level_lesson(lesson=step,
+        lessonsteps = lesson.get_children()
+
+        for lessonstep in lessonsteps:
+            classlessonstep = _copy_any_level_lesson(lesson=lessonstep,
                                courseevent=courseevent,
                                parent=classlesson)
+            if not classlessonstep:
+                lessonsteps_moved.append(lessonstep)
+
+    for lessonstep in lessonsteps_moved:
+        classparent = ClassLesson.objects.get(courseevent=courseevent,
+                                              original_lesson=lessonstep.parent)
+        classlesson = _copy_any_level_lesson(lesson=lessonstep,
+                                        courseevent=courseevent,
+                                        parent=classparent,
+                                        move=True)
+
 
     ClassLesson.objects.rebuild()
 
+
     return(HttpResponseRedirect(reverse('coursebackend:classlesson:start',
-                               kwargs={'course_slug': courseevent.course.slug, 'slug': courseevent.slug})))
+                                kwargs={'course_slug': courseevent.course.slug,
+                                       'slug': courseevent.slug})))
 
 
-def _copy_any_level_lesson(lesson, courseevent, parent):
+def _copy_any_level_lesson(lesson, courseevent, parent, move=False):
     now = datetime.datetime.now()
-    classlesson = ClassLesson(
-        title=lesson.title,
-        text=lesson.text,
-        lesson_nr=lesson.lesson_nr,
-        nr=lesson.nr,
-        course=lesson.course,
-        description=lesson.description,
-        courseevent=courseevent,
-        material=lesson.material,
-        original_lesson=lesson,
-        modified=now,
-        created=now,
-        is_homework=lesson.is_homework,
-        is_original_lesson=True
-    )
-    classlesson.insert_at(parent)
-    classlesson.save(copy=True)
+    try:
+        classlesson = ClassLesson.objects.get(original_lesson=lesson)
+        if lesson.level == 3:
+            if classlesson.parent.original_lesson != parent and not move:
+                return None
+    except:
+        classlesson = ClassLesson(created=now)
 
-    return classlesson
-
-
-def _update_lesson(lesson, courseevent):
-    classlesson = ClassLesson.objects.get(original_lesson=lesson, courseevent=courseevent)
     classlesson.title=lesson.title
     classlesson.text=lesson.text
     classlesson.lesson_nr=lesson.lesson_nr
     classlesson.nr=lesson.nr
     classlesson.course=lesson.course
     classlesson.description=lesson.description
-    classlesson.is_original_lesson = True
-
-    now = datetime.datetime.now()
-    classlesson.created = now
-    classlesson.modified = now
-
+    classlesson.courseevent=courseevent
+    classlesson.material=lesson.material
+    classlesson.original_lesson=lesson
+    classlesson.modified=now
+    classlesson.is_homework=lesson.is_homework
+    classlesson.is_original_lesson=True
+    if not classlesson.pk:
+        classlesson.insert_at(parent)
+    elif move:
+        classlesson.move_to(parent)
+    print "--- before save"
+    print classlesson
     classlesson.save(copy=True)
     return classlesson
 
-
-def _update_or_create_lessonstep(lessonstep, classlesson, courseevent, published=False):
-    try:
-        classlessonstep = ClassLesson.objects.get(original_lesson=lessonstep, courseevent=courseevent)
-        classlessonstep.title=lessonstep.title
-        classlessonstep.text=lessonstep.text
-        classlessonstep.lesson_nr=lessonstep.lesson_nr
-        classlessonstep.courseevent=courseevent
-        classlessonstep.nr=lessonstep.nr
-        classlessonstep.course=lessonstep.course
-        classlessonstep.description=lessonstep.description
-        classlessonstep.material=lessonstep.material
-        classlessonstep.is_homework=lessonstep.is_homework
-        classlessonstep.courseevent=classlesson.courseevent
-        classlessonstep.is_original_lesson = True
-        classlessonstep.published = published
-
-        now = datetime.datetime.now()
-        classlessonstep.created = now
-        classlessonstep.modified = now
-
-        classlessonstep.save(copy=True)
-
-    except ObjectDoesNotExist:
-        classlessonstep = _copy_any_level_lesson(
-            lesson=lessonstep,
-            courseevent=classlesson.courseevent,
-            parent=classlesson)
-
-    return classlessonstep

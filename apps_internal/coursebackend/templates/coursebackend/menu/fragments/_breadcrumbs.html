@@ -2,22 +2,24 @@
 
 <div class="ui large breadcrumb" id ="page-breadcrumb">
 
-    <a href="{{ list_url }}" class="section">
-        Klassenzimmer-Menü
-    </a>
+    {% if not url_name == 'list' or url_name == 'list' %}
+        <div  class="section active">
+            Klassenzimmer-Menü
+        </div>
+    {% elif url_name == 'list' %}
+        <a href="{{ list_url }}" class="section">
+            Klassenzimmer-Menü
+        </a>
 
-    <i class="right chevron icon divider"></i>
-   {% if url_name == 'list' %}
-    <div class="section active">
-        veröffentlicht
-    </div>
-    {% elif url_name == 'preview' %}
-    <div class="section active">
-        Menü bearbeiten
-    </div>
-    {% elif url_name == 'sort' %}
-    <div class="section active">
-        Menüpunkte sortieren
-    </div>
+        <i class="right chevron icon divider"></i>
+       {% if url_name == 'list' %}
+            <div class="section active">
+                veröffentlicht
+            </div>
+       {% elif url_name == 'sort' %}
+            <div class="section active">
+                sortieren
+            </div>
+       {% endif %}
     {% endif %}
 </div>

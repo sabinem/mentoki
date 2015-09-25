@@ -17,6 +17,6 @@ class MaterialForm(forms.ModelForm):
 
     def clean_document_type(self):
         document_type = self.cleaned_data["document_type"]
-        if document_type == Material.DOCTYPE.zip :
-            raise ValidationError('''zip-Datein werden derzeit noch nicht unterstützt.''')
+        #if document_type == Material.DOCTYPE.zip :
+        #   raise ValidationError('''zip-Datein werden derzeit noch nicht unterstützt.''')
         return self.cleaned_data["document_type"]

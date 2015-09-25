@@ -1,0 +1,20 @@
+
+{% url 'classroom:studentswork:list' slug=es  as public_url %}
+{% url 'classroom:studentswork:listprivate' slug=es as private_url %}
+
+<div class="ui two item menu">
+  {% if url_name == 'list' %}
+      <a class="item active">
+  {% else %}
+      <a class="item" href="{{ public_url }}">
+  {% endif %}
+      veröffentlicht*
+  </a>
+  {% if url_name == 'listprivate' %}
+      <a class="item active">
+  {% else %}
+      <a class="item" href="{{ private_url }}">
+  {% endif %}
+      Entwürfe (privat)*
+  </a>
+</div>

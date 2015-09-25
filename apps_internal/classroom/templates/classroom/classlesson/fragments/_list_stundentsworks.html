@@ -1,22 +1,71 @@
+{% if url_name == 'privatelist' %}
+ {% url 'classroom:classlesson:create' slug=es pk=lessonstep.pk as create_url %}
+<a href="{{ create_url }}" class="ui button">
+  neue Arbeit anlegen
+  <i class="icon plus"></i>
+</a>
+{% endif %}
 {% for studentswork in studentsworks %}
 
-    {% url 'classroom:classlesson:studentswork' slug=es work_pk=studentswork.pk pk=lessonstep.pk as work_url %}
+    {% url 'classroom:classlesson:studentswork' slug=es work_pk=studentswork.pk pk=lessonstep.pk as comment_url %}
+    {% if studentswork.published %}
+        {% url 'classroom:classlesson:updatepublic' slug=es work_pk=studentswork.pk pk=lessonstep.pk as work_url %}
+    {% else %}
+        {% url 'classroom:classlesson:updateprivate' slug=es work_pk=studentswork.pk pk=lessonstep.pk as work_url %}
+    {% endif %}
+    {% url 'classroom:classlesson:studentswork' slug=es work_pk=studentswork.pk pk=lessonstep.pk as detail_url %}
+    {% url 'classroom:classlesson:delete' slug=es work_pk=studentswork.pk pk=lessonstep.pk as delete_url %}
+    {% url 'classroom:classlesson:addteam' slug=es work_pk=studentswork.pk pk=lessonstep.pk as addteam_url %}
 
     <div class="ui card fluid">
       <div class="content">
-        <a href="{{ work_url }}" class="header">"{{ studentswork.title }}"</a>
+        <a href="{{ detail_url }}" class="header">{{ studentswork.title }}</a>
         <div class="meta">
-          <span class="right time">abgegeben am {{ studentswork.published_at | date:'d.m.Y' }}</span>
-        </div>
-        <div class="description">
-          <span class="category">von: {{ studentswork.team | join:', ' }}</span>
+          {% if studentswork.publish_count != 0 %}
+          <span class="right time">Erstabgabe am {{ studentswork.published_at | date:'d.m.Y' }}
+              {{ studentswork.published_at|time:"H:i" }},</span>
+          {% else %}
+              (Entwurf)
+          {% endif %}
+          {% if studentswork.publish_count > 1 %}
+          <span class="right time">{{ studentswork.publish_count }}. Abgabe {{ studentwork.publish_count }}:
+              {{ studentswork.republished_at | date:'d.m.Y' }}{{ studentswork.republished_at|time:"H:i" }}</span>
+          {% endif %}
+          <br>
+            von:
+          <div class="ui horizontal list">
+              {% for worker in studentswork.workers.all %}
+                  <div class="item">
+                     <img class="ui mini image" src="{{ worker.profile_image.url }}">
+                    <div class="content">
+                      <div class="header">{{ worker.username }}</div>
+                    </div>
+                  </div>
+              {% endfor %}
+          </div>
         </div>
       <div class="extra content">
         <div>
-          <a href="{{ work_url }}" class="ui button">
+        {% if studentswork.publish_count != 0 %}
+          <a href="{{ comment_url }}" class="ui button">
               ansehen und kommentieren
               <i class="icon comments"></i>
           </a>
+        {% endif %}
+          {% if request.user in studentswork.workers.all %}
+              <a href="{{ work_url }}" class="ui button">
+                  bearbeiten
+                  <i class="icon write"></i>
+              </a>
+            {% if studentswork.publish_count == 0 %}
+                <a class="ui button" href="{{ delete_url }}">
+                    <i class="trash blue icon"></i>
+                </a>
+                <a class="ui button" href="{{ addteam_url }}">
+                    <i class="add user icon blue"></i>
+                </a>
+            {% endif %}
+          {% endif %}
         </div>
       </div>
     </div>

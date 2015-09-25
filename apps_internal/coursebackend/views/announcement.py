@@ -34,9 +34,9 @@ class AnnouncementListView(
         context = super(AnnouncementListView, self).get_context_data(**kwargs)
 
         context ['announcements_unpublished'] = \
-            Announcement.objects.unpublished(courseevent = context['courseevent'])
+            Announcement.objects.draft(courseevent = context['courseevent'])
         context ['announcements_published'] = \
-            Announcement.objects.published(courseevent = context['courseevent'])
+            Announcement.objects.published_in_class(courseevent = context['courseevent'])
         context ['announcements_archived'] = \
             Announcement.objects.archived(courseevent = context['courseevent'])
 

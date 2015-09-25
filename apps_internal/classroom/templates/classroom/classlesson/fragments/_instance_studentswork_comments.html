@@ -1,42 +1,48 @@
-{% url 'classroom:classlesson:comment' slug=es pk=lessonstep.pk work_pk=studentswork.pk as comment_url %}
 
-<h4 class="ui horizontal divider header">
-    <i class="comments outline icon"></i>
-    Kommentare
-</h4>
 
-<div class="ui comments">
+    {% url 'classroom:classlesson:comment' slug=es pk=lessonstep.pk work_pk=studentswork.pk as comment_url %}
 
-    {% for comment in comments %}
+    <h4 class="ui horizontal divider header">
+        <i class="comments outline icon"></i>
+        Kommentare
+    </h4>
 
-        <div class="comment">
+    {% if url_name != 'updatepublic' %}
+        <a href="{{ comment_url }}" class="ui button">
+            <i class="write icon blue"></i>Kommentar anfügen?
+        </a>
+    {% endif %}
 
-            <a class="avatar">
+    <div class="ui comments">
 
-                    <img src="{{ comment.author.profile_image.url }}">
+        {% for comment in comments %}
 
-            </a>
+            <div class="comment">
 
-            <div class="content">
+                <a class="avatar">
 
-                <a class="author">{{ comment.author }}: {{ comment.title }}</a>
+                        <img src="{{ comment.author.profile_image.url }}">
 
-                <div class="metadata">
-                    <span class="date">{{ comment.created }}</span>
-                </div>
+                </a>
 
-                <div class="froala-view">
-                    {{ comment.text | safe }}
+                <div class="content">
+
+                    <a class="author">{{ comment.author }}: {{ comment.title }}</a>
+
+                    <div class="metadata">
+                        <span class="date">{{ comment.created }}</span>
+                    </div>
+
+                    <div class="froala-view">
+                        {{ comment.text | safe }}
+                    </div>
+
                 </div>
 
             </div>
 
-        </div>
+        {% endfor %}
 
-    {% endfor %}
+    </div>
 
-</div>
 
-<a href="{{ comment_url }}" class="ui button">
-    <i class="write icon blue"></i>Kommentar anfügen?
-</a>

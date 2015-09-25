@@ -5,7 +5,7 @@
 {% url 'coursebackend:forum:list' course_slug=cs slug=es as forum_url %}
 {% url 'coursebackend:announcement:list' course_slug=cs slug=es as announcements_url %}
 {% url 'coursebackend:classhomework:list' course_slug=cs slug=es as homeworks_url %}
-{% url 'coursebackend:menu:list' course_slug=cs slug=es as menu_url %}
+{% url 'coursebackend:menu:preview' course_slug=cs slug=es as menu_url %}
 {% url "coursebackend:classlesson:start" course_slug=cs slug=es as lesson_url %}
 {% url "coursebackend:material:list" course_slug=cs slug=es as material_url %}
 {% url 'coursebackend:classlesson:start' course_slug=cs slug=es as classlesson_url %}

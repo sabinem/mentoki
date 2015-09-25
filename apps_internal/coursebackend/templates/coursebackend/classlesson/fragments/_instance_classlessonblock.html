@@ -16,19 +16,67 @@
         <i class="left arrow icon"></i>{{ previous_node.lesson_nr }}
     </a>
 {% endif %}
-
+{% url 'coursebackend:classlesson:unlock' slug=es course_slug=cs pk=classlessonblock.pk as unlock_url %}
+{% url 'lesson:copy_block' courseevent_pk=courseevent.pk block_pk=classlessonblock.original_lesson_id as copy_url %}
 
 <div class="ui header medium">
 
     <!-- icon -->
-    <i class="top aligned cube icon">{{ classlessonblock.lesson_nr }}</i>
+
 
     <div class="content">
 
-        {{ classlessonblock.title }}
+       <i class="cube icon"></i> {{ classlessonblock.lesson_nr }} {{ classlessonblock.title }}
 
+    <!-- class link -->
+    {% if classlessonblock.original_lesson %}
+<i class="icon lock purple"></i>
+<br>
+                        <a class="ui button" href="{{ unlock_url }}">
+                            <i class="icon blue unlock"></i>abkoppeln?
+                        </a>
+                        <a class="ui button" href="{{ copy_url }}">
+                            <i class="icon blue copy"></i>neu übernehmen?
+                        </a>
+                                        {% if not node.is_visible_in_classroom  %}
+                                <a href="{{ delete_url }}">
+                                   <i class="icon blue trash"></i>
+                                </a>
+                                {% endif %}
+
+                <!-- meta -->
+                <p style="font-size: 0.9em; color:grey; font-weight:normal;">
+                   {% if not classlessonblock.original_lesson and not classlessonblock.original_lesson_id %}
+                       angelegt: {{ classlessonblock.created |date:'d.m.Y' }}, letzte Änderung: {{ classlessonblock.modified |date:'d.m.Y' }}
+
+                   {% elif classlessonblock.outdated %}
+                                 {%  if not classlessonblock.original_lesson %}
+                                     Original wurde gelöscht!
+                                 {% endif %}
+                                 <span class="outdated" >
+                                     Original wurde aktualisert:
+                                     {{ classlessonblock.original_lesson.modified |date:'d.m.Y'}},
+                                     {{ classlessonblock.original_lesson.modified|time:"H:i" }}
+                                    <a href="{{ course_url }}">
+                                        <i class="icon blue external"></i>
+                                    </a>
+
+
+                                 </span>
+                   {% endif %}
+                </p>
+    {% else %}
+    <!-- update -->
+        <a href="{{ update_url }}">
+           <i class="icon blue write"></i>
+        </a>
+        {% if not classlessonblock.is_visible_in_classroom  %}
+        <a href="{{ delete_url }}">
+           <i class="icon blue trash"></i>
+        </a>
+        {% endif %}
+    {% endif %}
     </div>
-
 </div>
 
 {% if lessonblock.text != '' %}
