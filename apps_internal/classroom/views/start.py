@@ -35,9 +35,9 @@ class ClassroomStartView(
             url = reverse('classroom:forum:detail', args=args, kwargs=kwargs)
             return url
 
-        elif startitem.item_type == ClassroomMenuItem.MENU_ITEM_TYPE.homework_item:
-            kwargs['pk'] = startitem.forum_id
-            url = reverse('classroom:homework:list', args=args, kwargs=kwargs)
+        elif startitem.item_type == ClassroomMenuItem.MENU_ITEM_TYPE.lessonstep_item:
+            kwargs['pk'] = startitem.classlesson_id
+            url = reverse('classroom:classlesson:step', args=args, kwargs=kwargs)
             return url
 
         elif startitem.item_type == ClassroomMenuItem.MENU_ITEM_TYPE.last_posts_item:

@@ -4,48 +4,22 @@ from __future__ import unicode_literals, absolute_import
 
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import get_object_or_404
-
+from django.http import HttpResponseRedirect
 from django.views.generic import DetailView, TemplateView, UpdateView, \
     DeleteView, FormView
 from django.core.validators import ValidationError
 
 from braces.views import FormValidMessageMixin
 
-from ..forms.classlesson import ClassLessonForm, ClassLessonStepForm
+from ..forms.classlesson import ClassLessonForm, ClassLessonStepForm,\
+     ClassLessonBlockForm
 from ..forms.lessoncopy import LessonCopyForm
 
 from apps_data.lesson.models.classlesson import ClassLesson
 from apps_data.lesson.models.lesson import Lesson
 from apps_data.courseevent.models.courseevent import CourseEvent
 
-from apps_data.lesson.utils.lessoncopy import copy_lesson_selected
-
-from .mixins.base import CourseMenuMixin, FormCourseKwargsMixin
-
-
-class CopyLessonListView(
-    CourseMenuMixin,
-    TemplateView):
-    """
-    Lists all lessons and provide the option to copy them as classlessons
-    for a courseevent
-    :param slug: of courseevent
-    :param course_slug: slug of course
-    :return: lessons: all lessons of the course
-             copied_lesson_ids: ids of all lessons of the course that have
-             already been copied
-    """
-
-    def get_context_data(self, **kwargs):
-        context = super(CopyLessonListView, self).get_context_data(**kwargs)
-
-        context['copied_lesson_ids'] = \
-            ClassLesson.objects.copied_lesson_ids(
-                courseevent=context['courseevent'])
-        context['lessons'] = \
-            Lesson.objects.lessons_for_course(course=context['course'])
-
-        return context
+from .mixins.base import CourseMenuMixin, FormCourseEventKwargsMixin, FormCourseKwargsMixin
 
 
 class ClassLessonStartView(
@@ -175,133 +149,3 @@ class HomeworkListView(
         return context
 
 
-class ClassLessonRedirectDetailMixin(object):
-    def get_success_url(self):
-       if self.context_object_name == 'classlesson':
-           return reverse_lazy('coursebackend:classlesson:lesson',
-                               kwargs={'course_slug': self.kwargs['course_slug'],
-                                       'slug': self.kwargs['slug'],
-                                       'pk': self.object.pk})
-       elif self.context_object_name == 'classlessonstep':
-           return reverse_lazy('coursebackend:classlesson:step',
-                               kwargs={'course_slug': self.kwargs['course_slug'],
-                                       'slug': self.kwargs['slug'],
-                                       'pk': self.object.pk})
-
-
-class ClassLessonRedirectListMixin(object):
-    def get_success_url(self):
-        return reverse_lazy('coursebackend:classlesson:start',
-                            kwargs={'course_slug': self.kwargs['course_slug'],
-                                    'slug': self.kwargs['slug']})
-
-
-class ClassLessonBreadcrumbMixin(object):
-    """
-    get breadcrumbs for object
-    """
-
-    def get_context_data(self, **kwargs):
-        context = super(ClassLessonBreadcrumbMixin, self).get_context_data(
-            **kwargs)
-        if 'object' in context:
-            context['breadcrumbs'] = context[
-                'object'].get_breadcrumbs_with_self
-        return context
-
-
-class ClassLessonUpdateView(
-    CourseMenuMixin,
-    ClassLessonBreadcrumbMixin,
-    FormValidMessageMixin,
-    ClassLessonRedirectDetailMixin,
-    UpdateView):
-    """
-    Update a classlesson
-    """
-    form_class = ClassLessonForm
-    model = ClassLesson
-    context_object_name = 'classlesson'
-    form_valid_message = "Die Lektion wurde geändert!"
-
-
-class ClassLessonStepUpdateView(
-    CourseMenuMixin,
-    ClassLessonBreadcrumbMixin,
-    FormValidMessageMixin,
-    FormCourseKwargsMixin,
-    ClassLessonRedirectDetailMixin,
-    UpdateView):
-    """
-    Update a classlesson step
-    """
-    model = ClassLesson
-    context_object_name = 'classlessonstep'
-    form_class = ClassLessonStepForm
-    form_valid_message = "Der Lernabschnitt wurde geändert!"
-
-
-class ClassLessonHomeworkUpdateView(
-    CourseMenuMixin,
-    ClassLessonBreadcrumbMixin,
-    FormValidMessageMixin,
-    FormCourseKwargsMixin,
-    ClassLessonRedirectDetailMixin,
-    UpdateView):
-    """
-    Update a classlesson step
-    """
-    model = ClassLesson
-    context_object_name = 'classlessonstep'
-    form_class = ClassLessonStepForm
-    form_valid_message = "Der Lernabschnitt wurde geändert!"
-
-
-class ClassLessonDeleteView(
-    CourseMenuMixin,
-    ClassLessonBreadcrumbMixin,
-    FormValidMessageMixin,
-    ClassLessonRedirectListMixin,
-    DeleteView):
-    """
-    Delete a classlesson
-    """
-    model = ClassLesson
-    context_object_name = 'classlesson'
-    form_valid_message = "Der Unterricht wurde gelöscht!"
-
-    def get_context_data(self, **kwargs):
-        context = super(ClassLessonDeleteView, self).get_context_data(**kwargs)
-        context['nodes'] = context['object'].get_delete_tree
-        return context
-
-
-class CopyLessonView(
-    CourseMenuMixin,
-    FormValidMessageMixin,
-    ClassLessonRedirectListMixin,
-    FormView):
-    """
-    Copy (and update or create) parts of a lesson into the class as classlesson
-    """
-    form_class = LessonCopyForm
-    form_valid_message = "Die Lektion wurde wie gewünscht kopiert!"
-
-    def get_form_kwargs(self):
-        lesson_pk = self.kwargs['pk']
-        kwargs = super(CopyLessonView, self).get_form_kwargs()
-        kwargs['lesson_pk'] = lesson_pk
-        return kwargs
-
-    def form_valid(self, form):
-        courseevent = get_object_or_404(CourseEvent, slug=self.kwargs['slug'])
-        copied = copy_lesson_selected(self,
-                                      lesson=form.lesson,
-                                      lessonsteps=form.cleaned_data[
-                                          'copy_lessonsteps'],
-                                      copy_lesson=form.cleaned_data[
-                                          'copy_lesson'],
-                                      courseevent=courseevent
-                                      )
-
-        return super(CopyLessonView, self).form_valid(form)

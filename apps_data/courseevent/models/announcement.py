@@ -1,5 +1,18 @@
 # coding: utf-8
 
+"""
+Announcements are the communication between teachers and the class.
+Announcements have a lifecycle:
+- they may start as drafts: in that stage they are private to the teachers.
+they may delete or change them.
+- once they are published, they will be visible in the classroom. Also
+an email is send to all teachers and the all participants.
+- later they may be archived, that means they will no longer be visible in
+the classroom.
+
+TODO: what about hidden participants? Is the announcement also sent to them?
+should not be. -> check
+"""
 from __future__ import unicode_literals, absolute_import
 
 from django.db import models
@@ -7,7 +20,6 @@ from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.template.loader import get_template
 from django.template import Context
-from django.shortcuts import get_object_or_404
 from django.contrib.sites.models import Site
 
 from model_utils.models import TimeStampedModel
@@ -22,29 +34,41 @@ from apps_data.course.models.course import CourseOwner
 
 
 class AnnouncementManager(models.Manager):
-
+    """
+    Querysets for Announcements
+    """
     def archived(self, courseevent):
+        """
+        get all archived announcements, newest announcement first
+        RETURN: queryset of Announcements
+        """
         return self.filter(courseevent=courseevent,
                            is_archived=True
                            ).order_by('-published_at')
 
-    def published(self, courseevent):
+    def published_in_class(self, courseevent):
+        """
+        get all announcements that are displayed in the class
+        (published, but not archived announcements)
+        RETURN: queryset of Announcements
+        """
         return self.filter(courseevent=courseevent,
                            published=True,
                            is_archived=False
                            ).order_by('-published_at')
 
-    def classroom(self, courseevent):
-        return self.filter(courseevent=courseevent,
-                           published=True,
-                           is_archived=False
-                           ).order_by('-published_at')
-
-    def unpublished(self, courseevent):
+    def draft(self, courseevent):
+        """
+        get all announcements that are only drafts yet
+        RETURN: queryset of Announcements
+        """
         return self.filter(courseevent=courseevent, published=False).\
             order_by('-created')
 
     def create(self, courseevent, text, title, mail_distributor="", published=False):
+        """
+        An Anncouncement is created.
+        """
         announcement = Announcement(courseevent=courseevent,
                                     text=text,
                                     title=title,
@@ -54,6 +78,11 @@ class AnnouncementManager(models.Manager):
         return announcement
 
 def send_announcement(announcement, courseevent, module):
+    """
+    Send an announcement: it is send to the teachers and the particpants.
+    Mentoki is set on CC. Sending uses django-mailqueue, so that send out
+    emails are als stored in the database.
+    """
     participants_emails = \
         list(CourseEventParticipation.objects.learners_emails(courseevent=courseevent))
     teachers_emails = \
@@ -89,8 +118,10 @@ def send_announcement(announcement, courseevent, module):
 
 class Announcement(TimeStampedModel):
     """
-    Announcements are send out as emails to the class, therefor they can not be deleted or changed
-    once send
+    Announcements are send out as emails to the class, therefore they can not
+    be deleted or changed once they have been sent, but they can be archived.
+    They may start as drafts. They are the one to many communication from the
+    teachers to the class.
     """
     courseevent = models.ForeignKey(CourseEvent, related_name="courseeventnews")
 
@@ -102,9 +133,8 @@ class Announcement(TimeStampedModel):
 
     published = models.BooleanField(
         verbose_name=_("veröffentlichen?"),
-        help_text=_("""Beim Veröffentlichen wird die Ankündigung an alle Kursteilnehmer
-        und Mentoren verschickt:
-        """),
+        help_text=_("""Beim Veröffentlichen wird die Ankündigung an
+                    alle Kursteilnehmer und Mentoren verschickt:"""),
         default=False)
     published_at = MonitorField(
         verbose_name=_("veröffentlicht am"),
@@ -113,15 +143,22 @@ class Announcement(TimeStampedModel):
 
     is_archived=models.BooleanField(
         verbose_name=_("archivieren"),
-        help_text=_("""Archivierte Veröffentlichungen sind im Klassenzimmer nicht mehr zu sehen.
-        """),
+        help_text=_("""Archivierte Veröffentlichungen sind im Klassenzimmer
+                    nicht mehr zu sehen."""),
         default=False)
 
-    mail_distributor = models.TextField(MailerMessage, null=True, blank=True)
+    mail_distributor = models.TextField(
+        verbose_name=_("Mail-Verteiler"),
+        help_text=_("email-Adressen, an die die Ankündigung geschickt wurde"),
+        null=True,
+        blank=True)
 
     objects = AnnouncementManager()
 
     def __unicode__(self):
+        """
+        Ankündigungen werden durch ihren Titel repräsentiert.
+        """
         return self.title
 
 

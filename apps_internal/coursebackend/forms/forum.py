@@ -18,7 +18,7 @@ class ForumForm(forms.ModelForm):
 
     class Meta:
         model = Forum
-        fields = ('title', 'text', 'description', 'parent', 'display_nr', 'can_have_threads', 'hidden')
+        fields = ('title', 'text', 'description', 'parent', 'display_nr', 'can_have_threads')
 
     def __init__(self, *args, **kwargs):
         courseevent_slug = kwargs.pop('courseevent_slug', None)

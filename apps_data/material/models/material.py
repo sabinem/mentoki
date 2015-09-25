@@ -26,25 +26,14 @@ class MaterialManager(models.Manager):
     def materials_for_course(self, course):
         """
         gets all materials for a course
-        :param course:
-        :return: all material for a course
         """
         return self.filter(course=course).order_by('modified')
 
     def create(self, course, title, file, document_type, description="",
                pdf_download_link=True,
-               pdf_link=True, pdf_viewer=True):
+               pdf_viewer=True):
         """
         creates a new material for course
-        :param course:
-        :param title:
-        :param file:
-        :param document_type:
-        :param description:
-        :param pdf_download_link:
-        :param pdf_link:
-        :param pdf_viewer:
-        :return: created material
         """
         material = Material(course=course,
                             title=title,
@@ -60,9 +49,6 @@ def lesson_material_name(instance, filename):
     """
     constructs the path where the file ist stored: <course-slug>/slugify<title>
     since course and title are unique together this should be unique
-    :param instance: material instance
-    :param filename: filename
-    :return: path were the uploaded file is stored
     """
     path = '/'.join([instance.course.slug, slugify(instance.title), filename])
     return path
@@ -87,7 +73,8 @@ class Material(TimeStampedModel):
         max_length=200,
         blank=True
     )
-    DOCTYPE = Choices(('zip', 'zip-Datei'),
+    DOCTYPE = Choices(
+                      #('zip', 'zip-Datei'),
                       ('pdf', 'pdf-Datei'))
     document_type  = StatusField(
         verbose_name='Dateityp',
@@ -125,10 +112,6 @@ class Material(TimeStampedModel):
     def __unicode__(self):
         return u'%s' % (self.title)
 
-    def um_id(self):
-        if self.unitmaterial:
-            return self.unitmaterial.id
-
     def is_used(self):
         if self.classlesson_set.all():
             return True
@@ -141,8 +124,6 @@ class Material(TimeStampedModel):
         creates a unique slug for a file from the material-title and the course-slug
         the slug will be used for downloading the file, it is unique because
         course and title are unique together.
-        :param instance: of the material
-        :return: slug for download
         """
         sequence=(instance.course.title, instance.title)
         return '-'.join(sequence)
@@ -157,5 +138,5 @@ class Material(TimeStampedModel):
         no_zip: zip files are not accepted so far
         no_file: Material cannot be stored without a file to upload
         """
-        if self.document_type == self.DOCTYPE.zip:
-             forms.ValidationError(_('zip file kann nicht angezeigt werden.'), code='no_zip')
+        #if self.document_type == self.DOCTYPE.zip:
+        #     forms.ValidationError(_('zip file kann nicht angezeigt werden.'), code='no_zip')

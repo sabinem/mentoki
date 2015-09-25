@@ -26,13 +26,13 @@ def send_announcement(announcement, courseevent, module):
         'courseevent': courseevent,
         'announcement': announcement,
         'owners': courseevent.teachers,
-        'betreff':  "Neue Nachricht von Mentoki %s" % courseevent.title
+        'betreff':  courseevent.email_greeting
     }
     message = get_template('email/announcement/announcement.html').render(Context(context))
 
     mail_message = MailerMessage()
 
-    mail_message.subject = "Neue Nachricht von %s" % courseevent.title
+    mail_message.subject = courseevent.email_greeting
     mail_message.bcc_address = MENTOKI_COURSE_EMAIL
     mail_message.to_address = send_all
     mail_message.from_address = MENTOKI_COURSE_EMAIL

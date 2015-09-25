@@ -10,15 +10,15 @@
 
             <div class="content">
                 <div class="header">
-                    <a href="{{ step_url }}" class="header">
+                    <a href="{{ step_url }}" >
                        {{ lessonstep.title }}
                         <!-- homework -->
-                        {% if lessonstep.is_homework %}
-                           <i class="icon lab orange"></i>
-                        {% endif %}
+
 
                     </a>
-
+                    {% if lessonstep.is_homework %}
+                          <a class="ui orange label">interaktiv</a>
+                    {% endif %}
                 </div>
                 <div>
                     {{ lessonstep.description }}

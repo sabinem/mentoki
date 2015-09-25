@@ -37,16 +37,33 @@ from apps_data.course.models.course import CourseOwner
 class StudentsWorkManager(models.Manager):
 
     def turnedin_homework(self, homework):
-        return self.filter(homework=homework, published=True).order_by('published_at')
+        return self.filter(homework=homework, published=True).order_by('-published_at')
+
+    def unpublished_homework(self, homework, user):
+        return self.filter(homework=homework, published=False,
+                           workers=user)\
+            .select_related('homework').order_by('-created')
+
+    def turnedin_homework_courseevent(self, courseevent, user):
+        return self.filter(courseevent=courseevent, published=True,
+                           workers=user).order_by('-published_at')
+
+    def unpublished_homework_courseevent(self, courseevent, user):
+        return self.filter(courseevent=courseevent, published=False,
+                           workers=user)\
+            .select_related('homework').order_by('-created')
 
     def mywork(self, user, courseevent):
         return self.filter(courseevent=courseevent, workers=user).select_related('homework').order_by('created')
 
-    def create(self, courseevent, homework, text, title, user):
+    def create(self, courseevent, homework, text, title, user, published):
         studentswork = StudentsWork(courseevent=courseevent,
                                     homework=homework,
                                     text=text,
+                                    published=published,
                                     title=title)
+        if published:
+            studentswork.publish_count = 1
         studentswork.save()
         studentswork.workers.add(user)
         return studentswork
@@ -71,6 +88,11 @@ class StudentsWork(TimeStampedModel):
 
     published = models.BooleanField(verbose_name="veröffentlichen", default=False)
     published_at = MonitorField(monitor='published', when=[True])
+
+    publish_count = models.IntegerField(default=0)
+    republished_at = MonitorField(monitor='publish_count')
+
+
 
     objects = StudentsWorkManager()
 
@@ -110,7 +132,7 @@ class StudentsWork(TimeStampedModel):
 class CommentManager(models.Manager):
 
     def comment_to_studentswork(self, studentswork):
-        return self.filter(studentswork=studentswork).order_by('created')
+        return self.filter(studentswork=studentswork).order_by('-created')
 
     def commentors_emails(self, studentswork):
         return set(self.filter(studentswork=studentswork).select_related('author')\

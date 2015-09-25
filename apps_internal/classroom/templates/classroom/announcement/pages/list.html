@@ -2,7 +2,7 @@
 
 {% block classroom_menu_items %}
     {% if request.user in course.teachers or request.user.is_superuser %}
-        {% url 'coursebackend:announcements:list' course_slug=cs slug=es as back_link %}
+        {% url 'coursebackend:announcement:list' course_slug=cs slug=es as back_link %}
         {% url 'coursebackend:menu:preview' course_slug=cs slug=es as menu_link %}
 
         <a href="{{ back_link }}" class="item" >
@@ -21,7 +21,7 @@
 {% block page_content %}
 
     <div class="row classroom_white">
-        <div class="sixteen wide column">
+        <div class="sixteen wide column" id="whitepaper">
 
             {% include 'classroom/announcement/fragments/_list_annoucements.html' %}
 

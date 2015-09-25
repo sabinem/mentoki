@@ -1,0 +1,45 @@
+        )
+        if classlesson.parent.original_lesson != parent and not move:
+            return None
+        "--- at the end if try"
+    except:
+        "--- in except"
+        classlesson = ClassLesson(created=now)
+    print "=================="
+    print classlesson
+
+    try:
+        print "try"
+    except:
+        print "except"
+def _copy_any_level_lesson(lesson, courseevent, parent, move=False):
+    print "================i am here where I should be==="
+    try:
+        classlesson = ClassLesson.objects.get(original_lesson=lesson)
+        print classlesson
+    except:
+        classlesson = ClassLesson(created=now)
+        print "no object there"
+
+    "--- after try"
+    classlesson.title=lesson.title
+    classlesson.text=lesson.text
+    classlesson.lesson_nr=lesson.lesson_nr
+    classlesson.nr=lesson.nr
+    classlesson.course=lesson.course
+    classlesson.description=lesson.description
+    classlesson.courseevent=courseevent
+    classlesson.material=lesson.material
+    classlesson.original_lesson=lesson
+    classlesson.modified=now
+    classlesson.is_homework=lesson.is_homework
+    classlesson.is_original_lesson=True
+
+    print "--- before save"
+    if not classlesson.pk:
+        classlesson.insert_at(parent)
+    elif move:
+        classlesson.move_to(parent)
+    classlesson.save(copy=True)
+    print "--- after save"
+    return classlesson

@@ -1,0 +1,20 @@
+{% url 'coursebackend:classlesson:lessoncreate'  course_slug=cs slug=es as lesson_url %}
+{% url 'coursebackend:classlesson:stepcreate'  course_slug=cs   slug=es as step_url %}
+
+<!-- create lesson -->
+
+    <a href="{{ lesson_url }}" class="item">
+        <i class="icon plus blue"></i>Lektion
+    </a>
+
+
+<!-- create lessonstep -->
+
+    <a href="{{ step_url }}" class="item">
+        <i class="icon plus  blue"></i>Lernabschnitt
+    </a>
+
+
+
+
+

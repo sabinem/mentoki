@@ -5,19 +5,21 @@ from __future__ import unicode_literals
 from django.conf.urls import patterns, url
 
 from ..views.classlesson import ClassBlockDetailView, ClassLessonStartView,\
-    ClassLessonDetailView, ClassStepDetailView, ClassLessonStepUpdateView, \
-    ClassLessonUpdateView, ClassLessonDeleteView, \
-    CopyLessonView, CopyLessonListView
+    ClassLessonDetailView, ClassStepDetailView
+from ..views.classlessonupdate import ClassLessonStepUpdateView, \
+    ClassLessonUpdateView, ClassLessonDeleteView, ClassLessonBlockUpdateView, \
+    ClassLessonCreateView, ClassLessonStepCreateView, ClassLessonBlockCreateView
+from ..views.lesson_to_classlesson import ClassLessonBLockUnlockView, CopyBlockListView
 
 
 urlpatterns = patterns('',
     url(r'^$', ClassLessonStartView.as_view(),
         {'template':'coursebackend/classlesson/pages/work.html'}, name='start'),
 
-    url(r'^meta$', ClassLessonStartView.as_view(),
-        {'template':'coursebackend/classlesson/pages/meta.html'}, name='meta'),
+    url(r'^block/(?P<pk>\d+)/entsperren$', ClassLessonBLockUnlockView.as_view(),
+        {'template':'coursebackend/classlesson/pages/unlock.html'}, name='unlock'),
 
-    url(r'^kopieren$', CopyLessonListView.as_view(),
+    url(r'^kopieren$', CopyBlockListView.as_view(),
         {'template':'coursebackend/classlesson/pages/copy.html'}, name='copy'),
 
     url(r'^block/(?P<pk>\d+)$', ClassBlockDetailView.as_view(),
@@ -33,7 +35,10 @@ urlpatterns = patterns('',
 
 urlpatterns += patterns('',
 
-    url(r'^bearbeiten/lektion/(?P<pk>\d+)$', ClassLessonUpdateView.as_view(),
+    url(r'^bearbeiten/block/(?P<pk>\d+)$', ClassLessonBlockUpdateView.as_view(),
+        {'template':'coursebackend/classlesson/pages/lessonblockupdate.html'}, name='blockupdate'),
+
+    url(r'^bearb/lektion/(?P<pk>\d+)$', ClassLessonUpdateView.as_view(),
         {'template':'coursebackend/classlesson/pages/lessonupdate.html'}, name='lessonupdate'),
 
     url(r'^bearbeiten/abschnitt/(?P<pk>\d+)$', ClassLessonStepUpdateView.as_view(),
@@ -41,13 +46,19 @@ urlpatterns += patterns('',
 )
 
 urlpatterns += patterns('',
-    url(r'^(?P<pk>\d+)/loeschen$', ClassLessonDeleteView.as_view(),
-        {'template':'coursebackend/classlesson/pages/delete.html'}, name='delete'),
+
+    url(r'^anlegen/block$', ClassLessonBlockCreateView.as_view(),
+        {'template':'coursebackend/classlesson/pages/lessonblockupdate.html'}, name='blockcreate'),
+
+    url(r'^anlegen/lektion$', ClassLessonCreateView.as_view(),
+        {'template':'coursebackend/classlesson/pages/lessonupdate.html'}, name='lessoncreate'),
+
+    url(r'^anlegen/abschnitt$', ClassLessonStepCreateView.as_view(),
+        {'template':'coursebackend/classlesson/pages/lessonstepupdate.html'}, name='stepcreate'),
 )
 
+
 urlpatterns += patterns('',
-
-    url(r'^(?P<pk>\d+)/kopieren$', CopyLessonView.as_view(),
-        {'template':'coursebackend/classlesson/pages/lessoncopy.html'}, name='lessoncopy'),
-
+    url(r'^(?P<pk>\d+)/loeschen$', ClassLessonDeleteView.as_view(),
+        {'template':'coursebackend/classlesson/pages/delete.html'}, name='delete'),
 )

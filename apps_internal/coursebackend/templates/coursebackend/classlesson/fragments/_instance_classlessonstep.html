@@ -19,7 +19,7 @@
 {% endif %}
 
 <div class="ui header medium"
-    {% if classlessonstep.published %}
+    {% if classlessonstep.is_visible_in_classroom %}
          id="published_in_class"
     {% endif %}
     >
@@ -29,18 +29,29 @@
 
     <!-- homework -->
     {% if classlessonstep.is_homework %}
-       <a><i class="icon lab orange"></i></a>
+         <a class="ui orange label">interaktiv</a>
     {% endif %}
 
+    <!-- class link -->
+    {% if classlessonstep.original_lesson %}
+        <a href="{{ copy_url }}">
+            <i class="icon blue copy"></i>
+        </a>
+        <a href="{{ course_url }}">
+            <i class="icon blue external"></i>
+        </a>
+    {% else %}
     <!-- update -->
-    <a href="{{ stepupdate_url }}">
-       <i class="icon write"></i>
-    </a>
+        <a href="{{ update_url }}">
+           <i class="icon blue write"></i>
+        </a>
+        {% if not classlessonstep.is_visible_in_classroom  %}
+        <a href="{{ delete_url }}">
+           <i class="icon blue trash"></i>
+        </a>
+        {% endif %}
+    {% endif %}
 
-    <!-- delete -->
-    <a href="{{ delete_url }}">
-       <i class="icon trash"></i>
-    </a>
 
     <!-- material links -->
     {% if classlessonstep.material %}
@@ -60,7 +71,7 @@
     {% endif %}
 
     <!-- class -->
-    {% if classlessonstep.published %}
+    {% if classlessonstep.is_visible_in_classroom %}
         <a href="{{ class_url }}">
            <i class="icon large student"></i>
         </a>

@@ -1,7 +1,7 @@
 {% extends "email/base_internal_email.html" %}
 
 {% block email_to %}
-    An die Teilnehmer des Mentoki Kurses "{{ courseevent.title }}":
+     {{ courseevent.email_greeting }}:
 {% endblock %}
 
 {% block email_title %}

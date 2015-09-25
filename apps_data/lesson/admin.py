@@ -14,10 +14,11 @@ class LessonAdmin(admin.ModelAdmin):
     Lessons are stored for the course as templates for the actual courseevents
     """
     list_display = ('id', 'course', 'lesson_nr',
-                    'has_published_classlesson', 'title',
+                    'title',
                     'modified', 'created', 'lesson_type', 'level',
                     )
-    list_filter = ('course', 'tree_id', 'level', 'modified')
+    list_filter = ('course', 'level', 'modified')
+
 
 
 
@@ -27,5 +28,5 @@ class ClassLessonAdmin(admin.ModelAdmin):
     ClassLessons are copied into the courseevent from a lesson
     They can be further adapted in the courseevent.
     """
-    list_display = ('id', 'courseevent', 'lesson_nr', 'title', 'is_original_lesson', 'published', 'modified', 'created', 'lesson_type', 'level')
-    list_filter = ('courseevent', 'level', 'modified')
+    list_display = ('id', 'courseevent', 'lesson_nr', 'title', 'original_lesson_id', 'is_original_lesson', 'modified', 'created', 'lesson_type', 'level')
+    list_filter = ('courseevent', 'level', 'modified', 'original_lesson_id')

@@ -2,7 +2,7 @@
 
 {{ form.media }}
 
-<form class="ui form" method="post" action="#target" onsubmit="return checkForm(this);">
+<form class="ui form" method="post" >
 
     {% csrf_token %}
 
@@ -85,14 +85,9 @@
 
     </div>
 
-    <button type="submit" value="post" name="onlyOnceButton" class="ui button" id="formsubmit_button"
-            action="#target">
+    <button type="submit" value="post" class="ui button" id="formsubmitonce">
         Speichern
     </button>
-    <button class="ui button" value="Reset Button" onclick="resetForm(this.form);">
-        Reset
-    </button>
-
     <a href="{{ back_url }}" class="ui button">
         Abbruch
     </a>

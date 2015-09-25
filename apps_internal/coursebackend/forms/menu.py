@@ -17,8 +17,8 @@ class MenuItemForm(forms.ModelForm):
 
     class Meta:
         model = ClassroomMenuItem
-        fields = ('display_nr', 'display_title', 'item_type',
-                  'classlesson', 'forum', 'homework',
+        fields = ('display_nr', 'display_title', 'icon', 'item_type',
+                  'classlesson', 'forum',
                   'is_start_item', 'is_shortlink')
 
     def __init__(self, *args, **kwargs):
@@ -27,9 +27,7 @@ class MenuItemForm(forms.ModelForm):
 
         super(MenuItemForm, self).__init__(*args, **kwargs)
         self.fields['classlesson'].queryset = \
-            ClassLesson.objects.lessons_for_courseevent(courseevent=self.courseevent)
-        self.fields['homework'].queryset = \
-            ClassLesson.objects.published_homeworks(courseevent=self.courseevent)
+            ClassLesson.objects.lessons_for_menu(courseevent=self.courseevent)
         self.fields['forum'].queryset = \
             Forum.objects.classroom_menu(courseevent=self.courseevent)
 

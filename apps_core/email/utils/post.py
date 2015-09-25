@@ -29,13 +29,13 @@ def send_post_notification(post, thread, courseevent, module):
         'courseevent': courseevent,
         'post': post,
         'thread': thread,
-        'betreff':  "Neue Nachricht von Mentoki %s" % courseevent.title
+        'betreff':  courseevent.email_greeting
     }
     message = get_template('email/forum/newpost.html').render(Context(context))
 
     mail_message = MailerMessage()
 
-    mail_message.subject = "Neue Nachricht von %s" % courseevent.title
+    mail_message.subject = courseevent.email_greeting
     mail_message.bcc_address = MENTOKI_COURSE_EMAIL
     mail_message.to_address = send_all
     mail_message.from_address = MENTOKI_COURSE_EMAIL

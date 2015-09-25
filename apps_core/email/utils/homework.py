@@ -18,20 +18,20 @@ def send_work_published_notification(studentswork, courseevent, module):
         list(studentswork.workers_emails())
     teachers_emails = \
         list(CourseOwner.objects.teachers_emails(course=courseevent.course))
-    all_emails = workers_emails + teachers_emails
+    all_emails = set(workers_emails + teachers_emails)
     send_all = ", ".join(all_emails)
     context = {
         'site': Site.objects.get_current(),
         'courseevent': courseevent,
         'studentswork': studentswork,
         'homework': studentswork.homework,
-        'betreff':  "Neue Nachricht von Mentoki %s" % courseevent.title
+        'betreff':  courseevent.email_greeting
     }
     message = get_template('email/homework/newhomework.html').render(Context(context))
 
     mail_message = MailerMessage()
 
-    mail_message.subject = "Neue Nachricht von %s" % courseevent.title
+    mail_message.subject = courseevent.email_greeting
     mail_message.bcc_address = MENTOKI_COURSE_EMAIL
     mail_message.to_address = send_all
     mail_message.from_address = MENTOKI_COURSE_EMAIL

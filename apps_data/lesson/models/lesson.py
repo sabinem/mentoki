@@ -91,6 +91,27 @@ class LessonManager(BaseLessonManager):
     def blocks_for_delete(self, courseevent):
         return self.objects.all()
 
+    def uncopied_blocks(self,courseevent):
+        """
+        this fetches the ids of all lessons for a courseevent, that
+        are related to lessons in the course
+        """
+        from .classlesson import ClassLesson
+        copied_ids_list = ClassLesson.objects.copied_block_ids(courseevent=courseevent)
+        return self.filter(course=courseevent.course, level=1).exclude(
+                           pk__in=copied_ids_list)
+
+    def copied_blocks(self,courseevent):
+        """
+        this fetches the ids of all lessons for a courseevent, that
+        are related to lessons in the course
+        """
+        from .classlesson import ClassLesson
+        copied_ids_list = ClassLesson.objects.copied_block_ids(courseevent=courseevent)
+        return self.filter(course=courseevent.course, level=1,
+                           pk__in=copied_ids_list)
+
+
 
 class Lesson(BaseLesson, TimeStampedModel):
 
@@ -99,18 +120,6 @@ class Lesson(BaseLesson, TimeStampedModel):
     class Meta:
         verbose_name = "Lektion (Vorlage)"
         verbose_name_plural = "Lektionen (Vorlage)"
-
-    def cb_id(self):
-        if self.courseblock:
-            return self.courseblock.id
-
-    def u_id(self):
-        if self.unit:
-            return self.unit.id
-
-    def um_id(self):
-        if self.unitmaterial:
-            return self.unitmaterial.id
 
     def has_published_classlesson(self):
         if self.classlesson_set.filter(published=True):

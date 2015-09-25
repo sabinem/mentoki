@@ -1,73 +1,30 @@
 {% load activelink %}
 
-{% url 'classroom:announcement:list' slug=es as announcements_url %}
-{% url 'classroom:forum:newposts' slug=es as newposts_url %}
-{% url 'classroom:studentswork:list' slug=es as private_url %}
-{% url 'classroom:participant:list' slug=es as participants_url %}
-{% url 'classroom:forum:start' slug=es as forum_url %}
-{% url 'classroom:classlesson:start' slug=es as lesson_url %}
-
-
-
-{% if item.is_forumlink %}
-    {% url 'classroom:forum:detail' slug=es pk=item.forum_id as forum_url %}
-{% elif item.is_lessonlink %}
-    {% url 'classroom:classlesson:lesson' slug=es pk=item.classlesson_id as lesson_url %}
-{% elif item.is_homeworklink %}
-    {% url 'classroom:classlesson:step' slug=es pk=item.homework_id as  homework_url %}
-{% endif %}
-
-
-{% if item.item_type == item.MENU_ITEM_TYPE.announcements_item %}
-    <a class="item
-    {% ifstartswith announcements_url %}active{% endifstartswith %}"  style="font-size:1.1em;"
-    href="{{ announcements_url }}">
-        <i class="announcement icon"></i>
-        {{ item.display_title }}
-    </a>
-
-{% elif item.item_type == item.MENU_ITEM_TYPE.participants_item %}
-    <a class="item
-    {% ifstartswith participants_url %}active{% endifstartswith %}"  style="font-size:1.1em;"
-    href="{{ participants_url }}">
-        <i class="users icon"></i>
-        {{ item.display_title }}
-    </a>
-
-{% elif item.item_type == item.MENU_ITEM_TYPE.forum_item %}
-    <a class="item
-    {% ifstartswith forum_url %}active{% endifstartswith %}" style="font-size:1.1em;"
-    href="{{ forum_url }}">
-        <i class="comments outline icon"></i>{{ item.display_title }}
-    </a>
-
-{% elif item.item_type == item.MENU_ITEM_TYPE.homework_item %}
-    <a class="item
-    {% ifstartswith homework_url %}active{% endifstartswith %}" style="font-size:1.1em;"
-    href="{{ homework_url }}">
-        <i class="lab icon"></i>{{ item.display_title }}
-    </a>
-
-{% elif item.item_type == item.MENU_ITEM_TYPE.last_posts_item %}
-    <a class="item
-    {% ifstartswith newposts_url %}active{% endifstartswith %}" style="font-size:1.1em;"
-    href="{{ newposts_url }}">
-        <i class="find icon"></i>{{ item.display_title }}
-    </a>
-
-{% elif item.item_type == item.MENU_ITEM_TYPE.private_item %}
-    <a class="item
-    {% ifstartswith private_url %}active{% endifstartswith %}" style="font-size:1.1em;"
-    href="{{ private_url }}">
-        <i class="privacy icon"></i>{{ item.display_title }}
-    </a>
-
+{% if item.item_type == item.MENU_ITEM_TYPE.forum_item %}
+    {% url 'classroom:forum:detail' slug=es pk=item.forum_id as item_url %}
 {% elif item.item_type == item.MENU_ITEM_TYPE.lesson_item %}
-    <a class="item
-    {% ifstartswith lesson_url %}active{% endifstartswith %}" style="font-size:1.1em;"
-    href="{{ lesson_url }}">
-        <i class="student icon"></i>{{ item.display_title }}
-    </a>
-
-
+    {% url 'classroom:classlesson:lesson' slug=es pk=item.classlesson_id as item_url %}
+{% elif item.item_type == item.MENU_ITEM_TYPE.lessonstep_item %}
+    {% url 'classroom:classlesson:step' slug=es pk=item.classlesson_id as item_url %}
+{% elif item.item_type == item.MENU_ITEM_TYPE.announcements_item %}
+    {% url 'classroom:announcement:list' slug=es as item_url %}
+{% elif item.item_type == item.MENU_ITEM_TYPE.participants_item %}
+    {% url 'classroom:participant:list' slug=es as item_url %}
+{% elif item.item_type == item.MENU_ITEM_TYPE.last_posts_item %}
+    {% url 'classroom:forum:newposts' slug=es as item_url %}
+{% elif item.item_type == item.MENU_ITEM_TYPE.private_item %}
+    {% url 'classroom:studentswork:list' slug=es as item_url %}
 {% endif %}
+
+<a class="item
+{% if item_url %}
+    {% ifstartswith item_url %}active{% endifstartswith %}"  style="font-size:1.1em;"
+    href="{{ item_url }}
+{% endif %}
+">
+        {% if item.icon %}
+            {{ item.icon.as_html }}
+        {% endif %}
+    {{ item.display_title }}
+    <br>
+</a>

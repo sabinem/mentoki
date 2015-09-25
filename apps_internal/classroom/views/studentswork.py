@@ -13,74 +13,38 @@ from apps_data.courseevent.models.courseevent import CourseEvent
 from apps_internal.coursebackend.views.mixins.base import FormCourseEventKwargsMixin
 
 from .mixins.base import ClassroomMenuMixin
-from ..forms.studentswork import StudentWorkCreateForm, StudentWorkAddTeamForm, StudentWorkUpdateForm
+from .classlessonstepwork import LessonStepContextMixin, StudentsWorkRedirectMixin
+from ..forms.studentswork import StudentWorkCreateForm
 
 
-class StudentsWorkRedirectMixin(
-    object):
-    """
-    redirects after successful form submit
-    """
-    def get_success_url(self):
-       return reverse_lazy('classroom:studentswork:list',
-                           kwargs={'slug': self.kwargs['slug']})
-
-
-class StudentsWorkListView(
+class StudentsWorkListPrivateView(
     ClassroomMenuMixin,
     TemplateView):
     """
     list all works where student is in the team
     """
     def get_context_data(self, **kwargs):
-        context = super(StudentsWorkListView, self).get_context_data(**kwargs)
+        context = super(StudentsWorkListPrivateView, self).get_context_data(**kwargs)
 
-        context['studentsworks'] = StudentsWork.objects.mywork(user=self.request.user,
-                                                              courseevent=context['courseevent'])
+        context['studentsworks'] = \
+            StudentsWork.objects.unpublished_homework_courseevent(user=self.request.user,
+                                                      courseevent=context['courseevent'])
         return context
 
 
-class StudentsWorkDetailView(
+class StudentsWorkListPublicView(
     ClassroomMenuMixin,
-    DetailView):
+    TemplateView):
     """
-    shows details of studentswork object
+    list all works where student is in the team
     """
-    model = StudentsWork
-    context_object_name ='studentswork'
+    def get_context_data(self, **kwargs):
+        context = super(StudentsWorkListPublicView, self).get_context_data(**kwargs)
 
-
-class StudentsWorkUpdateView(
-    ClassroomMenuMixin,
-    StudentsWorkRedirectMixin,
-    UpdateView):
-    """
-    updates a students work object
-    """
-    model = StudentsWork
-    form_class = StudentWorkUpdateForm
-    context_object_name ='studentswork'
-
-    def form_valid(self, form):
-        # make email to all people participating in the work
-        mail_distributor = send_work_published_notification(
-                studentswork = form.instance,
-                courseevent=form.instance.courseevent,
-                module=self.__module__,
-            )
-        print mail_distributor
-        return super(StudentsWorkUpdateView, self).form_valid(form)
-
-
-class StudentsWorkDeleteView(
-    ClassroomMenuMixin,
-    StudentsWorkRedirectMixin,
-    DeleteView):
-    """
-    deletes a students work object
-    """
-    model = StudentsWork
-    context_object_name ='studentswork'
+        context['studentsworks'] = StudentsWork.objects.turnedin_homework_courseevent(
+                                                      user=self.request.user,
+                                                      courseevent=context['courseevent'])
+        return context
 
 
 class StudentsWorkCreateView(
@@ -96,32 +60,14 @@ class StudentsWorkCreateView(
     context_object_name ='studentswork'
 
     def form_valid(self, form):
+        print self.kwargs['slug']
         courseevent = get_object_or_404(CourseEvent, slug=self.kwargs['slug'])
-        studentswork = StudentsWork.objects.create(
+        print courseevent
+        self.object = StudentsWork.objects.create(
             courseevent=courseevent,
             homework=form.cleaned_data['homework'],
+            published=form.cleaned_data['published'],
             text=form.cleaned_data['text'],
             title=form.cleaned_data['title'],
             user=self.request.user)
-        # make email to all people participating
-        mail_distributor = send_work_published_notification(
-                studentswork = studentswork,
-                courseevent=studentswork.courseevent,
-                module=self.__module__,
-            )
-        print mail_distributor
         return HttpResponseRedirect(self.get_success_url())
-
-
-class StudentsWorkAddTeamView(
-    ClassroomMenuMixin,
-    FormCourseEventKwargsMixin,
-    StudentsWorkRedirectMixin,
-    UpdateView):
-    """
-    adds new team members to students work object
-    """
-    model = StudentsWork
-    form_class = StudentWorkAddTeamForm
-    context_object_name = 'studentswork'
-

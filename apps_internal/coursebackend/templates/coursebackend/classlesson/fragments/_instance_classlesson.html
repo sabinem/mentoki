@@ -19,7 +19,7 @@
 {% endif %}
 
 <div class="ui header medium"
-    {% if classlesson.published %}
+    {% if classlesson.is_visible_in_classroom %}
          id="published_in_class"
     {% endif %}
     >
@@ -27,18 +27,29 @@
     <!-- title -->
     {{ classlesson.lesson_nr }}. {{ classlesson.title }}
 
+    <!-- class link -->
+    {% if classlesson.original_lesson %}
+        <a href="{{ copy_url }}">
+            <i class="icon blue copy"></i>
+        </a>
+        <a href="{{ course_url }}">
+            <i class="icon blue external"></i>
+        </a>
+    {% else %}
     <!-- update -->
-    <a href="{{ update_url }}" class="{{ published }}">
-       <i class="icon write"></i>
-    </a>
+        <a href="{{ update_url }}">
+           <i class="icon blue write"></i>
+        </a>
+        {% if not classlesson.is_visible_in_classroom  %}
+        <a href="{{ delete_url }}">
+           <i class="icon blue trash"></i>
+        </a>
+        {% endif %}
+    {% endif %}
 
-    <!-- delete -->
-    <a href="{{ delete_url }}">
-       <i class="icon trash"></i>
-    </a>
 
     <!-- class -->
-    {% if classlesson.published %}
+    {% if classlesson.is_visible_in_classroom %}
         <a href="{{ class_url }}">
            <i class="icon large student"></i>
         </a>

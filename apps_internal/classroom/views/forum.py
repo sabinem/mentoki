@@ -21,11 +21,10 @@ class ForumStartView(
     def get_context_data(self, **kwargs):
         context = super(ForumStartView, self).get_context_data(**kwargs)
 
-        context['forum_items'] = \
-            ClassroomMenuItem.objects.forums_for_courseevent(
-                courseevent=context['courseevent'])
-        context['nodes'] = Forum.objects.forums_published_in_courseevent(courseevent=context['courseevent'])
-
+        context['nodes'] = Forum.objects.published_forums(
+            courseevent=context['courseevent'])
+        print "======== IA AM HERE"
+        print context['nodes']
 
         return context
 

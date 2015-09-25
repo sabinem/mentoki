@@ -24,7 +24,7 @@
 
     <!-- homework -->
     {% if lessonstep.is_homework %}
-       <a><i class="icon lab orange"></i></a>
+       <a class="ui orange label">interaktiv</a>
     {% endif %}
 
     <!-- update -->
@@ -58,7 +58,7 @@
 
 <!-- meta -->
 <p style="color:grey">
-   (zuletzt geändert {{ lesson.modified |date:'d.m.Y' }})
+   (angelegt: {{ lessonstep.created |date:'d.m.Y' }}, zuletzt geändert {{ lessonstep.modified |date:'d.m.Y' }})
 </p>
 
 {% if lessonstep.text != '' %}

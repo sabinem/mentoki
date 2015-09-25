@@ -1,0 +1,64 @@
+{{ form.media }}
+
+
+{% url 'classroom:classlesson:publiclist' slug=es pk=studentswork.homework.pk  as back_url %}
+
+
+
+<form class="ui form" method="post" action="" >{% csrf_token %}
+
+    {% include 'classroom/forms/form_fields/_form_non_field_errors.html' %}
+
+    <div class="fields inline">
+    <div class="field sixteen wide">
+
+        {% if form.title.errors %}
+            <div class="ui negative floating message">
+                {{ form.title.errors }}
+            </div>
+        {% endif %}
+        <label>{{ form.title.label_tag }}</label>
+
+        {{ form.title }}
+
+    </div>
+    </div>
+
+    <div class="field sixteen wide">
+        {% if form.text.errors %}
+            <div class="ui negative floating message">
+                {{ form.text.errors }}
+            </div>
+        {% endif %}
+        <br>
+
+        {{ form.text }}
+
+    </div>
+
+
+    <div class="ui dividing medium header">Neu veröffentlichen?</div>
+    <p>Bei einer neuen Veröffentlichung wird eine email an alle Beteiligten geschickt.</p>
+
+    {% if form.republish.errors %}
+        <div class="ui negative floating message">
+            {{ form.republish.errors }}
+        </div>
+    {% endif %}
+
+      <div class="field eigth wide">
+
+          {{ form.republish }}
+
+      </div>
+
+    <button type="submit" value="post" class="ui button" id="formsubmitonce">
+        Speichern
+    </button>
+
+    <a class="ui button" href="{{ back_url }}">
+        Zurück
+    </a>
+
+
+</form>

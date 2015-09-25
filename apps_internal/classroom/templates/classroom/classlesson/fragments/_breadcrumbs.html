@@ -11,13 +11,6 @@
                 Unterricht {{ courseevent.title }}
             </div>
 
-        {% elif url_name == 'list' %}
-
-            <!-- section active: homeworks list -->
-            <div class="section active">
-                Aufgaben {{ courseevent.title }}
-            </div>
-
         {% endif %}
 
     {% else %}
@@ -38,7 +31,7 @@
 
                  <i class="right chevron icon divider"></i>
 
-                {% if forloop.last and url_name == 'step' %}
+                {% if forloop.last and not studentswork %}
 
                      <!-- active breadcrumb -->
                      <div class="section active">

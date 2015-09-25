@@ -1,0 +1,25 @@
+{% extends "coursebackend/base_courseevent.html" %}
+
+{% block breadcrumbs %}
+    {% include 'coursebackend/classlesson/fragments/_breadcrumbs.html' %}
+{% endblock %}
+
+{% block page_content %}
+
+    <div class="row classroom_emphasis">
+        <div class="sixteen wide column" id="whitepaper">
+
+            <div class="ui message warning">
+                Vorsicht: Der gesamte abgebildetet Baum wird bei dieser
+                Aktion von der Vorlage entkoppelt!
+            </div>
+
+            <!-- nodetree -->
+            {% include 'coursebackend/classlesson/fragments/_recursetree_nodes.html' %}
+
+            <!-- delete form -->
+            {% include 'coursebackend/forms/delete/_unlock.html' %}
+
+        </div>
+    </div>
+{% endblock %}

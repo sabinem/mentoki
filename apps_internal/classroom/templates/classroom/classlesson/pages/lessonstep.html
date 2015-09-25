@@ -13,12 +13,7 @@
     <div class="row classroom_white">
         <div class="sixteen wide column" id="whitepaper">
 
-            {% url 'classroom:homework:list' slug=es pk=lessonstep.pk as homework_url %}
-            {% url 'classroom:studentswork:list' slug=es as private_url %}
-
             {% include 'classroom/classlesson/fragments/_instance_lessonstep.html' %}
-
-            {% include 'classroom/classlesson/fragments/_list_stundentsworks.html' %}
 
         </div>
     </div>

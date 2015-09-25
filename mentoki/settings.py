@@ -52,6 +52,7 @@ INSTALLED_APPS = (
     'froala_editor',
     #'django_prices',
     'extra_views',
+    'fontawesome',
 
     'mailqueue',
 
@@ -59,7 +60,7 @@ INSTALLED_APPS = (
     'django_markdown',
 
     'accounts',
-    #'customers',
+    'customers',
 
     'apps_core.core',
     'apps_core.email',
@@ -303,7 +304,7 @@ FROALA_EDITOR_OPTIONS = {
                         'selectAll', 'createLink', 'insertImage',
                         'insertVideo', 'table', 'undo',
                         'redo', 'html',
-                        'insertHorizontalRule']
+                        'insertHorizontalRule'],
 }
 
 BRAINTREE = {
@@ -311,3 +312,5 @@ BRAINTREE = {
     'public_key':os.environ.get('BRAINTREE_PUBLIC_KEY'),
     'private_key':os.environ.get('BRAINTREE_PRIVATE_KEY'),
 }
+
+FONTAWESOME_CSS_URL = '/static/font-awesome-4.4.0/css/font-awesome.min.css'

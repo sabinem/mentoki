@@ -1,0 +1,22 @@
+{% extends "classroom/base.html" %}
+
+{% block breadcrumbs %}
+   {% include 'classroom/classlesson/fragments/_breadcrumbs.html' %}
+{% endblock %}
+
+{% block page_content %}
+
+    <div class="row classroom_white">
+        <div class="sixteen wide column">
+
+            {% include 'classroom/classlesson/fragments/_menu_work.html' %}
+            {% include 'classroom/classlesson/fragments/_instance_stundentswork_work.html' %}
+
+            {% include 'classroom/forms/_form_delete_studentswork.html' %}
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block rows %}{% endblock %}
