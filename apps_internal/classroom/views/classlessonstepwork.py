@@ -176,8 +176,8 @@ class StudentsWorkCreateView(
         if form.cleaned_data['published']:
             # make email to all people participating in the work
             mail_distributor = send_work_published_notification(
-                    studentswork = form.instance,
-                    courseevent=form.instance.courseevent,
+                    studentswork = self.object,
+                    courseevent=self.object.courseevent,
                     module=self.__module__,
                 )
         return HttpResponseRedirect(self.get_success_url())
