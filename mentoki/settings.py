@@ -18,6 +18,8 @@ BASE_DIR_PROJECT = os.path.abspath(os.path.join(BASE_DIR, os.pardir))
 # get Environment Variables specific to server production/test/local
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
+
+
 LOCAL_ENVIRONMENT = os.environ.get('LOCAL_ENVIROMENT')
 DEBUG = bool(os.environ.get('DEBUG', False))
 
