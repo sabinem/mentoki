@@ -161,7 +161,7 @@
     <button type="submit" value="post" class="ui button" id="formsubmitonce">
         Speichern
     </button>
-    {% if form.instance.delete_possible %}
+    {% if form.instance.pk %}
 
         <a href="{{ delete_url }}" class="ui button" >
             Löschen
