@@ -221,6 +221,8 @@ if LOCAL_ENVIRONMENT:
     LOGGING = {
         'version': 1,
         'disable_existing_loggers': True,
+
+        # formatters okay!
         'formatters': {
             'verbose': {
                 'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
@@ -230,11 +232,25 @@ if LOCAL_ENVIRONMENT:
                 'format': '%(levelname)s %(message)s'
             },
         },
+
+
         'handlers': {
-            'file': {
+            'emailfile': {
                 'level': 'INFO',
                 'class': 'logging.FileHandler',
-                'filename': 'netteachers.log',
+                'filename': 'mentoki-emails-send.log',
+                'formatter': 'verbose'
+            },
+            'backendfile': {
+                'level': 'INFO',
+                'class': 'logging.FileHandler',
+                'filename': 'mentoki-coursebackend-activity.log',
+                'formatter': 'verbose'
+            },
+            'classroomfile': {
+                'level': 'INFO',
+                'class': 'logging.FileHandler',
+                'filename': 'mentoki-classroom-activity.log',
                 'formatter': 'verbose'
             },
             'console':{
@@ -245,17 +261,17 @@ if LOCAL_ENVIRONMENT:
 
         },
         'loggers': {
-            'apps.forum': {
+            'apps_core.email': {
                 'handlers': ['handler_for_my_apps'],
                 'propagate': True,
                 'level': 'DEBUG',
             },
-            'apps.core': {
+            'apps_data.core': {
                 'handlers': ['handler_for_my_apps'],
                 'propagate': True,
                 'level': 'DEBUG',
             },
-            'apps.course': {
+            'apps-.course': {
                 'handlers': ['handler_for_my_apps'],
                 'propagate': True,
                 'level': 'DEBUG',

@@ -124,13 +124,13 @@ class StudentsWorkUpdatePrivateView(
 
     def form_valid(self, form):
         if form.cleaned_data['published']:
+            form.instance.publish_count += 1
             # make email to all people participating in the work
             mail_distributor = send_work_published_notification(
                     studentswork = form.instance,
                     courseevent=form.instance.courseevent,
                     module=self.__module__,
                 )
-            print mail_distributor
         return super(StudentsWorkUpdatePrivateView, self).form_valid(form)
 
 
@@ -161,13 +161,25 @@ class StudentsWorkCreateView(
 
     def form_valid(self, form):
         step = get_object_or_404(ClassLesson, pk=self.kwargs['pk'])
+        if form.cleaned_data['published']:
+            publish_count = 1
+        else:
+            publish_count = 0
         self.object = StudentsWork.objects.create(
             courseevent=step.courseevent,
             homework=step,
             published=form.cleaned_data['published'],
             text=form.cleaned_data['text'],
             title=form.cleaned_data['title'],
+            publish_count=publish_count,
             user=self.request.user)
+        if form.cleaned_data['published']:
+            # make email to all people participating in the work
+            mail_distributor = send_work_published_notification(
+                    studentswork = form.instance,
+                    courseevent=form.instance.courseevent,
+                    module=self.__module__,
+                )
         return HttpResponseRedirect(self.get_success_url())
 
 

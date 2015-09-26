@@ -56,11 +56,12 @@ class StudentsWorkManager(models.Manager):
     def mywork(self, user, courseevent):
         return self.filter(courseevent=courseevent, workers=user).select_related('homework').order_by('created')
 
-    def create(self, courseevent, homework, text, title, user, published):
+    def create(self, courseevent, homework, text, title, user, published, publish_count):
         studentswork = StudentsWork(courseevent=courseevent,
                                     homework=homework,
                                     text=text,
                                     published=published,
+                                    publish_count=publish_count,
                                     title=title)
         if published:
             studentswork.publish_count = 1

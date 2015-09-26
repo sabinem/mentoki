@@ -5,15 +5,13 @@ from __future__ import unicode_literals, absolute_import
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
-from django.views.generic import DetailView, TemplateView, UpdateView, \
+from django.views.generic import UpdateView, \
     DeleteView, FormView
-from django.core.validators import ValidationError
 
 from braces.views import FormValidMessageMixin
 
 from ..forms.classlesson import ClassLessonForm, ClassLessonStepForm,\
      ClassLessonBlockForm
-from ..forms.lessoncopy import LessonCopyForm
 
 from apps_data.lesson.models.classlesson import ClassLesson
 from apps_data.lesson.models.lesson import Lesson
@@ -52,7 +50,6 @@ class ClassLessonBreadcrumbMixin(object):
     """
     get breadcrumbs for object
     """
-
     def get_context_data(self, **kwargs):
         context = super(ClassLessonBreadcrumbMixin, self).get_context_data(
             **kwargs)
