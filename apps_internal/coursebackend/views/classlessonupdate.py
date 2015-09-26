@@ -66,7 +66,6 @@ class ClassLessonBlockUpdateView(
     CourseMenuMixin,
     ClassLessonBreadcrumbMixin,
     FormValidMessageMixin,
-    FormCourseKwargsMixin,
     ClassLessonRedirectDetailMixin,
     UpdateView):
     """
