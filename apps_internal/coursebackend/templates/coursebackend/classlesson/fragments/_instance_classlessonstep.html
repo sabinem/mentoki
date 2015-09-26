@@ -1,4 +1,4 @@
-{% url 'coursebackend:classlesson:stepupdate'  course_slug=cs slug=es pk=classlessonstep.pk as stepupdate_url %}
+{% url 'coursebackend:classlesson:stepupdate'  course_slug=cs slug=es pk=classlessonstep.pk as update_url %}
 {% url 'coursebackend:classlesson:delete'  course_slug=cs slug=es pk=classlessonstep.pk as delete_url %}
 {% url 'classroom:classlesson:step'  slug=es pk=classlessonstep.pk as class_url %}
 {% url 'coursebackend:classlesson:step' course_slug=cs slug=es pk=next_node.pk as forward_url %}
