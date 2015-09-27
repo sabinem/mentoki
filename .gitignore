@@ -20,6 +20,7 @@ htdocs/media/**
 # some hidden toplevel files
 .idea
 .DS_Store
+.env
 
 # paramico: What is this?
 paramiko*
@@ -34,5 +35,9 @@ logs/*.log
 static/img-reserve/**
 static/Semantic-UI-1.12.2/**
 static/Semantic-UI-2.0.7_2/src/**
+static/Semantic-UI-2.0.7_2/examples/**
+static/Semantic-UI-2.0.7_2/tasks/**
+static/Semantic-UI-2.0.7_2/tests/**
+static/Semantic-UI-2.0.7_2/node_modules/**
 static/deadsimple-less-watch-compiler-master/**
 
