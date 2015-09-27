@@ -31,7 +31,7 @@ paramiko*
 
 htmlcov/**
 logs/*.log
-
+coolProject.dump
 # static
 
 static/img-reserve/**
