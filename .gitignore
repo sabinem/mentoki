@@ -1,11 +1,8 @@
-tmp/**
 
-*.sh
-*.sql
-*.old
-
-master.sql
+# hidden files
 .idea
+
+# pyc files
 *.pyc
 **/*.pyc
 *.pyc
@@ -24,25 +21,18 @@ htdocs/media/**
 .idea
 .DS_Store
 
-mentoki/settings_production.py
-mentoki/settings_test.py
-configuration
+# paramico: What is this?
 paramiko*
 
+# test coverage
 htmlcov/**
+
+# log-files
 logs/*.log
-coolProject.dump
-# static
 
+#static
 static/img-reserve/**
-tmp/**
-
 static/Semantic-UI-1.12.2/**
 static/Semantic-UI-2.0.7_2/src/**
-
-
-static/redactor/**
-steel*/**
-
 static/deadsimple-less-watch-compiler-master/**
 
