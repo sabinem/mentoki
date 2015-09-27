@@ -53,6 +53,7 @@ INSTALLED_APPS = (
     'floppyforms',
     'froala_editor',
     #'django_prices',
+
     'extra_views',
     'fontawesome',
 
@@ -217,83 +218,77 @@ CACHES = {
 }
 
 # Logging
-if LOCAL_ENVIRONMENT:
-    LOGGING = {
-        'version': 1,
-        'disable_existing_loggers': True,
 
-        # formatters okay!
-        'formatters': {
-            'verbose': {
-                'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
-                'datefmt' : "%d/%b/%Y %H:%M:%S"
-            },
-            'simple': {
-                'format': '%(levelname)s %(message)s'
-            },
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+
+    # formatters okay!
+    'formatters': {
+        'verbose': {
+            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'emailfile': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/emails-activity.log',
+            'formatter': 'verbose'
+        },
+        'backendfile': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/coursebackend-activity.log',
+            'formatter': 'verbose'
+        },
+        'datafile': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/data-activity.log',
+            'formatter': 'verbose'
+        },
+        'classroomfile': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/classroom-activity.log',
+            'formatter': 'verbose'
+        },
+        'console':{
+            'level':'DEBUG',
+            'class':'logging.StreamHandler',
+            'formatter': 'simple'
         },
 
-
-        'handlers': {
-            'emailfile': {
-                'level': 'INFO',
-                'class': 'logging.FileHandler',
-                'filename': 'mentoki-emails-send.log',
-                'formatter': 'verbose'
-            },
-            'backendfile': {
-                'level': 'INFO',
-                'class': 'logging.FileHandler',
-                'filename': 'mentoki-coursebackend-activity.log',
-                'formatter': 'verbose'
-            },
-            'classroomfile': {
-                'level': 'INFO',
-                'class': 'logging.FileHandler',
-                'filename': 'mentoki-classroom-activity.log',
-                'formatter': 'verbose'
-            },
-            'console':{
-                'level':'DEBUG',
-                'class':'logging.StreamHandler',
-                'formatter': 'simple'
-            },
-
+    },
+    'loggers': {
+        'apps_core.email': {
+            'handlers': ['emailfile'],
+            'propagate': True,
+            'level': 'INFO',
         },
-        'loggers': {
-            'apps_core.email': {
-                'handlers': ['handler_for_my_apps'],
-                'propagate': True,
-                'level': 'DEBUG',
-            },
-            'apps_data.core': {
-                'handlers': ['handler_for_my_apps'],
-                'propagate': True,
-                'level': 'DEBUG',
-            },
-            'apps-.course': {
-                'handlers': ['handler_for_my_apps'],
-                'propagate': True,
-                'level': 'DEBUG',
-            },
-            'apps.classroom': {
-                'handlers': ['handler_for_my_apps'],
-                'propagate': True,
-                'level': 'DEBUG',
-            },
-            'apps.desk': {
-                'handlers': ['handler_for_my_apps'],
-                'propagate': True,
-                'level': 'DEBUG',
-            },
-        }
+        'apps_data': {
+            'handlers': ['datafile'],
+            'propagate': True,
+            'level': 'INFO',
+        },
+        'apps_internal.classroom': {
+            'handlers': ['classroomfile'],
+            'propagate': True,
+            'level': 'INFO',
+        },
+        'apps_internal.coursebackend': {
+            'handlers': ['backendfile'],
+            'propagate': True,
+            'level': 'INFO',
+        },
     }
+}
 
-    # make all loggers use the console.
-    for logger in LOGGING['loggers']:
-        LOGGING['loggers'][logger]['handlers'] = ['console']
-
-#Set your DSN value
 RAVEN_CONFIG = {
     'dsn': os.environ.get('SENTRY_DSN'),
 }
@@ -308,6 +303,9 @@ LOGOUT_URL = reverse_lazy("home:home")
 
 ACTIVATION_KEY = 'Eif1hsgbcC10obc=='
 
+
+# Froala Editor options: custom buttons set in order to include
+# 'insertHorizontalRule'
 FROALA_EDITOR_OPTIONS = {
     'key': 'tckD-17B1ewrwA-7sekA2ys==',
     'inlineMode': False,
@@ -325,10 +323,12 @@ FROALA_EDITOR_OPTIONS = {
                         'insertHorizontalRule'],
 }
 
+# Braintree set up for payments
 BRAINTREE = {
     'merchant_id':os.environ.get('BRAINTREE_MERCHANT_ID'),
     'public_key':os.environ.get('BRAINTREE_PUBLIC_KEY'),
     'private_key':os.environ.get('BRAINTREE_PRIVATE_KEY'),
 }
 
+# include fontawesome (for
 FONTAWESOME_CSS_URL = '/static/font-awesome-4.4.0/css/font-awesome.min.css'

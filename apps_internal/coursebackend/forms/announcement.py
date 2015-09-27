@@ -17,17 +17,10 @@ from apps_data.course.models.course import CourseOwner
 from mentoki.settings import MENTOKI_INFO_EMAIL
 
 
-class AnnouncementCreateForm(forms.ModelForm):
-    text = forms.CharField(widget=FroalaEditor)
-
-    class Meta:
-        model = Announcement
-        fields = ('title', 'text', 'published')
-
-
 class AnnouncementUpdateForm(forms.ModelForm):
-    text = forms.CharField(widget=FroalaEditor)
-
+    """
+    used to create or update an announcement
+    """
     class Meta:
         model = Announcement
         fields = ('title', 'text', 'published')

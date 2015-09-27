@@ -10,6 +10,7 @@ class ThreadTest(TestCase):
 
     def test_threadcreateview(self):
         url = reverse('classroom:forum:thread_create', kwargs={'slug': self.courseevent.slug})
+
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, _('Beitrag'))

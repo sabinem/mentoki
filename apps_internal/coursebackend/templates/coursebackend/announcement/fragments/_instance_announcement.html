@@ -1,33 +1,49 @@
+
+<!-- link to update view -->
 {% url 'coursebackend:announcement:update' pk=announcement.pk course_slug=cs slug=es as update_url %}
-{% url 'coursebackend:announcement:delete' course_slug=cs slug=es as delete_url %}
+
+<!-- link to delete view -->
+{% url 'coursebackend:announcement:delete' course_slug=cs slug=es pk=announcement.pk as delete_url %}
 
 <div class="ui card fluid">
-  <div class="content">
-    <div class="header">
-        {{ announcement.title }}
-        {% if not announcement.published and url_name == "detail" %}
-        <a href="{{ update_url }}">
-            <i class="icon write"></i>
-        </a>
-        <a href="{{ delete_url }}">
-            <i class="icon trash"></i>
-        </a>
-        {% endif %}
-    </div>
-    <div class="meta">
-         {% if announcement.published %}
-            <hr>veröffentlicht: {{ announcement.published_at |date:'d.m.Y' }}
-             <i class="icon checkmark green"></i>
-             <br>
-               <i class="icon mail"></i>{{ announcement.mail_distributor }}
-         {% else %}
+
+    <div class="content">
+
+        <div class="header">
+
+            <!-- title -->
+            {{ announcement.title }}
+
+            <!-- links for drafts -->
+            {% if not announcement.published and url_name == "detail" %}
+                <a href="{{ update_url }}">
+                    <i class="icon write"></i>
+                </a>
+                <a href="{{ delete_url }}">
+                    <i class="icon trash"></i>
+                </a>
+            {% endif %}
+
+        </div>
+
+        <!-- meta data for published announcements -->
+        <div class="meta">
+             {% if announcement.published %}
+                 <hr>
+                 veröffentlicht: {{ announcement.published_at |date:'d.m.Y' }}
+                 <i class="icon checkmark green"></i>
+                 <br>
+                 <i class="icon mail"></i>{{ announcement.mail_distributor }}
+             {% else %}
                  noch unveröffentlicht
-         {% endif %}
+             {% endif %}
+        </div>
+
+        <!-- annnouncement text -->
+        <div class="froala-view">
+            {{ announcement.text | safe }}
+        </div>
+
     </div>
 
-      <div class="description">
-        {{ announcement.text | safe }}
-    </div>
-
-  </div>
 </div>

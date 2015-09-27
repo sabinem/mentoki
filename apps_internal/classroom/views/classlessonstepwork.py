@@ -23,6 +23,8 @@ from apps_internal.coursebackend.views.mixins.base import \
 from ..forms.studentswork import StudentWorkCreateForm, \
     StudentWorkAddTeamForm, StudentWorkUpdatePublicForm, \
     StudentWorkUpdatePrivateForm
+import logging
+logger = logging.getLogger(__name__)
 
 
 class StudentsWorkCommentView(
@@ -43,12 +45,15 @@ class StudentsWorkCommentView(
                                studentswork=studentswork,
                                author=self.request.user)
         # make email to all people participating
+        logger.info("[%s] Kommentar zu %s von %s"
+                    % (courseevent, comment , self.request.user))
         mail_distributor = send_work_comment_notification(
                 studentswork = comment.studentswork,
                 courseevent=comment.courseevent,
                 comment = comment,
                 module=self.__module__,
             )
+        logger.info("[%s] Email gesendet an %s" % (courseevent, mail_distributor))
 
         return HttpResponseRedirect(self.get_success_url())
 

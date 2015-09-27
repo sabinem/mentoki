@@ -1,0 +1,17 @@
+<!-- link to list view -->
+{% url 'coursebackend:announcement:list' course_slug=cs slug=es as list_url %}
+
+<div class="ui large breadcrumb" id ="page-breadcrumb">
+
+    <!-- section link -->
+    <a href="{{ list_url }}" class="section">
+        Ankündigungen
+    </a>
+    <i class="right chevron icon divider"></i>
+
+    <!-- announcement active -->
+    <div class="section active">
+        {{ announcement }}
+    </div>
+
+</div>

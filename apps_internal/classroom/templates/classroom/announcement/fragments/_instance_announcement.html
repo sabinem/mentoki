@@ -1,13 +1,23 @@
+<!-- announcement detail view -->
 <div class="ui card fluid">
-  <div class="content">
-    <div class="header">
-        {{ announcement.title }}
+
+    <div class="content">
+
+        <!-- title -->
+        <div class="header">
+            {{ announcement.title }}
+        </div>
+
+        <!-- meta data -->
+        <div class="meta">
+           vom {{ announcement.published_at |date:'d.m.Y' }}
+        </div>
+
+        <!-- text -->
+        <div class="froala-view">
+            {{ announcement.text | safe }}
+        </div>
+
     </div>
-    <div class="meta">
-       vom {{ announcement.published_at |date:'d.m.Y' }}
-    </div>
-    <div class="description">
-        {{ announcement.text | safe }}
-    </div>
-  </div>
+
 </div>

@@ -1,23 +1,35 @@
+<!-- announcement list in classroom -->
 {% for announcement in announcements %}
 
+    <!-- links: to detail view -->
     {% url 'classroom:announcement:detail' slug=es pk=announcement.pk as detail_url %}
 
+    <!-- announcement detail -->
     <div class="ui card fluid">
-      <div class="content">
-        <div class="header">
-            <a href="{{ detail_url }}">
-            {{ announcement.title }}
-            </a>
-        </div>
-        <div class="meta">
-           vom {{ announcement.published_at |date:'d.m.Y' }}
-        </div>
-        {% if forloop.first %}
-            <div class="description">
-                {{ announcement.text | safe }}
+
+        <div class="content">
+
+            <!-- title with detail link -->
+            <div class="header">
+                <a href="{{ detail_url }}">
+                {{ announcement.title }}
+                </a>
             </div>
-        {% endif %}
-      </div>
+
+            <!-- meta data -->
+            <div class="meta">
+               vom {{ announcement.published_at |date:'d.m.Y' }}
+            </div>
+
+            <!-- only the first announcement is shown in full -->
+            {% if forloop.first %}
+                <div class="froala-view">
+                    {{ announcement.text | safe }}
+                </div>
+            {% endif %}
+
+        </div>
+
     </div>
 
 {% endfor %}
