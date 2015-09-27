@@ -1,30 +1,30 @@
-{% comment %}
 
-announcement table
-
-for list
-
-{% endcomment %}
-
+<!-- table of announcements -->
 <table class="ui table">
 
+    <!-- table header -->
     <thead>
         <tr>
             <tr>
+                <th>bearbeiten?</th>
                 <th>veröffentlicht?</th>
-                <th>archivieren?</th>
                 <th>Titel</th>
-
             </tr>
         </tr>
     </thead>
 
+    <!-- 3 lists of announcements -->
     <tbody>
-        {% for announcement in announcements_unpublished %}
 
+        <!-- 1. list of drafts -->
+        {% for announcement in announcements_unpublished %}
+            <!-- delete update and detail links -->
             {% url 'coursebackend:announcement:update' course_slug=cs slug=es pk=announcement.pk as update_url %}
             {% url 'coursebackend:announcement:delete' course_slug=cs slug=es pk=announcement.pk as delete_url %}
+            {% url 'coursebackend:announcement:detail' course_slug=cs slug=es pk=announcement.pk as detail_url %}
             <tr>
+
+                <!-- update and delete links -->
                 <td>
                     <a href="{{ update_url }}">
                         <i class="icon write blue"></i>
@@ -33,54 +33,81 @@ for list
                         <i class="icon trash blue"></i>
                     </a>
                 </td>
+
+                <!-- no publication date -->
                 <td>-</td>
-                <td>
-                    <a href="{{ delete_url }}">
-                        {{ announcement.title }}
-                    </a>
-                </td>
-            </tr>
-        {% endfor %}
-        {% for announcement in announcements_published %}
 
-            {% url 'coursebackend:announcement:detail' course_slug=cs slug=es pk=announcement.pk as detail_url %}
-            {% url 'coursebackend:announcement:archive' course_slug=cs slug=es pk=announcement.pk as archive_url %}
-
-            <tr>
-                <td>
-                    {{ announcement.published_at | date:'d.m.Y'  }}
-                    <i class="icon checkmark green"></i>
-                </td>
-                <td>
-                    <a href="{{ archive_url }}">
-                        archivieren
-                    </a>
-                </td>
+                <!-- title with detail link -->
                 <td>
                     <a href="{{ detail_url }}">
                         {{ announcement.title }}
                     </a>
                 </td>
+
             </tr>
         {% endfor %}
+
+        <!-- 2. list of published announcements -->
+        {% for announcement in announcements_published %}
+
+            <!-- detail and archive links -->
+            {% url 'coursebackend:announcement:detail' course_slug=cs slug=es pk=announcement.pk as detail_url %}
+            {% url 'coursebackend:announcement:archive' course_slug=cs slug=es pk=announcement.pk as archive_url %}
+
+            <tr>
+
+                <!-- archive link -->
+                <td>
+                    <a href="{{ archive_url }}">
+                        archivieren
+                    </a>
+                </td>
+
+                <!-- publication date -->
+                <td>
+                    {{ announcement.published_at | date:'d.m.Y'  }}
+                    <i class="icon checkmark green"></i>
+                </td>
+
+                <!-- title with detail link -->
+                <td>
+                    <a href="{{ detail_url }}">
+                        {{ announcement.title }}
+                    </a>
+                </td>
+
+            </tr>
+        {% endfor %}
+
+        <!-- 3. list of archived announcements -->
         {% for announcement in announcements_archived %}
 
+            <!-- detail and recover links -->
             {% url 'coursebackend:announcement:unarchive' course_slug=cs slug=es pk=announcement.pk as unarchive_url %}
-            <div class="meta:data">
-                <td><span class="meta_data">
-                    {{ announcement.published_at | date:'d.m.Y'  }}</span>
-                </td>
+            {% url 'coursebackend:announcement:detail' course_slug=cs slug=es pk=announcement.pk as detail_url %}
+
+            <tr class="meta:data">
+
+                <!-- recover link -->
                 <td>
                     <a href="{{ unarchive_url }}">
                         <i class="unhide icon"></i>
                     </a>
                 </td>
-                <td>
-                    <span class="meta_data">
-                        {{ announcement.title }}</span>
+
+                <!-- publication date -->
+                <td><span class="meta_data">
+                    {{ announcement.published_at | date:'d.m.Y'  }}</span>
                 </td>
+
+                <!-- title with detail link -->
+                <td>
+                    <a href="{{ detail_url }}" class="meta_data">
+                        {{ announcement.title }}
+                    </a>
+                </td>
+
             </tr>
-            </div>
         {% endfor %}
     </tbody>
 </table>

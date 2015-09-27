@@ -19,6 +19,8 @@ from apps_data.courseevent.models.courseevent import CourseEvent
 
 from .mixins.base import CourseMenuMixin, FormCourseEventKwargsMixin, FormCourseKwargsMixin
 
+import logging
+logger = logging.getLogger(__name__)
 
 class ClassLessonRedirectDetailMixin(object):
     def get_success_url(self):

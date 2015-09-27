@@ -27,6 +27,8 @@ urlpatterns = i18n_patterns('',
         include(admin.site.urls)),
 
     (r'^mail-queue/', include('mailqueue.urls')),
+
+    (r'^admin/linkcheck/', include('linkcheck.urls'))
 )
 
 

@@ -25,12 +25,17 @@ from django.contrib.sites.models import Site
 from model_utils.models import TimeStampedModel
 from model_utils.fields import MonitorField
 
+from froala_editor.fields import FroalaField
+
 from mailqueue.models import MailerMessage
 
 from mentoki.settings import MENTOKI_COURSE_EMAIL
 
 from apps_data.courseevent.models.courseevent import CourseEvent, CourseEventParticipation
 from apps_data.course.models.course import CourseOwner
+
+import logging
+logger = logging.getLogger(__name__)
 
 
 class AnnouncementManager(models.Manager):
@@ -39,7 +44,7 @@ class AnnouncementManager(models.Manager):
     """
     def archived(self, courseevent):
         """
-        get all archived announcements, newest announcement first
+        gets all archived announcements, newest announcement first
         RETURN: queryset of Announcements
         """
         return self.filter(courseevent=courseevent,
@@ -67,7 +72,7 @@ class AnnouncementManager(models.Manager):
 
     def create(self, courseevent, text, title, mail_distributor="", published=False):
         """
-        An Anncouncement is created.
+        an anncouncement is created.
         """
         announcement = Announcement(courseevent=courseevent,
                                     text=text,
@@ -75,6 +80,8 @@ class AnnouncementManager(models.Manager):
                                     published=published,
                                     mail_distributor=mail_distributor)
         announcement.save()
+        logger.info("[%s] [Ankündigung %s %s]: neu angelegt"
+                    % (courseevent, announcement.id, announcement))
         return announcement
 
 def send_announcement(announcement, courseevent, module):
@@ -111,8 +118,12 @@ def send_announcement(announcement, courseevent, module):
     mail_message.app = module
 
     mail_distributer = send_all
-    print mail_distributer
-    mail_message = mail_message.save()
+    logger.info("[%s] [Ankündigung %s %s]: als email verschickt an %s"
+                        % (courseevent,
+                           announcement.id,
+                           announcement,
+                           mail_distributer))
+    mail_message.save()
     return mail_distributer
 
 
@@ -128,7 +139,7 @@ class Announcement(TimeStampedModel):
     title = models.CharField(
         verbose_name=_("Betreff"),
         max_length=100)
-    text = models.TextField(
+    text = FroalaField(
         verbose_name=_("Text"))
 
     published = models.BooleanField(
@@ -163,20 +174,42 @@ class Announcement(TimeStampedModel):
 
 
     def get_absolute_url(self):
+        """
+        absolute urls for an announcement in the coursebackend
+        """
         return reverse('coursebackend:announcement:detail',
                        kwargs={'course_slug':self.course_slug,
                                'slug':self.slug,
                                'pk':self.pk})
 
     def archive(self):
+        """
+        archive an announcement, so that is no longer visible
+        in the classroom
+        """
+        logger.info("[%s] [Ankündigung %s %s]: archiviert"
+                    % (self.courseevent, self.id, self))
         self.is_archived = True
         self.save()
 
     def unarchive(self):
+        """
+        revive an announcement, so that is again visible
+        in the classroom
+        """
+        logger.info("[%s] [Ankündigung %s %s]: unarchiviert"
+                    % (self.courseevent, self.id, self))
         self.is_archived = False
         self.save()
 
     def publish(self, mail_distributor):
+        """
+        publish an announcement: publication means 2 things:
+        1. an email is send out to the students
+        2. the announcement is visible in the classroom
+        """
+        logger.info("[%s] [Ankündigung %s %s]: veröffentlicht"
+                    % (self.courseevent, self.id, self))
         self.mail_distributor = mail_distributor
         self.published = True
         self.save()

@@ -1,11 +1,13 @@
 {% extends "coursebackend/base_courseevent.html" %}
 
 {% block courseevent_menu_items %}
+    <!-- links for create and to the classroom -->
     {% include 'coursebackend/announcement/fragments/_top_links.html' %}
 {% endblock %}
 
 {% block breadcrumbs %}
-    {% include 'coursebackend/announcement/fragments/_breadcrumbs.html' %}
+    <!-- links for list and detail view -->
+    {% include 'coursebackend/announcement/fragments/_breadcrumb_specific.html' %}
 {% endblock %}
 
 {% block page_content %}

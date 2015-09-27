@@ -1,0 +1,18 @@
+<!-- breadcrumb specific -->
+
+<!-- list link -->
+{% url 'classroom:announcement:list' slug=es as list_url %}
+
+<div class="ui large breadcrumb" id ="page-breadcrumb">
+
+    <!-- link -->
+    <a href="{{ list_url }}" class="section">
+        Ankündigungen
+    </a>
+    <i class="right chevron icon divider"></i>
+
+    <div class="section active">
+        {{ announcement }}
+    </div>
+
+</div>

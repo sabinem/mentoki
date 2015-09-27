@@ -29,6 +29,9 @@ mentoki/settings_test.py
 configuration
 paramiko*
 
+htmlcov/**
+logs/*.log
+
 # static
 
 static/img-reserve/**
