@@ -42,7 +42,7 @@ class AnnouncementManager(models.Manager):
     """
     Querysets for Announcements
     """
-    def archived(self, courseevent):
+    def archived_announcements(self, courseevent):
         """
         gets all archived announcements, newest announcement first
         RETURN: queryset of Announcements
@@ -62,7 +62,7 @@ class AnnouncementManager(models.Manager):
                            is_archived=False
                            ).order_by('-published_at')
 
-    def draft(self, courseevent):
+    def drafts_in_backend(self, courseevent):
         """
         get all announcements that are only drafts yet
         RETURN: queryset of Announcements
@@ -182,7 +182,7 @@ class Announcement(TimeStampedModel):
                                'slug':self.slug,
                                'pk':self.pk})
 
-    def archive(self):
+    def archive_announcement(self):
         """
         archive an announcement, so that is no longer visible
         in the classroom
@@ -192,7 +192,7 @@ class Announcement(TimeStampedModel):
         self.is_archived = True
         self.save()
 
-    def unarchive(self):
+    def unarchive_announcement(self):
         """
         revive an announcement, so that is again visible
         in the classroom
@@ -202,7 +202,7 @@ class Announcement(TimeStampedModel):
         self.is_archived = False
         self.save()
 
-    def publish(self, mail_distributor):
+    def publish_announcement(self, mail_distributor):
         """
         publish an announcement: publication means 2 things:
         1. an email is send out to the students

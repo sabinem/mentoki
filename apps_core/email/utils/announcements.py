@@ -60,7 +60,7 @@ def send_announcement(announcement, courseevent, module):
                mail_message,
                send_all))
 
-    announcement.publish(mail_distributor=send_all)
+    announcement.publish_announcement(mail_distributor=send_all)
 
     return send_all
 

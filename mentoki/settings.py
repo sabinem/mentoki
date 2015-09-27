@@ -53,7 +53,7 @@ INSTALLED_APPS = (
     'floppyforms',
     'froala_editor',
     #'django_prices',
-    'linkcheck',
+
     'extra_views',
     'fontawesome',
 
@@ -303,6 +303,9 @@ LOGOUT_URL = reverse_lazy("home:home")
 
 ACTIVATION_KEY = 'Eif1hsgbcC10obc=='
 
+
+# Froala Editor options: custom buttons set in order to include
+# 'insertHorizontalRule'
 FROALA_EDITOR_OPTIONS = {
     'key': 'tckD-17B1ewrwA-7sekA2ys==',
     'inlineMode': False,
@@ -320,10 +323,12 @@ FROALA_EDITOR_OPTIONS = {
                         'insertHorizontalRule'],
 }
 
+# Braintree set up for payments
 BRAINTREE = {
     'merchant_id':os.environ.get('BRAINTREE_MERCHANT_ID'),
     'public_key':os.environ.get('BRAINTREE_PUBLIC_KEY'),
     'private_key':os.environ.get('BRAINTREE_PRIVATE_KEY'),
 }
 
+# include fontawesome (for
 FONTAWESOME_CSS_URL = '/static/font-awesome-4.4.0/css/font-awesome.min.css'

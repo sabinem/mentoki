@@ -58,7 +58,7 @@ class AnnouncementListView(
         context = super(AnnouncementListView, self).get_context_data(**kwargs)
 
         context ['announcements_unpublished'] = \
-            Announcement.objects.draft(
+            Announcement.objects.drafts_in_backend(
                 courseevent = context['courseevent'])
 
         context ['announcements_published'] = \
@@ -66,7 +66,8 @@ class AnnouncementListView(
                 courseevent = context['courseevent'])
 
         context ['announcements_archived'] = \
-            Announcement.objects.archived(courseevent = context['courseevent'])
+            Announcement.objects.archived_announcements(
+                courseevent = context['courseevent'])
 
         return context
 
@@ -161,6 +162,7 @@ class AnnouncementMailContextMixin(CourseMenuMixin):
                 ))
         return super(AnnouncementMailContextMixin, self).form_valid(form)
 
+
 class AnnouncementUpdateView(
     AnnouncementMailContextMixin,
     MessageMixin,
@@ -212,7 +214,7 @@ def archive_announcement(request, course_slug, slug, pk):
     """
     messages.success(request, "Die Ankündigung wurde archiviert.")
     announcement = get_object_or_404(Announcement, pk=pk)
-    announcement.archive()
+    announcement.archive_announcement()
     logger.info("[Ankündigung %s %s]: archiviert: %s" % (
         announcement.courseevent,
         announcement.id,
@@ -230,7 +232,7 @@ def unarchive_announcement(request, course_slug, slug, pk):
     """
     messages.success(request, "Die Ankündigung wurde wieder sichtbar gemacht.")
     announcement = get_object_or_404(Announcement, pk=pk)
-    announcement.unarchive()
+    announcement.unarchive_announcement()
     logger.info("[Ankündigung %s %s]: unarchiviert: %s" % (
         announcement.courseevent,
         announcement.id,
