@@ -1,7 +1,5 @@
 # App Courseevent
-
 Courseevents are about an event which is based of the teaching material of a course
-
 ## CourseEvent
 The following Models belong to the course app:
 ### Announcement
