@@ -13,9 +13,10 @@ the classroom.
 TODO: what about hidden participants? Is the announcement also sent to them?
 should not be. -> check
 """
+
 from __future__ import unicode_literals, absolute_import
 
-from django.db import models
+from django.db import models, IntegrityError
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.template.loader import get_template
@@ -77,8 +78,8 @@ class AnnouncementManager(models.Manager):
         announcement = Announcement(courseevent=courseevent,
                                     text=text,
                                     title=title,
-                                    published=published,
-                                    mail_distributor=mail_distributor)
+                                    mail_distributor=[],
+                                    published=False)
         announcement.save()
         logger.info("[%s] [Ankündigung %s %s]: neu angelegt"
                     % (courseevent, announcement.id, announcement))
@@ -189,6 +190,9 @@ class Announcement(TimeStampedModel):
         """
         logger.info("[%s] [Ankündigung %s %s]: archiviert"
                     % (self.courseevent, self.id, self))
+        if not self.published:
+            raise IntegrityError('''only published announcements
+                                 can get archived''')
         self.is_archived = True
         self.save()
 

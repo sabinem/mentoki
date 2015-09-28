@@ -1,0 +1,28 @@
+        #create announcements
+        self.announcement1 = AnnouncementFactory(
+            courseevent=self.event1, published=True,
+            title="news1", text="text1" )
+        self.announcement2 = AnnouncementFactory(
+            courseevent=self.event1, published=False,
+            title="news2", text="text2" )
+        self.announcement3 = AnnouncementFactory(
+            courseevent=self.event1, published=True,
+            title="news3", text="text4" )
+        self.announcement4 = AnnouncementFactory(
+            courseevent=self.event1, published=True)
+            title="news3", text="text5" )
+
+        self.announcement5 = AnnouncementFactory(
+            courseevent=self.event2, published=True)
+            title="news3", text="text3" )
+        self.announcement6 = AnnouncementFactory(
+            courseevent=self.event2, published=False)
+        self.announcement7 = AnnouncementFactory(
+            courseevent=self.event2, published=True)
+
+        self.announcement9 = AnnouncementFactory(
+            courseevent=self.event3, published=True)
+        self.announcement8 = AnnouncementFactory(
+            courseevent=self.event3, published=False)
+        self.announcementa = AnnouncementFactory(
+            courseevent=self.event3, published=True)

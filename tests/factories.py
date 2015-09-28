@@ -5,7 +5,6 @@ from __future__ import unicode_literals, absolute_import
 from apps_data.course.models.course import Course
 from django.contrib.sites.models import Site
 
-from apps_data.course.tests.factories import CourseFactory
 from apps_data.lesson.tests.factories import ClassLessonFactory
 
 from apps_data.courseevent.models.courseevent import CourseEvent, CourseEventParticipation
@@ -28,8 +27,6 @@ class SiteFactory(factory.DjangoModelFactory):
 class CourseEventFactory(factory.DjangoModelFactory):
     class Meta:
         model = CourseEvent
-
-    course = factory.SubFactory(CourseFactory)
 
 
 class AnnouncementFactory(factory.DjangoModelFactory):
@@ -56,21 +53,3 @@ class ParticipationFactory(factory.DjangoModelFactory):
     class Meta:
         model = CourseEventParticipation
 
-
-class ClassroomMenuItemFactory(factory.DjangoModelFactory):
-    class Meta:
-        model = ClassroomMenuItem
-
-
-class ForumMenuItemFactory(ClassroomMenuItemFactory):
-    class Meta:
-        model = ClassroomMenuItem
-
-    forum = factory.SubFactory(ForumFactory)
-
-
-class ClassLessonMenuItemFactory(ClassroomMenuItemFactory):
-    class Meta:
-        model = ClassroomMenuItem
-
-    forum = factory.SubFactory(ClassLessonFactory)

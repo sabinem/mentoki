@@ -1,5 +1,22 @@
 # coding: utf-8
 
+"""
+Teachers establish their own menu for the courseevent for their class.
+This classroom-menu is stored in the model ClassroomMenuItem.
+
+Objects are only visible in the class once they are put into the menu.
+In that way the menu influnces what is published in the class, but this
+information is "soft". It is not stored in the objects, whether they are
+accessible or not. Rather they have to look for themselves wether a menu entry
+exists for them or not.
+
+There a re two menus: a complete menu with everything published so far and
+a shortlinksmenu for the most important items at any time.
+
+Also the start item can be chosen: the item that is shown first when
+students enter the classroom.
+"""
+
 from __future__ import unicode_literals, absolute_import
 
 from django.db import models
@@ -14,6 +31,7 @@ from fontawesome.fields import IconField
 from .courseevent import CourseEvent
 from .forum import Forum
 from apps_data.lesson.models.classlesson import ClassLesson
+
 
 
 def switch_start_item(menuitem):

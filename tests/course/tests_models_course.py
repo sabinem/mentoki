@@ -20,7 +20,7 @@ from django.test import TestCase, Client
 from django.core.urlresolvers import reverse
 
 from apps_data.course.models.course import CourseOwner, foto_location
-from .factories import CourseFactory, SiteFactory
+from ..factories import CourseFactory, SiteFactory
 from apps_internal.coursebackend.views.mixins.base import AuthMixin
 
 from django.test import Client
