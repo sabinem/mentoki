@@ -238,25 +238,25 @@ LOGGING = {
         'emailfile': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': 'logs/emails-activity.log',
+            'filename': os.path.join(BASE_DIR, 'email.log' ),
             'formatter': 'verbose'
         },
         'backendfile': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': 'logs/coursebackend-activity.log',
+            'filename': os.path.join(BASE_DIR, 'coursebackend.log' ),
             'formatter': 'verbose'
         },
         'datafile': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': 'logs/data-activity.log',
+            'filename': os.path.join(BASE_DIR, 'data.log' ),
             'formatter': 'verbose'
         },
         'classroomfile': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': 'logs/classroom-activity.log',
+            'filename': os.path.join(BASE_DIR, 'classroom.log' ),
             'formatter': 'verbose'
         },
         'console':{
