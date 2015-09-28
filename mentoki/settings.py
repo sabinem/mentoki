@@ -219,65 +219,76 @@ CACHES = {
 
 
 # Logging
-if LOCAL_ENVIRONMENT:
-    LOGGING = {
-        'version': 1,
-        'disable_existing_loggers': True,
-        'formatters': {
-            'verbose': {
-                'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
-                'datefmt' : "%d/%b/%Y %H:%M:%S"
-            },
-            'simple': {
-                'format': '%(levelname)s %(message)s'
-            },
-        },
-        'handlers': {
-            'file': {
-                'level': 'INFO',
-                'class': 'logging.FileHandler',
-                'filename': 'netteachers.log',
-                'formatter': 'verbose'
-            },
-            'console':{
-                'level':'DEBUG',
-                'class':'logging.StreamHandler',
-                'formatter': 'simple'
-            },
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+
+    # formatters okay!
+    'formatters': {
+        'verbose': {
+            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
         },
-        'loggers': {
-            'apps.forum': {
-                'handlers': ['handler_for_my_apps'],
-                'propagate': True,
-                'level': 'DEBUG',
-            },
-            'apps.core': {
-                'handlers': ['handler_for_my_apps'],
-                'propagate': True,
-                'level': 'DEBUG',
-            },
-            'apps.course': {
-                'handlers': ['handler_for_my_apps'],
-                'propagate': True,
-                'level': 'DEBUG',
-            },
-            'apps.classroom': {
-                'handlers': ['handler_for_my_apps'],
-                'propagate': True,
-                'level': 'DEBUG',
-            },
-            'apps.desk': {
-                'handlers': ['handler_for_my_apps'],
-                'propagate': True,
-                'level': 'DEBUG',
-            },
-        }
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'emailfile': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/emails-activity.log',
+            'formatter': 'verbose'
+        },
+        'backendfile': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/coursebackend-activity.log',
+            'formatter': 'verbose'
+        },
+        'datafile': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/data-activity.log',
+            'formatter': 'verbose'
+        },
+        'classroomfile': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/classroom-activity.log',
+            'formatter': 'verbose'
+        },
+        'console':{
+            'level':'DEBUG',
+            'class':'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+
+    },
+    'loggers': {
+        'apps_core.email': {
+            'handlers': ['emailfile'],
+            'propagate': True,
+            'level': 'INFO',
+        },
+        'apps_data': {
+            'handlers': ['datafile'],
+            'propagate': True,
+            'level': 'INFO',
+        },
+        'apps_internal.classroom': {
+            'handlers': ['classroomfile'],
+            'propagate': True,
+            'level': 'INFO',
+        },
+        'apps_internal.coursebackend': {
+            'handlers': ['backendfile'],
+            'propagate': True,
+            'level': 'INFO',
+        },
     }
-
-    # make all loggers use the console.
-    for logger in LOGGING['loggers']:
-        LOGGING['loggers'][logger]['handlers'] = ['console']
+}
 
 RAVEN_CONFIG = {
     'dsn': os.environ.get('SENTRY_DSN'),
