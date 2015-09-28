@@ -29,7 +29,7 @@ paramiko*
 htmlcov/**
 
 # log-files
-logs/*.log
+*.log
 
 #static
 static/img-reserve/**

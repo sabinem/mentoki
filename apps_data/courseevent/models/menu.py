@@ -233,20 +233,22 @@ class ClassroomMenuItem(TimeStampedModel):
 
         # 2. lesson item: only relationship to lesson is required
         if self.item_type == self.MENU_ITEM_TYPE.lesson_item:
-            if not self.classlesson.is_lesson():
-                raise ValidationError('''Lektions-Eintrag muss zu einer Lektion
-                verlinken.''', code='invalid_object'
-                )
+            if self.classlesson:
+                if not self.classlesson.is_lesson():
+                    raise ValidationError('''Lektions-Eintrag muss zu einer Lektion
+                    verlinken.''', code='invalid_object'
+                    )
             if self.forum:
                 raise ValidationError('''Bei diesem Eintragstyp
                 kann kein Forum angegeben werden.''')
 
         # 3. lessonstep item: only relationship to lessonstep  is required
         if self.item_type == self.MENU_ITEM_TYPE.lessonstep_item:
-            if not self.classlesson.is_step():
-                raise ValidationError('''Lernschritt-Eintrag muss zu einem
-                Lernabschnitt verlinken.''', code='invalid_object'
-                )
+            if self.classlesson:
+                if not self.classlesson.is_step():
+                    raise ValidationError('''Lernschritt-Eintrag muss zu einem
+                    Lernabschnitt verlinken.''', code='invalid_object'
+                    )
             if self.forum:
                 raise ValidationError('''Bei diesem Eintragstyp
                 kann kein Forum angegeben werden.''')
