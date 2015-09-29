@@ -37,8 +37,6 @@ from apps_data.lesson.models.classlesson import ClassLesson
 def switch_start_item(menuitem):
     """
     The start item of a courseevent is changed to a given new menuitem
-    :param menuitem: the menuitem that should be the new startitem
-    :return: None
     """
     menuitems = ClassroomMenuItem.objects.all_for_courseevent(courseevent=menuitem.courseevent).\
         exclude(pk=menuitem.pk)
@@ -162,6 +160,14 @@ class ClassroomMenuItemManager(models.Manager):
 class ClassroomMenuItem(TimeStampedModel):
     """
     Classroom Menu Items make up the Classroom Menu
+    dependent on courseevent
+
+    ClassLessons and Classlessonsteps may be published in the class through
+    an entry in the menu. The same is true for forums.
+
+    Also certain links may be published that way:
+    - link to particpant list
+    - link to latest forum contributions
     """
     courseevent = models.ForeignKey(CourseEvent)
 
@@ -218,6 +224,10 @@ class ClassroomMenuItem(TimeStampedModel):
     shortlinks = QueryManager(is_shortlink=True).order_by('display_nr')
 
     unique_together=('display_title', 'courseevent')
+
+    class Meta:
+        verbose_name = _("Menüeintrag")
+        verbose_name_plural = _("Menüeinträge")
 
     def __unicode__(self):
         return u'%s' % (self.display_title)

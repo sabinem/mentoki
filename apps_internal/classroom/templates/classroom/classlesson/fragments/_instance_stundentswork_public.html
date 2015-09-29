@@ -1,0 +1,54 @@
+
+<!-- urls -->
+{% url 'classroom:classlesson:updatepublic' slug=es work_pk=studentswork.pk pk=studentswork.homework.pk as work_url %}
+
+<div class="ui card fluid">
+
+    <div class="content">
+
+        <div class="header">
+
+            <!-- title -->
+            {{ studentswork.title }}
+
+            <!--update -->
+            <a href="{{ work_url }}">
+                bearbeiten
+                <i class="icon write"></i>
+            </a>
+
+        </div>
+
+        <div class="meta">
+            {% if studentswork.publish_count != 0 %}
+            <span class="right time">Erstabgabe am {{ studentswork.published_at | date:'d.m.Y' }}
+            {{ studentswork.published_at|time:"H:i" }},</span>
+            {% endif %}
+            {% if studentswork.publish_count > 1 %}
+            <span class="right time">{{ studentswork.publish_count }}. Abgabe {{ studentwork.publish_count }}:
+            {{ studentswork.republished_at | date:'d.m.Y' }}{{ studentswork.republished_at|time:"H:i" }}</span>
+            {% endif %}
+          <br>
+            von:
+          <div class="ui horizontal list">
+              {% for worker in studentswork.workers.all %}
+                  <div class="item">
+                     <img class="ui mini image" src="{{ worker.profile_image.url }}">
+                    <div class="content">
+                      <div class="header">{{ worker.username }}</div>
+                    </div>
+                  </div>
+              {% endfor %}
+          </div>
+        </div>
+
+        <div class="extra content">
+
+            <!-- work -->
+            <div class="froala-view">
+            {{ studentswork.text | safe }}
+            </div>
+
+        </div>
+    </div>
+</div>

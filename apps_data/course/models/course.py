@@ -185,7 +185,11 @@ def foto_location(instance, filename):
         IN: CourseOwner, filename
         RETURN: path <course-slug>/<filename>
         """
-        return '/'.join([instance.course.slug, filename])
+        path = '/'.join([instance.course.slug, filename])
+        logger.info("""[%s] [filename %s]:
+                    Foto gespeichert unter %s"""
+                    % (instance.course,  filename, path))
+        return path
 
 
 class CourseOwner(TimeStampedModel):
@@ -235,7 +239,6 @@ class CourseOwner(TimeStampedModel):
     class Meta:
         verbose_name = _("Kursleitung")
         verbose_name_plural = _("Kursleitungen")
-        ordering = ['course', 'display_nr']
 
     def __unicode__(self):
         """

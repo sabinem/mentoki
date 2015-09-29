@@ -1,5 +1,6 @@
 {% url 'classroom:classlesson:step' slug=es pk=next_node.pk as forward_url %}
 {% url 'classroom:classlesson:step' slug=es pk=previous_node.pk as backward_url %}
+{% url 'classroom:classlesson:publiclist' slug=es pk=lessonstep.pk as turnedin_url %}
 
 <!-- forward -->
 {% if next_node %}
@@ -39,7 +40,16 @@
 
     <!-- homework -->
     {% if lessonstep.is_homework %}
-         <a class="ui orange label">interaktiv</a>
+        <a class="ui orange label">interaktiv</a>
+
+        <br>
+
+        <a href="{{ turnedin_url }}">
+            <div class="ui label large">
+                {{ lessonstep.studentswork_count }}
+                Beiträge abgegeben
+            </div>
+        </a>
     {% endif %}
 
 </div>
@@ -82,6 +92,7 @@
     <div class="froala-view">
         {{ lessonstep.extra_text | safe }}
     </div>
+
 
 
 {% endif %}

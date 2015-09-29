@@ -309,3 +309,9 @@ class ClassLesson(BaseLesson):
         for node in nodes:
             node.original_lesson = None
             node.save()
+
+    @property
+    def studentswork_count(self):
+        if self.is_homework:
+            from apps_data.courseevent.models.homework import StudentsWork
+            return StudentsWork.objects.filter(homework=self).count()

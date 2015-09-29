@@ -1,5 +1,10 @@
-# App Courseevent
-Courseevents are about an event which is based of the teaching material of a course
+# app_data.courseevent
+Courseevents are the events where the actual teaching takes place.
+They belong to the course, which is the time and event independent wrapper,
+that gathers the teaching material
+## function
+this app doese all the data handling for courseevents.
+## models
 ## CourseEvent
 The following Models belong to the course app:
 ### Announcement
@@ -12,13 +17,8 @@ Participants of a course
 The classroom Menu
 
 ## Interface to other apps: 
-    CourseEvent.public_ready_for_booking.all()
-All courseevents that are ready for public booking
 
-    CourseEvent.public_ready_for_preview.all()
-All courseevents that are ready for public booking
  
-    CourseEvent.objects.get_courseevent_or_404_from_slug(self, slug): 
-get one courseevent from slug    
+ 
  
 

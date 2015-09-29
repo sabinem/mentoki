@@ -62,11 +62,13 @@ class StudentsWorkCommentView(
         context = super(StudentsWorkCommentView, self).get_context_data(**kwargs)
         studentswork = get_object_or_404(StudentsWork, pk=self.kwargs['work_pk'])
         context['studentswork'] = studentswork
+        context['comments'] = \
+            Comment.objects.comment_to_studentswork(studentswork=context['studentswork'])
 
         return context
 
     def get_success_url(self):
-       return reverse_lazy('classroom:classlesson:studentswork',
+       return reverse_lazy('classroom:classlesson:publicstudentswork',
                            kwargs={'slug': self.kwargs['slug'], 'pk':self.kwargs['pk'],
                                    'work_pk':self.kwargs['work_pk']})
 

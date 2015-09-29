@@ -256,8 +256,8 @@ class Thread(ForumContributionModel):
     objects = ThreadManager()
 
     class Meta:
-        verbose_name = "Beitrag"
-        verbose_name_plural = "Beiträge"
+        verbose_name = "Beitrag (Forum)"
+        verbose_name_plural = "Beiträge (Forum)"
         ordering = [ '-modified' ]
 
     def __unicode__(self):
@@ -309,8 +309,8 @@ class Post(ForumContributionModel):
     objects = PostManager()
 
     class Meta:
-        verbose_name = "Post"
-        verbose_name_plural = "Posts"
+        verbose_name = "Post (Forum)"
+        verbose_name_plural = "Posts (Forum)"
         ordering = [ '-modified' ]
 
     def __unicode__(self):

@@ -3,6 +3,7 @@
     {% for lessonstep in lessonsteps %}
 
        {% url "classroom:classlesson:step" slug=es pk=lessonstep.pk as step_url %}
+       {% url 'classroom:classlesson:publiclist' slug=es pk=lessonstep.pk as turnedin_url %}
 
         <div class="item">
 
@@ -13,11 +14,15 @@
                     <a href="{{ step_url }}" >
                        {{ lessonstep.title }}
                         <!-- homework -->
-
-
                     </a>
                     {% if lessonstep.is_homework %}
-                          <a class="ui orange label">interaktiv</a>
+                        <a class="ui orange label">interaktiv</a>
+                        <a href="{{ turnedin_url }}">
+                            <div class="ui label medium">
+                                {{ lessonstep.studentswork_count }}
+                                Beiträge abgegeben
+                            </div>
+                        </a>
                     {% endif %}
                 </div>
                 <div>

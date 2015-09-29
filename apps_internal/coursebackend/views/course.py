@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
 
+"""
+Views for internally viewing and editing courses. These views are only
+accessible by teachers. Access is tested by CourseMenuMixin.
+
+
+"""
+
 from __future__ import unicode_literals
 
 from django.forms.models import modelform_factory

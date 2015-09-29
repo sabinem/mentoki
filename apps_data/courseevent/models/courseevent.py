@@ -1,5 +1,21 @@
 # coding: utf-8
 
+
+"""
+Courseevents are the Events where the actual teaching takes place.
+A course may have several courseevents.
+
+Courseevents have participants.
+The teachers are already determined by the course.
+
+They have also some infrastructure:
+- a forum
+- announcements
+- a classroom menu
+- classlessons
+
+"""
+
 from __future__ import unicode_literals, absolute_import
 
 import datetime
@@ -22,20 +38,24 @@ from model_utils import Choices
 from apps_data.course.models.course import Course
 
 
-#class CourseEventQuerySet(QuerySet):
 class CourseEventManager(models.Manager):
+    """
+    Querysets for CourseEvents
+    """
 
     def courseevents_for_course(self, course):
+        """
+        all Courseevents for a course
+        """
         return self.filter(course=course)
 
     def active_courseevents_for_course(self, course):
+        """
+        all active courseevents for a course
+        teachers
+        RETURN: queryset of courseevents
+        """
         return self.filter(course=course, active=True)
-
-    def courseevents_for_course_slug(self, course_slug):
-        return self.select_related('course').filter(course__slug=course_slug)
-
-    def get_courseevent_or_404_from_slug(self, slug):
-        return get_object_or_404(self, slug=slug)
 
 
 class CourseEvent(TimeStampedModel):
@@ -147,9 +167,14 @@ class CourseEvent(TimeStampedModel):
         help_text=_("""Skizziere Dein Wunsch-Preis-Modell für diesen Kurs."""),
         blank=True)
 
+    price = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        verbose_name=_('Preis')
+    )
 
-    #price = PriceField('Price', currency='ECU', max_digits=12, decimal_places=2, null=True, blank=True)
-    price = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
     #participants
     participation = models.ManyToManyField(settings.AUTH_USER_MODEL, through="CourseEventParticipation", related_name='participation')
 
@@ -163,6 +188,10 @@ class CourseEvent(TimeStampedModel):
     objects = CourseEventManager()
     public_ready_for_booking = QueryManager(status_external=STATUS_EXTERNAL.booking)
     public_ready_for_preview = QueryManager(status_external=STATUS_EXTERNAL.preview)
+
+    class Meta:
+        verbose_name = _("Kursereignis")
+        verbose_name_plural = _("Kursereignisse")
 
     def __unicode__(self):
         return self.title
@@ -190,8 +219,6 @@ class CourseEvent(TimeStampedModel):
         if self.start_date and self.nr_weeks:
            end_date = self.start_date + datetime.timedelta(days=7*self.nr_weeks)
            return end_date
-
-
 
     @property
     def days_to_start(self):
@@ -260,6 +287,10 @@ class CourseEventParticipation(TimeStampedModel):
     hidden_status_changed = MonitorField(monitor='hidden')
 
     objects = ParticipationManager()
+
+    class Meta:
+        verbose_name = _("Kurs-Teilnehmer")
+        verbose_name_plural = _("Kurs-Teilnehmer")
 
     def __unicode__(self):
         return u'%s / %s' % (self.courseevent, self.user)

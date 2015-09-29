@@ -93,9 +93,11 @@ class StudentsWork(TimeStampedModel):
     publish_count = models.IntegerField(default=0)
     republished_at = MonitorField(monitor='publish_count')
 
-
-
     objects = StudentsWorkManager()
+
+    class Meta:
+        verbose_name = _("Teilnehmer-Arbeit")
+        verbose_name_plural = _("Teilnehmer-Arbeiten")
 
     def __unicode__(self):
         return self.title
@@ -120,6 +122,9 @@ class StudentsWork(TimeStampedModel):
 
     def workers_emails(self):
         return self.workers.all().values_list('email', flat=True, )
+
+    def comment_count(self):
+        return Comment.objects.filter(studentswork=self).count()
 
     def team_size(self):
         return self.team.count()
@@ -158,6 +163,10 @@ class Comment(TimeStampedModel):
     text = models.TextField(verbose_name="Text")
 
     objects = CommentManager()
+
+    class Meta:
+        verbose_name = _("Kommentar")
+        verbose_name_plural = _("Kommentare")
 
     def __unicode__(self):
         return self.title

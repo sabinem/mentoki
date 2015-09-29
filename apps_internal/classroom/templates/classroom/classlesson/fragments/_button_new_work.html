@@ -1,0 +1,7 @@
+{% url 'classroom:classlesson:create' slug=es pk=lessonstep.pk as create_url %}
+
+<!-- create new work -->
+<a href="{{ create_url }}" class="ui button">
+    neue Arbeit anlegen
+    <i class="icon plus"></i>
+</a>

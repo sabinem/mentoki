@@ -1,7 +1,10 @@
+# coding: utf-8
+
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 from django.core.validators import RegexValidator
+from django.utils.translation import ugettext_lazy as _
 
 from apps_data.course.models.course import Course
 from apps_data.courseevent.models.courseevent import CourseEvent
@@ -64,6 +67,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
+
+    class Meta:
+        verbose_name = _("Benutzer")
+        verbose_name_plural = _("Benutzer")
 
     def __unicode__(self):
         return u'%s' % (self.username)

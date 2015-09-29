@@ -29,15 +29,23 @@ urlpatterns += patterns('',
 
     url(r'^abschnitt/(?P<pk>\d+)/arbeit/(?P<work_pk>\d{1,4})$',
         StudentsWorkDetailView.as_view(),
-        {'template':'classroom/classlesson/pages/studentswork.html'}, name='studentswork'),
+        {'template':'classroom/classlesson/pages/studentswork_public.html'},
+        name='publicstudentswork'),
+
+    url(r'^abschnitt/(?P<pk>\d+)/arbeit/(?P<work_pk>\d{1,4})$',
+        StudentsWorkDetailView.as_view(),
+        {'template':'classroom/classlesson/pages/studentswork_private.html'},
+        name='privatestudentswork'),
 
     url(r'^abschnitt/(?P<pk>\d+)/abgegeben$',
         StudentsWorkPublicListView.as_view(),
-        {'template':'classroom/classlesson/pages/studentsworks_published.html'}, name='publiclist'),
+        {'template':'classroom/classlesson/pages/studentsworks_published.html'},
+        name='publiclist'),
 
     url(r'^abschnitt/(?P<pk>\d+)/privat$',
         StudentsWorkPrivateListView.as_view(),
-        {'template':'classroom/classlesson/pages/studentsworks_private.html'}, name='privatelist'),
+        {'template':'classroom/classlesson/pages/studentsworks_private.html'},
+        name='privatelist'),
 )
 
 

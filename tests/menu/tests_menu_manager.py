@@ -4,8 +4,7 @@ from __future__ import unicode_literals, absolute_import
 
 from django.test import TestCase
 
-from .factories import CourseEventFactory, ClassroomMenuItemFactory, \
-    ClassLessonMenuItemFactory, ForumMenuItemFactory, ForumFactory
+from ..factories import CourseEventFactory, ForumFactory, ClassLessonFactory
 from apps_data.lesson.tests.factories import ClassLessonFactory
 
 from apps_data.courseevent.models.menu import ClassroomMenuItem

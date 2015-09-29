@@ -1,0 +1,79 @@
+<table class="ui table">
+
+    <thead>
+        <tr>
+            <th>Titel</th>
+            <th>Team</th>
+            <th>Abgabedatum</th>
+            <th>Kommentare</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        {% for studentswork in studentsworks %}
+
+            <!-- named urls -->
+            {% url 'classroom:classlesson:updatepublic' slug=es work_pk=studentswork.pk pk=lessonstep.pk as work_url %}
+            {% url 'classroom:classlesson:publicstudentswork' slug=es work_pk=studentswork.pk pk=lessonstep.pk as detail_url %}
+
+            <tr>
+                <td>
+                    {{ studentswork.title }}
+                    {% if request.user in studentswork.workers.all %}
+                        <a href="{{ work_url }}">
+                            <i class="icon write"></i>
+                        </a>
+                    {% endif %}
+                    <div class="ui label circular">
+                        {{ studentswork.comment_count }}
+                    </div>
+                </td>
+                <td>
+                    <div class="ui horizontal list">
+                      {% for worker in studentswork.workers.all %}
+                          <div class="item">
+                             <img class="ui mini image" src="{{ worker.profile_image.url }}">
+                            <div class="content">
+                              <div class="header">{{ worker.username }}</div>
+                            </div>
+                          </div>
+                      {% endfor %}
+                    </div>
+                </td>
+                <td>
+                    {% with count=studentswork.publish_count %}
+                        {% if count == 1 %}
+                            <div class="ui label">
+                                {{ studentswork.publish_count }}.
+                            </div>
+                        {% endif %}
+                        {{ studentswork.published_at | date:'d.m.Y' }}
+                        {{ studentswork.published_at|time:"H:i" }}
+                        {% if count > 1 %}
+                            <span class="right time"><br>
+                                <div class="ui label">
+                                    {{ studentswork.publish_count }}.
+                                </div>
+                                {{ studentswork.republished_at | date:'d.m.Y' }}
+                                {{ studentswork.republished_at|time:"H:i" }}
+                            </span>
+                        {% endif %}
+                    {% endwith %}
+                </td>
+                <td>
+                    <a href="{{ detail_url }}" class="ui button">
+                        ansehen?
+                        <i class="icon comments"></i>
+                    </a>
+
+                </td>
+            </tr>
+
+        {% endfor %}
+
+    </tbody>
+
+</table>
+
+

@@ -1,0 +1,65 @@
+
+
+{% for studentswork in studentsworks %}
+
+    <!-- named urls -->
+
+    {% url 'classroom:classlesson:updateprivate' slug=es work_pk=studentswork.pk pk=lessonstep.pk as work_url %}
+    {% url 'classroom:classlesson:studentswork' slug=es work_pk=studentswork.pk pk=lessonstep.pk as detail_url %}
+    {% url 'classroom:classlesson:delete' slug=es work_pk=studentswork.pk pk=lessonstep.pk as delete_url %}
+    {% url 'classroom:classlesson:addteam' slug=es work_pk=studentswork.pk pk=lessonstep.pk as addteam_url %}
+
+
+    <!-- card studentswork -->
+    <div class="ui card fluid">
+
+    <div class="content">
+
+        <!-- header -->
+        <a href="{{ detail_url }}" class="header">{{ studentswork.title }}</a>
+
+        <!-- meta data -->
+        <div class="meta">
+
+            <!-- draft -->
+            (Entwurf)
+
+            <br>
+            von:
+            <div class="ui horizontal list">
+              {% for worker in studentswork.workers.all %}
+                  <div class="item">
+                     <img class="ui mini image" src="{{ worker.profile_image.url }}">
+                    <div class="content">
+                      <div class="header">{{ worker.username }}</div>
+                    </div>
+                  </div>
+              {% endfor %}
+            </div>
+
+        </div>
+
+
+      <div class="extra content">
+        <div>
+
+          {% if request.user in studentswork.workers.all %}
+                  <a href="{{ work_url }}" class="ui button">
+                      bearbeiten
+                      <i class="icon write"></i>
+                  </a>
+
+                <a class="ui button" href="{{ delete_url }}">
+                    <i class="trash blue icon"></i>
+                </a>
+                <a class="ui button" href="{{ addteam_url }}">
+                    <i class="add user icon blue"></i>
+                </a>
+
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    </div>
+
+{% endfor %}

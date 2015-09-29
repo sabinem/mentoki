@@ -13,7 +13,7 @@
     <hr>
     <h2>{{ studentswork.title }}</h2>
     <p>{{ studentswork.text | safe}}</p>
-    <a href="http://{{ site }}{%  url 'classroom:classlesson:studentswork' work_pk=studentswork.pk pk=homework.pk slug=courseevent.slug %}">
+    <a href="http://{{ site }}{%  url 'classroom:classlesson:publicstudentswork' work_pk=studentswork.pk pk=homework.pk slug=courseevent.slug %}">
         Link zum Beitrag im Klassenzimmer
     </a>
 {% endblock %}

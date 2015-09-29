@@ -167,6 +167,10 @@ class Announcement(TimeStampedModel):
 
     objects = AnnouncementManager()
 
+    class Meta:
+        verbose_name = _("Ankündigung")
+        verbose_name_plural = _("Ankündigungen")
+
     def __unicode__(self):
         """
         Ankündigungen werden durch ihren Titel repräsentiert.

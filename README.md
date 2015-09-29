@@ -62,3 +62,23 @@ since this seems to make the most sense to me.
 * logging: implemented
 * doku: ready
 * tests: missing
+##Course:
+###Apps
+* data: apps_data.course.models.course
+* coursebackend: apps_internal.coursebackend.views.course               
+* coursebackend: apps_internal.coursebackend.views.courseowner     
+###Status:
+* logging: implemented
+* doku: ready
+* tests: missing
+##CourseEvent:
+##Lesson:
+##ClassLesson:
+##Material
+##ClassroomMenu:
+##Forum:
+##StudentsWork:
+##Accounts:
+##Customers:
+##Homepage:
+##Public Courses:

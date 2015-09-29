@@ -2,16 +2,7 @@
 
     {% url 'classroom:classlesson:comment' slug=es pk=lessonstep.pk work_pk=studentswork.pk as comment_url %}
 
-    <h4 class="ui horizontal divider header">
-        <i class="comments outline icon"></i>
-        Kommentare
-    </h4>
 
-    {% if url_name != 'updatepublic' %}
-        <a href="{{ comment_url }}" class="ui button">
-            <i class="write icon blue"></i>Kommentar anfügen?
-        </a>
-    {% endif %}
 
     <div class="ui comments">
 

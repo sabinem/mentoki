@@ -103,6 +103,10 @@ class Material(TimeStampedModel):
 
     unique_together=('course', 'title')
 
+    class Meta:
+        verbose_name = _("Material")
+        verbose_name_plural = _("Materialien")
+
     objects = MaterialManager()
 
     class Meta:
