@@ -33,6 +33,7 @@ htmlcov/**
 
 #static
 static/img-reserve/**
+static/img-old/**
 static/Semantic-UI-1.12.2/**
 static/Semantic-UI-2.0.7_2/src/**
 static/Semantic-UI-2.0.7_2/examples/**

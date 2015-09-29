@@ -40,4 +40,4 @@ class WebinarView(RedirectView):
     url = '/unterrichten#webinarinfo'
 
 class NewHomePageView(TemplateView):
-    template_name = "public/home/homepage.html"
+    template_name = "home/homepage.html"
