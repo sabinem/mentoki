@@ -93,7 +93,15 @@
         {{ lessonstep.extra_text | safe }}
     </div>
 
+    <a href="{{ turnedin_url }}" class="ui header medium">
+        Beiträge (Kurzübersicht)
+    </a>
+    <div class="ui list">
+    {% for studentswork in studentsworks %}
+        {% url 'classroom:classlesson:publicstudentswork' slug=es work_pk=studentswork.pk pk=lessonstep.pk as detail_url %}
 
-
+       <a href="{{ detail_url }}" class="item">{{ studentswork.title }}</a>
+    {% endfor %}
+    </div>
 {% endif %}
 

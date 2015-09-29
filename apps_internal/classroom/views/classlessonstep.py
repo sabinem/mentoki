@@ -43,9 +43,8 @@ class ClassLessonStepDetailView(
         context = super(ClassLessonStepDetailView, self).get_context_data(**kwargs)
 
         if context['lessonstep'].is_homework:
-                context['studentsworks'] = \
-                    StudentsWork.objects.turnedin_homework(homework=context['lessonstep'])
-
+            context['studentsworks'] = \
+                StudentsWork.objects.turnedin_homework(homework=context['lessonstep'])
         return context
 
 
