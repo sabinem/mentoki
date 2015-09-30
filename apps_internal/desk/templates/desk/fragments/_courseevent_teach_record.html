@@ -1,0 +1,15 @@
+<div class="content">
+    <div class="header">{{ course.title }}</div>
+    Zur Unterrichtsvorbereitung gehen
+</div>
+<a class="ui bottom attached  button"
+   href="{% url 'coursebackend:course:detail' course_slug=course.slug %}">
+    <i class="wrench icon"></i>
+    Kursvorlage bearbeiten
+</a>
+
+<a class="ui bottom attached  button"
+   href="{% url 'coursebackend:lesson:start' course_slug=course.slug %}">
+    <i class="wrench icon"></i>
+    Unterricht vorbereiten
+</a>

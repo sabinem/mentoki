@@ -1,16 +1,26 @@
 from django.conf.urls import patterns, url
 
-from .views import HomePageView, TeachPageView, TeamPageView, ImpressumPageView, \
-    NewsLetterView, WebinarView, NewHomePageView
+from .views import HomePageView, AboutPageView, MotivationPageView
 
 urlpatterns = patterns("",
-    url(r'^$', NewHomePageView.as_view(), name='home'),
-    url(r'^team$', TeamPageView.as_view(), name='team'),
-    url(r'^impressum$', ImpressumPageView.as_view(), name='impressum'),
-    url(r'^newsletters$', NewsLetterView.as_view(), name='newsletter'),
-    url(r'^unterrichten$', TeachPageView.as_view(), name='teach'),
-    url(r'^unterrichten/(?P<goto>\S+)$', TeachPageView.as_view(), name='teach'),
 
-    #old urls still maintained
-    url(r'^webinar-online-unterrichten$', WebinarView.as_view(), name='webinar'),
+    # alter url: muss so bleiben, wegen google
+    url(r'^team$',
+        AboutPageView.as_view(),
+        name='about'),
+
+    # alter url: muss so bleiben, wegen google
+    url(r'^$',
+        HomePageView.as_view(),
+        name='home'),
+
+    # neuer url: kann auch anderers heissen
+    url(r'^motivation$',
+        MotivationPageView.as_view(),
+        name='motivation'),
+
+    # neuer url: kann auch anderers heissen
+    url(r'^mentor/(?P<username>[a-z0-9_-]+)/$',
+        MotivationPageView.as_view(),
+        name='mentor'),
 )

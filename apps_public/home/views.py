@@ -3,41 +3,48 @@
 from __future__ import unicode_literals
 
 from django.views.generic import TemplateView, RedirectView
+from django.shortcuts import get_object_or_404
+
+from userprofiles.models.mentor import MentorsProfile
+from apps_data.course.models.course import CourseOwner
+from accounts.models import User
 
 
 class HomePageView(TemplateView):
-    template_name = "public/homepage/homepage.html"
+    template_name = "home/pages/homepage.html"
 
-class TeachPageView(TemplateView):
-    template_name = "public/teachpage/teach.html"
+
+class AboutPageView(TemplateView):
+    template_name = "home/pages/about.html"
 
     def get_context_data(self, **kwargs):
-        context = super(TeachPageView, self).get_context_data(**kwargs)
-        try:
-            if kwargs['goto'] == "testimonials":
-                context['gotodiv']="testimonial_pagemark"
-            elif kwargs['goto'] == "details":
-                context['gotodiv']="detail_pagemark"
-            elif kwargs['goto'] == "webinar":
-                context['gotodiv']="webinar_pagemark"
-        except:
-            pass
+        context = super(AboutPageView, self).get_context_data()
+
+        # get mentor_profile
+        mentors = MentorsProfile.objects.all().select_related('user')
+        context['mentors'] = mentors
+
+        print context
         return context
 
+class MotivationPageView(TemplateView):
+    template_name = "home/pages/motivation.html"
 
-class ImpressumPageView(TemplateView):
-    template_name = "public/generalpages/impressum.html"
 
-class TeamPageView(TemplateView):
-    template_name = "public/generalpages/team.html"
+class MentorsPageView(TemplateView):
+    template_name = "home/pages/mentor.html"
 
-class NewsLetterView(TemplateView):
-    template_name = "public/newsletter.html"
+    def get_context_data(self, **kwargs):
+        context = super(MentorsPageView, self).get_context_data()
 
-# old urls will still be served
-class WebinarView(RedirectView):
-    permanent = True
-    url = '/unterrichten#webinarinfo'
+        # get user from username
+        user = User.objects.get(username=self.kwargs['username'])
 
-class NewHomePageView(TemplateView):
-    template_name = "home/homepage.html"
+        # get mentor_profile
+        mentor = get_object_or_404(MentorsProfile, user=user)
+        context['mentor'] = mentor
+
+        #get courses
+        context['courseevents'] = user.teaching_public()
+        print context
+        return context
