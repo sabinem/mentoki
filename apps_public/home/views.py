@@ -21,7 +21,7 @@ class AboutPageView(TemplateView):
         context = super(AboutPageView, self).get_context_data()
 
         # get mentor_profile
-        mentors = MentorsProfile.objects.all().select_related('user')
+        mentors = MentorsProfile.objects.all().select_related('user').order_by('display_nr')
         context['mentors'] = mentors
 
         print context
