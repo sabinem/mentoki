@@ -1,0 +1,235 @@
+{% extends "base/base_public.html" %}
+{% load i18n %}
+
+{% block meta_title %}Mentoki - Lehr- und Lernplattform | Lernen und Lehren lebenslang{% endblock %}
+
+{% block meta_description %}Wir sind eine Lehr- und Lern-Plattform für unabhängiger Mentoren und ihre Schüler{% endblock %}
+{% block meta_keywords %}mentoren netzwerk, lern plattform, erwachsenen bildung, online unterrichten, lehr plattform{% endblock %}
+
+
+{% block page_section_css_id %}home{% endblock %}
+
+{% block main_content %}
+
+    <!-- urls --->
+    {% url 'courseoffer:christine' as christine_url %}
+
+    <!-- banner -->
+    <div class="ui grid centered">
+        <div class="one column row">
+            <div class="ui column sixteen wide">
+                <img class="ui image fluid"
+                     src="/static/img/wordle5.jpg">
+            </div>
+        </div>
+    </div>
+
+
+    <!-- text page -->
+    <div class="ui grid container" style="padding-bottom:100px;">
+
+        <div class="content ui column sixteen wide">
+
+                <div class="ui header center aligned  large" style="color:#19aaa6;
+                font-family: 'Montserrat', sans-serif;
+                font-size: 2em;
+                font-weight: 400;
+                line-height: 1.5em;
+                -webkit-font-smoothing: antialiased;
+                ">
+                    Mentoki Kurse
+                </div>
+                <div class="ui two column stackable grid">
+                    <div class="column">
+                        <p>
+                            Für mentoki-Kurse gelten mentoki-Standards. Das heisst, dass die Kurskonzepte
+                            auf Basis modernster Forschungs- und best practice-Ergebnisse entwickelt
+                            wurden und immer stark praxisbezogen, kommunikativ und interaktiv sind.
+                        </p>
+                        <p>
+                            Teilnahmebescheinigungen werden nur bei Erfüllung der Anforderungen ausgestellt.
+                            Wir legen größten Wert darauf, dass sich Ihr Lernengagement auch für Sie lohnt.
+                            Neben den Kursen, die der persönlichen Weiterentwicklung dienen, besetzen wir Nischen,
+                            in denen wir Lösungen für Verbesserungen in unserer Gesellschaft anbieten -
+                            hierzu zählen beispielsweise unsere Kurse Demografie,
+                            Integration, und Musikschul-Marketing.
+                    </div>
+                    <div class="column">
+                        <p>
+                            Wir wünschen Ihnen viel Spaß beim Stöbern.
+                        </p><p>
+                            Sobald neue Kurse abgeschlossen
+                            und freigegeben sind,
+                            finden Sie sie hier. Es sind einige in Entstehung. Wir halten Sie aber
+                            auch gern mit unserem Newsletter auf dem Laufenden.
+                        </p>
+                    </div>
+                </div>
+
+            <div class="ui centered one column grid">
+
+                <div class="column">
+                <div class="ui header center aligned medium" style="color:#24678d;
+                font-family: 'Montserrat', sans-serif;
+                font-size: 1.5em;
+                font-weight: 400;
+                line-height: 1.5em;
+                -webkit-font-smoothing: antialiased;
+                ">
+                    ab sofort buchbar, Kurse starten im September/Oktober 2015
+                </div>
+                <div class="ui cards centered">
+
+                  <!-- Christines Kurs -->
+                  <div class="card">
+                    <a class="image" href="#">
+                        <img src="/static/img/selbstfuehrung.JPG">
+                    </a>
+                    <div class="content">
+                      <div class="header">Selbstführung</div>
+                          <div class="meta">
+      <a>Mentoren: Christine und Michael Radomsky</a>
+                            </div>
+                        <div class="description">
+                        Wie Sie Kapitän
+                        Ihres Lebensschiffes werden
+                      </div>
+                    </div>
+                    <a class="ui bottom attached button" href="{{ christine_url }}">
+                      Zur Buchung und Vorinformation
+                    </a>
+                  </div>
+
+                  <!-- Franz Kurs -->
+                  <div class="card">
+                    <a class="image" href="#">
+                        <img src="/static/img/easywriter.png">
+                    </a>
+                    <div class="content">
+                      <div class="header">EasyWriter 24x7 Schreibwerkstatt für Studierende</div>
+                          <div class="meta">
+      <a>Mentor: Franz Neff</a>
+                            </div>
+                        <div class="description">
+                        "Mit meinen Schreibwerkstätten und in der Schreibberatung möchte
+                            ich dazu beitragen, dass Ihnen das Schreiben leichter fällt,
+                            ja, dass Sie vielleicht erfahren, wie viel Sie profitieren können,
+                            wenn Sie schreibend lernen und lernend schreiben."
+                      </div>
+                    </div>
+                    <div class="ui bottom attached button">
+                      Zur Buchung und Vorinformation
+                    </div>
+                  </div>
+
+                 <!-- Wolfgangs Kurs -->
+                  <div class="card">
+                    <a class="image" href="#">
+                        <img src="/static/img/42756493_s.jpg">
+                    </a>
+                    <div class="content">
+                      <div class="header">Event and Solution Interaktiv</div>
+                          <div class="meta">
+      <a>Mentor: Wolfgang Erdmann</a>
+                            </div>
+                        <div class="description">
+
+                         Eventexperten vermitteln wichtige Kenntnisse und brauchbare Tipps
+                            für die Organisation Ihrer Firmen-Events.
+                      </div>
+                    </div>
+                    <div class="ui bottom attached button">
+                      Zur Buchung und Vorinformation
+                    </div>
+                  </div>
+
+                 <!-- Beas Kurs -->
+                  <div class="card">
+                    <a class="image" href="#">
+                        <img src="/static/img/42304630_s.jpg">
+                    </a>
+                    <div class="content">
+                      <div class="header">Schneller Lesen</div>
+                          <div class="meta">
+      <a>Mentorin: Bea Ribaux</a>
+                            </div>
+                        <div class="description">
+                        "Schneller Lesen = mehr vom Leben haben"
+                      </div>
+                    </div>
+                    <div class="ui bottom attached button">
+                      Zur Buchung und Vorinformation
+                    </div>
+                  </div>
+
+
+
+                 <!-- Anettes Kurs Musik -->
+                  <div class="card">
+                    <a class="image" href="#">
+                        <img src="/static/img/musikschule.jpg">
+                    </a>
+                    <div class="content">
+                      <div class="header">Musikschul-Marketing</div>
+                          <div class="meta">
+      <a>Mentorin: Anette Pekrul</a>
+                            </div>
+                        <div class="description">
+                        "Vorbeugen ist besser
+                        als schließen."
+                      </div>
+                    </div>
+                    <div class="ui bottom attached button">
+                      Zur Buchung und Vorinformation
+                    </div>
+                  </div>
+
+                 <!-- Anettes Kurs Integration -->
+                  <div class="card">
+                    <a class="image" href="#">
+                        <img src="/static/img/32112402_s.jpg">
+                    </a>
+                    <div class="content">
+                      <div class="header">Integrationskurs Deutsch</div>
+                          <div class="meta">
+      <a>Mentorin: Anette Pekrul</a>
+                            </div>
+                        <div class="description">
+                        - Zuwanderung managen
+                          für alle Prozess-Beteiligten
+                      </div>
+                    </div>
+                    <div class="ui bottom attached button">
+                      Zur Buchung und Vorinformation
+                    </div>
+                  </div>
+
+                 <!-- Anettes Kurs Demografie -->
+                  <div class="card">
+                    <a class="image" href="#">
+                        <img src="/static/img/33947428_s.jpg">
+                    </a>
+                    <div class="content">
+                      <div class="header">Keine Angst vorm Alter</div>
+                          <div class="meta">
+      <a>Mentorin: Anette Pekrul</a>
+                            </div>
+                        <div class="description">
+                        Demografie-Kurs
+                        "Keine Angst vorm Alter -
+                            so lässt es sich gut lange leben!"
+                      </div>
+                    </div>
+                    <div class="ui bottom attached button">
+                      Zur Buchung und Vorinformation
+                    </div>
+                  </div>
+
+
+
+                </div>
+
+        </div>
+    </div>
+</div></div>
+{% endblock %}

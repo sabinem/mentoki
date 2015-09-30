@@ -1,155 +1,65 @@
 {% extends "base/base.html" %}
 
-{% block head %}
-    <!-- Meta information -->
-    {% include 'base/fragments/meta/_meta.html' %}
+{% block meta %}
 
     <!-- BLOCK: Meta description -->
-
     <meta name="description" content="{% block meta_description %}{% endblock %}">
 
     <!-- BLOCK: Meta keywords -->
-
     <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
 
     <!-- BLOCK: Meta title -->
-
     <title>{% block meta_title %}{% endblock %}</title>
 
-    <!-- CSS -->
-    {% include 'base/fragments/vendor/_semantic_css.html' %}
-    {% include 'base/fragments/custom/_custom_css.html' %}
+{% endblock %}
 
-    <!-- favicon -->
-    {% include 'base/fragments/menu/_favicon.html' %}
-
+{% block head_extra_css %}
+    <link href="/static/css/styles-public.css" rel="stylesheet">
 {% endblock %}
 
 <!-- BLOCK: Navbar -->
 
-{% block navbar %}
-
-    <!-- pc and tablet version of the navbar -->
-
-    <div class="ui menu fixed center aligned top" id="pc_navbar">
-
-        {% include 'base/fragments/menu/_pc_logo.html' %}
-
-        {% if user.is_authenticated %}
-
-            {% include 'base/fragments/menu/_main_menu_authenticated_left.html' %}
-
-            {% if is_owner %}
-
-               <a  href="{% url 'course:courseevent' ce_slug=courseevent.slug slug=course.slug %}" class="item
-                    ">
-                    Kursbearbeitung
-                </a>
-            {% endif %}
-
-            <!-- BLOCK: custom menu item -->
-
-            {% block custom_menu_item %}{% endblock %}
-
-            <div class="right menu">
-                {% include 'base/fragments/menu/_main_menu_authenticated_right.html' %}
-            </div>
-
-        {% else %}
-
-            {% include 'base/fragments/menu/_main_menu_public_left.html' %}
-
-            <div class="right menu">
-                {% include 'base/fragments/menu/_social_media_icons.html' %}
-                {% include 'base/fragments/menu/_main_menu_public_right.html' %}
-            </div>
-
-        {% endif %}
-    </div>
-
-   <!-- mobile menu -->
-
-    <div class="ui top attached menu fluid six item" id="mobile_navbar">
-
-        <!-- mobile button -->
-
-        <a class="item" id="mobile_button">
-          <i class="sidebar icon"></i>
-        </a>
-
-        {% include 'base/fragments/menu/_home_icon.html' %}
-        {% include 'base/fragments/menu/_social_media_icons.html' %}
-        {% include 'base/fragments/menu/_main_menu_public_right.html' %}
-
-    </div>
-
-    <!-- mobile sidebar -->
-
-    <div class="ui labeled icon wide left inline vertical sidebar menu mobile only" id="mobile_menu">
-        {% include 'base/fragments/menu/_mobile_menu.html' %}
-    </div>
-
-{% endblock %}
-
-<!-- BLOCK: Main page -->
-
 {% block page %}
 
-    <!-- BLOCK: Section css id of the Website -->
+    {% url 'home:impressum'  as impressum_url %}
+    {% url 'home:about'  as about_url %}
+    {% url 'contact:contact' as contact_url %}
 
-    <div id="{% block page_section_css_id %}{% endblock %}">
-
-        <div id="content">
-
-            <div id="base_page">
-
-                 <!-- BLOCK: main page content -->
-
-                {% block main %}
-
-                    <div class="ui grid container {% block page_grid_class %}stackable two column centered{% endblock %}">
-
-                        <div class="column center aligned">
-
-                            <div class="segment ui" id="{% block main_segment_id %}standard_public_segment{% endblock %}">
-
-                                {% include 'base/fragments/_messages.html' %}
-
-                                <!-- BLOCK: Inner page -->
-
-                                {% block page_content %}{% endblock %}
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                {% endblock %}
-
+    <div class="ui top attached fluid center aligned segment">
+        <div class="ui grid centered">
+            <div class="ui column" style="width:400px;">
+                <img class="ui image fluid" src="/static/img/mentoki_logo_untertitel.jpg">
             </div>
-
         </div>
+    </div>
+    <div class="ui sticky">
+        {% include 'base/_menu_public.html' %}
+    </div>
 
-        <!-- Footer -->
+    <div id="context" style="padding-top:0px;">
+
+        {% block main_content %}{% endblock %}
 
         <div class="ui bottom attached menu fluid three item">
-            <a class="item"  href="{% url 'contact:contact' %}">Kontakt</a>
-            <a class="item"  href="{% url 'home:team' %}">Team</a>
-            <a class="item"  href="{% url 'home:impressum' %}">Impressum</a>
+            <a class="item"  href="{{ contact_url }}">AGB</a>
+            <a class="item"  href="{{ about_url }}">
+                Team
+            </a>
+            <a class="item"  href="{{ impressum_url }}">Impressum</a>
         </div>
+
 
     </div>
 
-{% endblock %}
-
-{% block bottom_js %}
-
-    {% include 'base/fragments/vendor/_jquery.html' %}
-    {% include 'base/fragments/vendor/_semantic_js.html' %}
-    {% include 'base/fragments/custom/_semantic.html' %}
 
 {% endblock %}
+
+
+
+
+
+
+
 
 
 

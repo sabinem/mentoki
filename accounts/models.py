@@ -92,6 +92,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     def teaching(self):
         return Course.objects.filter(courseowner__user=self)
 
+    def teaching_public(self):
+        courses = Course.objects.filter(courseowner__user=self).values_list('id', flat=True)
+        courseevents = CourseEvent.objects.filter(
+            course_id__in=courses,
+            status_external=CourseEvent.STATUS_EXTERNAL.booking)
+
     def studying(self):
         return CourseEvent.objects.filter(courseeventparticipation__user=self)
 
@@ -101,3 +107,5 @@ class User(AbstractBaseUser, PermissionsMixin):
            return True
         except:
            return False
+
+
