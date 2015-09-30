@@ -61,7 +61,7 @@ INSTALLED_APPS = (
 
     'pagedown',
     'django_markdown',
-
+    'userprofiles',
     'accounts',
     'customers',
 
