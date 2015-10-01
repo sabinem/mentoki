@@ -1,6 +1,9 @@
+# -*- coding: utf-8 -*-
+
 from django.conf.urls import patterns, url
 
-from .views import HomePageView, AboutPageView, MotivationPageView
+from .views import HomePageView, AboutPageView, MotivationPageView, \
+    MentorsPageView
 
 urlpatterns = patterns("",
 
@@ -21,6 +24,6 @@ urlpatterns = patterns("",
 
     # neuer url: kann auch anderers heissen
     url(r'^mentor/(?P<username>[a-z0-9_-]+)/$',
-        MotivationPageView.as_view(),
+        MentorsPageView.as_view(),
         name='mentor'),
 )

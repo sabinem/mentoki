@@ -8,15 +8,15 @@ from __future__ import unicode_literals, absolute_import
 
 from django.contrib import admin
 
-from .models.mentor import MentorsProfile
+from .models.courseeventproduct import CourseEventProduct
 
 
-@admin.register(MentorsProfile)
+@admin.register(CourseEventProduct)
 class CourseAdmin(admin.ModelAdmin):
     """
     Courses are time independent collections of teaching material, that are
     set up and owned by teachers.
     """
-    list_display = ('id', 'user', 'modified', 'created', 'teaching_public', 'teaching_preview')
-    list_filter = ('modified',)
+    list_display = ('id', 'courseevent', 'modified', 'created')
+    list_filter = ('modified', 'courseevent')
     list_display_links = ('id',)

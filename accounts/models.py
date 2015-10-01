@@ -8,6 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from apps_data.course.models.course import Course
 from apps_data.courseevent.models.courseevent import CourseEvent
+from mentoki_products.models.courseeventproduct import CourseEventProduct
 
 
 class UserManager(BaseUserManager):
@@ -55,6 +56,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     # this field is calculated in the save method, no manual update
     is_teacher = models.BooleanField(default=False, editable=False)
 
+    is_female = models.BooleanField(default=True)
+
     # this field is calculated in the save method, no manual update
     is_student = models.BooleanField(default=False, editable=False)
 
@@ -91,12 +94,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def teaching(self):
         return Course.objects.filter(courseowner__user=self)
-
-    def teaching_public(self):
-        courses = Course.objects.filter(courseowner__user=self).values_list('id', flat=True)
-        courseevents = CourseEvent.objects.filter(
-            course_id__in=courses,
-            status_external=CourseEvent.STATUS_EXTERNAL.booking)
 
     def studying(self):
         return CourseEvent.objects.filter(courseeventparticipation__user=self)

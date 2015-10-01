@@ -2,7 +2,7 @@
 
 from django.conf.urls import patterns, url
 
-from .views import CourseEventDetailView, CourseEventListView, ChristineView
+from .views import CourseEventProductView, CourseEventListView, ChristineView
 
 
 urlpatterns = patterns('',
@@ -14,7 +14,7 @@ urlpatterns = patterns('',
         ChristineView.as_view(), name='christine'),
 
     url(r'^(?P<slug>[a-z0-9_-]{3,50})/$',
-        CourseEventDetailView.as_view(), name='detail'),
+        CourseEventProductView.as_view(), name='detail'),
 
 )
 
