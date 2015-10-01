@@ -69,6 +69,8 @@
 
                 {% for mentor in mentors %}
 
+                 {% url 'home:mentor' username=mentor.user.username  as mentor_url %}
+
                   <!-- Christines Kurs -->
                   <div class="card">
                     <div class="image" >
@@ -93,7 +95,7 @@
 
                       </div>
                     </div>
-                    <a class="ui bottom attached button" href="{{ christine_url }}">
+                    <a class="ui bottom attached button" href="{{ mentor_url }}">
                       Mehr über {{ mentor.user.first_name }} erfahren
                     </a>
                   </div>

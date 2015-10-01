@@ -8,6 +8,7 @@ from django.views.generic import DetailView, TemplateView, FormView
 from django.shortcuts import get_object_or_404
 
 from apps_data.courseevent.models.courseevent import CourseEvent
+from mentoki_products.models.courseeventproduct import CourseEventProduct
 from apps_data.course.models.course import CourseOwner
 
 
@@ -21,26 +22,26 @@ class CourseEventListView(TemplateView):
         context = super(CourseEventListView, self).get_context_data()
 
         # build list of course events
-        context['courseevents_now'] = CourseEvent.public_ready_for_booking.all()
-        context['courseevents_preview'] = CourseEvent.public_ready_for_preview.all()
-
+        context['courseevents'] = CourseEventProduct.objects.all().select_related('courseevent')
+        print context
         return context
 
 
-class CourseEventDetailView(DetailView):
+class CourseEventProductView(TemplateView):
     """
     This View shows the details of a courseevents. From here you can book them, if they are
     available for booking yet.
     """
-    template_name = "courseoffer/pages/courselist.html"
-    model = CourseEvent
-    context_object_name ='courseevent'
-    slug_field = 'slug'
+    template_name = "courseoffer/pages/detail.html"
 
     def get_context_data(self, **kwargs):
-        context = super(CourseEventDetailView, self).get_context_data()
-
-        context['teachersinfo'] = CourseOwner.objects.teachers_courseinfo_display(course=context['courseevent'].course)
+        context = super(CourseEventProductView, self).get_context_data()
+        courseevent = get_object_or_404(CourseEvent,slug=self.kwargs['slug'])
+        context['teachersinfo'] = CourseOwner.objects.teachers_courseinfo_display(
+            course=courseevent.course)
+        context['courseevent'] = courseevent
+        context['courseeventproduct'] = courseevent.courseeventproduct
+        print context
 
         return context
 

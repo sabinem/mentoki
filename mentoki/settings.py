@@ -64,7 +64,7 @@ INSTALLED_APPS = (
     'userprofiles',
     'accounts',
     'customers',
-
+    'mentoki_products',
     'apps_core.core',
     'apps_core.email',
 

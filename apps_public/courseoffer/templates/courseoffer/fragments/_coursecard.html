@@ -1,0 +1,20 @@
+                 {% url 'courseoffer:detail' slug=product.courseevent.slug as detail_url %}
+                  <div class="card">
+                    <a class="image" href="#">
+                        {% if product.foto %}
+                            <img src="{{ product.foto.url }}">
+                        {% endif %}
+                    </a>
+                    <div class="content">
+                      <div class="header">{{ product.courseevent.title }}</div>
+                          <div class="meta">
+      <a>Mentoren: {{ product.courseevent.teachersrecord }}</a>
+                            </div>
+                        <div class="description">
+                        {{ product.in_one_sentence }}
+                      </div>
+                    </div>
+                    <a class="ui bottom attached button" href="{{ detail_url }}">
+                      Zur Buchung und Vorinformation
+                    </a>
+                  </div>
