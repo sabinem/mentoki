@@ -45,6 +45,6 @@ class MentorsPageView(TemplateView):
         context['mentor'] = mentor
 
         #get courses
-        context['courseevents'] = mentor.teaching_public()
+        context['courseevents'] = mentor.teaching_preview()
         print context
         return context

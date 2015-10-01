@@ -124,6 +124,7 @@ class MentorsProfile(TimeStampedModel):
 
         courseeventproducts=CourseEventProduct.objects.filter(
             courseevent__course_id__in=courseids,
-            courseevent__status_external=CourseEvent.STATUS_EXTERNAL.preview)
+            courseevent__status_external__in=[CourseEvent.STATUS_EXTERNAL.preview,
+                                              CourseEvent.STATUS_EXTERNAL.booking])
         print courseeventproducts
         return courseeventproducts
