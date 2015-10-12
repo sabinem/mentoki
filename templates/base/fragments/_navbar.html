@@ -2,7 +2,8 @@
 {% url 'course_sale:list' as sell_url %}
 {% url 'home:home' as home_url %}
 {% url 'home:about' as about_url %}
-{% url 'home:motivation' as motivation_url %}
+{% url 'home:standard' as standard_url %}
+{% url 'home:course_agb' as course_agb_url %}
 {% url 'course_sale:detail' pk=1 as course_selbstfuehrung_url %}
 {% url 'course_sale:detail' pk=1 as course_schreiben_url %}
 {% url 'course_sale:detail' pk=1 as course_deutsch_url %}
@@ -42,6 +43,29 @@
         " href="{{ course_url }}">
         Kurse
     </a>
+
+    <div class="ui popup bottom fluid left transition hidden" style="max-width:200px;">
+
+        <div class="ui one column relaxed divided grid">
+
+            <div class="column">
+
+                <div class="ui link list">
+                    <a href="{{ course_url }}" class="item">
+                        Aktuelle Kurse
+                    </a>
+                    <a href="{{ standard_url }}" class="item">
+                        Mentoki Standards
+                    </a>
+                    <a href="{{ course_agb_url }}" class="item">
+                        AGB
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
 
     <a class="item
         " href="{{ learn_url }}">

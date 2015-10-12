@@ -17,7 +17,6 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # Debug settings
 DEBUG = False
-TEMPLATE_DEBUG = False
 
 # hosts
 ALLOWED_HOSTS = ['*']
@@ -63,11 +62,14 @@ INSTALLED_APPS += (
 # installed apps mentoki
 INSTALLED_APPS += (
     'accounts',
-    'userprofiles',
+    
+    'apps_accountdata/userprofiles',
 
     'apps_customerdata.transaction',
     'apps_customerdata.customer',
     'apps_customerdata.mentoki_product',
+
+    'apps_pagedata.textchunks',
 
     'apps_data.course',
     'apps_data.courseevent',

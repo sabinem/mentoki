@@ -9,7 +9,6 @@ from .base import *
 
 # Debug settings
 DEBUG = True
-TEMPLATE_DEBUG = True
 
 # additional thirdparty apps
 INSTALLED_APPS += (
@@ -47,3 +46,24 @@ LOGGING['loggers'].update({
 
 # overwrite raven settings
 RAVEN_CONFIG = {'dsn': ''}
+
+#TODO: how can I overwrite just that one setting for DEBUG in templates?
+# templates overwrites
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': ['templates'],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                "django.contrib.auth.context_processors.auth",
+                "django.core.context_processors.debug",
+                "django.core.context_processors.i18n",
+                "django.core.context_processors.media",
+                'django.core.context_processors.request',
+                "django.contrib.messages.context_processors.messages",
+            ],
+            'debug': DEBUG
+        },
+    },
+]

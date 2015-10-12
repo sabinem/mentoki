@@ -1,10 +1,11 @@
 # Templates
 
-Here are some base templates and scripts. Most templates are located within the apps in a
-folder /apps/<appname>/templates/<appname> according to Django recommendation.
+Here are only the base templates
 
-## Status: 
+## account:
+these templates overwrite the according django-allauth templates 
 
+##base: these are the base templates 
 
 ##Questions:
 ### Are all of these attributes necessary?

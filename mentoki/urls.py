@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+"""
+urls for mentoki
+"""
+
 from django.conf.urls import include, url, patterns
 from django.contrib import admin
 from django.conf.urls.i18n import i18n_patterns
@@ -122,12 +126,6 @@ urlpatterns += i18n_patterns('',
 
 
 if settings.DEBUG:
-    print "============= settings.STATIC_URL %s" % settings.STATIC_URL
-    print "============= settings.MEDIA_URL %s" % settings.MEDIA_URL
-    print "============= settings.BASE_DIR %s" % settings.BASE_DIR
-    #print "============= settings.BASE_DIR_PROJ %s" % settings.BASE_DIR_PROJECT
-    print "============= settings.STATIC_ROOT %s" % settings.STATIC_ROOT
-    print "============= settings.MEDIA_ROOT %s" % settings.MEDIA_ROOT
     urlpatterns += patterns('',
         url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
             'document_root': settings.MEDIA_ROOT,

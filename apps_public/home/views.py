@@ -2,16 +2,41 @@
 
 from __future__ import unicode_literals
 
-from django.views.generic import TemplateView, RedirectView
+from django.views.generic import TemplateView, RedirectView, DetailView
 from django.shortcuts import get_object_or_404
 
 from userprofiles.models.mentor import MentorsProfile
 from apps_data.course.models.course import CourseOwner
+from apps_pagedata.textchunks.models import PublicTextChunks
 from accounts.models import User
 
 
 class HomePageView(TemplateView):
     template_name = "home/pages/homepage.html"
+
+
+class CourseAGBPageView(TemplateView):
+    template_name = "home/pages/motivation.html"
+
+
+class StandardPageView(DetailView):
+    template_name = "home/pages/textpage.html"
+    context_object_name = 'textchunk'
+
+    def get_object(self, queryset=None):
+        """
+        Returns the object the view is displaying.
+        By default this requires `self.queryset` and a `pk` or `slug` argument
+        in the URLconf, but subclasses can override this to return any object.
+        """
+        pagecode = self.kwargs['pagecode']
+        textchunk = get_object_or_404(PublicTextChunks, pagecode=pagecode)
+        return textchunk
+
+
+
+class MotivationPageView(TemplateView):
+    template_name = "home/pages/motivation.html"
 
 
 class AboutPageView(TemplateView):
@@ -26,9 +51,6 @@ class AboutPageView(TemplateView):
 
         print context
         return context
-
-class MotivationPageView(TemplateView):
-    template_name = "home/pages/motivation.html"
 
 
 class MentorsPageView(TemplateView):

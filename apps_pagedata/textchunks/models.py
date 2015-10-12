@@ -1,7 +1,7 @@
 # coding: utf-8
 
 """
-TO DO use with chunks template tags
+TO DO: use with chunks template tags
 https://github.com/clintecker/django-chunks/blob/master/chunks/templatetags/chunks.py
 """
 from __future__ import unicode_literals, absolute_import
@@ -14,17 +14,28 @@ from model_utils.models import TimeStampedModel
 from froala_editor.fields import FroalaField
 
 
-class GeneralTextChunks(TimeStampedModel):
+class PublicTextChunks(TimeStampedModel):
     """
-    Newsletters are appear once a month
+    General text chunks like agb, etc.
     """
-    shortcode = models.CharField(max_length=10, verbose_name="Code", unique=True)
-    text =  FroalaField()
-    description = models.CharField(max_length=250)
+    pagecode = models.CharField(
+        'Code',
+        max_length=10,
+        primary_key=True)
+    text =  FroalaField(
+        'text'
+    )
+    title = models.CharField(
+        'Titel',
+        max_length=200
+    )
+    description = models.CharField(
+        'description',
+        max_length=250
+    )
 
     class meta:
         verbose_name = "Texte für allgemeine Seiten"
 
     def __unicode__(self):
-        return self.shortcode
-
+        return self.pagecode
