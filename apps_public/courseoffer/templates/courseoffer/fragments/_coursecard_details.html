@@ -13,12 +13,14 @@
             <img src="{{ product.foto.url }}">
         {% endif %}
     </a>
+    {% if url_name != 'paymentmethod'  %}
     <div class="extra content">
         <div class="ui two buttons">
         <a href="{{ agb_url }}" class="ui basic teal button">AGB</a>
         <a href="{{ mentors_url }}" class="ui basic teal button">Kursleitung</a>
         </div>
     </div>
+    {% endif %}
     <div class="content">
       <div class="header">{{ product.courseevent.title }}</div>
 
@@ -40,7 +42,7 @@
         {{ product.in_one_sentence }}
       </div>
     </div>
-    {% if url_name != 'paymentmethod' %}
+    {% if url_name != 'paymentmethod' and url_name != 'payment_success' %}
     <a class="ui bottom attached button" href="{{ payment_url }}">
       {{ product.price_total }} {{ product.currency }}
       Jetzt bezahlen

@@ -48,7 +48,7 @@ class Transaction(models.Model):
         default="x")
     braintree_customer_id = models.CharField(
         'braintree_customer_id',
-        max_length=36, unique=True,
+        max_length=36,
         default="x")
     braintree_merchant_account_id = models.CharField(
         'braintree_merchant',

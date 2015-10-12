@@ -23,6 +23,8 @@ from apps_customerdata.transaction.models.transaction import Transaction
 from apps_customerdata.mentoki_product.models.courseevent \
     import CourseEventProduct
 
+from .info import CourseEventProductMixin
+
 
 # configure the global braintree object:
 braintree.Configuration.configure(
@@ -39,6 +41,7 @@ class BraintreeForm(forms.Form):
     Payment Form uses Braintrees Drop In
     """
     payment_method_nonce = forms.CharField()
+    agbs_read = forms.CharField(widget=forms.CheckboxInput)
 
 
 class PaymentView(
@@ -71,7 +74,7 @@ class PaymentView(
         """
         redirects to the success page after paying
         """
-        return reverse('courseoffer:payment_success')
+        return reverse('courseoffer:payment_success', kwargs={'slug': self.kwargs['slug']})
 
     def form_valid(self, form):
         """
@@ -180,7 +183,9 @@ class PaymentView(
         return super(PaymentView, self).form_valid(form)
 
 
-class SuccessView(TemplateView):
+class SuccessView(
+    CourseEventProductMixin,
+    TemplateView):
     """
     This view is called if the payment has been successful.
     """

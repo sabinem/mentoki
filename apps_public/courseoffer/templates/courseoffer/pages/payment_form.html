@@ -6,9 +6,10 @@
 
     <!-- text page -->
     <div class="ui grid container" style="padding-bottom:100px;
-          padding-top:40px;>
+          padding-top:40px;"  >
 
         <div class="content ui column sixteen wide">
+
 
             <div class="ui two column stackable grid">
 
@@ -26,9 +27,19 @@
 
                     {% include 'courseoffer/fragments/_3steps_checkout.html' %}
 
+                    <h4 class="ui dividing header">Teilnehmer-Anmeldung</h4>
+
+                    <p>{{ user.get_full_name }}</p>
+
+                    <h4 class="ui dividing header">Bezahlung mit</h4>
+                    <p>Bitte entweder Paypal wählen oder Ihre Kreditkartendaten eingeben.</p>
+
                     <form id="checkout-form" method="post" class="ui form" autocomplete="off">
                       {% csrf_token %}
-
+                      <div class="field">
+                         <label>Ich habe die AGBs zur Kenntnis genommen</label>
+                         {{ form.agbs_read }}
+                      </div>
                       <div id="dropin-container"></div>
                       <input class="ui button" type="submit" value="jetzt zahlen">
                     </form>
@@ -45,6 +56,6 @@
                 </script>
             </div>
         </div>
-
+    </div>
 
 {% endblock %}

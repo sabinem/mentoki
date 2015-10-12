@@ -16,7 +16,8 @@ urlpatterns = patterns('',
     url(r'^$',
         CourseEventListView.as_view(), name='list'),
 
-    url(r'^dankex/$', SuccessView.as_view(), name='payment_success'),
+    url(r'^(?P<slug>[a-z0-9_-]{3,50})/danke$', SuccessView.as_view(),
+        name='payment_success'),
 
     url(r'^(?P<slug>[a-z0-9_-]{3,50})/$',
         CourseEventProductView.as_view(), name='detail'),

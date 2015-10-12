@@ -10,6 +10,7 @@ from django.shortcuts import get_object_or_404
 from apps_data.courseevent.models.courseevent import CourseEvent
 from apps_customerdata.mentoki_product.models.courseevent import CourseEventProduct
 from apps_data.course.models.course import CourseOwner
+from apps_pagedata.textchunks.models import PublicTextChunks
 
 
 class CourseEventListView(TemplateView):
@@ -76,3 +77,10 @@ class CourseEventAGBView(
     """
     template_name = "courseoffer/pages/agb.html"
 
+    def get_context_data(self, **kwargs):
+        """
+        gets product detail context
+        """
+        context = super(CourseEventAGBView, self).get_context_data()
+        context['textchunk'] = get_object_or_404(PublicTextChunks, pagecode='course_agb')
+        return context
