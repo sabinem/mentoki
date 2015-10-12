@@ -12,7 +12,7 @@ from allauth.account.models import EmailAddress
 
 from apps_data.courseevent.models.courseevent import CourseEvent, CourseEventParticipation
 from apps_data.course.models.course import Course, CourseOwner
-from userprofiles.models.mentor import MentorsProfile
+from apps_accountdata.userprofiles.models.mentor import MentorsProfile
 from apps_customerdata.customer.models import Customer
 
 

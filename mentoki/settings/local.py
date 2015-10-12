@@ -32,14 +32,14 @@ LOGGING['loggers'].update({
          'handlers': ['console'],
          'propagate': False,
     },
+    'apps_public': {
+         'level': 'DEBUG',
+         'handlers': ['console'],
+         'propagate': False,
+    },
     'django.request': {
         'level': 'DEBUG',
         'handlers': ['console'],  # Dump exceptions to the console.
-        'propagate': False,
-    },
-    '${PROJECT_NAME}': {
-        'level': 'DEBUG',
-        'handlers': ['console'],  # Dump app logs to the console.
         'propagate': False,
     },
 })

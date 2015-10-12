@@ -62,8 +62,8 @@ INSTALLED_APPS += (
 # installed apps mentoki
 INSTALLED_APPS += (
     'accounts',
-    
-    'apps_accountdata/userprofiles',
+
+    'apps_accountdata.userprofiles',
 
     'apps_customerdata.transaction',
     'apps_customerdata.customer',

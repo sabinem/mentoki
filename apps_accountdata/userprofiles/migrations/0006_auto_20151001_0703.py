@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-import userprofiles.models.mentor
+import apps_accountdata.userprofiles.models.mentor
 
 
 class Migration(migrations.Migration):
@@ -15,11 +15,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='mentorsprofile',
             name='foto_detail_page',
-            field=models.ImageField(help_text='Hier kannst Du ein Foto von Dir hochladen.\n                    Dieses Foto ist f\xfcr die Detailseite gedacht', upload_to=userprofiles.models.mentor.foto_location, verbose_name='Foto', blank=True),
+            field=models.ImageField(help_text='Hier kannst Du ein Foto von Dir hochladen.\n                    Dieses Foto ist f\xfcr die Detailseite gedacht', upload_to=apps_accountdata.userprofiles.models.mentor.foto_location, verbose_name='Foto', blank=True),
         ),
         migrations.AlterField(
             model_name='mentorsprofile',
             name='foto',
-            field=models.ImageField(help_text='Hier kannst Du ein Foto von Dir hochladen.\n                     Dieses Foto ist f\xfcr die Listenansicht gedacht', upload_to=userprofiles.models.mentor.foto_location, verbose_name='Foto', blank=True),
+            field=models.ImageField(help_text='Hier kannst Du ein Foto von Dir hochladen.\n                     Dieses Foto ist f\xfcr die Listenansicht gedacht', upload_to=apps_accountdata.userprofiles.models.mentor.foto_location, verbose_name='Foto', blank=True),
         ),
     ]

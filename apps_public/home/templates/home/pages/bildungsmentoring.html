@@ -16,29 +16,28 @@
 
         <div class="content ui column sixteen wide">
 
-                <div class="ui header center aligned  large" style="color:#19aaa6;
+                <div class="ui header center aligned medium" style="color:#19aaa6;
                 font-family: 'Montserrat', sans-serif;
                 font-size: 2em;
                 font-weight: 400;
                 line-height: 1.5em;
                 -webkit-font-smoothing: antialiased;
                 ">
-                    Aktuelle Mentoki Kurse
-                    {% include 'home/fragments/_courselist_menu.html' %}
+                    {{ textchunk.title }}
                 </div>
-
-
-            <div class="ui centered one column grid">
-
-                <div class="column">
-                    <div class="ui cards centered">
-                        {% for product in courseevents %}
-                            {% include 'courseoffer/fragments/_coursecard.html' %}
-                        {% endfor %}
+                <div class="ui two column stackable grid">
+                    <div class="column">
+                       <img class="ui image fluid"
+                         src="/static/img/Handy_Jeans_Mentoki.jpg">
                     </div>
-
+                    <div class="column">
+                        <div class="froala_view">
+                            {{ textchunk.text | safe }}
+                        </div>
+                    </div>
                 </div>
-            </div>
+
         </div>
     </div>
+
 {% endblock %}

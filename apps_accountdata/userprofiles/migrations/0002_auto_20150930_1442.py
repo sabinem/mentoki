@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.db import models, migrations
 import django.db.models.deletion
 from django.conf import settings
-import userprofiles.models.mentor
+import apps_accountdata.userprofiles.models.mentor
 
 
 class Migration(migrations.Migration):
@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='mentorsprofile',
             name='foto',
-            field=models.ImageField(help_text='Hier kannst Du ein Foto von Dir hochladen.', upload_to=userprofiles.models.mentor.foto_location, verbose_name='Foto', blank=True),
+            field=models.ImageField(help_text='Hier kannst Du ein Foto von Dir hochladen.', upload_to=apps_accountdata.userprofiles.models.mentor.foto_location, verbose_name='Foto', blank=True),
         ),
         migrations.AlterField(
             model_name='mentorsprofile',

@@ -12,8 +12,6 @@
 {% block main_content %}
 
     <!-- urls --->
-
-
     <!-- banner -->
     <div class="ui grid centered">
         <div class="one column row">
@@ -23,7 +21,6 @@
             </div>
         </div>
     </div>
-   {% url 'courseoffer:christine' as christine_url %}
 
     <!-- text page -->
     <div class="ui grid container" style="padding-bottom:100px;">
@@ -52,62 +49,97 @@
                 </p>
             </div>
         </div>
+
         <div class="content ui column sixteen wide">
 
-            <div class="sixteen wide column">
-
-                <div class="ui header center aligned  large" style="color:#19aaa6;
+            <div class="sixteen wide column" id="whitepaper">
+                <div class="ui header aligned center large" style="color:#19aaa6;
                 font-family: 'Montserrat', sans-serif;
                 font-size: 2em;
                 font-weight: 400;
                 line-height: 1.5em;
                 -webkit-font-smoothing: antialiased;
                 ">
-                    Mentoki Mentoren
+                    Was uns antreibt
                 </div>
-                 <div class="ui cards centered">
-
-                {% for mentor in mentors %}
-
-                 {% url 'home:mentor' username=mentor.user.username  as mentor_url %}
-
-                  <!-- Christines Kurs -->
-                  <div class="card">
-                    <div class="image" >
-                        {% if mentor.foto %}
-                            <img src="{{ mentor.foto.url }}">
-                        {% endif %}
+                <div class="ui two column stackable grid">
+                    <div class="column">
+                       <img class="ui image fluid"
+                         src="/static/img/IMG_9796.jpg">
                     </div>
+                    <div class="column">
+                        <p>
+                           Wir, Sabine Maennel und Anette Pekrul, verfügen nunmehr über
+                            mehr als vierzig Jahre Lernerfahrung. In dieser Zeit haben
+                            sich die Bildungsmöglichkeiten und Technologien dramatisch schnell
+                            verändert - wir haben alle Veränderungen durchlebt. Außerdem hat
+                            die Neurobiologie gigantische Fortschritte gemacht und es liegen
+                            wissenschaftliche Forschungsergebnisse vor, die belegen, dass der
+                            Mensch bis ins hohe Alter lernfähig ist und sich das Trainieren des Gehirns
+                            positiv auf die Gesundheit auswirkt.</p>
 
-                    <div class="content">
-                      <div class="header">{{ mentor.user.get_full_name }}</div>
+                        <p>Wir lieben Online-Unterricht, weil er uns Spaß macht, wenn er gut gemacht ist.
+                            Er kann viel preiswerter und effizienter als Präsenzunterricht sein und das
+                            Vernetzen mit Mitstudierenden, Professoren und Dozenten weltweit ist eine
+                            tolle Sache.
+                        </p><p>
+                            Aus den vielen Bildungsangeboten, die wir wahrgenommen haben, haben wir nicht
+                            nur den Stoff mitgenommen, sondern auch gelernt, was gut funktioniert und vor allem,
+                            was Spaß macht und was nicht. Wir haben analysiert, ausprobiert mit anderen Teilnehmern
+                            diskutiert ... und letztlich kreiert ...
+                        </p>
                     </div>
-                      <div class="content">
-                          <div class="event">
-                              <h4 class="ui sub header">bei Mentoki</h4>
-                              <div class="content">
-      {{ mentor.at_mentoki }}</div>
+                </div>
+
+                <div class="ui header center aligned  medium" style="color:#19aaa6;
+                font-family: 'Montserrat', sans-serif;
+                font-size: 1.5em;
+                font-weight: 400;
+                line-height: 1.5em;
+                -webkit-font-smoothing: antialiased;
+                ">
+                    Das Ergebnis ist Mentoki
+                </div>
+                    <div class="column">
+                        <div class="ui two column stackable grid">
+                            <div class="column">
+                        <p>
+                            Wir sind der Meinung, dass wir uns in diesen sich immer schneller wandelnden
+                            Zeiten kontinuierlich weiterbilden müssen, um den Anschluss nicht zu
+                            verlieren und die Möglichkeiten, die uns mit dem und durch das Internet
+                            geboten werden, auch nutzen zu können. Die Nachrichten- und Informationsflut
+                            ist gigantisch, man kann lernen, damit umzugehen.
+                            <p></p>
+                            Andererseits gibt es noch
+                            unendliche Potenziale an Wissen und Erfahrungen, die Menschen
+                            in sich tragen und
+                            verloren gehen würden, wenn sie nicht in digitaler oder analoger Form
+                            weitergegeben werden.</p>
                             </div>
-                       </div>
-                       <div class="content">
-                        <div class="description">
-                        {{ mentor.special_power }}
+                            <div class="column">
+                            <p>Unser staatliches Bildungssystem ist zu verkrustet und zu träge,
+                            um unseren
+                            Kindern das optimale Handwerkszeug für ihre Zukunft mitzugeben.</p><p>
+                            Wir stehen für Paradigmenwechsel, lebenslanges Lernen und neueste
+                            Lern- und Lehrmethoden für Lern- und Lehrwillige jeden Alters. Bei uns kann
+                            jeder zu jeder Zeit einsteigen - unabhängig vom Bildungs- und Finanzstatus.
+                            Wir suchen oder entwickeln das passende Angebot, dass Ihnen Spaß macht
+                            möglichst viel bringt.</p>
 
-                      </div>
+                            <p>Wir freuen uns auf Sie!</p>
+
+                            <p>Sabine Maennel & Anette Pekrul</p>
+                            </div>
+                            <p style="color:grey">
+                            (In Deutschland können Bildungsgutscheine oder das Bildungs- und
+                            Teilhabe-Angebot für mentoki genutzt werden.)
+
+                        </p>
                     </div>
-                    <a class="ui bottom attached button" href="{{ mentor_url }}">
-                      Mehr über {{ mentor.user.first_name }} erfahren
-                    </a>
-                  </div>
-
-                 {% endfor %}
-
-
-
-
                 </div>
-
+            </div>
         </div>
+
     </div>
-</div></div>
+
 {% endblock %}

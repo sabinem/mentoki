@@ -2,23 +2,27 @@
 {% url 'course_sale:list' as sell_url %}
 {% url 'home:home' as home_url %}
 {% url 'home:about' as about_url %}
-{% url 'home:standard' as standard_url %}
-{% url 'home:course_agb' as course_agb_url %}
-{% url 'course_sale:detail' pk=1 as course_selbstfuehrung_url %}
-{% url 'course_sale:detail' pk=1 as course_schreiben_url %}
-{% url 'course_sale:detail' pk=1 as course_deutsch_url %}
+{% url 'home:motivation' as motivation_url %}
 {% url 'account_login' as login_url %}
 {% url 'account_logout' as logout_url %}
 {% url 'desk:profile' as desk_url %}
 {% url 'contact:contact' as contact_url %}
 {% url 'account_change_password' as change_password_url %}
+{% url 'home:standards' as standards_url %}
+{% url 'home:course_agb' as agb_url %}
+{% url 'home:mentorslist' as mentorslist_url %}
+{% url 'home:starterkurs' as starterkurs_url %}
+{% url 'home:educationmentor' as educationmentor_url %}
+{% url 'home:teachonline' as teachonline_url %}
+{% url 'home:teachready' as teachready_url %}
 
-<a class="item" id="logo_navbar_pc"
+
+<a class="item browse" id="logo_navbar_pc"
     href="{{ home_url }}">
     <img  id="logo_img_navbar" src="/static/img/mentoki_logo.png"
           >
 </a>
-<div class="ui popup bottom fluid left transition hidden" style="max-width:200px;">
+<div class="ui popup bottom fluid left transition hidden" style="max-width:300px;">
 
     <div class="ui one column relaxed divided grid">
 
@@ -28,8 +32,8 @@
                 <a href="{{ about_url }}" class="item">
                     Über uns
                 </a>
-                <a href="{{ motivation_url }}" class="item">
-                    Was uns antreibt
+                <a href="{{ mentorslist_url }}" class="item">
+                    Das Mentoren-Team
                 </a>
             </div>
 
@@ -44,7 +48,7 @@
         Kurse
     </a>
 
-    <div class="ui popup bottom fluid left transition hidden" style="max-width:200px;">
+    <div class="ui popup bottom fluid left transition hidden" style="max-width:300px;">
 
         <div class="ui one column relaxed divided grid">
 
@@ -54,10 +58,10 @@
                     <a href="{{ course_url }}" class="item">
                         Aktuelle Kurse
                     </a>
-                    <a href="{{ standard_url }}" class="item">
+                    <a href="{{ standards_url }}" class="item">
                         Mentoki Standards
                     </a>
-                    <a href="{{ course_agb_url }}" class="item">
+                    <a href="{{ agb_url }}" class="item">
                         AGB
                     </a>
                 </div>
@@ -66,13 +70,12 @@
 
         </div>
     </div>
-
     <a class="item
-        " href="{{ learn_url }}">
+        " href="{{ educationmentor_url }}">
         Bildungsmentoring
     </a>
     <a class="item browse"
-         href="{{ teach_url }}">
+         href="{{ teachonline_url }}">
         Unterrichten
         <i class="dropdown icon"></i>
     </a>
@@ -86,7 +89,7 @@
                     <a href="{{ starterkurs_url }}" class="item">
                         Mentor werden
                     </a>
-                    <a href="{{ coaching_url }}" class="item">
+                    <a href="{{ teachready_url }}" class="item">
                         Online-Kurs anbieten
                     </a>
                 </div>
@@ -97,10 +100,6 @@
     </div>
 
     <div class="right menu">
-        <a class="item
-            " href="{{ contact_url }}">
-            Kontakt
-        </a>
         {% if request.user.is_authenticated %}
             <a class="item browse">
                 {{ request.user }}

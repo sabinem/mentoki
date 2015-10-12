@@ -14,14 +14,8 @@ from django.db import models
 
 from django.utils.translation import ugettext_lazy as _
 
-from model_utils.models import TimeStampedModel
-
-from model_utils import Choices
-
 import logging
 logger = logging.getLogger(__name__)
-
-#from django_prices.models import PriceField
 
 from froala_editor.fields import FroalaField
 

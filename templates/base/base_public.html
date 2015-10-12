@@ -22,10 +22,6 @@
 
 {% block page %}
 
-
-    {% url 'home:impressum'  as impressum_url %}
-    {% url 'home:about'  as about_url %}
-    {% url 'contact:contact' as contact_url %}
     {% url 'courseoffer:list' as course_url %}
 
     <!-- pc and tablet version of the navbar -->
@@ -62,11 +58,41 @@
 {% endblock %}
 
 {% block footer %}
-    <div class="ui bottom attached menu fluid three item">
-        <a class="item"  href="{{ contact_url }}">AGB</a>
-        <a class="item"  href="{{ about_url }}">
-            Team
-        </a>
-        <a class="item"  href="{{ impressum_url }}">Impressum</a>
+
+    {% url 'home:agb'  as agb_url %}
+    {% url 'home:impressum'  as impressum_url %}
+    {% url 'contact:contact' as contact_url %}
+
+    <div class="ui grey inverted vertical footer segment">
+        <div class="ui center aligned container">
+            <div class="ui stackable inverted grid">
+                <div class="five wide column">
+                    <h4 class="ui inverted header">Anschrift</h4>
+                    <div class="ui inverted link list">
+                        <div class="item">Mentoki Maennel</div>
+                        <div class="item">Leimbachstr. 223</div>
+                        <div class="item">8041 Zürich</div>
+                        <div class="item">Schweiz</div>
+                        <div class="item">Tel. +41 43 53 778 74</div>
+                    </div>
+                </div>
+                <div class="five wide column">
+                    <h4 class="ui inverted header">Geschäftbedingungen</h4>
+                    <div class="ui inverted link list">
+                        <a href="{{ impressum_url }}" class="item">Impressum</a>
+                        <a href="{{ agb_url }}" class="item">AGB</a>
+                    </div>
+                </div>
+                <div class="five wide column">
+                    <h4 class="ui inverted header">Kontakt</h4>
+                    <div class="ui inverted link list">
+                        <div class="item">email: mentoki@mentoki.com</div>
+                        <a href="{{ contact_url }}" class="item">Kontaktformular</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
 {% endblock %}
+

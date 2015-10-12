@@ -23,22 +23,14 @@
                 line-height: 1.5em;
                 -webkit-font-smoothing: antialiased;
                 ">
-                    Aktuelle Mentoki Kurse
+                    {{ textchunk.title }}
                     {% include 'home/fragments/_courselist_menu.html' %}
                 </div>
-
-
-            <div class="ui centered one column grid">
-
-                <div class="column">
-                    <div class="ui cards centered">
-                        {% for product in courseevents %}
-                            {% include 'courseoffer/fragments/_coursecard.html' %}
-                        {% endfor %}
-                    </div>
-
+                <div class="froala_view">
+                    {{ textchunk.text | safe }}
                 </div>
-            </div>
+
         </div>
     </div>
+
 {% endblock %}

@@ -608,9 +608,6 @@ object.htmlembed {
   #mobile_navbar {
     display: none;
   }
-  #content {
-    padding-top: 40px;
-  }
   #whitepaper {
     padding-left: 100px;
     padding-right: 100px;
@@ -625,9 +622,6 @@ object.htmlembed {
   #pc_navbar .item {
     padding-left: 10px;
     padding-right: 10px;
-  }
-  #content {
-    padding-top: 40px;
   }
   #whitepaper {
     padding-left: 30px;
