@@ -63,23 +63,22 @@ urlpatterns += i18n_patterns('',
     url(r'^schreibtisch/',
         include('apps_internal.desk.urls', namespace='desk')),
 
-
     # user handling urls
-    url(r'^accounts/',
-        include('accounts.urls')),
+    #url(r'^benutzer/',
+    #    include('accounts.urls')),
 
-    url(r'^zahlung/',
-        include('customers.urls')),
+    url(r'^accounts/', include('allauth.urls')),
+
 )
 
 # Data urls
 urlpatterns += i18n_patterns('',
 
     # lesson data urls
-    url(r'^lesson/',
+    url(r'^unterricht/',
         include('apps_data.lesson.urls', namespace='lesson')),
 
-    url(r'^courseevent/',
+    url(r'^kurse/',
         include('apps_data.courseevent.urls', namespace='courseevent')),
 )
 
@@ -123,15 +122,17 @@ urlpatterns += i18n_patterns('',
 
 
 if settings.DEBUG:
+    print "============= settings.STATIC_URL %s" % settings.STATIC_URL
+    print "============= settings.MEDIA_URL %s" % settings.MEDIA_URL
+    print "============= settings.BASE_DIR %s" % settings.BASE_DIR
+    #print "============= settings.BASE_DIR_PROJ %s" % settings.BASE_DIR_PROJECT
+    print "============= settings.STATIC_ROOT %s" % settings.STATIC_ROOT
+    print "============= settings.MEDIA_ROOT %s" % settings.MEDIA_ROOT
     urlpatterns += patterns('',
-        (r'^500/$', TemplateView.as_view(template_name="500.html")),
-        (r'^404/$', TemplateView.as_view(template_name="404.html"))
-    )
-
-
-if settings.DEBUG:
-    # static files (images, css, javascript, etc.)
-    urlpatterns += patterns('',
-        (r'^media/(?P<path>.*)$', 'django.views.static.serve', {
-        'document_root': settings.MEDIA_ROOT}))
-
+        url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
+            'document_root': settings.MEDIA_ROOT,
+        }),
+        url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {
+            'document_root': settings.STATIC_ROOT,
+        }),
+)

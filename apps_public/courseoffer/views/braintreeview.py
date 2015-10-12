@@ -5,8 +5,7 @@ from django import forms
 from django.core.urlresolvers import reverse
 from django.views.generic import FormView, TemplateView
 import logging
-from .models import Customer
-
+from apps_customerdata.customer.models import Customer
 logger = logging.getLogger(__name__)
 
 
@@ -29,17 +28,34 @@ class BraintreeForm(forms.Form):
     amount = forms.CharField(label='Amount')
     payment_method_nonce = forms.CharField()
 
+    def __init__(self, *args, **kwargs):
 
-class PaymentView(FormView):
+        #courseevent_slug = kwargs.pop('courseevent_slug', None)
+        #self.courseevent = get_object_or_404(CourseEvent, slug=courseevent_slug)
+
+        super(BraintreeForm, self).__init__(*args, **kwargs)
+
+        print "-------------------------"
+        print "i am here"
+
+        print self.fields
+
+        print "========================="
+        #self.fields['parent'] = TreeNodeChoiceField(
+        #    queryset=ClassLesson.objects.blocks_for_courseevent(courseevent=self.courseevent))
+        #self.fields['parent'].empty_label = None
+
+
+class BraintreeView(FormView):
     """
     This view contains the payment form.
     """
 
-    template_name = 'payment_form.html'
+    template_name = 'courseoffer/pages/payment_form_test.html'
     form_class = BraintreeForm
 
     def get_context_data(self, **kwargs):
-        cx = super(PaymentView, self).get_context_data(**kwargs)
+        cx = super(BraintreeView, self).get_context_data(**kwargs)
         cx['client_token'] = braintree.ClientToken.generate()
         return cx
 
@@ -48,8 +64,17 @@ class PaymentView(FormView):
             'amount': '10.00'
         }
 
+    def get(self, request, *args, **kwargs):
+        """
+        Handles GET requests and instantiates a blank version of the form.
+        """
+
+        form = self.get_form()
+
+        return self.render_to_response(self.get_context_data(form=form))
+
     def get_success_url(self):
-        return reverse('payment_success')
+        return reverse('courseoffer:payment_success')
 
     def form_valid(self, form):
         # Collect payment info
@@ -73,10 +98,11 @@ class PaymentView(FormView):
                   'payment_method_nonce': nonce
                 })
                 if result.is_success:
-                    customer = Customer.objects.create(
-                        id=result.customer_id,
-                        user=user
-                    )
+                    pass
+                    #customer = Customer.objects.create(
+                    #    id=result.customer_id,
+                    #    user=user
+                    #)
                 else:
                     raise Exception('could not create customer. %s' % result)
             else:
@@ -90,22 +116,22 @@ class PaymentView(FormView):
             'payment_method_nonce': nonce,
         }
 
-        if customer and customer.id:
-            transaction_data['customer_id'] = customer.id
-        else:
+        #if customer and customer.id:
+        #    transaction_data['customer_id'] = customer.id
+        #else:
             # The customer wanted to check out without registration.
             # TODO: create the customer object form the form fields
-            transaction_data['customer'] = {
-                'first_name': form.cleaned_data['first_name'],
-                'last_name': form.cleaned_data['last_name'],
+        #    transaction_data['customer'] = {
+        #        'first_name': form.cleaned_data['first_name'],
+        #        'last_name': form.cleaned_data['last_name'],
 
-            }
+        #    }
 
-        transaction_data['billing'] = {
-            'street_address': 'Musterstrasse 3',
-            'postal_code': '1234',
-            'country_code_alpha2': 'CH',
-        }
+        #transaction_data['billing'] = {
+        #    'street_address': 'Musterstrasse 3',
+        #    'postal_code': '1234',
+        #    'country_code_alpha2': 'CH',
+        #}
 
         # Commit the transaction
         result = braintree.Transaction.sale(transaction_data)
@@ -120,4 +146,5 @@ class PaymentView(FormView):
         # TODO: Store transaction info in a database.
 
         # redirect to thank you page.
-        return super(PaymentView, self).form_valid(form)
+        return super(BraintreeView, self).form_valid(form)
+

@@ -1,0 +1,16 @@
+{% load activelink %}
+{% include 'base_semantic/_home_icon.html' %}
+<a class="item
+    {% ifactive "courseevent:publiclist" %}
+        active
+    {% endifactive %}
+    " href="{% url 'courseevent:publiclist' %}">
+    Lernen
+</a>
+<a class="item
+    {% ifactive "home:teach" %}
+        active
+    {% endifactive %}
+    " href="{% url 'home:teach' %}">
+     Unterrichten
+</a>

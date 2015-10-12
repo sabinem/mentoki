@@ -5,9 +5,14 @@
 {% block main_content %}
 
     <!-- text page -->
-    <div class="ui grid container" style="padding-bottom:100px; padding-top:10px;">
+    <div class="ui grid container" style="padding-bottom:100px; padding-top:10px;
+    min-height:400px;">
         <div class="content ui column sixteen wide">
             <div class="sixteen wide column" id="whitepaper">
+
+                <div class="ui large header">Dein Schreibtisch: {{ request.user.get_full_name }}</div>
+
+                {% include 'desk/fragments/_menu.html' %}
 
                 {% include 'base/fragments/_messages.html' %}
 
@@ -18,7 +23,7 @@
                         <!-- learn -->
 
                         <h2 class="ui header inverted center aligned" id="desk_teach">
-                            Dein Lernen
+                            Dein Lernenxx
                         </h2>
 
                         <div class="ui cards">
@@ -26,6 +31,8 @@
                                 <div class="ui card fluid">
                                     {% include 'desk/fragments/_courseevent_learn_record.html' %}
                                 </div>
+                            {% empty %}
+                                Du hast noch keinen Kurs gebucht.
                             {% endfor %}
                         </div>
                     </div>

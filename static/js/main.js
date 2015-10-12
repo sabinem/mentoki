@@ -4,6 +4,11 @@
 
 $(document).ready(function(){
 
+   // Mobile button for sidebar
+   $('#mobile_button').on('click', function(){
+       $('#mobile_menu').sidebar('toggle', 'overlay');
+   });
+
 /**
  * dropdown menu for public pages
  */
@@ -91,6 +96,9 @@ $(document).ready(function(){
         this.form.submit();
     });
 
+
+
+
+
+
 });
-
-

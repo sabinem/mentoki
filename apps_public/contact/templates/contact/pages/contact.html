@@ -8,13 +8,14 @@
 {% block meta_description %}Kontaktiere uns, wenn Du online lernen oder unterrichten willst{% endblock %}
 {% block meta_keywords %}online lernen, online unterrichten {% endblock %}
 
-{% block main %}
+{% block main_content %}
 
-    <div class="ui page main grid centered" id="contact_page_grid">
+    <!-- text page -->
+    <div class="ui grid container" style="padding-bottom:100px; padding-top:50px;">
 
-        <div class="column">
+        <div class="content ui column sixteen wide">
 
-            <div class="ui piled segment">
+            <div class="sixteen wide column" id="whitepaper">
 
                 <!--page content -->
                 <h2 class="ui header ">{% trans 'Kontaktiere uns!' %}
@@ -31,9 +32,8 @@
                 </form>
 
             </div>
-
         </div>
-
     </div>
+
 {% endblock %}
 

@@ -1,21 +1,132 @@
 /* ------------------------- */
 /* Variables                 */
 /* ------------------------- */
-#public {
-  // no border for segments on public pages
-  .ui.segment {
-    border:none;
-  }
+
+// the bluegreen mentoki logo color
+@base-url: "/static/img";
+@mentoki_color: #19aaa6;
+@desk_background_img: url("@{base-url}/normaldesk.jpg");
+@desk_header_color:#aeb3a4;
+
+
+/* ------------------------- */
+/* Mixins                    */
+/* ------------------------- */
+
+.fixed-background-image (@url) {
+    background-image: @url;
+    background-size: cover;
+    background-attachment: fixed;
 }
 
 
 /* ------------------------- */
 /* Homepage                  */
+/* determines the navbar     */
+/* of public pages for       */
+/* different media           */
 /* ------------------------- */
 
+// media pc
+@media only screen and (min-width: 992px) {
+    // on pc a different navbar is displayed
+    #mobile_menu, #mobile_navbar {
+      display:none;
+    }
+    // the content makes space for the navbar
+    #content {
+      padding-top:70px;
+      padding-bottom:50px;
+    }
+}
+
+/* media tablet */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    // mobile navbar is not displayed
+    #mobile_menu, #mobile_navbar {
+      display:none;
+    }
+
+    #pc_navbar .item {
+      //padding-left:10px;
+      //padding-right:10px;
+    }
+
+    #content {
+      padding-top:70px;
+      padding-bottom:50px;
+    }
+}
+
+/* media mobile */
+@media only screen and (max-width: 767px) {
+    /* phones */
+    #pc_navbar {
+      display:none;
+    }
+    #home .divider_header.ui.header {
+      font-size:1.5em
+    }
+    #content {
+      padding-top:20px;
+    }
+
+    /* reset margin, so that navbar is on top */
+    #mobile_navbar {
+      margin:0px;
+    }
+
+}
+
+/* --------------------------------- */
+/* Logo in the navbar                */
+/* Proportions of the logo for pc    */
+/* --------------------------------- */
+
+/* logo in the navbar in the pc version: tablet and computer */
+#logo_navbar_pc {
+    padding:0;
+    margin:0;
+    padding-left:30px;
+}
+
+/* size of logo img in the navbar */
+#logo_img_navbar {
+    height:50px; width:auto;
+}
+
+/* --------------------------------- */
+/* Styling homepage                  */
+/* --------------------------------- */
+
+#homepage {
+  blockquote {
+    color: @mentoki_color;
+  }
+}
+
+#homepage .mentoki_nice_font {
+    color:#232323;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.3em;
+    font-weight: 400;
+    line-height: 1.5em;
+    -webkit-font-smoothing: antialiased;
+}
 
 
 
+/* ------------------------- */
+/* desk page                 */
+/* ------------------------- */
 
+#desk {
+  .fixed-background-image(@desk_background_img);
+  h2 {
+      background: @desk_header_color;
+      color:white;
+  }
+
+}
 
 

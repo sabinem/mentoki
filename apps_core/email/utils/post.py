@@ -12,10 +12,10 @@ from __future__ import unicode_literals, absolute_import
 from django.template.loader import get_template
 from django.template import Context
 from django.contrib.sites.models import Site
+from django.conf import settings
 
 from mailqueue.models import MailerMessage
 
-from mentoki.settings import MENTOKI_COURSE_EMAIL
 from apps_data.course.models.course import CourseOwner
 from apps_data.courseevent.models.forum import Post
 
@@ -45,9 +45,9 @@ def send_post_notification(post, thread, courseevent, module):
     mail_message = MailerMessage()
     mail_message = MailerMessage(
        subject = courseevent.email_greeting,
-       bcc_address = MENTOKI_COURSE_EMAIL,
+       bcc_address = settings.MENTOKI_COURSE_EMAIL,
        to_address = send_all,
-       from_address = MENTOKI_COURSE_EMAIL,
+       from_address = settings.MENTOKI_COURSE_EMAIL,
        content = "Neuer Post zum Beitrag %s" % thread.title,
        html_content = message,
        reply_to = None,

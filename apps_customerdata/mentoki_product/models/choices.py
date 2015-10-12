@@ -1,1 +1,6 @@
-__author__ = 'sabinemaennel'
+#encoding: utf-8
+
+CURRENCY_CHOICES = (
+    ('EUR', 'Euro'),
+    ('CHF', 'Swiss Francs'),
+)

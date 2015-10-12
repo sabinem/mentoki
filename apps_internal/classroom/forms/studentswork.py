@@ -5,15 +5,13 @@ from __future__ import unicode_literals
 import floppyforms.__future__ as forms
 
 from django.shortcuts import get_object_or_404
-from mentoki.settings import AUTH_USER_MODEL
-from django.core.validators import ValidationError
 
 from froala_editor.widgets import FroalaEditor
 
 from apps_data.courseevent.models.menu import ClassroomMenuItem
 from apps_data.courseevent.models.courseevent import CourseEvent
 from apps_data.courseevent.models.homework import StudentsWork, Comment
-from apps_data.lesson.models.classlesson import ClassLesson
+
 
 class StudentWorkCreateForm(forms.ModelForm):
     text = forms.CharField(widget=FroalaEditor)

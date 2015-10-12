@@ -1,9 +1,91 @@
 /* ------------------------- */
 /* Variables                 */
 /* ------------------------- */
-#public .ui.segment {
-  border: none;
-}
+/* ------------------------- */
+/* Mixins                    */
+/* ------------------------- */
 /* ------------------------- */
 /* Homepage                  */
+/* determines the navbar     */
+/* of public pages for       */
+/* different media           */
 /* ------------------------- */
+@media only screen and (min-width: 992px) {
+  #mobile_menu,
+  #mobile_navbar {
+    display: none;
+  }
+  #content {
+    padding-top: 70px;
+    padding-bottom: 50px;
+  }
+}
+/* media tablet */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  #mobile_menu,
+  #mobile_navbar {
+    display: none;
+  }
+  #content {
+    padding-top: 70px;
+    padding-bottom: 50px;
+  }
+}
+/* media mobile */
+@media only screen and (max-width: 767px) {
+  /* phones */
+  #pc_navbar {
+    display: none;
+  }
+  #home .divider_header.ui.header {
+    font-size: 1.5em;
+  }
+  #content {
+    padding-top: 20px;
+  }
+  /* reset margin, so that navbar is on top */
+  #mobile_navbar {
+    margin: 0px;
+  }
+}
+/* --------------------------------- */
+/* Logo in the navbar                */
+/* Proportions of the logo for pc    */
+/* --------------------------------- */
+/* logo in the navbar in the pc version: tablet and computer */
+#logo_navbar_pc {
+  padding: 0;
+  margin: 0;
+  padding-left: 30px;
+}
+/* size of logo img in the navbar */
+#logo_img_navbar {
+  height: 50px;
+  width: auto;
+}
+/* --------------------------------- */
+/* Styling homepage                  */
+/* --------------------------------- */
+#homepage blockquote {
+  color: #19aaa6;
+}
+#homepage .mentoki_nice_font {
+  color: #232323;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.3em;
+  font-weight: 400;
+  line-height: 1.5em;
+  -webkit-font-smoothing: antialiased;
+}
+/* ------------------------- */
+/* desk page                 */
+/* ------------------------- */
+#desk {
+  background-image: url("/static/img/normaldesk.jpg");
+  background-size: cover;
+  background-attachment: fixed;
+}
+#desk h2 {
+  background: #aeb3a4;
+  color: white;
+}

@@ -30,7 +30,7 @@ from froala_editor.fields import FroalaField
 
 from mailqueue.models import MailerMessage
 
-from mentoki.settings import MENTOKI_COURSE_EMAIL
+from django.conf import settings
 
 from apps_data.courseevent.models.courseevent import CourseEvent, CourseEventParticipation
 from apps_data.course.models.course import CourseOwner
@@ -110,9 +110,9 @@ def send_announcement(announcement, courseevent, module):
     mail_message = MailerMessage()
 
     mail_message.subject = "Neue Nachricht von %s" % courseevent.title
-    mail_message.bcc_address = MENTOKI_COURSE_EMAIL
+    mail_message.bcc_address = settings.MENTOKI_COURSE_EMAIL
     mail_message.to_address = send_all
-    mail_message.from_address = MENTOKI_COURSE_EMAIL
+    mail_message.from_address = settings.MENTOKI_COURSE_EMAIL
     mail_message.content = "Neue Nachricht von %s and die Teilnehmer" % courseevent.title
     mail_message.html_content = message
     mail_message.reply_to = send_all

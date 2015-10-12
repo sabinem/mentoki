@@ -20,9 +20,8 @@ INSTALLED_APPS += (
 # ssl settings
 SSLIFY_DISABLE = True
 
-# overwrites static and media root
-MEDIA_ROOT = os.path.join(BASE_DIR_PROJECT, 'ht_docs', 'media')
-STATIC_ROOT = os.path.join(BASE_DIR_PROJECT, 'ht_docs', 'static')
+# overwrites media root
+MEDIA_ROOT = os.path.join(BASE_DIR_PROJECT, 'htdocs', 'media')
 
 # overwrite email backend
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

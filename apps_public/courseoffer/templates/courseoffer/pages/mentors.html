@@ -19,7 +19,18 @@
 
         <div class="content ui column sixteen wide">
 
-                <div class="ui header center aligned large" style="color:#19aaa6;
+
+                <div class="ui two column stackable grid">
+                  <div class="column five wide">
+
+                         <div class="ui cards centered">
+                  {% include 'courseoffer/fragments/_coursecard_details.html' with product=courseevent.courseeventproduct %}
+
+                        </div>
+                  </div>
+                  <div class="column ten wide">
+
+                 <div class="ui header center aligned large" style="color:#19aaa6;
                 font-family: 'Montserrat', sans-serif;
                 font-size: 1.5em;
                 font-weight: 400;
@@ -29,14 +40,6 @@
                     Mentoki Kurs: {{ courseevent.title }}<br>
                     von {{ courseevent.teachersrecord }}
                 </div>
-                <div class="ui two column stackable grid">
-                  <div class="column five wide">
-                  <!-- Christines Kurs -->
-                         <div class="ui cards centered">
-                  {% include 'courseoffer/fragments/_coursecard_details.html' with product=courseevent.courseeventproduct %}
-
-                        </div>
-
                         <div class="ui header center aligned  large" style="color:#19aaa6;
                         font-family: 'Montserrat', sans-serif;
                         font-size: 1.2em;
@@ -48,143 +51,31 @@
                             Kursleitung
                         </div>
 
-                         <div class="ui cards centered">
                              {% for user in courseevent.teachers  %}
 
-                  {% include 'courseoffer/fragments/_mentorcard.html' with mentor=user.mentorsprofile %}
-                             {% endfor %}
-                        </div>
-
-
-
-
-                  </div>
-                      <div class="column ten wide">
-                        <div class="ui header center aligned  large" style="color:#19aaa6;
+                                    <div class="ui header center aligned  large" style="color:#19aaa6;
                         font-family: 'Montserrat', sans-serif;
                         font-size: 1.2em;
                         font-weight: 400;
                         line-height: 1.5em;
                         -webkit-font-smoothing: antialiased;
                         ">
-                            Abstrakt
+                            {{ user.get_full_name }}
                         </div>
-
-                         <div class="froala-view">
-                             {{ courseevent.excerpt |safe }}
+                             {% if user.mentorsprofile.foto_detail_page %}
+                                <img class="left floated" src="{{ user.mentorsprofile.foto_detail_page.url }}">
+                            {% elif user.mentorsprofile.foto %}
+                                <img class="left floated" src="{{ user.mentorsprofile.foto.url }}">
+                            {% endif %}
+                        <div class="froala-view">
+                             {{ user.mentorsprofile.text | safe }}
                          </div>
 
-                        <div class="ui header center aligned  large" style="color:#19aaa6;
-                        font-family: 'Montserrat', sans-serif;
-                        font-size: 1.2em;
-                        font-weight: 400;
-                        line-height: 1.5em;
-                        -webkit-font-smoothing: antialiased;
-                        ">
-                            Videoeinführung
+                             {% endfor %}
                         </div>
-                        {% if courseevent.video_url %}
-                            <div class="ui segment">
-                                <style>.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe,
-                                       .embed-container object,
-                                       .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-                                </style>
-                                <div class='embed-container'>
-                                    <iframe src='http://www.youtube.com/embed/{{ courseevent.video_url }}?rel=0&controls=0&showinfo=0' frameborder='0' allowfullscreen>
-                                    </iframe>
-                                </div>
-                            </div>
-                        {% endif %}
-                        {% if courseevent.target_group %}
-
-                <div class="ui header  large" style="color:#19aaa6;
-                font-family: 'Montserrat', sans-serif;
-                font-size: 1.2em;
-                font-weight: 400;
-                line-height: 1.2em;
-                -webkit-font-smoothing: antialiased;
-                ">                                Zielgruppe
-                            </div>
-                            {{ courseevent.target_group | safe }}
-                        {% endif %}
-                        {% if courseevent.project %}
-                                           <div class="ui header center aligned  large" style="color:#19aaa6;
-                font-family: 'Montserrat', sans-serif;
-                font-size: 1.2em;
-                font-weight: 400;
-                line-height: 1.2em;
-                -webkit-font-smoothing: antialiased;
-                ">
-                                Was Du aus diesem Kurs mitnimmst
-                            </div>
-                            {{courseevent.project | safe }}
-                        {% endif %}
-                        {% if courseevent.format %}
-                                            <div class="ui header center aligned  large" style="color:#19aaa6;
-                font-family: 'Montserrat', sans-serif;
-                font-size: 1.2em;
-                font-weight: 400;
-                line-height: 1.2em;
-                -webkit-font-smoothing: antialiased;
-                ">
-                                Kursformat
-                            </div>
-                            {{ courseevent.format | safe}}
-                        {% endif %}
-                        {% if courseevent.structure %}
-                                            <div class="ui header center aligned  large" style="color:#19aaa6;
-                font-family: 'Montserrat', sans-serif;
-                font-size: 1.2em;
-                font-weight: 400;
-                line-height: 1.2em;
-                -webkit-font-smoothing: antialiased;
-                ">
-                                Gliederung
-                            </div>
-                            {{courseevent.structure | safe }}
-                        {% endif %}
-                        {% if courseevent.prerequisites %}
-                                            <div class="ui header center aligned  large" style="color:#19aaa6;
-                font-family: 'Montserrat', sans-serif;
-                font-size: 1.2em;
-                font-weight: 400;
-                line-height: 1.2em;
-                -webkit-font-smoothing: antialiased;
-                ">
-                                Voraussetzungen
-                            </div>
-                            {{ courseevent.prerequisites | safe }}
-                        {% endif %}
-                        {% if courseevent.workload %}
-                                            <div class="ui header center aligned  large" style="color:#19aaa6;
-                font-family: 'Montserrat', sans-serif;
-                font-size: 1.2em;
-                font-weight: 400;
-                line-height: 1.2em;
-                -webkit-font-smoothing: antialiased;
-                ">
-                                Arbeitsaufwand
-                            </div>
-                            {{ courseevent.workload | safe }}
-                        {% endif %}
-                        {% if courseevent.text %}
-                                            <div class="ui header center aligned  large" style="color:#19aaa6;
-                font-family: 'Montserrat', sans-serif;
-                font-size: 1.2em;
-                font-weight: 400;
-                line-height: 1.2em;
-                -webkit-font-smoothing: antialiased;
-                ">
-                                Kursbeschreibung
-                            </div>
-                            {{courseevent.text | safe }}
-                        {% endif %}
-                     <div>
-                  </div>
 
                 </div>
             </div>
         </div>
-    </div>
 
 {% endblock %}

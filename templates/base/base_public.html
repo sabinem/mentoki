@@ -21,9 +21,12 @@
 <!-- BLOCK: Navbar -->
 
 {% block page %}
+
+
     {% url 'home:impressum'  as impressum_url %}
     {% url 'home:about'  as about_url %}
     {% url 'contact:contact' as contact_url %}
+    {% url 'courseoffer:list' as course_url %}
 
     <!-- pc and tablet version of the navbar -->
     <div class="ui menu fixed center aligned top" id="pc_navbar">
@@ -37,22 +40,28 @@
         <a class="item" id="mobile_button">
           <i class="sidebar icon"></i>
         </a>
+
         {% include 'base_semantic/_home_icon.html' %}
         {% include 'base_semantic/_social_media_icons.html' %}
-        {% include 'base_semantic/_main_menu_public_right.html' %}
+        <a class="item" href="{{ login_url }}" >
+            Login
+        </a>
     </div>
 
     {% comment %}sidebar{% endcomment %}
     <div class="ui labeled icon wide left inline vertical sidebar menu mobile only" id="mobile_menu">
-        {% comment %}{% include 'base_semantic/_mobile_menu.html' %}{% endcomment %}
+        {% include 'base/fragments/_mobile_navbar.html' %}
     </div>
 
-    <div id="content">
+    <div id="{% block page_section_css_id %}{% endblock %}">
 
         {% block main_content %}{% endblock %}
 
     </div>
 
+{% endblock %}
+
+{% block footer %}
     <div class="ui bottom attached menu fluid three item">
         <a class="item"  href="{{ contact_url }}">AGB</a>
         <a class="item"  href="{{ about_url }}">
@@ -60,5 +69,4 @@
         </a>
         <a class="item"  href="{{ impressum_url }}">Impressum</a>
     </div>
-
 {% endblock %}

@@ -15,7 +15,10 @@ class Newsletter(TimeStampedModel):
     """
     Newsletters are appear once a month
     """
-    title = models.CharField(max_length=100, verbose_name="Thema")
+    title = models.CharField(
+        verbose_name="Thema",
+        help_text="Titel",
+        max_length=100, )
     # abstract that appears on the list page for newsletters
     excerpt =  models.TextField(verbose_name='Abstrakt', blank=True)
     # slug for the newsletter

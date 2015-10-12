@@ -28,6 +28,7 @@ class LessonBlockForm(forms.ModelForm):
         self.fields['text'].required = False
 
 
+
 class LessonForm(forms.ModelForm):
     text = forms.CharField(widget=FroalaEditor, required=False)
 

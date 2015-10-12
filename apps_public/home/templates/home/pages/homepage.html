@@ -1,0 +1,87 @@
+{% extends "base/base_public.html" %}
+{% load i18n %}
+
+{% block meta_title %}Mentoki - Lehr- und Lernplattform | Lernen und Lehren lebenslang{% endblock %}
+
+{% block meta_description %}Wir sind eine Lehr- und Lern-Plattform für
+    unabhängiger Mentoren und ihre Schüler
+{% endblock %}
+{% block meta_keywords %}mentoren netzwerk, lern plattform, erwachsenen bildung,
+    online unterrichten, lehr plattform
+{% endblock %}
+
+{% block main_content %}
+
+    <!-- urls -->
+    {% url 'courseoffer:list' as courselist_url %}
+
+    <!-- grid -->
+    <div class="ui grid one column centered" id="homepage">
+
+         <!-- one column -->
+         <div class="sixteen wide column">
+
+             <!-- logo -->
+             <img class="ui image centered large image" src="/static/img/mentoki_logo_untertitel.jpg">
+             <!-- image -->
+             <img class="ui image fluid" src="/static/img/mentoki_start.jpg">
+
+         </div>
+
+         <div class="sixteen wide tablet eight wide computer column">
+
+             <!-- quote -->
+             <div class="ui header center aligned medium mentoki_nice_font">
+                 <blockquote>
+                        "Bildung ist die mächtigste Waffe,
+                        um die Welt zu verändern."<br>(Nelson Mandela)
+                 </blockquote>
+
+             </div>
+
+             <!-- image courses -->
+
+             <div class="ui header center aligned large mentoki_nice_font">
+                 Mit unseren Kursen
+                 stehen wir für
+                 projektbegleitendes
+                 unterstütztendes Lernen:
+                 <a href="{{ courselist_url }}">
+                     <img class="ui image centered medium image"
+                          src="/static/img/brain_growing.jpg">
+                 </a>
+                 <a class="ui basic button large" href="{{ courselist_url }}">
+                     Hier geht es zu unserem Kursprogramm
+                 </a>
+             </div>
+
+
+             <!-- image mentoring -->
+             <div class="ui header center aligned large mentoki_nice_font">
+                 Wir bringen Licht in den Online-Bildungsdschungel:
+                 <a href="{{ courselist_url }}">
+                     <img class="ui image centered small image"
+                          src="/static/img/38348433_s.jpg">
+                 </a>
+                 <a class="ui basic button large" href="{{ courselist_url }}">
+                     Zu unserem Angebot Bildungsmentoring
+                 </a>
+             </div>
+
+             <!-- image teaching -->
+             <div class="ui header center aligned large mentoki_nice_font">
+                 Wir unterstützen Sie bei Ihrem
+                 Einstieg in den Online-Unterricht
+                 <a href="{{ courselist_url }}">
+                     <img class="ui image centered medium image"
+                          src="/static/img/online_teaching.jpg">
+                 </a>
+                 <a class="ui basic button large" href="{{ courselist_url }}">
+                     Zum Angebot Online-Unterrichten
+                 </a>
+            </div>
+         </div>
+    </div>
+{% endblock %}
+
+

@@ -1,15 +1,26 @@
 {% extends "base/base_public.html" %}
 
-{% block section %}id="standard_public_page_body_2"{% endblock %}
+{% block main_content %}
 
-{% block main %}
+    <!-- text page -->
+    <div class="ui grid container" style="padding-bottom:100px; padding-top:50px;">
+        <div class="content ui column sixteen wide">
+            <div class="sixteen wide column" id="whitepaper">
 
-    <div class="ui grid page tablet computer only two column centered" id="generalpage">
-        {% include '_403.html' %}
-    </div>
+                <!-- page content -->
 
-    <div class="ui grid page mobile only column centered" id="generalpage">
-        {% include '_403.html' %}
+                <div class="column center aligned">
+                    <div class="segment ui" id="userlogin_segment">
+                        <div class="ui header medium">
+                            Sie haben keine Berechtigung für die angeforderte Seite.
+                        </div>
+                        <a href="{% url 'login' %}">Wollen Sie sich neu anmelden?</a>
+                        <a href="{% url 'contact:contact' %}">Oder nehmen Die Kontakt zu uns auf?</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
 
 {% endblock %}

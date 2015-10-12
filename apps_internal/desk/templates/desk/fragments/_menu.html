@@ -1,5 +1,23 @@
+{% load activelink %}
+{% url 'desk:profile' as profile_url %}
+{% url 'desk:teach' as teach_url %}
+{% url 'desk:learn' as learn_url %}
+
+
 <div class="ui three item menu">
-  <a class="active item">Editorials</a>
-  <a class="item">Reviews</a>
-  <a class="item">Upcoming Events</a>
+    <a href="{{ profile_url }}" class="
+      {% ifstartswith profile_url %}active {% endifstartswith %}
+    item">
+      Dein Profil
+    </a>
+    <a href="{{ learn_url }}" class="item
+    {% ifstartswith learn_url %}active {% endifstartswith %}
+    ">
+        Dein Lernen
+    </a>
+    <a href="{{ teach_url }}" class="item
+    {% ifstartswith teach_url %}active {% endifstartswith %}
+    ">
+        Dein Unterricht
+    </a>
 </div>

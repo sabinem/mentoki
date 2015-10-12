@@ -1,10 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
 
-</body>
-</html>
+<!-- foto ----->
+{% if user.mentorsprofile.foto_detail_page %}
+    <img class="left floated" src="{{ user.mentorsprofile.foto_detail_page.url }}">
+{% elif user.mentorsprofile.foto %}
+    <img class="left floated" src="{{ user.mentorsprofile.foto.url }}">
+{% endif %}
+
+<!-- mentors profile text -->
+<div class="froala-view">
+    {{ user.mentorsprofile.text | safe }}
+</div>

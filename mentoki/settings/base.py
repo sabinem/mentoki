@@ -9,6 +9,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(
     os.path.abspath(__file__)))
 )
+#path above the project
 BASE_DIR_PROJECT = os.path.abspath(os.path.join(BASE_DIR, os.pardir))
 
 # secret key
@@ -64,7 +65,6 @@ INSTALLED_APPS += (
     'accounts',
     'userprofiles',
 
-    'apps_customerdata.payment_method',
     'apps_customerdata.transaction',
     'apps_customerdata.customer',
     'apps_customerdata.mentoki_product',
@@ -157,39 +157,31 @@ USE_TZ = True
 DATE_FORMAT = 'd.m.Y'
 
 # static and media urls
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
-# List of finder classes that know how to find static files in
-# various locations.
-STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
 )
 
-
-
-# Template dirs and loaders
-TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, 'templates'),
-)
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-)
-
-# context processors
-TEMPLATE_CONTEXT_PROCESSORS = (
-    "django.contrib.auth.context_processors.auth",
-    "django.core.context_processors.debug",
-    "django.core.context_processors.i18n",
-    "django.core.context_processors.media",
-    'django.core.context_processors.request',
-    "django.contrib.messages.context_processors.messages",
-)
+# templates
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': ['templates'],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                "django.contrib.auth.context_processors.auth",
+                "django.core.context_processors.debug",
+                "django.core.context_processors.i18n",
+                "django.core.context_processors.media",
+                'django.core.context_processors.request',
+                "django.contrib.messages.context_processors.messages",
+            ],
+        },
+    },
+]
 
 # ignore certain urls
 import re
@@ -372,6 +364,9 @@ FROALA_EDITOR_OPTIONS = {
                         'insertHorizontalRule'],
 }
 
+# 3rd party app fontawesome: location of css file
+FONTAWESOME_CSS_URL = '/static/font-awesome-4.4.0/css/font-awesome.min.css'
+
 # 3rd party app Braintree:
 
 # braintree configuration for testing in the sandbox
@@ -386,6 +381,5 @@ BRAINTREE = {
 import braintree
 BRAINTREE_ENVIRONMENT = braintree.Environment.Sandbox
 
-# 3rd party app fontawesome: location of css file
-FONTAWESOME_CSS_URL = '/static/font-awesome-4.4.0/css/font-awesome.min.css'
+
 

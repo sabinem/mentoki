@@ -1,170 +1,187 @@
 # coding: utf-8
 
 """
-Paymill Integration Payment Form
+Braintree Integration Payment Form
 """
 
 from __future__ import unicode_literals, absolute_import
 
 from django.conf import settings
-from django.core.urlresolvers import reverse
-from django.views.generic import FormView, TemplateView
 from django import forms
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
-from django.shortcuts import redirect
-from django.utils.translation import ugettext_lazy as _
-from mentoki.settings import LOGIN_REDIRECT_URL
-from allauth.account.decorators import verified_email_required
+from django.views.generic import FormView, TemplateView
 from django.core.exceptions import ObjectDoesNotExist
 
-from braces.views import LoginRequiredMixin, MessageMixin, UserPassesTestMixin
-
-import paymill
-
-from apps_customerdata.customer.models import Customer
-from apps_data.courseevent.models.courseevent import CourseEvent
-from apps_core.core.mixins import TemplateMixin
-
-from .info import CourseEventProductMixin
+import braintree
 
 import logging
 logger = logging.getLogger(__name__)
 
-
+from apps_customerdata.customer.models import Customer
+from apps_customerdata.transaction.models.transaction import Transaction
 from apps_customerdata.mentoki_product.models.courseevent \
     import CourseEventProduct
 
 
-class PaymillForm(forms.Form):
-    token = forms.CharField(widget=forms.HiddenInput())
+# configure the global braintree object:
+braintree.Configuration.configure(
+    environment=settings.BRAINTREE_ENVIRONMENT,
+    merchant_id=settings.BRAINTREE['merchant_id'],
+    public_key=settings.BRAINTREE['public_key'],
+    private_key=settings.BRAINTREE['private_key'],
+    merchant_account_id_chf=settings.BRAINTREE['merchant_account_id_chf'],
+    merchant_account_id_eur=settings.BRAINTREE['merchant_account_id_eur'],
+)
+
+class BraintreeForm(forms.Form):
+    """
+    Payment Form uses Braintrees Drop In
+    """
+    payment_method_nonce = forms.CharField()
 
 
-class PaymentMethodView(
-    CourseEventProductMixin,
+class PaymentView(
     FormView):
     """
-    Payment of courseevent
+    This view contains the payment form.
     """
-    form_class = PaymillForm
-
-    template_name = 'courseoffer/pages/paymentdata.html'
+    template_name = 'courseoffer/pages/payment_form.html'
+    form_class = BraintreeForm
 
     def get_context_data(self, **kwargs):
-        context = super(PaymentMethodView, self).get_context_data(**kwargs)
+        """
+        gets the product and the braintree client token
+        """
+        context = super(PaymentView, self).get_context_data(**kwargs)
+        context['url_name'] = self.request.resolver_match.url_name
 
-        user = self.request.user
-        context['PAYMILL_PUBLIC_KEY'] = settings.PAYMILL['public_key']
-        paymill_context = \
-            paymill.PaymillContext(settings.PAYMILL['private_key']);
-        logger.info("[%s] [Courseeventproduct Payment]"
-                    % (user))
+        courseeventproduct = get_object_or_404(CourseEventProduct,pk=self.kwargs['pk'])
+        context['courseeventproduct'] = courseeventproduct
+        logger.debug('payment started for: %s %s'
+                     % (self.request.user, courseeventproduct))
 
-        try:
-            customer = Customer.objects.get(user=user)
-            logger.info("[%s] [Courseeventproduct Payment]: customer exists: %s %s"
-                    % (user, customer, customer.paymill_client))
-            client_service = paymill_context.get_client_service()
-            client = customer.paymill_id
-            paymill_client =  client_service.detail(client)
-            import ipdb; ipdb.set_trace()
-        except ObjectDoesNotExist:
-            logger.info("[%s] [Courseeventproduct Payment]: customer does not exists"
-                    % (user))
-            client_service = paymill_context.get_client_service()
-            paymill_client =  client_service.create(email=user.email)
-            logger.info("[%s] [Courseeventproduct Payment]: paymill client created: %s"
-                    % (user, paymill_client.id))
-            paymill_client =  client_service.create(paymill_client)
-            logger.info("[%s] [Courseeventproduct Payment]: paymill client found: %s"
-                    % (paymill_client.id))
+        context['client_token'] = braintree.ClientToken.generate()
+        logger.debug('payment toke generated: %s'
+                     % context['client_token'])
 
-            #customer.create(paymill_id=paymill_client.client)
-            customer = Customer.objects.create(
-
-                )
-            customer = Customer()
-            print paymill_client
         return context
-
-
 
     def get_success_url(self):
-        url = None
-        if self.success:
-            url = reverse('payment:success')
-        else:
-            url = reverse('payment:failed')
-        return url
+        """
+        redirects to the success page after paying
+        """
+        return reverse('courseoffer:payment_success')
 
     def form_valid(self, form):
-        # check for customerdata
+        """
+        handles the transaction and the customer identification
+        """
+        print "============ in form valid ========================"
+
+        nonce = form.cleaned_data['payment_method_nonce']
+
+        print " 1. ---- nonce received %s" % nonce
+        logger.debug('payment method nonce received: %s'
+                     % nonce)
+
         user = self.request.user
-        if user.is_authenticated():
-            try:
-                customer = get_object_or_404(Customer, user=self.request.user)
-            except ObjectDoesNotExist:
-                customer = Customer.objects.create()
+        print "2. ---- check wether user is customer: %s" % user
 
-        return context
+        # create a customer
+        # https://developers.braintreepayments.com/javascript+python/reference/response/customer
+        try:
 
+            customer = Customer.objects.get(user=user)
+            print "2a. ------ Case a: user is already customer: %s %s " % \
+                  (customer, customer.braintree_customer_id)
+            logger.debug('user is customer: %s %s'
+                         % (customer, customer.braintree_customer_id))
 
-        # Change payment status and jump to success_url or failure_url
+        except ObjectDoesNotExist:
 
-        token = form.cleaned_data['token']
-        print "token: %s" % token
-        #logger.info("[%s] [Zahlung %s %s]:" % (
-        #    self.object.product,
-        #    self.object.id,
-        #    self.object.title,
-        #    mail_distributor))
-        paymill_context = paymill.PaymillContext(settings.PAYMILL['private_key'])
+            print "2b. ----- Case b: user is not yet customer -> create braintree customer"
+            result = braintree.Customer.create({
+              'first_name': user.first_name,
+              'last_name': user.last_name
+            })
 
-        payment_service = paymill_context.get_payment_service()
-        payment_with_token = payment_service.create(
-            token=token
+            print "braintree result %s " % result
+            logger.debug('result braintree customer creation: %s'
+                         % (result))
+
+            if result.is_success:
+                # create a customer object
+                customer = Customer.objects.create(
+                    braintree_customer_id=result.customer.id,
+                    user=user
+                )
+                print "create new customer at mentoki %s %s" % (customer, customer.braintree_id)
+                logger.debug('create new mentoki customer: %s %s'
+                             % (customer, customer.braintree_id))
+            else:
+                raise Exception('Kunde konnte nicht angelegt werden. %s' % result)
+
+        # Prepare the transaction
+        # https://developers.braintreepayments.com/javascript+python/reference/request/transaction/sale
+
+        product = get_object_or_404(CourseEventProduct, pk=self.kwargs['pk'])
+
+        amount = str(product.price_total())
+
+        braintree_merchant_account_id = settings.BRAINTREE['merchant_account_id_chf']
+
+        print "3. ---- prepare transaction: %s %s" % (product, amount)
+
+        transaction_data = {
+            'amount': amount,
+            'options': {
+                'submit_for_settlement': True,
+                'store_in_vault_on_success': True,
+            },
+            #'descriptor': {
+            #    'name': 'Mentoki',
+            #},
+            'merchant_account_id': braintree_merchant_account_id,
+            'payment_method_nonce': nonce,
+        }
+        print "prepare transaction %s" % (transaction_data)
+        logger.debug('prepare transaction %s'
+                     % (transaction_data))
+
+        result = braintree.Transaction.sale(transaction_data)
+
+        print "4. ----------- react to transaction result: %s" % (result)
+        logger.debug('react to transaction result %s'
+                     % (result))
+
+        # TODO: Check if the payment went through
+
+        if not result.is_success:
+            logger.warning('Payment Error: %s' % result.message)
+            print "ERROR: %s" % (result)
+            return self.form_invalid(form)
+
+        transaction = Transaction.objects.create(
+            braintree_customer_id=customer.braintree_customer_id,
+            braintree_transaction_id=result.transaction.id,
+            amount=amount,
+            currency=product.currency,
+            braintree_merchant_account_id=braintree_merchant_account_id,
+            product=product,
+            customer=customer
         )
-        payment_with_token_and_client = payment_service.create(
-            token='098f6bcd4621d373cade4e832627b4f6',
-            client_id='client_33baaf3ee3251b083420'
-        )
+        print "5. ----------- transaction stored: %s" % (transaction)
+        logger.debug('transaction saved %s'
+                     % (transaction))
 
-        amount = 4200
-        currency = 'EUR'
-        transaction_service = paymill_context.get_transaction_service()
-        transaction_with_token = transaction_service.create_with_token(
-            token=token,
-            amount=4200, currency='EUR',
-            description='Test Transaction',
-            fee_amount=4200,
-            fee_payment_id='pay_3af44644dd6d25c820a8',
-            fee_currency='EUR'
-        )
-
-        #transaction = pmill.transact(amount, payment=card, currency=currency)
-
-        transaction = True
-        if transaction:
-            self.success = True
-            if not self.payment.on_success():
-                # This method returns if payment was fully paid
-                # if it is not, we should alert user that payment was not successfully ended anyway
-                self.success = False
-        else:
-            self.success = False
-            self.payment.on_failure()
+        print "------------- the end -------------------"
+        # redirect to thank you page.
         return super(PaymentView, self).form_valid(form)
 
 
-class PaymentSuccessView(TemplateView):
+class SuccessView(TemplateView):
     """
     This view is called if the payment has been successful.
     """
-    template_name = 'transaction/pages/payment_sucessful.html'
-
-
-class PaymentFailedView(TemplateView):
-    """
-    This view is called if the payment has been declined.
-    """
-    template_name = 'transaction/pages/payment_failed.html'
+    template_name = 'courseoffer/pages/payment_sucessful.html'

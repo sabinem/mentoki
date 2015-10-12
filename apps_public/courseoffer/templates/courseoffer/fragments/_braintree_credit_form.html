@@ -1,10 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+<form id="checkout-form" method="post" class="ui form" autocomplete="off">
+  {% csrf_token %}
 
-</body>
-</html>
+  {{ form.first_name.errors }}
+  {{ form.last_name.errors }}
+  <label>Name</label>
+  <div class="fields">
+      <div class="eight wide field">
+    {{ form.first_name }}
+      </div>
+       <div class="eight wide field">
+  {{ form.last_name }}
+      </div>
+  </div>
+  {{ form.amount.errors }}
+  <label>zu zahlender Betrag</label>
+  <div class="field">
+  {{ form.amount }}
+  </div>
+  <div id="dropin-container"></div>
+  <input class="ui button" type="submit" value="jetzt zahlen">
+</form>

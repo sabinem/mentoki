@@ -6,10 +6,10 @@ import floppyforms.__future__ as forms
 
 from django.template.loader import get_template
 from django.template import Context
+from django.conf import settings
 
 from mailqueue.models import MailerMessage
 
-from mentoki.settings import MENTOKI_INFO_EMAIL
 
 class ContactForm(forms.Form):
     # Kontaktformular
@@ -20,7 +20,7 @@ class ContactForm(forms.Form):
 
     OUTGOING=u'Kontakt: Bestätigungsmail an den Kunden'
     INTERNAL=u'Weiterleitung Kontaktanfrage, bitte beantworten!'
-    CONTACT_EMAIL=MENTOKI_INFO_EMAIL
+    CONTACT_EMAIL=settings.MENTOKI_INFO_EMAIL
 
     def __init__(self, *args, **kwargs):
         super(ContactForm, self).__init__(*args, **kwargs)
