@@ -7,24 +7,11 @@ ssh.util.log_to_file("paramiko.log", 10)
 env.hosts = ['ssh.pyrox.eu']
 env.user = 'web0263'
 
-def gitlist():
-    """
-    makes a list of the tracked files in the current git branch
-    :return: git-tracked-file.txt
-    """
-    local('git ls-tree --full-tree -r HEAD > projectdocs/git-tracked-files.txt')
-
 def gitclean():
     """
     stops files in gitignore from being tracked without deleting them
     """
     local('git rm --cached `git ls-files -i -X .gitignore`')
-
-def git_listclean():
-    """
-    determines whether there are files in gitignore that are still being tracked
-    """
-    local('git ls-files -i -X .gitignore')
 
 
 def stage():
