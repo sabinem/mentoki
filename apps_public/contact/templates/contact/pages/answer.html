@@ -1,36 +1,33 @@
 {% extends "base/base_public.html" %}
 
-{% block page_section_css_id %}standard_public_page_body_2{% endblock %}
+{% block main_content %}
 
-{% block main %}
-
-    <main class="ui page centered grid">
-
-        <div class="column">
-
-            <div class="ui piled segment">
+    <!-- text page -->
+    <div class="ui grid container" style="padding-bottom:100px; padding-top:50px;">
+        <div class="content ui column sixteen wide">
+            <div class="sixteen wide column" id="whitepaper">
 
                     <!-- page content -->
 
-                <h1 class="ui header center aligned">
-                    <img id="logo_answer_page" src="/static/img/mentoki_logo_untertitel.jpg">
-                </h1>
                     {% if messages %}
 
                         {% for message in messages %}
                             <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>
                                 {{ message | safe }}
                             </p>
+
                         {% endfor %}
+                    {% else %}
+
+                        Danke für Deine Nachricht, Du hörst bald von uns!
+
                     {% endif %}
 
                 <p>Mit lieben Grüssen</p>
                 <p id="signature">Sabine Maennel und Anette Pekrul</p>
 
             </div>
-
         </div>
-
-    </main>
+    </div>
 
 {% endblock %}

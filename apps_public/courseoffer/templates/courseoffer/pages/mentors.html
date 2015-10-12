@@ -1,0 +1,81 @@
+{% extends "base/base_public.html" %}
+{% load i18n %}
+
+{% block meta_title %}Mentoki - Lehr- und Lernplattform | Lernen und Lehren lebenslang{% endblock %}
+
+{% block meta_description %}Wir sind eine Lehr- und Lern-Plattform für unabhängiger Mentoren und ihre Schüler{% endblock %}
+{% block meta_keywords %}mentoren netzwerk, lern plattform, erwachsenen bildung, online unterrichten, lehr plattform{% endblock %}
+
+
+{% block page_section_css_id %}home{% endblock %}
+
+{% block main_content %}
+
+    <!-- urls --->
+
+    <!-- text page -->
+    <div class="ui grid container" style="padding-bottom:100px;
+          padding-top:40px;"  >
+
+        <div class="content ui column sixteen wide">
+
+
+                <div class="ui two column stackable grid">
+                  <div class="column five wide">
+
+                         <div class="ui cards centered">
+                  {% include 'courseoffer/fragments/_coursecard_details.html' with product=courseevent.courseeventproduct %}
+
+                        </div>
+                  </div>
+                  <div class="column ten wide">
+
+                 <div class="ui header center aligned large" style="color:#19aaa6;
+                font-family: 'Montserrat', sans-serif;
+                font-size: 1.5em;
+                font-weight: 400;
+                line-height: 1.2em;
+                -webkit-font-smoothing: antialiased;
+                ">
+                    Mentoki Kurs: {{ courseevent.title }}<br>
+                    von {{ courseevent.teachersrecord }}
+                </div>
+                        <div class="ui header center aligned  large" style="color:#19aaa6;
+                        font-family: 'Montserrat', sans-serif;
+                        font-size: 1.2em;
+                        font-weight: 400;
+                        line-height: 1.5em;
+                        padding-top:30px;
+                        -webkit-font-smoothing: antialiased;
+                        ">
+                            Kursleitung
+                        </div>
+
+                             {% for user in courseevent.teachers  %}
+
+                                    <div class="ui header center aligned  large" style="color:#19aaa6;
+                        font-family: 'Montserrat', sans-serif;
+                        font-size: 1.2em;
+                        font-weight: 400;
+                        line-height: 1.5em;
+                        -webkit-font-smoothing: antialiased;
+                        ">
+                            {{ user.get_full_name }}
+                        </div>
+                             {% if user.mentorsprofile.foto_detail_page %}
+                                <img class="left floated" src="{{ user.mentorsprofile.foto_detail_page.url }}">
+                            {% elif user.mentorsprofile.foto %}
+                                <img class="left floated" src="{{ user.mentorsprofile.foto.url }}">
+                            {% endif %}
+                        <div class="froala-view">
+                             {{ user.mentorsprofile.text | safe }}
+                         </div>
+
+                             {% endfor %}
+                        </div>
+
+                </div>
+            </div>
+        </div>
+
+{% endblock %}

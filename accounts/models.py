@@ -8,7 +8,6 @@ from django.utils.translation import ugettext_lazy as _
 
 from apps_data.course.models.course import Course
 from apps_data.courseevent.models.courseevent import CourseEvent
-from mentoki_products.models.courseeventproduct import CourseEventProduct
 
 
 class UserManager(BaseUserManager):
@@ -102,7 +101,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         try:
            Course.objects.get(courseowner__user=self, id=course.id)
            return True
-        except:
+        except Course.DoesNotExist:
            return False
+        # Course.object.filter(courseowner__user=self, id=course.id).count() > 0
 
 

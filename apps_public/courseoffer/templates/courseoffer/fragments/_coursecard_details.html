@@ -1,21 +1,53 @@
+{% load activelink %}
+<!-- urls -->
+{% url 'courseoffer:detail' slug=slug  as detail_url %}
+{% url 'courseoffer:mentors' slug=slug  as mentors_url %}
+{% url 'courseoffer:agb' slug=slug as agb_url %}
+{% url 'courseoffer:paymentmethod' slug=slug pk=product.pk as payment_url %}
+{% url 'courseoffer:registration' slug=slug pk=product.pk as register_url %}
+{% url 'courseoffer:braintreemethod' slug=slug pk=product.pk as test_url %}
 
-                  <div class="card">
-                    <a class="image" href="#">
-                        {% if product.foto %}
-                            <img src="{{ product.foto.url }}">
-                        {% endif %}
-                    </a>
-                    <div class="content">
-                      <div class="header">{{ product.courseevent.title }}</div>
+<div class="card">
+    <a class="image" href="#">
+        {% if product.foto %}
+            <img src="{{ product.foto.url }}">
+        {% endif %}
+    </a>
+    <div class="extra content">
+        <div class="ui two buttons">
+        <a href="{{ agb_url }}" class="ui basic teal button">AGB</a>
+        <a href="{{ mentors_url }}" class="ui basic teal button">Kursleitung</a>
+        </div>
+    </div>
+    <div class="content">
+      <div class="header">{{ product.courseevent.title }}</div>
 
-                        <div class="description">
-                        {{ product.in_one_sentence }}
-                      </div>
-                    </div>
-                  <div class="content">
-                   {{ courseevent.get_event_type_display }}
-                  </div>
-                    <a class="ui bottom attached button" href="{{ detail_url }}">
-                      Zur Buchung und Vorinformation
-                    </a>
-                  </div>
+        <div class="description">
+        {{ product.duration }}
+      </div>
+    </div>
+    <div class="content">
+      <div class="header">Kursformat</div>
+
+        <div class="description">
+        {{ product.format }}
+      </div>
+    </div>
+    <div class="content">
+      <div class="header">Kursdauer</div>
+
+        <div class="description">
+        {{ product.in_one_sentence }}
+      </div>
+    </div>
+    {% if url_name != 'paymentmethod' %}
+    <a class="ui bottom attached button" href="{{ payment_url }}">
+      {{ product.price_total }} {{ product.currency }}
+      Jetzt bezahlen
+    </a>
+    <a class="ui bottom attached button" href="{{ test_url }}">
+      {{ product.price_total }} {{ product.currency }}
+      Jetzt Bezahlung testen
+    </a>
+    {% endif %}
+    </div>

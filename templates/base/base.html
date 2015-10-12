@@ -41,20 +41,26 @@
 
     </head>
 
-    <body id="mentoki" class="preload load">
+    <body id="mentoki">
+        <!-- keep wrapper to have the footer at the bottom of the viewport -->
+        <div id="wrapper">
+            <div id="content">
+                {% block navbar %}{% endblock %}
 
-        {% block navbar %}{% endblock %}
+                {% block page %}{% endblock %}
 
-        {% block page %}{% endblock %}
+                {% block sidebar %}{% endblock %}
 
-        {% block sidebar %}{% endblock %}
+                {% block pusher %}{% endblock %}
 
-        {% block pusher %}{% endblock %}
-
-        <script src="/static/Semantic-UI-2.0.7_2/dist/semantic.js"></script>
-        <script src="/static/js/main.js"></script>
-        {% block bottom_js_extra_tools %}{% endblock %}
-
+                <script src="/static/Semantic-UI-2.0.7_2/dist/semantic.js"></script>
+                <script src="/static/js/main.js"></script>
+                {% block bottom_js_extra_tools %}{% endblock %}
+            </div>
+            <div id="footer">
+            {% block footer %}{% endblock %}
+            </div>
+        </div>
     </body>
 
 </html>

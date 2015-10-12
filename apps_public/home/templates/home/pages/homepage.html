@@ -3,192 +3,85 @@
 
 {% block meta_title %}Mentoki - Lehr- und Lernplattform | Lernen und Lehren lebenslang{% endblock %}
 
-{% block meta_description %}Wir sind eine Lehr- und Lern-Plattform für unabhängiger Mentoren und ihre Schüler{% endblock %}
-{% block meta_keywords %}mentoren netzwerk, lern plattform, erwachsenen bildung, online unterrichten, lehr plattform{% endblock %}
-
-
-{% block page_section_css_id %}home{% endblock %}
+{% block meta_description %}Wir sind eine Lehr- und Lern-Plattform für
+    unabhängiger Mentoren und ihre Schüler
+{% endblock %}
+{% block meta_keywords %}mentoren netzwerk, lern plattform, erwachsenen bildung,
+    online unterrichten, lehr plattform
+{% endblock %}
 
 {% block main_content %}
 
+    <!-- urls -->
     {% url 'courseoffer:list' as courselist_url %}
-    <div class="ui grid centered">
-        <div class="one column row">
-            <div class="ui column sixteen wide">
-                <img class="ui image fluid" src="/static/img/mentoki_start.jpg">
-            </div>
-        </div>
-        <div class="one column row">
-            <div class="ui column" >
-                <div class="ui center aligned segment">
-                    <div class="ui header large" style="color:#19aaa6;">
-                        <img class="ui image"
-                                src="/static/img/mentoki_eule.png"
-                                style="width:100px;">
-                        <blockquote
-                        style="padding-top:20px;
-                        margin-top:0px; color:#19aaa6;" >
-                                "Bildung ist die mächtigste Waffe,
-                                um die Welt zu verändern."
-                        </blockquote>
-                    </div>
-                    <p style="font-style:italic; color:#19aaa6;
-                    ">
-                        (Nelson Mandela)
-                    </p>
 
-                </div>
+    <!-- grid -->
+    <div class="ui grid one column centered" id="homepage">
+
+         <!-- one column -->
+         <div class="sixteen wide column">
+
+             <!-- logo -->
+             <img class="ui image centered large image" src="/static/img/mentoki_logo_untertitel.jpg">
+             <!-- image -->
+             <img class="ui image fluid" src="/static/img/mentoki_start.jpg">
+
+         </div>
+
+         <div class="sixteen wide tablet eight wide computer column">
+
+             <!-- quote -->
+             <div class="ui header center aligned medium mentoki_nice_font">
+                 <blockquote>
+                        "Bildung ist die mächtigste Waffe,
+                        um die Welt zu verändern."<br>(Nelson Mandela)
+                 </blockquote>
+
+             </div>
+
+             <!-- image courses -->
+
+             <div class="ui header center aligned large mentoki_nice_font">
+                 Mit unseren Kursen
+                 stehen wir für
+                 projektbegleitendes
+                 unterstütztendes Lernen:
+                 <a href="{{ courselist_url }}">
+                     <img class="ui image centered medium image"
+                          src="/static/img/brain_growing.jpg">
+                 </a>
+                 <a class="ui basic button large" href="{{ courselist_url }}">
+                     Hier geht es zu unserem Kursprogramm
+                 </a>
+             </div>
+
+
+             <!-- image mentoring -->
+             <div class="ui header center aligned large mentoki_nice_font">
+                 Wir bringen Licht in den Online-Bildungsdschungel:
+                 <a href="{{ courselist_url }}">
+                     <img class="ui image centered small image"
+                          src="/static/img/38348433_s.jpg">
+                 </a>
+                 <a class="ui basic button large" href="{{ courselist_url }}">
+                     Zu unserem Angebot Bildungsmentoring
+                 </a>
+             </div>
+
+             <!-- image teaching -->
+             <div class="ui header center aligned large mentoki_nice_font">
+                 Wir unterstützen Sie bei Ihrem
+                 Einstieg in den Online-Unterricht
+                 <a href="{{ courselist_url }}">
+                     <img class="ui image centered medium image"
+                          src="/static/img/online_teaching.jpg">
+                 </a>
+                 <a class="ui basic button large" href="{{ courselist_url }}">
+                     Zum Angebot Online-Unterrichten
+                 </a>
             </div>
-        </div>
+         </div>
     </div>
-    <div class="one column row">
-        <div class="column" >
-            <div class="ui center aligned segment">
-                <div class="ui header large" style="color:#232323;
-                font-family: 'Montserrat', sans-serif;
-                font-size: 1.5em;
-                font-weight: 400;
-                line-height: 1.5em;
-                -webkit-font-smoothing: antialiased;                    ">
-
-                                                Mit unseren Kursen stehen wir für<br>
-                        <span style="color: #24678d;"
-                                > projektbegleitendes</span>
-                    <br> unterstütztendes Lernen
-
-                </div>
-                <a class="ui button" style="
-                background:lightgrey;" href="{{ courselist_url }}"
-                 >
-                     <img class="ui image"
-                        src="/static/img/brain_growing.jpg"
-                        style="width:150px; padding-top:10px; display:inline;
-                        float:right;
-                        margin: 0 0 10px 10px;
-                        ">
-
-                    <div style="
-                font-family: 'Montserrat', sans-serif;
-                font-size: 1.2em;
-                font-weight: 400;
-                line-height: 1.5em;
-                -webkit-font-smoothing: antialiased;
-                 float:left
-                 margin: 0 0 100px 100px;
-                 width:300px;
-                    ">
-                        <p style="margin-top:30px;">
-                                Hier geht es zu unseren
-                          aktuellen Kursen</p>
-                        </div>
-                    <div style="clear: both;
-                    "></div>
-
-
-                </a>
-
-            </div>
-        </div>
-    </div>
-    <div class="one column row">
-
-        <div class="column" >
-            <div class="ui center aligned segment">
-                <div class="ui header large" style="color:#232323;
-                font-family: 'Montserrat', sans-serif;
-                font-size: 1.5em;
-                font-weight: 400;
-                line-height: 1.5em;
-                -webkit-font-smoothing: antialiased;                    ">
-
-                     Wir bringen Licht in den Online-Bildungsdschungel
-
-                </div>
-                <div class="ui button" style="
-                background:lightgrey;"
-                 >
-                     <img class="ui image"
-                        src="/static/img/38348433_s.jpg"
-                        style="width:150px; padding-top:10px; display:inline;
-                        float:right;
-                        margin: 0 0 10px 10px;
-                        ">
-
-                    <div style="
-                font-family: 'Montserrat', sans-serif;
-                font-size: 1.2em;
-                font-weight: 400;
-                line-height: 1.5em;
-                -webkit-font-smoothing: antialiased;
-                 float:left
-                 margin: 0 0 100px 100px;
-                 width:300px;
-                    ">
-                        <p style="margin-top:30px;">
-                    Hier geht es zu unserem Angebot
-                      Bildungsmentoring</p>
-                        </div>
-                    <div style="clear: both;
-                    "></div>
-
-
-                </div>
-
-            </div>
-        </div>
-
-    </div>
-    <div class="one column row">
-
-            <div class="column" >
-                <div class="ui center aligned segment">
-                    <div class="ui header large" style="color:#232323;
-                    font-family: 'Montserrat', sans-serif;
-                    font-size: 1.5em;
-                    font-weight: 400;
-                    line-height: 1.5em;
-                    -webkit-font-smoothing: antialiased;                    ">
-                            Wir unterstützen Sie bei
-                         <span style="color: #24678d;"
-                                    > Ihrem</span>
-
-                        Einstieg in den Online-Unterricht
-
-                    </div>
-                    <div class="ui button" style="
-                    background:lightgrey;"
-                     >
-                         <img class="ui image"
-                            src="/static/img/online_teaching.jpg"
-                            style="width:200px; padding-top:10px; display:inline;
-                            float:right;
-                            margin: 0 0 10px 10px;
-                            ">
-
-                        <div style="
-                    font-family: 'Montserrat', sans-serif;
-                    font-size: 1.2em;
-                    font-weight: 400;
-                    line-height: 1.5em;
-                    -webkit-font-smoothing: antialiased;
-                     float:left
-                     margin: 0 0 100px 100px;
-                     width:300px;
-                        ">
-                            <p style="margin-top:30px;">
-                        Hier geht es zu unseren Angeboten fürs Online-Unterrichten</p>
-                            </div>
-                        <div style="clear: both;
-                        "></div>
-
-
-                    </div>
-
-                </div>
-            </div>
-
-    </div>
-
-
-
 {% endblock %}
+
+

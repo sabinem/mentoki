@@ -83,6 +83,7 @@ class BaseLesson(MPTTModel):
         blank=True,
         related_name='children',
         db_index=True,
+
         )
 
     # dependant on course

@@ -1,0 +1,33 @@
+{% extends "desk/pages/base.html" %}
+
+{% block work %}
+
+    <div class="ui one column grid">
+
+        <div class="column">
+
+            <div class="ui cards">
+                {% for courseevent in study_courseevents %}
+                    <div class="ui card fluid">
+                        {% include 'desk/fragments/_courseevent_learn_record.html' %}
+                    </div>
+                {% empty %}
+                    Du hast noch keinen Kurs gebucht.
+                {% endfor %}
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+

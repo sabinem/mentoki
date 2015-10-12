@@ -1,21 +1,11 @@
-
+# git ignore file
 # hidden files
 .idea
-
-# pyc files
 *.pyc
 **/*.pyc
-*.pyc
 
 # extra files for the project
 projectdocs/**
-
-# all tmp files
-tmp/**
-
-# media files
-media/**
-htdocs/media/**
 
 # some hidden toplevel files
 .idea
@@ -34,6 +24,9 @@ htmlcov/**
 #static
 static/img-reserve/**
 static/img-old/**
+static/css-old
+static/font-awesome-4.4.0
+static/froala_editor
 static/Semantic-UI-1.12.2/**
 static/Semantic-UI-2.0.7_2/src/**
 static/Semantic-UI-2.0.7_2/examples/**
@@ -41,4 +34,5 @@ static/Semantic-UI-2.0.7_2/tasks/**
 static/Semantic-UI-2.0.7_2/tests/**
 static/Semantic-UI-2.0.7_2/node_modules/**
 static/deadsimple-less-watch-compiler-master/**
+static/less-old
 

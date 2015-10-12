@@ -1,12 +1,18 @@
+# coding: utf-8
+
+from __future__ import unicode_literals, absolute_import
+
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from django.contrib.auth.admin import UserCreationForm
+
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from .models import User
-from django import forms
 
 
 class UserAdmin(UserAdmin):
+    """
+    Adminstration of Users
+    """
     form = CustomUserChangeForm
     add_form = CustomUserCreationForm
 

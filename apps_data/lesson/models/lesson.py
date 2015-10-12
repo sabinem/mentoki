@@ -127,4 +127,7 @@ class Lesson(BaseLesson, TimeStampedModel):
         else:
             return False
 
+    #def limit_choices_to(self):
+        #return qs
+
 

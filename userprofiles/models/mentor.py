@@ -22,7 +22,7 @@ from autoslug import AutoSlugField
 
 from apps_data.course.models.course import Course, CourseOwner
 from apps_data.courseevent.models.courseevent import CourseEvent
-from mentoki_products.models.courseeventproduct import CourseEventProduct
+from apps_customerdata.mentoki_product.models.courseevent import CourseEventProduct
 
 import logging
 logger = logging.getLogger(__name__)

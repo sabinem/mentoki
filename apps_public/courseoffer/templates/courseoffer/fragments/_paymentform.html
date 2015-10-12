@@ -1,0 +1,67 @@
+{% load i18n %}
+
+<h4 class="ui dividing header">Zahlungsdaten</h4>
+
+<form id="payment-form" action="#" method="POST" class="ui form">
+
+    <div class="field">
+        <input id="card-amount-int" type="hidden" value="{{ amount_int }}">
+    </div>
+    <input id="card-currency" type="hidden" value="{{ payment.currency }}">
+
+    <!-- Kartenart -->
+    <div class="fields">
+        <div class="field seven wide">
+            <label>Kartenart</label>
+            <div class="ui selection dropdown">
+                <input type="hidden" name="card[type]">
+                <div class="default text">Typ</div>
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                    <div class="item" data-value="visa">
+                        <i class="visa icon"></i>
+                        Visa
+                    </div>
+                    <div class="item" data-value="amex">
+                         <i class="amex icon"></i>
+                         American Express
+                    </div>
+                    <div class="item" data-value="discover">
+                        <i class="discover icon"></i>
+                        Discover
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Kartendaten -->
+
+    <div class="fields">
+        <div class="seven wide field">
+            <label>{% trans "Kartennummer" %}</label>
+            <input id="card-number" type="text" size="20">
+        </div>
+        <div class="three wide field">
+            <label>{% trans "Monat" %}</label>
+            <input id="card-expiry-month" type="text" size="2">
+        </div>
+        <div class="three wide field">
+            <label>{% trans "Jahr" %}</label>
+            <input id="card-expiry-year" type="text" size="4">
+        </div>
+    </div>
+    <div class="fields">
+        <div class="ten wide field">
+            <label>{% trans "Name" %}</label>
+            <input id="card-holdername" type="text" size="20">
+        </div>
+        <div class="three wide field">
+            <label>{% trans "CVC" %}</label>
+            <input id="card-cvc" type="text" size="4">
+        </div>
+    </div>
+
+    <button class="ui button" id="submit-button" type="submit">{% trans "jetzt bezahlen" %}</button>
+
+</form>

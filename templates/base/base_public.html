@@ -1,4 +1,6 @@
-{% extends "base/base.html" %}
+{% extends 'base/base.html' %}
+{% load activelink %}
+{% load i18n %}
 
 {% block meta %}
 
@@ -16,52 +18,55 @@
 {% block head_extra_css %}
     <link href="/static/css/styles-public.css" rel="stylesheet">
 {% endblock %}
-
 <!-- BLOCK: Navbar -->
 
 {% block page %}
 
+
     {% url 'home:impressum'  as impressum_url %}
     {% url 'home:about'  as about_url %}
     {% url 'contact:contact' as contact_url %}
+    {% url 'courseoffer:list' as course_url %}
 
-    <div class="ui top attached fluid center aligned segment">
-        <div class="ui grid centered">
-            <div class="ui column" style="width:400px;">
-                <img class="ui image fluid" src="/static/img/mentoki_logo_untertitel.jpg">
-            </div>
-        </div>
-    </div>
-    <div class="ui sticky">
-        {% include 'base/_menu_public.html' %}
+    <!-- pc and tablet version of the navbar -->
+    <div class="ui menu fixed center aligned top" id="pc_navbar">
+        {% include 'base/fragments/_navbar.html' %}
     </div>
 
-    <div id="context" style="padding-top:0px;">
+    {% comment %}menu{% endcomment %}
+    <div class="ui top attached menu fluid six item" id="mobile_navbar">
+
+        {% comment %}mobile button{% endcomment %}
+        <a class="item" id="mobile_button">
+          <i class="sidebar icon"></i>
+        </a>
+
+        {% include 'base_semantic/_home_icon.html' %}
+        {% include 'base_semantic/_social_media_icons.html' %}
+        <a class="item" href="{{ login_url }}" >
+            Login
+        </a>
+    </div>
+
+    {% comment %}sidebar{% endcomment %}
+    <div class="ui labeled icon wide left inline vertical sidebar menu mobile only" id="mobile_menu">
+        {% include 'base/fragments/_mobile_navbar.html' %}
+    </div>
+
+    <div id="{% block page_section_css_id %}{% endblock %}">
 
         {% block main_content %}{% endblock %}
 
-        <div class="ui bottom attached menu fluid three item">
-            <a class="item"  href="{{ contact_url }}">AGB</a>
-            <a class="item"  href="{{ about_url }}">
-                Team
-            </a>
-            <a class="item"  href="{{ impressum_url }}">Impressum</a>
-        </div>
-
-
     </div>
-
 
 {% endblock %}
 
-
-
-
-
-
-
-
-
-
-
-
+{% block footer %}
+    <div class="ui bottom attached menu fluid three item">
+        <a class="item"  href="{{ contact_url }}">AGB</a>
+        <a class="item"  href="{{ about_url }}">
+            Team
+        </a>
+        <a class="item"  href="{{ impressum_url }}">Impressum</a>
+    </div>
+{% endblock %}

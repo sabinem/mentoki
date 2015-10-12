@@ -2,7 +2,7 @@
 
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext_lazy as _
-from mentoki.settings import LOGIN_REDIRECT_URL
+from django.conf import settings
 
 from braces.views import LoginRequiredMixin, MessageMixin, UserPassesTestMixin
 
@@ -16,8 +16,8 @@ class AuthMixin(LoginRequiredMixin, UserPassesTestMixin, MessageMixin, TemplateM
     this Mixin builds the menu in the side-bar and the top of the page.
     """
     raise_exception = False
-    login_url = LOGIN_REDIRECT_URL
-    redirect_field_name = LOGIN_REDIRECT_URL
+    login_url = settings.LOGIN_REDIRECT_URL
+    redirect_field_name = settings.LOGIN_REDIRECT_URL
 
     def test_func(self, user):
 

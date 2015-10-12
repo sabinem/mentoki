@@ -1,0 +1,121 @@
+{% extends "base/base_public.html" %}
+{% load i18n %}
+
+{% block meta_title %}Mentoki - Lehr- und Lernplattform | Lernen und Lehren lebenslang{% endblock %}
+
+{% block meta_description %}Wir sind eine Lehr- und Lern-Plattform für unabhängiger Mentoren und ihre Schüler{% endblock %}
+{% block meta_keywords %}mentoren netzwerk, lern plattform, erwachsenen bildung, online unterrichten, lehr plattform{% endblock %}
+
+
+{% block page_section_css_id %}home{% endblock %}
+
+{% block main_content %}
+
+    <!-- urls --->
+
+    <!-- text page -->
+    <div class="ui grid container" style="padding-bottom:100px;
+          padding-top:40px;>
+
+        <div class="content ui column sixteen wide">
+
+            <div class="ui two column stackable grid">
+
+                <div class="column five wide">
+
+                    <!-- courseevent detail -->
+
+                    <div class="ui cards centered">
+                        {% include 'courseoffer/fragments/_coursecard_details.html' with product=courseevent.courseeventproduct %}
+                    </div>
+
+                </div>
+
+                <div class="column ten wide">
+
+                    {% include 'courseoffer/fragments/_3steps_checkout.html' %}
+
+                    {% include 'courseoffer/fragments/_paymentform.html' %}
+
+                    {% comment %}
+                    This is the form that will hold the actual token that will be sent to the server
+                    {% endcomment %}
+                    <form id="payment-form-token" action="" method="POST">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                    </form>
+
+                    <script type="text/javascript" src="https://bridge.paymill.com/"></script>
+                    <script type="text/javascript">
+                        paymill.embedFrame('credit-card-fields', options, callback);
+                        var PAYMILL_PUBLIC_KEY = '{{ PAYMILL_PUBLIC_KEY }}';
+                        alert (JSON.stringify(PAYMILL_PUBLIC_KEY));
+                        var PaymillResponseHandler = function(error, result) {
+                            alert('in response handler');
+                            if(error) {
+                                document.getElementById('submit-button').disabled = '';
+                                alert('Error!');
+                                alert(JSON.stringify(error))
+                            } else {
+                                alert('was okay');
+                                var token_form = document.getElementById('payment-form-token');
+                                token_form.token.value = result.token;
+                                token_form.submit();
+                                alert('token received');
+                            }
+                        }
+                        var create_token = function(e) {
+                            e.preventDefault();
+                            // This function will handle the token generation
+                            // Deactivate submit button to avoid further clicks
+                            document.getElementById('submit-button').disabled = 'disabled';
+                            var number_field = e.target['card-number'];
+                            var expiry_month_field = e.target['card-expiry-month'];
+                            var expiry_year_field = e.target['card-expiry-year'];
+                            var cvc_field = e.target['card-cvc'];
+                            var amount_int_field = e.target['card-amount-int'];
+                            var currency_field = e.target['card-currency'];
+                            var holdername_field = e.target['card-holdername'];
+                            alert(number_field);
+                            alert('in create token');
+                            paymill.createToken({
+                              amount_int: 4200,
+                              currency: 'EUR',
+                              number: '4111111111111111',
+                              exp_month: '01',
+                              exp_year: '2020',
+                              cvc: '123',
+                              cardholder: 'John Doe'
+                            }, PaymillResponseHandler);
+                            //paymill.createToken({
+                            //    number: number_field.value,
+                            //    exp_month: expiry_month_field.value,
+                            //    exp_year: expiry_year_field.value,
+                            //    cvc: cvc_field.value,
+                            //    amount_int: amount_int_field.value,
+                            //    currency: currency_field.value,
+                            //    cardholder: holdername_field.value
+                            //}, PaymillResponseHandler);
+                            return false;
+                        }
+                        var payment_form = document.getElementById('payment-form');
+                        if (!payment_form.addEventListener) {
+                            payment_form.attachEvent("onsubmit", create_token);
+                        }
+                        else {
+                            payment_form.addEventListener("submit", create_token, false);
+                        }
+                    </script>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% load i18n %}
+{% comment %}
+Paymill requires a custom form with some JS.
+{% endcomment %}
+
+

@@ -1,0 +1,23 @@
+{% extends "base/base_account.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+
+{% block content %}
+<h1>{% trans "Sign Up" %}</h1>
+
+<p>{% blocktrans %}Hast Du schon einen Account bei uns? Dann kannst Du dich hier
+    <a class="ui button basic"
+       href="{{ login_url }}">Anmelden</a>.{% endblocktrans %}</p>
+
+<form class="signup ui form" id="signup_form" method="post" action="{% url 'account_signup' %}">
+  {% csrf_token %}
+  {{ form.as_p }}
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+  {% endif %}
+  <button class="ui button" type="submit">{% trans "Sign Up" %} &raquo;</button>
+</form>
+
+{% endblock %}

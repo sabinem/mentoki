@@ -2,36 +2,17 @@
 
 from __future__ import unicode_literals, absolute_import
 
-from django.db import models
-from django.utils.translation import ugettext as _
-from django.core.urlresolvers import reverse
-
-from mentoki import settings
-
-from model_utils.models import TimeStampedModel
-from model_utils.fields import MonitorField
-
 from apps_data.lesson.models.classlesson import ClassLesson
 
-from .courseevent import CourseEvent
-
-
 from django.db import models
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
-from django.template.loader import get_template
-from django.template import Context
-from django.shortcuts import get_object_or_404
+from django.conf import settings
 
 from model_utils.models import TimeStampedModel
 from model_utils.fields import MonitorField
 
-from mailqueue.models import MailerMessage
-
-from mentoki.settings import MENTOKI_COURSE_EMAIL
-
-from apps_data.courseevent.models.courseevent import CourseEvent, CourseEventParticipation
-from apps_data.course.models.course import CourseOwner
+from apps_data.courseevent.models.courseevent import CourseEvent
 
 
 class StudentsWorkManager(models.Manager):

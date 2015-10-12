@@ -13,7 +13,7 @@ from django.contrib.sites.models import Site
 
 from mailqueue.models import MailerMessage
 
-from mentoki.settings import MENTOKI_COURSE_EMAIL
+from django.conf import settings
 
 from apps_data.courseevent.models.courseevent import CourseEventParticipation
 from apps_data.course.models.course import CourseOwner
@@ -47,9 +47,9 @@ def send_work_comment_notification(studentswork, comment, courseevent, module):
 
     mail_message = MailerMessage(
        subject = courseevent.email_greeting,
-       bcc_address = MENTOKI_COURSE_EMAIL,
+       bcc_address = settings.MENTOKI_COURSE_EMAIL,
        to_address = send_all,
-       from_address = MENTOKI_COURSE_EMAIL,
+       from_address = settings.MENTOKI_COURSE_EMAIL,
        content = "Neuer Kommentar von %s zur Aufgabe %s" \
                            % (comment.author, studentswork.homework),
        html_content = message,

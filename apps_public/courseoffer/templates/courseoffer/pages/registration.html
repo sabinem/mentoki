@@ -1,0 +1,78 @@
+{% extends "base/base_public.html" %}
+{% load i18n %}
+
+{% block meta_title %}Mentoki - Lehr- und Lernplattform | Lernen und Lehren lebenslang{% endblock %}
+
+{% block meta_description %}Wir sind eine Lehr- und Lern-Plattform für unabhängiger Mentoren und ihre Schüler{% endblock %}
+{% block meta_keywords %}mentoren netzwerk, lern plattform, erwachsenen bildung, online unterrichten, lehr plattform{% endblock %}
+
+
+{% block page_section_css_id %}home{% endblock %}
+
+{% block main_content %}
+
+    <!-- urls --->
+
+    <!-- text page -->
+    <div class="ui grid container" style="padding-bottom:100px;
+          padding-top:40px;"  >
+
+        <div class="content ui column sixteen wide">
+
+            <div class="ui two column stackable grid">
+
+                <div class="column five wide">
+
+                    <!-- courseevent detail -->
+
+                    <div class="ui cards centered">
+                        {% include 'courseoffer/fragments/_coursecard_details.html' with product=courseevent.courseeventproduct %}
+                    </div>
+
+                </div>
+
+                <div class="column ten wide">
+
+                    {% include 'courseoffer/fragments/_3steps_checkout.html' %}
+
+                    <h2>{% trans "Send an activation link" %}</h2>
+                    <form method="post" action="{% url "email_registration_form" %}"
+                        class="well" id="registration">
+                      {% csrf_token %}
+                      <div class="controls">
+                        <input id="id_email" type="text" name="email" maxlength="30"
+                          placeholder="{% trans "Email address" %}">
+                      </div>
+                      <button type="submit" class="btn btn-primary">
+                        {% trans "Register" %}
+                      </button>
+                    </form>
+
+                    <script>
+                    function init_registration($) {
+                      alert('in init_registration');
+                      $('#registration').on('submit', function() {
+                        var $form = $(this);
+                        $.post(this.action, $form.serialize(), function(data) {
+                          alert('in post');
+                          $('#registration').replaceWith(data);
+                          init_registration($);
+                        });
+                        return false;
+                      });
+                    }
+                    $(init_registration);
+                    </script>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% load i18n %}
+{% comment %}
+Paymill requires a custom form with some JS.
+{% endcomment %}
+
+
