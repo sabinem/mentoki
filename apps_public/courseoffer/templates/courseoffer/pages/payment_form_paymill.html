@@ -1,0 +1,98 @@
+{% extends "base/base_x.html" %}
+
+{% block page_section_css_id %}standard_public_page_body_2{% endblock %}
+
+{% block main_content %}
+
+    <!-- text page -->
+    <div class="ui grid container" style="padding-bottom:100px; padding-top:50px;">
+        <div class="content ui column sixteen wide">
+            <div class="sixteen wide column" id="whitepaper">
+<div class="ui header">Kursbuchung:</div>
+<p>Kurs XY, Start Z, Teilnehmerzahl 15 ...</p>
+
+<div class="ui three steps">
+  <div class="active  step">
+    <i class="truck icon"></i>
+    <div class="content">
+      <div class="title">Kundenregistrierung</div>
+    </div>
+  </div>
+  <div class="step">
+    <i class="payment icon"></i>
+    <div class="content">
+      <div class="title">Bezahlung</div>
+    </div>
+  </div>
+  <div class="disabled step">
+    <i class="info icon"></i>
+    <div class="content">
+      <div class="title">Buckung bestätigen</div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  var PAYMILL_PUBLIC_KEY = '62477926916d4da496cf4f1a77c4175d';
+</script>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="https://bridge.paymill.com"></script>
+
+<script type="text/javascript">
+  $(document).ready(function () {
+
+    function PaymillResponseHandler(error, result) {
+      if (error) {
+        // Displays the error above the form
+        $(".payment-errors").text(error.apierror);
+      } else {
+        $(".payment-errors").text("");
+        var form = $("#payment-form");
+        // Token
+        var token = result.token;
+
+        // Insert token into form in order to submit to server
+        form.append("<input type='hidden' name='paymillToken' value='" + token + "'/>");
+        form.get(0).submit();
+      }
+      $(".submit-button").removeAttr("disabled");
+    }
+
+    $("#payment-form").submit(function (event) {
+      // Deactivate submit button to avoid further clicks
+      $('.submit-button').attr("disabled", "disabled");
+
+      if (!paymill.validateCardNumber($('.card-number').val())) {
+        $(".payment-errors").text("Invalid card number");
+        $(".submit-button").removeAttr("disabled");
+        return false;
+      }
+
+      if (!paymill.validateExpiry(
+        $('.card-expiry-month').val(),
+        $('.card-expiry-year').val())
+      ) {
+        $(".payment-errors").text("Invalid expiration date");
+        $(".submit-button").removeAttr("disabled");
+        return false;
+      }
+
+      paymill.createToken({
+      number:         $('.card-number').val(),
+      exp_month:      $('.card-expiry-month').val(),
+      exp_year:       $('.card-expiry-year').val(),
+      cvc:            $('.card-cvc').val(),
+      cardholder:     $('.card-holdername').val(),
+      amount_int:     $('.card-amount-int').val(), // Integer e.g. "4900" fÃ¼r 49,00 EUR
+      currency:       $('.card-currency').val()    // ISO 4217 z.B. "EUR"
+      }, PaymillResponseHandler);
+
+      return false;
+    });
+  });
+</script>
+                            </div>
+        </div>
+    </div>
+
+{% endblock %}

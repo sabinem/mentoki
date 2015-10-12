@@ -1,5 +1,0 @@
-{% for courseevent in courseevents_preview %}
-    <a class="item" href="{% url 'courseoffer:detail' slug=courseevent.slug %}">
-        {{ courseevent.title }}
-    </a>
-{% endfor %}
