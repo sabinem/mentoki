@@ -80,36 +80,29 @@ class PaymentView(
         """
         handles the transaction and the customer identification
         """
-        print "============ in form valid ========================"
 
         nonce = form.cleaned_data['payment_method_nonce']
 
-        print " 1. ---- nonce received %s" % nonce
         logger.debug('payment method nonce received: %s'
                      % nonce)
 
         user = self.request.user
-        print "2. ---- check wether user is customer: %s" % user
 
         # create a customer
         # https://developers.braintreepayments.com/javascript+python/reference/response/customer
         try:
 
             customer = Customer.objects.get(user=user)
-            print "2a. ------ Case a: user is already customer: %s %s " % \
-                  (customer, customer.braintree_customer_id)
             logger.debug('user is customer: %s %s'
                          % (customer, customer.braintree_customer_id))
 
         except ObjectDoesNotExist:
 
-            print "2b. ----- Case b: user is not yet customer -> create braintree customer"
             result = braintree.Customer.create({
               'first_name': user.first_name,
               'last_name': user.last_name
             })
 
-            print "braintree result %s " % result
             logger.debug('result braintree customer creation: %s'
                          % (result))
 
@@ -119,9 +112,8 @@ class PaymentView(
                     braintree_customer_id=result.customer.id,
                     user=user
                 )
-                print "create new customer at mentoki %s %s" % (customer, customer.braintree_id)
                 logger.debug('create new mentoki customer: %s %s'
-                             % (customer, customer.braintree_id))
+                             % (customer, customer.braintree_customer_id))
             else:
                 raise Exception('Kunde konnte nicht angelegt werden. %s' % result)
 
@@ -133,8 +125,6 @@ class PaymentView(
         amount = str(product.price_total())
 
         braintree_merchant_account_id = settings.BRAINTREE['merchant_account_id_chf']
-
-        print "3. ---- prepare transaction: %s %s" % (product, amount)
 
         transaction_data = {
             'amount': amount,
@@ -148,13 +138,11 @@ class PaymentView(
             'merchant_account_id': braintree_merchant_account_id,
             'payment_method_nonce': nonce,
         }
-        print "prepare transaction %s" % (transaction_data)
         logger.debug('prepare transaction %s'
                      % (transaction_data))
 
         result = braintree.Transaction.sale(transaction_data)
 
-        print "4. ----------- react to transaction result: %s" % (result)
         logger.debug('react to transaction result %s'
                      % (result))
 
@@ -162,7 +150,6 @@ class PaymentView(
 
         if not result.is_success:
             logger.warning('Payment Error: %s' % result.message)
-            print "ERROR: %s" % (result)
             return self.form_invalid(form)
 
         transaction = Transaction.objects.create(
@@ -174,11 +161,9 @@ class PaymentView(
             product=product,
             customer=customer
         )
-        print "5. ----------- transaction stored: %s" % (transaction)
         logger.debug('transaction saved %s'
                      % (transaction))
 
-        print "------------- the end -------------------"
         # redirect to thank you page.
         return super(PaymentView, self).form_valid(form)
 
