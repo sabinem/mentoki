@@ -12,7 +12,9 @@ from .base import *
 SSLIFY_DISABLE = True
 
 # static and media root
-STATIC_ROOT = os.path.join(BASE_DIR, 'htdocs', 'static')
-MEDIA_ROOT = os.path.join(BASE_DIR, 'htdocs', 'media')
+STATIC_ROOT = os.path.join(BASE_DIR_PROJECT, 'htdocs', 'static')
+MEDIA_ROOT = os.path.join(BASE_DIR_PROJECT, 'htdocs', 'media')
+
+
 
 
