@@ -261,41 +261,49 @@ LOGGING = {
     },
     'handlers': {
         'paymentfile': {
-            'filename': os.path.join(BASE_DIR, 'payment.log' ),
+            'filename': os.path.join(BASE_DIR, 'logfiles', 'payments.log' ),
             'formatter': 'verbose',
-            'level': 'INFO',
+            'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
             'maxBytes': 500000,  # 500 kB
             'backupCount': 4  ,
         },
         'emailfile': {
-            'filename': os.path.join(BASE_DIR, 'email.log' ),
+            'filename': os.path.join(BASE_DIR, 'logfiles', 'emails.log' ),
             'formatter': 'verbose',
-            'level': 'INFO',
+            'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
             'maxBytes': 500000,  # 500 kB
             'backupCount': 4  ,
         },
         'backendfile': {
-            'level': 'INFO',
+            'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
             'maxBytes': 500000,  # 500 kB
-            'filename': os.path.join(BASE_DIR, 'coursebackend.log' ),
+            'filename': os.path.join(BASE_DIR, 'logfiles', 'teacherativity.log' ),
             'formatter': 'verbose',
             'backupCount': 4  ,
         },
         'datafile': {
-            'level': 'INFO',
+            'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
             'maxBytes': 500000,  # 500 kB
-            'filename': os.path.join(BASE_DIR, 'data.log' ),
+            'filename': os.path.join(BASE_DIR, 'logfiles', 'dataactivity.log' ),
             'formatter': 'verbose'
         },
         'classroomfile': {
-            'level': 'INFO',
+            'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
             'maxBytes': 500000,  # 500 kB
-            'filename': os.path.join(BASE_DIR, 'classroom.log' ),
+            'filename': os.path.join(BASE_DIR, 'logfiles', 'classroomactivity.log' ),
+            'formatter': 'verbose',
+            'backupCount': 4  ,
+        },
+        'customerdatafile': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'maxBytes': 500000,  # 500 kB
+            'filename': os.path.join(BASE_DIR, 'logfiles', 'customerdata.log' ),
             'formatter': 'verbose',
             'backupCount': 4  ,
         },
@@ -310,27 +318,32 @@ LOGGING = {
         'apps_core.email': {
             'handlers': ['emailfile'],
             'propagate': True,
-            'level': 'INFO',
+            'level': 'DEBUG',
         },
         'apps_data': {
             'handlers': ['datafile'],
             'propagate': True,
-            'level': 'INFO',
+            'level': 'DEBUG',
         },
         'apps_internal.classroom': {
             'handlers': ['classroomfile'],
             'propagate': True,
-            'level': 'INFO',
+            'level': 'DEBUG',
         },
         'apps_internal.coursebackend': {
             'handlers': ['backendfile'],
             'propagate': True,
-            'level': 'INFO',
+            'level': 'DEBUG',
         },
         'apps_customerdata': {
+            'handlers': ['customerdatafile'],
+            'propagate': True,
+            'level': 'DEBUG',
+        },
+        'apps_public.courseoffer': {
             'handlers': ['paymentfile'],
             'propagate': True,
-            'level': 'INFO',
+            'level': 'DEBUG',
         },
     }
 }

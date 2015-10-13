@@ -25,25 +25,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR_PROJECT, 'htdocs', 'media')
 # overwrite email backend
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-# update logging
-LOGGING['loggers'].update({
-    'apps_customerdata': {
-         'level': 'DEBUG',
-         'handlers': ['console'],
-         'propagate': False,
-    },
-    'apps_public': {
-         'level': 'DEBUG',
-         'handlers': ['console'],
-         'propagate': False,
-    },
-    'django.request': {
-        'level': 'DEBUG',
-        'handlers': ['console'],  # Dump exceptions to the console.
-        'propagate': False,
-    },
-})
-
 # overwrite raven settings
 RAVEN_CONFIG = {'dsn': ''}
 
