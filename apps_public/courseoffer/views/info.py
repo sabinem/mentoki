@@ -82,5 +82,5 @@ class CourseEventAGBView(
         gets product detail context
         """
         context = super(CourseEventAGBView, self).get_context_data()
-        context['textchunk'] = get_object_or_404(PublicTextChunks, pagecode='course_agb')
+        context['textchunk'] = get_object_or_404(PublicTextChunks, pagecode='agb')
         return context

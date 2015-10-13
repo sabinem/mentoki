@@ -71,9 +71,9 @@ urlpatterns = patterns("",
         name='standards'),
 
     # neuer url: kann auch anderers heissen
-    url(r'^mentoki-kurse-bedingungen$',
+    url(r'^mentoki-allgemeine-geschaeftsbedingungen$',
         CourseAGBPageView.as_view(),
-        {'pagecode': 'course_agb'},
+        {'pagecode': 'agb'},
         name='agb'),
 
     # neuer url: kann auch anderers heissen
