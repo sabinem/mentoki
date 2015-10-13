@@ -11,3 +11,7 @@ from .base import *
 # static and media root
 STATIC_ROOT = os.path.join(BASE_DIR_PROJECT, 'htdocs', 'static')
 MEDIA_ROOT = os.path.join(BASE_DIR_PROJECT, 'htdocs', 'media')
+
+
+# ssl settings
+SSLIFY_DISABLE = True

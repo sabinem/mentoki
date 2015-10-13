@@ -158,6 +158,8 @@ USE_TZ = True
 
 DATE_FORMAT = 'd.m.Y'
 
+
+# TODO: brauche ich dieses setup so? Oder ist es veraltet?
 # static and media urls
 MEDIA_URL = '/media/'
 STATIC_URL = '/static/'
@@ -166,13 +168,12 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
-# List of finder classes that know how to find static files in
-# various locations.
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
+# TODO: Simon fragen warum das nicht funktioniert hat: base templates were not found
 # templates
 #TEMPLATES = [
 #    {
@@ -247,6 +248,7 @@ LOGIN_REDIRECT_URL = reverse_lazy("desk:start")
 LOGOUT_URL = reverse_lazy("home:home")
 
 # Logging
+# TODO: adjust loglevel DEBUG/INFO
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
