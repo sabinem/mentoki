@@ -32,25 +32,27 @@ def send_invoice(invoice, module):
     print "invoice in send_invoice %s" % invoice
 
     betreff = "Ihre Bestellung: Mentokis %s" % invoice.product.courseevent.title
-    urllib.urlencode(OrderedDict([
+    url_parms = urllib.urlencode(OrderedDict([
         ('tid', invoice.payrexx_tld),
         ('invoice_amount', invoice.amount),
         ('invoice_currency', invoice.currency),
         ('contact_forename',invoice.first_name),
         ('contact_surname',invoice.last_name),
-        ('invoice_nr',invoice.title ),
+        ('invoice_number',invoice.title ),
+        ('contact_email',invoice.email),
     ]))
 
-    url_input = {
-          'tid': invoice.payrexx_tld,
-          'invoice_amount' : invoice.amount,
-          'invoice_currency' : invoice.currency,
-          'contact_forename': invoice.first_name,
-          'contact_surname': invoice.last_name,
-          'invoice_number' : invoice.title,
-          }
+    #url_input = {
+    #      'tid': invoice.payrexx_tld,
+    #      'invoice_amount' : invoice.amount,
+    #      'invoice_currency' : invoice.currency,
+    #      'contact_forename': invoice.first_name,
+    #      'contact_surname': invoice.last_name,
+    #      'invoice_number' : invoice.title,
+    #
+    #      }
 
-    url_parms = urllib.urlencode(url_input)
+    #url_parms = urllib.urlencode(url_input)
     print url_parms
     context = {
         'site': Site.objects.get_current(),
