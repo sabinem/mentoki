@@ -9,7 +9,7 @@ from .views import DeskStartView, DeskTeachView, DeskLearnView, \
 
 
 urlpatterns = patterns('',
-    url(r'^start$', DeskStartView.as_view(), name='start' ),
+    url(r'^profile$', DeskProfileView.as_view(), name='start' ),
 
     url(r'^unterrichten$', DeskTeachView.as_view(), name='teach' ),
 
