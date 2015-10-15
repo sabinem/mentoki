@@ -23,7 +23,7 @@ SSLIFY_DISABLE = True
 MEDIA_ROOT = os.path.join(BASE_DIR_PROJECT, 'htdocs', 'media')
 
 # overwrite email backend
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # overwrite raven settings
 RAVEN_CONFIG = {'dsn': ''}

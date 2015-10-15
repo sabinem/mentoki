@@ -17,30 +17,11 @@
 {% url 'home:teachready' as teachready_url %}
 
 
-<a class="item browse" id="logo_navbar_pc"
-    href="{{ home_url }}">
-    <img  id="logo_img_navbar" src="/static/img/mentoki_logo.png"
-          >
-</a>
-<div class="ui popup bottom fluid left transition hidden" style="max-width:300px;">
-
-    <div class="ui one column relaxed divided grid">
-
-        <div class="column">
-
-            <div class="ui link list">
-                <a href="{{ about_url }}" class="item">
-                    Über uns
-                </a>
-                <a href="{{ mentorslist_url }}" class="item">
-                    Das Mentoren-Team
-                </a>
-            </div>
-
-        </div>
-
-    </div>
-</div>
+    <a class="item" id="logo_navbar_pc"
+        href="{{ home_url }}">
+        <img  id="logo_img_navbar" src="/static/img/mentoki_logo.png"
+              >
+    </a>
 
     <a class="item browse"
        style="color:grey; border:none;
@@ -71,6 +52,10 @@
         </div>
     </div>
     <a class="item
+        " href="{{ mentorslist_url }}">
+        Mentoren
+    </a>
+    <a class="item
         " href="{{ educationmentor_url }}">
         Bildungsmentoring
     </a>
@@ -98,7 +83,10 @@
 
         </div>
     </div>
-
+    <a class="item
+        " href="{{ about_url }}">
+        Über uns
+    </a>
     <div class="right menu">
         {% if request.user.is_authenticated %}
             <a class="item browse">

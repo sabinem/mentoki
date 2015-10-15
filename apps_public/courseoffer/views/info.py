@@ -24,6 +24,7 @@ class CourseEventListView(TemplateView):
 
         # build list of course events
         context['courseevents'] = CourseEventProduct.objects.all().select_related('courseevent')
+
         print "in courseevent list view"
         print context
         return context
@@ -55,7 +56,7 @@ class CourseEventProductView(
     This View shows the details of a courseevents. From here you can book them, if they are
     available for booking yet.
     """
-    template_name = "courseoffer/pages/detail.html"
+    template_name = "courseoffer/pages/courseproductdetail.html"
 
 
 class CourseEventMentorsView(
@@ -65,22 +66,38 @@ class CourseEventMentorsView(
     This View shows the details of a courseevents. From here you can book them, if they are
     available for booking yet.
     """
-    template_name = "courseoffer/pages/mentors.html"
+    template_name = "courseoffer/pages/courseproductmentors.html"
 
 
-class CourseEventAGBView(
+class CourseEventOfferView(
     CourseEventProductMixin,
     TemplateView):
     """
     This View shows the details of a courseevents. From here you can book them, if they are
     available for booking yet.
     """
-    template_name = "courseoffer/pages/agb.html"
+    template_name = "courseoffer/pages/courseproductoffer.html"
 
     def get_context_data(self, **kwargs):
         """
         gets product detail context
         """
-        context = super(CourseEventAGBView, self).get_context_data()
-        context['textchunk'] = get_object_or_404(PublicTextChunks, pagecode='agb')
+        context = super(CourseEventOfferView, self).get_context_data()
+        return context
+
+
+class PaymentView(
+    CourseEventProductMixin,
+    TemplateView):
+    """
+    This View shows the details of a courseevents. From here you can book them, if they are
+    available for booking yet.
+    """
+    template_name = "courseoffer/pages/payment.html"
+
+    def get_context_data(self, **kwargs):
+        """
+        gets product detail context
+        """
+        context = super(PaymentView, self).get_context_data()
         return context

@@ -66,6 +66,7 @@ INSTALLED_APPS += (
     'apps_accountdata.userprofiles',
 
     'apps_customerdata.transaction',
+    'apps_customerdata.invoice',
     'apps_customerdata.customer',
     'apps_customerdata.mentoki_product',
 
@@ -424,5 +425,5 @@ BRAINTREE = {
 import braintree
 BRAINTREE_ENVIRONMENT = braintree.Environment.Sandbox
 
-
+PAYREXX_SITE = 'mentoki.payrexx.com'
 

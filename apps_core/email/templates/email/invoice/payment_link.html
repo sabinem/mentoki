@@ -1,0 +1,29 @@
+{% extends "email/base_internal_email.html" %}
+
+{% block email_to %}
+     {{ betreff }}:
+{% endblock %}
+
+{% block email_title %}
+    Vielen Dank für Ihr Interesse an {{ product.courseevent.title }} von
+    {{ product.courseevent.teachersrecord }}.
+{% endblock %}
+
+{% block email_text %}
+    <p>Anbei ist ein Zahlungslink. Sobald Sie bezahlt haben, erhalten Sie
+    umgehend ihre Zugangsdaten.
+    <hr>
+    <p>Mit freundlichen Grüssen</p>
+    <p>Sabine Maennel und Anette Pekrul</p>
+    <h5>Link zum Produkt: </h5>
+    <a href="http://{{ site }}{%  url 'courseoffer:detail' slug=product.courseevent.slug  %}">
+        {{ product.courseevent.title }}
+    </a>
+     <h5>Zur Bezahlung: </h5>
+    <h5>Referenz-Nummer: {{ invoice.title }}</h5>
+    <p> Der Link unten führt Sie zum Zahlungsformular</p>
+    <a href="https://{{ pay_site }}/de/pay?{{ url_parms }}">
+        https://{{ pay_site }}/de/pay?{{ url_parms }}
+    </a>
+
+{% endblock %}

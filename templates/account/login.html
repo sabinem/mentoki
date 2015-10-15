@@ -29,11 +29,7 @@ for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
 {% include "socialaccount/snippets/login_extra.html" %}
 
 {% else %}
-<p>{% blocktrans %}Wenn Du noch keinen Account bei uns hast, kannst Du hier einen anlegen.
-    Ein Account ist notwendig, wenn Du bei Mentoki eine Leistung buchen willst:
-<a class="ui button basic" href="{{ signup_url }}">
-    Registrieren{{ request.resolver_match }}</a>
-    {% endblocktrans %}</p>
+
 {% endif %}
 
 <form class="login ui form" method="POST" action="{% url 'account_login' %}">

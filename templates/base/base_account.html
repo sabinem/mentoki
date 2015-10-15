@@ -5,18 +5,27 @@
 {% block main_content %}
 
     <!-- text page -->
-    <div class="ui grid container"
-         style="padding-bottom:100px; padding-top:50px;
-            min-height:400px;">
+    <!-- grid -->
+    <div class="ui grid one column centered" style="padding-bottom:50px;">
 
-        <div class="content ui column sixteen wide">
+         <!-- one column -->
+         <div class="sixteen wide column" style="padding-top:0px;">
 
-            <div class="sixteen wide column" id="whitepaper">
+             <!-- logo -->
+             <img class="ui image centered huge image" src="/static/img/mentoki_start_account.jpg">
+             <!-- image -->
+
+
+         </div>
+
+
+            <div class="ten wide column" id="whitepaper">
 
                 {% block content %}{% endblock %}
 
             </div>
-        </div>
+
     </div>
+
 
 {% endblock %}

@@ -23,8 +23,6 @@ class ForumStartView(
 
         context['nodes'] = Forum.objects.published_forums(
             courseevent=context['courseevent'])
-        print "======== IA AM HERE"
-        print context['nodes']
 
         return context
 

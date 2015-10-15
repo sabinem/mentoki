@@ -62,6 +62,12 @@ class BaseProduct(TimeStampedModel):
         blank=True,
         verbose_name=_('Mentoki Mehrwertsteuer')
     )
+    price_total = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        verbose_name=_('Verkaufspreis'))
     CURRENCY_CHOICES = Choices(
         ('EUR', 'euro',_('Euro')),
         ('CHF', 'chf',_('Schweizer Franken')),
@@ -77,18 +83,18 @@ class BaseProduct(TimeStampedModel):
     def __unicode__(self):
         return self.name
 
-    def price_total(self):
-        total = 0
-        if self.netto_vk:
-            total += self.netto_vk
-        if self.mentoki_netto:
-            total += self.mentoki_netto
-        if self.mwst:
-            total += self.mwst
-        if self.mentoki_mwst:
-            total += self.mentoki_mwst
-
-        return total
+    #def price_total(self):
+    #    total = 0
+    #    if self.netto_vk:
+    #        total += self.netto_vk
+    #    if self.mentoki_netto:
+    #        total += self.mentoki_netto
+    #    if self.mwst:
+    #        total += self.mwst
+    #    if self.mentoki_mwst:
+    #        total += self.mentoki_mwst
+    #
+    #    return total
 
     def price_paymill(self):
         return self.price_total() * 100

@@ -12,7 +12,7 @@
 {% block main_content %}
 
     <!-- urls --->
-
+    {% url 'home:agb' as agb_url %}
     <!-- text page -->
     <div class="ui grid container" style="padding-bottom:100px;
           padding-top:40px;"  >
@@ -22,7 +22,7 @@
 
                 <div class="ui two column stackable grid">
                   <div class="column five wide">
-                  <!-- Christines Kurs -->
+
                          <div class="ui cards centered">
                   {% include 'courseoffer/fragments/_coursecard_details.html' with product=courseevent.courseeventproduct %}
 
@@ -30,43 +30,23 @@
                   </div>
                   <div class="column ten wide">
 
-                <div class="ui header center aligned large" style="color:#19aaa6;
-                font-family: 'Montserrat', sans-serif;
-                font-size: 1.5em;
-                font-weight: 400;
-                line-height: 1.2em;
-                -webkit-font-smoothing: antialiased;
-                ">
-                    Mentoki Kurs: {{ courseevent.title }}<br>
-                    von {{ courseevent.teachersrecord }}
-                </div>
+                        {% include 'courseoffer/fragments/_course_menu.html' %}
                         <div class="ui header center aligned  large" style="color:#19aaa6;
                         font-family: 'Montserrat', sans-serif;
                         font-size: 1.2em;
                         font-weight: 400;
                         line-height: 1.5em;
-                        padding-top:30px;
+
                         -webkit-font-smoothing: antialiased;
                         ">
-                            AGB
+                            Angebot
                         </div>
-                        Es gelten die allgemeinen AGBs von Mentoki:
+
                         <div class="froala-view">
-                        {{ textchunk.text | safe }}
+                        {{ courseeventproduct.offer | safe }}
                         </div>
-                        <div class="ui header center aligned  large" style="color:#19aaa6;
-                        font-family: 'Montserrat', sans-serif;
-                        font-size: 1.2em;
-                        font-weight: 400;
-                        line-height: 1.5em;
-                        padding-top:30px;
-                        -webkit-font-smoothing: antialiased;
-                        ">
-                            Sonderegelungen für diesen Kurs
-                        </div>
-                        <div class="froala-view">
-                             {{ courseevent.courseeventproduct.agb | safe }}
-                         </div>
+                       <div class="ui divider"></div>
+                        <p>Es gelten unsere <a href="{{ agb_url }}">AGBs</a>.</p>
                   </div>
 
                 </div>

@@ -30,30 +30,12 @@
                   </div>
                   <div class="column ten wide">
 
-                 <div class="ui header center aligned large" style="color:#19aaa6;
-                font-family: 'Montserrat', sans-serif;
-                font-size: 1.5em;
-                font-weight: 400;
-                line-height: 1.2em;
-                -webkit-font-smoothing: antialiased;
-                ">
-                    Mentoki Kurs: {{ courseevent.title }}<br>
-                    von {{ courseevent.teachersrecord }}
-                </div>
-                        <div class="ui header center aligned  large" style="color:#19aaa6;
-                        font-family: 'Montserrat', sans-serif;
-                        font-size: 1.2em;
-                        font-weight: 400;
-                        line-height: 1.5em;
-                        padding-top:30px;
-                        -webkit-font-smoothing: antialiased;
-                        ">
-                            Kursleitung
-                        </div>
+                         {% include 'courseoffer/fragments/_course_menu.html' %}
+
 
                              {% for user in courseevent.teachers  %}
 
-                                    <div class="ui header center aligned  large" style="color:#19aaa6;
+                        <div class="ui header center aligned  large" style="color:#19aaa6;
                         font-family: 'Montserrat', sans-serif;
                         font-size: 1.2em;
                         font-weight: 400;

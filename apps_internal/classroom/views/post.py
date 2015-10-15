@@ -39,7 +39,6 @@ class PostCreateView(
                 module=self.__module__,
                 courseevent=courseevent
             )
-        print mail_distributor
 
         return HttpResponseRedirect(self.get_success_url())
 

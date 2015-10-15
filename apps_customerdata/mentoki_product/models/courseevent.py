@@ -20,6 +20,7 @@ logger = logging.getLogger(__name__)
 from froala_editor.fields import FroalaField
 
 from apps_data.courseevent.models.courseevent import CourseEvent
+from apps_data.course.models.course import Course
 
 from .base import BaseProduct
 
@@ -31,6 +32,9 @@ class CourseEventProductManager(models.Manager):
     def courseevents_for_sale(self):
         return CourseEventProduct.objects.all().select_related('courseevent')
 
+    def courses_for_sale(self):
+        courses = Course.objects.filter()
+        CourseEventProduct.objects.all().select_related('courseevent')
 
 def foto_location(instance, filename):
         """
@@ -51,6 +55,7 @@ class CourseEventProduct(BaseProduct):
         CourseEvent,
         on_delete=models.PROTECT
     )
+    #course = models.ForeignKey(Course)
     foto = models.ImageField(
         verbose_name=_('Foto'),
         help_text=_('''Hier kannst Du ein Foto für Deinen Kurs hochladen.'''),
@@ -68,7 +73,7 @@ class CourseEventProduct(BaseProduct):
         verbose_name=_("Kursdauer"),
         max_length=250,
         blank=True)
-    agb = FroalaField()
+    offer = FroalaField()
 
     objects = CourseEventProductManager()
 
