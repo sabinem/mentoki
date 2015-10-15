@@ -12,6 +12,6 @@ def server_error(request):
 def maintenance_mode(request):
     # one of the things ‘render’ does is add ‘STATIC_URL’ to
     # the context, making it available from within the template.
-    response = render(request, '503.html')
+    response = render(request, 'x503.html')
     response.status_code = 503
     return response
