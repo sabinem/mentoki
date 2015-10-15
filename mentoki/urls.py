@@ -134,3 +134,8 @@ if settings.DEBUG:
             'document_root': settings.STATIC_ROOT,
         }),
 )
+
+# urls or settings
+handler500 = 'mentoki.views.server_error'
+handler503 = 'mentoki.views.maintenance_mode'
+
