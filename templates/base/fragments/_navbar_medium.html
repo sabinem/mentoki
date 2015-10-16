@@ -1,32 +1,32 @@
 <!-- urls ----->
-{% url 'course_sale:list' as sell_url %}
 {% url 'home:home' as home_url %}
+
+{% url 'home:standards' as standards_url %}
+{% url 'courseoffer:list' as course_url %}
+
+{% url 'home:mentorslist' as mentorslist_url %}
+
 {% url 'home:about' as about_url %}
-{% url 'home:motivation' as motivation_url %}
+{% url 'contact:contact' as contact_url %}
+
 {% url 'account_login' as login_url %}
 {% url 'account_logout' as logout_url %}
 {% url 'desk:profile' as desk_url %}
-{% url 'contact:contact' as contact_url %}
-{% url 'account_change_password' as change_password_url %}
-{% url 'home:standards' as standards_url %}
-{% url 'home:agb' as agb_url %}
-{% url 'home:mentorslist' as mentorslist_url %}
+
 {% url 'home:starterkurs' as starterkurs_url %}
 {% url 'home:educationmentor' as educationmentor_url %}
 {% url 'home:teachonline' as teachonline_url %}
 {% url 'home:teachready' as teachready_url %}
 
 
-    <a class="item" id="logo_navbar_pc"
-        href="{{ home_url }}">
-        <img  id="logo_img_navbar" src="/static/img/mentoki_logo.png"
-              >
+    <a class="item" href="{% url 'home:home' %}">
+        <i class="icon home"></i>
     </a>
 
     <a class="item browse"
        style="color:grey; border:none;
         " href="{{ course_url }}">
-        Kurse
+        Lernen
     </a>
 
     <div class="ui popup bottom fluid left transition hidden" style="max-width:300px;">
@@ -42,8 +42,8 @@
                     <a href="{{ standards_url }}" class="item">
                         Mentoki Standards
                     </a>
-                    <a href="{{ agb_url }}" class="item">
-                        AGB
+                    <a href="{{ mentorslist_url }}" class="item">
+                        Mentoren
                     </a>
                 </div>
 
@@ -51,10 +51,6 @@
 
         </div>
     </div>
-    <a class="item
-        " href="{{ mentorslist_url }}">
-        Mentoren
-    </a>
     <a class="item
         " href="{{ educationmentor_url }}">
         Bildungsmentoring

@@ -111,6 +111,8 @@ urlpatterns += i18n_patterns('',
     url(r'^download/(?P<slug>[a-zA-Z0-9_-]+)/$',
         download, name="download"),
 
+    url(r'^payrexx/', include('apps_customerdata.invoice.urls')),
+
     # file markdown ...
     url(r'^markdown/',
         include('django_markdown.urls')),

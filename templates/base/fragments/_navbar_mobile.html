@@ -1,0 +1,87 @@
+<!-- urls ----->
+{% url 'home:home' as home_url %}
+
+{% url 'home:standards' as standards_url %}
+{% url 'courseoffer:list' as course_url %}
+
+{% url 'home:mentorslist' as mentorslist_url %}
+
+{% url 'home:about' as about_url %}
+{% url 'contact:contact' as contact_url %}
+
+{% url 'account_login' as login_url %}
+{% url 'account_logout' as logout_url %}
+{% url 'desk:profile' as desk_url %}
+
+{% url 'home:starterkurs' as starterkurs_url %}
+{% url 'home:educationmentor' as educationmentor_url %}
+{% url 'home:teachonline' as teachonline_url %}
+{% url 'home:teachready' as teachready_url %}
+
+<a class="item" id="logo_mobile_menu"
+    href="{{ home_url }}">
+    <img  id="logo_img_mobile" src="/static/img/mentoki_logo.png">
+</a>
+
+{% load activelink %}
+{% if request.user.is_authenticated %}
+    <a class="header item">
+        Hallo {{ request.user }}
+    </a>
+    <a href="{{ desk_url }}" class="item">
+        Dein Schreibtisch
+    </a>
+    <a href="{{ logout_url }}" class="item">
+        Abmelden?
+    </a>
+{% endif %}
+<a href="{{ course_url }}" class="header item" id="logo_mobile_menu">
+    Kurse
+</a>
+<a class="item
+    {% ifactive course_url %}
+        active
+    {% endifactive %}
+    " href="{{ course_url }}">
+    Aktuelle Kurse
+</a>
+<a class="item
+    {% ifactive standards_url %}
+        active
+    {% endifactive %}
+    " href="{{ standards_url }}">
+    Mentoki Standards
+</a>
+<a class="header item
+    {% ifactive mentorslist_url %}
+        active
+    {% endifactive %}
+    " href="{{ mentorslist_url }}">
+    Mentoren
+</a>
+<a class="item
+    {% ifactive educationmentor_url %}
+        active
+    {% endifactive %}
+    " href="{{ educationmentor_url }}">
+    Bildungsmentoring
+</a>
+<a class="item header"
+     href="{{ teachonline_url }}">
+    Unterrichten
+</a>
+<a href="{{ starterkurs_url }}" class="item">
+    Mentor werden
+</a>
+<a href="{{ teachready_url }}" class="item">
+    Online-Kurs anbieten
+</a>
+<a class="header item
+    " href="{{ about_url }}">
+    Über uns
+</a>
+<a class="item
+    " href="{{ contact_url }}">
+    Kontakt
+</a>
+

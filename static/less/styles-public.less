@@ -28,9 +28,9 @@
 /* ------------------------- */
 
 // media pc
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 1160px) {
     // on pc a different navbar is displayed
-    #mobile_menu, #mobile_navbar {
+    #mobile_menu, #mobile_navbar, #medium_navbar {
       display:none;
     }
     // the content makes space for the navbar
@@ -41,15 +41,10 @@
 }
 
 /* media tablet */
-@media only screen and (min-width: 768px) and (max-width: 991px) {
+@media only screen and (min-width: 768px) and (max-width: 1160px) {
     // mobile navbar is not displayed
-    #mobile_menu, #mobile_navbar {
+    #mobile_menu, #mobile_navbar, #pc_navbar {
       display:none;
-    }
-
-    #pc_navbar .item {
-      //padding-left:10px;
-      //padding-right:10px;
     }
 
     #content {
@@ -61,14 +56,18 @@
 /* media mobile */
 @media only screen and (max-width: 767px) {
     /* phones */
-    #pc_navbar {
+    #pc_navbar, #medium_navbar {
       display:none;
     }
     #home .divider_header.ui.header {
       font-size:1.5em
     }
     #content {
-      padding-top:20px;
+      padding-top:0;
+    }
+
+    #public, #desk {
+      padding-top:15px;
     }
 
     /* reset margin, so that navbar is on top */

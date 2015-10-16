@@ -22,34 +22,48 @@
 
 {% block page %}
 
-    {% url 'courseoffer:list' as course_url %}
-
-    <!-- pc and tablet version of the navbar -->
+    <!-- pc version of the navbar -->
     <div class="ui menu fixed center aligned top" id="pc_navbar">
-        {% include 'base/fragments/_navbar.html' %}
+        {% include 'base/fragments/_navbar_big.html' %}
     </div>
 
+    <!-- tablet version of the navbar -->
+    <div class="ui menu fixed center aligned top" id="medium_navbar">
+        {% include 'base/fragments/_navbar_medium.html' %}
+    </div>
+
+
     {% comment %}menu{% endcomment %}
-    <div class="ui top attached menu fluid six item" id="mobile_navbar">
+    <div class="ui top attached menu fluid four item" id="mobile_navbar">
 
         {% comment %}mobile button{% endcomment %}
         <a class="item" id="mobile_button">
           <i class="sidebar icon"></i>
         </a>
 
-        {% include 'base/fragments/_home_icon.html' %}
-        {% include 'base/fragments/_social_media_icons.html' %}
-        <a class="item" href="{{ login_url }}" >
-            Login
+        <a class="item" href="{% url 'home:home' %}">
+            <i class="icon home"></i>
         </a>
+        {% if request.user.is_authenticated %}
+            <a href="{{ desk_url }}" class="item">
+                Schreibtisch
+            </a>
+            <a class="item" href="{{ logout_url }}">
+                {{ request.user }}
+            </a>
+        {% else %}
+            <a class="item" href="{{ login_url }}" >
+                Anmelden
+            </a>
+        {% endif %}
     </div>
 
     {% comment %}sidebar{% endcomment %}
     <div class="ui labeled icon wide left inline vertical sidebar menu mobile only" id="mobile_menu">
-        {% include 'base/fragments/_mobile_navbar.html' %}
+        {% include 'base/fragments/_navbar_mobile.html' %}
     </div>
 
-    <div id="{% block page_section_css_id %}{% endblock %}">
+    <div id="{% block page_section_css_id %}public{% endblock %}">
 
         {% block main_content %}{% endblock %}
 
