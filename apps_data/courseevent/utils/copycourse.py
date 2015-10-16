@@ -13,9 +13,14 @@ from django.http import HttpResponseRedirect
 from apps_data.courseevent.models.courseevent import CourseEvent
 from apps_data.course.models.course import Course
 
+from django.contrib.auth.decorators import login_required, user_passes_test
+
 import logging
 logger = logging.getLogger(__name__)
 
+# TODO: Berechtigung prüfen!!!
+#@login_required()
+#@user_passes_test()
 def copy_course_description(self, courseevent_pk):
     """
     this utility copies the description from a course to the courseevent

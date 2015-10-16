@@ -1,4 +1,5 @@
 -r base.txt
 Pillow==2.7.0
 psycopg2==2.5.5
+pycrypto==2.6.1
 

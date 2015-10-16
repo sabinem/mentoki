@@ -21,10 +21,11 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def payment_event(self):
+def payment_event():
     """
     payrexx payment success
     :return:
     """
-    return True
+    invoice = "x"
+    return invoice
 
