@@ -65,8 +65,7 @@ INSTALLED_APPS += (
 
     'apps_accountdata.userprofiles',
 
-    'apps_customerdata.transaction',
-    'apps_customerdata.invoice',
+    #'apps_customerdata.invoice',
     'apps_customerdata.customer',
     'apps_customerdata.mentoki_product',
 
@@ -88,6 +87,7 @@ INSTALLED_APPS += (
 
     'apps_core.core',
     'apps_core.email',
+    'apps_core.webhooks',
 )
 
 # custom user model
@@ -242,10 +242,9 @@ CACHES = {
 }
 
 # Login and redirect urls
-# TODO: do I still need these after switching to allauth?
 from django.core.urlresolvers import reverse_lazy
-LOGIN_URL = reverse_lazy("login")
-LOGIN_REDIRECT_URL = reverse_lazy("desk:start")
+LOGIN_URL = reverse_lazy("account_login")
+LOGIN_REDIRECT_URL = reverse_lazy("desk:profile")
 LOGOUT_URL = reverse_lazy("home:home")
 
 # Logging
@@ -368,11 +367,6 @@ AUTHENTICATION_BACKENDS = (
 from django.core.urlresolvers import reverse_lazy
 # authenticate by email
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
-# email must be confirmed
-ACCOUNT_CONFIRM_EMAIL_ON_GET = False
-# where is the user sent after email confirmation
-ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = \
-    reverse_lazy("courseoffer:list")
 # email must be unique
 ACCOUNT_UNIQUE_EMAIL = True
 # accounts have a username
@@ -381,8 +375,8 @@ ACCOUNT_USER_MODEL_USERNAME_FIELD = 'username'
 ACCOUNT_USER_MODEL_EMAIL_FIELD = 'email'
 # an email is required
 ACCOUNT_EMAIL_REQUIRED = 'True'
-# emails must be confirmed
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+
+
 
 #  3rd party app markdown:
 MARKDOWN_EDITOR_SKIN = 'simple'

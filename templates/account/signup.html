@@ -7,12 +7,16 @@
 {% block content %}
 <h1>{% trans "Sign Up" %}</h1>
 
-<p>{% blocktrans %}Hast Du schon einen Account bei uns? Dann kannst Du dich hier
-    <a class="ui button basic"
-       href="{{ login_url }}">Anmelden</a>.{% endblocktrans %}</p>
-
+<div class="ui header medium">Hallo
+  {{ customer.first_name }}{{ customer.last_name }},
+</div>
+<p>Willkommen bei Mentoki! </p>
+<p>Wir haben von Dir folgende email-Addresse gespeichert: <strong>{{ customer.email }}</strong>
+Bitte benachrichtige uns falls Sie falsch ist oder unsere Email nicht bei Dir ankommt.
+<p>Hier kannst DU Dich jetzt anmelden:</p>
 <form class="signup ui form" id="signup_form" method="post" action="{% url 'account_signup' %}">
   {% csrf_token %}
+
   {{ form.as_p }}
   {% if redirect_field_value %}
   <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />

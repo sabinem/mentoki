@@ -26,20 +26,57 @@
                 <div class="column ten wide">
 
                     {% include 'courseoffer/fragments/_3steps_checkout.html' %}
+                {% if request.user.is_authenticated %}
 
                     <h4 class="ui dividing header">Teilnehmer-Anmeldung</h4>
 
-                    <p>{{ user.get_full_name }}</p>
+                    <p>{{ request.user.get_full_name }}</p>
 
                     <h4 class="ui dividing header">Bezahlung mit</h4>
-                    <p>Bitte entweder Paypal wählen oder Ihre Kreditkartendaten eingeben.</p>
+                    <p>Bitte entweder Paypal auswählen oder direkt Ihre Kreditkartendaten eingeben.</p>
 
+
+                   {% endif %}
                     <form id="checkout-form" method="post" class="ui form" autocomplete="off">
                       {% csrf_token %}
-                      <div class="field">
-                         <label>Ich habe die AGBs zur Kenntnis genommen</label>
-                         {{ form.agbs_read }}
-                      </div>
+                        {% if form.non_field_errors %}
+                            <div class="ui negative floating message">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+                      {% if not request.user.is_authenticated %}
+                         <h4 class="ui dividing header">Teilnehmer-Anmeldung</h4>
+                          {{ form.non_field.errors }}
+
+                         <div class="fields">
+                         <label>Vorname</label>
+                            {{ form.first_name.errors }}
+                            <div class="field eight wide">
+                           {{ form.first_name }}
+                            </div>
+                             <label>Nachname</label>
+                             {{ form.last_name.errors }}
+                            <div class="field eight wide">
+                           {{ form.last_name }}
+                            </div>
+                         </div>
+                          <div class="fields">
+                          <label>Benutzername</label>
+                          {{ form.username.errors }}
+                             <div class="field eight wide">
+                           {{ form.username }}
+                            </div>
+                          <label>Email</label>
+                          {{ form.email.errors }}
+                             <div class="field eight wide">
+                           {{ form.email }}
+                            </div>
+                          </div>
+ <h4 class="ui dividing header">Bezahlung mit</h4>
+                    <p>Bitte entweder Paypal auswählen oder direkt Ihre Kreditkartendaten eingeben.</p>
+
+                      {% endif %}
+
                       <div id="dropin-container"></div>
                       <input class="ui button" type="submit" value="jetzt zahlen">
                     </form>

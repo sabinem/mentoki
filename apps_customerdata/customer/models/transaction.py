@@ -5,21 +5,20 @@ import datetime
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from apps_customerdata.customer.models import Customer
+from .customer import Customer
 from apps_customerdata.mentoki_product.models.courseevent import CourseEventProduct
 
 
 class TransactionManager(models.Manager):
     def create(self, amount, currency,
                product, customer,
-               braintree_merchant_account_id, braintree_customer_id,
+               braintree_merchant_account_id,
                braintree_transaction_id):
         transaction = Transaction(
             amount=amount,
             currency=currency,
             product=product,
             customer=customer,
-            braintree_customer_id=braintree_customer_id,
             braintree_merchant_account_id=braintree_merchant_account_id,
             braintree_transaction_id=braintree_transaction_id)
         transaction.save()
@@ -46,10 +45,6 @@ class Transaction(models.Model):
         max_length=50,
         primary_key=True,
         default="x")
-    braintree_customer_id = models.CharField(
-        'braintree_customer_id',
-        max_length=36,
-        default="x")
     braintree_merchant_account_id = models.CharField(
         'braintree_merchant',
         max_length=100,
@@ -57,6 +52,10 @@ class Transaction(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     objects = TransactionManager()
+
+    class Meta:
+        verbose_name = 'Transaktion'
+        verbose_name_plural = 'Transaktionen'
 
     def __unicode__(self):
         return self.braintree_transaction_id

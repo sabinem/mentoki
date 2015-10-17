@@ -1,7 +1,7 @@
 {% load activelink %}
 <!-- urls -->
 
-{% url 'courseoffer:pay_per_mail' pk=product.pk slug=slug  as pay_url %}
+{% url 'courseoffer:braintree' pk=product.pk slug=slug  as pay_url %}
 {% url 'courseoffer:registration' slug=slug pk=product.pk as register_url %}
 {% url 'courseoffer:braintreemethod' slug=slug pk=product.pk as test_url %}
 

@@ -44,7 +44,6 @@ class CourseEventProductMixin(object):
         context['courseevent'] = courseevent
         context['courseeventproduct'] = courseevent.courseeventproduct
         context['url_name'] = self.request.resolver_match.url_name
-        print context
 
         return context
 

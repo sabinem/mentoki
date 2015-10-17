@@ -4,6 +4,7 @@
 
 {% block main_content %}
 
+    {% url 'account_reset_password' as password_reset_url %}
     <!-- text page -->
     <div class="ui grid container" style="padding-bottom:100px;
           padding-top:40px;"  >
@@ -25,25 +26,22 @@
                 <div class="column ten wide">
                     <!-- page content -->
 
-                    <div class="ui header">Hallo {{ invoice.first_name }} {{ invoice.last_name }}</div>
-                <p>Vielen Dank, für Ihr Interesse an {{ invoice.product.courseevent.title }}.</p>
 
-                <p>Wir haben Ihnen eine email mit einem Zahlungslink
-                    geschickt.
+                    <div class="ui header">Hallo {{ transaction.customer.first_name }} {{ transaction.customer.last_name }}</div>
+                <p>Vielen Dank, wir haben Ihre Zahlung erhalten
+                    und Sie sind jetzt angemeldet für {{ transaction.product.courseevent.title }}.</p>
+                {% if not request.user.is_authenticated %}
+                    <div class="ui header medium">Setzen Sie Ihr Passwort!</div>
+                    <p>Sie sind bereits im System registriert. Damit sie sich einloggen können
+                    fordern sie bitte einen Link zum Setzen Ihres Passworts an.
+                    </p>
+                    <a href="{{ password_reset_url }}" class="ui button medium">Link zu Setzen des Passworts anfordern</a>
 
-                    Sobald sie bezahlt haben, erhalten Sie Ihre Zugangsdaten für den Kurs.</p>
-
-                    <p>Wenden Sie sich gerne an uns, wenn Sie noch Fragen haben.
-
-                    Sie können für Rückfragen die Referenz-Nummer dieses Zahlungsvorgang verwenden:</p>
-                    <div class="ui list">
-                        <div class="item">
-                        <div class="header">
-                            Referenz-Nummer:
-                            {{ invoice.title }}
-                        </div>
-                        </div>
-                    </div>
+                        <p></p>
+                        <p>Wenn Sie sonst noch Fragen haben, schreiben Sie gerne an uns:
+                        <strong>mentoki@mentoki.com</strong></p>
+                    </p>
+                {% endif %}
                 <p>Mit lieben Grüssen</p>
                 <p id="signature">Sabine Maennel und Anette Pekrul</p>
 

@@ -8,8 +8,8 @@ from __future__ import unicode_literals, absolute_import
 
 from django.contrib import admin
 
-from .models import Customer
-
+from .models.customer import Customer
+from .models.transaction import Transaction
 
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
@@ -17,6 +17,20 @@ class CustomerAdmin(admin.ModelAdmin):
     Courses are time independent collections of teaching material, that are
     set up and owned by teachers.
     """
-    list_display = ('braintree_customer_id', 'user', 'created' )
+    list_display = ('braintree_customer_id', 'user', 'first_name', 'last_name', 'created' )
     list_filter = ('created','user')
+    readonly_fields = ('braintree_customer_id',)
 
+
+
+
+
+@admin.register(Transaction)
+class Transaction(admin.ModelAdmin):
+    """
+    Courses are time independent collections of teaching material, that are
+    set up and owned by teachers.
+    """
+    list_display = ('product', 'customer', 'amount',
+                     )
+    readonly_fields = ('braintree_transaction_id', 'customer')

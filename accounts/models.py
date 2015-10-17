@@ -11,13 +11,16 @@ from apps_data.courseevent.models.courseevent import CourseEvent
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, username, email, password=None):
+    def create_user(self, username, email, first_name, last_name, password=None):
         if not email:
             raise ValueError('Users must have an email address')
         if not username:
             raise ValueError('Users must have a username')
 
-        user = self.model(username=username, email=self.normalize_email(email),
+        user = self.model(username=username,
+                          email=self.normalize_email(email),
+                          first_name=first_name,
+                          last_name=last_name
                           )
         user.is_active = True
         user.set_password(password)
@@ -77,12 +80,15 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __unicode__(self):
         return u'%s' % (self.username)
 
-    #def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs):
     #    if self.teaching():
     #        self.is_teacher = True
     #    if self.studying():
     #        self.is_student = True
-    #    super(User, self).save(*args, **kwargs)
+    #TODO google considers emails equal even if they have more or less points in them:
+    #TODO sabine.m@gmail.com is the same as sabinem@gmail.com
+        #self.email = self.email.lower()
+        super(User, self).save(*args, **kwargs)
 
 
     def get_full_name(self):

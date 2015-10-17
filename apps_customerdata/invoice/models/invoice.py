@@ -5,7 +5,7 @@ import datetime
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from apps_customerdata.customer.models import Customer
+from apps_customerdata.customer.models.customer import Customer
 from apps_customerdata.mentoki_product.models.courseevent import CourseEventProduct
 
 

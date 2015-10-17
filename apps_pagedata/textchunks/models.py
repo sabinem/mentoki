@@ -56,8 +56,9 @@ class PublicTextChunks(TimeStampedModel):
         upload_to=foto_location, blank=True
     )
 
-    class meta:
-        verbose_name = "Texte für allgemeine Seiten"
+    class Meta:
+        verbose_name = 'Text für Webseite'
+        verbose_name_plural = 'Texte für Webseite'
 
     def __unicode__(self):
         return self.pagecode

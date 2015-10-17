@@ -67,10 +67,6 @@ urlpatterns += i18n_patterns('',
     url(r'^schreibtisch/',
         include('apps_internal.desk.urls', namespace='desk')),
 
-    # user handling urls
-    #url(r'^benutzer/',
-    #    include('accounts.urls')),
-
     url(r'^accounts/', include('allauth.urls')),
 
 )
@@ -111,7 +107,7 @@ urlpatterns += i18n_patterns('',
     url(r'^download/(?P<slug>[a-zA-Z0-9_-]+)/$',
         download, name="download"),
 
-    url(r'^payrexx/', include('apps_customerdata.invoice.urls')),
+    url(r'^webhooks/', include('apps_core.webhooks.urls')),
 
     # file markdown ...
     url(r'^markdown/',

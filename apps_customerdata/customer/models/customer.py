@@ -20,9 +20,11 @@ from model_utils import Choices
 
 class CustomerManager(models.Manager):
 
-    def create(self, user, braintree_customer_id):
-        customer = Customer(user=user,
-                      braintree_customer_id=braintree_customer_id)
+    def create(self, braintree_customer_id, first_name, last_name, email, user=None, authenticated_user=False):
+        customer = Customer(first_name=first_name, last_name=last_name, email=email,
+                      braintree_customer_id=braintree_customer_id )
+        if authenticated_user:
+            customer.user = user
         customer.save()
         return customer
 
@@ -33,7 +35,9 @@ class Customer(TimeStampedModel):
     """
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
-        related_name='customer'
+        related_name='customer',
+        blank=True,
+        null=True
     )
     braintree_customer_id = models.CharField(
         'braintree_customer_id',
@@ -41,12 +45,20 @@ class Customer(TimeStampedModel):
         primary_key=True
         )
 
+    email = models.EmailField()
+
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
 
     class Meta:
-        verbose_name = 'customer'
-        verbose_name_plural = 'customers'
+        verbose_name = 'Kunde'
+        verbose_name_plural = 'Kunden'
 
     objects = CustomerManager()
 
     def __unicode__(self):
-        return 'Customer: %s' % self.user
+        return 'Customer: %s %s %s : %s' \
+               % (self.braintree_customer_id,
+                  self.first_name,
+                  self.last_name,
+                  self.user,)

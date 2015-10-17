@@ -1,0 +1,31 @@
+curl -X POST http://127.0.0.1:8000/de/webhooks/test -d '{"foo": "bar"}'
+curl -X POST http://127.0.0.1:8000/de/webhooks/payrexx/ -d '{"foo": "bar"}'
+
+# curl manual
+curl -M
+
+# html to console:
+curl http://127.0.0.1:8000/de/team
+
+# download html to file
+curl -o team.html http://127.0.0.1:8000/de/team
+
+#show more detail
+curl -o -v team.html http://127.0.0.1:8000/de/team
+
+curl -X POST http://127.0.0.1:8000/de/webhooks/test -d '{"foo": "bar"}'
+
+apiSignature=`echo -n "1TDrv2R8kAXKDCYJbje8apAN4OmPUk" | openssl dgst -sha256 -hmac "1TDrv2R8kAXKDCYJbje8apAN4OmPUk" -binary
+ | openssl enc -base64`
+
+curl --request GET "https://api.payrexx.com/v1.0/Invoice/1/?instance=invoice
+ --data-urlencode "ApiSignature=$apiSignature"
+
+apiSignature=`echo -n "" | openssl dgst -sha256 -hmac "1TDrv2R8kAXKDCYJbje8apAN4OmPUk" -binary | openssl enc -base64`
+curl --request GET "https://api.payrexx.com/v1.0/Page/?instance=invoice" --data-urlencode "ApiSignature=$apiSignature"
+
+apiSignature=`echo -n "" | openssl dgst -sha256 -hmac "1TDrv2R8kAXKDCYJbje8apAN4OmPUk" -binary | openssl enc -base64`
+curl --request GET "https://api.payrexx.com/v1.0/Invoice/1/?instance=invoice" --data-urlencode "ApiSignature=$apiSignature"
+
+apiSignature=`echo -n "" | openssl dgst -sha256 -hmac "1TDrv2R8kAXKDCYJbje8apAN4OmPUk" -binary | openssl enc -base64`
+curl --request GET "https://api.payrexx.com/v1.0/Page/?instance=2" --data-urlencode "ApiSignature=$apiSignature"
