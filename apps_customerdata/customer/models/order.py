@@ -17,6 +17,7 @@ from model_utils import Choices
 
 from apps_productdata.mentoki_product.models.courseproduct import CourseProduct
 from apps_customerdata.customer.models.customer import Customer
+from django.conf import settings
 from apps_customerdata.customer.models.transaction import Transaction
 
 
@@ -37,8 +38,19 @@ class Order(TimeStampedModel):
     order_type = models.CharField(max_length=200, default="Kurs-Teilnahme")
 
     courseproduct = models.ForeignKey(CourseProduct, blank=True, null=True)
-    customer = models.ForeignKey(Customer, blank=True, null=True )
+    customer = models.ForeignKey(
+        Customer,
+        'Kunde, der bezahlt hat'                         ,
+        blank=True,
+        null=True )
 
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        'Teilnehmer als Benutzer'
+    )
+    participant_email=models.EmailField(
+        'Email des Teilnehmers'
+    )
     is_paid = models.BooleanField(default=True)
     transaction = models.ManyToManyField(Transaction)
 

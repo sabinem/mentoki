@@ -50,7 +50,9 @@ class Customer(TimeStampedModel):
         primary_key=True
         )
 
-    email = models.EmailField()
+    email = models.EmailField(
+        'Kundenemail'
+    )
 
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
