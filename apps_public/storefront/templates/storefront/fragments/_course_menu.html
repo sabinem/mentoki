@@ -1,0 +1,26 @@
+{% load activelink %}
+
+<!-- urls -->
+{% url 'storefront:detail' slug=courseproductgroup.slug  as detail_url %}
+{% url 'storefront:mentors' slug=courseproductgroup.slug  as mentors_url %}
+{% url 'storefront:offer' slug=courseproductgroup.slug as offer_url %}
+
+<div class="ui stackable three item menu">
+    <a href="{{ detail_url }}" class="
+      {% ifactive detail_url %}active {% endifactive %}
+    item">
+        Kursbeschreibung
+    </a>
+    <a href="{{ mentors_url }}" class="item
+    {% ifactive mentors_url %}active {% endifactive %}
+    ">
+        Kursleitung
+    </a>
+    <a href="{{ offer_url }}" class="item
+    {% ifactive offer_url %}active {% endifactive %}
+    "  style='border:1px solid red;'>
+        Angebote
+    </a>
+</div>
+<span style="color:grey; font-size:0.8em; padding:0; margin:0;">
+</span>

@@ -60,8 +60,8 @@
                            </div>
 
                                    <div class="ui cards centered">
-                                {% for product in mentor.teaching_preview %}
-                                    {% include 'courseoffer/fragments/_coursecard.html' with product=product %}
+                                {% for courseproductgroup in courseproductgroups %}
+                                    {% include 'home/fragments/_coursecard.html' %}
                                 {% endfor %}
                             </div>
 

@@ -57,6 +57,7 @@ INSTALLED_APPS += (
     'mailqueue',
     'pagedown',
     'django_markdown',
+    'formtools',
 )
 
 # installed apps mentoki
@@ -65,9 +66,9 @@ INSTALLED_APPS += (
 
     'apps_accountdata.userprofiles',
 
-    #'apps_customerdata.invoice',
     'apps_customerdata.customer',
-    'apps_customerdata.mentoki_product',
+
+    'apps_productdata.mentoki_product',
 
     'apps_pagedata.textchunks',
 
@@ -83,7 +84,8 @@ INSTALLED_APPS += (
     'apps_public.newsletter',
     'apps_public.contact',
     'apps_public.home',
-    'apps_public.courseoffer',
+    'apps_public.storefront',
+    'apps_public.checkout',
 
     'apps_core.core',
     'apps_core.email',

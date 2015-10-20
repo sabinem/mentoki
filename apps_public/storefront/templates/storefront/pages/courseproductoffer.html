@@ -1,0 +1,112 @@
+{% extends "base/base_public.html" %}
+{% load i18n %}
+
+{% block meta_title %}Mentoki - Lehr- und Lernplattform | Lernen und Lehren lebenslang{% endblock %}
+
+{% block meta_description %}Wir sind eine Lehr- und Lern-Plattform für unabhängiger Mentoren und ihre Schüler{% endblock %}
+{% block meta_keywords %}mentoren netzwerk, lern plattform, erwachsenen bildung, online unterrichten, lehr plattform{% endblock %}
+
+
+{% block page_section_css_id %}home{% endblock %}
+
+{% block main_content %}
+
+    <!-- urls --->
+    {% url 'home:agb' as agb_url %}
+
+    <!-- text page -->
+    <div class="ui grid container" style="padding-bottom:100px;
+          padding-top:40px;"  >
+
+        <div class="content ui column sixteen wide">
+
+
+                <div class="ui two column stackable grid">
+                  <div class="column five wide">
+
+                         <div class="ui cards centered">
+                  {% include 'storefront/fragments/_coursecard_detail.html' %}
+
+                        </div>
+                  </div>
+                  <div class="column ten wide">
+
+                        {% include 'storefront/fragments/_course_menu.html' %}
+
+                        <div class="froala-view">
+                        {{ courseproductgroup.conditions | safe }}
+                        </div>
+                               <p style="color:grey;">* Es gelten unsere <a href="{{ agb_url }}">AGBs</a>.</p>
+ {% if courseproductgroup.discount_text %}
+     <!-- red: #eb3d00; -->
+          <div class="extra content" style="color:#eb3d00; min-height: 150px;" >
+              <img class="ui medium floated right image" src="/static/img/einfuehrungsrabatt.png">
+               <br> {{ courseproductgroup.discount_text_long }}
+
+          </div>
+ {% endif %}
+
+
+                      <div class="ui middle aligned divided list">
+                      {% for courseproduct in available_courseproducts %}
+
+                          {% url 'checkout:start' slug=courseproduct.slug as pay_url %}
+
+                      <div class="item" style="padding-top:40px;">
+                        <div class="right floated content">
+                          <a href="{{ pay_url }}" class="ui button">
+                              {% if courseproduct.specialoffer %}
+                             jetzt<span style="color:#eb3d00">
+                             {{ courseproduct.sales_price }}</span>
+                              statt
+
+                               {{ courseproduct.price }}
+                              {% else %}
+                                  jetzt kaufen für
+                              {{ courseproduct.price }}
+                              {% endif %}
+
+                              {{ courseproduct.currency }}
+                          </a>
+                        </div>
+                        <div class="content">
+                            <div class="header">
+                          {{ courseproduct.name }}
+                            </div>
+                           <p>{{ courseproduct.description | safe }}</p>
+                        </div>
+                      </div>
+
+
+
+
+                        {% endfor %}
+                      {% for courseproduct in out_of_reach_courseproducts %}
+
+                      <div class="item" style="color:grey; padding-top:40px;">
+                        <div class="right floated content">
+                          <div class="ui button basic">
+                              Preis
+                              {{ courseproduct.price }}
+                              {{ courseproduct.currency }}
+                          </div>
+                        </div>
+                        <div class="content">
+                            <div class="header" style="color:grey;">
+                          {{ courseproduct.name }}: {{ courseproduct.price }} {{ courseproduct.currency }}
+                            </div>
+                           <p>{{ courseproduct.description | safe }}</p>
+                        </div>
+                      </div>
+
+
+
+
+                        {% endfor %}
+                      </div>
+
+                </div>
+            </div>
+        </div>
+
+{% endblock %}

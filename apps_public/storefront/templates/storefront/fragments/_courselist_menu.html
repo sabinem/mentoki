@@ -1,0 +1,26 @@
+{% load activelink %}
+
+<!-- urls -->
+{% url 'home:standards' as standards_url %}
+{% url 'home:agb' as agb_url %}
+{% url 'storefront:list' as list_url %}
+
+<div class="ui three item menu">
+    <a href="{{ list_url }}" class="
+      {% ifstartswith list_url %}active {% endifstartswith %}
+    item">
+        Kurse
+    </a>
+    <a href="{{ standards_url }}" class="item
+    {% ifstartswith standards_url %}active {% endifstartswith %}
+    ">
+        Standards
+    </a>
+    <a href="{{ agb_url }}" class="item
+    {% ifstartswith agb_url %}active {% endifstartswith %}
+    ">
+        Konditionen
+    </a>
+</div>
+<span style="color:grey; font-size:0.8em; padding:0; margin:0;">
+</span>

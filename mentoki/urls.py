@@ -43,7 +43,11 @@ urlpatterns += i18n_patterns('',
 
     # courseevent offers
     url(r'^kurse/',
-        include('apps_public.courseoffer.urls', namespace='courseoffer')),
+        include('apps_public.checkout.urls', namespace='checkout')),
+
+    # courseevent offers
+    url(r'^kurse/',
+        include('apps_public.storefront.urls', namespace='storefront')),
 
     # contact
     url(r'^kontakt/',

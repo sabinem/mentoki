@@ -6,7 +6,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from .customer import Customer
-from apps_customerdata.mentoki_product.models.courseevent import CourseEventProduct
+from apps_productdata.mentoki_product.models.courseproduct import CourseProduct
 
 
 class TransactionManager(models.Manager):
@@ -38,7 +38,11 @@ class Transaction(models.Model):
         _("currency"),
         default='USD',
         max_length=3)
-    product = models.ForeignKey(CourseEventProduct)
+    courseproduct = models.ForeignKey(
+        CourseProduct,
+        blank=True,
+        null=True
+    )
     customer = models.ForeignKey(Customer)
     # what braintree got
     braintree_transaction_id = models.CharField(

@@ -6,9 +6,9 @@ from django.views.generic import TemplateView, RedirectView, DetailView
 from django.shortcuts import get_object_or_404
 
 from apps_accountdata.userprofiles.models.mentor import MentorsProfile
-from apps_data.course.models.course import CourseOwner
 from apps_pagedata.textchunks.models import PublicTextChunks
 from accounts.models import User
+from apps_productdata.mentoki_product.models.courseproductgroup import CourseProductGroup
 
 class PageTextMixin(object):
     context_object_name = 'textchunk'
@@ -104,6 +104,6 @@ class MentorsPageView(TemplateView):
         context['mentor'] = mentor
 
         #get courses
-        context['courseevents'] = mentor.teaching_preview()
+        context['courseproductgroups'] = CourseProductGroup.objects.by_mentor(user=user)
         print context
         return context

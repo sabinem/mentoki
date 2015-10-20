@@ -1,37 +1,42 @@
 # coding: utf-8
 from __future__ import unicode_literals, absolute_import
 
-from django.conf import settings
-from django.db import models
-
 from django.db import models
 from django.conf import settings
-from django.core.urlresolvers import reverse
-from django.utils.functional import cached_property
-from django.utils.translation import ugettext_lazy as _
-from django.shortcuts import get_object_or_404
-from django.core.validators import ValidationError
 
 from model_utils.models import TimeStampedModel
-from model_utils.managers import QueryManager
-from model_utils.fields import MonitorField
-from model_utils import Choices
+
+from apps_productdata.mentoki_product.models.courseproduct import CourseProduct
+#from apps_customerdata.customer.models.order import Order
 
 
 class CustomerManager(models.Manager):
-
-    def create(self, braintree_customer_id, first_name, last_name, email, user=None, authenticated_user=False):
-        customer = Customer(first_name=first_name, last_name=last_name, email=email,
-                      braintree_customer_id=braintree_customer_id )
+    """
+    Manager for customers
+    """
+    def create(
+            self,
+            braintree_customer_id,
+            first_name,
+            last_name,
+            email,
+            user=None,
+            authenticated_user=False):
+        customer = Customer(
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            braintree_customer_id=braintree_customer_id
+        )
         if authenticated_user:
             customer.user = user
         customer.save()
         return customer
 
+
 class Customer(TimeStampedModel):
     """
-    An example customer model.
-    Should store the shipping and billing address(es).
+    Customer: stores connection to braintree object as braintree_customer_id
     """
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
@@ -62,3 +67,27 @@ class Customer(TimeStampedModel):
                   self.first_name,
                   self.last_name,
                   self.user,)
+
+    def purchased_products(self, course):
+        return CourseProduct.objects.filter(order__customer=self, course=course).order_by('display_nr')
+
+    def purchased_products_ids(self, course):
+        return self.purchased_products(course=course).values_list('pk', flat=True)
+
+    def available_products(self, course):
+        purchased = self.purchased_products_ids(course=course)
+        independent = CourseProduct.objects.filter(course=course, has_depedencies=False).\
+            exclude(id__in=purchased)
+        dependent = CourseProduct.objects.filter(course=course, has_depedencies=True).\
+            filter(dependancies=purchased).exclude(id__in=purchased)
+        available = dependent | independent
+        available.order_by('display_nr')
+        return available
+
+    def available_products_ids(self, course):
+        return self.available_products(course=course).values_list('pk', flat=True)
+
+    def not_yet_avalable(self, course):
+        return CourseProduct.objects.filter(course=course, has_dependencies=True,
+                                            id__in=self.available_products_ids(course)).order_by('display_nr')
+
