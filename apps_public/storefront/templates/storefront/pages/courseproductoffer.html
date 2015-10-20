@@ -50,7 +50,7 @@
                       <div class="ui middle aligned divided list">
                       {% for courseproduct in available_courseproducts %}
 
-                          {% url 'checkout:start' slug=courseproduct.slug as pay_url %}
+                          {% url 'checkout:construction' slug=courseproduct.slug as pay_url %}
 
                       <div class="item" style="padding-top:40px;">
                         <div class="right floated content">

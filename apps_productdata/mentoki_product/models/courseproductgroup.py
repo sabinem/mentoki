@@ -33,10 +33,12 @@ class CourseProductGroupManager(models.Manager):
     Querysets for CourseEvents
     """
     def by_mentor(self, user):
-        return self.filter(course__courseowner__user=user).select_related('course')
+        return self.filter(course__courseowner__user=user).\
+            select_related('course').order_by('display_nr')
 
     def published(self):
-        return self.filter(published=True).select_related('course')
+        return self.filter(published=True).\
+            select_related('course').order_by('display_nr')
 
 
 def foto_location(instance, filename):
@@ -67,6 +69,7 @@ class CourseProductGroup(TimeStampedModel):
         max_length=250)
 
     published = models.BooleanField(default=True)
+    display_nr = models.IntegerField(default=1)
 
     slug = models.SlugField(default="x")
     title = models.CharField(max_length=100, default="x")

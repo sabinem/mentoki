@@ -1,6 +1,7 @@
 
 {% url 'storefront:detail' slug=courseproductgroup.slug as detail_url %}
 
+{% url 'storefront:offer' slug=courseproductgroup.slug as offer_url %}
 <div class="card">
 
     <a class="image" href="#">
@@ -34,7 +35,7 @@
 
           </div>
  {% endif %}
-    <a class="ui bottom attached button" href="{{ detail_url }}">
+    <a class="ui bottom attached button" href="{{ offer_url }}">
 
         Angebote ansehen
     </a>
