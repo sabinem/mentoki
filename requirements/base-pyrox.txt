@@ -1,5 +1,4 @@
 Django==1.8.5
-Fabric==1.10.2
 Markdown==2.6.2
 PyYAML==3.11
 braintree==3.20.0
