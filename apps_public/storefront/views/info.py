@@ -80,7 +80,7 @@ class CourseGroupOfferView(
         context = super(CourseGroupOfferView, self).get_context_data()
         course = context['courseproductgroup'].course
         user=self.request.user
-        if user.is_authenticated() and user.customer:
+        if user.is_authenticated() and hasattr(user, 'customer'):
             context['purchased_courseproducts'] = \
                 user.customer.purchased_products()
             context['available_courseproducts'] = \
