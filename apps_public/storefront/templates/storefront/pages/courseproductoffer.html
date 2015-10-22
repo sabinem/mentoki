@@ -86,8 +86,16 @@
                       <div class="item" style="color:grey; padding-top:40px;">
                         <div class="right floated content">
                           <div class="ui button basic">
-                              Preis
+                              {% if courseproduct.specialoffer %}
+                             jetzt<span style="color:#eb3d00">
+                             {{ courseproduct.sales_price }}</span>
+                              statt
+
+                               {{ courseproduct.price }}
+                              {% else %}
+                                  jetzt kaufen für
                               {{ courseproduct.price }}
+                              {% endif %}
                               {{ courseproduct.currency }}
                           </div>
                         </div>
