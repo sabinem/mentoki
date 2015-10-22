@@ -31,7 +31,7 @@ class CourseProductAdmin(admin.ModelAdmin):
     Courses are time independent collections of teaching material, that are
     set up and owned by teachers.
     """
-    list_display = ('id', 'course', 'product_type', 'price' , 'sales_price', 'modified', 'created')
+    list_display = ('id', 'name', 'display_nr', 'dependencies', 'price' , 'sales_price', 'modified', 'created')
     list_filter = ('modified', 'course')
     list_display_links = ('id',)
 
