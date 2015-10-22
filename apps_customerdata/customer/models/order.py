@@ -25,7 +25,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class BaseProductManager(models.Manager):
+class OrderManager(models.Manager):
     """
     Products that Mentoki sells
     """
@@ -34,32 +34,29 @@ class BaseProductManager(models.Manager):
 
 
 class Order(TimeStampedModel):
-
-    order_type = models.CharField(max_length=200, default="Kurs-Teilnahme")
-
+    """
+    Order of a product
+    """
     courseproduct = models.ForeignKey(CourseProduct, blank=True, null=True)
     customer = models.ForeignKey(
         Customer,
-        'Kunde, der bezahlt hat'                         ,
+        verbose_name='Kunde, der bezahlt hat',
         blank=True,
         null=True )
 
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        'Teilnehmer als Benutzer'
+        verbose_name='Teilnehmer, der teilnimmt',
+        default=1,
+        blank=True,
+        null=True
     )
-    participant_email=models.EmailField(
-        'Email des Teilnehmers'
-    )
-    is_paid = models.BooleanField(default=True)
-    transaction = models.ManyToManyField(Transaction)
-
-    definitive = models.BooleanField()
     ORDER_STATUS = Choices(
-        ('booked', 'booked',_('Gebucht')),
-        ('confirmed', 'confirmed',_('Bestätigt')),
+        ('fix', 'fix',_('Nicht mehr erstattbar')),
+        ('paid', 'bezahlt',_('bezahlt')),
+        ('attempted', 'attempted',_('versucht')),
     )
     order_status = models.CharField( max_length=12, choices=ORDER_STATUS,
-                                 default=ORDER_STATUS.booked )
+                                 default=ORDER_STATUS.attempted )
 
 

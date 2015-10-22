@@ -80,6 +80,10 @@ class CourseProduct(TimeStampedModel):
         choices=PRODUCT_TYPE,
         default=PRODUCT_TYPE.courseevent)
 
+    meta_keywords = models.CharField(max_length=200, default="x")
+    meta_description = models.CharField(max_length=200, default="x")
+    meta_title = models.CharField(max_length=100, default="x")
+
     objects = CourseProductManager()
 
     class Meta:

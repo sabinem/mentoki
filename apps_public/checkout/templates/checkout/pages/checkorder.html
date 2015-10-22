@@ -21,7 +21,7 @@
 
                 <div class="column ten wide">
 
-                    {% include 'checkout/fragments/_2steps_checkout_2.html' %}
+                    {% include 'checkout/fragments/_2steps_checkout_1.html' %}
                     {% include 'checkout/fragments/_courseproduct.html' %}
 
                     <!-- participant data ----->
@@ -35,27 +35,13 @@
                             </div>
                         {% endif %}
 
-                        <!-- payment data part of the form -->
-                        <h4 class="ui dividing header">Zahlungs-Daten</h4>
-                        {% include 'checkout/fragments/_payers_info_form.html' %}
-
-                        <h4 class="ui dividing header">Bezahlung mit</h4>
-                        <p>Bitte entweder Paypal auswählen oder direkt Ihre Kreditkartendaten eingeben.</p>
-
-                        <div id="dropin-container"></div>
-                        <input class="ui button" type="submit" value="jetzt zahlen">
+                        <!-- particpant data are part of the form -->
+                        <h4 class="ui dividing header">Teilnehmer-Daten</h4>
+                        {% include 'checkout/fragments/_participant_form.html' %}
+                        <input class="ui button" type="submit" value="weiter">
                     </form>
                 </div>
 
-                <script src="https://js.braintreegateway.com/v2/braintree.js"></script>
-
-                <script type="text/javascript">
-                    // Execute on DOM Ready ($(function(){}))
-                    braintree.setup("{{ client_token }}", "dropin", {
-                      container: "dropin-container",  // id of the container div
-                      form: "checkout-form"  // id of the form
-                    });
-                </script>
             </div>
         </div>
     </div>

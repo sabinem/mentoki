@@ -1,0 +1,41 @@
+{% if request.user.is_authenticated %}
+     <label>Hallo {{ request.user.get_full_name }}. Willst Du Dich selbst anmelden?</label>
+    <div class="fields">
+
+        {{ form.for_self.errors }}
+        <div class="field eight wide">
+            <label>ja, bitte</label>
+            <div class="ui checkbox" id="participant_self">
+            {{ form.for_self }}
+            </div>
+        </div>
+
+    </div>
+{% endif %}
+<div class="participant_fields">
+<p>Ansonsten fülle bitte die Teilnehmerdaten aus.</p>
+<div class="fields">
+    <label>Vorname</label>
+    {{ form.participant_first_name.errors }}
+    <div class="field eight wide">
+        {{ form.participant_first_name }}
+    </div>
+    <label>Nachname</label>
+    {{ form.participant_last_name.errors }}
+    <div class="field eight wide">
+        {{ form.participant_last_name }}
+    </div>
+</div>
+<div class="fields">
+    <label>Benutzername</label>
+    {{ form.participant_username.errors }}
+     <div class="field eight wide">
+         {{ form.participant_username }}
+    </div>
+    <label>Email</label>
+    {{ form.participant_email.errors }}
+     <div class="field eight wide">
+         {{ form.participant_email }}
+    </div>
+</div>
+</div>

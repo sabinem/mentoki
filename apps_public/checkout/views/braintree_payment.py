@@ -1,7 +1,7 @@
 # coding: utf-8
 
 """
-Braintree Integration Payment Form
+Braintree Integration Payment Form for Authenticated Users
 """
 
 from __future__ import unicode_literals, absolute_import
@@ -22,6 +22,9 @@ logger = logging.getLogger(__name__)
 
 from apps_customerdata.customer.models.customer import Customer
 from apps_customerdata.customer.models.transaction import Transaction
+from apps_customerdata.customer.models.order import Order
+from apps_customerdata.customer.models.temporder import TempOrder
+
 from apps_productdata.mentoki_product.models.courseproduct \
     import CourseProduct
 from apps_productdata.mentoki_product.models.courseproductgroup import \
@@ -42,46 +45,92 @@ braintree.Configuration.configure(
 )
 
 
-class NewCustomerForm(forms.ModelForm):
-    """
-    Form for new user; includes Braintree Dropin
-    """
-    payment_method_nonce = forms.CharField()
-    payment_first_name = forms.CharField()
-    payment_last_name = forms.CharField()
-    payment_email = forms.EmailField()
-    payer_is_participant = forms.BooleanField()
-
-    class Meta:
-        model = User
-        fields = ('first_name', 'last_name', 'email', 'username')
-
-    def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user', None)
-        super(NewCustomerForm, self).__init__(*args, **kwargs)
-
-    def clean(self):
-        if not self.user.is_authenticated():
-            try:
-                # TODO get User form settings?
-                # TODO compare emails so that capitalsation does not matter
-                User.objects.get(email=self.cleaned_data['email'])
-                raise ValidationError('''Ihre Email existiert schon im System.
-                                      Loggen Sie sich bitte ein.''')
-            except ObjectDoesNotExist:
-                pass
-        return self.cleaned_data
-
-
-class RecurringCustomerForm(forms.Form):
+class PaymentForm(forms.ModelForm):
     """
     Payment Form uses Braintrees Drop In
+
+    The payment nounce is hidden.
+
+    The participant data have already been stored in the temporder. It is assumed that
+    the pariticipant is either logged in or new to the system.
+
+    Therefore the payer, if different from the participant may be a known in the system, but can't
+    be aaked to login as well.
+
+    It must be checked whether a braintree customer exists for that email. Since the email
+    serves as identification this should be good enough.
+
     """
-    payer_is_participant = forms.BooleanField()
-    payment_first_name = forms.CharField()
-    payment_last_name = forms.CharField()
-    payment_email = forms.EmailField()
+    # hidden input
     payment_method_nonce = forms.CharField()
+    logged_in_user_paying = forms.BooleanField()
+
+    class Meta:
+        model = Customer
+        fields = ('email', 'first_name',
+                  'last_name')
+
+    def __init__(self, *args, **kwargs):
+        """
+        The init gets the product and the user
+        """
+        # get product
+        courseproduct_slug = kwargs.pop('courseproduct_slug', None)
+        self.courseproduct = get_object_or_404(CourseProduct, slug=courseproduct_slug)
+        # get user if logged in
+        self.user = kwargs.pop('user', None)
+        super(PaymentForm, self).__init__(*args, **kwargs)
+
+    def clean(self):
+        """
+        If the email already exists the user is asked to log in first.
+        """
+        # check whether user exists already
+
+        try:
+            # a user that is logged in pays himself: he is the customer
+            if self.user.is_authenticated and self.cleaned_data['logged_in_user_paying']:
+                customer = Customer.objects.get(user=self.user)
+            else:
+                # someone else is paying
+                customer = Customer.objects.get(email=self.cleaned_data['email'])
+        except ObjectDoesNotExist:
+            # create braintree customer
+            result = braintree.Customer.create({
+              'first_name': self.cleaned_data['first_name'],
+              'last_name': self.cleaned_data['last_name'],
+              'email': self.cleaned_data['email']
+            })
+
+            customer_exists = False
+        else :
+            try:
+                # someone else is paying
+                customer = Customer.objects.get(email=self.cleaned_data['email'])
+            except ObjectDoesNotExist:
+                #
+                customer_exists = False
+
+
+
+        Customer.objects.get(user=user)
+
+        email = email = self.cleaned_data['email']
+        try:
+            User.objects.get(email=email)
+            raise ValidationError('Du bist schon bei Mentoki registriert. '
+                                  'Bitte melde Dich an, bevor Du den Kurs bezahlst.')
+        except ObjectDoesNotExist:
+            pass
+
+        # check whether user ordered this product already
+        try:
+            Order.objects.get(courseproduct=self.courseproduct,
+                              participant_email=self.cleaned_data['email'])
+            raise ValidationError('Du hast diesen Kurs schon für diesen Teilnehmer gekauft')
+        except ObjectDoesNotExist:
+            pass
+        return self.cleaned_data
 
 
 class PaymentView(
@@ -90,18 +139,26 @@ class PaymentView(
     This view contains the payment form.
     """
     template_name = 'checkout/pages/payment_form.html'
+    form_class = PaymentForm
 
     def get_context_data(self, **kwargs):
         """
-        gets the product data and the braintree client token
+        gets the temporary order that already contains the participant data and
+        the product and gets the braintree client token, in order to prepare
+        for the payment
         """
         context = super(PaymentView, self).get_context_data(**kwargs)
 
-        courseproduct = get_object_or_404(CourseProduct, slug=self.kwargs['slug'])
-        courseproductgroup = get_object_or_404(CourseProductGroup, course=courseproduct.course)
+        temporder = get_object_or_404(
+            TempOrder,
+            pk=self.kwargs['temporder_pk'])
+        courseproduct = temporder.courseproduct
+        courseproductgroup = get_object_or_404(CourseProductGroup,
+                                               course=courseproduct.course)
         context['courseproductgroup'] = courseproductgroup
         context['courseproduct'] = courseproduct
         context['user'] = self.request.user
+        context['temporder'] = temporder
 
         logger.debug('-------------- payment started for: %s %s'
                      % (self.request.user, courseproduct))
@@ -113,22 +170,19 @@ class PaymentView(
 
         return context
 
-    def get_form_class(self):
-        # it is assumed that the user is the participant in that case
-        if self.request.user.is_authenticated():
-            return RecurringCustomerForm
-        else:
-            return NewCustomerForm
-
     def get_form_kwargs(self):
-
-        if not self.request.user.is_authenticated():
+        """
+        save the user and the product data for the form, to check
+        wether there is already an order for that combination.
+        """
+        if self.request.user.is_authenticated():
             user = self.request.user
+        courseproduct_slug = self.kwargs['slug']
         kwargs = super(PaymentView, self).get_form_kwargs()
-        if not self.request.user.is_authenticated():
+        if self.request.user.is_authenticated():
             kwargs['user']= user
+        kwargs['courseproduct_slug'] = courseproduct_slug
         return kwargs
-
 
     def form_valid(self, form):
         """
