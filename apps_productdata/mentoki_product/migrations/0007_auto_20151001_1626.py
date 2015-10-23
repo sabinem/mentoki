@@ -12,9 +12,4 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterField(
-            model_name='courseeventproduct',
-            name='agb',
-            field=froala_editor.fields.FroalaField(),
-        ),
     ]

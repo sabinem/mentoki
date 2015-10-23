@@ -12,18 +12,6 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RemoveField(
-            model_name='courseeventproduct',
-            name='event_type',
-        ),
-        migrations.RemoveField(
-            model_name='courseeventproduct',
-            name='pricemodel',
-        ),
-        migrations.RemoveField(
-            model_name='courseeventproduct',
-            name='provision_mentoki',
-        ),
-        migrations.RemoveField(
             model_name='simpleproduct',
             name='event_type',
         ),

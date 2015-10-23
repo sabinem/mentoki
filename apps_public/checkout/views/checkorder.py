@@ -12,6 +12,7 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import FormView
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import ValidationError
+from django.http import HttpResponseRedirect
 
 from django.conf import settings
 
@@ -29,6 +30,7 @@ from apps_productdata.mentoki_product.models.courseproductgroup import \
 # TODO import User from settings instead ?
 from accounts.models import User
 
+
 class CheckOrderForm(forms.ModelForm):
     """
     Check Order: the first step when checking out.
@@ -36,7 +38,7 @@ class CheckOrderForm(forms.ModelForm):
     """
     class Meta:
         model = TempOrder
-        fields = ('for_self', 'participant_first_name', 'participant_last_name',
+        fields = ('participant_first_name', 'participant_last_name',
                   'participant_username',
                   'participant_email')
 
@@ -53,17 +55,17 @@ class CheckOrderForm(forms.ModelForm):
 
     def clean(self):
         """
-        This form is for entering the participant information
+        This form is for entering the participant information for anonymous users
+        A registered user must login in order to be able to book a course.
+        The email is used as an identifier for users. So if an anounymous user
+        tries to register with a known email, he is asked to log in. This form
+        is only shown to anonymous users.
 
-        It is not allowed to book for a registerd user who is not logged in as
-        a participant. So if the participants email is already registered in the system,
-        the person is asked to log in first.
+        It also checks for registered user whether an order for that product already
+        exists, since most products can only be bought once.
         """
-        # check participant
-        if self.cleaned_data['for_self']:
-            # this is okay
-            pass
-        else:
+        # for new users check the pariticipant data
+        if not self.user.is_authenticated():
             # check participant data
             if not self.cleaned_data['participant_email'] \
                 or not self.cleaned_data['participant_first_name'] \
@@ -88,16 +90,12 @@ class CheckOrderForm(forms.ModelForm):
             except ObjectDoesNotExist:
                 pass
 
-        # if everything is okay with the participant data, try whether the order makes sense:
-
-        # we ruled out that the participant is already a registered user, but he would be
-        # in case his order was already processed, so all I need to check here is the case of
-        # a registered user booking for himself.
+        # for registered users check whether the user already ordered and paid for the product.
 
         if self.user.is_authenticated():
             try:
                 Order.objects.get(courseproduct=self.courseproduct,
-                                  user=self.user)
+                                  customer=self.user.customer)
                 raise ValidationError('''Du bist bereits für diesen Kurs angemeldet. Eine Doppelbuchung
                 ist nicht möglich.''')
             except ObjectDoesNotExist:
@@ -110,10 +108,13 @@ class CheckOrderView(
     FormView):
     """
     This view checks the participant data and whether it is possible for a participant
-    to buy a product / register for a course. If everything is fine it establishes a
+    to buy the product / register for a course. If everything is fine it establishes a
     temporary order object, that will still be there in case the payment does not
     go through. It can be used for example to get back to the customer and assist him with the
     payment process. Some of our products will be expensive, so this does make sense.
+
+    Later on preorders might also be used to take an interest in a class into account.
+    The person might be contacted in case the class opens for registration.
     """
     template_name = 'checkout/pages/checkorder.html'
     form_class = CheckOrderForm
@@ -124,28 +125,25 @@ class CheckOrderView(
         """
         context = super(CheckOrderView, self).get_context_data(**kwargs)
 
-        courseproduct = get_object_or_404(CourseProduct, slug=self.kwargs['slug'])
-        courseproductgroup = get_object_or_404(CourseProductGroup, course=courseproduct.course)
-        context['courseproductgroup'] = courseproductgroup
-        context['courseproduct'] = courseproduct
+        self.courseproduct = get_object_or_404(CourseProduct, slug=self.kwargs['slug'])
+        self.courseproductgroup = get_object_or_404(CourseProductGroup, course=self.courseproduct.course)
+        context['courseproductgroup'] = self.courseproductgroup
+        context['courseproduct'] = self.courseproduct
         context['user'] = self.request.user
-
         logger.debug('-------------- payment started for: %s %s'
-                     % (self.request.user, courseproduct))
-
+                     % (self.request.user, self.courseproduct))
         return context
+
 
     def get_form_kwargs(self):
         """
         save the user and the product data for the form, to check
         wether there is already an order for that combination.
         """
-        if self.request.user.is_authenticated():
-            user = self.request.user
+        user = self.request.user
         courseproduct_slug = self.kwargs['slug']
         kwargs = super(CheckOrderView, self).get_form_kwargs()
-        if self.request.user.is_authenticated():
-            kwargs['user']= user
+        kwargs['user']= user
         kwargs['courseproduct_slug'] = courseproduct_slug
         return kwargs
 
@@ -155,9 +153,7 @@ class CheckOrderView(
         """
         self.object = TempOrder.objects.create(
             courseproduct=form.courseproduct,
-            for_self=form.cleaned_data['for_self'],
             user=form.user,
-            by_authenticated_user=form.user.is_authenticated(),
             participant_first_name=form.cleaned_data['participant_first_name'],
             participant_last_name=form.cleaned_data['participant_last_name'],
             participant_username=form.cleaned_data['participant_username'],

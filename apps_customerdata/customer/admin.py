@@ -9,7 +9,7 @@ from __future__ import unicode_literals, absolute_import
 from django.contrib import admin
 
 from .models.customer import Customer
-from .models.transaction import Transaction
+from .models.transaction import SuccessfulTransaction, FailedTransaction
 from .models.order import Order
 from .models.temporder import TempOrder
 
@@ -23,13 +23,22 @@ class CustomerAdmin(admin.ModelAdmin):
     list_filter = ('created','user')
 
 
-@admin.register(Transaction)
+@admin.register(SuccessfulTransaction)
 class Transaction(admin.ModelAdmin):
     """
     Transactions that occur when payment happens, they are also registered at braintree,
     the payment provider
     """
-    list_display = ('courseproduct', 'customer', 'amount')
+    list_display = ('order', 'customer', 'amount', 'course')
+
+
+@admin.register(FailedTransaction)
+class Transaction(admin.ModelAdmin):
+    """
+    Transactions that occur when payment happens, they are also registered at braintree,
+    the payment provider
+    """
+    list_display = ('temporder', 'customer', 'amount', 'course')
 
 
 @admin.register(Order)
@@ -38,7 +47,7 @@ class Order(admin.ModelAdmin):
     Orders are between registered user only since they are listed here only after
     payment occured and the the users got registered
     """
-    list_display = ('courseproduct', 'customer', 'order_status')
+    list_display = ('courseproduct', 'customer', 'order_status', 'course')
 
 
 @admin.register(TempOrder)

@@ -25,6 +25,20 @@
                     {% include 'checkout/fragments/_courseproduct.html' %}
 
                     <!-- participant data ----->
+                        <!-- payment data part of the form -->
+                        <h4 class="ui dividing header">Teilnehmer-Daten</h4>
+
+                        {% if user.is_authenticated %}
+                        <p>{{ user.first_name }} {{ user.last_name }}
+                            <br>{{ user.email }}<br>Benutzername: {{ user.username }}
+                        </p>
+
+                        {% else %}
+                        <p>{{ temporder.participant_first_name }} {{ temporder.participant_last_name }}
+                            <br>{{ temporder.participant_email }}<br>Benutzername: {{ temporder.participant_username }}
+                        </p>
+                        {% endif %}
+
 
                     <form id="checkout-form" method="post" class="ui form" autocomplete="off">
                         {% csrf_token %}
@@ -39,14 +53,11 @@
                         <h4 class="ui dividing header">Zahlungs-Daten</h4>
                         {% include 'checkout/fragments/_payers_info_form.html' %}
 
-                        <h4 class="ui dividing header">Bezahlung mit</h4>
                         <p>Bitte entweder Paypal auswählen oder direkt Ihre Kreditkartendaten eingeben.</p>
 
                         <div id="dropin-container"></div>
                         <input class="ui button" type="submit" value="jetzt zahlen">
                     </form>
-                </div>
-
                 <script src="https://js.braintreegateway.com/v2/braintree.js"></script>
 
                 <script type="text/javascript">
@@ -56,6 +67,9 @@
                       form: "checkout-form"  // id of the form
                     });
                 </script>
+                </div>
+
+
             </div>
         </div>
     </div>

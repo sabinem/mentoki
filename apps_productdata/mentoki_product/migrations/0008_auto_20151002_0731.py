@@ -11,14 +11,4 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RenameField(
-            model_name='courseeventproduct',
-            old_name='netto',
-            new_name='brutto',
-        ),
-        migrations.AddField(
-            model_name='courseeventproduct',
-            name='name',
-            field=models.CharField(default='Kurs-Teilnahme', max_length=200),
-        ),
     ]

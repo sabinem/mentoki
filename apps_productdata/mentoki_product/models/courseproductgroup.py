@@ -8,10 +8,7 @@ of coruseevents
 
 from __future__ import unicode_literals, absolute_import
 
-import datetime
-
 from django.db import models
-
 from django.utils.translation import ugettext_lazy as _
 
 import logging
@@ -19,13 +16,9 @@ logger = logging.getLogger(__name__)
 
 from froala_editor.fields import FroalaField
 
-from model_utils import Choices
 from model_utils.models import TimeStampedModel
 
-from apps_data.courseevent.models.courseevent import CourseEvent
 from apps_data.course.models.course import Course
-
-from .baseproduct import BaseProduct
 
 
 class CourseProductGroupManager(models.Manager):

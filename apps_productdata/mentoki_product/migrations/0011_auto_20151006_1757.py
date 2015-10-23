@@ -12,16 +12,6 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterField(
-            model_name='courseeventproduct',
-            name='mwst',
-            field=models.DecimalField(null=True, verbose_name='Mehrwertsteuer', max_digits=12, decimal_places=2, blank=True),
-        ),
-        migrations.AlterField(
-            model_name='courseeventproduct',
-            name='netto_vk',
-            field=models.DecimalField(null=True, verbose_name='Netto Preis', max_digits=12, decimal_places=2, blank=True),
-        ),
-        migrations.AlterField(
             model_name='simpleproduct',
             name='mwst',
             field=models.DecimalField(null=True, verbose_name='Mehrwertsteuer', max_digits=12, decimal_places=2, blank=True),

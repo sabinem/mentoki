@@ -11,9 +11,4 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterField(
-            model_name='courseeventproduct',
-            name='in_one_sentence',
-            field=models.CharField(help_text='beschreibe den Kurs in einem Satz', max_length=250, verbose_name='in einem Satz'),
-        ),
     ]

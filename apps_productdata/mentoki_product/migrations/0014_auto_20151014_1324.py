@@ -12,11 +12,6 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AddField(
-            model_name='courseeventproduct',
-            name='price_total',
-            field=models.DecimalField(null=True, verbose_name='Verkaufspreis', max_digits=12, decimal_places=2, blank=True),
-        ),
-        migrations.AddField(
             model_name='simpleproduct',
             name='price_total',
             field=models.DecimalField(null=True, verbose_name='Verkaufspreis', max_digits=12, decimal_places=2, blank=True),

@@ -19,7 +19,7 @@
                     <!-- courseevent detail -->
 
                     <div class="ui cards centered">
-                        {% include 'courseoffer/fragments/_coursecard_details.html' with product=courseeventproduct %}
+                        {% include 'checkout/fragments/_coursecard_details.html' with product=courseeventproduct %}
                     </div>
 
                 </div>
@@ -29,7 +29,20 @@
 
                     <div class="ui header">Hallo {{ transaction.customer.first_name }} {{ transaction.customer.last_name }}</div>
                 <p>Vielen Dank, wir haben Ihre Zahlung erhalten
-                    und Sie sind jetzt angemeldet für {{ transaction.product.courseevent.title }}.</p>
+                    und Sie sind jetzt angemeldet für:</p>
+                                     <div class="ui middle aligned divided list">
+
+                          {% url 'checkout:braintree' slug=courseproduct.slug as pay_url %}
+
+                      <div class="item" >
+                        <div class="content">
+                            <div class="header">
+                          {{ courseproduct.name }}
+                            </div>
+                           <p>{{ courseproduct.description | safe }}</p>
+                        </div>
+                      </div>
+                      </div>
                 {% if not request.user.is_authenticated %}
                     <div class="ui header medium">Setzen Sie Ihr Passwort!</div>
                     <p>Sie sind bereits im System registriert. Damit sie sich einloggen können

@@ -9,7 +9,6 @@ of coruseevents
 from __future__ import unicode_literals, absolute_import
 
 from django.db import models
-from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 from model_utils.models import TimeStampedModel
@@ -17,8 +16,8 @@ from model_utils import Choices
 
 from apps_productdata.mentoki_product.models.courseproduct import CourseProduct
 from apps_customerdata.customer.models.customer import Customer
-from django.conf import settings
-from apps_customerdata.customer.models.transaction import Transaction
+from apps_data.course.models.course import Course
+from apps_productdata.mentoki_product.constants import CURRENCY_CHOICES
 
 
 import logging
@@ -29,8 +28,21 @@ class OrderManager(models.Manager):
     """
     Products that Mentoki sells
     """
-    def by_customer(self,customer):
+    def by_customer(self,customer, income, currency):
         return self.filter(customer=customer)
+
+    def create(self, courseproduct, customer, income, currency):
+        order = Order(
+            courseproduct=courseproduct,
+            customer=customer,
+            income=income,
+            currency=currency,
+            course=courseproduct.course
+            )
+
+        order.save()
+        y=x
+        return order
 
 
 class Order(TimeStampedModel):
@@ -43,20 +55,23 @@ class Order(TimeStampedModel):
         verbose_name='Kunde, der bezahlt hat',
         blank=True,
         null=True )
-
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        verbose_name='Teilnehmer, der teilnimmt',
-        default=1,
-        blank=True,
-        null=True
-    )
+    course = models.ForeignKey(Course, blank=True, null=True)
     ORDER_STATUS = Choices(
         ('fix', 'fix',_('Nicht mehr erstattbar')),
-        ('paid', 'bezahlt',_('bezahlt')),
-        ('attempted', 'attempted',_('versucht')),
+        ('paid', 'paid',_('bezahlt')),
+        ('canceled', 'canceled',_('storniert')),
+        ('refunded', 'refunded',_('zurückerstattet')),
     )
     order_status = models.CharField( max_length=12, choices=ORDER_STATUS,
-                                 default=ORDER_STATUS.attempted )
+                                 default=ORDER_STATUS.paid )
+    income = models.DecimalField(
+        _("amount"),
+        decimal_places=4,
+        max_digits=20,
+        default=0
+    )
+    currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES,
+        default=CURRENCY_CHOICES.euro )
+
 
 

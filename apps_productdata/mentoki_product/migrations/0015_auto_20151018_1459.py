@@ -57,51 +57,6 @@ class Migration(migrations.Migration):
         migrations.DeleteModel(
             name='SimpleProduct',
         ),
-        migrations.RemoveField(
-            model_name='courseeventproduct',
-            name='mentoki_mwst',
-        ),
-        migrations.RemoveField(
-            model_name='courseeventproduct',
-            name='mentoki_netto',
-        ),
-        migrations.RemoveField(
-            model_name='courseeventproduct',
-            name='mwst',
-        ),
-        migrations.RemoveField(
-            model_name='courseeventproduct',
-            name='netto_vk',
-        ),
-        migrations.RemoveField(
-            model_name='courseeventproduct',
-            name='price_total',
-        ),
-        migrations.AddField(
-            model_name='courseeventproduct',
-            name='description',
-            field=models.CharField(default='Kurs-Teilnahme', max_length=200, blank=True),
-        ),
-        migrations.AddField(
-            model_name='courseeventproduct',
-            name='price',
-            field=models.DecimalField(decimal_places=2, default=0, max_digits=12, blank=True, null=True, verbose_name='Verkaufspreis'),
-        ),
-        migrations.AddField(
-            model_name='courseeventproduct',
-            name='price_changed',
-            field=model_utils.fields.MonitorField(default=django.utils.timezone.now, verbose_name='letzte Preis\xe4nderung am', monitor='price'),
-        ),
-        migrations.AddField(
-            model_name='courseeventproduct',
-            name='product_nr',
-            field=models.CharField(default=1, max_length=20),
-        ),
-        migrations.AddField(
-            model_name='courseeventproduct',
-            name='slug',
-            field=models.SlugField(default='x'),
-        ),
         migrations.CreateModel(
             name='CourseAddOnProduct',
             fields=[

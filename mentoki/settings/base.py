@@ -344,10 +344,10 @@ LOGGING = {
             'propagate': True,
             'level': 'DEBUG',
         },
-        'apps_public.courseoffer': {
+        'apps_public.checkout': {
             'handlers': ['paymentfile'],
             'propagate': True,
-            'level': 'DEBUG',
+            'level': 'INFO',
         },
     }
 }
