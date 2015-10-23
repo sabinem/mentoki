@@ -1,7 +1,7 @@
 # coding: utf-8
 
 """
-Admin for Course and its relation to User: CourseOwner
+Admin for Customers-Data, Transactions and Orders
 """
 
 from __future__ import unicode_literals, absolute_import
@@ -9,35 +9,51 @@ from __future__ import unicode_literals, absolute_import
 from django.contrib import admin
 
 from .models.customer import Customer
-from .models.transaction import Transaction
+from .models.transaction import SuccessfulTransaction, FailedTransaction
 from .models.order import Order
+from .models.temporder import TempOrder
 
 
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
     """
-    Courses are time independent collections of teaching material, that are
-    set up and owned by teachers.
+    Customers that pay and are registered at braintree, the payment provider
     """
     list_display = ('braintree_customer_id', 'user', 'first_name', 'last_name', 'created' )
     list_filter = ('created','user')
 
 
-
-@admin.register(Transaction)
+@admin.register(SuccessfulTransaction)
 class Transaction(admin.ModelAdmin):
     """
-    Courses are time independent collections of teaching material, that are
-    set up and owned by teachers.
+    Transactions that occur when payment happens, they are also registered at braintree,
+    the payment provider
     """
-    list_display = ('courseproduct', 'customer', 'amount')
+    list_display = ('order', 'customer', 'amount', 'course')
 
+
+@admin.register(FailedTransaction)
+class Transaction(admin.ModelAdmin):
+    """
+    Transactions that occur when payment happens, they are also registered at braintree,
+    the payment provider
+    """
+    list_display = ('temporder', 'customer', 'amount', 'course')
 
 
 @admin.register(Order)
 class Order(admin.ModelAdmin):
     """
-    Courses are time independent collections of teaching material, that are
-    set up and owned by teachers.
+    Orders are between registered user only since they are listed here only after
+    payment occured and the the users got registered
     """
-    list_display = ('courseproduct', 'customer', 'order_status')
+    list_display = ('courseproduct', 'customer', 'order_status', 'course')
+
+
+@admin.register(TempOrder)
+class TempOrder(admin.ModelAdmin):
+    """
+    Incomplete orders are listed here. It may make sense to send out an email,
+    if someone attempted to book, but could not pay.
+    """
+    list_display = ('courseproduct', 'participant_email', 'user')

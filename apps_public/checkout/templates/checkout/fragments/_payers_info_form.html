@@ -1,0 +1,23 @@
+
+<div class="participant_fields">
+<p>Bitte Name und Email des Zahlenden angeben</p>
+<div class="fields">
+    <label>Vorname</label>
+    {{ form.first_name.errors }}
+    <div class="field eight wide">
+        {{ form.first_name }}
+    </div>
+    <label>Nachname</label>
+    {{ form.last_name.errors }}
+    <div class="field eight wide">
+        {{ form.last_name }}
+    </div>
+</div>
+<div class="fields">
+    <label>Email</label>
+   {{ form.email.errors }}
+   <div class="field eight wide">
+       {{ form.email }}
+   </div>
+</div>
+</div>

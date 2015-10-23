@@ -11,9 +11,4 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RenameField(
-            model_name='courseeventproduct',
-            old_name='agb',
-            new_name='offer',
-        ),
     ]

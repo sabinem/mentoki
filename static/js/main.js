@@ -26,6 +26,32 @@ $(document).ready(function(){
     })
     ;
 
+
+// This first part is for all pages in the Courses Section of the site
+// checkboxes are special in Semantic UI
+    $('.ui.checkbox')
+      .checkbox()
+    ;
+
+
+// this checkbox displays the particpants form fields in preparation for
+// payment, when requested
+    if ($('#participant_self').checkbox('is checked')){
+       $('.participant_fields').hide();
+    }
+    $('#participant_self').change(function(){
+       if ($('#participant_self').checkbox('is checked')){
+           $('.participant_fields').fadeOut();
+       }
+    });
+    $('#participant_self').change(function(){
+       if ($('#participant_self').checkbox('is unchecked')){
+           $('.participant_fields').fadeIn();
+       }
+    });
+
+
+
 /**
  * correct ui classes for user input through editor
  */

@@ -9,7 +9,6 @@ of coruseevents
 from __future__ import unicode_literals, absolute_import
 
 from django.db import models
-
 from django.utils.translation import ugettext_lazy as _
 
 from model_utils.models import TimeStampedModel
@@ -20,6 +19,8 @@ from apps_data.courseevent.models.courseevent import CourseEvent
 from apps_data.course.models.course import Course
 
 from froala_editor.fields import FroalaField
+
+from ..constants import CURRENCY_CHOICES
 
 import logging
 logger = logging.getLogger(__name__)
@@ -57,10 +58,7 @@ class CourseProduct(TimeStampedModel):
     price_changed = MonitorField(
             monitor='price',
             verbose_name=_("letzte Preisänderung am"))
-    CURRENCY_CHOICES = Choices(
-        ('EUR', 'euro',_('Euro')),
-        ('CHF', 'chf',_('Schweizer Franken')),
-    )
+
     currency = models.CharField( max_length=3, choices=CURRENCY_CHOICES,
                                  default=CURRENCY_CHOICES.euro )
 
@@ -80,6 +78,10 @@ class CourseProduct(TimeStampedModel):
         choices=PRODUCT_TYPE,
         default=PRODUCT_TYPE.courseevent)
 
+    meta_keywords = models.CharField(max_length=200, default="x")
+    meta_description = models.CharField(max_length=200, default="x")
+    meta_title = models.CharField(max_length=100, default="x")
+
     objects = CourseProductManager()
 
     class Meta:
@@ -93,9 +95,7 @@ class CourseProduct(TimeStampedModel):
     def sales_price(self):
         if hasattr(self, 'specialoffer'):
             percentage = 100 - self.specialoffer.percentage_off
-            print "======== percentage %s" % percentage
             sales_price = int(self.price) * percentage / 100.00
-            print "--- sales_price %s -> %s" % (self.price, sales_price)
             return sales_price
 
 

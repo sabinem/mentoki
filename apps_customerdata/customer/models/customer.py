@@ -14,22 +14,20 @@ class CustomerManager(models.Manager):
     """
     Manager for customers
     """
-    def create(
+    def create_new_customer(
             self,
             braintree_customer_id,
             first_name,
             last_name,
             email,
-            user=None,
-            authenticated_user=False):
+            user):
         customer = Customer(
+            braintree_customer_id=braintree_customer_id,
             first_name=first_name,
             last_name=last_name,
             email=email,
-            braintree_customer_id=braintree_customer_id
+            user=user
         )
-        if authenticated_user:
-            customer.user = user
         customer.save()
         return customer
 
@@ -50,7 +48,9 @@ class Customer(TimeStampedModel):
         primary_key=True
         )
 
-    email = models.EmailField()
+    email = models.EmailField(
+        'Kundenemail'
+    )
 
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
@@ -79,7 +79,7 @@ class Customer(TimeStampedModel):
         independent = CourseProduct.objects.filter(course=course, has_depedencies=False).\
             exclude(id__in=purchased)
         dependent = CourseProduct.objects.filter(course=course, has_depedencies=True).\
-            filter(dependancies=purchased).exclude(id__in=purchased)
+            filter(dependencies=purchased).exclude(id__in=purchased)
         available = dependent | independent
         available.order_by('display_nr')
         return available

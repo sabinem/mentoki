@@ -11,9 +11,4 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='courseeventproduct',
-            name='format_card',
-            field=models.CharField(max_length=250, verbose_name='Kursformart kurz', blank=True),
-        ),
     ]

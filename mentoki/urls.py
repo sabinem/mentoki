@@ -42,7 +42,7 @@ urlpatterns += i18n_patterns('',
         include('apps_public.home.urls', namespace='home')),
 
     # courseevent offers
-    url(r'^kurse/',
+    url(r'^checkout/',
         include('apps_public.checkout.urls', namespace='checkout')),
 
     # courseevent offers

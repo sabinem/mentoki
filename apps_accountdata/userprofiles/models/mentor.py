@@ -22,7 +22,6 @@ from autoslug import AutoSlugField
 
 from apps_data.course.models.course import Course, CourseOwner
 from apps_data.courseevent.models.courseevent import CourseEvent
-from apps_productdata.mentoki_product.models.courseevent import CourseEventProduct
 
 import logging
 logger = logging.getLogger(__name__)
@@ -99,32 +98,3 @@ class MentorsProfile(TimeStampedModel):
 
     def teaching(self):
         return Course.objects.filter(courseowner__user=self.user)
-
-    def teaching_public(self):
-        courseids = Course.objects.filter(courseowner__user=self.user).values_list('id', flat=True)
-        print "courseids: %s" % courseids
-
-        courseevents = CourseEvent.objects.filter(
-            course_id__in=courseids,
-            status_external=CourseEvent.STATUS_EXTERNAL.booking)
-
-        courseeventproducts=CourseEventProduct.objects.filter(
-            courseevent__course_id__in=courseids,
-            courseevent__status_external=CourseEvent.STATUS_EXTERNAL.booking)
-        print courseeventproducts
-        return courseeventproducts
-
-    def teaching_preview(self):
-        courseids = Course.objects.filter(courseowner__user=self.user).values_list('id', flat=True)
-        print "courseids: %s" % courseids
-
-        courseevents = CourseEvent.objects.filter(
-            course_id__in=courseids,
-            status_external=CourseEvent.STATUS_EXTERNAL.preview)
-
-        courseeventproducts=CourseEventProduct.objects.filter(
-            courseevent__course_id__in=courseids,
-            courseevent__status_external__in=[CourseEvent.STATUS_EXTERNAL.preview,
-                                              CourseEvent.STATUS_EXTERNAL.booking])
-        print courseeventproducts
-        return courseeventproducts

@@ -34,12 +34,6 @@ class CourseGroupMixin(object):
         context = super(CourseGroupMixin, self).get_context_data()
         courseproductgroup = get_object_or_404(CourseProductGroup,slug=self.kwargs['slug'])
         context['courseproductgroup'] =courseproductgroup
-        #context['slug'] = slug=self.kwargs['slug']
-        #context['teachersinfo'] = CourseOwner.objects.teachers_courseinfo_display(
-        #    course=courseevent.course)
-        #context['courseevent'] = courseevent
-        #context['courseeventproduct'] = courseevent.courseeventproduct
-        #context['url_name'] = self.request.resolver_match.url_name
 
         return context
 
@@ -82,16 +76,14 @@ class CourseGroupOfferView(
         user=self.request.user
         if user.is_authenticated() and hasattr(user, 'customer'):
             context['purchased_courseproducts'] = \
-                user.customer.purchased_products()
+                user.customer.purchased_products(course=course)
             context['available_courseproducts'] = \
-                user.customer.objects.available_products(
-                    course=course,
-                    user=user)
+                user.customer.available_products(
+                    course=course)
             context['out_of_reach_courseproducts'] = \
-                user.customer.objects.\
+                user.customer.\
                     not_yet_avalable(
-                    course=course,
-                    user=user)
+                    course=course)
         else:
             context['available_courseproducts'] = \
                 CourseProduct.objects.for_new_customers_by_course(course=course)
