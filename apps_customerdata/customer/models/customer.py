@@ -76,9 +76,9 @@ class Customer(TimeStampedModel):
 
     def available_products(self, course):
         purchased = self.purchased_products_ids(course=course)
-        independent = CourseProduct.objects.filter(course=course, has_depedencies=False).\
+        independent = CourseProduct.objects.filter(course=course, has_dependencies=False).\
             exclude(id__in=purchased)
-        dependent = CourseProduct.objects.filter(course=course, has_depedencies=True).\
+        dependent = CourseProduct.objects.filter(course=course, has_dependencies=True).\
             filter(dependencies=purchased).exclude(id__in=purchased)
         available = dependent | independent
         available.order_by('display_nr')

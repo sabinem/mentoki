@@ -11,7 +11,7 @@
 
         <div class="content ui column sixteen wide">
 
-
+            {% url 'desk:learn' as desk_url %}
             <div class="ui two column stackable grid">
 
                 <div class="column five wide">
@@ -27,13 +27,11 @@
                     <!-- page content -->
 
 
-                    <div class="ui header">Hallo {{ transaction.customer.first_name }} {{ transaction.customer.last_name }}</div>
-                <p>Vielen Dank, wir haben Ihre Zahlung erhalten
-                    und Sie sind jetzt angemeldet für:</p>
+                    <div class="ui header">Hallo {{ order.customer.first_name }} {{ order.customer.last_name }}</div>
+                <p>Vielen Dank, wir haben Deine Zahlung erhalten
+                    und Du bist jetzt angemeldet für:</p>
+                <h4 class="ui dividing header">Kurs-Daten</h4>
                                      <div class="ui middle aligned divided list">
-
-                          {% url 'checkout:braintree' slug=courseproduct.slug as pay_url %}
-
                       <div class="item" >
                         <div class="content">
                             <div class="header">
@@ -42,18 +40,36 @@
                            <p>{{ courseproduct.description | safe }}</p>
                         </div>
                       </div>
-                      </div>
+                         </div>
+                    <!-- participant data ----->
+                        <!-- payment data part of the form -->
+                        <h4 class="ui dividing header">Teilnehmer-Daten</h4>
+
+                        {% if user.is_authenticated %}
+                        <p>{{ user.first_name }} {{ user.last_name }}
+                            <br>{{ user.email }}<br>Benutzername: {{ user.username }}
+                        </p>
+
+                        {% else %}
+                        <p>{{ newuser.first_name }} {{ newuser.last_name }}
+                            <br>{{ newuser.email }}<br>Benutzername: {{ newuser.username }}
+                        </p>
+                        {% endif %}
+
+
                 {% if not request.user.is_authenticated %}
-                    <div class="ui header medium">Setzen Sie Ihr Passwort!</div>
-                    <p>Sie sind bereits im System registriert. Damit sie sich einloggen können
-                    fordern sie bitte einen Link zum Setzen Ihres Passworts an.
+                    <div class="ui header medium">Setze Dein Passwort!</div>
+                    <p>Du bist bereits im System registriert. Damit Du Dich einloggen kannst,
+                    wurde eine email zu Setzen Deines Passworts an Dich geschickt.
                     </p>
-                    <a href="{{ password_reset_url }}" class="ui button medium">Link zu Setzen des Passworts anfordern</a>
 
                         <p></p>
-                        <p>Wenn Sie sonst noch Fragen haben, schreiben Sie gerne an uns:
+                        <p>Wenn Du sonst noch Fragen hast, schreibe uns gerne:
                         <strong>mentoki@mentoki.com</strong></p>
                     </p>
+                {% else %}
+                    <p>Den Zugang zum Kurs findest Du auf Deinem
+                        <a href="{{ desk_url }}">Schreibtisch.</a></p>
                 {% endif %}
                 <p>Mit lieben Grüssen</p>
                 <p id="signature">Sabine Maennel und Anette Pekrul</p>

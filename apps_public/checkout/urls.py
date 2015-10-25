@@ -14,7 +14,7 @@ urlpatterns = patterns('',
     url(r'^(?P<slug>[a-z0-9_-]{3,50})/(?P<temporder_pk>\d{1,4})/zahlen$',
         PaymentView.as_view(), name='payment'),
 
-    url(r'^(?P<slug>[a-z0-9_-]{3,50})/(?P<pk>[a-z0-9]{3,50})/danke$', SuccessView.as_view(),
+    url(r'^(?P<slug>[a-z0-9_-]{3,50})/(?P<order_pk>\d{1,4})/danke$', SuccessView.as_view(),
         name='payment_success'),
 )
 

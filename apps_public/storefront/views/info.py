@@ -89,6 +89,6 @@ class CourseGroupOfferView(
                 CourseProduct.objects.for_new_customers_by_course(course=course)
             context['out_of_reach_courseproducts'] = \
                 CourseProduct.objects.not_for_new_customers_by_course(course=course)
-        print context
+
         return context
 

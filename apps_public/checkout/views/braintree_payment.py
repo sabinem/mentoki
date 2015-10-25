@@ -123,6 +123,7 @@ class PaymentView(
         # prefetched if his customer_id is included when requesting the token
         # --------------------------------------
         context['client_token'] = braintree.ClientToken.generate(braintree_token_customer_arg)
+        # TODO Benutzer im Fehlerfall auf eine Fehlerseite schicken.
         logger.debug('payment token generated')
 
         return context
@@ -133,16 +134,16 @@ class PaymentView(
         """
         # payment nounce
         nonce = form.cleaned_data['payment_method_nonce']
-        logger.debug('payment nonce exists %s' % nonce)
+
 
         # ----------------------------------------
         # get temporary order and prepare date
         # ----------------------------------------
-        print nonce
 
         temporder = get_object_or_404(
             TempOrder,
             pk=self.kwargs['temporder_pk'])
+        #TODO: anders reagieren
 
         # sales data
         amount = str(temporder.courseproduct.sales_price)
@@ -181,7 +182,7 @@ class PaymentView(
         transaction_data['merchant_account_id'] = merchant_account_id
         transaction_data['merchant_account_id'] = merchant_account_id
         transaction_data['payment_method_nonce'] = nonce
-        transaction_data['amount'] = '14.00'
+        transaction_data['amount'] = amount
         transaction_data['options'] = {
                     'submit_for_settlement': True,
                     'store_in_vault_on_success': True,
@@ -193,9 +194,11 @@ class PaymentView(
                             "last_name": last_name,
                             "email": email
                           }
-        result = braintree.Transaction.sale(transaction_data)
         logger.debug('prepare transaction %s'
                      % (transaction_data))
+        #TODO abfangen wennbraintree nicht verfügbar ist
+        result = braintree.Transaction.sale(transaction_data)
+
 
         # ---------------------------
         # if the result is success, create user, customer and transaction object
@@ -217,6 +220,8 @@ class PaymentView(
 
             if not hasattr(user, 'customer'):
                 # create a customer object
+                # TODO customer email first_name und last_name raus aus dem customer, aber in der Order speichern
+
                 customer = Customer.objects.create_new_customer(
                     braintree_customer_id=result.transaction.customer['id'],
                     first_name=first_name,
@@ -230,18 +235,18 @@ class PaymentView(
                 customer = user.customer
 
             #create order
-            order = Order.objects.create(
+            self.order = Order.objects.create(
                 courseproduct=courseproduct,
                 customer=customer,
                 income=amount,
                 currency=currency
             )
-            self.transaction = SuccessfulTransaction.objects.create(
+            transaction = SuccessfulTransaction.objects.create(
                 braintree_transaction_id=result.transaction.id,
                 amount=amount,
                 currency=currency,
                 braintree_merchant_account_id=merchant_account_id,
-                order=order,
+                order=self.order,
                 customer=customer
             )
         # ---------------------------
@@ -281,4 +286,4 @@ class PaymentView(
         """
         return reverse('checkout:payment_success',
                        kwargs={'slug': self.kwargs['slug'],
-                               'pk': self.transaction.pk})
+                               'order_pk': self.order.pk})

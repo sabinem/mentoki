@@ -31,10 +31,10 @@ class CourseProductManager(models.Manager):
     Querysets for CourseEvents
     """
     def for_new_customers_by_course(self, course):
-        return self.filter(course=course, has_depedencies=False).order_by('display_nr')
+        return self.filter(course=course, has_dependencies=False).order_by('display_nr')
 
     def not_for_new_customers_by_course(self, course):
-        return self.filter(course=course, has_depedencies=True).order_by('display_nr')
+        return self.filter(course=course, has_dependencies=True).order_by('display_nr')
 
 class CourseProduct(TimeStampedModel):
 
@@ -63,7 +63,7 @@ class CourseProduct(TimeStampedModel):
                                  default=CURRENCY_CHOICES.euro )
 
     can_be_bought_only_once = models.BooleanField(default=False)
-    has_depedencies = models.BooleanField(default=False)
+    has_dependencies = models.BooleanField(default=False)
     dependencies = models.ForeignKey('self', null=True, blank=True)
     course = models.ForeignKey(Course)
     courseevent = models.ForeignKey(CourseEvent, blank=True, null=True)
@@ -97,6 +97,8 @@ class CourseProduct(TimeStampedModel):
             percentage = 100 - self.specialoffer.percentage_off
             sales_price = int(self.price) * percentage / 100.00
             return sales_price
+        else:
+            return self.price
 
 
     def save(self, *args, **kwargs):
