@@ -78,6 +78,8 @@ class CheckoutStartView(
                 courseproduct = get_object_or_404(
                     CourseProduct,
                     slug=self.kwargs['slug'])
+                print " courseproducts found %s" % courseproduct
+                print "----------------"
                 if hasattr(user, 'customer'):
                     customer=user.customer
                     print " is customer"
@@ -109,6 +111,10 @@ class CheckoutStartView(
                         print coursegroup_url
 
                         return coursegroup_url
+                else:
+                    print " not customer"
+                    print "----------------"
+                    return product_url
 
             else:
                 # product is not defined
