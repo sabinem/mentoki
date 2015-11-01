@@ -65,6 +65,8 @@ class Product(TimeStampedModel):
     product_type = models.ForeignKey(
         ProductType,
         verbose_name="Produktart",
+        null=True,
+        blank=True
     )
 
     objects = ProductManager()

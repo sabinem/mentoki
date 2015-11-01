@@ -41,6 +41,7 @@ class SpecialOfferManager(models.Manager):
             return offer
         except ObjectDoesNotExist:
             pass # try next filter
+        """
         if courseproduct.product_type.is_courseevent_participation:
             logger.debug('try eventoffers')
             try:
@@ -62,6 +63,7 @@ class SpecialOfferManager(models.Manager):
             return offer
         except ObjectDoesNotExist:
             return None
+        """
 
 
 class SpecialOffer(TimeStampedModel):

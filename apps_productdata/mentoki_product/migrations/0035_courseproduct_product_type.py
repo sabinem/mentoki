@@ -7,13 +7,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('mentoki_product', '0045_auto_20151030_0956'),
+        ('mentoki_product', '0034_auto_20151101_2111'),
     ]
 
     operations = [
-        migrations.RenameField(
+        migrations.AddField(
             model_name='courseproduct',
-            old_name='dependencies',
-            new_name='dependency',
+            name='product_type',
+            field=models.ForeignKey(verbose_name='Produktart', blank=True, to='mentoki_product.ProductType', null=True),
         ),
     ]

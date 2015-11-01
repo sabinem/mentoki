@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='user',
             name='checkout_product_slug',
-            field=models.SlugField(blank=True),
+            field=models.SlugField(null=True, blank=True),
         ),
     ]
