@@ -58,7 +58,6 @@ INSTALLED_APPS += (
     'pagedown',
     'django_markdown',
     'formtools',
-    'django_countries',
 )
 
 # installed apps mentoki
