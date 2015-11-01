@@ -2,9 +2,10 @@
 
 from django.conf.urls import patterns, url
 
-from .views.info import CourseProductGroupsListView, \
-    CourseGroupDetailView, CourseGroupMentorsView, CourseGroupOfferView
-
+from .views.courseproductgroup_info import \
+    CourseGroupDetailView, CourseGroupMentorsView
+from .views.courseproductgroup_list import CourseProductGroupsListView
+from .views.courseproductgroup_sales import CourseGroupOfferView
 
 
 urlpatterns = patterns('',

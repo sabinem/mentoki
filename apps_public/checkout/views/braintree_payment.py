@@ -1,7 +1,8 @@
 # coding: utf-8
 
 """
-Braintree Integration Payment Form for Authenticated Users
+Braintree Integration Payment View
+handles payment for authenticated and anonymous users
 """
 
 from __future__ import unicode_literals, absolute_import
@@ -27,8 +28,6 @@ from apps_customerdata.customer.models.transaction import \
 from apps_customerdata.customer.models.order import Order
 from apps_customerdata.customer.models.temporder import TempOrder
 
-from apps_productdata.mentoki_product.models.courseproduct \
-    import CourseProduct
 from apps_productdata.mentoki_product.models.courseproductgroup import \
     CourseProductGroup
 from apps_productdata.mentoki_product.constants import CURRENCY_CHOICES

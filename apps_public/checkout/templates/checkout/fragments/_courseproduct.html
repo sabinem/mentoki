@@ -3,23 +3,20 @@
                           {% url 'checkout:braintree' slug=courseproduct.slug as pay_url %}
 
                       <div class="item" >
-                        <div class="right floated content">
-                          <a href="{{ pay_url }}" class="ui button">
-                              {% if courseproduct.specialoffer %}
-                             jetzt<span style="color:#eb3d00">
-                             {{ courseproduct.sales_price }}</span>
-                              statt
-
-                               {{ courseproduct.price }}
-                              {% else %}
-                                  jetzt kaufen für
-                              {{ courseproduct.price }}
-                              {% endif %}
-
-                              {{ courseproduct.currency }}
-                          </a>
-                        </div>
                         <div class="content">
+                    <div class="right floated content">
+                            {% if courseproduct.sales_price != courseproduct.price %}
+                                jetzt<span style="color:#eb3d00">
+                                {{ courseproduct.sales_price }}</span>
+                                statt
+                                {{ courseproduct.price }}
+                            {% else %}
+                                Preis
+                                {{ courseproduct.price }}
+                            {% endif %}
+                            {{ item.courseproduct.currency }}
+                    </div>
+
                             <div class="header">
                           {{ courseproduct.name }}
                             </div>

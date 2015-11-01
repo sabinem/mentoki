@@ -58,6 +58,7 @@ INSTALLED_APPS += (
     'pagedown',
     'django_markdown',
     'formtools',
+    'django_countries',
 )
 
 # installed apps mentoki
@@ -243,12 +244,6 @@ CACHES = {
     }
 }
 
-# Login and redirect urls
-from django.core.urlresolvers import reverse_lazy
-LOGIN_URL = reverse_lazy("account_login")
-LOGIN_REDIRECT_URL = reverse_lazy("desk:profile")
-LOGOUT_URL = reverse_lazy("home:home")
-
 # Logging
 # TODO: adjust loglevel DEBUG/INFO
 LOGGING = {
@@ -280,6 +275,14 @@ LOGGING = {
             'maxBytes': 500000,  # 500 kB
             'backupCount': 4  ,
         },
+        'productfile': {
+            'filename': os.path.join(BASE_DIR, 'logfiles', 'product.log' ),
+            'formatter': 'verbose',
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'maxBytes': 500000,  # 500 kB
+            'backupCount': 4  ,
+        },
         'backendfile': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
@@ -287,6 +290,13 @@ LOGGING = {
             'filename': os.path.join(BASE_DIR, 'logfiles', 'teacherativity.log' ),
             'formatter': 'verbose',
             'backupCount': 4  ,
+        },
+        'storefrontfile': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'maxBytes': 500000,  # 500 kB
+            'filename': os.path.join(BASE_DIR, 'logfiles', 'storefront.log' ),
+            'formatter': 'verbose'
         },
         'datafile': {
             'level': 'DEBUG',
@@ -311,6 +321,21 @@ LOGGING = {
             'formatter': 'verbose',
             'backupCount': 4  ,
         },
+        'publicfile': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'maxBytes': 500000,  # 500 kB
+            'filename': os.path.join(BASE_DIR, 'logfiles', 'publicactivity.log' ),
+            'formatter': 'verbose'
+        },
+        'displayproductinformationfile': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'maxBytes': 500000,  # 500 kB
+            'filename': os.path.join(BASE_DIR, 'logfiles',
+                                     'displayproductinformation.log' ),
+            'formatter': 'verbose'
+        },
         'console':{
             'level':'DEBUG',
             'class':'logging.StreamHandler',
@@ -319,35 +344,67 @@ LOGGING = {
 
     },
     'loggers': {
+        # emails that were send
+        'public.product_information_log': {
+            'handlers': ['displayproductinformationfile'],
+            'propagate': True,
+            'level': 'DEBUG',
+        },
+
+        # emails that were send
         'apps_core.email': {
             'handlers': ['emailfile'],
             'propagate': True,
             'level': 'DEBUG',
         },
+        # database changes for internal tables
         'apps_data': {
             'handlers': ['datafile'],
             'propagate': True,
             'level': 'DEBUG',
         },
+        # internal activity in the classroom and teachers backend
         'apps_internal.classroom': {
             'handlers': ['classroomfile'],
             'propagate': True,
             'level': 'DEBUG',
         },
+        # activity on the teachers dashboard
         'apps_internal.coursebackend': {
             'handlers': ['backendfile'],
             'propagate': True,
             'level': 'DEBUG',
         },
+        # changes in the productdata
+        'apps_productdata': {
+            'handlers': ['productfile'],
+            'propagate': True,
+            'level': 'DEBUG',
+        },
+        # changes in the customerdata
         'apps_customerdata': {
             'handlers': ['customerdatafile'],
             'propagate': True,
             'level': 'DEBUG',
         },
+        # checkout of courses / payment
         'apps_public.checkout': {
             'handlers': ['paymentfile'],
             'propagate': True,
-            'level': 'INFO',
+            'level': 'DEBUG',
+        },
+        # logs the selection: how it is decided which products are shown
+        # to which customers
+        'apps_public.storefront': {
+            'handlers': ['storefrontfile'],
+            'propagate': True,
+            'level': 'DEBUG',
+        },
+        # public file: users path
+        'accounts': {
+            'handlers': ['publicfile'],
+            'propagate': True,
+            'level': 'DEBUG',
         },
     }
 }
@@ -358,6 +415,13 @@ LOGGING = {
 RAVEN_CONFIG = {
     'dsn': os.environ.get('SENTRY_DSN'),
 }
+
+# Login and redirect urls
+from django.core.urlresolvers import reverse_lazy
+LOGIN_URL = reverse_lazy("account_login")
+LOGIN_REDIRECT_URL = reverse_lazy("desk:redirect")
+LOGOUT_URL = reverse_lazy("home:home")
+COURSE_LIST_URL = reverse_lazy('storefront:list')
 
 # 3rd party app allauth:
 # allauth backends
@@ -377,8 +441,13 @@ ACCOUNT_USER_MODEL_USERNAME_FIELD = 'username'
 ACCOUNT_USER_MODEL_EMAIL_FIELD = 'email'
 # an email is required
 ACCOUNT_EMAIL_REQUIRED = 'True'
+# email must be confirmed
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+# login automatically after email has been confirmed
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 
-
+ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = None
+ACCOUNT_SIGNUP_FORM_CLASS = 'accounts.forms.SignupForm'
 
 #  3rd party app markdown:
 MARKDOWN_EDITOR_SKIN = 'simple'

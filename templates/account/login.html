@@ -7,7 +7,7 @@
 
 {% block content %}
 
-<h1>{% trans "Sign In" %}</h1>
+<h2>{% trans "Sign In" %}</h2>
 
 {% get_providers as socialaccount_providers %}
 
@@ -32,16 +32,33 @@ for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
 
 {% endif %}
 
+<!-- messages -->
+{% include 'base/fragments/_messages.html' %}
+
+<h3>
+    Oder wenn Du noch nicht bei Mentoki registriert bist:
+    <a href="{{ signup_url }}" class="ui button">Jetzt registrieren</a>
+</h3>
+
 <form class="login ui form" method="POST" action="{% url 'account_login' %}">
-  {% csrf_token %}
-  {{ form.as_p }}
-  {% if redirect_field_value %}
+
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    {% if redirect_field_value %}
+
       <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-  {% endif %}
-  <a class="button secondaryAction" href="{% url 'account_reset_password' %}">
+
+    {% endif %}
+
+    <a class="button secondaryAction" href="{% url 'account_reset_password' %}">
       {% trans "Forgot Password?" %}
-  </a>
-  <button class="ui button primaryAction" type="submit">{% trans "Sign In" %}</button>
+    </a>
+
+    <button class="ui button primaryAction" type="submit">{% trans "Sign In" %}</button>
+
 </form>
+
 
 {% endblock %}

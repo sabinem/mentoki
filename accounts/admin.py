@@ -16,7 +16,7 @@ class UserAdmin(UserAdmin):
     form = CustomUserChangeForm
     add_form = CustomUserCreationForm
 
-    list_display = ('id', 'username', 'email', 'is_staff', 'is_superuser', 'is_teacher', 'is_student', 'studying')
+    list_display = ('id', 'username', 'email', 'checkout_product_slug', 'is_staff', 'is_superuser', 'is_teacher', 'is_student', 'studying')
     list_filter = ('is_superuser', 'is_teacher', 'is_student')
 
     fieldsets = (

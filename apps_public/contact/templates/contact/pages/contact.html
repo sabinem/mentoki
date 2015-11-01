@@ -1,4 +1,4 @@
-{% extends "base/base_public_basic.html" %}
+{% extends "contact/pages/base.html" %}
 {% load i18n %}
 
 {% block page_section_css_id %}standard_public_page_body_2{% endblock %}
@@ -8,7 +8,11 @@
 {% block meta_description %}Kontaktiere uns, wenn Du online lernen oder unterrichten willst{% endblock %}
 {% block meta_keywords %}online lernen, online unterrichten {% endblock %}
 
-{% block content %}
+{% block contact_page_image %}
+    <img class="ui image centered huge image" src="/static/img/anette_and_sabine.jpg">
+{% endblock %}
+
+{% block contact_content %}
 
     <!--page content -->
     <h2 class="ui header ">{% trans 'Kontaktiere uns!' %}
@@ -18,8 +22,8 @@
     <!-- form -->
     <form class="ui form" method="post" action="">
         {% csrf_token %}
-        {{ form }}
-        <button type="submit" value="post" class="ui teal button">
+        {{ form.as_p }}
+        <button type="submit" value="post" class="ui button">
             Abschicken
         </button>
     </form>

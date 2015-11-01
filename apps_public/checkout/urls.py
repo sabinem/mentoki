@@ -2,19 +2,28 @@
 
 from django.conf.urls import patterns, url
 
-from .views.payment_success import SuccessView
-from .views.braintree_payment import PaymentView
-from .views.checkorder import CheckOrderView
+from .views.payment_result import PaymentSuccessView, PaymentFailureView
+from .views.payment import PaymentView
+from .views.checkout_failed import CheckoutFailedView
+from .views.redirect import CheckoutStartView
 
 urlpatterns = patterns('',
 
-    url(r'^(?P<slug>[a-z0-9_-]{3,50})/checkorder$',
-        CheckOrderView.as_view(), name='checkorder'),
+    url(r'^$',
+        CheckoutStartView.as_view(), name='redirect'),
 
-    url(r'^(?P<slug>[a-z0-9_-]{3,50})/(?P<temporder_pk>\d{1,4})/zahlen$',
+    url(r'^(?P<slug>[a-z0-9_-]{3,50})/redirect$',
+        CheckoutStartView.as_view(), name='redirect_to_product'),
+
+    url(r'^(?P<slug>[a-z0-9_-]{3,50})/zahlen$',
         PaymentView.as_view(), name='payment'),
 
-    url(r'^(?P<slug>[a-z0-9_-]{3,50})/(?P<order_pk>\d{1,4})/danke$', SuccessView.as_view(),
+    url(r'^(?P<slug>[a-z0-9_-]{3,50})/(?P<order_pk>\d{1,4})/danke$',
+        PaymentSuccessView.as_view(),
         name='payment_success'),
+
+    url(r'^(?P<slug>[a-z0-9_-]{3,50})/(?P<transaction_pk>\d{1,4})/fehler$',
+        PaymentFailureView.as_view(),
+        name='payment_failure'),
 )
 

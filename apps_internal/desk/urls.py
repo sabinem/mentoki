@@ -4,8 +4,11 @@ from __future__ import unicode_literals, absolute_import
 
 from django.conf.urls import patterns, url
 
-from .views import DeskStartView, DeskTeachView, DeskLearnView, \
-    DeskAdminView, DeskProfileView
+from .views.redirect import DeskRedirectView
+from .views.learn import DeskLearnView
+from .views.teach import DeskTeachView
+from .views.admin import DeskAdminView
+from .views.profile import DeskProfileView
 
 
 urlpatterns = patterns('',
@@ -15,9 +18,9 @@ urlpatterns = patterns('',
 
     url(r'^lernen$', DeskLearnView.as_view(), name='learn' ),
 
-    url(r'^profile$', DeskProfileView.as_view(), name='profile' ),
-
     url(r'^admin$', DeskAdminView.as_view(), name='admin' ),
+
+    url(r'^redirect$', DeskRedirectView.as_view(), name='redirect' ),
 
 )
 

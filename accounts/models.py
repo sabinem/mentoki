@@ -8,6 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from apps_data.course.models.course import Course
 from apps_data.courseevent.models.courseevent import CourseEvent
+from apps_data.courseevent.constants import PARTICIPANT_STATUS_CHOICES
 
 
 class UserManager(BaseUserManager):
@@ -67,6 +68,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     updated_at = models.DateTimeField(auto_now=True)
     profile_image = models.ImageField(upload_to="uploads", blank=False, null=False,
                                       default='/static/img/happyface.jpg' )
+    checkout_product_slug = models.SlugField(
+        blank=True, null=True
+    )
 
     objects = UserManager()
 
@@ -102,6 +106,20 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def studying(self):
         return CourseEvent.objects.filter(courseeventparticipation__user=self)
+
+    def studying_full(self):
+        return self.studying()\
+            .filter(
+               courseeventparticipation__participation_type=\
+                   PARTICIPANT_STATUS_CHOICES.full
+            )
+
+    def studying_part(self):
+        return self.studying()\
+            .filter(
+               courseeventparticipation__participation_type=\
+                   PARTICIPANT_STATUS_CHOICES.part
+            )
 
     def has_ownership(self, course):
         try:

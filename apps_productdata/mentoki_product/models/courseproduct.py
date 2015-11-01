@@ -10,6 +10,7 @@ from __future__ import unicode_literals, absolute_import
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.core.exceptions import ObjectDoesNotExist
 
 from model_utils.models import TimeStampedModel
 from model_utils.fields import MonitorField
@@ -20,7 +21,8 @@ from apps_data.course.models.course import Course
 
 from froala_editor.fields import FroalaField
 
-from ..constants import CURRENCY_CHOICES
+from ..constants import CURRENCY_CHOICES, PRODUCT_TO_CUSTOMER_CASES
+from .product import Product
 
 import logging
 logger = logging.getLogger(__name__)
@@ -28,120 +30,103 @@ logger = logging.getLogger(__name__)
 
 class CourseProductManager(models.Manager):
     """
-    Querysets for CourseEvents
+    Querysets for CourseProducts
     """
-    def for_new_customers_by_course(self, course):
-        return self.filter(course=course, has_dependencies=False).order_by('display_nr')
+    def without_dependencies_by_course(self, course):
+        """
+        gets all courseproducts that have no dependencies for one course
+        """
+        return self.filter(
+            course=course,
+            dependencies=None)\
+            .order_by('display_nr')
 
-    def not_for_new_customers_by_course(self, course):
-        return self.filter(course=course, has_dependencies=True).order_by('display_nr')
+    def with_dependencies_by_course(self, course):
+        """
+        gets all courseproducts that have dependencies for one course
+        """
+        return self.filter(
+            course=course,
+            product_type__has_dependencies=True)\
+            .exclude(dependencies=None)\
+            .order_by('display_nr')
 
-class CourseProduct(TimeStampedModel):
+    def all_by_course(self, course):
+        """
+        gets all courseproducts that have dependencies for one course
+        """
+        return self.filter(
+            course=course)\
+            .order_by('display_nr')
 
-    name = models.CharField(max_length=200, default="Kurs-Teilnahme")
 
-    description = FroalaField()
-
-    product_nr = models.CharField(max_length=20, default=1)
-
-    slug = models.SlugField()
-
-    price = models.DecimalField(
-        max_digits=12,
-        decimal_places=2,
-        null=True,
-        blank=True,
-        verbose_name=_('Verkaufspreis'))
-
-    display_nr = models.IntegerField(default=1)
-
-    price_changed = MonitorField(
-            monitor='price',
-            verbose_name=_("letzte Preisänderung am"))
-
-    currency = models.CharField( max_length=3, choices=CURRENCY_CHOICES,
-                                 default=CURRENCY_CHOICES.euro )
-
-    can_be_bought_only_once = models.BooleanField(default=False)
-    has_dependencies = models.BooleanField(default=False)
-    dependencies = models.ForeignKey('self', null=True, blank=True)
+class CourseProduct(Product):
+    """
+    Course Products are Products that belong to one Course
+    """
     course = models.ForeignKey(Course)
     courseevent = models.ForeignKey(CourseEvent, blank=True, null=True)
-    PRODUCT_TYPE = Choices(('courseevent', 'courseevent', _('Kursteilnahme')),
-                           ('part', 'courseevent_part', _('Teilabschnitt einer Kurses')),
-                           ('addon', 'other', _('anderes Produkt')),
-                           ('selflearn', 'selflearn', _('Material und Forum-Zugang')),
-                           )
-    product_type =  models.CharField(
-        verbose_name="Produktart",
-        max_length=12,
-        choices=PRODUCT_TYPE,
-        default=PRODUCT_TYPE.courseevent)
-
-    meta_keywords = models.CharField(max_length=200, default="x")
-    meta_description = models.CharField(max_length=200, default="x")
-    meta_title = models.CharField(max_length=100, default="x")
+    dependency = models.ForeignKey('self', null=True, blank=True, related_name="dependent_on")
+    part_of = models.ForeignKey('self', null=True, blank=True, related_name="belongs_to")
 
     objects = CourseProductManager()
 
     class Meta:
-        verbose_name = _("Kurs-Produkt")
-        verbose_name_plural = _("Kurs-Produkte")
+        verbose_name = _("Kursangebote")
+        verbose_name_plural = _("Kursangebote")
 
     def __unicode__(self):
-        return "%s: %s" % (self.course.title, self.name)
+        return u'[%s] %s' % (self.id, self.name)
+
 
     @property
     def sales_price(self):
-        if hasattr(self, 'specialoffer'):
-            percentage = 100 - self.specialoffer.percentage_off
+        logger.debug('------------ calculating sales_price for [%s]'
+                 % (self))
+        from .specialoffer import SpecialOffer
+        specialoffer = SpecialOffer.objects.get_special_offer_courseproduct(
+            courseproduct=self)
+        if specialoffer:
+            logger.debug('specialoffer %s found for %s'
+                     % (specialoffer, self))
+            percentage = 100 - specialoffer.percentage_off
+            logger.debug('----- percentage %s, percentage_off %s'
+                     % (percentage, specialoffer.percentage_off))
             sales_price = int(self.price) * percentage / 100.00
+            logger.debug('----- price %s, sales_price %s'
+                     % (self.price, sales_price))
             return sales_price
         else:
+            logger.debug('no specialoffer found for %s'
+                     % (self))
             return self.price
 
-
-    def save(self, *args, **kwargs):
-        #TODO check wether prices addup to total price
-        super(CourseProduct, self).save(*args, **kwargs)
-
-
-class CourseAddOnProductManager(models.Manager):
-    def get_queryset(self):
-        return super(CourseAddOnProductManager, self).get_queryset().filter(
-            product_type='addon')
-
-class CourseEventProductPartManager(models.Manager):
-    def get_queryset(self):
-        return super(CourseEventProductPartManager, self).get_queryset().filter(
-            product_type='part')
-
-class CourseEventProductManager(models.Manager):
-    def get_queryset(self):
-        return super(CourseEventProductManager, self).get_queryset().filter(
-            product_type='courseevent')
-
-
-class CourseEventFullProduct(CourseProduct):
-    class Meta:
-        proxy = True
-
-    def __str__(self):
-        return self.name.upper()
-
-
-class CourseEventPartProduct(CourseProduct):
-    class Meta:
-        proxy = True
-
-    def __str__(self):
-        return self.name.upper()
-
-
-class CourseAddOnProduct(CourseProduct):
-    class Meta:
-        proxy = True
-
-    def __str__(self):
-        return self.name.upper()
+    def available_with_past_orders(self, ordered_products=None):
+        """
+        checks for a given courseproduct and course whether it can be
+        booked by a customer
+        """
+        # if no products have been orded then the product is available
+        # if it has no dependencies
+        if not ordered_products:
+            if self.dependency:
+                return False
+        else:
+        # case ordered products exists
+            if self in ordered_products:
+                # product has been already ordered
+                return False
+            else:
+                if self.dependency and not self.dependency in ordered_products:
+                    # dependencies are not fullfilled
+                    return False
+                for item in ordered_products:
+                    if item.part_of == self:
+                        # if parts of the products have been bought already
+                        return False
+                if self.part_of in ordered_products:
+                    # the whole of which the product is a part of has already
+                    # been bought
+                    return False
+        return True
 

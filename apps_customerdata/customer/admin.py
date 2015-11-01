@@ -9,36 +9,27 @@ from __future__ import unicode_literals, absolute_import
 from django.contrib import admin
 
 from .models.customer import Customer
-from .models.transaction import SuccessfulTransaction, FailedTransaction
+from .models.transaction import Transaction
 from .models.order import Order
-from .models.temporder import TempOrder
 
+#TODO determine later on what exactly is needed in the admin
 
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
     """
     Customers that pay and are registered at braintree, the payment provider
     """
-    list_display = ('braintree_customer_id', 'user', 'first_name', 'last_name', 'created' )
-    list_filter = ('created','user')
+    list_display = ( 'id', 'user', 'braintree_customer_id', 'created')
+    list_filter = ('user', 'created')
 
 
-@admin.register(SuccessfulTransaction)
+@admin.register(Transaction)
 class Transaction(admin.ModelAdmin):
     """
     Transactions that occur when payment happens, they are also registered at braintree,
     the payment provider
     """
-    list_display = ('order', 'customer', 'amount', 'course')
-
-
-@admin.register(FailedTransaction)
-class Transaction(admin.ModelAdmin):
-    """
-    Transactions that occur when payment happens, they are also registered at braintree,
-    the payment provider
-    """
-    list_display = ('temporder', 'customer', 'amount', 'course')
+    list_display = ('id', )
 
 
 @admin.register(Order)
@@ -47,13 +38,4 @@ class Order(admin.ModelAdmin):
     Orders are between registered user only since they are listed here only after
     payment occured and the the users got registered
     """
-    list_display = ('courseproduct', 'customer', 'order_status', 'course')
-
-
-@admin.register(TempOrder)
-class TempOrder(admin.ModelAdmin):
-    """
-    Incomplete orders are listed here. It may make sense to send out an email,
-    if someone attempted to book, but could not pay.
-    """
-    list_display = ('courseproduct', 'participant_email', 'user')
+    list_display = ('id', 'courseproduct', 'customer', 'order_status' )

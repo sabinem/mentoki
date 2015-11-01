@@ -25,7 +25,6 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext_lazy as _
-from django.shortcuts import get_object_or_404
 from django.core.validators import ValidationError
 
 from model_utils.models import TimeStampedModel
@@ -33,9 +32,8 @@ from model_utils.managers import QueryManager
 from model_utils.fields import MonitorField
 from model_utils import Choices
 
-#from django_prices.models import PriceField
-
 from apps_data.course.models.course import Course
+from ..constants import PARTICIPANT_STATUS_CHOICES
 
 
 class CourseEventManager(models.Manager):
@@ -276,6 +274,21 @@ class ParticipationManager(models.Manager):
     def active(self,courseevent):
         return self.filter(courseevent=courseevent, hidden=False).select_related('user')
 
+    def create(self, user, courseevent):
+        courseeventparticipation = CourseEventParticipation(
+            user=user,
+            courseevent=courseevent
+        )
+        courseeventparticipation.save()
+        return courseeventparticipation
+
+    def participating_in(self, user, course, participation_type):
+        return self.filter(
+               user=user,
+               courseevent__course = course,
+               participation_type=participation_type
+            ).values_list('courseevent', flat=True)
+
 
 class CourseEventParticipation(TimeStampedModel):
 
@@ -285,7 +298,10 @@ class CourseEventParticipation(TimeStampedModel):
         verbose_name=_('versteckt'),
         default=False)
     hidden_status_changed = MonitorField(monitor='hidden')
-
+    participation_type = models.CharField(
+        max_length=10,
+        choices=PARTICIPANT_STATUS_CHOICES,
+        default=PARTICIPANT_STATUS_CHOICES.preview)
     objects = ParticipationManager()
 
     class Meta:

@@ -22,24 +22,17 @@
                 <div class="column ten wide">
 
                     {% include 'checkout/fragments/_2steps_checkout_2.html' %}
-                    {% include 'checkout/fragments/_courseproduct.html' %}
+
 
                     <!-- participant data ----->
                         <!-- payment data part of the form -->
                         <h4 class="ui dividing header">Teilnehmer-Daten</h4>
 
-                        {% if user.is_authenticated %}
                         <p>{{ user.first_name }} {{ user.last_name }}
                             <br>{{ user.email }}<br>Benutzername: {{ user.username }}
                         </p>
-
-                        {% else %}
-                        <p>{{ temporder.participant_first_name }} {{ temporder.participant_last_name }}
-                            <br>{{ temporder.participant_email }}<br>Benutzername: {{ temporder.participant_username }}
-                        </p>
-                        {% endif %}
-
-
+                    <h4 class="ui dividing header">Buchung</h4>
+                    {% include 'checkout/fragments/_courseproduct.html' %}
                     <form id="checkout-form" method="post" class="ui form" autocomplete="off">
                         {% csrf_token %}
 
@@ -50,7 +43,7 @@
                         {% endif %}
 
                         <!-- payment data part of the form -->
-                        <h4 class="ui dividing header">Zahlungs-Daten</h4>
+                        <h4 class="ui dividing header">Zahlung</h4>
                         {% include 'checkout/fragments/_payers_info_form.html' %}
 
                         <p>Bitte entweder Paypal auswählen oder direkt Ihre Kreditkartendaten eingeben.</p>

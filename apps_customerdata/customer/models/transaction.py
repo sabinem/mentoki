@@ -1,118 +1,113 @@
 #encoding: utf-8
 
-import datetime
+"""
+Transactions are stored here. They correspond to braintree transactions.
+"""
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from .customer import Customer
+from model_utils.models import TimeStampedModel
+
 from apps_data.course.models.course import Course
 from apps_customerdata.customer.models.order import Order
-from apps_customerdata.customer.models.temporder import TempOrder
 from apps_productdata.mentoki_product.constants import CURRENCY_CHOICES
 
+from ..constants import TRANSACTION_ERROR_CODE
+from .customer import Customer
 
-class BaseTransaction(models.Model):
+
+class TransactionManager(models.Manager):
     """
-    This is an abstract class that defines a structure of Payment model that will be
-    generated dynamically with one additional field: ``order``
+    handles Transactions with the payment provider braintree
     """
-    # what mentoki wanted
+    pass
+
+
+class Transaction(TimeStampedModel):
+    """
+    Transactions are stored in this model. A flag indicates whether
+    they passed successfully.
+    """
+    # order must be present
+    order = models.ForeignKey(Order)
+
+    # will be an index later on
+    course = models.ForeignKey(Course, blank=True, null=True)
+
+    # customer that performs the transaction
+    customer = models.ForeignKey(
+        Customer,
+        blank=True,
+        null=True)
+
+    # payment intention
     amount = models.DecimalField(
         _("amount"),
         decimal_places=4,
         max_digits=20)
     currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES,
         default=CURRENCY_CHOICES.euro )
-    course = models.ForeignKey(Course, blank=True, null=True)
-    customer = models.ForeignKey(Customer)
-    # what braintree got
+
+    # "customer" data, at the point of time when the transaction happened
+    email=models.EmailField(
+        _('Email des Teilnehmers'),
+         default="x"
+    )
+    first_name = models.CharField(
+        _('Vorname der Teilnehmers'),
+        default="x",
+        max_length=40)
+    last_name = models.CharField(
+        max_length=40,
+        default="x"
+    )
+
+    # braintree transaction data and the merchant key that was used
     braintree_transaction_id = models.CharField(
-        max_length=50,
-        primary_key=True,
-        default="x")
+        max_length=10,
+        blank=True)
+    braintree_customer_id = models.CharField(
+        'braintree Kundennr.',
+        max_length=10,
+        blank=True)
+    braintree_payment_token = models.CharField(
+        'braintree Kundennr.',
+        max_length=10,
+        blank=True)
     braintree_merchant_account_id = models.CharField(
         'braintree_merchant',
-        max_length=100,
-        default="default")
-    created = models.DateTimeField(auto_now_add=True)
+        max_length=20,
+        blank=True)
+    braintree_amount = models.CharField(
+        _("amount form braintree"),
+        blank=True,
+        max_length=10)
 
-    class Meta:
-        abstract = True
-        verbose_name = 'Transaktion'
-        verbose_name_plural = 'Transaktionen'
-
-    def __unicode__(self):
-        return self.braintree_transaction_id
-
-
-class TransactionManager(models.Manager):
-    def create(self, amount, currency,
-               customer, order,
-               braintree_merchant_account_id,
-               braintree_transaction_id):
-        transaction = SuccessfulTransaction(
-            amount=amount,
-            currency=currency,
-            order=order,
-            course=order.course,
-            customer=customer,
-            braintree_merchant_account_id=braintree_merchant_account_id,
-            braintree_transaction_id=braintree_transaction_id)
-        transaction.save()
-        return transaction
-
-
-class SuccessfulTransaction(BaseTransaction):
-    """
-    This is an abstract class that defines a structure of Payment model that will be
-    generated dynamically with one additional field: ``order``
-    """
-    order = models.ForeignKey(
-        Order
+    # in case there was no success
+    braintree_error_details = models.TextField(
+        blank=True
     )
+
+    # flag, whether the transaction had success
+    flag_payment_sucess = models.BooleanField(default=False)
+
+    # own error code
+    error_code = models.CharField(
+        max_length=12,
+        choices=TRANSACTION_ERROR_CODE,
+        blank=True,
+        default="")
+    # own error message
+    error_message = models.CharField(
+        max_length=250,
+        blank=True,
+        default="")
+
     objects = TransactionManager()
 
     class Meta:
-        verbose_name = 'Erfolgreiche Transaktion'
-        verbose_name_plural = 'Erfolgreiche Transaktionen'
-
-    def __unicode__(self):
-        return self.braintree_transaction_id
+        verbose_name = 'Transaktion'
+        verbose_name_plural = 'Transaktionen'
 
 
-class FailedTransactionManager(models.Manager):
-    def create(self, amount, currency,
-               customer, temporder,
-               braintree_merchant_account_id,
-               braintree_transaction_id):
-        transaction = BaseTransaction(
-            amount=amount,
-            currency=currency,
-            temporder = temporder,
-            customer=customer,
-            braintree_merchant_account_id=braintree_merchant_account_id,
-            braintree_transaction_id=braintree_transaction_id)
-        transaction.save()
-        return transaction
-
-
-class FailedTransaction(BaseTransaction):
-    """
-    This is an abstract class that defines a structure of Payment model that will be
-    generated dynamically with one additional field: ``order``
-    """
-    # what mentoki wanted
-    temporder = models.ForeignKey(
-        TempOrder
-    )
-    braintree_result = models.TextField(blank=True)
-
-    objects = FailedTransactionManager()
-
-    class Meta:
-        verbose_name = 'Nicht erfolgreiche Transaktion'
-        verbose_name_plural = 'Nicht erfolgreiche Transaktionen'
-
-    def __unicode__(self):
-        return self.braintree_transaction_id

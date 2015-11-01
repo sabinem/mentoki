@@ -18,32 +18,18 @@
                     <!-- courseevent detail -->
 
                     <div class="ui cards centered">
-                        {% include 'courseoffer/fragments/_coursecard_details.html' with product=courseeventproduct %}
+                        {% include 'checkout/fragments/_coursecard_details.html' with product=courseeventproduct %}
                     </div>
 
                 </div>
                 <div class="column ten wide">
                     <!-- page content -->
 
-                    <div class="ui header">Hallo {{ invoice.first_name }} {{ invoice.last_name }}</div>
-                <p>Vielen Dank, für Ihr Interesse an {{ invoice.product.courseevent.title }}.</p>
-
-                <p>Wir haben Ihnen eine email mit einem Zahlungslink
-                    geschickt.
-
-                    Sobald sie bezahlt haben, erhalten Sie Ihre Zugangsdaten für den Kurs.</p>
-
-                    <p>Wenden Sie sich gerne an uns, wenn Sie noch Fragen haben.
-
-                    Sie können für Rückfragen die Referenz-Nummer dieses Zahlungsvorgang verwenden:</p>
-                    <div class="ui list">
-                        <div class="item">
-                        <div class="header">
-                            Referenz-Nummer:
-                            {{ invoice.title }}
-                        </div>
-                        </div>
-                    </div>
+                    <div class="ui header">Hallo {{ request.user.first_name }} {{ request.user.last_name }}</div>
+                <p>Vielen Dank, für Ihr Interesse an {{ transaction.coursproduct.name }}.</p>
+                {{ transaction.error_message }}{{ transaction.error_code }}
+                    {{ transaction }}
+                <p>Leider ist Ihre Zahlung fehlgschlagen ...
                 <p>Mit lieben Grüssen</p>
                 <p id="signature">Sabine Maennel und Anette Pekrul</p>
 

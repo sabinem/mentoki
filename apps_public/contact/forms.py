@@ -14,9 +14,27 @@ from mailqueue.models import MailerMessage
 class ContactForm(forms.Form):
     # Kontaktformular
 
-    name = forms.CharField(required=True, max_length=100, label='Name')
-    email = forms.EmailField(required=True)
-    message = forms.CharField(required=True, widget=forms.Textarea, label='Ihre Nachricht')
+    name = forms.CharField(
+        required=True,
+        max_length=100,
+        label='Name',
+        widget=forms.TextInput(
+           attrs={'placeholder':
+                  'Name',
+                  'autofocus': 'autofocus'}))
+    email = forms.EmailField(
+        required=True,
+        max_length=100,
+        label='Email',
+        widget=forms.TextInput(
+           attrs={'placeholder':
+                  'Email'}))
+    message = forms.CharField(
+        required=True,
+        label='Nachricht',
+        widget=forms.Textarea(
+            attrs={'placeholder':
+                  'Deine Nachricht'}))
 
     OUTGOING=u'Kontakt: Bestätigungsmail an den Kunden'
     INTERNAL=u'Weiterleitung Kontaktanfrage, bitte beantworten!'

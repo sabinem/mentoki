@@ -1,7 +1,10 @@
+# coding: utf-8
+from __future__ import unicode_literals, absolute_import
+
 import floppyforms.__future__ as forms
 
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, ReadOnlyPasswordHashField
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 
 from .models import User
 
@@ -60,11 +63,24 @@ class CustomUserChangeForm(UserChangeForm):
 
 
 class SignupForm(forms.Form):
-    first_name = forms.CharField(max_length=30, label='Vorname')
-    last_name = forms.CharField(max_length=30, label='Nachname')
-    kunden_nr = forms.CharField(max_length=30)
+    first_name = forms.CharField(label='Vorname',
+                               max_length=30,
+                               widget=forms.TextInput(
+                                   attrs={'placeholder':
+                                          'Vorname',
+                                          'autofocus': 'autofocus'}))
+    last_name = forms.CharField(label='Nachname',
+                               max_length=30,
+                               widget=forms.TextInput(
+                                   attrs={'placeholder':
+                                          'Nachname'}))
 
     def signup(self, request, user):
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']
+
+        if request.session.has_key('unfinished_checkout'):
+
+            user.checkout_product_slug=\
+                request.session['unfinished_product_slug']
         user.save()

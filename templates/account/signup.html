@@ -7,21 +7,96 @@
 {% block content %}
 <h1>{% trans "Sign Up" %}</h1>
 
-<div class="ui header medium">Hallo
-  {{ customer.first_name }}{{ customer.last_name }},
+<div class="ui header large">Hallo
+  Willkommen bei Mentoki!
 </div>
-<p>Willkommen bei Mentoki! </p>
-<p>Wir haben von Dir folgende email-Addresse gespeichert: <strong>{{ customer.email }}</strong>
-Bitte benachrichtige uns falls Sie falsch ist oder unsere Email nicht bei Dir ankommt.
-<p>Hier kannst DU Dich jetzt anmelden:</p>
+
+<p>Viele Dank für Dein Interesse.</strong>
+Bevor Du bei uns einen Kurs buchen kannst, brauchen wir Deine Kontaktdaten:
+
 <form class="signup ui form" id="signup_form" method="post" action="{% url 'account_signup' %}">
+
   {% csrf_token %}
 
-  {{ form.as_p }}
+    {% if form.non_field_errors %}
+        <div class="ui negative floating message">
+            {{ form.non_field_errors }}
+        </div>
+    {% endif %}
+
+    <div class="ui dividing medium header">Kontaktdaten</div>
+
+    <div class="fields inline">
+
+        <label>Name: Vorname / Nachname</label>
+
+        <div class="field eight wide">
+            {{ form.first_name }}
+        </div>
+        <div class="field eight wide">
+            {{ form.last_name }}
+        </div>
+    </div>
+    {% if form.first_name.errors or form.last_name.errors  %}
+        <div class="ui negative floating message">
+            {{ form.first_name.errors }}
+            {{ form.last_name.errors }}
+        </div>
+    {% endif %}
+
+    <div class="fields inline">
+        <div class="field sixteen wide">
+            {{ form.email.label_tag }}
+            {{ form.email }}
+        </div>
+    </div>
+    {% if form.email.errors %}
+        <div class="ui negative floating message">
+            {{ form.email.errors }}
+        </div>
+    {% endif %}
+
+    <div class="ui dividing medium header">Benutzername auf Mentoki</div>
+
+    <div class="fields inline">
+
+        <div class="field sixteen wide">
+            {{ form.username.label_tag }}
+            {{ form.username }}
+        </div>
+    </div>
+    {% if form.username.errors %}
+        <div class="ui negative floating message">
+            {{ form.username.errors }}
+        </div>
+    {% endif %}
+
+    <div class="ui dividing medium header">Passwort setzen</div>
+
+    <div class="fields inline">
+        <label>Passwort</label>
+        <div class="field eight wide">
+            {{ form.password1 }}
+        </div>
+        <div class="field eight wide">
+            {{ form.password2 }}
+        </div>
+    </div>
+    {% if form.password1.errors or form.password2.errors  %}
+        <div class="ui negative floating message">
+            {{ form.password1.errors }}
+            {{ form.password2.errors }}
+        </div>
+    {% endif %}
+
   {% if redirect_field_value %}
+
   <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+
   {% endif %}
+
   <button class="ui button" type="submit">{% trans "Sign Up" %} &raquo;</button>
+
 </form>
 
 {% endblock %}
