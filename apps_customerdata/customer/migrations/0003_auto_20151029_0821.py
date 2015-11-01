@@ -50,14 +50,7 @@ class Migration(migrations.Migration):
             model_name='order',
             name='city',
         ),
-        migrations.RemoveField(
-            model_name='order',
-            name='country',
-        ),
-        migrations.RemoveField(
-            model_name='order',
-            name='phone_nr',
-        ),
+
         migrations.RemoveField(
             model_name='order',
             name='postal_box',

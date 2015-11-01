@@ -2,11 +2,9 @@
 from __future__ import unicode_literals
 
 from django.db import migrations, models
-import django_countries.fields
 import model_utils.fields
 import django.utils.timezone
 from django.conf import settings
-import phonenumber_field.modelfields
 
 
 class Migration(migrations.Migration):
@@ -47,8 +45,6 @@ class Migration(migrations.Migration):
                 ('city', models.CharField(max_length=100, blank=True)),
                 ('postal_code', models.CharField(max_length=20, blank=True)),
                 ('postal_box', models.CharField(max_length=20, verbose_name='Postal box', blank=True)),
-                ('country', django_countries.fields.CountryField(blank=True, max_length=2)),
-                ('phone_nr', phonenumber_field.modelfields.PhoneNumberField(max_length=128, blank=True)),
                 ('order_status', models.CharField(default='initial', max_length=12, choices=[('initial', 'aufgenommen'), ('paid', 'bezahlt'), ('canceled', 'storniert'), ('refunded', 'zur\xfcckerstattet')])),
                 ('amount', models.DecimalField(default=0, verbose_name='Betrag', max_digits=20, decimal_places=4)),
                 ('currency', models.CharField(default=b'EUR', max_length=3, choices=[(b'EUR', 'Euro'), (b'CHF', 'Schweizer Franken')])),
