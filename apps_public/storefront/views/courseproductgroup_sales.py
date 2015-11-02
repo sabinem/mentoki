@@ -20,8 +20,8 @@ from apps_data.courseevent.constants import PARTICIPANT_STATUS_CHOICES
 from .courseproductgroup_info import CourseGroupMixin
 
 import logging
-#logger = logging.getLogger('public.customers')
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('public.customers')
+#logger = logging.getLogger(__name__)
 
 class CourseGroupOfferView(
     CourseGroupMixin,
