@@ -39,6 +39,11 @@ INSTALLED_APPS = (
     'django.contrib.sites'
 )
 
+# sentry
+INSTALLED_APPS += (
+    'raven.contrib.django.raven_compat',
+)
+
 # installed apps thirdparty
 INSTALLED_APPS += (
     'braces',
@@ -410,10 +415,12 @@ LOGGING = {
 
 # 3rd party apps:
 
-# 3rd party app raven for SENTRY:
+# sentry
+import raven
 RAVEN_CONFIG = {
-    'dsn': os.environ.get('SENTRY_DSN'),
+    'dsn': os.environ.get('SENTRY_DSN')
 }
+
 
 # Login and redirect urls
 from django.core.urlresolvers import reverse_lazy
@@ -489,5 +496,4 @@ BRAINTREE = {
 import braintree
 BRAINTREE_ENVIRONMENT = braintree.Environment.Sandbox
 
-PAYREXX_SITE = 'mentoki.payrexx.com'
 
