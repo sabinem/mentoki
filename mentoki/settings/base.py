@@ -248,175 +248,52 @@ CACHES = {
     }
 }
 
-# Logging
-# TODO: adjust loglevel DEBUG/INFO
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': False,
+    'disable_existing_loggers': True,
+    'root': {
+        'level': 'WARNING',
+        'handlers': ['sentry'],
+    },
     'formatters': {
         'verbose': {
-            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
-            'datefmt' : "%d/%b/%Y %H:%M:%S"
-        },
-        'simple': {
-            'format': '%(levelname)s %(message)s'
+            'format': '%(levelname)s %(asctime)s %(module)s '
+                      '%(process)d %(thread)d %(message)s'
         },
     },
     'handlers': {
-        'paymentfile': {
-            'filename': os.path.join(BASE_DIR, 'logfiles', 'payments.log' ),
-            'formatter': 'verbose',
-            'level': 'DEBUG',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'maxBytes': 500000,  # 500 kB
-            'backupCount': 4  ,
+        'sentry': {
+            'level': 'ERROR',
+            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
         },
-        'emailfile': {
-            'filename': os.path.join(BASE_DIR, 'logfiles', 'emails.log' ),
-            'formatter': 'verbose',
+        'console': {
             'level': 'DEBUG',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'maxBytes': 500000,  # 500 kB
-            'backupCount': 4  ,
-        },
-        'productfile': {
-            'filename': os.path.join(BASE_DIR, 'logfiles', 'product.log' ),
-            'formatter': 'verbose',
-            'level': 'DEBUG',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'maxBytes': 500000,  # 500 kB
-            'backupCount': 4  ,
-        },
-        'backendfile': {
-            'level': 'DEBUG',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'maxBytes': 500000,  # 500 kB
-            'filename': os.path.join(BASE_DIR, 'logfiles', 'teacherativity.log' ),
-            'formatter': 'verbose',
-            'backupCount': 4  ,
-        },
-        'storefrontfile': {
-            'level': 'DEBUG',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'maxBytes': 500000,  # 500 kB
-            'filename': os.path.join(BASE_DIR, 'logfiles', 'storefront.log' ),
+            'class': 'logging.StreamHandler',
             'formatter': 'verbose'
-        },
-        'datafile': {
-            'level': 'DEBUG',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'maxBytes': 500000,  # 500 kB
-            'filename': os.path.join(BASE_DIR, 'logfiles', 'dataactivity.log' ),
-            'formatter': 'verbose'
-        },
-        'classroomfile': {
-            'level': 'DEBUG',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'maxBytes': 500000,  # 500 kB
-            'filename': os.path.join(BASE_DIR, 'logfiles', 'classroomactivity.log' ),
-            'formatter': 'verbose',
-            'backupCount': 4  ,
-        },
-        'customerdatafile': {
-            'level': 'DEBUG',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'maxBytes': 500000,  # 500 kB
-            'filename': os.path.join(BASE_DIR, 'logfiles', 'customerdata.log' ),
-            'formatter': 'verbose',
-            'backupCount': 4  ,
-        },
-        'publicfile': {
-            'level': 'DEBUG',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'maxBytes': 500000,  # 500 kB
-            'filename': os.path.join(BASE_DIR, 'logfiles', 'publicactivity.log' ),
-            'formatter': 'verbose'
-        },
-        'displayproductinformationfile': {
-            'level': 'DEBUG',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'maxBytes': 500000,  # 500 kB
-            'filename': os.path.join(BASE_DIR, 'logfiles',
-                                     'displayproductinformation.log' ),
-            'formatter': 'verbose'
-        },
-        'console':{
-            'level':'DEBUG',
-            'class':'logging.StreamHandler',
-            'formatter': 'simple'
-        },
-
+        }
     },
     'loggers': {
-        # emails that were send
-        'public.product_information_log': {
-            'handlers': ['displayproductinformationfile'],
-            'propagate': True,
-            'level': 'DEBUG',
+        'django.db.backends': {
+            'level': 'ERROR',
+            'handlers': ['console'],
+            'propagate': False,
         },
-
-        # emails that were send
-        'apps_core.email': {
-            'handlers': ['emailfile'],
-            'propagate': True,
+        'raven': {
             'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
         },
-        # database changes for internal tables
-        'apps_data': {
-            'handlers': ['datafile'],
-            'propagate': True,
+        'sentry.errors': {
             'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
         },
-        # internal activity in the classroom and teachers backend
-        'apps_internal.classroom': {
-            'handlers': ['classroomfile'],
-            'propagate': True,
-            'level': 'DEBUG',
-        },
-        # activity on the teachers dashboard
-        'apps_internal.coursebackend': {
-            'handlers': ['backendfile'],
-            'propagate': True,
-            'level': 'DEBUG',
-        },
-        # changes in the productdata
-        'apps_productdata': {
-            'handlers': ['productfile'],
-            'propagate': True,
-            'level': 'DEBUG',
-        },
-        # changes in the customerdata
-        'apps_customerdata': {
-            'handlers': ['customerdatafile'],
-            'propagate': True,
-            'level': 'DEBUG',
-        },
-        # checkout of courses / payment
-        'apps_public.checkout': {
-            'handlers': ['paymentfile'],
-            'propagate': True,
-            'level': 'DEBUG',
-        },
-        # logs the selection: how it is decided which products are shown
-        # to which customers
-        'apps_public.storefront': {
-            'handlers': ['storefrontfile'],
-            'propagate': True,
-            'level': 'DEBUG',
-        },
-        # public file: users path
-        'accounts': {
-            'handlers': ['publicfile'],
-            'propagate': True,
-            'level': 'DEBUG',
-        },
-    }
+    },
 }
 
 # 3rd party apps:
 
 # sentry
-import raven
 RAVEN_CONFIG = {
     'dsn': os.environ.get('SENTRY_DSN')
 }
