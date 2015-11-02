@@ -14,7 +14,7 @@ from apps_productdata.mentoki_product.models.courseproductgroup import CoursePro
 
 
 import logging
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('sentry.info')
 
 
 class CheckoutStartView(
