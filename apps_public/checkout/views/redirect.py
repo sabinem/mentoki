@@ -49,9 +49,6 @@ class CheckoutStartView(
         wanted to go before he was forced to login or register
         :return: redirect_url
         """
-        print "================"
-        print " in get redirect url"
-        print "================"
         logger.info('------------ starting payment process for %s'
                     % self.request.user)
 
@@ -63,8 +60,6 @@ class CheckoutStartView(
             # since he have had to register in between
 
             product_url = reverse('checkout:payment', kwargs=kwargs)
-            print " user authenticated"
-            print "----------------"
             # since the user will be able to checkout now
             if kwargs.has_key('slug'):
                 # product is in kwargs
@@ -72,18 +67,11 @@ class CheckoutStartView(
                 logger.info(
                     'redirecting to url %s'
                     % product_url)
-                print " kwargs have slug"
-                print "----------------"
-
                 courseproduct = get_object_or_404(
                     CourseProduct,
                     slug=self.kwargs['slug'])
-                print " courseproducts found %s" % courseproduct
-                print "----------------"
                 if hasattr(user, 'customer'):
                     customer=user.customer
-                    print " is customer"
-                    print "----------------"
                     logger.debug('1. user is a customer [%s]' % customer)
                     ordered_products = \
                         Order.objects.\
@@ -91,29 +79,20 @@ class CheckoutStartView(
                             course=courseproduct.course,
                             customer=user.customer)
                     if courseproduct.available_with_past_orders(ordered_products):
-                        print " product available"
-                        print "----------------"
                         return product_url
                     else:
                         self.messages.warning('''Du kannst dieses Produkt nicht buchen,
                             weil es sich mit Kursen überschneidet,
                             die Du bereits gebucht hast. Siehe die Liste unten,
                             welche Kurse für Dich im Angebot sind.''')
-                        print " product not available ....."
-                        print "----------------"
                         courseproductgroup = get_object_or_404(
                             CourseProductGroup,
                             course=courseproduct.course)
-                        print "_____________________ REDIRECT !!!!!"
                         coursegroup_url = reverse('storefront:offer', kwargs={
                             'slug': courseproductgroup.slug
                         })
-                        print coursegroup_url
-
                         return coursegroup_url
                 else:
-                    print " not customer"
-                    print "----------------"
                     return product_url
 
             else:
