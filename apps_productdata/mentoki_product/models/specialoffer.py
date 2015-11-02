@@ -21,7 +21,7 @@ from ..constants import OFFERREACH_CHOICES
 from apps_productdata.mentoki_product.models.producttype import ProductType
 
 import logging
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('public.payment')
 
 
 class SpecialOfferManager(models.Manager):
@@ -32,17 +32,18 @@ class SpecialOfferManager(models.Manager):
         logger.debug('searching for offer for %s'
              % (courseproduct))
         try:
-            logger.debug('try productoffers')
+            logger.info('try productoffers')
             offer = self.get(
                 courseproduct=courseproduct,
                 reach=OFFERREACH_CHOICES.product)
-            logger.debug('productoffer found: %s'
+            logger.info('productoffer found: %s'
                      % (offer))
             return offer
         except ObjectDoesNotExist:
             pass # try next filter
 
-        if courseproduct.product_type.is_courseevent_participation:
+        if courseproduct.product_type \
+                and courseproduct.product_type.is_courseevent_participation:
             logger.debug('try eventoffers')
             try:
                 offer = self.get(

@@ -20,7 +20,8 @@ from apps_data.courseevent.constants import PARTICIPANT_STATUS_CHOICES
 from .courseproductgroup_info import CourseGroupMixin
 
 import logging
-logger = logging.getLogger('public.product_information_log')
+#logger = logging.getLogger('public.customers')
+logger = logging.getLogger(__name__)
 
 class CourseGroupOfferView(
     CourseGroupMixin,
@@ -37,11 +38,7 @@ class CourseGroupOfferView(
         context = super(CourseGroupOfferView, self).get_context_data()
         course = context['courseproductgroup'].course
         user=self.request.user
-        logger.debug('=================================')
-        logger.debug('      New view of offerspage ')
-        logger.debug('=================================')
-        logger.debug('IN: course [%s]' % course)
-        logger.debug('IN: user [%s]' % user)
+        logger.info('offerpage view for course [%s]' % course)
 
         # -------------------------------------------------------------
         # determine whether user is customers and whether orders exist

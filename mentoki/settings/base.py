@@ -270,6 +270,10 @@ LOGGING = {
             'level': 'INFO',
             'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
         },
+        'sentrywarning': {
+            'level': 'WARNING',
+            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+        },
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
@@ -292,9 +296,24 @@ LOGGING = {
             'handlers': ['console'],
             'propagate': False,
         },
-        'sentry.info': {
+        '': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'public.payment': {
             'level': 'INFO',
             'handlers': ['sentryinfo'],
+            'propagate': False,
+        },
+        'public.customers': {
+            'level': 'INFO',
+            'handlers': ['sentryinfo'],
+            'propagate': False,
+        },
+        'public.dataintegrity': {
+            'level': 'WARNING',
+            'handlers': ['sentrywarning'],
             'propagate': False,
         },
     },
