@@ -37,13 +37,13 @@ class SpecialOfferManager(models.Manager):
         :param courseproduct:
         :return: offer or None, if no offer exists
         """
-        logger.info('Suche nach Rabatt für Produkt: [%s]'
+        logger.debug('Suche nach Rabatt für Produkt: [%s]'
              % (courseproduct))
         try:
             offer = self.get(
                 courseproduct=courseproduct,
                 reach=OFFERREACH_CHOICES.product)
-            logger.info('Produktangebot [%s] gefunden für Produkt: [%s], '
+            logger.debug('Produktangebot [%s] gefunden für Produkt: [%s], '
                         '[%s] Prozent Rabatt'
                      % (offer, offer.coursproduct, offer.percentage_off))
             return offer
@@ -56,7 +56,7 @@ class SpecialOfferManager(models.Manager):
                 offer = self.get(
                     courseevent=courseproduct.courseevent,
                     reach=OFFERREACH_CHOICES.courseevent)
-                logger.info('Kursangebot gefunden: [%s] für Kurs: [%s], '
+                logger.debug('Kursangebot gefunden: [%s] für Kurs: [%s], '
                             '[%s] Prozent Rabatt'
                             % (offer, offer.courseevent, offer.percentage_off))
                 return offer
@@ -66,12 +66,12 @@ class SpecialOfferManager(models.Manager):
             offer = self.get(
                 course=courseproduct.course,
                 reach=OFFERREACH_CHOICES.course)
-            logger.info('Kursgruppenangebot [%s] gefunden für Kursgruppe: [%s]'
+            logger.debug('Kursgruppenangebot [%s] gefunden für Kursgruppe: [%s]'
                         ', [%s] Prozent Rabatt'
                      % (offer, offer.course, offer.percentage_off))
             return offer
         except ObjectDoesNotExist:
-            logger.info('Es gibt keinen Rabatt für dieses Produkt.')
+            logger.debug('Es gibt keinen Rabatt für dieses Produkt.')
             return None
 
 
