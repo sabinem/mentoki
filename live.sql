@@ -99,7 +99,8 @@ CREATE TABLE accounts_user (
     created_at timestamp with time zone NOT NULL,
     updated_at timestamp with time zone NOT NULL,
     profile_image character varying(100) NOT NULL,
-    is_female boolean NOT NULL
+    is_female boolean NOT NULL,
+    checkout_product_slug character varying(50)
 );
 
 
@@ -525,7 +526,8 @@ CREATE TABLE courseevent_courseeventparticipation (
     hidden boolean NOT NULL,
     hidden_status_changed timestamp with time zone NOT NULL,
     courseevent_id integer NOT NULL,
-    user_id integer NOT NULL
+    user_id integer NOT NULL,
+    participation_type character varying(10) NOT NULL
 );
 
 
@@ -743,31 +745,31 @@ ALTER SEQUENCE courseevent_thread_id_seq OWNED BY courseevent_thread.id;
 --
 
 CREATE TABLE customer_customer (
+    id integer NOT NULL,
     created timestamp with time zone NOT NULL,
     modified timestamp with time zone NOT NULL,
     braintree_customer_id character varying(36) NOT NULL,
-    user_id integer,
-    email character varying(254) NOT NULL,
-    first_name character varying(100) NOT NULL,
-    last_name character varying(100) NOT NULL
+    user_id integer
 );
 
 
 --
--- Name: customer_failedtransaction; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: customer_customer_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE TABLE customer_failedtransaction (
-    amount numeric(20,4) NOT NULL,
-    currency character varying(3) NOT NULL,
-    braintree_transaction_id character varying(50) NOT NULL,
-    braintree_merchant_account_id character varying(100) NOT NULL,
-    created timestamp with time zone NOT NULL,
-    braintree_result text NOT NULL,
-    course_id integer,
-    customer_id character varying(36) NOT NULL,
-    temporder_id integer NOT NULL
-);
+CREATE SEQUENCE customer_customer_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: customer_customer_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE customer_customer_id_seq OWNED BY customer_customer.id;
 
 
 --
@@ -778,12 +780,15 @@ CREATE TABLE customer_order (
     id integer NOT NULL,
     created timestamp with time zone NOT NULL,
     modified timestamp with time zone NOT NULL,
+    email character varying(254) NOT NULL,
+    first_name character varying(40) NOT NULL,
+    last_name character varying(40) NOT NULL,
     order_status character varying(12) NOT NULL,
-    courseproduct_id integer,
-    customer_id character varying(36),
-    course_id integer,
+    amount numeric(20,4) NOT NULL,
     currency character varying(3) NOT NULL,
-    income numeric(20,4) NOT NULL
+    course_id integer,
+    courseproduct_id integer,
+    customer_id integer
 );
 
 
@@ -807,43 +812,38 @@ ALTER SEQUENCE customer_order_id_seq OWNED BY customer_order.id;
 
 
 --
--- Name: customer_successfultransaction; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: customer_transaction; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE customer_successfultransaction (
+CREATE TABLE customer_transaction (
+    id integer NOT NULL,
+    created timestamp with time zone NOT NULL,
+    modified timestamp with time zone NOT NULL,
     amount numeric(20,4) NOT NULL,
     currency character varying(3) NOT NULL,
-    braintree_transaction_id character varying(50) NOT NULL,
-    braintree_merchant_account_id character varying(100) NOT NULL,
-    created timestamp with time zone NOT NULL,
+    email character varying(254) NOT NULL,
+    first_name character varying(40) NOT NULL,
+    last_name character varying(40) NOT NULL,
+    braintree_transaction_id character varying(10) NOT NULL,
+    braintree_customer_id character varying(10) NOT NULL,
+    braintree_payment_token character varying(10) NOT NULL,
+    braintree_merchant_account_id character varying(20) NOT NULL,
+    braintree_amount character varying(10) NOT NULL,
+    braintree_error_details text NOT NULL,
+    flag_payment_sucess boolean NOT NULL,
+    error_code character varying(12) NOT NULL,
+    error_message character varying(250) NOT NULL,
     course_id integer,
-    customer_id character varying(36) NOT NULL,
+    customer_id integer,
     order_id integer NOT NULL
 );
 
 
 --
--- Name: customer_temporder; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: customer_transaction_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE TABLE customer_temporder (
-    id integer NOT NULL,
-    created timestamp with time zone NOT NULL,
-    modified timestamp with time zone NOT NULL,
-    participant_email character varying(254),
-    participant_first_name character varying(40) NOT NULL,
-    participant_last_name character varying(40) NOT NULL,
-    participant_username character varying(40) NOT NULL,
-    courseproduct_id integer,
-    user_id integer
-);
-
-
---
--- Name: customer_temporder_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE customer_temporder_id_seq
+CREATE SEQUENCE customer_transaction_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -852,26 +852,10 @@ CREATE SEQUENCE customer_temporder_id_seq
 
 
 --
--- Name: customer_temporder_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: customer_transaction_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE customer_temporder_id_seq OWNED BY customer_temporder.id;
-
-
---
--- Name: customers_customer; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE customers_customer (
-    user_id integer NOT NULL,
-    id character varying(36) NOT NULL,
-    country character varying(100) NOT NULL,
-    created timestamp with time zone NOT NULL,
-    house_nr character varying(100) NOT NULL,
-    modified timestamp with time zone NOT NULL,
-    street character varying(100) NOT NULL,
-    town character varying(100) NOT NULL
-);
+ALTER SEQUENCE customer_transaction_id_seq OWNED BY customer_transaction.id;
 
 
 --
@@ -1010,45 +994,6 @@ CREATE SEQUENCE django_site_id_seq
 --
 
 ALTER SEQUENCE django_site_id_seq OWNED BY django_site.id;
-
-
---
--- Name: invoice_invoice; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE invoice_invoice (
-    amount numeric(20,4) NOT NULL,
-    currency character varying(3) NOT NULL,
-    first_name character varying(100) NOT NULL,
-    last_name character varying(100) NOT NULL,
-    invoice_nr integer NOT NULL,
-    created timestamp with time zone NOT NULL,
-    paid boolean NOT NULL,
-    customer_id character varying(36),
-    product_id integer NOT NULL,
-    email character varying(254) NOT NULL,
-    title character varying(100) NOT NULL,
-    payrexx_tld integer NOT NULL
-);
-
-
---
--- Name: invoice_invoice_invoice_nr_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE invoice_invoice_invoice_nr_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: invoice_invoice_invoice_nr_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE invoice_invoice_invoice_nr_seq OWNED BY invoice_invoice.invoice_nr;
 
 
 --
@@ -1269,21 +1214,20 @@ CREATE TABLE mentoki_product_courseproduct (
     modified timestamp with time zone NOT NULL,
     name character varying(200) NOT NULL,
     description text NOT NULL,
-    product_nr character varying(20) NOT NULL,
     slug character varying(50) NOT NULL,
     price numeric(12,2),
     price_changed timestamp with time zone NOT NULL,
     currency character varying(3) NOT NULL,
-    can_be_bought_only_once boolean NOT NULL,
-    has_dependencies boolean NOT NULL,
-    product_type character varying(12) NOT NULL,
     course_id integer NOT NULL,
-    dependencies_id integer,
     courseevent_id integer,
     display_nr integer NOT NULL,
     meta_description character varying(200) NOT NULL,
     meta_keywords character varying(200) NOT NULL,
-    meta_title character varying(100) NOT NULL
+    meta_title character varying(100) NOT NULL,
+    dependency_id integer,
+    invoice_descriptor character varying(250) NOT NULL,
+    part_of_id integer,
+    product_type_id integer
 );
 
 
@@ -1349,6 +1293,42 @@ ALTER SEQUENCE mentoki_product_courseproductgroup_id_seq OWNED BY mentoki_produc
 
 
 --
+-- Name: mentoki_product_producttype; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE mentoki_product_producttype (
+    id integer NOT NULL,
+    name character varying(200) NOT NULL,
+    description text NOT NULL,
+    is_part boolean NOT NULL,
+    is_test boolean NOT NULL,
+    belongs_to_course boolean NOT NULL,
+    is_courseevent_participation boolean NOT NULL,
+    can_be_bought_only_once boolean NOT NULL,
+    has_dependencies boolean NOT NULL
+);
+
+
+--
+-- Name: mentoki_product_producttype_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE mentoki_product_producttype_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: mentoki_product_producttype_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE mentoki_product_producttype_id_seq OWNED BY mentoki_product_producttype.id;
+
+
+--
 -- Name: mentoki_product_specialoffer; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1360,7 +1340,9 @@ CREATE TABLE mentoki_product_specialoffer (
     description text NOT NULL,
     courseproduct_id integer,
     percentage_off integer NOT NULL,
-    course_id integer
+    course_id integer,
+    courseevent_id integer,
+    reach character varying(10) NOT NULL
 );
 
 
@@ -1601,22 +1583,6 @@ CREATE TABLE textchunks_publictextchunks (
 
 
 --
--- Name: transaction_transaction; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE transaction_transaction (
-    amount numeric(20,4) NOT NULL,
-    currency character varying(3) NOT NULL,
-    braintree_transaction_id character varying(50) NOT NULL,
-    braintree_customer_id character varying(36) NOT NULL,
-    braintree_merchant_account_id character varying(100) NOT NULL,
-    created timestamp with time zone NOT NULL,
-    customer_id character varying(36) NOT NULL,
-    product_id integer NOT NULL
-);
-
-
---
 -- Name: userprofiles_mentorsprofile; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1798,6 +1764,13 @@ ALTER TABLE ONLY courseevent_thread ALTER COLUMN id SET DEFAULT nextval('coursee
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY customer_customer ALTER COLUMN id SET DEFAULT nextval('customer_customer_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY customer_order ALTER COLUMN id SET DEFAULT nextval('customer_order_id_seq'::regclass);
 
 
@@ -1805,7 +1778,7 @@ ALTER TABLE ONLY customer_order ALTER COLUMN id SET DEFAULT nextval('customer_or
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY customer_temporder ALTER COLUMN id SET DEFAULT nextval('customer_temporder_id_seq'::regclass);
+ALTER TABLE ONLY customer_transaction ALTER COLUMN id SET DEFAULT nextval('customer_transaction_id_seq'::regclass);
 
 
 --
@@ -1834,13 +1807,6 @@ ALTER TABLE ONLY django_migrations ALTER COLUMN id SET DEFAULT nextval('django_m
 --
 
 ALTER TABLE ONLY django_site ALTER COLUMN id SET DEFAULT nextval('django_site_id_seq'::regclass);
-
-
---
--- Name: invoice_nr; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY invoice_invoice ALTER COLUMN invoice_nr SET DEFAULT nextval('invoice_invoice_invoice_nr_seq'::regclass);
 
 
 --
@@ -1890,6 +1856,13 @@ ALTER TABLE ONLY mentoki_product_courseproduct ALTER COLUMN id SET DEFAULT nextv
 --
 
 ALTER TABLE ONLY mentoki_product_courseproductgroup ALTER COLUMN id SET DEFAULT nextval('mentoki_product_courseproductgroup_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY mentoki_product_producttype ALTER COLUMN id SET DEFAULT nextval('mentoki_product_producttype_id_seq'::regclass);
 
 
 --
@@ -1956,6 +1929,7 @@ COPY account_emailaddress (id, email, verified, "primary", user_id) FROM stdin;
 1	sabine.maennel@gmail.com	t	t	1
 2	m.radomsky@alcudina.de	t	t	18
 3	friedkat@students.zhaw.ch	t	t	29
+4	anette.pekrul@hotmail.de	t	t	4
 \.
 
 
@@ -1963,7 +1937,7 @@ COPY account_emailaddress (id, email, verified, "primary", user_id) FROM stdin;
 -- Name: account_emailaddress_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('account_emailaddress_id_seq', 3, true);
+SELECT pg_catalog.setval('account_emailaddress_id_seq', 4, true);
 
 
 --
@@ -1973,6 +1947,8 @@ SELECT pg_catalog.setval('account_emailaddress_id_seq', 3, true);
 COPY account_emailconfirmation (id, created, sent, key, email_address_id) FROM stdin;
 3	2015-10-16 15:02:28.8398+00	2015-10-16 15:02:29.974306+00	b1zprow7jneetxrvlwbmof3pnsbozkkjfbosdhevkb3uvieefnmx0xw3ptfa5icv	2
 4	2015-10-17 07:25:12.489233+00	2015-10-17 07:25:13.967499+00	no1drn6emo5lzs15ityjmubaxb2mnaoece8dto0pgtf5verzk0rblwozcichg0po	3
+5	2015-11-02 12:13:22.5457+00	2015-11-02 12:13:24.497757+00	6kbuof64rrmorlmeeegbmcyuphdqxx5hicwd8eifdrvgsdhmc7ydhux65csnygyj	4
+6	2015-11-02 12:13:23.218154+00	2015-11-02 12:13:24.992546+00	mlhdz1hqi9qbp9afzjvoyvobjg2ecctaszpciwstssj4bhcmatydznnf3fygwins	4
 \.
 
 
@@ -1980,49 +1956,49 @@ COPY account_emailconfirmation (id, created, sent, key, email_address_id) FROM s
 -- Name: account_emailconfirmation_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('account_emailconfirmation_id_seq', 4, true);
+SELECT pg_catalog.setval('account_emailconfirmation_id_seq', 6, true);
 
 
 --
 -- Data for Name: accounts_user; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY accounts_user (id, password, last_login, is_superuser, email, username, first_name, last_name, is_active, is_staff, is_teacher, is_student, created_at, updated_at, profile_image, is_female) FROM stdin;
-2	pbkdf2_sha256$20000$vekhkdHJcCQ2$WQqcRhZloi14g5Z5vkz0La/nfw/n1gA/4GqmM1UBksw=	2015-08-16 15:25:44.128+00	f	Sabine.maennel@gmail.com	sabine	Sabine	Maennel	t	f	f	f	2015-08-19 09:01:56.795+00	2015-09-05 17:53:43.071+00	uploads/sabine3.jpg	t
-4	pbkdf2_sha256$20000$vzFuNa1Br6Nh$R2MnboQV/NAyjgfGz8mNRwNRHZLC6qEMd20vK95+/7M=	2015-08-14 09:48:05.637+00	f	anette.pekrul@hotmail.de	anette	Anette	Pekrul	t	f	f	f	2015-08-19 09:01:56.653+00	2015-09-05 17:54:46.174+00	uploads/anette.jpg	t
-5	pbkdf2_sha256$12000$M3eYVkFHHeOd$u7Qy3LWP5uLTGr4pke1/amXZ2GQSd5CO7qJEQaN1ofU=	2015-03-26 12:22:44.841+00	f	franz@grieser-coaching.de	franzg	Franz 	Grieser	t	f	f	f	2015-08-19 09:01:56.595+00	2015-08-19 09:01:56.595+00	/static/img/happyface.jpg	t
-8	pbkdf2_sha256$20000$ZTdVfrtQSsya$iFomtbqnMIu8DShypUOA2G/SbBMpXBLL/4IMjTS5QP4=	2015-08-31 14:10:08.054+00	f	cult5d@t-online.de	wolfgang	Wolfgang 	Erdmann	t	f	f	f	2015-08-19 09:01:56.853+00	2015-09-05 17:58:21.367+00	uploads/wolfgang-erdmann.jpg	t
-9	pbkdf2_sha256$12000$QDv4ztGnTL2b$hmipa+GvSOTk23N5SHGbQGeEXi66nuQR9fQwt11TgKI=	2015-01-15 06:05:53.3+00	f	haraldhelfrich@web.de	harald	Harald	Helfrich	t	f	f	f	2015-08-19 09:01:56.607+00	2015-08-19 09:01:56.607+00	/static/img/happyface.jpg	t
-10	pbkdf2_sha256$12000$SrOH0rETpdK7$kOjZf+PdI/UlW0vmVAYAbft502AeUq2JCMdPLgeFCj4=	2015-04-29 20:38:18.181+00	f	Bea.ribaux@bluewin.ch	bea	Bea	Ribaux	t	f	f	f	2015-08-19 09:01:56.636+00	2015-09-05 17:59:13.038+00	uploads/bea3.jpg	t
-11	pbkdf2_sha256$12000$cwkmHFMpDvJS$bU0jdT39eJkMbXKx6+Dk4K4r8NQVCR/svNMrduXfamQ=	2015-03-10 19:44:20.612+00	f	info@brain-sourcer.com	alexander	Alexander	von Rebenstock	t	f	f	f	2015-08-19 09:01:56.62+00	2015-08-19 09:01:56.62+00	/static/img/happyface.jpg	t
-12	pbkdf2_sha256$12000$zQz2ydq2Gy3A$Y1zRTx59YNwNhGP2CI4bi5ibDEjUWhUet/ashFjNpw8=	2015-05-08 06:29:39.025+00	f	mail@mediafactory-sft.de	christian	Christian	Großmann	t	f	f	f	2015-08-19 09:01:56.669+00	2015-09-05 18:01:43.19+00	uploads/Christian-Großmann.jpg	t
-14	pbkdf2_sha256$12000$jdmsArU4gzKr$Iyxi6FOX6vVZ4FH7SrHDIk0+n/Y310v17cPp5c8u2KI=	2015-03-08 13:24:10.848+00	f	berger@wortundmedia.de	andreasberger	Andreas	Berger	t	f	f	f	2015-08-19 09:01:56.581+00	2015-08-19 09:01:56.581+00	/static/img/happyface.jpg	t
-16	pbkdf2_sha256$20000$YMIePYtY9hCk$XJm3y+wLP73F94FU2pn4Dv2LmkW6lymh4vEf/yIORMI=	2015-07-17 14:57:11.17+00	f	barbara.lafaro@bluewin.ch	barbara	Barbara	La Faro	t	f	f	f	2015-08-19 09:01:56.837+00	2015-08-19 09:01:56.837+00	/static/img/happyface.jpg	t
-17	pbkdf2_sha256$20000$XfxPWqNjThmQ$fhEEjHxDKVn+nHOySfPOwxScwvDEA/HEOqI3dNh7ODk=	2015-07-24 12:06:07.302+00	f	mindyourwriting@gmail.com	christianw	Christian	Wymann	t	f	f	f	2015-08-19 09:01:56.687+00	2015-08-19 09:01:56.687+00	/static/img/happyface.jpg	t
-19	pbkdf2_sha256$12000$xltbTkZOQ51s$PDjZ+Uop9hj89zmBiassCrurT/mOLYRM4gTmJ0inbBw=	2015-05-13 18:11:02.431+00	f		Andy			t	f	f	f	2015-08-19 09:01:56.761+00	2015-08-19 09:01:56.761+00	/static/img/happyface.jpg	t
-20	pbkdf2_sha256$12000$KrlUT2j6k5Nf$NKrv72gLCAkmotY2rwe+/XOdYJlo0SEeWPypkpsf06g=	2015-06-04 04:42:37.116+00	f	isa-isa10@hotmail.com	issa	Issa	Rashek	t	f	f	f	2015-08-19 09:01:56.678+00	2015-08-19 09:01:56.678+00	/static/img/happyface.jpg	t
-21	pbkdf2_sha256$12000$UFiaAxgddekO$8bh+ZaLs1VvjBg77FQdR2i2MKfqD6TZbNDQCyO1548c=	2015-06-03 19:15:38+00	f	shahino1993@live.com	shahin	Shahin	Kussa	t	f	f	f	2015-08-19 09:01:56.628+00	2015-08-19 09:01:56.628+00	/static/img/happyface.jpg	t
-22	pbkdf2_sha256$12000$WTCw0HrGN4HK$gaGnW14Ly7+4mPr0G3T5HvSLhqPYxN0BMSmoe9G7KXM=	2015-06-04 10:09:57.875+00	f	chald628@gmail.com	khalid	Khalid	Kussa	t	f	f	f	2015-08-19 09:01:56.703+00	2015-08-19 09:01:56.703+00	/static/img/happyface.jpg	t
-23	pbkdf2_sha256$12000$xTxvPIB1x28o$j4geR4nJHg1hgoab30O1usoI5tN74yajkOrHXZeKMT0=	2015-06-04 08:52:30.628+00	f	alaa66697@gmail.com	alaa	Alaa	Maaeni	t	f	f	f	2015-08-19 09:01:56.695+00	2015-08-19 09:01:56.695+00	/static/img/happyface.jpg	t
-24	pbkdf2_sha256$20000$uBStFqVp5Kbh$Bs4xrsm2WmHo9tkDvzoI3mefsUoly+Z3pzgkSDk3iNU=	2015-07-29 20:00:58.728+00	f	sbine.lau@t-online.de	sabinel	Sabine	Lau	t	f	f	f	2015-08-19 09:01:56.661+00	2015-09-05 18:10:52.87+00	uploads/sabinelau.jpg	t
-25	pbkdf2_sha256$20000$U0tXT7DT8DVK$oKTT0z7wE7iqaGg6wo1Y945RAzum+2ooHxPmWLPo5Q4=	\N	f	alina.ullrich.au88@gmail.com	alina	Alina	Ullrich	t	f	f	f	2015-08-19 09:01:56.845+00	2015-08-19 09:01:56.845+00	/static/img/happyface.jpg	t
-27	pbkdf2_sha256$20000$QH0MQlDRtge0$bz+eXRJbp08tzxC8bS4mSCjxZlve650M/E2q5FlbLLo=	\N	f	run.wirth@freenet.de	runhild	Runhild	Wirth	t	f	f	f	2015-08-19 09:01:56.862+00	2015-08-19 09:01:56.862+00	/static/img/happyface.jpg	t
-30	pbkdf2_sha256$20000$AcCsE5z7K1MD$sIQw8a7NnBLQg8216lqc0YRKc4ufHUi0BTwfCD0WMhg=	\N	f	dejanz@gmx.ch	deborah	Deborah	Janz	t	f	f	f	2015-09-22 04:32:33.505+00	2015-09-22 04:33:09.604+00	/static/img/happyface.jpg	t
-31	pbkdf2_sha256$20000$exDKkJuYNDr8$yW5QjqPi9zc12iOowXXeDxM3bJH0UbXU5PKEW/sIbYQ=	\N	f	loeffcla@students.zhaw.ch	claudia	Claudia	Löffler	t	f	f	f	2015-09-22 04:37:29.886+00	2015-09-22 04:37:44.397+00	/static/img/happyface.jpg	t
-32	pbkdf2_sha256$20000$tg6FHwxVknBG$Yt9cvXLCyQmjGcY5r7vb5Hsnja9griYwDa5zR/QcYPw=	\N	f	nussbviv@students.zhaw.ch	joanna	Joanna	Nussbaumer	t	f	f	f	2015-09-22 04:38:48.299+00	2015-09-22 05:18:30.844+00	/static/img/happyface.jpg	t
-33	pbkdf2_sha256$20000$EH6IK4eoGDNz$w+y6bG5XFsKs3LnBKb6uB7gukCUZ3FJouRhvqlw24NA=	\N	f	oertlfra@students.zhaw.ch	franziska	Franziska	Oertle	t	f	f	f	2015-09-22 04:40:51.854+00	2015-09-22 04:43:00.325+00	/static/img/happyface.jpg	t
-35	pbkdf2_sha256$20000$ojdIYvHwkrTg$y8xVduM9TLpwkUlGiZh1xMDNZdlwVWLJqwt7fkQsEmQ=	\N	f	mreber88@gmail.com	manuel	Manuel	Reber	t	f	f	f	2015-09-22 04:45:48.51+00	2015-09-22 04:46:14.332+00	/static/img/happyface.jpg	t
-36	pbkdf2_sha256$20000$w9id5nXOaQVY$JG3W0X7q3rncBZbNnfDjFQFJrPXNJ9aJkmWvdSendzo=	\N	f	ruhm@zhaw.ch	doris	Doris	Ruhmann	t	f	f	f	2015-09-22 04:47:09.525+00	2015-09-22 04:47:34.466+00	/static/img/happyface.jpg	t
-34	pbkdf2_sha256$20000$EqDsowCj1fuq$zZ5Pv2eREtB2Q33o2JZZCODEksDhiUEW3JRnZDtqfec=	2015-09-25 12:25:07.411333+00	f	xr@xrauch.ch	xaver	Xaver	Rauch	t	f	f	f	2015-09-22 04:43:46.282+00	2015-09-22 20:40:21.575868+00	/static/img/happyface.jpg	t
-7	pbkdf2_sha256$20000$gvvKkhM19moM$aVfQtZDsuoYcrYKBfwYDE+cuRN0DF2yPCjpxODolp/U=	2015-09-28 11:59:16.4565+00	f	c.radomsky@alcudina.de	christine	Christine	Radomsky	t	f	f	f	2015-08-19 09:01:56.645+00	2015-08-30 08:40:24.215+00	uploads/christine.jpg	t
-28	pbkdf2_sha256$20000$FUMGW7IAN2mR$2HX/FiA9IIbSckqy/Ovyc6oRX//sQBfAMcSdTOfZEfI=	2015-09-28 17:48:45.831149+00	f	susanne.ihloff@gmx.de	susanne	Susanne	Ihloff	t	f	f	f	2015-09-08 07:13:07.725+00	2015-09-08 07:13:50.87+00	/static/img/happyface.jpg	t
-13	pbkdf2_sha256$20000$3rpX9NqFJPzV$DJiyPfD0dhHmwMH2CuhU8kPNKfAKvZ1gufSoL+tTePY=	2015-10-25 06:55:57.742699+00	f	maennel@me.com	liselotte	Liselotte	Maennel	t	t	f	f	2015-08-19 09:01:56.746+00	2015-10-25 06:55:29.317949+00	/static/img/happyface.jpg	t
-18	pbkdf2_sha256$20000$vC4QtC1bXsMB$zQJFDjNrkrfDREaCH1y9PNZbKfEenzREmqyO41bd3IE=	2015-10-25 21:12:00.862564+00	f	m.radomsky@alcudina.de	michael	Michael	Radomsky	t	t	f	f	2015-08-19 09:01:56.753+00	2015-10-25 06:51:27.05522+00	uploads/michael-radomsky.jpg	t
-26	pbkdf2_sha256$20000$yfio94YI30p7$lSFESb+C4zJcvCX5mTX9sdzcWODd1EU/qY2x7l4tCVE=	2015-10-03 08:23:34.574399+00	f	bernd.ullrich431@gmail.com	bernd	Bernd	Ullrich	t	f	f	f	2015-08-19 09:01:56.829+00	2015-10-03 06:48:00.211314+00	/static/img/happyface.jpg	t
-37	pbkdf2_sha256$20000$GZqZFDCfQ0Jl$FMvRb9Y7tUmLo2JbIqb2fxt4MJVtTpA23jdXRnumzB4=	2015-10-04 16:26:51.980979+00	f	tho.markus@gmx.de	thomas	Thomas	Unmuessig	t	f	f	f	2015-09-22 04:48:32.591+00	2015-09-22 04:48:56.386+00	/static/img/happyface.jpg	t
-1	pbkdf2_sha256$20000$h0mcTPkukZIf$sOpIt43SFlLLsxXT//9B+VcAdLGx04lf3PJ3jsBN20U=	2015-10-25 10:29:07.99794+00	t	sabine.maennel@gmail.com	web0263	Sabine	Maennel	t	t	f	f	2015-08-19 09:01:56.878+00	2015-10-15 15:50:11.736669+00	uploads/sabine3_U8fEOvy.jpg	t
-29	pbkdf2_sha256$20000$5wKOa0Leukxu$VHcSRsoWGnTGQLwHlxLK3p6Qx/CF8Ut2rtlNNpqUeZA=	2015-10-17 07:26:24.833398+00	f	friedkat@students.zhaw.ch	katharina	Katharina Renate Ulrika	Friedli	t	f	f	f	2015-09-22 04:28:33.063+00	2015-10-17 07:25:46.943254+00	/static/img/happyface.jpg	t
-6	pbkdf2_sha256$20000$a4PzgIPXpb1T$DmajY2MIZk1lSpROfxxoFznrh0drFqjP9DVfxEw975o=	2015-10-22 11:29:59.235573+00	f	f.neff@schreibcoach.ch	franzn	Franz	Neff	t	f	f	f	2015-08-19 09:01:56.87+00	2015-09-05 17:58:49.146+00	uploads/FranzNeff.jpg	t
+COPY accounts_user (id, password, last_login, is_superuser, email, username, first_name, last_name, is_active, is_staff, is_teacher, is_student, created_at, updated_at, profile_image, is_female, checkout_product_slug) FROM stdin;
+2	pbkdf2_sha256$20000$vekhkdHJcCQ2$WQqcRhZloi14g5Z5vkz0La/nfw/n1gA/4GqmM1UBksw=	2015-08-16 15:25:44.128+00	f	Sabine.maennel@gmail.com	sabine	Sabine	Maennel	t	f	f	f	2015-08-19 09:01:56.795+00	2015-09-05 17:53:43.071+00	uploads/sabine3.jpg	t	\N
+5	pbkdf2_sha256$12000$M3eYVkFHHeOd$u7Qy3LWP5uLTGr4pke1/amXZ2GQSd5CO7qJEQaN1ofU=	2015-03-26 12:22:44.841+00	f	franz@grieser-coaching.de	franzg	Franz 	Grieser	t	f	f	f	2015-08-19 09:01:56.595+00	2015-08-19 09:01:56.595+00	/static/img/happyface.jpg	t	\N
+8	pbkdf2_sha256$20000$ZTdVfrtQSsya$iFomtbqnMIu8DShypUOA2G/SbBMpXBLL/4IMjTS5QP4=	2015-08-31 14:10:08.054+00	f	cult5d@t-online.de	wolfgang	Wolfgang 	Erdmann	t	f	f	f	2015-08-19 09:01:56.853+00	2015-09-05 17:58:21.367+00	uploads/wolfgang-erdmann.jpg	t	\N
+9	pbkdf2_sha256$12000$QDv4ztGnTL2b$hmipa+GvSOTk23N5SHGbQGeEXi66nuQR9fQwt11TgKI=	2015-01-15 06:05:53.3+00	f	haraldhelfrich@web.de	harald	Harald	Helfrich	t	f	f	f	2015-08-19 09:01:56.607+00	2015-08-19 09:01:56.607+00	/static/img/happyface.jpg	t	\N
+10	pbkdf2_sha256$12000$SrOH0rETpdK7$kOjZf+PdI/UlW0vmVAYAbft502AeUq2JCMdPLgeFCj4=	2015-04-29 20:38:18.181+00	f	Bea.ribaux@bluewin.ch	bea	Bea	Ribaux	t	f	f	f	2015-08-19 09:01:56.636+00	2015-09-05 17:59:13.038+00	uploads/bea3.jpg	t	\N
+11	pbkdf2_sha256$12000$cwkmHFMpDvJS$bU0jdT39eJkMbXKx6+Dk4K4r8NQVCR/svNMrduXfamQ=	2015-03-10 19:44:20.612+00	f	info@brain-sourcer.com	alexander	Alexander	von Rebenstock	t	f	f	f	2015-08-19 09:01:56.62+00	2015-08-19 09:01:56.62+00	/static/img/happyface.jpg	t	\N
+12	pbkdf2_sha256$12000$zQz2ydq2Gy3A$Y1zRTx59YNwNhGP2CI4bi5ibDEjUWhUet/ashFjNpw8=	2015-05-08 06:29:39.025+00	f	mail@mediafactory-sft.de	christian	Christian	Großmann	t	f	f	f	2015-08-19 09:01:56.669+00	2015-09-05 18:01:43.19+00	uploads/Christian-Großmann.jpg	t	\N
+14	pbkdf2_sha256$12000$jdmsArU4gzKr$Iyxi6FOX6vVZ4FH7SrHDIk0+n/Y310v17cPp5c8u2KI=	2015-03-08 13:24:10.848+00	f	berger@wortundmedia.de	andreasberger	Andreas	Berger	t	f	f	f	2015-08-19 09:01:56.581+00	2015-08-19 09:01:56.581+00	/static/img/happyface.jpg	t	\N
+16	pbkdf2_sha256$20000$YMIePYtY9hCk$XJm3y+wLP73F94FU2pn4Dv2LmkW6lymh4vEf/yIORMI=	2015-07-17 14:57:11.17+00	f	barbara.lafaro@bluewin.ch	barbara	Barbara	La Faro	t	f	f	f	2015-08-19 09:01:56.837+00	2015-08-19 09:01:56.837+00	/static/img/happyface.jpg	t	\N
+17	pbkdf2_sha256$20000$XfxPWqNjThmQ$fhEEjHxDKVn+nHOySfPOwxScwvDEA/HEOqI3dNh7ODk=	2015-07-24 12:06:07.302+00	f	mindyourwriting@gmail.com	christianw	Christian	Wymann	t	f	f	f	2015-08-19 09:01:56.687+00	2015-08-19 09:01:56.687+00	/static/img/happyface.jpg	t	\N
+19	pbkdf2_sha256$12000$xltbTkZOQ51s$PDjZ+Uop9hj89zmBiassCrurT/mOLYRM4gTmJ0inbBw=	2015-05-13 18:11:02.431+00	f		Andy			t	f	f	f	2015-08-19 09:01:56.761+00	2015-08-19 09:01:56.761+00	/static/img/happyface.jpg	t	\N
+20	pbkdf2_sha256$12000$KrlUT2j6k5Nf$NKrv72gLCAkmotY2rwe+/XOdYJlo0SEeWPypkpsf06g=	2015-06-04 04:42:37.116+00	f	isa-isa10@hotmail.com	issa	Issa	Rashek	t	f	f	f	2015-08-19 09:01:56.678+00	2015-08-19 09:01:56.678+00	/static/img/happyface.jpg	t	\N
+21	pbkdf2_sha256$12000$UFiaAxgddekO$8bh+ZaLs1VvjBg77FQdR2i2MKfqD6TZbNDQCyO1548c=	2015-06-03 19:15:38+00	f	shahino1993@live.com	shahin	Shahin	Kussa	t	f	f	f	2015-08-19 09:01:56.628+00	2015-08-19 09:01:56.628+00	/static/img/happyface.jpg	t	\N
+22	pbkdf2_sha256$12000$WTCw0HrGN4HK$gaGnW14Ly7+4mPr0G3T5HvSLhqPYxN0BMSmoe9G7KXM=	2015-06-04 10:09:57.875+00	f	chald628@gmail.com	khalid	Khalid	Kussa	t	f	f	f	2015-08-19 09:01:56.703+00	2015-08-19 09:01:56.703+00	/static/img/happyface.jpg	t	\N
+23	pbkdf2_sha256$12000$xTxvPIB1x28o$j4geR4nJHg1hgoab30O1usoI5tN74yajkOrHXZeKMT0=	2015-06-04 08:52:30.628+00	f	alaa66697@gmail.com	alaa	Alaa	Maaeni	t	f	f	f	2015-08-19 09:01:56.695+00	2015-08-19 09:01:56.695+00	/static/img/happyface.jpg	t	\N
+24	pbkdf2_sha256$20000$uBStFqVp5Kbh$Bs4xrsm2WmHo9tkDvzoI3mefsUoly+Z3pzgkSDk3iNU=	2015-07-29 20:00:58.728+00	f	sbine.lau@t-online.de	sabinel	Sabine	Lau	t	f	f	f	2015-08-19 09:01:56.661+00	2015-09-05 18:10:52.87+00	uploads/sabinelau.jpg	t	\N
+25	pbkdf2_sha256$20000$U0tXT7DT8DVK$oKTT0z7wE7iqaGg6wo1Y945RAzum+2ooHxPmWLPo5Q4=	\N	f	alina.ullrich.au88@gmail.com	alina	Alina	Ullrich	t	f	f	f	2015-08-19 09:01:56.845+00	2015-08-19 09:01:56.845+00	/static/img/happyface.jpg	t	\N
+27	pbkdf2_sha256$20000$QH0MQlDRtge0$bz+eXRJbp08tzxC8bS4mSCjxZlve650M/E2q5FlbLLo=	\N	f	run.wirth@freenet.de	runhild	Runhild	Wirth	t	f	f	f	2015-08-19 09:01:56.862+00	2015-08-19 09:01:56.862+00	/static/img/happyface.jpg	t	\N
+30	pbkdf2_sha256$20000$AcCsE5z7K1MD$sIQw8a7NnBLQg8216lqc0YRKc4ufHUi0BTwfCD0WMhg=	\N	f	dejanz@gmx.ch	deborah	Deborah	Janz	t	f	f	f	2015-09-22 04:32:33.505+00	2015-09-22 04:33:09.604+00	/static/img/happyface.jpg	t	\N
+31	pbkdf2_sha256$20000$exDKkJuYNDr8$yW5QjqPi9zc12iOowXXeDxM3bJH0UbXU5PKEW/sIbYQ=	\N	f	loeffcla@students.zhaw.ch	claudia	Claudia	Löffler	t	f	f	f	2015-09-22 04:37:29.886+00	2015-09-22 04:37:44.397+00	/static/img/happyface.jpg	t	\N
+32	pbkdf2_sha256$20000$tg6FHwxVknBG$Yt9cvXLCyQmjGcY5r7vb5Hsnja9griYwDa5zR/QcYPw=	\N	f	nussbviv@students.zhaw.ch	joanna	Joanna	Nussbaumer	t	f	f	f	2015-09-22 04:38:48.299+00	2015-09-22 05:18:30.844+00	/static/img/happyface.jpg	t	\N
+33	pbkdf2_sha256$20000$EH6IK4eoGDNz$w+y6bG5XFsKs3LnBKb6uB7gukCUZ3FJouRhvqlw24NA=	\N	f	oertlfra@students.zhaw.ch	franziska	Franziska	Oertle	t	f	f	f	2015-09-22 04:40:51.854+00	2015-09-22 04:43:00.325+00	/static/img/happyface.jpg	t	\N
+35	pbkdf2_sha256$20000$ojdIYvHwkrTg$y8xVduM9TLpwkUlGiZh1xMDNZdlwVWLJqwt7fkQsEmQ=	\N	f	mreber88@gmail.com	manuel	Manuel	Reber	t	f	f	f	2015-09-22 04:45:48.51+00	2015-09-22 04:46:14.332+00	/static/img/happyface.jpg	t	\N
+36	pbkdf2_sha256$20000$w9id5nXOaQVY$JG3W0X7q3rncBZbNnfDjFQFJrPXNJ9aJkmWvdSendzo=	\N	f	ruhm@zhaw.ch	doris	Doris	Ruhmann	t	f	f	f	2015-09-22 04:47:09.525+00	2015-09-22 04:47:34.466+00	/static/img/happyface.jpg	t	\N
+34	pbkdf2_sha256$20000$EqDsowCj1fuq$zZ5Pv2eREtB2Q33o2JZZCODEksDhiUEW3JRnZDtqfec=	2015-09-25 12:25:07.411333+00	f	xr@xrauch.ch	xaver	Xaver	Rauch	t	f	f	f	2015-09-22 04:43:46.282+00	2015-09-22 20:40:21.575868+00	/static/img/happyface.jpg	t	\N
+7	pbkdf2_sha256$20000$gvvKkhM19moM$aVfQtZDsuoYcrYKBfwYDE+cuRN0DF2yPCjpxODolp/U=	2015-09-28 11:59:16.4565+00	f	c.radomsky@alcudina.de	christine	Christine	Radomsky	t	f	f	f	2015-08-19 09:01:56.645+00	2015-08-30 08:40:24.215+00	uploads/christine.jpg	t	\N
+28	pbkdf2_sha256$20000$FUMGW7IAN2mR$2HX/FiA9IIbSckqy/Ovyc6oRX//sQBfAMcSdTOfZEfI=	2015-09-28 17:48:45.831149+00	f	susanne.ihloff@gmx.de	susanne	Susanne	Ihloff	t	f	f	f	2015-09-08 07:13:07.725+00	2015-09-08 07:13:50.87+00	/static/img/happyface.jpg	t	\N
+13	pbkdf2_sha256$20000$3rpX9NqFJPzV$DJiyPfD0dhHmwMH2CuhU8kPNKfAKvZ1gufSoL+tTePY=	2015-10-25 06:55:57.742699+00	f	maennel@me.com	liselotte	Liselotte	Maennel	t	t	f	f	2015-08-19 09:01:56.746+00	2015-10-25 06:55:29.317949+00	/static/img/happyface.jpg	t	\N
+18	pbkdf2_sha256$20000$vC4QtC1bXsMB$zQJFDjNrkrfDREaCH1y9PNZbKfEenzREmqyO41bd3IE=	2015-10-25 21:12:00.862564+00	f	m.radomsky@alcudina.de	michael	Michael	Radomsky	t	t	f	f	2015-08-19 09:01:56.753+00	2015-10-25 06:51:27.05522+00	uploads/michael-radomsky.jpg	t	\N
+26	pbkdf2_sha256$20000$yfio94YI30p7$lSFESb+C4zJcvCX5mTX9sdzcWODd1EU/qY2x7l4tCVE=	2015-10-03 08:23:34.574399+00	f	bernd.ullrich431@gmail.com	bernd	Bernd	Ullrich	t	f	f	f	2015-08-19 09:01:56.829+00	2015-10-03 06:48:00.211314+00	/static/img/happyface.jpg	t	\N
+37	pbkdf2_sha256$20000$GZqZFDCfQ0Jl$FMvRb9Y7tUmLo2JbIqb2fxt4MJVtTpA23jdXRnumzB4=	2015-10-04 16:26:51.980979+00	f	tho.markus@gmx.de	thomas	Thomas	Unmuessig	t	f	f	f	2015-09-22 04:48:32.591+00	2015-09-22 04:48:56.386+00	/static/img/happyface.jpg	t	\N
+4	pbkdf2_sha256$20000$LO2R2YjpW5Y8$ssDdJ/GwNBsGucJbVXUzKLRA1S3pU4qNEMj9Maz2od0=	2015-11-02 12:14:54.776515+00	f	anette.pekrul@hotmail.de	anette	Anette	Pekrul	t	f	f	f	2015-08-19 09:01:56.653+00	2015-11-02 12:14:22.074857+00	uploads/anette.jpg	t	\N
+29	pbkdf2_sha256$20000$5wKOa0Leukxu$VHcSRsoWGnTGQLwHlxLK3p6Qx/CF8Ut2rtlNNpqUeZA=	2015-10-17 07:26:24.833398+00	f	friedkat@students.zhaw.ch	katharina	Katharina Renate Ulrika	Friedli	t	f	f	f	2015-09-22 04:28:33.063+00	2015-10-17 07:25:46.943254+00	/static/img/happyface.jpg	t	\N
+6	pbkdf2_sha256$20000$a4PzgIPXpb1T$DmajY2MIZk1lSpROfxxoFznrh0drFqjP9DVfxEw975o=	2015-10-22 11:29:59.235573+00	f	f.neff@schreibcoach.ch	franzn	Franz	Neff	t	f	f	f	2015-08-19 09:01:56.87+00	2015-09-05 17:58:49.146+00	uploads/FranzNeff.jpg	t	\N
+1	pbkdf2_sha256$20000$h0mcTPkukZIf$sOpIt43SFlLLsxXT//9B+VcAdLGx04lf3PJ3jsBN20U=	2015-11-02 12:52:34.409401+00	t	sabine.maennel@gmail.com	web0263	Sabine	Maennel	t	t	f	f	2015-08-19 09:01:56.878+00	2015-10-15 15:50:11.736669+00	uploads/sabine3_U8fEOvy.jpg	t	\N
 \.
 
 
@@ -2274,15 +2250,12 @@ COPY auth_permission (id, name, content_type_id, codename) FROM stdin;
 211	Can add Rabatt	68	add_specialoffer
 212	Can change Rabatt	68	change_specialoffer
 213	Can delete Rabatt	68	delete_specialoffer
-214	Can add temp order	72	add_temporder
-215	Can change temp order	72	change_temporder
-216	Can delete temp order	72	delete_temporder
-217	Can add Erfolgreiche Transaktion	73	add_successfultransaction
-218	Can change Erfolgreiche Transaktion	73	change_successfultransaction
-219	Can delete Erfolgreiche Transaktion	73	delete_successfultransaction
-220	Can add Nicht erfolgreiche Transaktion	74	add_failedtransaction
-221	Can change Nicht erfolgreiche Transaktion	74	change_failedtransaction
-222	Can delete Nicht erfolgreiche Transaktion	74	delete_failedtransaction
+223	Can add Transaktion	75	add_transaction
+224	Can change Transaktion	75	change_transaction
+225	Can delete Transaktion	75	delete_transaction
+226	Can add Produktart	76	add_producttype
+227	Can change Produktart	76	change_producttype
+228	Can delete Produktart	76	delete_producttype
 \.
 
 
@@ -2290,7 +2263,7 @@ COPY auth_permission (id, name, content_type_id, codename) FROM stdin;
 -- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('auth_permission_id_seq', 222, true);
+SELECT pg_catalog.setval('auth_permission_id_seq', 228, true);
 
 
 --
@@ -2444,6 +2417,7 @@ COPY courseevent_announcement (id, created, modified, title, text, published, pu
 182	2015-10-15 20:45:30.561322+00	2015-10-16 08:11:20.787465+00	Noch eine lange email hinterher ...	<p>Ihr Lieben,</p><p>ich habe den Eindruck, ich schulde Euch nach der kurzen Update-Benachrichtigung &nbsp;gestern noch eine l&auml;ngere Erkl&auml;rung hinterher:</p><h3>1. Neue Benutzerauthorisierung</h3><p>Ich habe ein neues recht m&auml;chtiges &quot;App&quot; eingeh&auml;ngt, das mir mehr Optionen &nbsp;f&uuml;r die Benutzerregistrierung erm&ouml;glicht. Es ist toll, aber ihr seid davon vermutlich gestern erstmal genervt worden. Es ist gerade noch so eingestellt, dass es die emails aller Nutzer best&auml;tigt haben m&ouml;chte und ich hatte den email-Text noch nicht von Englisch auf Deutsch ge&auml;ndert. Deshalb habt Ihr jetzt wohl alle eine Aufforderung in Englisch zur Best&auml;tigung Eurer email erhalten. Sorry daf&uuml;r. Wir sind eben immer noch nicht live und da ist noch nicht alles perfekt.</p><h3>2. Produkte</h3><p>An den Produkten werde ich am Wochende noch arbeiten. Sie sind noch nicht so dargestellt, wie ich mir das w&uuml;nsche. Insbesondere gibt es wohl zu einem &quot;Kurs&quot; mehrere Angebote, etwa bei Franz Neff: Selbstlernen und gef&uuml;hrter Kurs oder bei Michael und Christine: Kauf Gesamt oder in Paketen m&ouml;glich. Ich verschiebe die &Uuml;berlegung dazu aufs Wochenende, weil ich heute noch die Zahlungsanbindung weiter vorantreiben will, solange der Support noch nicht im Wochenende ist.</p><h3>3. Zahlungsanbindung</h3><p>Die Zahlungsanbieter sind eine Welt f&uuml;r sich. Bei jedem muss man sich einzeln bewerben und zwar mit der fertigen Webseite und jeder hat andere Bedingungen und der Support ist auf Massenabfertigung ausgerichtet.&nbsp;</p><p>Gl&uuml;cklicherweise habe ich habe dann doch etwas tolles f&uuml;r Mentoki entdeckt. Ich arbeite f&uuml;r die Zahlungsanbindung jetzt mit einer Schweizer Firma namens &quot;Payrexx&quot; zusammen, die sich in die Nische zwischen Endkunden und Zahlungsanbieter gesetzt hat und darauf spezialisiert ist, Schweizer Anbietern schnell in die Startl&ouml;scher zu verhelfen. </p><p>Dort habe ich jetzt den direkten Draht zu den Entwicklern und werde als Kunde richtig ernst genommen mit Spitzen-Support und Sonderkonditionen, weil sie uns als Referenz-Kunden gewinnen wollen. Und sie bedienen alle Zahlungsanbieter &uuml;ber ihre Schnittstelle, was heisst, das wir von den einzelnen Anbietern unabh&auml;ngig bleiben und sp&auml;ter leicht wechseln, wenn uns die Konditionen woanders besser gefallen. Ausserdem verstehen sie den Schweizer und der Deutschen Markt und helfen einem bei der Auswahl des Zahlungsanbieters und beim Bewerbungsverfahren.&nbsp;</p><p>Bei Mentokis Zahlungsanbindung bin ich gerade noch dabei den Workflow zu perfektionieren. Aber im Prinzip kann man schon in der Testumgebung das Zahlen ausprobieren und zwar bei Franz Neffs Schreibwerkstatt: Wenn ihr bei Paypal landet m&uuml;sst Ihr als Konto: &quot;info-buyer@mentoki.com&quot; mit dem Passwort &quot;infoatmentoki&quot; ausw&auml;hlen. Dann k&ouml;nnt ihr eine Probezahlung durchf&uuml;hren. </p><p>Am Workflow der Zahlung arbeite ich heute noch. Vielleicht verschiebt ihr also den Probedurchlauf auf das Wochenende, dann sollte ich damit weiter sein. Im Prinzip ist jetzt die Idee, dass ich die Zahlungsaufforderung als Email verschicke, damit ich sicher bin, dass der Teilnehmer &uuml;ber die angegebene Email auch zu erreichen ist. Und registrieren m&ouml;chte ich ihn erst nachdem er bezahlt hat. Sonst bekomme ich zuviele &quot;Geister&quot;-Benutzer auf der Plattform, die dort gar nichts zu suchen haben. Aber ich hatte Sorge, dass jemand bezahlt und dann nicht erreicht werden kann oder unsere Email in seinem Spam landet. Er w&uuml;rde sich wohl &uuml;ber Mentoki wundern ... das wird mit einer verschickten Zahlungsform umgangen. Dieser Teil des Prozesses l&auml;st sich schon ausprobieren. Nur der Abschluss ist noch nicht ganz gekl&auml;rt: wie es weitergeht, wenn der neue Teilnehmer bezahlt hat. Aber wie gesagt, das habe ich f&uuml;r heute in meiner Planung.</p><p>So, das w&auml;rs jetzt mal. Ich arbeite konzentrierter denn je an der Plattform: von morgens fr&uuml;h bis abends sp&auml;t. Auch mein Code wird immer professioneller und besser. Ich weiss schon, dass wir im Herbst starten wollten. Aber hudeln hat auch keinen Sinn. Ich denke, ich bin recht kurz vor einer ersten Live-Schaltung, bei der die Zahlungsanbindung erstmal Paypal heissen wird, aber parallel wird dann schon der Antrag f&uuml;r einen Zahlungsanbieter mit g&uuml;nstigeren Konditionen laufen.&nbsp;</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Mit lieben Gr&uuml;ssen und Ich w&uuml;nsche Euch allen ein sch&ouml;nes Wochenende</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sabine</p><p>&nbsp;</p><p><br></p><p>&nbsp;</p><p><br></p><p><br></p>	t	2015-10-16 08:11:20.772955+00	f	m.radomsky@alcudina.de, c.radomsky@alcudina.de, anette.pekrul@hotmail.de, f.neff@schreibcoach.ch, sbine.lau@t-online.de, cult5d@t-online.de, mail@mediafactory-sft.de, Bea.ribaux@bluewin.ch, franz@grieser-coaching.de, sabine.maennel@gmail.com	17
 183	2015-10-20 10:25:35.992287+00	2015-10-20 10:37:10.384399+00	Fortschritte	<p>Ich arbeite heute nochmal an der <strong><span style="color: #2969B0;">Zahlungsfuktion</span></strong> und habe sie deshalb vor&uuml;bergehend wieder abgeklemmt. Es gibt an dieser Fromt auch noch Neuigkeiten. <strong><span style="color: #B8312F; font-size: 27px;">Payrexx&nbsp;</span></strong>der freundliche Schweizer Anbieter ist f&uuml;r kleine private Webseiten sicher zu empfehlen. Aber leider haben sie keine fertige Python-Anbindung und das ist nun mal meine Programmiersprache und es schien mir jetzt doch zu aufwendig die Anbindung selbst zu bauen.&nbsp;</p><p>Demgegen&uuml;ber ist bei den Zahlungsanbietern direkt so etwas immer schon vorhanden und <span style="color: #41A85F;"><strong><span style="font-size: 27px;">braintree</span></strong> <span style="color: #000000;">(</span></span>ein Zahlungsanbieter, der Paypal aufgekauft hat und recht g&uuml;nstig ist) ist bereits in die Webseite integriert, die Anmeldung l&auml;uft und ich arbeite heute noch am Finetuning.</p><p><span style="color: #41A85F;"><strong> Aber sie m&uuml;ssen unser Angebot sehen</strong></span>. Deshalb w&uuml;rde ich Euch bitten Eure Angebote alle nochmal im Detail zu &uuml;berlegen.</p><p>Also ich habe das Produktangebot nochmal &uuml;berdacht und meine L&ouml;sung ist jetzt bereit zur Begutachtung durch Euch:</p><h3>Neue Produktorganisation</h3><p>Ihr habt jeder soetwas wie eine <strong><span style="color: #F37934;">&quot;Schule&quot; oder &quot;Produktgruppe&quot;</span></strong>f&uuml;r Euer Thema:</p><p>Dazu brauche ich&nbsp;<strong><span style="color: #F37934;">drei freigestaltetet Seiten&nbsp;</span></strong>(ihr macht das viel besser als ich, etwa Franz Neff mit seinen supertollen Zeichungen, die ich so bewundere und von denen ich mal zwei auf seiner Frontseite eingeh&auml;ngt habe):</p><p><span style="color: rgb(0, 0, 0);">1.</span><span style="color: rgb(243, 121, 52); font-weight: bold;"> &quot;About&quot;:</span> so was wie eine About-Page: das sind im Wesentlichen Eure alten Kursbeschreibungen, die ich an diese Stelle schon mal reinkopiert habe.</p><p>2. <span style="color: rgb(243, 121, 52);"><strong>&quot;Kursleitung&quot;: </strong><span style="color: #000000;">Diese Seite k&ouml;nnt ihr ebenfalls frei gestalten.</span></span></p><p><span style="color: #000000;">3. <span style="color: rgb(243, 121, 52);"><strong>&quot;Angebote&quot;: </strong><span style="color: rgb(0, 0, 0);">Beschreibt Eure Angebote mit Freitext: wie unterscheiden sie sich die Angebote voneinander bzw. wie h&auml;ngen sie miteinander zusammen</span></span></span></p><p><span style="color: #F37934;"><strong>Ich ben&ouml;tige auch eine Beschreibungen der Angebote einzeln:&nbsp;</strong></span></p><ul><li><span style="color: rgb(0, 0, 0);">Name der Angebots</span></li><li>kurze Beschreibung</li><li>Preis</li><li>Einf&uuml;hrungsrabatt, wenn gew&uuml;nscht, wieviel % Nachlass daf&uuml;r? (wie das dann aussieht mit dem Einf&uuml;hrungsangebot k&ouml;nnt ihr beim Kurs Selbstf&uuml;hrung sehen)</li></ul><p>F&uuml;r die Suchmaschine ben&ouml;tige ich sp&auml;ter auch f&uuml;r alles noch Schl&uuml;sselw&ouml;rter und eine Beschreibung in einem kurzen Satz. Dazu gebe ich dann bei Gelegenheit noch eine Anleitung. Es hat aber noch etwas Zeit damit. Aber theoretisch k&ouml;nnt ihr das schon mit &uuml;berlegen.</p><h3>Praktisches Vorgehen</h3><p>Ihr k&ouml;nnt bei Eurer Unterrichtsvorlage einen Block einrichten und den Editor benutzen und diese 3 Seiten anlegen plus eine Seite f&uuml;r jedes Eurer Angebote dort anlegen. Ich hole mir die Texte dann dort ab und kopiere sie in die Front der Webseite. Sp&auml;ter wird das Verfahren dann ge&auml;ndert.&nbsp;</p><p>Christine und Michael, ich weiss, dass ich nicht alles aus Eurem PDF kopiert habe, aber ich kann aus PDFs nicht kopieren. Ich m&uuml;sste es abschreiben, das war mir jetzt zu m&uuml;hsam.&nbsp;</p><p>Ich habe einfach mal ein bisschen was zum Ansehen &uuml;berall angelegt. <strong>Prokukte gibt es schon bei der</strong> <strong>Schreibwerkstatt und bei der</strong> <strong>Selbstf&uuml;hrung</strong>. Wenn Ihr Inspirationen braucht, seht Euch dort an, was m&ouml;glich ist.&nbsp;</p><p>Auf Wunsch von Christine und Michael ist es m&ouml;glich Produkte voneinander abh&auml;ngig zu machen: Block 2 ihres Kurses kann erst erworben werden, wenn Block 1 gekauft wurde.&nbsp;</p><p>Ich freue mich &uuml;ber Euer Feedback und helfe Euch auch gerne, wenn ihr mit etwas M&uuml;he habt. Ruft mich an, wenn ihr wollt (+41 43 53 778 74) oder schreibt mir eine mail. Ich halte die Augen offen und antworte so schnell es geht.&nbsp;</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Mit lieben Gr&uuml;ssen an Euch alle</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sabine</p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p>	t	2015-10-20 10:37:10.374265+00	f	m.radomsky@alcudina.de, c.radomsky@alcudina.de, anette.pekrul@hotmail.de, f.neff@schreibcoach.ch, sbine.lau@t-online.de, cult5d@t-online.de, mail@mediafactory-sft.de, Bea.ribaux@bluewin.ch, franz@grieser-coaching.de, sabine.maennel@gmail.com	17
 184	2015-10-25 14:44:52.084559+00	2015-10-25 14:44:52.085045+00	Start des ersten Kurslaufs	<p>Hier erf&auml;hrst du in K&uuml;rze den Starttermin.</p>	f	2015-10-25 14:44:52.084663+00	f	[]	4
+185	2015-11-02 10:27:35.990308+00	2015-11-02 10:27:37.607757+00	Wir haben den Zuschlag vom Zahlungsanbieter!	<p>Ihr Lieben,&nbsp;</p><p><strong>ich habe am Wochenende den Zuschlag vom Zahlungsanbieter<span style="font-size: 23px;"> <a href="https://www.braintreepayments.com/" rel="nofollow" target="_blank">&quot;braintree&quot;</a></span>&nbsp;erhalten. </strong>Dei Auswahl war eine rechte Odyssee, aber ich bin jetzt mit dieser Wahl sehr zufrieden.&nbsp;</p><p>Payrexx, der Schweizer Anbieter, fiel aus dem Feld, weil sie nur eine PHP aber keine Python Anbindung hatten, ausserdem &nbsp;sind sie nur ein Zwischenglied vor dem eigentlichen Zahlungsanbieter und h&auml;tten unter Umst&auml;nden dann doch irgendwann noch extra Kosten verursacht.&nbsp;</p><p>Von Paymill dem deutschen Konkorrenten bin ich abgekommen, weil der Support dort recht unfreundlich und schleppend war und etwas sp&auml;ter habe ich dann im Spiegel einen recht abschreckenden Bericht &uuml;ber den Mutterkonzern hinter Paymill gelesen, der Clons am Fliessband produziert, aber oft nicht die n&ouml;tige Fachexpertise mitbringt, um sie auf Erfolgskurs zu halten und schon gar keine Leidenschaft!</p><p><strong>Naja, jedenfalls braintree braucht etwa noch 5 Tage um uns f&uuml;r die Zahlung sowohl in CHF als auch in EUR einzurichten.</strong> Mentoki wird das Geld in der jeweiligen W&auml;hrung einnehmen, in der ihr Eure Preise macht, so dasswir das W&auml;hrungsrisiko umgehen. Die Gesch&auml;ftskonten sind beide schon eingerichtet.</p><p><strong>Mit der Zahlungsanbindung funktioniert jetzt eigentlich schon alles</strong>, aber ich werde die n&auml;chsten Tage dazu nutzen die Fehler noch besser abzufangen, die Dokumentation des Zahlungsprozesses wasserdicht zu machen, Test einzurichten, etc.</p><p><span style="color: #00A885;">Dar&uuml;berhinaus k&ouml;nnt ihr gerne mal probieren als angemeldeter oder auch unangemeldeter Benutzer Kurse zu buchen und zu bezahlen</span>. Probiert gerne auch den unangemeldeten Benutzer aus, um ein Gef&uuml;hl daf&uuml;r zu bekommen, was Eure Kunden erwartet: Sie werden vor der Zahlung geschickt gef&uuml;hrt, bis sie sich registriert und ihre email best&auml;tigt haben und landen am Ende genau dort, wo sie urspr&uuml;nglich kaufen wollten </p><p>Ihr k&ouml;nnt Eure email mit +1, +2, etc verbinden, also statt sabine.maennel@gmail.com:&nbsp;sabine.maennel<span style="color: #00A885;">+1</span>@gmail.com. Das System denkt dann es handelt sich um eine neue email, aber zumindest gmail reagiert so, dass es die email weiterhin an Euch sendet. Einen neune Benutzernamen m&uuml;sst Ihr nat&uuml;rlich auch w&auml;hlen und einen Namen erfinden. Ich werde die +emails dann irgendwann vor dem Life gehen wieder l&ouml;schen. Vielleicht k&ouml;nnt ihr ja test irgendwo im Vor- oder Nachnamen mit einbringen, so dass ich diese Testbenutzer sp&auml;ter einfach herausfiltern kann.</p><p>F&uuml;r die Zahlung k&ouml;nnt ihr folgende Konten verwenden&nbsp;&nbsp;(&quot;g&uuml;ltige&quot; Test-Kreditkartennummern von braintree):</p><pre>5555555555554444 </pre><pre>4012888888881881</pre><pre>4500600000000061</pre><p>Das Datum muss einfach irgendwann in der Zukunft liegen.</p><p>Ich werde heute noch alle von Euch einzeln anschreiben, um noch die Details f&uuml;r Eure Kurse zu besprechen, wenn wir endlich live gehen.&nbsp;</p><p><br></p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Mit lieben Gr&uuml;ssen an Euch alle</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Sabine</p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p>	t	2015-11-02 10:27:37.607794+00	f	m.radomsky@alcudina.de, c.radomsky@alcudina.de, anette.pekrul@hotmail.de, f.neff@schreibcoach.ch, sbine.lau@t-online.de, cult5d@t-online.de, mail@mediafactory-sft.de, Bea.ribaux@bluewin.ch, franz@grieser-coaching.de, sabine.maennel@gmail.com	17
 \.
 
 
@@ -2451,7 +2425,7 @@ COPY courseevent_announcement (id, created, modified, title, text, published, pu
 -- Name: courseevent_announcement_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('courseevent_announcement_id_seq', 184, true);
+SELECT pg_catalog.setval('courseevent_announcement_id_seq', 185, true);
 
 
 --
@@ -2565,71 +2539,71 @@ SELECT pg_catalog.setval('courseevent_courseevent_id_seq', 19, true);
 -- Data for Name: courseevent_courseeventparticipation; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY courseevent_courseeventparticipation (id, created, modified, hidden, hidden_status_changed, courseevent_id, user_id) FROM stdin;
-1	2015-01-31 22:47:48.525+00	2015-01-31 22:47:48.533+00	f	2015-08-18 18:30:35.572+00	1	11
-3	2015-01-31 22:48:11.419+00	2015-01-31 22:48:11.427+00	f	2015-08-18 18:30:35.572+00	1	10
-4	2015-01-31 22:48:22.549+00	2015-01-31 22:48:22.557+00	f	2015-08-18 18:30:35.572+00	1	5
-5	2015-01-31 22:48:33.545+00	2015-01-31 22:48:33.553+00	f	2015-08-18 18:30:35.572+00	1	1
-6	2015-01-31 22:48:43.772+00	2015-01-31 22:48:43.78+00	f	2015-08-18 18:30:35.572+00	1	7
-7	2015-01-31 22:48:55.7+00	2015-01-31 22:48:55.709+00	f	2015-08-18 18:30:35.572+00	1	6
-8	2015-01-31 22:49:09.937+00	2015-01-31 22:49:09.946+00	f	2015-08-18 18:30:35.572+00	1	8
-9	2015-01-31 22:49:25.638+00	2015-01-31 22:49:25.646+00	f	2015-08-18 18:30:35.572+00	1	12
-10	2015-01-31 22:49:35.486+00	2015-01-31 22:49:35.494+00	f	2015-08-18 18:30:35.572+00	1	4
-15	2015-02-19 21:37:11.72+00	2015-02-19 21:37:11.721+00	f	2015-08-18 18:30:35.572+00	8	1
-16	2015-02-22 07:14:03.964+00	2015-09-18 13:46:35.832+00	f	2015-09-18 13:46:35.832+00	4	1
-17	2015-02-22 07:14:15.545+00	2015-02-22 07:14:15.546+00	f	2015-08-18 18:30:35.572+00	9	1
-18	2015-02-22 07:14:30.531+00	2015-02-22 07:14:30.532+00	f	2015-08-18 18:30:35.572+00	7	1
-19	2015-02-22 07:14:43.742+00	2015-02-22 07:14:43.742+00	f	2015-08-18 18:30:35.572+00	6	1
-20	2015-02-22 07:14:56.131+00	2015-02-22 07:14:56.131+00	f	2015-08-18 18:30:35.572+00	2	1
-21	2015-02-22 13:51:57.978+00	2015-02-22 13:51:57.979+00	f	2015-08-18 18:30:35.572+00	2	6
-22	2015-02-22 13:52:27.461+00	2015-09-18 13:46:39.356+00	f	2015-09-18 13:46:39.356+00	4	6
-23	2015-03-07 11:03:16.019+00	2015-03-07 11:03:16.02+00	f	2015-08-18 18:30:35.572+00	9	6
-24	2015-03-08 16:41:35.568+00	2015-03-08 16:41:35.568+00	f	2015-08-18 18:30:35.572+00	8	7
-25	2015-03-09 19:03:55.579+00	2015-03-09 19:03:55.587+00	f	2015-08-18 18:30:35.572+00	8	16
-26	2015-03-09 19:04:13.337+00	2015-03-09 19:04:13.345+00	f	2015-08-18 18:30:35.572+00	8	17
-27	2015-03-11 13:53:36.614+00	2015-03-11 13:53:36.615+00	f	2015-08-18 18:30:35.572+00	9	7
-28	2015-03-11 13:54:07.788+00	2015-03-11 13:54:07.789+00	f	2015-08-18 18:30:35.572+00	2	7
-29	2015-03-12 16:49:48.068+00	2015-09-18 13:46:42.348+00	f	2015-09-18 13:46:42.348+00	4	4
-30	2015-03-12 16:50:42.402+00	2015-03-12 16:50:42.403+00	f	2015-08-18 18:30:35.572+00	8	4
-31	2015-03-12 17:34:22.542+00	2015-03-12 17:34:22.55+00	f	2015-08-18 18:30:35.572+00	11	1
-32	2015-03-25 08:31:07.07+00	2015-03-25 08:31:07.078+00	f	2015-08-18 18:30:35.572+00	4	18
-33	2015-03-26 12:23:12.422+00	2015-03-26 12:23:12.423+00	f	2015-08-18 18:30:35.572+00	4	5
-34	2015-04-14 13:15:06.011+00	2015-04-14 13:15:06.011+00	f	2015-08-18 18:30:35.572+00	4	2
-35	2015-05-13 15:03:07.253+00	2015-05-13 15:03:07.262+00	f	2015-08-18 18:30:35.572+00	1	19
-36	2015-05-13 15:03:22.51+00	2015-05-13 15:03:22.519+00	f	2015-08-18 18:30:35.572+00	11	19
-37	2015-06-03 19:20:11.759+00	2015-06-03 19:20:11.767+00	f	2015-08-18 18:30:35.572+00	10	20
-38	2015-06-03 19:20:34+00	2015-06-03 19:20:34.009+00	f	2015-08-18 18:30:35.572+00	10	23
-39	2015-06-03 19:20:56.971+00	2015-06-03 19:20:56.98+00	f	2015-08-18 18:30:35.572+00	10	22
-40	2015-06-03 19:21:17.463+00	2015-06-03 19:21:17.473+00	f	2015-08-18 18:30:35.572+00	10	21
-41	2015-07-27 09:28:29.658+00	2015-07-27 09:28:29.667+00	f	2015-08-18 18:30:35.572+00	7	4
-43	2015-07-29 11:22:44.511+00	2015-07-29 11:22:44.52+00	f	2015-08-18 18:30:35.572+00	7	7
-44	2015-07-29 11:52:48.833+00	2015-07-29 11:52:48.843+00	f	2015-08-18 18:30:35.572+00	4	25
-45	2015-07-29 11:52:59.264+00	2015-07-29 11:52:59.273+00	f	2015-08-18 18:30:35.572+00	4	26
-46	2015-07-29 11:53:09.833+00	2015-07-29 11:53:09.842+00	f	2015-08-18 18:30:35.572+00	4	27
-47	2015-07-29 20:25:19.495+00	2015-07-29 20:25:19.504+00	f	2015-08-18 18:30:35.572+00	4	8
-48	2015-07-29 20:25:38.323+00	2015-07-29 20:25:38.332+00	f	2015-08-18 18:30:35.572+00	8	8
-49	2015-07-29 20:29:49.167+00	2015-07-29 20:29:49.175+00	f	2015-08-18 18:30:35.572+00	7	6
-50	2015-08-04 14:33:03.441+00	2015-08-04 14:33:03.45+00	f	2015-08-18 18:30:35.572+00	12	2
-52	2015-08-30 08:37:44.103+00	2015-08-30 08:37:44.115+00	f	2015-08-30 08:37:32+00	17	18
-53	2015-08-30 08:37:59.784+00	2015-08-30 08:37:59.795+00	f	2015-08-30 08:37:46+00	17	7
-54	2015-08-30 08:38:10.252+00	2015-08-30 08:38:10.264+00	f	2015-08-30 08:38:02+00	17	4
-55	2015-08-30 08:38:22.588+00	2015-08-30 08:38:22.6+00	f	2015-08-30 08:38:12+00	17	6
-56	2015-08-30 08:38:53.933+00	2015-08-30 08:38:53.944+00	f	2015-08-30 08:38:37+00	17	24
-57	2015-08-30 08:39:05.318+00	2015-08-30 08:39:05.33+00	f	2015-08-30 08:38:55+00	17	8
-58	2015-08-30 15:18:46.569+00	2015-08-30 15:18:46.584+00	f	2015-08-30 15:18:33+00	17	12
-59	2015-08-30 15:30:54.813+00	2015-08-30 15:30:54.824+00	f	2015-08-30 15:30:41+00	17	10
-61	2015-09-08 07:14:20.828+00	2015-09-08 07:14:20.845+00	f	2015-09-08 07:14:07+00	4	7
-62	2015-09-10 12:03:42.807+00	2015-09-10 12:03:42.818+00	f	2015-09-10 12:03:25+00	17	5
-72	2015-09-22 20:07:06.537709+00	2015-09-22 20:07:06.554684+00	f	2015-09-22 20:06:55+00	18	31
-73	2015-09-22 20:37:14.563193+00	2015-09-22 20:37:14.580271+00	f	2015-09-22 20:37:00+00	18	32
-74	2015-09-22 20:37:27.439616+00	2015-09-22 20:37:27.452543+00	f	2015-09-22 20:37:17+00	18	35
-75	2015-09-22 20:37:38.622523+00	2015-09-22 20:37:38.634298+00	f	2015-09-22 20:37:29+00	18	30
-76	2015-09-22 20:37:50.832499+00	2015-09-22 20:37:50.844512+00	f	2015-09-22 20:37:41+00	18	36
-77	2015-09-22 20:38:08.416912+00	2015-09-22 20:38:08.428819+00	f	2015-09-22 20:37:53+00	18	37
-78	2015-09-22 20:38:19.604158+00	2015-09-22 20:38:19.616292+00	f	2015-09-22 20:38:10+00	18	34
-79	2015-09-22 20:38:56.49697+00	2015-09-22 20:38:56.508791+00	f	2015-09-22 20:38:47+00	18	29
-80	2015-09-22 20:39:08.914675+00	2015-09-22 20:39:08.926511+00	f	2015-09-22 20:38:59+00	18	33
-81	2015-10-18 18:22:58.312731+00	2015-10-18 18:22:58.330143+00	f	2015-10-18 18:22:36+00	18	1
+COPY courseevent_courseeventparticipation (id, created, modified, hidden, hidden_status_changed, courseevent_id, user_id, participation_type) FROM stdin;
+1	2015-01-31 22:47:48.525+00	2015-01-31 22:47:48.533+00	f	2015-08-18 18:30:35.572+00	1	11	preview
+3	2015-01-31 22:48:11.419+00	2015-01-31 22:48:11.427+00	f	2015-08-18 18:30:35.572+00	1	10	preview
+4	2015-01-31 22:48:22.549+00	2015-01-31 22:48:22.557+00	f	2015-08-18 18:30:35.572+00	1	5	preview
+5	2015-01-31 22:48:33.545+00	2015-01-31 22:48:33.553+00	f	2015-08-18 18:30:35.572+00	1	1	preview
+6	2015-01-31 22:48:43.772+00	2015-01-31 22:48:43.78+00	f	2015-08-18 18:30:35.572+00	1	7	preview
+7	2015-01-31 22:48:55.7+00	2015-01-31 22:48:55.709+00	f	2015-08-18 18:30:35.572+00	1	6	preview
+8	2015-01-31 22:49:09.937+00	2015-01-31 22:49:09.946+00	f	2015-08-18 18:30:35.572+00	1	8	preview
+9	2015-01-31 22:49:25.638+00	2015-01-31 22:49:25.646+00	f	2015-08-18 18:30:35.572+00	1	12	preview
+10	2015-01-31 22:49:35.486+00	2015-01-31 22:49:35.494+00	f	2015-08-18 18:30:35.572+00	1	4	preview
+15	2015-02-19 21:37:11.72+00	2015-02-19 21:37:11.721+00	f	2015-08-18 18:30:35.572+00	8	1	preview
+16	2015-02-22 07:14:03.964+00	2015-09-18 13:46:35.832+00	f	2015-09-18 13:46:35.832+00	4	1	preview
+17	2015-02-22 07:14:15.545+00	2015-02-22 07:14:15.546+00	f	2015-08-18 18:30:35.572+00	9	1	preview
+18	2015-02-22 07:14:30.531+00	2015-02-22 07:14:30.532+00	f	2015-08-18 18:30:35.572+00	7	1	preview
+19	2015-02-22 07:14:43.742+00	2015-02-22 07:14:43.742+00	f	2015-08-18 18:30:35.572+00	6	1	preview
+20	2015-02-22 07:14:56.131+00	2015-02-22 07:14:56.131+00	f	2015-08-18 18:30:35.572+00	2	1	preview
+21	2015-02-22 13:51:57.978+00	2015-02-22 13:51:57.979+00	f	2015-08-18 18:30:35.572+00	2	6	preview
+22	2015-02-22 13:52:27.461+00	2015-09-18 13:46:39.356+00	f	2015-09-18 13:46:39.356+00	4	6	preview
+23	2015-03-07 11:03:16.019+00	2015-03-07 11:03:16.02+00	f	2015-08-18 18:30:35.572+00	9	6	preview
+24	2015-03-08 16:41:35.568+00	2015-03-08 16:41:35.568+00	f	2015-08-18 18:30:35.572+00	8	7	preview
+25	2015-03-09 19:03:55.579+00	2015-03-09 19:03:55.587+00	f	2015-08-18 18:30:35.572+00	8	16	preview
+26	2015-03-09 19:04:13.337+00	2015-03-09 19:04:13.345+00	f	2015-08-18 18:30:35.572+00	8	17	preview
+27	2015-03-11 13:53:36.614+00	2015-03-11 13:53:36.615+00	f	2015-08-18 18:30:35.572+00	9	7	preview
+28	2015-03-11 13:54:07.788+00	2015-03-11 13:54:07.789+00	f	2015-08-18 18:30:35.572+00	2	7	preview
+29	2015-03-12 16:49:48.068+00	2015-09-18 13:46:42.348+00	f	2015-09-18 13:46:42.348+00	4	4	preview
+30	2015-03-12 16:50:42.402+00	2015-03-12 16:50:42.403+00	f	2015-08-18 18:30:35.572+00	8	4	preview
+31	2015-03-12 17:34:22.542+00	2015-03-12 17:34:22.55+00	f	2015-08-18 18:30:35.572+00	11	1	preview
+32	2015-03-25 08:31:07.07+00	2015-03-25 08:31:07.078+00	f	2015-08-18 18:30:35.572+00	4	18	preview
+33	2015-03-26 12:23:12.422+00	2015-03-26 12:23:12.423+00	f	2015-08-18 18:30:35.572+00	4	5	preview
+34	2015-04-14 13:15:06.011+00	2015-04-14 13:15:06.011+00	f	2015-08-18 18:30:35.572+00	4	2	preview
+35	2015-05-13 15:03:07.253+00	2015-05-13 15:03:07.262+00	f	2015-08-18 18:30:35.572+00	1	19	preview
+36	2015-05-13 15:03:22.51+00	2015-05-13 15:03:22.519+00	f	2015-08-18 18:30:35.572+00	11	19	preview
+37	2015-06-03 19:20:11.759+00	2015-06-03 19:20:11.767+00	f	2015-08-18 18:30:35.572+00	10	20	preview
+38	2015-06-03 19:20:34+00	2015-06-03 19:20:34.009+00	f	2015-08-18 18:30:35.572+00	10	23	preview
+39	2015-06-03 19:20:56.971+00	2015-06-03 19:20:56.98+00	f	2015-08-18 18:30:35.572+00	10	22	preview
+40	2015-06-03 19:21:17.463+00	2015-06-03 19:21:17.473+00	f	2015-08-18 18:30:35.572+00	10	21	preview
+41	2015-07-27 09:28:29.658+00	2015-07-27 09:28:29.667+00	f	2015-08-18 18:30:35.572+00	7	4	preview
+43	2015-07-29 11:22:44.511+00	2015-07-29 11:22:44.52+00	f	2015-08-18 18:30:35.572+00	7	7	preview
+44	2015-07-29 11:52:48.833+00	2015-07-29 11:52:48.843+00	f	2015-08-18 18:30:35.572+00	4	25	preview
+45	2015-07-29 11:52:59.264+00	2015-07-29 11:52:59.273+00	f	2015-08-18 18:30:35.572+00	4	26	preview
+46	2015-07-29 11:53:09.833+00	2015-07-29 11:53:09.842+00	f	2015-08-18 18:30:35.572+00	4	27	preview
+47	2015-07-29 20:25:19.495+00	2015-07-29 20:25:19.504+00	f	2015-08-18 18:30:35.572+00	4	8	preview
+48	2015-07-29 20:25:38.323+00	2015-07-29 20:25:38.332+00	f	2015-08-18 18:30:35.572+00	8	8	preview
+49	2015-07-29 20:29:49.167+00	2015-07-29 20:29:49.175+00	f	2015-08-18 18:30:35.572+00	7	6	preview
+50	2015-08-04 14:33:03.441+00	2015-08-04 14:33:03.45+00	f	2015-08-18 18:30:35.572+00	12	2	preview
+52	2015-08-30 08:37:44.103+00	2015-08-30 08:37:44.115+00	f	2015-08-30 08:37:32+00	17	18	preview
+53	2015-08-30 08:37:59.784+00	2015-08-30 08:37:59.795+00	f	2015-08-30 08:37:46+00	17	7	preview
+54	2015-08-30 08:38:10.252+00	2015-08-30 08:38:10.264+00	f	2015-08-30 08:38:02+00	17	4	preview
+55	2015-08-30 08:38:22.588+00	2015-08-30 08:38:22.6+00	f	2015-08-30 08:38:12+00	17	6	preview
+56	2015-08-30 08:38:53.933+00	2015-08-30 08:38:53.944+00	f	2015-08-30 08:38:37+00	17	24	preview
+57	2015-08-30 08:39:05.318+00	2015-08-30 08:39:05.33+00	f	2015-08-30 08:38:55+00	17	8	preview
+58	2015-08-30 15:18:46.569+00	2015-08-30 15:18:46.584+00	f	2015-08-30 15:18:33+00	17	12	preview
+59	2015-08-30 15:30:54.813+00	2015-08-30 15:30:54.824+00	f	2015-08-30 15:30:41+00	17	10	preview
+61	2015-09-08 07:14:20.828+00	2015-09-08 07:14:20.845+00	f	2015-09-08 07:14:07+00	4	7	preview
+62	2015-09-10 12:03:42.807+00	2015-09-10 12:03:42.818+00	f	2015-09-10 12:03:25+00	17	5	preview
+72	2015-09-22 20:07:06.537709+00	2015-09-22 20:07:06.554684+00	f	2015-09-22 20:06:55+00	18	31	preview
+73	2015-09-22 20:37:14.563193+00	2015-09-22 20:37:14.580271+00	f	2015-09-22 20:37:00+00	18	32	preview
+74	2015-09-22 20:37:27.439616+00	2015-09-22 20:37:27.452543+00	f	2015-09-22 20:37:17+00	18	35	preview
+75	2015-09-22 20:37:38.622523+00	2015-09-22 20:37:38.634298+00	f	2015-09-22 20:37:29+00	18	30	preview
+76	2015-09-22 20:37:50.832499+00	2015-09-22 20:37:50.844512+00	f	2015-09-22 20:37:41+00	18	36	preview
+77	2015-09-22 20:38:08.416912+00	2015-09-22 20:38:08.428819+00	f	2015-09-22 20:37:53+00	18	37	preview
+78	2015-09-22 20:38:19.604158+00	2015-09-22 20:38:19.616292+00	f	2015-09-22 20:38:10+00	18	34	preview
+79	2015-09-22 20:38:56.49697+00	2015-09-22 20:38:56.508791+00	f	2015-09-22 20:38:47+00	18	29	preview
+80	2015-09-22 20:39:08.914675+00	2015-09-22 20:39:08.926511+00	f	2015-09-22 20:38:59+00	18	33	preview
+81	2015-10-18 18:22:58.312731+00	2015-10-18 18:22:58.330143+00	f	2015-10-18 18:22:36+00	18	1	preview
 \.
 
 
@@ -3363,27 +3337,24 @@ SELECT pg_catalog.setval('courseevent_thread_id_seq', 167, true);
 -- Data for Name: customer_customer; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY customer_customer (created, modified, braintree_customer_id, user_id, email, first_name, last_name) FROM stdin;
-2015-10-25 08:39:01.974838+00	2015-10-25 08:39:01.978075+00	39375092	13	maennel@me.com	Liselotte	Maennel
-2015-10-25 14:41:20.428636+00	2015-10-25 14:41:20.431887+00	29109987	18	m.radomsky@alcudina.de	Michael	Radomsky
+COPY customer_customer (id, created, modified, braintree_customer_id, user_id) FROM stdin;
+1	2015-11-02 09:56:26.044673+00	2015-11-02 09:56:27.809412+00	78753340	1
 \.
 
 
 --
--- Data for Name: customer_failedtransaction; Type: TABLE DATA; Schema: public; Owner: -
+-- Name: customer_customer_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-COPY customer_failedtransaction (amount, currency, braintree_transaction_id, braintree_merchant_account_id, created, braintree_result, course_id, customer_id, temporder_id) FROM stdin;
-\.
+SELECT pg_catalog.setval('customer_customer_id_seq', 1, true);
 
 
 --
 -- Data for Name: customer_order; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY customer_order (id, created, modified, order_status, courseproduct_id, customer_id, course_id, currency, income) FROM stdin;
-1	2015-10-25 08:39:02.006099+00	2015-10-25 08:39:02.006692+00	paid	6	39375092	\N	EUR	749.2500
-2	2015-10-25 14:41:20.461727+00	2015-10-25 14:41:20.462218+00	paid	6	29109987	\N	EUR	749.2500
+COPY customer_order (id, created, modified, email, first_name, last_name, order_status, amount, currency, course_id, courseproduct_id, customer_id) FROM stdin;
+1	2015-11-02 09:56:26.291405+00	2015-11-02 09:56:27.820917+00	sabine.maennel@gmail.com	Sabine	Maennel	paid	10.0000	CHF	10	1	1
 \.
 
 
@@ -3391,42 +3362,23 @@ COPY customer_order (id, created, modified, order_status, courseproduct_id, cust
 -- Name: customer_order_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('customer_order_id_seq', 2, true);
+SELECT pg_catalog.setval('customer_order_id_seq', 1, true);
 
 
 --
--- Data for Name: customer_successfultransaction; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: customer_transaction; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY customer_successfultransaction (amount, currency, braintree_transaction_id, braintree_merchant_account_id, created, course_id, customer_id, order_id) FROM stdin;
-749.2500	EUR	c7bsrj	7tsyzcf8cwwpqeur	2015-10-25 08:39:02.018386+00	\N	39375092	1
-749.2500	EUR	gcsp88	7tsyzcf8cwwpqeur	2015-10-25 14:41:20.476646+00	\N	29109987	2
+COPY customer_transaction (id, created, modified, amount, currency, email, first_name, last_name, braintree_transaction_id, braintree_customer_id, braintree_payment_token, braintree_merchant_account_id, braintree_amount, braintree_error_details, flag_payment_sucess, error_code, error_message, course_id, customer_id, order_id) FROM stdin;
+1	2015-11-02 09:56:26.322597+00	2015-11-02 09:56:27.777333+00	10.0000	CHF	sabine.maennel@gmail.com	Sabine	Maennel	cc5yyt	78753340	3wvphw	7tsyzcf8cwwpq6vb			t			10	1	1
 \.
 
 
 --
--- Data for Name: customer_temporder; Type: TABLE DATA; Schema: public; Owner: -
+-- Name: customer_transaction_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-COPY customer_temporder (id, created, modified, participant_email, participant_first_name, participant_last_name, participant_username, courseproduct_id, user_id) FROM stdin;
-1	2015-10-25 08:38:31.537232+00	2015-10-25 08:38:31.537782+00	\N				6	13
-2	2015-10-25 14:40:29.089898+00	2015-10-25 14:40:29.090349+00	\N				6	18
-\.
-
-
---
--- Name: customer_temporder_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
-
-SELECT pg_catalog.setval('customer_temporder_id_seq', 2, true);
-
-
---
--- Data for Name: customers_customer; Type: TABLE DATA; Schema: public; Owner: -
---
-
-COPY customers_customer (user_id, id, country, created, house_nr, modified, street, town) FROM stdin;
-\.
+SELECT pg_catalog.setval('customer_transaction_id_seq', 1, true);
 
 
 --
@@ -4421,6 +4373,31 @@ COPY django_admin_log (id, action_time, object_id, object_repr, action_flag, cha
 1572	2015-10-25 14:31:13.265487+00	5	Selbstführung	2	conditions geändert.	66	18
 1573	2015-10-25 14:31:45.237349+00	5	Selbstführung	2	conditions geändert.	66	18
 1574	2015-10-25 21:28:35.856921+00	5	Selbstführung	2	conditions geändert.	66	18
+1575	2015-11-02 06:00:03.571588+00	1	Kurs	1		76	1
+1576	2015-11-02 06:00:33.434131+00	2	Kursabschnitt	1		76	1
+1577	2015-11-02 06:00:54.752074+00	3	Test	1		76	1
+1578	2015-11-02 06:01:31.700882+00	7	[7] Schreibwerkstatt individuell mit Betreuung	2	product_type geändert.	67	1
+1579	2015-11-02 06:01:59.056575+00	6	[6] Selbstführung Gesamtpaket: geführter Gruppenkurs mit 3-12 Teilnehmern	2	product_type geändert.	67	1
+1580	2015-11-02 06:02:20.608895+00	12	[12] 7. Etappe (7)	2	product_type, dependency und part_of geändert.	67	1
+1581	2015-11-02 06:02:48.598932+00	11	[11] 6. Etappe (6)	2	product_type, dependency und part_of geändert.	67	1
+1582	2015-11-02 06:03:18.171318+00	10	[10] 5. Etappe (5)	2	product_type, dependency und part_of geändert.	67	1
+1583	2015-11-02 06:03:45.501341+00	9	[9] 4. Etappe (4)	2	product_type, dependency und part_of geändert.	67	1
+1584	2015-11-02 06:04:12.580209+00	8	[8] 3. Etappe (3) 	2	product_type, dependency und part_of geändert.	67	1
+1585	2015-11-02 06:04:40.699205+00	5	[5] 1. Etappe (0 +1) 	2	product_type und part_of geändert.	67	1
+1586	2015-11-02 06:05:24.822822+00	4	[4] 2. Etappe (2)	2	product_type, dependency und part_of geändert.	67	1
+1587	2015-11-02 06:11:50.037895+00	1	25% Einführungsrabatt: course	2	courseproduct geändert.	68	1
+1588	2015-11-02 06:12:09.959975+00	9	25% Einführungsrabatt: course	3		68	1
+1589	2015-11-02 06:12:09.980289+00	8	25% Einführungsrabatt: course	3		68	1
+1590	2015-11-02 06:12:09.997469+00	7	25% Einführungsrabatt: course	3		68	1
+1591	2015-11-02 06:12:10.005227+00	5	25% Einführungsrabatt: course	3		68	1
+1592	2015-11-02 06:12:10.013499+00	4	25% Einführungsrabatt: course	3		68	1
+1593	2015-11-02 06:12:10.021813+00	3	25% Einführungsrabatt: course	3		68	1
+1594	2015-11-02 06:12:10.030112+00	2	25% Einführungsrabatt: course	3		68	1
+1595	2015-11-02 06:14:07.877087+00	3	[3] Test zur Einschätzung der individuellen  Schreibkompetenten	2	product_type geändert.	67	1
+1596	2015-11-02 06:14:17.64353+00	2	[2] Schreibwerkstatt als begleiteter Gruppenkurs	2	product_type geändert.	67	1
+1597	2015-11-02 06:14:34.106408+00	1	[1] Schreibwerkstatt individuell und ohne Betreuung	2	product_type geändert.	67	1
+1598	2015-11-02 06:14:45.681303+00	3	[3] Test zur Einschätzung der individuellen  Schreibkompetenten	2	product_type geändert.	67	1
+1599	2015-11-02 12:12:07.164526+00	4	anette	2	password geändert.	46	1
 \.
 
 
@@ -4428,7 +4405,7 @@ COPY django_admin_log (id, action_time, object_id, object_repr, action_flag, cha
 -- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('django_admin_log_id_seq', 1574, true);
+SELECT pg_catalog.setval('django_admin_log_id_seq', 1599, true);
 
 
 --
@@ -4490,12 +4467,8 @@ COPY django_content_type (id, app_label, model) FROM stdin;
 66	mentoki_product	courseproductgroup
 67	mentoki_product	courseproduct
 68	mentoki_product	specialoffer
-69	mentoki_product	courseeventfullproduct
-70	mentoki_product	courseeventpartproduct
-71	mentoki_product	courseaddonproduct
-72	customer	temporder
-73	customer	successfultransaction
-74	customer	failedtransaction
+75	customer	transaction
+76	mentoki_product	producttype
 \.
 
 
@@ -4503,7 +4476,7 @@ COPY django_content_type (id, app_label, model) FROM stdin;
 -- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('django_content_type_id_seq', 74, true);
+SELECT pg_catalog.setval('django_content_type_id_seq', 76, true);
 
 
 --
@@ -4570,7 +4543,6 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 57	userprofiles	0008_auto_20151001_1222	2015-10-01 10:38:20.923629+00
 58	account	0001_initial	2015-10-15 14:26:54.351648+00
 59	account	0002_email_max_length	2015-10-15 14:26:54.405319+00
-60	customer	0001_initial	2015-10-15 14:26:54.624702+00
 61	mentoki_product	0001_initial	2015-10-15 14:26:54.856791+00
 62	mentoki_product	0002_auto_20150930_2243	2015-10-15 14:26:54.983207+00
 63	mentoki_product	0003_courseeventproduct_foto	2015-10-15 14:26:55.238418+00
@@ -4606,13 +4578,6 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 93	mentoki_product	0019_courseproductgroup_about	2015-10-20 08:36:30.700347+00
 94	mentoki_product	0020_courseproductgroup_mentors	2015-10-20 08:36:31.075628+00
 95	mentoki_product	0021_auto_20151018_2156	2015-10-20 08:36:31.399701+00
-96	customer	0002_auto_20151016_1926	2015-10-20 08:36:32.193124+00
-97	customer	0003_auto_20151016_2324	2015-10-20 08:36:32.386504+00
-98	customer	0004_auto_20151017_0801	2015-10-20 08:36:32.986374+00
-99	customer	0005_auto_20151019_0831	2015-10-20 08:36:34.254718+00
-100	customer	0006_remove_order_customer	2015-10-20 08:36:34.48785+00
-101	customer	0007_order_customer	2015-10-20 08:36:34.687201+00
-102	customer	0008_auto_20151019_2026	2015-10-20 08:36:35.302533+00
 103	mentoki_product	0022_auto_20151019_1510	2015-10-20 08:36:35.899271+00
 104	mentoki_product	0023_courseproductgroup_discount_text_long	2015-10-20 08:36:36.223971+00
 105	mentoki_product	0024_courseproduct_display_nr	2015-10-20 08:36:36.629557+00
@@ -4623,21 +4588,14 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 110	mentoki_product	0029_auto_20151019_1552	2015-10-20 08:36:38.640457+00
 111	textchunks	0006_auto_20151018_1459	2015-10-20 08:36:38.700467+00
 112	mentoki_product	0030_courseproductgroup_display_nr	2015-10-20 09:55:16.587015+00
-113	customer	0009_auto_20151020_1714	2015-10-25 08:36:59.12856+00
-114	customer	0010_auto_20151021_1302	2015-10-25 08:36:59.991042+00
-115	customer	0011_auto_20151021_1347	2015-10-25 08:37:00.648079+00
-116	customer	0012_temporder	2015-10-25 08:37:00.923551+00
-117	customer	0013_auto_20151022_1322	2015-10-25 08:37:01.098114+00
-118	customer	0014_auto_20151022_1649	2015-10-25 08:37:01.439875+00
-119	customer	0015_auto_20151022_1727	2015-10-25 08:37:01.915646+00
-120	customer	0016_auto_20151022_1730	2015-10-25 08:37:02.273365+00
-121	customer	0017_auto_20151022_2012	2015-10-25 08:37:03.565275+00
-122	customer	0018_auto_20151022_2024	2015-10-25 08:37:03.767308+00
-123	customer	0019_auto_20151023_1600	2015-10-25 08:37:06.20621+00
-124	customer	0020_auto_20151023_1710	2015-10-25 08:37:07.513183+00
 125	mentoki_product	0031_auto_20151022_1322	2015-10-25 08:37:09.110609+00
 126	mentoki_product	0032_auto_20151023_1710	2015-10-25 08:37:09.356161+00
 127	mentoki_product	0033_auto_20151023_2118	2015-10-25 08:37:09.538033+00
+128	accounts	0004_user_checkout_product_slug	2015-11-02 05:40:16.192221+00
+129	courseevent	0017_courseeventparticipation_participation_type	2015-11-02 05:40:16.523379+00
+130	customer	0001_initial	2015-11-02 05:40:17.500071+00
+131	mentoki_product	0034_auto_20151101_2111	2015-11-02 05:40:20.151411+00
+132	mentoki_product	0035_courseproduct_product_type	2015-11-02 05:40:20.359848+00
 \.
 
 
@@ -4645,7 +4603,7 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('django_migrations_id_seq', 127, true);
+SELECT pg_catalog.setval('django_migrations_id_seq', 132, true);
 
 
 --
@@ -4917,9 +4875,11 @@ ncsxv5sz0plkpt87vgh16zjyamptmx4v	MjczYTQyNzgzYjU4YmQ5ZGM1YTc1YzhmZjlkZmQxNWFiMTk
 q7k9edv298jw1od5zl2xya8uvw49bp7j	Njk5OTc4Zjc4ZDcwZGFlZjdjOWQ2ZTBmNTlmNTNhN2MyMmJjZGZlNjp7Il9hdXRoX3VzZXJfaGFzaCI6IjdiM2QwMjA1M2UyMWViYzUyNWE1YTNiNDA3YTcyMGQ1MDU0MTM2OTYiLCJfYXV0aF91c2VyX2lkIjoiMzQiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIndvcmtvbl9jb3Vyc2VldmVudF9pZCI6MTh9	2015-10-09 12:28:42.611632+00
 p9jn7sqdzj93t8s78m3okt4yufs83p0r	OTYwOWUzYjkyMzFkZWZkYWNjNzdlNzU2MjUwOTUxZThkZGFjOWM4NDp7Indvcmtvbl9jb3Vyc2VfaWQiOjYsIl9hdXRoX3VzZXJfaGFzaCI6Ijc5MGU5ZjJkZmE2ZjI1ZDgyZjU4NmMxMmJhNjEwNWQxN2IzN2UwYTIiLCJfYXV0aF91c2VyX2lkIjoiNyIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIn0=	2015-10-10 13:27:31.956394+00
 31xkyduu5zidsi2q8upyfbzk1aaxmgc0	ZWI1YjcxYjVhMmZiZmM0OGQ4NWM5YzQ0Yzg4YThmYzQ2ODZkOTY5Mzp7Indvcmtvbl9jb3Vyc2VfaWQiOjYsIl9zZXNzaW9uX2V4cGlyeSI6MCwiX2F1dGhfdXNlcl9oYXNoIjoiMjU1NGQ1MzdlYTI4MmViYWRmOGRmN2VkMWEyNjYyZWY4YTcxNWFkOSIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6IjE4In0=	2015-11-06 15:31:18.268127+00
-h7s0e4bsqdt08uv82s89l8zz1lra8nfi	MDcwN2VlODEwY2YwNGIyZGNlZmIwMmI2YTIwMDgzMDViZmUwYmRiZDp7Il9hdXRoX3VzZXJfaGFzaCI6ImQ2ODc4MzdhOWY2ZTc1Nzc3NjRhMDMzYmM1MzRhZWE1NDYzZmRhNDgiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIxIn0=	2015-11-08 10:29:08.011194+00
 chrmy9s5dro09kexjhmkti6sbg37gxud	ODE4NmMxNjYyOTExMWJkYjQ3YWE0MDAzNjUwMjA1NjBlM2ExYTMyZTp7Il9hdXRoX3VzZXJfaGFzaCI6IjIyNTVjMzk1MGFlN2MxOWEzODE2OWRhMjNjNzhmMTg3MTdjYzdmNzEiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIyOCJ9	2015-10-12 16:55:39.734953+00
 jzh3efc2turya5h5c0v39lltm4di36ws	MGE5ZTg4ZjJhMDU3ZmQwYTI2ZTYxMTAyMjg1Mjk0YjgwYjkwNGRlZTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJ3b3Jrb25fY291cnNlX2lkIjoxMCwiX3Nlc3Npb25fZXhwaXJ5IjowLCJfYXV0aF91c2VyX2hhc2giOiJkNjg3ODM3YTlmNmU3NTc3NzY0YTAzM2JjNTM0YWVhNTQ2M2ZkYTQ4Iiwid29ya29uX2NvdXJzZWV2ZW50X2lkIjoxOH0=	2015-11-01 19:17:27.172901+00
+que2048u1kg29wiheeq0ukxpov9um4hc	OGI5NGIxNzJiYTFhZjM0MjNjNDZkM2VmYjhmYTY1NTc1M2EyMGQ3ZDp7InVuZmluaXNoZWRfcHJvZHVjdF9zbHVnIjoic2VsYnN0ZnVlaHJ1bmctZ3J1cHBlbmt1cnMiLCJ1bmZpbmlzaGVkX2NoZWNrb3V0Ijp0cnVlLCJuZXh0IjoiL2RlL2NoZWNrb3V0L3NlbGJzdGZ1ZWhydW5nLWdydXBwZW5rdXJzL3JlZGlyZWN0In0=	2015-11-16 06:29:59.508463+00
+nft8nxve9u1wp3d5bljd1jtp4kpbk3i7	ZTlhYmU4ZTE0YWEzYmRiOGRiM2NlMGM2MzQ5ZWFmY2M4NTJlZmQwZDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9oYXNoIjoiM2ZkODRmOTg4MTE4Yzk5YTFlNTJlMTVhODk5MWJmM2I4YTNhYzIyOCIsIl9hdXRoX3VzZXJfaWQiOiI0IiwiX3Nlc3Npb25fZXhwaXJ5IjoxODE0NDAwfQ==	2015-11-23 12:14:54.789948+00
+6b6vxg9lgpg7p780e7lgy8iphi66w1bu	MjRiYjQ2YjlhMmI1ODNjYTEwOGYyZmM4NTNhZWY4MmZiNWEzZmQ3NDp7InVuZmluaXNoZWRfcHJvZHVjdF9zbHVnIjoic2NocmVpYndlcmtzdGF0dC1pbmRpdmlkdWVsbC1vaG5lLWJldHJldXVuZyIsIl9hdXRoX3VzZXJfaWQiOiIxIiwidW5maW5pc2hlZF9jaGVja291dCI6dHJ1ZSwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJuZXh0IjoiL2RlL2NoZWNrb3V0L3NjaHJlaWJ3ZXJrc3RhdHQtaW5kaXZpZHVlbGwtb2huZS1iZXRyZXV1bmcvcmVkaXJlY3QiLCJfc2Vzc2lvbl9leHBpcnkiOjAsIl9hdXRoX3VzZXJfaGFzaCI6ImQ2ODc4MzdhOWY2ZTc1Nzc3NjRhMDMzYmM1MzRhZWE1NDYzZmRhNDgifQ==	2015-11-16 12:52:34.420772+00
 pjfdrookkteyfhg80m00uxhils5p3mlq	NDNhNzZmZDk4YmU4MzNlNjM1ZWY4YjA2YTVkZDA5Y2M2YWMxYjRmOTp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9oYXNoIjoiMjU1NGQ1MzdlYTI4MmViYWRmOGRmN2VkMWEyNjYyZWY4YTcxNWFkOSIsIl9hdXRoX3VzZXJfaWQiOiIxOCIsIl9zZXNzaW9uX2V4cGlyeSI6MH0=	2015-10-30 15:08:23.136178+00
 s9722z5od654bgsh5c7txyxrk0w6uppz	NDJlNzQ1ZDkwMGM0NmZiYjExYjRlNTcwMWM0N2YzNTZkMDhjMDc0YTp7Indvcmtvbl9jb3Vyc2VfaWQiOjEwLCJfYXV0aF91c2VyX2hhc2giOiJkOGEwNDgwMzY3YjNjMDhiOTNiOGRjYTg4NTE1NTI2NWQzZTViZGQ3IiwiX2F1dGhfdXNlcl9pZCI6IjYiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIndvcmtvbl9jb3Vyc2VldmVudF9pZCI6OH0=	2015-10-16 06:14:18.966987+00
 a5tikjlly4wnswo8znd3tiv6r2dl5ite	Y2FhZTljZTk4Yzg4MDE0NDFiYWUzMDNjNGIxMTRjYWEwMGNhNTk0Yjp7Indvcmtvbl9jb3Vyc2VfaWQiOjEwLCJfYXV0aF91c2VyX2lkIjoiNiIsIl9hdXRoX3VzZXJfaGFzaCI6ImQ4YTA0ODAzNjdiM2MwOGI5M2I4ZGNhODg1MTU1MjY1ZDNlNWJkZDciLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9zZXNzaW9uX2V4cGlyeSI6MH0=	2015-11-05 06:19:31.055063+00
@@ -4940,22 +4900,6 @@ COPY django_site (id, domain, name) FROM stdin;
 --
 
 SELECT pg_catalog.setval('django_site_id_seq', 1, true);
-
-
---
--- Data for Name: invoice_invoice; Type: TABLE DATA; Schema: public; Owner: -
---
-
-COPY invoice_invoice (amount, currency, first_name, last_name, invoice_nr, created, paid, customer_id, product_id, email, title, payrexx_tld) FROM stdin;
-10.0000	CHF	Sabine	Maennel	1	2015-10-15 20:45:55.628836+00	f	\N	1	Sabine.maennel@gmail.com	schreibwerkstatt-rechnungsnr-1	2
-\.
-
-
---
--- Name: invoice_invoice_invoice_nr_seq; Type: SEQUENCE SET; Schema: public; Owner: -
---
-
-SELECT pg_catalog.setval('invoice_invoice_invoice_nr_seq', 1, true);
 
 
 --
@@ -5611,6 +5555,7 @@ COPY mailqueue_mailermessage (id, subject, to_address, bcc_address, from_address
 66	Neuigkeiten vom Mentorencafé	m.radomsky@alcudina.de, c.radomsky@alcudina.de, anette.pekrul@hotmail.de, f.neff@schreibcoach.ch, sbine.lau@t-online.de, cult5d@t-online.de, mail@mediafactory-sft.de, Bea.ribaux@bluewin.ch, franz@grieser-coaching.de, sabine.maennel@gmail.com	mentoki@mentoki.com	mentoki@mentoki.com	Neue Nachricht von Mentoren Cafe and die Teilnehmer	<!DOCTYPE html>\n<html lang="en">\n<head>\n<title>A Responsive Email Template</title>\n<!--\n\n    An email present from your friends at Litmus (@litmusapp)\n\n    Email is surprisingly hard. While this has been thoroughly tested, your mileage may vary.\n    It's highly recommended that you test using a service like Litmus (http://litmus.com) and your own devices.\n\n    Enjoy!\n\n -->\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<meta http-equiv="X-UA-Compatible" content="IE=edge" />\n<style type="text/css">\n    /* CLIENT-SPECIFIC STYLES */\n    #outlook a{padding:0;} /* Force Outlook to provide a "view in browser" message */\n    .ReadMsgBody{width:100%;} .ExternalClass{width:100%;} /* Force Hotmail to display emails at full width */\n    .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {line-height: 100%;} /* Force Hotmail to display normal line spacing */\n    body, table, td, a{-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%;} /* Prevent WebKit and Windows mobile changing default text sizes */\n    table, td{mso-table-lspace:0pt; mso-table-rspace:0pt;} /* Remove spacing between tables in Outlook 2007 and up */\n    img{-ms-interpolation-mode:bicubic;} /* Allow smoother rendering of resized image in Internet Explorer */\n\n    /* RESET STYLES */\n    body{margin:0; padding:0;}\n    img{border:0; height:auto; line-height:100%; outline:none; text-decoration:none;}\n    table{border-collapse:collapse !important;}\n    body{height:100% !important; margin:0; padding:0; width:100% !important;}\n\n    /* iOS BLUE LINKS */\n    .appleBody a {color:#68440a; text-decoration: none;}\n    .appleFooter a {color:#999999; text-decoration: none;}\n\n    /* MOBILE STYLES */\n    @media screen and (max-width: 525px) {\n\n        /* ALLOWS FOR FLUID TABLES */\n        table[class="wrapper"]{\n          width:100% !important;\n        }\n\n        /* ADJUSTS LAYOUT OF LOGO IMAGE */\n        td[class="logo"]{\n          text-align: left;\n          padding: 20px 0 20px 0 !important;\n        }\n\n        td[class="logo"] img{\n          margin:0 auto!important;\n        }\n\n        /* USE THESE CLASSES TO HIDE CONTENT ON MOBILE */\n        td[class="mobile-hide"]{\n          display:none;}\n\n        img[class="mobile-hide"]{\n          display: none !important;\n        }\n\n        img[class="img-max"]{\n          max-width: 100% !important;\n          height:auto !important;\n        }\n\n        /* FULL-WIDTH TABLES */\n        table[class="responsive-table"]{\n          width:100%!important;\n        }\n\n        /* UTILITY CLASSES FOR ADJUSTING PADDING ON MOBILE */\n        td[class="padding"]{\n          padding: 10px 5% 15px 5% !important;\n        }\n\n        td[class="padding-copy"]{\n          padding: 10px 5% 10px 5% !important;\n          text-align: center;\n        }\n\n        td[class="padding-meta"]{\n          padding: 30px 5% 0px 5% !important;\n          text-align: center;\n        }\n\n        td[class="no-pad"]{\n          padding: 0 0 20px 0 !important;\n        }\n\n        td[class="no-padding"]{\n          padding: 0 !important;\n        }\n\n        td[class="section-padding"]{\n          padding: 50px 15px 50px 15px !important;\n        }\n        \n        td[class="section-header"]{\n          padding: 10px 15px 10px 15px !important;\n        }\n\n        td[class="section-padding-bottom-image"]{\n          padding: 50px 15px 0 15px !important;\n        }\n\n        /* ADJUST BUTTONS ON MOBILE */\n        td[class="mobile-wrapper"]{\n            padding: 10px 5% 15px 5% !important;\n        }\n\n        table[class="mobile-button-container"]{\n            margin:0 auto;\n            width:100% !important;\n        }\n\n        a[class="mobile-button"]{\n            width:80% !important;\n            padding: 15px !important;\n            border: 0 !important;\n            font-size: 16px !important;\n        }\n\n    }\n</style>\n</head>\n<body style="margin: 0; padding: 0;">\n\n<!-- HEADER -->\n<table border="0" cellpadding="0" cellspacing="0" width="100%">\n    <tr>\n        <td bgcolor="#ffffff" align="center" width="100%" style="padding: 20px 15px 20px 15px;" class="section-header">\n            <table border="0" cellpadding="0" cellspacing="0" width="500" class="wrapper" align="center">\n                <!-- LOGO/PREHEADER TEXT -->\n                <tr>\n                    <td align="center">\n                        <table border="0" cellpadding="0" cellspacing="0" width="100%">\n                            <tr>\n                                <td style="font-size: 18px; font-family: Helvetica, Arial, sans-serif; color: #333333; padding-top: 30px;" class="padding-copy">\n                                    \n     Neuigkeiten vom Mentorencafé:\n\n                                </td>\n                            </tr>\n                        </table>\n                    </td>\n                </tr>\n            </table>\n        </td>\n    </tr>\n</table>\n\n<!-- ONE COLUMN SECTION -->\n<table border="0" cellpadding="0" cellspacing="0" width="100%">\n    <tr>\n        <td bgcolor="white" align="center" style="padding: 30px 15px 30px 15px;" class="section-padding">\n            <table border="0" cellpadding="0" cellspacing="0" width="500" class="responsive-table">\n                <tr>\n                    <td>\n                        <table width="100%" border="0" cellspacing="0" cellpadding="0">\n\n                            <tr>\n                                <td>\n                                    <!-- COPY -->\n                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">\n                                        <tr>\n                                            <td style="font-size: 18px; font-family: Helvetica, Arial, sans-serif; color: #333333; padding-top: 30px;" class="padding-copy">\n                                                \n    Fortschritte\n</td>\n                                        </tr>\n                                        <tr>\n                                            <td style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">\n                                                \n    <p>Ich arbeite heute nochmal an der <strong><span style="color: #2969B0;">Zahlungsfuktion</span></strong> und habe sie deshalb vor&uuml;bergehend wieder abgeklemmt. Es gibt an dieser Fromt auch noch Neuigkeiten. <strong><span style="color: #B8312F; font-size: 27px;">Payrexx&nbsp;</span></strong>der freundliche Schweizer Anbieter ist f&uuml;r kleine private Webseiten sicher zu empfehlen. Aber leider haben sie keine fertige Python-Anbindung und das ist nun mal meine Programmiersprache und es schien mir jetzt doch zu aufwendig die Anbindung selbst zu bauen.&nbsp;</p><p>Demgegen&uuml;ber ist bei den Zahlungsanbietern direkt so etwas immer schon vorhanden und <span style="color: #41A85F;"><strong><span style="font-size: 27px;">braintree</span></strong> <span style="color: #000000;">(</span></span>ein Zahlungsanbieter, der Paypal aufgekauft hat und recht g&uuml;nstig ist) ist bereits in die Webseite integriert, die Anmeldung l&auml;uft und ich arbeite heute noch am Finetuning.</p><p><span style="color: #41A85F;"><strong> Aber sie m&uuml;ssen unser Angebot sehen</strong></span>. Deshalb w&uuml;rde ich Euch bitten Eure Angebote alle nochmal im Detail zu &uuml;berlegen.</p><p>Also ich habe das Produktangebot nochmal &uuml;berdacht und meine L&ouml;sung ist jetzt bereit zur Begutachtung durch Euch:</p><h3>Neue Produktorganisation</h3><p>Ihr habt jeder soetwas wie eine <strong><span style="color: #F37934;">&quot;Schule&quot; oder &quot;Produktgruppe&quot;</span></strong>f&uuml;r Euer Thema:</p><p>Dazu brauche ich&nbsp;<strong><span style="color: #F37934;">drei freigestaltetet Seiten&nbsp;</span></strong>(ihr macht das viel besser als ich, etwa Franz Neff mit seinen supertollen Zeichungen, die ich so bewundere und von denen ich mal zwei auf seiner Frontseite eingeh&auml;ngt habe):</p><p><span style="color: rgb(0, 0, 0);">1.</span><span style="color: rgb(243, 121, 52); font-weight: bold;"> &quot;About&quot;:</span> so was wie eine About-Page: das sind im Wesentlichen Eure alten Kursbeschreibungen, die ich an diese Stelle schon mal reinkopiert habe.</p><p>2. <span style="color: rgb(243, 121, 52);"><strong>&quot;Kursleitung&quot;: </strong><span style="color: #000000;">Diese Seite k&ouml;nnt ihr ebenfalls frei gestalten.</span></span></p><p><span style="color: #000000;">3. <span style="color: rgb(243, 121, 52);"><strong>&quot;Angebote&quot;: </strong><span style="color: rgb(0, 0, 0);">Beschreibt Eure Angebote mit Freitext: wie unterscheiden sie sich die Angebote voneinander bzw. wie h&auml;ngen sie miteinander zusammen</span></span></span></p><p><span style="color: #F37934;"><strong>Ich ben&ouml;tige auch eine Beschreibungen der Angebote einzeln:&nbsp;</strong></span></p><ul><li><span style="color: rgb(0, 0, 0);">Name der Angebots</span></li><li>kurze Beschreibung</li><li>Preis</li><li>Einf&uuml;hrungsrabatt, wenn gew&uuml;nscht, wieviel % Nachlass daf&uuml;r? (wie das dann aussieht mit dem Einf&uuml;hrungsangebot k&ouml;nnt ihr beim Kurs Selbstf&uuml;hrung sehen)</li></ul><p>F&uuml;r die Suchmaschine ben&ouml;tige ich sp&auml;ter auch f&uuml;r alles noch Schl&uuml;sselw&ouml;rter und eine Beschreibung in einem kurzen Satz. Dazu gebe ich dann bei Gelegenheit noch eine Anleitung. Es hat aber noch etwas Zeit damit. Aber theoretisch k&ouml;nnt ihr das schon mit &uuml;berlegen.</p><h3>Praktisches Vorgehen</h3><p>Ihr k&ouml;nnt bei Eurer Unterrichtsvorlage einen Block einrichten und den Editor benutzen und diese 3 Seiten anlegen plus eine Seite f&uuml;r jedes Eurer Angebote dort anlegen. Ich hole mir die Texte dann dort ab und kopiere sie in die Front der Webseite. Sp&auml;ter wird das Verfahren dann ge&auml;ndert.&nbsp;</p><p>Christine und Michael, ich weiss, dass ich nicht alles aus Eurem PDF kopiert habe, aber ich kann aus PDFs nicht kopieren. Ich m&uuml;sste es abschreiben, das war mir jetzt zu m&uuml;hsam.&nbsp;</p><p>Ich habe einfach mal ein bisschen was zum Ansehen &uuml;berall angelegt. <strong>Prokukte gibt es schon bei der</strong> <strong>Schreibwerkstatt und bei der</strong> <strong>Selbstf&uuml;hrung</strong>. Wenn Ihr Inspirationen braucht, seht Euch dort an, was m&ouml;glich ist.&nbsp;</p><p>Auf Wunsch von Christine und Michael ist es m&ouml;glich Produkte voneinander abh&auml;ngig zu machen: Block 2 ihres Kurses kann erst erworben werden, wenn Block 1 gekauft wurde.&nbsp;</p><p>Ich freue mich &uuml;ber Euer Feedback und helfe Euch auch gerne, wenn ihr mit etwas M&uuml;he habt. Ruft mich an, wenn ihr wollt (+41 43 53 778 74) oder schreibt mir eine mail. Ich halte die Augen offen und antworte so schnell es geht.&nbsp;</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Mit lieben Gr&uuml;ssen an Euch alle</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sabine</p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p>\n    <a href="http://mentoki.de/de/mentorencafe/klassenzimmer/aktuelles/183">\n        Link zur Ankündigung im Klassenzimmer\n    </a>\n</td>\n                                        </tr>\n                                    </table>\n                                </td>\n                            </tr>\n\n                        </table>\n                    </td>\n                </tr>\n            </table>\n        </td>\n    </tr>\n</table>\n\n<!-- FOOTER -->\n<table border="0" cellpadding="0" cellspacing="0" width="100%">\n    <tr>\n        <td bgcolor="#ffffff" align="center">\n            <table border="0" cellspacing="0" cellpadding="0" width="100%" align="center">\n                <tr>\n                    <td style="padding: 20px 0px;" align="center">\n                        <!-- UNSUBSCRIBE COPY -->\n                        <table width="500" border="0" cellspacing="0" cellpadding="0" align="center" class="responsive-table">\n                            <tr>\n                                <td align="center" class="padding-copy" style="font-size: 12px; line-height: 18px; font-family: Helvetica, Arial, sans-serif; color:#666666;">\n                                    <span class="appleFooter" style="color:#666666;">\n\n\n<table class="footer centered" align="center">\n<tr><td align="center" class="border">&nbsp;</td></tr>\n<tr><td align="center" class="logo"><div align="center" id="emb-email-header" class="logo-center">\n    <a style="color:teal !important;" href="http://mentoki.com/">\n    <img src="https://img.createsend1.com/ti/i/F0/96D/D45/eblogo/mentoki_logo.png" alt="" width="150" height="33" style="max-width:450px"></div></td></tr>\n    </a>\n</table>\n<table class="footer centered">\n<tr>\n  <td align="center" class="social">\n    <table>\n      <tr>\n        <td class="social-link">\n          <table>\n            <tr>\n              <td>\n                <fblike style="text-decoration:none; " likeurl="https://www.facebook.com/internetteachers">\n                    <a href="https://www.facebook.com/internetteachers">\n                  <img src="https://i5.createsend1.com/static/eb/master/01-mason/images/facebook-dark.png" width="26" height="21" />\n                </a>\n                </fblike>\n              </td>\n              <td class="social-text">\n                <fblike style="text-decoration:none; color:grey !important;" likeurl="https://www.facebook.com/internetteachers">\n                  <a href="https://www.facebook.com/internetteachers">\n                    Like</a>\n                </fblike>\n              </td>\n            </tr>\n          </table>\n        </td>\n        <td class="divider">\n          <img src="https://i6.createsend1.com/static/eb/master/01-mason/images/diamond.png" width="5" height="21" alt="" />\n        </td>\n        <td class="social-link">\n          <table>\n            <tr>\n              <td>\n                <tweet style="text-decoration:none;">\n                    <a href="https://twitter.com/Mentoki_com" rel="publisher">\n                  <img src="https://i7.createsend1.com/static/eb/master/01-mason/images/twitter-dark.png" width="26" height="21" />\n                </a>\n                </tweet>\n              </td>\n              <td class="social-text">\n                <tweet style="text-decoration:none; color=grey!important;">\n                    <a href="https://twitter.com/Mentoki_com" rel="publisher">\n                  Tweet\n                    </a>\n                </tweet>\n              </td>\n            </tr>\n          </table>\n        </td>\n\n        <td class="social-link">\n\n        </td>\n      </tr>\n    </table>\n<a style="color:teal !important;" href="http://mentoki.com/">http://mentoki.com</a><br>\n<span style="color:grey;">Sabine Maennel, Leimbachstr. 223, 8041 Zürich, Schweiz</span><br>\n<span style="color:grey;">Anette Pekrul, Seewiesenäckerweg 15, 76199 Karlsruhe</span><br>\n<a style="padding-top:30px;" href="http://mentoki.us10.list-manage1.com/unsubscribe?u=1a72f5bdde772bc5b10e2e0bd&id=ce99ada10d"\n   class="original-only" style="color: grey; text-decoration: none;">\n    Aus unserem Newsletter austragen\n</a>\n                                </td>\n                            </tr>\n                        </table>\n                    </td>\n                </tr>\n            </table>\n        </td>\n    </tr>\n</table>\n\n</body>\n</html>	apps_internal.coursebackend.views.announcement	t	2015-10-20 10:37:08.500139+00	m.radomsky@alcudina.de, c.radomsky@alcudina.de, anette.pekrul@hotmail.de, f.neff@schreibcoach.ch, sbine.lau@t-online.de, cult5d@t-online.de, mail@mediafactory-sft.de, Bea.ribaux@bluewin.ch, franz@grieser-coaching.de, sabine.maennel@gmail.com
 67	Deine Nachricht an Mentoki	Sabine.maennel@gmail.com		mentoki@mentoki.com	Kontakt: Bestätigungsmail an den Kunden	\n<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml">\n  <head>\n    <title></title>\n    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />\n    <style type="text/css">\nbody {\n  margin: 0;\n  mso-line-height-rule: exactly;\n  padding: 0;\n  min-width: 100%;\n}\ntable {\n  border-collapse: collapse;\n  border-spacing: 0;\n}\ntd {\n  padding: 0;\n  vertical-align: top;\n}\n.spacer,\n.border {\n  font-size: 1px;\n  line-height: 1px;\n}\n.spacer {\n  width: 100%;\n}\nimg {\n  border: 0;\n  -ms-interpolation-mode: bicubic;\n}\n.image {\n  font-size: 12px;\n  Margin-bottom: 24px;\n  mso-line-height-rule: at-least;\n}\n.image img {\n  display: block;\n}\n.logo {\n  mso-line-height-rule: at-least;\n}\n.logo img {\n  display: block;\n}\nstrong {\n  font-weight: bold;\n}\nh1,\nh2,\nh3,\np,\nol,\nul,\nli {\n  Margin-top: 0;\n}\nol,\nul,\nli {\n  padding-left: 0;\n}\nblockquote {\n  Margin-top: 0;\n  Margin-right: 0;\n  Margin-bottom: 0;\n  padding-right: 0;\n}\n.column-top {\n  font-size: 32px;\n  line-height: 32px;\n}\n.column-bottom {\n  font-size: 8px;\n  line-height: 8px;\n}\n.column {\n  text-align: left;\n}\n.contents {\n  table-layout: fixed;\n  width: 100%;\n}\n.padded {\n  padding-left: 32px;\n  padding-right: 32px;\n  word-break: break-word;\n  word-wrap: break-word;\n}\n.wrapper {\n  display: table;\n  table-layout: fixed;\n  width: 100%;\n  min-width: 620px;\n  -webkit-text-size-adjust: 100%;\n  -ms-text-size-adjust: 100%;\n}\ntable.wrapper {\n  table-layout: fixed;\n}\n.one-col,\n.two-col,\n.three-col {\n  Margin-left: auto;\n  Margin-right: auto;\n  width: 600px;\n}\n.centered {\n  Margin-left: auto;\n  Margin-right: auto;\n}\n.two-col .image {\n  Margin-bottom: 23px;\n}\n.two-col .column-bottom {\n  font-size: 9px;\n  line-height: 9px;\n}\n.two-col .column {\n  width: 300px;\n}\n.three-col .image {\n  Margin-bottom: 21px;\n}\n.three-col .column-bottom {\n  font-size: 11px;\n  line-height: 11px;\n}\n.three-col .column {\n  width: 200px;\n}\n.three-col .first .padded {\n  padding-left: 32px;\n  padding-right: 16px;\n}\n.three-col .second .padded {\n  padding-left: 24px;\n  padding-right: 24px;\n}\n.three-col .third .padded {\n  padding-left: 16px;\n  padding-right: 32px;\n}\n@media only screen and (min-width: 0) {\n  .wrapper {\n    text-rendering: optimizeLegibility;\n  }\n}\n@media only screen and (max-width: 620px) {\n  [class=wrapper] {\n    min-width: 318px !important;\n    width: 100% !important;\n  }\n  [class=wrapper] .one-col,\n  [class=wrapper] .two-col,\n  [class=wrapper] .three-col {\n    width: 318px !important;\n  }\n  [class=wrapper] .column,\n  [class=wrapper] .gutter {\n    display: block;\n    float: left;\n    width: 318px !important;\n  }\n  [class=wrapper] .padded {\n    padding-left: 32px !important;\n    padding-right: 32px !important;\n  }\n  [class=wrapper] .block {\n    display: block !important;\n  }\n  [class=wrapper] .hide {\n    display: none !important;\n  }\n  [class=wrapper] .image {\n    margin-bottom: 24px !important;\n  }\n  [class=wrapper] .image img {\n    height: auto !important;\n    width: 100% !important;\n  }\n}\n.wrapper h1 {\n  font-weight: 700;\n}\n.wrapper h2 {\n  font-style: italic;\n  font-weight: normal;\n}\n.wrapper h3 {\n  font-weight: normal;\n}\n.one-col blockquote,\n.two-col blockquote,\n.three-col blockquote {\n  font-style: italic;\n}\n.one-col-feature h1 {\n  font-weight: normal;\n}\n.one-col-feature h2 {\n  font-style: normal;\n  font-weight: bold;\n}\n.one-col-feature h3 {\n  font-style: italic;\n}\ntd.border {\n  width: 1px;\n}\ntr.border {\n  background-color: #e9e9e9;\n  height: 1px;\n}\ntr.border td {\n  line-height: 1px;\n}\n.one-col,\n.two-col,\n.three-col,\n.one-col-feature {\n  background-color: #ffffff;\n  font-size: 14px;\n  table-layout: fixed;\n}\n.one-col,\n.two-col,\n.three-col,\n.one-col-feature,\n.preheader,\n.header,\n.footer {\n  Margin-left: auto;\n  Margin-right: auto;\n}\n.preheader table {\n  width: 602px;\n}\n.preheader .title,\n.preheader .webversion {\n  padding-top: 10px;\n  padding-bottom: 12px;\n  font-size: 12px;\n  line-height: 21px;\n}\n.preheader .title {\n  text-align: left;\n}\n.preheader .webversion {\n  text-align: right;\n  width: 300px;\n}\n.header {\n  width: 602px;\n}\n.header .logo {\n  padding: 32px 0;\n}\n.header .logo div {\n  font-size: 26px;\n  font-weight: 700;\n  letter-spacing: -0.02em;\n  line-height: 32px;\n}\n.header .logo div a {\n  text-decoration: none;\n}\n.header .logo div.logo-center {\n  text-align: center;\n}\n.header .logo div.logo-center img {\n  Margin-left: auto;\n  Margin-right: auto;\n}\n.gmail {\n  width: 650px;\n  min-width: 650px;\n}\n.gmail td {\n  font-size: 1px;\n  line-height: 1px;\n}\n.wrapper a {\n  text-decoration: underline;\n  transition: all .2s;\n}\n.wrapper h1 {\n  font-size: 36px;\n  Margin-bottom: 18px;\n}\n.wrapper h2 {\n  font-size: 26px;\n  line-height: 32px;\n  Margin-bottom: 20px;\n}\n.wrapper h3 {\n  font-size: 18px;\n  line-height: 22px;\n  Margin-bottom: 16px;\n}\n.wrapper h1 a,\n.wrapper h2 a,\n.wrapper h3 a {\n  text-decoration: none;\n}\n.one-col blockquote,\n.two-col blockquote,\n.three-col blockquote {\n  font-size: 14px;\n  border-left: 2px solid #e9e9e9;\n  Margin-left: 0;\n  padding-left: 16px;\n}\ntable.divider {\n  width: 100%;\n}\n.divider .inner {\n  padding-bottom: 24px;\n}\n.divider table {\n  background-color: #e9e9e9;\n  font-size: 2px;\n  line-height: 2px;\n  width: 60px;\n}\n.wrapper .gray {\n  background-color: #f7f7f7;\n}\n.wrapper .gray blockquote {\n  border-left-color: #dddddd;\n}\n.wrapper .gray .divider table {\n  background-color: #dddddd;\n}\n.padded .image {\n  font-size: 0;\n}\n.image-frame {\n  padding: 8px;\n}\n.image-background {\n  display: inline-block;\n  font-size: 12px;\n}\n.btn {\n  Margin-bottom: 24px;\n  padding: 2px;\n}\n.btn a {\n  border: 1px solid #ffffff;\n  display: inline-block;\n  font-size: 13px;\n  font-weight: bold;\n  line-height: 15px;\n  outline-style: solid;\n  outline-width: 2px;\n  padding: 10px 30px;\n  text-align: center;\n  text-decoration: none !important;\n}\n.one-col .column table:nth-last-child(2) td h1:last-child,\n.one-col .column table:nth-last-child(2) td h2:last-child,\n.one-col .column table:nth-last-child(2) td h3:last-child,\n.one-col .column table:nth-last-child(2) td p:last-child,\n.one-col .column table:nth-last-child(2) td ol:last-child,\n.one-col .column table:nth-last-child(2) td ul:last-child {\n  Margin-bottom: 24px;\n}\n.one-col p,\n.one-col ol,\n.one-col ul {\n  font-size: 16px;\n  line-height: 24px;\n}\n.one-col ol,\n.one-col ul {\n  Margin-left: 18px;\n}\n.two-col .column table:nth-last-child(2) td h1:last-child,\n.two-col .column table:nth-last-child(2) td h2:last-child,\n.two-col .column table:nth-last-child(2) td h3:last-child,\n.two-col .column table:nth-last-child(2) td p:last-child,\n.two-col .column table:nth-last-child(2) td ol:last-child,\n.two-col .column table:nth-last-child(2) td ul:last-child {\n  Margin-bottom: 23px;\n}\n.two-col .image-frame {\n  padding: 6px;\n}\n.two-col h1 {\n  font-size: 26px;\n  line-height: 32px;\n  Margin-bottom: 16px;\n}\n.two-col h2 {\n  font-size: 20px;\n  line-height: 26px;\n  Margin-bottom: 18px;\n}\n.two-col h3 {\n  font-size: 16px;\n  line-height: 20px;\n  Margin-bottom: 14px;\n}\n.two-col p,\n.two-col ol,\n.two-col ul {\n  font-size: 14px;\n  line-height: 23px;\n}\n.two-col ol,\n.two-col ul {\n  Margin-left: 16px;\n}\n.two-col li {\n  padding-left: 5px;\n}\n.two-col .divider .inner {\n  padding-bottom: 23px;\n}\n.two-col .btn {\n  Margin-bottom: 23px;\n}\n.two-col blockquote {\n  padding-left: 16px;\n}\n.three-col .column table:nth-last-child(2) td h1:last-child,\n.three-col .column table:nth-last-child(2) td h2:last-child,\n.three-col .column table:nth-last-child(2) td h3:last-child,\n.three-col .column table:nth-last-child(2) td p:last-child,\n.three-col .column table:nth-last-child(2) td ol:last-child,\n.three-col .column table:nth-last-child(2) td ul:last-child {\n  Margin-bottom: 21px;\n}\n.three-col .image-frame {\n  padding: 4px;\n}\n.three-col h1 {\n  font-size: 20px;\n  line-height: 26px;\n  Margin-bottom: 12px;\n}\n.three-col h2 {\n  font-size: 16px;\n  line-height: 22px;\n  Margin-bottom: 14px;\n}\n.three-col h3 {\n  font-size: 14px;\n  line-height: 18px;\n  Margin-bottom: 10px;\n}\n.three-col p,\n.three-col ol,\n.three-col ul {\n  font-size: 12px;\n  line-height: 21px;\n}\n.three-col ol,\n.three-col ul {\n  Margin-left: 14px;\n}\n.three-col li {\n  padding-left: 6px;\n}\n.three-col .divider .inner {\n  padding-bottom: 21px;\n}\n.three-col .btn {\n  Margin-bottom: 21px;\n}\n.three-col .btn a {\n  font-size: 12px;\n  line-height: 14px;\n  padding: 8px 19px;\n}\n.three-col blockquote {\n  padding-left: 16px;\n}\n.one-col-feature .column-top {\n  font-size: 36px;\n  line-height: 36px;\n}\n.one-col-feature .column-bottom {\n  font-size: 4px;\n  line-height: 4px;\n}\n.one-col-feature .column {\n  text-align: center;\n  width: 600px;\n}\n.one-col-feature .image {\n  Margin-bottom: 32px;\n}\n.one-col-feature .column table:nth-last-child(2) td h1:last-child,\n.one-col-feature .column table:nth-last-child(2) td h2:last-child,\n.one-col-feature .column table:nth-last-child(2) td h3:last-child,\n.one-col-feature .column table:nth-last-child(2) td p:last-child,\n.one-col-feature .column table:nth-last-child(2) td ol:last-child,\n.one-col-feature .column table:nth-last-child(2) td ul:last-child {\n  Margin-bottom: 32px;\n}\n.one-col-feature h1,\n.one-col-feature h2,\n.one-col-feature h3 {\n  text-align: center;\n}\n.one-col-feature h1 {\n  font-size: 52px;\n  Margin-bottom: 22px;\n}\n.one-col-feature h2 {\n  font-size: 42px;\n  Margin-bottom: 20px;\n}\n.one-col-feature h3 {\n  font-size: 32px;\n  line-height: 42px;\n  Margin-bottom: 20px;\n}\n.one-col-feature p,\n.one-col-feature ol,\n.one-col-feature ul {\n  font-size: 21px;\n  line-height: 32px;\n  Margin-bottom: 32px;\n}\n.one-col-feature p a,\n.one-col-feature ol a,\n.one-col-feature ul a {\n  text-decoration: none;\n}\n.one-col-feature p {\n  text-align: center;\n}\n.one-col-feature ol,\n.one-col-feature ul {\n  Margin-left: 40px;\n  text-align: left;\n}\n.one-col-feature li {\n  padding-left: 3px;\n}\n.one-col-feature .btn {\n  Margin-bottom: 32px;\n  text-align: center;\n}\n.one-col-feature .divider .inner {\n  padding-bottom: 32px;\n}\n.one-col-feature blockquote {\n  border-bottom: 2px solid #e9e9e9;\n  border-left-color: #ffffff;\n  border-left-width: 0;\n  border-left-style: none;\n  border-top: 2px solid #e9e9e9;\n  Margin-bottom: 32px;\n  Margin-left: 0;\n  padding-bottom: 42px;\n  padding-left: 0;\n  padding-top: 42px;\n  position: relative;\n}\n.one-col-feature blockquote:before,\n.one-col-feature blockquote:after {\n  background: -moz-linear-gradient(left, #ffffff 25%, #e9e9e9 25%, #e9e9e9 75%, #ffffff 75%);\n  background: -webkit-gradient(linear, left top, right top, color-stop(25%, #ffffff), color-stop(25%, #e9e9e9), color-stop(75%, #e9e9e9), color-stop(75%, #ffffff));\n  background: -webkit-linear-gradient(left, #ffffff 25%, #e9e9e9 25%, #e9e9e9 75%, #ffffff 75%);\n  background: -o-linear-gradient(left, #ffffff 25%, #e9e9e9 25%, #e9e9e9 75%, #ffffff 75%);\n  background: -ms-linear-gradient(left, #ffffff 25%, #e9e9e9 25%, #e9e9e9 75%, #ffffff 75%);\n  background: linear-gradient(to right, #ffffff 25%, #e9e9e9 25%, #e9e9e9 75%, #ffffff 75%);\n  content: '';\n  display: block;\n  height: 2px;\n  left: 0;\n  outline: 1px solid #ffffff;\n  position: absolute;\n  right: 0;\n}\n.one-col-feature blockquote:before {\n  top: -2px;\n}\n.one-col-feature blockquote:after {\n  bottom: -2px;\n}\n.one-col-feature blockquote p,\n.one-col-feature blockquote ol,\n.one-col-feature blockquote ul {\n  font-size: 42px;\n  line-height: 48px;\n  Margin-bottom: 48px;\n}\n.one-col-feature blockquote p:last-child,\n.one-col-feature blockquote ol:last-child,\n.one-col-feature blockquote ul:last-child {\n  Margin-bottom: 0 !important;\n}\n.footer {\n  width: 602px;\n}\n.footer .padded {\n  font-size: 12px;\n  line-height: 20px;\n}\n.social {\n  padding-top: 32px;\n  padding-bottom: 22px;\n}\n.social img {\n  display: block;\n}\n.social .divider {\n  font-family: sans-serif;\n  font-size: 10px;\n  line-height: 21px;\n  text-align: center;\n  padding-left: 14px;\n  padding-right: 14px;\n}\n.social .social-text {\n  height: 21px;\n  vertical-align: middle !important;\n  font-size: 10px;\n  font-weight: bold;\n  text-decoration: none;\n  text-transform: uppercase;\n}\n.social .social-text a {\n  text-decoration: none;\n}\n.address {\n  width: 250px;\n}\n.address .padded {\n  text-align: left;\n  padding-left: 0;\n  padding-right: 10px;\n}\n.subscription {\n  width: 350px;\n}\n.subscription .padded {\n  text-align: right;\n  padding-right: 0;\n  padding-left: 10px;\n}\n.address,\n.subscription {\n  padding-top: 32px;\n  padding-bottom: 64px;\n}\n.address a,\n.subscription a {\n  font-weight: bold;\n  text-decoration: none;\n}\n.address table,\n.subscription table {\n  width: 100%;\n}\n@media only screen and (max-width: 651px) {\n  .gmail {\n    display: none !important;\n  }\n}\n@media only screen and (max-width: 620px) {\n  [class=wrapper] .one-col .column:last-child table:nth-last-child(2) td h1:last-child,\n  [class=wrapper] .two-col .column:last-child table:nth-last-child(2) td h1:last-child,\n  [class=wrapper] .three-col .column:last-child table:nth-last-child(2) td h1:last-child,\n  [class=wrapper] .one-col-feature .column:last-child table:nth-last-child(2) td h1:last-child,\n  [class=wrapper] .one-col .column:last-child table:nth-last-child(2) td h2:last-child,\n  [class=wrapper] .two-col .column:last-child table:nth-last-child(2) td h2:last-child,\n  [class=wrapper] .three-col .column:last-child table:nth-last-child(2) td h2:last-child,\n  [class=wrapper] .one-col-feature .column:last-child table:nth-last-child(2) td h2:last-child,\n  [class=wrapper] .one-col .column:last-child table:nth-last-child(2) td h3:last-child,\n  [class=wrapper] .two-col .column:last-child table:nth-last-child(2) td h3:last-child,\n  [class=wrapper] .three-col .column:last-child table:nth-last-child(2) td h3:last-child,\n  [class=wrapper] .one-col-feature .column:last-child table:nth-last-child(2) td h3:last-child,\n  [class=wrapper] .one-col .column:last-child table:nth-last-child(2) td p:last-child,\n  [class=wrapper] .two-col .column:last-child table:nth-last-child(2) td p:last-child,\n  [class=wrapper] .three-col .column:last-child table:nth-last-child(2) td p:last-child,\n  [class=wrapper] .one-col-feature .column:last-child table:nth-last-child(2) td p:last-child,\n  [class=wrapper] .one-col .column:last-child table:nth-last-child(2) td ol:last-child,\n  [class=wrapper] .two-col .column:last-child table:nth-last-child(2) td ol:last-child,\n  [class=wrapper] .three-col .column:last-child table:nth-last-child(2) td ol:last-child,\n  [class=wrapper] .one-col-feature .column:last-child table:nth-last-child(2) td ol:last-child,\n  [class=wrapper] .one-col .column:last-child table:nth-last-child(2) td ul:last-child,\n  [class=wrapper] .two-col .column:last-child table:nth-last-child(2) td ul:last-child,\n  [class=wrapper] .three-col .column:last-child table:nth-last-child(2) td ul:last-child,\n  [class=wrapper] .one-col-feature .column:last-child table:nth-last-child(2) td ul:last-child {\n    Margin-bottom: 24px !important;\n  }\n  [class=wrapper] .address,\n  [class=wrapper] .subscription {\n    display: block;\n    float: left;\n    width: 318px !important;\n    text-align: center !important;\n  }\n  [class=wrapper] .address {\n    padding-bottom: 0 !important;\n  }\n  [class=wrapper] .subscription {\n    padding-top: 0 !important;\n  }\n  [class=wrapper] h1 {\n    font-size: 36px !important;\n    line-height: 42px !important;\n    Margin-bottom: 18px !important;\n  }\n  [class=wrapper] h2 {\n    font-size: 26px !important;\n    line-height: 32px !important;\n    Margin-bottom: 20px !important;\n  }\n  [class=wrapper] h3 {\n    font-size: 18px !important;\n    line-height: 22px !important;\n    Margin-bottom: 16px !important;\n  }\n  [class=wrapper] p,\n  [class=wrapper] ol,\n  [class=wrapper] ul {\n    font-size: 16px !important;\n    line-height: 24px !important;\n    Margin-bottom: 24px !important;\n  }\n  [class=wrapper] ol,\n  [class=wrapper] ul {\n    Margin-left: 18px !important;\n  }\n  [class=wrapper] li {\n    padding-left: 2px !important;\n  }\n  [class=wrapper] blockquote {\n    padding-left: 16px !important;\n  }\n  [class=wrapper] .two-col .column:nth-child(n + 3) {\n    border-top: 1px solid #e9e9e9;\n  }\n  [class=wrapper] .btn {\n    margin-bottom: 24px !important;\n  }\n  [class=wrapper] .btn a {\n    display: block !important;\n    font-size: 13px !important;\n    font-weight: bold !important;\n    line-height: 15px !important;\n    padding: 10px 30px !important;\n  }\n  [class=wrapper] .column-bottom {\n    font-size: 8px !important;\n    line-height: 8px !important;\n  }\n  [class=wrapper] .first .column-bottom,\n  [class=wrapper] .three-col .second .column-bottom {\n    display: none;\n  }\n  [class=wrapper] .second .column-top,\n  [class=wrapper] .third .column-top {\n    display: none;\n  }\n  [class=wrapper] .image-frame {\n    padding: 4px !important;\n  }\n  [class=wrapper] .header .logo {\n    padding-left: 10px !important;\n    padding-right: 10px !important;\n  }\n  [class=wrapper] .header .logo div {\n    font-size: 26px !important;\n    line-height: 32px !important;\n  }\n  [class=wrapper] .header .logo div img {\n    display: inline-block !important;\n    max-width: 280px !important;\n    height: auto !important;\n  }\n  [class=wrapper] table.border,\n  [class=wrapper] .header,\n  [class=wrapper] .webversion,\n  [class=wrapper] .footer {\n    width: 320px !important;\n  }\n  [class=wrapper] .preheader .webversion,\n  [class=wrapper] .header .logo a {\n    text-align: center !important;\n  }\n  [class=wrapper] .preheader table,\n  [class=wrapper] .border td {\n    width: 318px !important;\n  }\n  [class=wrapper] .border td.border {\n    width: 1px !important;\n  }\n  [class=wrapper] .image .border td {\n    width: auto !important;\n  }\n  [class=wrapper] .title {\n    display: none;\n  }\n  [class=wrapper] .footer .padded {\n    text-align: center !important;\n  }\n  [class=wrapper] .footer .subscription .padded {\n    padding-top: 20px !important;\n  }\n  [class=wrapper] .footer .social-link {\n    display: block !important;\n  }\n  [class=wrapper] .footer .social-link table {\n    margin: 0 auto 10px !important;\n  }\n  [class=wrapper] .footer .divider {\n    display: none !important;\n  }\n  [class=wrapper] .one-col-feature .btn {\n    margin-bottom: 28px !important;\n  }\n  [class=wrapper] .one-col-feature .image {\n    margin-bottom: 28px !important;\n  }\n  [class=wrapper] .one-col-feature .divider .inner {\n    padding-bottom: 28px !important;\n  }\n  [class=wrapper] .one-col-feature h1 {\n    font-size: 42px !important;\n    line-height: 48px !important;\n    margin-bottom: 20px !important;\n  }\n  [class=wrapper] .one-col-feature h2 {\n    font-size: 32px !important;\n    line-height: 36px !important;\n    margin-bottom: 18px !important;\n  }\n  [class=wrapper] .one-col-feature h3 {\n    font-size: 26px !important;\n    line-height: 32px !important;\n    margin-bottom: 20px !important;\n  }\n  [class=wrapper] .one-col-feature p,\n  [class=wrapper] .one-col-feature ol,\n  [class=wrapper] .one-col-feature ul {\n    font-size: 20px !important;\n    line-height: 28px !important;\n    margin-bottom: 28px !important;\n  }\n  [class=wrapper] .one-col-feature blockquote {\n    font-size: 18px !important;\n    line-height: 26px !important;\n    margin-bottom: 28px !important;\n    padding-bottom: 26px !important;\n    padding-left: 0 !important;\n    padding-top: 26px !important;\n  }\n  [class=wrapper] .one-col-feature blockquote p,\n  [class=wrapper] .one-col-feature blockquote ol,\n  [class=wrapper] .one-col-feature blockquote ul {\n    font-size: 26px !important;\n    line-height: 32px !important;\n  }\n  [class=wrapper] .one-col-feature blockquote p:last-child,\n  [class=wrapper] .one-col-feature blockquote ol:last-child,\n  [class=wrapper] .one-col-feature blockquote ul:last-child {\n    margin-bottom: 0 !important;\n  }\n  [class=wrapper] .one-col-feature .column table:last-of-type h1:last-child,\n  [class=wrapper] .one-col-feature .column table:last-of-type h2:last-child,\n  [class=wrapper] .one-col-feature .column table:last-of-type h3:last-child {\n    margin-bottom: 28px !important;\n  }\n}\n@media only screen and (max-width: 320px) {\n  [class=wrapper] td.border {\n    display: none;\n  }\n  [class=wrapper] table.border,\n  [class=wrapper] .header,\n  [class=wrapper] .webversion,\n  [class=wrapper] .footer {\n    width: 318px !important;\n  }\n}\n</style>\n    <!--[if gte mso 9]>\n    <style>\n      .column-top {\n        mso-line-height-rule: exactly !important;\n      }\n    </style>\n    <![endif]-->\n  </head>\n  <body><style type="text/css">\nbody,.wrapper,.emb-editor-canvas{background-color:#fbfbfb}.border{background-color:#e9e9e9}h1{color:#565656}.wrapper h1{}.wrapper h1{font-family:sans-serif}@media only screen and (min-width: 0){.wrapper h1{font-family:Avenir,sans-serif !important}}h1{}.one-col h1{line-height:42px}.two-col h1{line-height:32px}.three-col h1{line-height:26px}.wrapper .one-col-feature h1{line-height:58px}@media only screen and (max-width: 620px){h1{line-height:42px !important}}h2{color:#555}.wrapper h2{}.wrapper h2{font-family:Georgia,serif}h2{}.one-col h2{line-height:32px}.two-col h2{line-height:26px}.three-col h2{line-height:22px}.wrapper .one-col-feature h2{line-height:52px}@media only screen and (max-width: 620px){h2{line-height:32px !important}}h3{color:#555}.wrapper h3{}.wrapper h3{font-family:Georgia,serif}h3{}.one-col h3{line-height:26px}.two-col h3{line-height:22px}.three-col h3{line-height:20px}.wrapper .one-col-feature h3{line-height:42px}@media only screen and (max-width: 620px){h3{line-height:26px !important}}p,ol,ul{color:#565656}.wrapper p,.wrapper ol,.wrapper ul{}.wrapper p,.wrapper ol,.wrapper ul{font-family:Georgia,serif}p,ol,ul{}.one-col p,.one-col ol,.one-col ul{line-height:25px;Margin-bottom:25px}.two-col p,.two-col ol,.two-col ul{line-height:23px;Margin-bottom:23px}.three-col p,.three-col ol,.three-col ul{line-height:21px;Margin-bottom:21px}.wrapper .one-col-feature p,.wrapper .one-col-feature ol,.wrapper .one-col-feature ul{line-height:32px}.one-col-feature blockquote p,.one-col-feature blockquote ol,.one-col-feature blockquote ul{line-height:50px}@media only screen and (max-width: 620px){p,ol,ul{line-height:25px !important;Margin-bottom:25px !important}}.image{color:#565656}.image{font-family:Georgia,serif}.wrapper a{color:#41637e}.wrapper a:hover{color:#30495c !important}.wrapper .logo div{color:#41637e}.wrapper .logo div{font-family:sans-serif}@media only screen and (min-width: 0){.wrapper .logo div{font-family:Avenir,sans-serif !important}}.wrapper .logo div a{color:#41637e}.wrapper .logo div a:hover{color:#41637e !important}.wrapper .one-col-feature p a,.wrapper .one-col-feature ol a,.wrapper .one-col-feature ul a{border-bottom:1px solid #41637e}.wrapper .one-col-feature p a:hover,.wrapper .one-col-feature ol a:hover,.wrapper .one-col-feature ul a:hover{color:#30495c !important;border-bottom:1px solid #30495c !important}.btn a{}.wrapper .btn a{}.wrapper .btn a{font-family:Georgia,serif}.wrapper .btn a{background-color:#41637e;color:#fff !important;outline-color:#41637e;text-shadow:0 1px 0 #3b5971}.wrapper .btn a:hover{background-color:#3b5971 !important;color:#fff !important;outline-color:#3b5971 !important}.preheader .title,.preheader .webversion,.footer .padded{color:#999}.preheader .title,.preheader .webversion,.footer .padded{font-family:Georgia,serif}.preheader .title a,.preheader .webversion a,.footer .padded a{color:#999}.preheader .title a:hover,.preheader .webversion a:hover,.footer .padded a:hover{color:#737373 !important}.footer .social .divider{color:#e9e9e9}.footer .social .social-text,.footer .social a{color:#999}.wrapper .footer .social .social-text,.wrapper .footer .social a{}.wrapper .footer .social .social-text,.wrapper .footer .social a{font-family:Georgia,serif}.footer .social .social-text,.footer .social a{}.footer .social .social-text,.footer .social a{letter-spacing:0.05em}.footer .social .social-text:hover,.footer .social a:hover{color:#737373 !important}.image .border{background-color:#c8c8c8}.image-frame{background-color:#dadada}.image-background{background-color:#f7f7f7}\n</style>\n    <center class="wrapper">\n    \t<table class="gmail"><tr><td>&nbsp;</td></tr></table>\n      <table class="preheader centered">\n        <tr>\n          <td>\n\n          </td>\n        </tr>\n      </table>\n      <table class="header centered">\n        <tr><td class="border">&nbsp;</td></tr>\n        <tr><td class="logo"><div align="center" id="emb-email-header" class="logo-center"><img src="https://img.createsend1.com/ti/i/F0/96D/D45/eblogo/mentoki_logo.png" alt="" width="300" height="65" style="max-width:450px"></div></td></tr>\n      </table>\n      \n          <table width="602" class="border" style="Margin-left:auto;Margin-right:auto;">\n            <tr><td>&#8203;</td></tr>\n          </table>\n        \n          <table class="centered">\n            <tr>\n              <td class="border">&#8203;</td>\n              <td>\n                <table class="one-col">\n                  <tr>\n                    <td class="column">\n                      <div><div class="column-top">&nbsp;</div></div>\n                        <table class="contents">\n                          <tr>\n                            <td class="padded">\n                            <div style="color: grey;">\n                              <h1 style="color:grey;"> Danke test für  Deine Nachricht.</h1>\n\n                                    \n<h3 style="color:grey;">\n    Hallo test,\n</h3>\n<p style="color:grey;">\n    Danke für Dein Interesse an Mentoki. Wir haben Deine Nachricht erhalten und\n    werden Dir innerhalb von 48 Stunden antworten.\n</p>\n<p style="padding-left: 30px;  color:grey;">\n    Mit freundlichen Grüssen\n</p>\n<p style="padding-left: 50px; color:grey;">\nDas Mentoki Team\n</p>\n<p style="padding-left: 80px; color:grey;">\nSabine Maennel & Anette Pekrul\n</p>\n\n                            </div>\n                            </td>\n                          </tr>\n                        </table>\n                      \n                      <div class="column-bottom">&nbsp;</div>\n                    </td>\n                  </tr>\n                </table>\n              </td>\n              <td class="border">&#8203;</td>\n            </tr>\n          </table>\n        \n          <table width="602" class="border" style="Margin-left:auto;Margin-right:auto;">\n            <tr><td>&#8203;</td></tr>\n          </table>\n        \n      <div class="spacer" style="line-height:32px;">&nbsp;</div>\n      <table class="footer centered">\n        <tr>\n          <td align="center" class="social">\n            <table>\n              <tr>\n                <td class="social-link">\n                  <table>\n                    <tr>\n                      <td>\n                        <fblike style="text-decoration:none; " likeurl="https://www.facebook.com/internetteachers">\n                            <a href="https://www.facebook.com/internetteachers">\n                          <img src="https://i5.createsend1.com/static/eb/master/01-mason/images/facebook-dark.png" width="26" height="21" />\n                        </a>\n                        </fblike>\n                      </td>\n                      <td class="social-text">\n                        <fblike style="text-decoration:none; color=grey !important;" likeurl="https://www.facebook.com/internetteachers">\n                          <a href="https://www.facebook.com/internetteachers">\n                            Like</a>\n                        </fblike>\n                      </td>\n                    </tr>\n                  </table>\n                </td>\n                <td class="divider">\n                  <img src="https://i6.createsend1.com/static/eb/master/01-mason/images/diamond.png" width="5" height="21" alt="" />\n                </td>\n                <td class="social-link">\n                  <table>\n                    <tr>\n                      <td>\n                        <tweet style="text-decoration:none;">\n                            <a href="https://twitter.com/Mentoki_com" rel="publisher">\n                          <img src="https://i7.createsend1.com/static/eb/master/01-mason/images/twitter-dark.png" width="26" height="21" />\n                        </a>\n                        </tweet>\n                      </td>\n                      <td class="social-text">\n                        <tweet style="text-decoration:none; color=grey!important;">\n                            <a href="https://twitter.com/Mentoki_com" rel="publisher">\n                          Tweet\n                            </a>\n                        </tweet>\n                      </td>\n                    </tr>\n                  </table>\n                </td>\n                \n                <td class="social-link">\n                  \n                </td>\n              </tr>\n            </table>\n          </td>\n        </tr>\n        <tr><td class="border">&nbsp;</td></tr>\n        <tr>\n          <td>\n            <table>\n              <tr>\n                <td class="address">\n                  <table class="contents">\n                    <tr>\n                      <td class="padded">\n                        <p style="color:grey;"><a style="color:teal !important;" href="http://mentoki.com/">http://mentoki.com</a><br>\n                          <span style="color:grey;">Sabine Maennel, Leimbachstr. 223, 8041 Zürich, Schweiz</span><br>\n                          Anette Pekrul, Seewiesenäckerweg 15, 76199 Karlsruhe\n\n                        </p>\n                      </td>\n                    </tr>\n                  </table>\n                </td>\n\n              </tr>\n            </table>\n          </td>\n        </tr>\n      </table>\n    </center>\n  </body>\n</html>\n	apps_public.contact.forms	t	2015-10-26 19:47:34.234504+00	mentoki@mentoki.com
 68	Kontaktanfrage an Mentoki	mentoki@mentoki.com		Sabine.maennel@gmail.com	Weiterleitung Kontaktanfrage, bitte beantworten!	<h4>Besucherfrage an Mentoki</h4>\n<hr>\n<p><strong>Name:</strong> test</p> \n<p><strong>email:</strong> Sabine.maennel@gmail.com</p> \n<p><strong>Frage:</strong> test</p>\n	apps_public.contact.forms	t	2015-10-26 19:47:35.726104+00	Sabine.maennel@gmail.com
+69	Neuigkeiten vom Mentorencafé	m.radomsky@alcudina.de, c.radomsky@alcudina.de, anette.pekrul@hotmail.de, f.neff@schreibcoach.ch, sbine.lau@t-online.de, cult5d@t-online.de, mail@mediafactory-sft.de, Bea.ribaux@bluewin.ch, franz@grieser-coaching.de, sabine.maennel@gmail.com	mentoki@mentoki.com	mentoki@mentoki.com	Neue Nachricht von Mentoren Cafe and die Teilnehmer	<!DOCTYPE html>\n<html lang="en">\n<head>\n<title>A Responsive Email Template</title>\n<!--\n\n    An email present from your friends at Litmus (@litmusapp)\n\n    Email is surprisingly hard. While this has been thoroughly tested, your mileage may vary.\n    It's highly recommended that you test using a service like Litmus (http://litmus.com) and your own devices.\n\n    Enjoy!\n\n -->\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<meta http-equiv="X-UA-Compatible" content="IE=edge" />\n<style type="text/css">\n    /* CLIENT-SPECIFIC STYLES */\n    #outlook a{padding:0;} /* Force Outlook to provide a "view in browser" message */\n    .ReadMsgBody{width:100%;} .ExternalClass{width:100%;} /* Force Hotmail to display emails at full width */\n    .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {line-height: 100%;} /* Force Hotmail to display normal line spacing */\n    body, table, td, a{-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%;} /* Prevent WebKit and Windows mobile changing default text sizes */\n    table, td{mso-table-lspace:0pt; mso-table-rspace:0pt;} /* Remove spacing between tables in Outlook 2007 and up */\n    img{-ms-interpolation-mode:bicubic;} /* Allow smoother rendering of resized image in Internet Explorer */\n\n    /* RESET STYLES */\n    body{margin:0; padding:0;}\n    img{border:0; height:auto; line-height:100%; outline:none; text-decoration:none;}\n    table{border-collapse:collapse !important;}\n    body{height:100% !important; margin:0; padding:0; width:100% !important;}\n\n    /* iOS BLUE LINKS */\n    .appleBody a {color:#68440a; text-decoration: none;}\n    .appleFooter a {color:#999999; text-decoration: none;}\n\n    /* MOBILE STYLES */\n    @media screen and (max-width: 525px) {\n\n        /* ALLOWS FOR FLUID TABLES */\n        table[class="wrapper"]{\n          width:100% !important;\n        }\n\n        /* ADJUSTS LAYOUT OF LOGO IMAGE */\n        td[class="logo"]{\n          text-align: left;\n          padding: 20px 0 20px 0 !important;\n        }\n\n        td[class="logo"] img{\n          margin:0 auto!important;\n        }\n\n        /* USE THESE CLASSES TO HIDE CONTENT ON MOBILE */\n        td[class="mobile-hide"]{\n          display:none;}\n\n        img[class="mobile-hide"]{\n          display: none !important;\n        }\n\n        img[class="img-max"]{\n          max-width: 100% !important;\n          height:auto !important;\n        }\n\n        /* FULL-WIDTH TABLES */\n        table[class="responsive-table"]{\n          width:100%!important;\n        }\n\n        /* UTILITY CLASSES FOR ADJUSTING PADDING ON MOBILE */\n        td[class="padding"]{\n          padding: 10px 5% 15px 5% !important;\n        }\n\n        td[class="padding-copy"]{\n          padding: 10px 5% 10px 5% !important;\n          text-align: center;\n        }\n\n        td[class="padding-meta"]{\n          padding: 30px 5% 0px 5% !important;\n          text-align: center;\n        }\n\n        td[class="no-pad"]{\n          padding: 0 0 20px 0 !important;\n        }\n\n        td[class="no-padding"]{\n          padding: 0 !important;\n        }\n\n        td[class="section-padding"]{\n          padding: 50px 15px 50px 15px !important;\n        }\n        \n        td[class="section-header"]{\n          padding: 10px 15px 10px 15px !important;\n        }\n\n        td[class="section-padding-bottom-image"]{\n          padding: 50px 15px 0 15px !important;\n        }\n\n        /* ADJUST BUTTONS ON MOBILE */\n        td[class="mobile-wrapper"]{\n            padding: 10px 5% 15px 5% !important;\n        }\n\n        table[class="mobile-button-container"]{\n            margin:0 auto;\n            width:100% !important;\n        }\n\n        a[class="mobile-button"]{\n            width:80% !important;\n            padding: 15px !important;\n            border: 0 !important;\n            font-size: 16px !important;\n        }\n\n    }\n</style>\n</head>\n<body style="margin: 0; padding: 0;">\n\n<!-- HEADER -->\n<table border="0" cellpadding="0" cellspacing="0" width="100%">\n    <tr>\n        <td bgcolor="#ffffff" align="center" width="100%" style="padding: 20px 15px 20px 15px;" class="section-header">\n            <table border="0" cellpadding="0" cellspacing="0" width="500" class="wrapper" align="center">\n                <!-- LOGO/PREHEADER TEXT -->\n                <tr>\n                    <td align="center">\n                        <table border="0" cellpadding="0" cellspacing="0" width="100%">\n                            <tr>\n                                <td style="font-size: 18px; font-family: Helvetica, Arial, sans-serif; color: #333333; padding-top: 30px;" class="padding-copy">\n                                    \n     Neuigkeiten vom Mentorencafé:\n\n                                </td>\n                            </tr>\n                        </table>\n                    </td>\n                </tr>\n            </table>\n        </td>\n    </tr>\n</table>\n\n<!-- ONE COLUMN SECTION -->\n<table border="0" cellpadding="0" cellspacing="0" width="100%">\n    <tr>\n        <td bgcolor="white" align="center" style="padding: 30px 15px 30px 15px;" class="section-padding">\n            <table border="0" cellpadding="0" cellspacing="0" width="500" class="responsive-table">\n                <tr>\n                    <td>\n                        <table width="100%" border="0" cellspacing="0" cellpadding="0">\n\n                            <tr>\n                                <td>\n                                    <!-- COPY -->\n                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">\n                                        <tr>\n                                            <td style="font-size: 18px; font-family: Helvetica, Arial, sans-serif; color: #333333; padding-top: 30px;" class="padding-copy">\n                                                \n    Wir haben den Zuschlag vom Zahlungsanbieter!\n</td>\n                                        </tr>\n                                        <tr>\n                                            <td style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">\n                                                \n    <p>Ihr Lieben,&nbsp;</p><p><strong>ich habe am Wochenende den Zuschlag vom Zahlungsanbieter<span style="font-size: 23px;"> <a href="https://www.braintreepayments.com/" rel="nofollow" target="_blank">&quot;braintree&quot;</a></span>&nbsp;erhalten. </strong>Dei Auswahl war eine rechte Odyssee, aber ich bin jetzt mit dieser Wahl sehr zufrieden.&nbsp;</p><p>Payrexx, der Schweizer Anbieter, fiel aus dem Feld, weil sie nur eine PHP aber keine Python Anbindung hatten, ausserdem &nbsp;sind sie nur ein Zwischenglied vor dem eigentlichen Zahlungsanbieter und h&auml;tten unter Umst&auml;nden dann doch irgendwann noch extra Kosten verursacht.&nbsp;</p><p>Von Paymill dem deutschen Konkorrenten bin ich abgekommen, weil der Support dort recht unfreundlich und schleppend war und etwas sp&auml;ter habe ich dann im Spiegel einen recht abschreckenden Bericht &uuml;ber den Mutterkonzern hinter Paymill gelesen, der Clons am Fliessband produziert, aber oft nicht die n&ouml;tige Fachexpertise mitbringt, um sie auf Erfolgskurs zu halten und schon gar keine Leidenschaft!</p><p><strong>Naja, jedenfalls braintree braucht etwa noch 5 Tage um uns f&uuml;r die Zahlung sowohl in CHF als auch in EUR einzurichten.</strong> Mentoki wird das Geld in der jeweiligen W&auml;hrung einnehmen, in der ihr Eure Preise macht, so dasswir das W&auml;hrungsrisiko umgehen. Die Gesch&auml;ftskonten sind beide schon eingerichtet.</p><p><strong>Mit der Zahlungsanbindung funktioniert jetzt eigentlich schon alles</strong>, aber ich werde die n&auml;chsten Tage dazu nutzen die Fehler noch besser abzufangen, die Dokumentation des Zahlungsprozesses wasserdicht zu machen, Test einzurichten, etc.</p><p><span style="color: #00A885;">Dar&uuml;berhinaus k&ouml;nnt ihr gerne mal probieren als angemeldeter oder auch unangemeldeter Benutzer Kurse zu buchen und zu bezahlen</span>. Probiert gerne auch den unangemeldeten Benutzer aus, um ein Gef&uuml;hl daf&uuml;r zu bekommen, was Eure Kunden erwartet: Sie werden vor der Zahlung geschickt gef&uuml;hrt, bis sie sich registriert und ihre email best&auml;tigt haben und landen am Ende genau dort, wo sie urspr&uuml;nglich kaufen wollten </p><p>Ihr k&ouml;nnt Eure email mit +1, +2, etc verbinden, also statt sabine.maennel@gmail.com:&nbsp;sabine.maennel<span style="color: #00A885;">+1</span>@gmail.com. Das System denkt dann es handelt sich um eine neue email, aber zumindest gmail reagiert so, dass es die email weiterhin an Euch sendet. Einen neune Benutzernamen m&uuml;sst Ihr nat&uuml;rlich auch w&auml;hlen und einen Namen erfinden. Ich werde die +emails dann irgendwann vor dem Life gehen wieder l&ouml;schen. Vielleicht k&ouml;nnt ihr ja test irgendwo im Vor- oder Nachnamen mit einbringen, so dass ich diese Testbenutzer sp&auml;ter einfach herausfiltern kann.</p><p>F&uuml;r die Zahlung k&ouml;nnt ihr folgende Konten verwenden&nbsp;&nbsp;(&quot;g&uuml;ltige&quot; Test-Kreditkartennummern von braintree):</p><pre>5555555555554444 </pre><pre>4012888888881881</pre><pre>4500600000000061</pre><p>Das Datum muss einfach irgendwann in der Zukunft liegen.</p><p>Ich werde heute noch alle von Euch einzeln anschreiben, um noch die Details f&uuml;r Eure Kurse zu besprechen, wenn wir endlich live gehen.&nbsp;</p><p><br></p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Mit lieben Gr&uuml;ssen an Euch alle</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Sabine</p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p>\n    <a href="http://mentoki.de/de/mentorencafe/klassenzimmer/aktuelles/185">\n        Link zur Ankündigung im Klassenzimmer\n    </a>\n</td>\n                                        </tr>\n                                    </table>\n                                </td>\n                            </tr>\n\n                        </table>\n                    </td>\n                </tr>\n            </table>\n        </td>\n    </tr>\n</table>\n\n<!-- FOOTER -->\n<table border="0" cellpadding="0" cellspacing="0" width="100%">\n    <tr>\n        <td bgcolor="#ffffff" align="center">\n            <table border="0" cellspacing="0" cellpadding="0" width="100%" align="center">\n                <tr>\n                    <td style="padding: 20px 0px;" align="center">\n                        <!-- UNSUBSCRIBE COPY -->\n                        <table width="500" border="0" cellspacing="0" cellpadding="0" align="center" class="responsive-table">\n                            <tr>\n                                <td align="center" class="padding-copy" style="font-size: 12px; line-height: 18px; font-family: Helvetica, Arial, sans-serif; color:#666666;">\n                                    <span class="appleFooter" style="color:#666666;">\n\n\n<table class="footer centered" align="center">\n<tr><td align="center" class="border">&nbsp;</td></tr>\n<tr><td align="center" class="logo"><div align="center" id="emb-email-header" class="logo-center">\n    <a style="color:teal !important;" href="http://mentoki.com/">\n    <img src="https://img.createsend1.com/ti/i/F0/96D/D45/eblogo/mentoki_logo.png" alt="" width="150" height="33" style="max-width:450px"></div></td></tr>\n    </a>\n</table>\n<table class="footer centered">\n<tr>\n  <td align="center" class="social">\n    <table>\n      <tr>\n        <td class="social-link">\n          <table>\n            <tr>\n              <td>\n                <fblike style="text-decoration:none; " likeurl="https://www.facebook.com/internetteachers">\n                    <a href="https://www.facebook.com/internetteachers">\n                  <img src="https://i5.createsend1.com/static/eb/master/01-mason/images/facebook-dark.png" width="26" height="21" />\n                </a>\n                </fblike>\n              </td>\n              <td class="social-text">\n                <fblike style="text-decoration:none; color:grey !important;" likeurl="https://www.facebook.com/internetteachers">\n                  <a href="https://www.facebook.com/internetteachers">\n                    Like</a>\n                </fblike>\n              </td>\n            </tr>\n          </table>\n        </td>\n        <td class="divider">\n          <img src="https://i6.createsend1.com/static/eb/master/01-mason/images/diamond.png" width="5" height="21" alt="" />\n        </td>\n        <td class="social-link">\n          <table>\n            <tr>\n              <td>\n                <tweet style="text-decoration:none;">\n                    <a href="https://twitter.com/Mentoki_com" rel="publisher">\n                  <img src="https://i7.createsend1.com/static/eb/master/01-mason/images/twitter-dark.png" width="26" height="21" />\n                </a>\n                </tweet>\n              </td>\n              <td class="social-text">\n                <tweet style="text-decoration:none; color=grey!important;">\n                    <a href="https://twitter.com/Mentoki_com" rel="publisher">\n                  Tweet\n                    </a>\n                </tweet>\n              </td>\n            </tr>\n          </table>\n        </td>\n\n        <td class="social-link">\n\n        </td>\n      </tr>\n    </table>\n<a style="color:teal !important;" href="http://mentoki.com/">http://mentoki.com</a><br>\n<span style="color:grey;">Sabine Maennel, Leimbachstr. 223, 8041 Zürich, Schweiz</span><br>\n<span style="color:grey;">Anette Pekrul, Seewiesenäckerweg 15, 76199 Karlsruhe</span><br>\n<a style="padding-top:30px;" href="http://mentoki.us10.list-manage1.com/unsubscribe?u=1a72f5bdde772bc5b10e2e0bd&id=ce99ada10d"\n   class="original-only" style="color: grey; text-decoration: none;">\n    Aus unserem Newsletter austragen\n</a>\n                                </td>\n                            </tr>\n                        </table>\n                    </td>\n                </tr>\n            </table>\n        </td>\n    </tr>\n</table>\n\n</body>\n</html>	apps_internal.coursebackend.views.announcement	t	2015-11-02 10:27:36.05563+00	m.radomsky@alcudina.de, c.radomsky@alcudina.de, anette.pekrul@hotmail.de, f.neff@schreibcoach.ch, sbine.lau@t-online.de, cult5d@t-online.de, mail@mediafactory-sft.de, Bea.ribaux@bluewin.ch, franz@grieser-coaching.de, sabine.maennel@gmail.com
 \.
 
 
@@ -5618,7 +5563,7 @@ COPY mailqueue_mailermessage (id, subject, to_address, bcc_address, from_address
 -- Name: mailqueue_mailermessage_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('mailqueue_mailermessage_id_seq', 68, true);
+SELECT pg_catalog.setval('mailqueue_mailermessage_id_seq', 69, true);
 
 
 --
@@ -5734,19 +5679,19 @@ SELECT pg_catalog.setval('material_material_id_seq', 96, true);
 -- Data for Name: mentoki_product_courseproduct; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY mentoki_product_courseproduct (id, created, modified, name, description, product_nr, slug, price, price_changed, currency, can_be_bought_only_once, has_dependencies, product_type, course_id, dependencies_id, courseevent_id, display_nr, meta_description, meta_keywords, meta_title) FROM stdin;
-10	2015-10-22 12:13:40.561168+00	2015-10-22 12:53:05.551566+00	5. Etappe (5)	<p>Dauer: 2 Wochen, nur als Fortf&uuml;hrung buchbar</p>	1	selbstfuehrung-etappe-5	159.46	2015-10-22 12:13:40+00	EUR	f	t	courseevent	6	9	4	7	x	x	x
-11	2015-10-22 12:16:20.329624+00	2015-10-22 13:03:41.798489+00	6. Etappe (6)	<p>Dauer: 2 Wochen, nur als Fortf&uuml;hrung buchbar</p>	6	selbstfuehrung-etappe-6	159.46	2015-10-22 13:03:41.798524+00	EUR	f	t	courseevent	6	10	4	9	x	x	x
-1	2015-10-20 09:09:07.747603+00	2015-10-22 10:14:30.864078+00	Schreibwerkstatt individuell und ohne Betreuung	<p>Einstieg jederzeit m&ouml;glich. Beliebige Wahl und Reihenfolge   der Kursinhalte. Im Forum kann ein Austausch mit anderen   Arbeitenden stattfinden. Keine Betreuung durch die   Kursleitung.</p>	1	schreibwerkstatt-individuell-ohne-betreuung	10.00	2015-10-20 09:09:07+00	CHF	t	f	selflearn	10	\N	8	1	x	x	x
-7	2015-10-22 10:10:51.256384+00	2015-10-22 10:15:34.772539+00	Schreibwerkstatt individuell mit Betreuung	<p>Einstieg jederzeit m&ouml;glich. Beliebige Wahl und Reihenfolge  der Kursinhalte. Im Forum kann ein Austausch mit anderen   Arbeitenden stattfinden. Individueller Austausch mit der   Kursleitung und Beratung (insgesamt eine Stunde) via E-Mail.   Inklusive ausf&uuml;hrlicher Test zu den pers&ouml;nlichen   Schreibkompetenzen mit Auswertung und Ratschl&auml;gen zum   weiteren Vorgehen.</p>	1	schreibwerkstatt-individuelle-betreuung	60.00	2015-10-22 10:10:51+00	CHF	t	f	selflearn	10	\N	8	2	x	x	x
-2	2015-10-20 09:10:52.99405+00	2015-10-22 10:15:54.623554+00	Schreibwerkstatt als begleiteter Gruppenkurs	<p>Moderierte Schreibwerkstatt f&uuml;r Gruppen in einem vorher   vereinbarten Arbeitsrhythmus (z.B. sechs Tage oder sechs   Wochen). Der Austausch erfolgt in einem eigens f&uuml;r die   Gruppe eingerichteten Forum. Der ausf&uuml;hrliche Test zu den   pers&ouml;nlichen Schreibkompetenzen mit Auswertung und   Ratschl&auml;gen zum weiteren Vorgehen ist im Kurspreis   inbegriffen.</p><p>(Pauschalpreise f&uuml;r Schulen auf Anfrage)</p>	2	schreibwerkstatt-gruppenkurs	100.00	2015-10-20 09:10:53+00	CHF	t	f	courseevent	10	\N	18	3	x	x	x
-3	2015-10-20 09:13:07.076268+00	2015-10-22 10:16:15.975144+00	Test zur Einschätzung der individuellen  Schreibkompetenten	<p>Ein Test mit 30 kurzen Fragen f&uuml;r eine erste   Standortbestimmung ist in allen Kursformaten inbegriffen.   Kurse mit Begleitung erm&ouml;glichen auch den Zugang zum   ausf&uuml;hrlichen Test der pers&ouml;nlichen Schreibkompetenzen. Er   nimmt ca. 20 Minuten in Anspruch. Die Teilnehmenden   erhalten eine individuelle Auswertung mit Ratschl&auml;gen zum   weiteren Vorgehen. Der ausf&uuml;hrliche Test kann auch separat   bestellt werden.</p>	Schreibwerkstatt-3	schreibwerkstatt-schreibtest	5.00	2015-10-20 09:13:07+00	CHF	f	f	addon	10	\N	8	4	x	x	x
-5	2015-10-20 09:16:49.167918+00	2015-10-22 12:14:36.812671+00	1. Etappe (0 +1) 	<p>Gesamtdauer 3 Wochen.</p><p><br></p>	2	selbstfuehrung-etappe-1	159.46	2015-10-22 12:04:39+00	EUR	f	f	courseevent	6	\N	4	2	x	x	x
-12	2015-10-22 12:19:05.68361+00	2015-10-22 12:20:58.057728+00	7. Etappe (7)	<p>Dauer: 2 Wochen, nur als Fortf&uuml;hrung buchbar</p>	7	selbstfuehrung-etappe-7	159.46	2015-10-22 12:19:05+00	EUR	f	t	courseevent	6	11	4	10	x	x	x
-8	2015-10-22 12:09:16.260355+00	2015-10-22 12:24:11.645764+00	3. Etappe (3) 	<p>Dauer: 2 Wochen, nur als Fortf&uuml;hrung buchbar</p>	4	selbstfuehrung-etappe-3	159.46	2015-10-22 12:09:16+00	EUR	t	t	courseevent	6	4	4	4	x	x	x
-4	2015-10-20 09:15:22.775077+00	2015-10-25 14:24:17.185714+00	2. Etappe (2)	<p>Dauer 2 Wochen, nur als Fortf&uuml;hrung buchbar.</p>	2	selbstfuehrung-etappe-2	159.46	2015-10-22 12:05:08+00	EUR	f	t	courseevent	6	5	4	3	x	x	x
-9	2015-10-22 12:12:25.412537+00	2015-10-25 14:25:25.430902+00	4. Etappe (4)	<p>Dauer: 2 Wochen, nur als Forf&uuml;hrung buchbar</p>	1	selbstfuehrung-etappe-4	159.46	2015-10-22 12:12:25+00	EUR	f	t	courseevent	6	8	4	5	x	x	x
-6	2015-10-20 09:18:23.865893+00	2015-10-25 14:28:55.063854+00	Selbstführung Gesamtpaket: geführter Gruppenkurs mit 3-12 Teilnehmern	<p>Buchung aller 7 Etappen als Paket.&nbsp;</p><p><strong>Bonus: </strong>Nach Abschluss des Kurses erhalten diese Teilnehmer bei Bedarf noch innerhalb&nbsp;zweier weiterer Wochen Online-Mentoring zu ihrem Kurslauf.</p>	1	selbstfuehrung-gruppenkurs	999.60	2015-10-20 09:18:23+00	EUR	f	f	courseevent	6	\N	4	1	x	x	x
+COPY mentoki_product_courseproduct (id, created, modified, name, description, slug, price, price_changed, currency, course_id, courseevent_id, display_nr, meta_description, meta_keywords, meta_title, dependency_id, invoice_descriptor, part_of_id, product_type_id) FROM stdin;
+7	2015-10-22 10:10:51.256384+00	2015-11-02 06:01:31.696282+00	Schreibwerkstatt individuell mit Betreuung	<p>Einstieg jederzeit m&ouml;glich. Beliebige Wahl und Reihenfolge  der Kursinhalte. Im Forum kann ein Austausch mit anderen   Arbeitenden stattfinden. Individueller Austausch mit der   Kursleitung und Beratung (insgesamt eine Stunde) via E-Mail.   Inklusive ausf&uuml;hrlicher Test zu den pers&ouml;nlichen   Schreibkompetenzen mit Auswertung und Ratschl&auml;gen zum   weiteren Vorgehen.</p>	schreibwerkstatt-individuelle-betreuung	60.00	2015-10-22 10:10:51+00	CHF	10	8	2	x	x	x	\N	x	\N	1
+6	2015-10-20 09:18:23.865893+00	2015-11-02 06:01:59.052252+00	Selbstführung Gesamtpaket: geführter Gruppenkurs mit 3-12 Teilnehmern	<p>Buchung aller 7 Etappen als Paket.&nbsp;</p><p><strong>Bonus: </strong>Nach Abschluss des Kurses erhalten diese Teilnehmer bei Bedarf noch innerhalb&nbsp;zweier weiterer Wochen Online-Mentoring zu ihrem Kurslauf.</p>	selbstfuehrung-gruppenkurs	999.60	2015-10-20 09:18:23+00	EUR	6	4	1	x	x	x	\N	x	\N	1
+12	2015-10-22 12:19:05.68361+00	2015-11-02 06:02:20.604451+00	7. Etappe (7)	<p>Dauer: 2 Wochen, nur als Fortf&uuml;hrung buchbar</p>	selbstfuehrung-etappe-7	159.46	2015-10-22 12:19:05+00	EUR	6	4	10	x	x	x	11	x	6	2
+11	2015-10-22 12:16:20.329624+00	2015-11-02 06:02:48.59464+00	6. Etappe (6)	<p>Dauer: 2 Wochen, nur als Fortf&uuml;hrung buchbar</p>	selbstfuehrung-etappe-6	159.46	2015-10-22 13:03:41+00	EUR	6	4	9	x	x	x	10	x	6	2
+10	2015-10-22 12:13:40.561168+00	2015-11-02 06:03:18.167005+00	5. Etappe (5)	<p>Dauer: 2 Wochen, nur als Fortf&uuml;hrung buchbar</p>	selbstfuehrung-etappe-5	159.46	2015-10-22 12:13:40+00	EUR	6	4	7	x	x	x	9	x	6	2
+9	2015-10-22 12:12:25.412537+00	2015-11-02 06:03:45.496875+00	4. Etappe (4)	<p>Dauer: 2 Wochen, nur als Forf&uuml;hrung buchbar</p>	selbstfuehrung-etappe-4	159.46	2015-10-22 12:12:25+00	EUR	6	4	5	x	x	x	8	x	6	2
+8	2015-10-22 12:09:16.260355+00	2015-11-02 06:04:12.575849+00	3. Etappe (3) 	<p>Dauer: 2 Wochen, nur als Fortf&uuml;hrung buchbar</p>	selbstfuehrung-etappe-3	159.46	2015-10-22 12:09:16+00	EUR	6	4	4	x	x	x	4	x	6	2
+5	2015-10-20 09:16:49.167918+00	2015-11-02 06:04:40.694864+00	1. Etappe (0 +1) 	<p>Gesamtdauer 3 Wochen.</p><p><br></p>	selbstfuehrung-etappe-1	159.46	2015-10-22 12:04:39+00	EUR	6	4	2	x	x	x	\N	x	6	2
+4	2015-10-20 09:15:22.775077+00	2015-11-02 06:05:24.818557+00	2. Etappe (2)	<p>Dauer 2 Wochen, nur als Fortf&uuml;hrung buchbar.</p>	selbstfuehrung-etappe-2	159.46	2015-10-22 12:05:08+00	EUR	6	4	3	x	x	x	5	x	6	2
+2	2015-10-20 09:10:52.99405+00	2015-11-02 06:14:17.639191+00	Schreibwerkstatt als begleiteter Gruppenkurs	<p>Moderierte Schreibwerkstatt f&uuml;r Gruppen in einem vorher   vereinbarten Arbeitsrhythmus (z.B. sechs Tage oder sechs   Wochen). Der Austausch erfolgt in einem eigens f&uuml;r die   Gruppe eingerichteten Forum. Der ausf&uuml;hrliche Test zu den   pers&ouml;nlichen Schreibkompetenzen mit Auswertung und   Ratschl&auml;gen zum weiteren Vorgehen ist im Kurspreis   inbegriffen.</p><p>(Pauschalpreise f&uuml;r Schulen auf Anfrage)</p>	schreibwerkstatt-gruppenkurs	100.00	2015-10-20 09:10:53+00	CHF	10	18	3	x	x	x	\N	x	\N	1
+1	2015-10-20 09:09:07.747603+00	2015-11-02 06:14:34.102087+00	Schreibwerkstatt individuell und ohne Betreuung	<p>Einstieg jederzeit m&ouml;glich. Beliebige Wahl und Reihenfolge   der Kursinhalte. Im Forum kann ein Austausch mit anderen   Arbeitenden stattfinden. Keine Betreuung durch die   Kursleitung.</p>	schreibwerkstatt-individuell-ohne-betreuung	10.00	2015-10-20 09:09:07+00	CHF	10	8	1	x	x	x	\N	x	\N	1
+3	2015-10-20 09:13:07.076268+00	2015-11-02 06:14:45.676965+00	Test zur Einschätzung der individuellen  Schreibkompetenten	<p>Ein Test mit 30 kurzen Fragen f&uuml;r eine erste   Standortbestimmung ist in allen Kursformaten inbegriffen.   Kurse mit Begleitung erm&ouml;glichen auch den Zugang zum   ausf&uuml;hrlichen Test der pers&ouml;nlichen Schreibkompetenzen. Er   nimmt ca. 20 Minuten in Anspruch. Die Teilnehmenden   erhalten eine individuelle Auswertung mit Ratschl&auml;gen zum   weiteren Vorgehen. Der ausf&uuml;hrliche Test kann auch separat   bestellt werden.</p>	schreibwerkstatt-schreibtest	5.00	2015-10-20 09:13:07+00	CHF	10	8	4	x	x	x	\N	x	\N	3
 \.
 
 
@@ -5780,18 +5725,29 @@ SELECT pg_catalog.setval('mentoki_product_courseproductgroup_id_seq', 7, true);
 
 
 --
+-- Data for Name: mentoki_product_producttype; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY mentoki_product_producttype (id, name, description, is_part, is_test, belongs_to_course, is_courseevent_participation, can_be_bought_only_once, has_dependencies) FROM stdin;
+1	Kurs	ganzer Kurs	f	f	t	t	t	f
+2	Kursabschnitt	Abschnitt eines Kurses	t	f	t	t	t	t
+3	Test	Test	f	t	t	f	f	f
+\.
+
+
+--
+-- Name: mentoki_product_producttype_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('mentoki_product_producttype_id_seq', 3, true);
+
+
+--
 -- Data for Name: mentoki_product_specialoffer; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY mentoki_product_specialoffer (id, created, modified, name, description, courseproduct_id, percentage_off, course_id) FROM stdin;
-1	2015-10-20 09:20:06.452757+00	2015-10-20 09:20:06.466279+00	25% Einführungsrabatt	<p>Zur Kurseinf&uuml;hrung</p>	6	25	6
-2	2015-10-20 09:20:43.090364+00	2015-10-20 09:20:43.10401+00	25% Einführungsrabatt	<p>Zur Kurseinf&uuml;hrung</p>	5	25	6
-4	2015-10-22 12:39:06.410327+00	2015-10-22 12:39:06.424291+00	25% Einführungsrabatt	<p>Zur Kurseinf&uuml;hrung</p>	8	25	6
-3	2015-10-22 12:38:38.618888+00	2015-10-22 12:39:25.504487+00	25% Einführungsrabatt	<p>Zur Kurseinf&uuml;hrung</p>	4	25	6
-5	2015-10-22 12:57:58.156504+00	2015-10-22 12:57:58.16975+00	25% Einführungsrabatt	<p>Zur Kurseinf&uuml;hrung</p>	12	25	6
-7	2015-10-22 12:59:34.312531+00	2015-10-22 12:59:34.325778+00	25% Einführungsrabatt	<p>Zur Kurseinf&uuml;hrung</p>	10	25	6
-8	2015-10-22 13:00:06.896324+00	2015-10-22 13:00:06.914536+00	25% Einführungsrabatt	<p>Zur Kurseinf&uuml;hrung</p>	9	25	6
-9	2015-10-22 13:01:44.292176+00	2015-10-22 13:01:44.305481+00	25% Einführungsrabatt	<p>Zur Kurseinf&uuml;hrung</p>	11	25	6
+COPY mentoki_product_specialoffer (id, created, modified, name, description, courseproduct_id, percentage_off, course_id, courseevent_id, reach) FROM stdin;
+1	2015-10-20 09:20:06.452757+00	2015-11-02 06:11:50.035166+00	25% Einführungsrabatt	<p>Zur Kurseinf&uuml;hrung</p>	\N	25	6	\N	course
 \.
 
 
@@ -5913,14 +5869,6 @@ COPY textchunks_publictextchunks (created, modified, pagecode, text, title, desc
 2015-10-15 14:37:26.366061+00	2015-10-15 14:37:26.372521+00	course_agb	<h3>Allgemeine Gesch&auml;ftsbedingungen/Nutzungsbedingungen</h3><h4>I. Vertragsgegenstand</h4><p>mentoki ist eine Plattform, die einerseits Dozenten/Mentoren und andererseits Lernwilligen unterschiedliche Produkte und Dienstleistungen anbietet. Allerdings erf&uuml;llen diejenigen Dozenten/Mentoren, die auf mentoki ihre Produkte/Kurse anbieten, die Qualit&auml;tsstandards von mentoki und sie haben ein besonderes Mentoring und einen Zulassungsprozess durchlaufen.<br>  Teilnehmer aller Produkte/Kurse von mentoki erhalten nach erfolgreichem Abschluss eine Teilnahmebescheinigung.<br>  Ein Vertrag mit mentoki kann nur von Vollj&auml;hrigen (18 Jahre) geschlossen werden, deshalb ist es erforderlich, bei der Anmeldung auch pers&ouml;nliche Daten, die selbstverst&auml;ndlich dem Datenschutz unterliegen, bekannt zu geben. F&uuml;r Kinder und Jugendliche ist dieser Vertrag mit den Eltern oder gesetzlichen Vertretern zu schlie&szlig;en. Eltern/gesetzliche Vertreter verpflichten sich, die Aufsicht/Kontrolle w&auml;hrend der Nutzung des mentoki-Angebotes f&uuml;r ihre Kinder/Jugendlichen zu f&uuml;hren.<br>  Mit der Anmeldung werden diese Gesch&auml;fts-/Nutzungsbedingungen akzeptiert.</p><h4>II. Anmeldung/Registrierung</h4><p>Sowohl Dozenten als auch Lernwillige m&uuml;ssen sich bei mentoki mit einem eigenen Account anmelden/registrieren. Bei erfolgreicher Registrierung erhalten Sie Zugangsdaten, die streng vertraulich zu behandeln sind. Die Zugangsdaten d&uuml;rfen nicht weitergegeben werden. Sie sind ganz alleine f&uuml;r Aktivit&auml;ten, die unter Ihrer Nutzerkennung erfolgen, verantwortlich. F&uuml;r Sch&auml;den, die durch fahrl&auml;ssigen Umgang mit ihren Login-Daten oder durch missbr&auml;uchliche Verwendung entstehen, haften Sie pers&ouml;nlich. mentoki &uuml;bernimmt in solchen F&auml;llen keinerlei Verantwortung.</p><h4>II. Datenschutz</h4><p>Sofern innerhalb des Internetangebotes die M&ouml;glichkeit zur Eingabe pers&ouml;nlicher oder gesch&auml;ftlicher Daten (Emailadressen, Namen, Anschriften) besteht, so erfolgt die Preisgabe dieser Daten seitens des Nutzers auf ausdr&uuml;cklich freiwilliger Basis. Die Inanspruchnahme und Bezahlung aller angebotenen Produkte/Dienste ist ausschlie&szlig;lich unter Angabe der geforderten Daten gestattet. Die Nutzung der im Rahmen des Impressums, der Kontaktdaten der Dozenten oder vergleichbarer Angaben ver&ouml;ffentlichten Kontaktdaten wie Postanschriften, Telefon- und Faxnummern sowie Emailadressen durch Dritte zur &Uuml;bersendung von nicht ausdr&uuml;cklich angeforderten Informationen ist nicht gestattet. Rechtliche Schritte gegen die Versender von sogenannten Spam-Mails bei Verst&ouml;ssen gegen dieses Verbot behalten wir uns ausdr&uuml;cklich vor.</p><h4>III. Produkte/Dienstleistungen und Dozenten/Mentoren/Lernwillige</h4><p>Produkte wie Online-Kurse und Mentoring werden im Folgenden als &bdquo;Angebote&ldquo; bezeichnet.&nbsp;Dozenten und Lernwillige werden &bdquo;Nutzer&ldquo; genannt. Auf der mentoki-Plattform werden Lehr- und Lern-Angebote in einem eigenen, virtuellen mentoki-Klassenzimmer zur Nutzung bereitgestellt.</p><p>Die mentoki-Produkte und ihre Verf&uuml;gbarkeit k&ouml;nnen jederzeit durch mentoki ge&auml;ndert werden. Mentoki beh&auml;lt sich auch vor, mit oder ohne Vorank&uuml;ndigung, dringende Wartungsarbeiten, Updates oder technische Optimierungen durchzuf&uuml;hren. mentoki wird sich bem&uuml;hen, die Nutzer rechtzeitig zu informieren. Ein Anspruch hierauf sowie ein Ersatz-Anspruch auf Zeiten, in denen unser Angebot nicht verf&uuml;gbar ist, entstehen nicht.<br>  Die entstehenden Kosten f&uuml;r die technischen Voraussetzungen, um mentoki-Produkte nutzen zu k&ouml;nnen, tragen Sie ausschlie&szlig;lich selbst und in eigener Verantwortung. Dies gilt auch f&uuml;r Telefon-, Daten-, Daten&uuml;bertragungskosten, nat&uuml;rlich auch f&uuml;r Hardware und sonstige Dienstleistungsgeb&uuml;hren oder damit verbundene Kosten.<br>  Sofern Sie ein Angebot von mentoki nutzen m&ouml;chten, sind die daf&uuml;r erhobenen Nutzungsgeb&uuml;hren im Voraus zu bezahlen. Erst nach Zahlungseingang, jedoch rechtzeitig vor Beginn des Angebotes, wird Ihr Zugang freigeschaltet.</p><h4>IV. Hausordnung/Nettiquette</h4><p>Alle Nutzer verpflichten sich, die mentoki Hausordnung zu beachten und einzuhalten. <br>  Es ist grunds&auml;tzlich ein h&ouml;flicher Ton zu wahren. Rassistische, beleidigende, irref&uuml;hrende, falsche, rechtsverletzende, diffamierende, verleumderische, sexistische &Auml;usserungen oder Forum-Posts, die gegen die g&auml;ngige Nettiquette verstossen, k&ouml;nnen zum Entzug des Zugangs und zum Ausschluss aus dem gebuchten Produkt f&uuml;hren. Die Nutzungsgeb&uuml;hren werden in diesem Fall nicht erstattet.</p><h4>V. Preise/Geb&uuml;hren/Zahlungsverpflichtung</h4><p>mentoki-Angebote sind mit Preisen/Nutzungsgeb&uuml;hren versehen. Erst nach vollst&auml;ndiger Bezahlung erwerben Sie das Recht zur einmaligen Nutzung. Die Preisangaben auf der mentoki-Plattform sind Bruttopreise inklusive Mehrwertsteuer. <br>  Es ist nicht erlaubt, weiteren Nutzern &uuml;ber Ihren Account Zugang zu mentoki-Angeboten zu gew&auml;hren.</p><h4>VI. R&uuml;cktritt</h4><p>Nutzer k&ouml;nnen bis zu 14 Tagen vor Inanspruchnahme des Angebotes kostenfrei zur&uuml;cktreten.</p><h4>VII. K&uuml;ndigungsrecht mentoki</h4><p>mentoki ist zur sofortigen fristlosen fristlosen K&uuml;ndigung aus wichtigem Grund berechtigt.<br>  Als wichtige Gr&uuml;nde gelten insbesondere:<br>  &bull; wiederholter Zahlungsverzug bzw. Zahlungsr&uuml;ckstand <br>  &bull; unberechtigtes Kopieren, L&ouml;schen oder Aufspielen von Software-Produkten oder Daten <br>  sowie unberechtigtes Entfernen von Daten oder die nicht themenbezogene Nutzung der Plattform<br>  &bull; der Versto&szlig; gegen die Hausordnung<br>  &bull; jede Art von Angriff gegen Glaube, Herkunft, Geschlecht oder sexueller Orientierung<br>  Die K&uuml;ndigung muss schriftlich erfolgen. Eventuell &uuml;berzahlte Betr&auml;ge werden nach Abzug eventueller Schadensersatzanspr&uuml;che erstattet. Ein Anspruch auf R&uuml;ckerstattung der bezahlten Geb&uuml;hren besteht nach Freischaltung der Kursinhalte oder ausgelieferter Dienstleistung nicht.</p><h4>VIII. Haftungsausschluss</h4><p>Die Dozenten/Mentoren sind nicht bei mentoki angestellt, deshalb &uuml;bernimmt mentoki keine Haftung f&uuml;r Interaktionen zwischen Dozenten und Lernenden. <br>  mentoki haftet nicht f&uuml;r die Inhalte der Produkte. Jeder Dozent/Mentor ist f&uuml;r sein Angebot selbstverantwortlich &ndash; dies gilt insbesondere f&uuml;r Inhalte, Urheberrechte, Links und bereitgestellte Materialien.<br>  mentoki ist eine eingetragene Marke. F&uuml;r alle von mentoki direkt angebotenen Dienstleistungen und Produkte liegen alle Rechte bei mentoki. Es ist nicht erlaubt, Design oder Inhalte zu kopieren.<br>  Das Urheberrecht der von Dozenten/Mentoren angebotenen Produkte liegt bei der Dozenten/Mentoren. Es ist nicht erlaubt, Design oder Inhalte zu kopieren.<br>  mentoki ist um die Richtigkeit der an die Nutzer &uuml;bermittelten Inhalte und Empfehlungen sowie um Aufrechterhaltung der technischen Betriebsbereitschaft in vollem Umfang bem&uuml;ht. Gleichwohl kann diese nicht garantiert werden. Eine Haftung f&uuml;r Sch&auml;den durch unzutreffende Inhalte und Empfehlungen, technische Ausf&auml;lle oder sonstige Unzul&auml;nglichkeiten ist ausgeschlossen. Dies gilt auch f&uuml;r Leistungen Dritter, die den Nutzern angeboten werden.<br>  mentoki haftet nicht f&uuml;r leicht fahrl&auml;ssig verursachte Sch&auml;den au&szlig;erhalb der sich aus diesem Vertrag ergebenden Kardinalpflichten. Eine Haftung f&uuml;r mittelbare Sch&auml;den, Mangelfolgesch&auml;den oder entgangenen Gewinn besteht nicht, sofern sich die Haftung nicht aus vors&auml;tzlichem Handeln oder dem Fehlen einer zugesicherten Eigenschaft ergibt.<br>  Nutzer haben jegliche gezogenen Daten und Programme &uuml;ber ihren Rechner abzusichern, um Datenverlust zu vermeiden.</p><h4>IX. Haftungsbeschr&auml;nkung/Salvatorische Klausel</h4><p>Soweit einzelne Bestimmungen dieses Vertrages unwirksam sind oder werden, wird dadurch die Wirksamkeit des Vertrages im &Uuml;brigen nicht ber&uuml;hrt.<br>  &Auml;nderungen oder Erg&auml;nzungen bed&uuml;rfen zu ihrer Wirksamkeit der Schriftform.<br>  Gerichtsstand ist Z&uuml;rich, Schweiz.</p>	Konditionen	Kurs Bedingungen	
 2015-10-15 14:38:57.682752+00	2015-10-15 14:38:57.688537+00	bildungsmentoring	<p><strong style="line-height: 15.4px;">mentoki-Angebot &quot;Bildungs-Mentoring&quot;</strong></p><p>Sie wollen lernen und finden nicht das richtige Angebot? Kein Wunder bei zweistelligen Millionen von Suchergebnissen - in diesem Dschungel findet sich kaum jemand zurecht. Wir haben einmal &apos;online lernen&apos; in Google eingegeben und in Bruchteilen von Sekunden &uuml;ber 74 Millionen Ergebnisse erhalten.</p><p><img alt="Bild" class="fr-dii fr-fin" src="http://mentoki.weebly.com/uploads/2/6/7/5/26750591/2762277_orig.jpg"></p><p>Und genau durch diesen Dschungel haben wir uns gearbeitet, um Ihnen die stundenlange und m&uuml;hsame Suche abzunehmen. Wir kennen unseren Markt sehr genau. Sie sagen uns, was Sie gerne lernen w&uuml;rden,&nbsp;nennen&nbsp;uns Ihr Budget und wir unterbreiten Ihnen bis zu drei Vorschl&auml;ge im Monat.</p><p>Unsere Angebote sind ausf&uuml;hrlich und enthalten jeweils eine kurze Einf&uuml;hrung.</p><p><strong>Konditionen:</strong></p><p><strong>29,90 Euro/Monat bei einem 6-Monats-Abo oder</strong></p><p><strong>19,90 Euro/Monat bei einem Jahres-Abo</strong></p><p>(Angebot g&uuml;ltig ab Oktober 2015)</p>	Engagieren Sie sich Ihren persönlichen Bildungs-Mentor!	Bildungsmentoring	
 2015-10-15 14:40:12.730998+00	2015-10-15 14:40:12.738005+00	agb	<h3>Allgemeine Gesch&auml;ftsbedingungen/Nutzungsbedingungen</h3><h4>I. Vertragsgegenstand</h4><p>mentoki ist eine Plattform, die einerseits Dozenten/Mentoren und andererseits Lernwilligen unterschiedliche Produkte und Dienstleistungen anbietet. Allerdings erf&uuml;llen diejenigen Dozenten/Mentoren, die auf mentoki ihre Produkte/Kurse anbieten, die Qualit&auml;tsstandards von mentoki und sie haben ein besonderes Mentoring und einen Zulassungsprozess durchlaufen.<br>  Teilnehmer aller Produkte/Kurse von mentoki erhalten nach erfolgreichem Abschluss eine Teilnahmebescheinigung.<br>  Ein Vertrag mit mentoki kann nur von Vollj&auml;hrigen (18 Jahre) geschlossen werden, deshalb ist es erforderlich, bei der Anmeldung auch pers&ouml;nliche Daten, die selbstverst&auml;ndlich dem Datenschutz unterliegen, bekannt zu geben. F&uuml;r Kinder und Jugendliche ist dieser Vertrag mit den Eltern oder gesetzlichen Vertretern zu schlie&szlig;en. Eltern/gesetzliche Vertreter verpflichten sich, die Aufsicht/Kontrolle w&auml;hrend der Nutzung des mentoki-Angebotes f&uuml;r ihre Kinder/Jugendlichen zu f&uuml;hren.<br>  Mit der Anmeldung werden diese Gesch&auml;fts-/Nutzungsbedingungen akzeptiert.</p><h4>II. Anmeldung/Registrierung</h4><p>Sowohl Dozenten als auch Lernwillige m&uuml;ssen sich bei mentoki mit einem eigenen Account anmelden/registrieren. Bei erfolgreicher Registrierung erhalten Sie Zugangsdaten, die streng vertraulich zu behandeln sind. Die Zugangsdaten d&uuml;rfen nicht weitergegeben werden. Sie sind ganz alleine f&uuml;r Aktivit&auml;ten, die unter Ihrer Nutzerkennung erfolgen, verantwortlich. F&uuml;r Sch&auml;den, die durch fahrl&auml;ssigen Umgang mit ihren Login-Daten oder durch missbr&auml;uchliche Verwendung entstehen, haften Sie pers&ouml;nlich. mentoki &uuml;bernimmt in solchen F&auml;llen keinerlei Verantwortung.</p><h4>II. Datenschutz</h4><p>Sofern innerhalb des Internetangebotes die M&ouml;glichkeit zur Eingabe pers&ouml;nlicher oder gesch&auml;ftlicher Daten (Emailadressen, Namen, Anschriften) besteht, so erfolgt die Preisgabe dieser Daten seitens des Nutzers auf ausdr&uuml;cklich freiwilliger Basis. Die Inanspruchnahme und Bezahlung aller angebotenen Produkte/Dienste ist ausschlie&szlig;lich unter Angabe der geforderten Daten gestattet. Die Nutzung der im Rahmen des Impressums, der Kontaktdaten der Dozenten oder vergleichbarer Angaben ver&ouml;ffentlichten Kontaktdaten wie Postanschriften, Telefon- und Faxnummern sowie Emailadressen durch Dritte zur &Uuml;bersendung von nicht ausdr&uuml;cklich angeforderten Informationen ist nicht gestattet. Rechtliche Schritte gegen die Versender von sogenannten Spam-Mails bei Verst&ouml;ssen gegen dieses Verbot behalten wir uns ausdr&uuml;cklich vor.</p><h4>III. Produkte/Dienstleistungen und Dozenten/Mentoren/Lernwillige</h4><p>Produkte wie Online-Kurse und Mentoring werden im Folgenden als &bdquo;Angebote&ldquo; bezeichnet.&nbsp;Dozenten und Lernwillige werden &bdquo;Nutzer&ldquo; genannt. Auf der mentoki-Plattform werden Lehr- und Lern-Angebote in einem eigenen, virtuellen mentoki-Klassenzimmer zur Nutzung bereitgestellt.</p><p>Die mentoki-Produkte und ihre Verf&uuml;gbarkeit k&ouml;nnen jederzeit durch mentoki ge&auml;ndert werden. Mentoki beh&auml;lt sich auch vor, mit oder ohne Vorank&uuml;ndigung, dringende Wartungsarbeiten, Updates oder technische Optimierungen durchzuf&uuml;hren. mentoki wird sich bem&uuml;hen, die Nutzer rechtzeitig zu informieren. Ein Anspruch hierauf sowie ein Ersatz-Anspruch auf Zeiten, in denen unser Angebot nicht verf&uuml;gbar ist, entstehen nicht.<br>  Die entstehenden Kosten f&uuml;r die technischen Voraussetzungen, um mentoki-Produkte nutzen zu k&ouml;nnen, tragen Sie ausschlie&szlig;lich selbst und in eigener Verantwortung. Dies gilt auch f&uuml;r Telefon-, Daten-, Daten&uuml;bertragungskosten, nat&uuml;rlich auch f&uuml;r Hardware und sonstige Dienstleistungsgeb&uuml;hren oder damit verbundene Kosten.<br>  Sofern Sie ein Angebot von mentoki nutzen m&ouml;chten, sind die daf&uuml;r erhobenen Nutzungsgeb&uuml;hren im Voraus zu bezahlen. Erst nach Zahlungseingang, jedoch rechtzeitig vor Beginn des Angebotes, wird Ihr Zugang freigeschaltet.</p><h4>IV. Hausordnung/Nettiquette</h4><p>Alle Nutzer verpflichten sich, die mentoki Hausordnung zu beachten und einzuhalten. <br>  Es ist grunds&auml;tzlich ein h&ouml;flicher Ton zu wahren. Rassistische, beleidigende, irref&uuml;hrende, falsche, rechtsverletzende, diffamierende, verleumderische, sexistische &Auml;usserungen oder Forum-Posts, die gegen die g&auml;ngige Nettiquette verstossen, k&ouml;nnen zum Entzug des Zugangs und zum Ausschluss aus dem gebuchten Produkt f&uuml;hren. Die Nutzungsgeb&uuml;hren werden in diesem Fall nicht erstattet.</p><h4>V. Preise/Geb&uuml;hren/Zahlungsverpflichtung</h4><p>mentoki-Angebote sind mit Preisen/Nutzungsgeb&uuml;hren versehen. Erst nach vollst&auml;ndiger Bezahlung erwerben Sie das Recht zur einmaligen Nutzung. Die Preisangaben auf der mentoki-Plattform sind Bruttopreise inklusive Mehrwertsteuer. <br>  Es ist nicht erlaubt, weiteren Nutzern &uuml;ber Ihren Account Zugang zu mentoki-Angeboten zu gew&auml;hren.</p><h4>VI. R&uuml;cktritt</h4><p>Nutzer k&ouml;nnen bis zu 14 Tagen vor Inanspruchnahme des Angebotes kostenfrei zur&uuml;cktreten.</p><h4>VII. K&uuml;ndigungsrecht mentoki</h4><p>mentoki ist zur sofortigen fristlosen fristlosen K&uuml;ndigung aus wichtigem Grund berechtigt.<br>  Als wichtige Gr&uuml;nde gelten insbesondere:<br>  &bull; wiederholter Zahlungsverzug bzw. Zahlungsr&uuml;ckstand <br>  &bull; unberechtigtes Kopieren, L&ouml;schen oder Aufspielen von Software-Produkten oder Daten <br>  sowie unberechtigtes Entfernen von Daten oder die nicht themenbezogene Nutzung der Plattform<br>  &bull; der Versto&szlig; gegen die Hausordnung<br>  &bull; jede Art von Angriff gegen Glaube, Herkunft, Geschlecht oder sexueller Orientierung<br>  Die K&uuml;ndigung muss schriftlich erfolgen. Eventuell &uuml;berzahlte Betr&auml;ge werden nach Abzug eventueller Schadensersatzanspr&uuml;che erstattet. Ein Anspruch auf R&uuml;ckerstattung der bezahlten Geb&uuml;hren besteht nach Freischaltung der Kursinhalte oder ausgelieferter Dienstleistung nicht.</p><h4>VIII. Haftungsausschluss</h4><p>Die Dozenten/Mentoren sind nicht bei mentoki angestellt, deshalb &uuml;bernimmt mentoki keine Haftung f&uuml;r Interaktionen zwischen Dozenten und Lernenden. <br>  mentoki haftet nicht f&uuml;r die Inhalte der Produkte. Jeder Dozent/Mentor ist f&uuml;r sein Angebot selbstverantwortlich &ndash; dies gilt insbesondere f&uuml;r Inhalte, Urheberrechte, Links und bereitgestellte Materialien.<br>  mentoki ist eine eingetragene Marke. F&uuml;r alle von mentoki direkt angebotenen Dienstleistungen und Produkte liegen alle Rechte bei mentoki. Es ist nicht erlaubt, Design oder Inhalte zu kopieren.<br>  Das Urheberrecht der von Dozenten/Mentoren angebotenen Produkte liegt bei der Dozenten/Mentoren. Es ist nicht erlaubt, Design oder Inhalte zu kopieren.<br>  mentoki ist um die Richtigkeit der an die Nutzer &uuml;bermittelten Inhalte und Empfehlungen sowie um Aufrechterhaltung der technischen Betriebsbereitschaft in vollem Umfang bem&uuml;ht. Gleichwohl kann diese nicht garantiert werden. Eine Haftung f&uuml;r Sch&auml;den durch unzutreffende Inhalte und Empfehlungen, technische Ausf&auml;lle oder sonstige Unzul&auml;nglichkeiten ist ausgeschlossen. Dies gilt auch f&uuml;r Leistungen Dritter, die den Nutzern angeboten werden.<br>  mentoki haftet nicht f&uuml;r leicht fahrl&auml;ssig verursachte Sch&auml;den au&szlig;erhalb der sich aus diesem Vertrag ergebenden Kardinalpflichten. Eine Haftung f&uuml;r mittelbare Sch&auml;den, Mangelfolgesch&auml;den oder entgangenen Gewinn besteht nicht, sofern sich die Haftung nicht aus vors&auml;tzlichem Handeln oder dem Fehlen einer zugesicherten Eigenschaft ergibt.<br>  Nutzer haben jegliche gezogenen Daten und Programme &uuml;ber ihren Rechner abzusichern, um Datenverlust zu vermeiden.</p><h4>IX. Haftungsbeschr&auml;nkung/Salvatorische Klausel</h4><p>Soweit einzelne Bestimmungen dieses Vertrages unwirksam sind oder werden, wird dadurch die Wirksamkeit des Vertrages im &Uuml;brigen nicht ber&uuml;hrt.<br>  &Auml;nderungen oder Erg&auml;nzungen bed&uuml;rfen zu ihrer Wirksamkeit der Schriftform.<br>  Gerichtsstand ist Z&uuml;rich, Schweiz.</p>	Konditionen	Kurs Bedingungen	
-\.
-
-
---
--- Data for Name: transaction_transaction; Type: TABLE DATA; Schema: public; Owner: -
---
-
-COPY transaction_transaction (amount, currency, braintree_transaction_id, braintree_customer_id, braintree_merchant_account_id, created, customer_id, product_id) FROM stdin;
 \.
 
 
@@ -6207,7 +6155,7 @@ ALTER TABLE ONLY courseevent_thread
 --
 
 ALTER TABLE ONLY customer_customer
-    ADD CONSTRAINT customer_customer_pkey PRIMARY KEY (braintree_customer_id);
+    ADD CONSTRAINT customer_customer_pkey PRIMARY KEY (id);
 
 
 --
@@ -6219,11 +6167,11 @@ ALTER TABLE ONLY customer_customer
 
 
 --
--- Name: customer_failedtransaction_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: customer_order_customer_id_50bc19c65cd1eff4_uniq; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY customer_failedtransaction
-    ADD CONSTRAINT customer_failedtransaction_pkey PRIMARY KEY (braintree_transaction_id);
+ALTER TABLE ONLY customer_order
+    ADD CONSTRAINT customer_order_customer_id_50bc19c65cd1eff4_uniq UNIQUE (customer_id, courseproduct_id);
 
 
 --
@@ -6235,35 +6183,11 @@ ALTER TABLE ONLY customer_order
 
 
 --
--- Name: customer_successfultransaction_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: customer_transaction_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY customer_successfultransaction
-    ADD CONSTRAINT customer_successfultransaction_pkey PRIMARY KEY (braintree_transaction_id);
-
-
---
--- Name: customer_temporder_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY customer_temporder
-    ADD CONSTRAINT customer_temporder_pkey PRIMARY KEY (id);
-
-
---
--- Name: customers_customer_id_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY customers_customer
-    ADD CONSTRAINT customers_customer_id_key UNIQUE (id);
-
-
---
--- Name: customers_customer_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY customers_customer
-    ADD CONSTRAINT customers_customer_pkey PRIMARY KEY (user_id);
+ALTER TABLE ONLY customer_transaction
+    ADD CONSTRAINT customer_transaction_pkey PRIMARY KEY (id);
 
 
 --
@@ -6312,14 +6236,6 @@ ALTER TABLE ONLY django_session
 
 ALTER TABLE ONLY django_site
     ADD CONSTRAINT django_site_pkey PRIMARY KEY (id);
-
-
---
--- Name: invoice_invoice_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY invoice_invoice
-    ADD CONSTRAINT invoice_invoice_pkey PRIMARY KEY (invoice_nr);
 
 
 --
@@ -6392,6 +6308,14 @@ ALTER TABLE ONLY mentoki_product_courseproductgroup
 
 ALTER TABLE ONLY mentoki_product_courseproductgroup
     ADD CONSTRAINT mentoki_product_courseproductgroup_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: mentoki_product_producttype_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY mentoki_product_producttype
+    ADD CONSTRAINT mentoki_product_producttype_pkey PRIMARY KEY (id);
 
 
 --
@@ -6499,14 +6423,6 @@ ALTER TABLE ONLY textchunks_publictextchunks
 
 
 --
--- Name: transaction_transaction_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY transaction_transaction
-    ADD CONSTRAINT transaction_transaction_pkey PRIMARY KEY (braintree_transaction_id);
-
-
---
 -- Name: userprofiles_mentorsprofile_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -6548,6 +6464,13 @@ CREATE INDEX account_emailconfirmation_6f1edeac ON account_emailconfirmation USI
 --
 
 CREATE INDEX account_emailconfirmation_key_7033a271201d424f_like ON account_emailconfirmation USING btree (key varchar_pattern_ops);
+
+
+--
+-- Name: accounts_user_cda53a30; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX accounts_user_cda53a30 ON accounts_user USING btree (checkout_product_slug);
 
 
 --
@@ -6838,48 +6761,6 @@ CREATE INDEX courseevent_thread_a9e33071 ON courseevent_thread USING btree (cour
 
 
 --
--- Name: customer_customer_braintree_customer_id_35cf9f90fdae5b7d_like; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX customer_customer_braintree_customer_id_35cf9f90fdae5b7d_like ON customer_customer USING btree (braintree_customer_id varchar_pattern_ops);
-
-
---
--- Name: customer_failedt_braintree_transaction_id_67e6d09f912d593c_like; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX customer_failedt_braintree_transaction_id_67e6d09f912d593c_like ON customer_failedtransaction USING btree (braintree_transaction_id varchar_pattern_ops);
-
-
---
--- Name: customer_failedtransaction_39671885; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX customer_failedtransaction_39671885 ON customer_failedtransaction USING btree (temporder_id);
-
-
---
--- Name: customer_failedtransaction_cb24373b; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX customer_failedtransaction_cb24373b ON customer_failedtransaction USING btree (customer_id);
-
-
---
--- Name: customer_failedtransaction_customer_id_434d4c3b7d714110_like; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX customer_failedtransaction_customer_id_434d4c3b7d714110_like ON customer_failedtransaction USING btree (customer_id varchar_pattern_ops);
-
-
---
--- Name: customer_failedtransaction_ea134da7; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX customer_failedtransaction_ea134da7 ON customer_failedtransaction USING btree (course_id);
-
-
---
 -- Name: customer_order_687517d1; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -6901,59 +6782,24 @@ CREATE INDEX customer_order_ea134da7 ON customer_order USING btree (course_id);
 
 
 --
--- Name: customer_success_braintree_transaction_id_68bb1eb064f42631_like; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: customer_transaction_69dfcb07; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX customer_success_braintree_transaction_id_68bb1eb064f42631_like ON customer_successfultransaction USING btree (braintree_transaction_id varchar_pattern_ops);
-
-
---
--- Name: customer_successfultransactio_customer_id_2739a76b48406f45_like; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX customer_successfultransactio_customer_id_2739a76b48406f45_like ON customer_successfultransaction USING btree (customer_id varchar_pattern_ops);
+CREATE INDEX customer_transaction_69dfcb07 ON customer_transaction USING btree (order_id);
 
 
 --
--- Name: customer_successfultransaction_69dfcb07; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: customer_transaction_cb24373b; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX customer_successfultransaction_69dfcb07 ON customer_successfultransaction USING btree (order_id);
-
-
---
--- Name: customer_successfultransaction_cb24373b; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX customer_successfultransaction_cb24373b ON customer_successfultransaction USING btree (customer_id);
+CREATE INDEX customer_transaction_cb24373b ON customer_transaction USING btree (customer_id);
 
 
 --
--- Name: customer_successfultransaction_ea134da7; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: customer_transaction_ea134da7; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX customer_successfultransaction_ea134da7 ON customer_successfultransaction USING btree (course_id);
-
-
---
--- Name: customer_temporder_687517d1; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX customer_temporder_687517d1 ON customer_temporder USING btree (courseproduct_id);
-
-
---
--- Name: customer_temporder_e8701ad4; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX customer_temporder_e8701ad4 ON customer_temporder USING btree (user_id);
-
-
---
--- Name: customers_customer_id_2f55060fe610a9b8_like; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX customers_customer_id_2f55060fe610a9b8_like ON customers_customer USING btree (id varchar_pattern_ops);
+CREATE INDEX customer_transaction_ea134da7 ON customer_transaction USING btree (course_id);
 
 
 --
@@ -6982,27 +6828,6 @@ CREATE INDEX django_session_de54fa62 ON django_session USING btree (expire_date)
 --
 
 CREATE INDEX django_session_session_key_461cfeaa630ca218_like ON django_session USING btree (session_key varchar_pattern_ops);
-
-
---
--- Name: invoice_invoice_9bea82de; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX invoice_invoice_9bea82de ON invoice_invoice USING btree (product_id);
-
-
---
--- Name: invoice_invoice_cb24373b; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX invoice_invoice_cb24373b ON invoice_invoice USING btree (customer_id);
-
-
---
--- Name: invoice_invoice_customer_id_77dce9cf3025f3dc_like; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX invoice_invoice_customer_id_77dce9cf3025f3dc_like ON invoice_invoice USING btree (customer_id varchar_pattern_ops);
 
 
 --
@@ -7146,6 +6971,13 @@ CREATE INDEX mentoki_product_courseproduct_2dbcba41 ON mentoki_product_coursepro
 
 
 --
+-- Name: mentoki_product_courseproduct_6cad1465; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX mentoki_product_courseproduct_6cad1465 ON mentoki_product_courseproduct USING btree (part_of_id);
+
+
+--
 -- Name: mentoki_product_courseproduct_a9e33071; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -7153,10 +6985,17 @@ CREATE INDEX mentoki_product_courseproduct_a9e33071 ON mentoki_product_coursepro
 
 
 --
--- Name: mentoki_product_courseproduct_bd1ac9d0; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: mentoki_product_courseproduct_d11782a6; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX mentoki_product_courseproduct_bd1ac9d0 ON mentoki_product_courseproduct USING btree (dependencies_id);
+CREATE INDEX mentoki_product_courseproduct_d11782a6 ON mentoki_product_courseproduct USING btree (dependency_id);
+
+
+--
+-- Name: mentoki_product_courseproduct_d9862cd8; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX mentoki_product_courseproduct_d9862cd8 ON mentoki_product_courseproduct USING btree (product_type_id);
 
 
 --
@@ -7185,6 +7024,13 @@ CREATE INDEX mentoki_product_courseproductgroup_2dbcba41 ON mentoki_product_cour
 --
 
 CREATE INDEX mentoki_product_specialoffer_687517d1 ON mentoki_product_specialoffer USING btree (courseproduct_id);
+
+
+--
+-- Name: mentoki_product_specialoffer_a9e33071; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX mentoki_product_specialoffer_a9e33071 ON mentoki_product_specialoffer USING btree (courseevent_id);
 
 
 --
@@ -7251,41 +7097,6 @@ CREATE INDEX textchunks_publictextchunks_pagecode_62949e91b3a9e1a8_like ON textc
 
 
 --
--- Name: transaction_tran_braintree_transaction_id_5c12c22d514c0c1c_like; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX transaction_tran_braintree_transaction_id_5c12c22d514c0c1c_like ON transaction_transaction USING btree (braintree_transaction_id varchar_pattern_ops);
-
-
---
--- Name: transaction_transac_braintree_customer_id_12c701bfa20ace9f_like; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX transaction_transac_braintree_customer_id_12c701bfa20ace9f_like ON transaction_transaction USING btree (braintree_customer_id varchar_pattern_ops);
-
-
---
--- Name: transaction_transaction_9bea82de; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX transaction_transaction_9bea82de ON transaction_transaction USING btree (product_id);
-
-
---
--- Name: transaction_transaction_cb24373b; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX transaction_transaction_cb24373b ON transaction_transaction USING btree (customer_id);
-
-
---
--- Name: transaction_transaction_customer_id_435cae980e0989b8_like; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX transaction_transaction_customer_id_435cae980e0989b8_like ON transaction_transaction USING btree (customer_id varchar_pattern_ops);
-
-
---
 -- Name: userprofiles_mentorsprofile_e8701ad4; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -7293,19 +7104,19 @@ CREATE INDEX userprofiles_mentorsprofile_e8701ad4 ON userprofiles_mentorsprofile
 
 
 --
--- Name: D03210f8868cf6fc100bbf2956c565cb; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: D208008b3234f0cd24d9bd5cbcb82da8; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY customer_failedtransaction
-    ADD CONSTRAINT "D03210f8868cf6fc100bbf2956c565cb" FOREIGN KEY (customer_id) REFERENCES customer_customer(braintree_customer_id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE ONLY mentoki_product_courseproduct
+    ADD CONSTRAINT "D208008b3234f0cd24d9bd5cbcb82da8" FOREIGN KEY (dependency_id) REFERENCES mentoki_product_courseproduct(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
--- Name: D24008d83d322a171201ff3e7c451a25; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: D32b0af874e692c55d4104a3d703dd89; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY customer_temporder
-    ADD CONSTRAINT "D24008d83d322a171201ff3e7c451a25" FOREIGN KEY (courseproduct_id) REFERENCES mentoki_product_courseproduct(id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE ONLY mentoki_product_courseproduct
+    ADD CONSTRAINT "D32b0af874e692c55d4104a3d703dd89" FOREIGN KEY (part_of_id) REFERENCES mentoki_product_courseproduct(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -7317,27 +7128,19 @@ ALTER TABLE ONLY customer_order
 
 
 --
+-- Name: D43774343096baf55f55f68b295e48c0; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY mentoki_product_courseproduct
+    ADD CONSTRAINT "D43774343096baf55f55f68b295e48c0" FOREIGN KEY (product_type_id) REFERENCES mentoki_product_producttype(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
 -- Name: D628174312a4b78eca919cda2e36edd7; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY courseevent_studentswork_workers
     ADD CONSTRAINT "D628174312a4b78eca919cda2e36edd7" FOREIGN KEY (studentswork_id) REFERENCES courseevent_studentswork(id) DEFERRABLE INITIALLY DEFERRED;
-
-
---
--- Name: D780eb1a35e071b0595442d6f1095a6e; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY customer_successfultransaction
-    ADD CONSTRAINT "D780eb1a35e071b0595442d6f1095a6e" FOREIGN KEY (customer_id) REFERENCES customer_customer(braintree_customer_id) DEFERRABLE INITIALLY DEFERRED;
-
-
---
--- Name: D7d745fc461c6ad8cbd9e4718393174b; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY customer_order
-    ADD CONSTRAINT "D7d745fc461c6ad8cbd9e4718393174b" FOREIGN KEY (customer_id) REFERENCES customer_customer(braintree_customer_id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -7426,14 +7229,6 @@ ALTER TABLE ONLY auth_group_permissions
 
 ALTER TABLE ONLY auth_group_permissions
     ADD CONSTRAINT auth_group_permission_id_1f49ccbbdc69d2fc_fk_auth_permission_id FOREIGN KEY (permission_id) REFERENCES auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
-
-
---
--- Name: b64b93c4f81a405bb264697cc0ec3a16; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY mentoki_product_courseproduct
-    ADD CONSTRAINT b64b93c4f81a405bb264697cc0ec3a16 FOREIGN KEY (dependencies_id) REFERENCES mentoki_product_courseproduct(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -7629,11 +7424,11 @@ ALTER TABLE ONLY customer_customer
 
 
 --
--- Name: customer_failedt_course_id_4329c9c04fa70893_fk_course_course_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: customer_o_customer_id_1ce3d3159841999d_fk_customer_customer_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY customer_failedtransaction
-    ADD CONSTRAINT customer_failedt_course_id_4329c9c04fa70893_fk_course_course_id FOREIGN KEY (course_id) REFERENCES course_course(id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE ONLY customer_order
+    ADD CONSTRAINT customer_o_customer_id_1ce3d3159841999d_fk_customer_customer_id FOREIGN KEY (customer_id) REFERENCES customer_customer(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -7645,51 +7440,27 @@ ALTER TABLE ONLY customer_order
 
 
 --
--- Name: customer_success_course_id_4fe03451d56896b2_fk_course_course_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: customer_t_customer_id_7962b09af88fe147_fk_customer_customer_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY customer_successfultransaction
-    ADD CONSTRAINT customer_success_course_id_4fe03451d56896b2_fk_course_course_id FOREIGN KEY (course_id) REFERENCES course_course(id) DEFERRABLE INITIALLY DEFERRED;
-
-
---
--- Name: customer_success_order_id_102ac01aaf5154c2_fk_customer_order_id; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY customer_successfultransaction
-    ADD CONSTRAINT customer_success_order_id_102ac01aaf5154c2_fk_customer_order_id FOREIGN KEY (order_id) REFERENCES customer_order(id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE ONLY customer_transaction
+    ADD CONSTRAINT customer_t_customer_id_7962b09af88fe147_fk_customer_customer_id FOREIGN KEY (customer_id) REFERENCES customer_customer(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
--- Name: customer_temporder_id_71798040b002970f_fk_customer_temporder_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: customer_transac_course_id_301a1f4a1fa70602_fk_course_course_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY customer_failedtransaction
-    ADD CONSTRAINT customer_temporder_id_71798040b002970f_fk_customer_temporder_id FOREIGN KEY (temporder_id) REFERENCES customer_temporder(id) DEFERRABLE INITIALLY DEFERRED;
-
-
---
--- Name: customer_temporder_user_id_7becc4be8f0da3ee_fk_accounts_user_id; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY customer_temporder
-    ADD CONSTRAINT customer_temporder_user_id_7becc4be8f0da3ee_fk_accounts_user_id FOREIGN KEY (user_id) REFERENCES accounts_user(id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE ONLY customer_transaction
+    ADD CONSTRAINT customer_transac_course_id_301a1f4a1fa70602_fk_course_course_id FOREIGN KEY (course_id) REFERENCES course_course(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
--- Name: customers_customer_user_id_6546646630fa41b3_fk_accounts_user_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: customer_transact_order_id_da33db3397bc712_fk_customer_order_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY customers_customer
-    ADD CONSTRAINT customers_customer_user_id_6546646630fa41b3_fk_accounts_user_id FOREIGN KEY (user_id) REFERENCES accounts_user(id) DEFERRABLE INITIALLY DEFERRED;
-
-
---
--- Name: dcb0a0081b7723e92bb35fd60f257749; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY invoice_invoice
-    ADD CONSTRAINT dcb0a0081b7723e92bb35fd60f257749 FOREIGN KEY (customer_id) REFERENCES customer_customer(braintree_customer_id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE ONLY customer_transaction
+    ADD CONSTRAINT customer_transact_order_id_da33db3397bc712_fk_customer_order_id FOREIGN KEY (order_id) REFERENCES customer_order(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -7706,14 +7477,6 @@ ALTER TABLE ONLY django_admin_log
 
 ALTER TABLE ONLY django_admin_log
     ADD CONSTRAINT django_admin_log_user_id_52fdd58701c5f563_fk_accounts_user_id FOREIGN KEY (user_id) REFERENCES accounts_user(id) DEFERRABLE INITIALLY DEFERRED;
-
-
---
--- Name: fa534554da6cfc4083ab3ed9b998902d; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY transaction_transaction
-    ADD CONSTRAINT fa534554da6cfc4083ab3ed9b998902d FOREIGN KEY (customer_id) REFERENCES customer_customer(braintree_customer_id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -7778,6 +7541,14 @@ ALTER TABLE ONLY lesson_lesson
 
 ALTER TABLE ONLY lesson_lesson
     ADD CONSTRAINT lesson_lesson_parent_id_7b28c8f2d83aa79e_fk_lesson_lesson_id FOREIGN KEY (parent_id) REFERENCES lesson_lesson(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: m_courseevent_id_13961ae469e648a3_fk_courseevent_courseevent_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY mentoki_product_specialoffer
+    ADD CONSTRAINT m_courseevent_id_13961ae469e648a3_fk_courseevent_courseevent_id FOREIGN KEY (courseevent_id) REFERENCES courseevent_courseevent(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --

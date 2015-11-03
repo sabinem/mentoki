@@ -50,7 +50,8 @@ from apps_customerdata.customer.constants import ORDER_STATUS, \
 from apps_data.courseevent.models.courseevent import CourseEventParticipation
 
 import logging
-logger = logging.getLogger('public.payment')
+logger = logging.getLogger('public.payment.story')
+event_logger = logging.getLogger('public.payment.event')
 
 
 # configure the global braintree object:
@@ -343,6 +344,12 @@ class PaymentView(
                      % (transaction_data))
         transaction_data['payment_method_nonce'] = nonce
         result = braintree.Transaction.sale(transaction_data)
+        event_logger.info('Braintree Transaktion mit folgendem Input (Token wird '
+                    'nicht angezeigt): [%s] hatte Erfolg [%s]. Braintree '
+                    'Transaktionsnr. [%s], Mentoki Transaktion [%s] '
+                     % (transaction_data, result.is_success,
+                        result.transaction.id, self.transaction))
+
         # ----------------------------------------
         # react on transaction result
         # ----------------------------------------
@@ -387,7 +394,7 @@ class PaymentView(
                     user=user,
                     courseevent=courseproduct.courseevent)
                 if participation:
-                    logger.debug('participation: [%s] created:[%s]'
+                    logger.info('participation: [%s] created:[%s]'
                                  % (participation, created))
 
         # ----------------------------------------
@@ -396,7 +403,7 @@ class PaymentView(
         else:
             self.transaction.flag_payment_sucess=False
             if self.transaction:
-                logger.debug('transaction there [%s] but no success'
+                logger.info('transaction there [%s] but no success'
                      % (self.transaction))
                 pass
             else:
@@ -406,7 +413,7 @@ class PaymentView(
                     (error.code, error.message))
                 self.transaction.braintree_error_details = message
                 self.transaction.save()
-                logger.debug('error during transaction [%s]'
+                logger.info('error during transaction [%s]'
                      % (self.transaction.errors))
         return super(PaymentView, self).form_valid(form)
 

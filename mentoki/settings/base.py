@@ -257,7 +257,8 @@ LOGGING = {
     },
     'formatters': {
         'verbose': {
-            'format': '%(levelname)s %(asctime)s [%(module)s] %(message)s',
+            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
         },
     },
     'handlers': {
@@ -268,6 +269,14 @@ LOGGING = {
         'sentryinfo': {
             'level': 'INFO',
             'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+        },
+        'paymentfile': {
+            'filename': os.path.join(BASE_DIR, 'logfiles', 'payments.log' ),
+            'formatter': 'verbose',
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'maxBytes': 500000,  # 500 kB
+            'backupCount': 4  ,
         },
         'sentrywarning': {
             'level': 'WARNING',
@@ -295,9 +304,14 @@ LOGGING = {
             'handlers': ['console'],
             'propagate': False,
         },
-        'public.payment': {
+        'public.payment.event': {
+            'level': 'INFO',
+            'handlers': ['sentryinfo'],
+            'propagate': False,
+        },
+        'public.payment.story': {
             'level': 'DEBUG',
-            'handlers': ['console'],
+            'handlers': ['paymentfile'],
             'propagate': False,
         },
         'public.customers': {
