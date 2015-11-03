@@ -24,7 +24,7 @@ from apps_data.courseevent.models.courseevent import CourseEvent
 from ..constants import OFFERREACH_CHOICES
 
 import logging
-logger = logging.getLogger('public.payment')
+logger = logging.getLogger('__name__')
 
 
 class SpecialOfferManager(models.Manager):
