@@ -39,9 +39,7 @@ class Customer(TimeStampedModel):
 
     objects = CustomerManager()
 
-    #TODO: determine later
     def __unicode__(self):
-        return 'Customer: %s' \
-               % (self.user,)
+        return 'Customer: %s' % (self.user)
 
 

@@ -95,6 +95,14 @@ class Order(TimeStampedModel):
         verbose_name = 'Buchung'
         verbose_name_plural = 'Buchungen'
 
+    def __unicode__(self):
+        return 'Order: [%s: %s] ' \
+               % (self.customer, self.courseproduct)
+
+    def __repr__(self):
+        return '[%s] %s %s' \
+               % (self.id, self.customer, self.courseproduct)
+
     def save(self, **kwargs):
         self.course = self.courseproduct.course
         super(Order, self).save()

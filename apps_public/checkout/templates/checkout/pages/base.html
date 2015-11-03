@@ -10,7 +10,10 @@
             <div class="ui two column stackable grid">
                 <div class="column five wide">
 
-                    {% block context_course %}{% endblock %}
+                    <!-- courseproduct group -->
+                    <div class="ui cards centered">
+                        {% include 'checkout/fragments/_coursecard_details.html' %}
+                    </div>
 
                 </div>
 

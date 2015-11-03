@@ -110,4 +110,16 @@ class Transaction(TimeStampedModel):
         verbose_name = 'Transaktion'
         verbose_name_plural = 'Transaktionen'
 
+    def __unicode__(self):
+        return '[Auftrag %s][Transaktion %s] %s %s: %s %s' \
+               % (self.order_id,
+                  self.braintree_transaction_id,
+                  self.first_name,
+                  self.last_name,
+                  self.amount,
+                  self.currency)
+
+    def __repr__(self):
+        return '[%s] %s %s' \
+               % (self.id, self.user, self.course)
 

@@ -1,8 +1,12 @@
 # coding: utf-8
 
 """
-Courseevents are for sale. This app handles the public data
-of coruseevents
+This module stores special offer for courseevents. These offers are
+always in the form: percentage off the regular price.
+They have differnt reach: they can be valid for a course, a courseevent or a
+product. The offer is taken from the more specialisied to the less specialized.
+So if an offer for a product exists, that one has priority over an offer that
+is valid for the course.
 """
 
 from __future__ import unicode_literals, absolute_import
@@ -18,7 +22,6 @@ from apps_productdata.mentoki_product.models.courseproduct import CourseProduct
 from apps_data.course.models.course import Course
 from apps_data.courseevent.models.courseevent import CourseEvent
 from ..constants import OFFERREACH_CHOICES
-from apps_productdata.mentoki_product.models.producttype import ProductType
 
 import logging
 logger = logging.getLogger('public.payment')
@@ -26,43 +29,49 @@ logger = logging.getLogger('public.payment')
 
 class SpecialOfferManager(models.Manager):
     """
-    Querysets for CourseEvents
+    Querysets for courseoffers
     """
     def get_special_offer_courseproduct(self, courseproduct):
-        logger.debug('searching for offer for %s'
+        """
+        This function searches for the offer that applies to a courseproduct
+        :param courseproduct:
+        :return: offer or None, if no offer exists
+        """
+        logger.info('Suche nach Rabatt für Produkt: [%s]'
              % (courseproduct))
         try:
-            logger.info('try productoffers')
             offer = self.get(
                 courseproduct=courseproduct,
                 reach=OFFERREACH_CHOICES.product)
-            logger.info('productoffer found: %s'
-                     % (offer))
+            logger.info('Produktangebot [%s] gefunden für Produkt: [%s], '
+                        '[%s] Prozent Rabatt'
+                     % (offer, offer.coursproduct, offer.percentage_off))
             return offer
         except ObjectDoesNotExist:
             pass # try next filter
 
         if courseproduct.product_type \
                 and courseproduct.product_type.is_courseevent_participation:
-            logger.debug('try eventoffers')
             try:
                 offer = self.get(
                     courseevent=courseproduct.courseevent,
                     reach=OFFERREACH_CHOICES.courseevent)
-                logger.debug('eventoffer found: %s'
-                     % (offer))
+                logger.info('Kursangebot gefunden: [%s] für Kurs: [%s], '
+                            '[%s] Prozent Rabatt'
+                            % (offer, offer.courseevent, offer.percentage_off))
                 return offer
             except ObjectDoesNotExist:
                 pass # try next filter
         try:
-            logger.debug('try courseoffers')
             offer = self.get(
                 course=courseproduct.course,
                 reach=OFFERREACH_CHOICES.course)
-            logger.debug('courseoffer found: %s'
-                 % (offer))
+            logger.info('Kursgruppenangebot [%s] gefunden für Kursgruppe: [%s]'
+                        ', [%s] Prozent Rabatt'
+                     % (offer, offer.course, offer.percentage_off))
             return offer
         except ObjectDoesNotExist:
+            logger.info('Es gibt keinen Rabatt für dieses Produkt.')
             return None
 
 

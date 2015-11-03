@@ -23,7 +23,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.forms import ValidationError
 from django.utils.decorators import method_decorator
 from django.db import IntegrityError
-from django.http import HttpResponseRedirect
+from django.views.decorators.cache import cache_control
 
 from django.conf import settings
 
@@ -50,7 +50,7 @@ from apps_customerdata.customer.constants import ORDER_STATUS, \
 from apps_data.courseevent.models.courseevent import CourseEventParticipation
 
 import logging
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('public.payment')
 
 
 # configure the global braintree object:
@@ -63,36 +63,39 @@ braintree.Configuration.configure(
     merchant_account_id_eur=settings.BRAINTREE['merchant_account_id_eur'],
 )
 
+class AuthMixin(UserPassesTestMixin, MessageMixin):
 
-class AuthMixin(UserPassesTestMixin):
-    """
-    this Mixin builds the menu in the side-bar and the top of the page.
-    """
-    raise_exception = False
-    login_url = settings.LOGIN_REDIRECT_URL
-    redirect_field_name = settings.LOGIN_REDIRECT_URL
+    redirect_field_name = settings.COURSE_LIST_URL
 
     def test_func(self, user):
-
         """
-        This function belongs to the Braces Mixin UserPasesTest: test for using the course backend.
-        Only the Superuser and the owner of the course are allowed
+        tests whether the logged in user may book this product
         """
-        course = get_object_or_404(Course, slug=self.kwargs['course_slug'])
-
-        if user.is_superuser:
-            self.request.session['workon_course_id'] = course.id
-            return True
-
-        else:
-
-            if course.is_owner(user):
-                self.request.session['workon_course_id'] = course.id
+        courseproduct = get_object_or_404(
+            CourseProduct,
+            slug=self.kwargs['slug'])
+        logger.info('Teste, ob Benutzer [%s] das Produkt [%s] kaufen kann.'
+                     % (user, courseproduct))
+        if hasattr(user, 'customer'):
+            customer=user.customer
+            ordered_products = \
+                Order.objects.\
+                products_with_order_paid_for_course_and_customer(
+                    course=courseproduct.course,
+                    customer=user.customer)
+            if courseproduct.available_with_past_orders(ordered_products):
+                logger.info('ja, kann er, denn es verträgt'
+                    ' sich mit seinen bisher gekauften Produkten')
                 return True
-
-        self.messages.warning(_('You are not allowed to change this data since you are not a teacher of this course.'))
-
-        return None
+            self.messages.warning('''Du kannst dieses Produkt nicht buchen,
+                weil es sich mit Kursen überschneidet,
+                die Du bereits gebucht hast.''')
+            logger.info('''nein, kann er nicht: denn es verträgt sich nicht
+                mit den bereits bestellten Produkten.''')
+            return None
+        else:
+            logger.info('nein, kann er, denn er ist noch kein Kunde')
+            return True
 
 
 class PaymentForm(forms.Form):
@@ -112,8 +115,7 @@ class PaymentForm(forms.Form):
 
 
 class PaymentView(
-    UserPassesTestMixin,
-    MessageMixin,
+    AuthMixin,
     FormView):
     """
     This view handles the payment process for courseproducts.
@@ -127,39 +129,15 @@ class PaymentView(
     template_name = 'checkout/pages/payment_form.html'
     form_class = PaymentForm
     amount = None
-    redirect_field_name = settings.COURSE_LIST_URL
 
-    def test_func(self, user):
-        """
-        tests whether the logged in user may book this product
-        """
-        courseproduct = get_object_or_404(
-            CourseProduct,
-            slug=self.kwargs['slug'])
-        if hasattr(user, 'customer'):
-            customer=user.customer
-            logger.debug('1. user is a customer [%s]' % customer)
-            ordered_products = \
-                Order.objects.\
-                products_with_order_paid_for_course_and_customer(
-                    course=courseproduct.course,
-                    customer=user.customer)
-            if courseproduct.available_with_past_orders(ordered_products):
-                return True
-            self.messages.warning('''Du kannst dieses Produkt nicht buchen,
-                weil es sich mit Kursen überschneidet,
-                die Du bereits gebucht hast.''')
-            return None
-        else:
-            return True
-
+    @cache_control(no_cache=True, must_revalidate=True)
     @method_decorator(verified_email_required)
     def dispatch(self, request, *args, **kwargs):
         """
         The users email needs to be verified before booking a course.
         This makes use of allauth decorator @verified_email_required.
         """
-        logger.debug('dispatch payment view')
+        logger.info('-------------- neuer Zahlungsaufruf')
         return super(PaymentView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -171,23 +149,29 @@ class PaymentView(
         - braintree id of the customer
         - braintree_merchant_id according to the currency of the payment
         """
-        logger.debug('===========get context data for payment')
-        context = super(PaymentView, self).get_context_data(**kwargs)
         # ------------------------------------------
         # get productdata or 404: this really is a 404, if the product
         # is not found
         # ------------------------------------------
+        context = super(PaymentView, self).get_context_data(**kwargs)
+        user=self.request.user
         courseproduct = get_object_or_404(
             CourseProduct,
             slug=self.kwargs['slug'])
+        logger.info('Zahlung gestartet für Benutzer [%s] Produkt [%s]'
+                    % (user, courseproduct))
         courseproductgroup = get_object_or_404(
             CourseProductGroup,
             course=courseproduct.course)
+        sales_price = courseproduct.sales_price
+        context['sales_price'] = sales_price
+        context['courseproductgroup'] = courseproductgroup
+        context['courseproduct'] = courseproduct
         logger.info(
-            'product data found: group[%s]product[%s]amount[%s]currency[%s]'
-                 % (courseproductgroup,
-                    courseproduct.sales_price,
-                    courseproduct,
+            'Die Produktdaten: Normalpreis:[%s], Rabattpreis:[%s],'
+            ' Währung:[%s]'
+                 % (courseproduct.price,
+                    sales_price,
                     courseproduct.currency))
         # ------------------------------------------
         # reset args for generating the client token
@@ -204,39 +188,41 @@ class PaymentView(
                 settings.BRAINTREE['merchant_account_id_eur']
         else:
             logger.error(
-                'Unknown currency for courseproduct [%s]' % (courseproduct))
+                'Unbekannte Währung [%s] bei Kursprodukt:[%s]' %
+                (courseproduct.currency, courseproduct))
         # ------------------------------------------
         # get braintree customer id, if it exists
         # ------------------------------------------
-        user=self.request.user
         try:
             customer = Customer.objects.get(user=user)
             braintree_token_args['customer_id'] \
                 = customer.braintree_customer_id
-            logger.debug('customer [%s] found with braintree customer_id[%s]'
-                         % (customer, customer.braintree_customer_id))
+            logger.info(
+                'Benutzer [%s] existiert bereits und ist bei mentoki'
+                ' mit folgender braintree id gespeichert:[%s]'
+                % (customer, customer.braintree_customer_id))
         except ObjectDoesNotExist:
             # new customer, does not have braintree entry yet
-            logger.info('no customer data was found')
+            logger.info(
+                'Bei Mentoki ist der Benutzer noch nicht als Kunde angelegt.')
         # ----------------------------------------
         # get client token from braintree
         # --------------------------------------
         token=None
         try:
-            logger.debug('generating token with args [%s]'
+            logger.info('Zur Generierung des Payment Tokens für braintree'
+                         'werden folgende Argumente mitgegeben:[%s]'
                          % braintree_token_args)
             token = braintree.ClientToken.generate(
                 braintree_token_args)
-            logger.info('payment token sucessfully generated')
+            logger.info('Das Token wurde generiert')
         except Exception as ex:
-            template = "An exception of type {0} occured. Arguments:\n{1!r}"
+            template = "Es gab einen Fehler vom Typ: {0}. Argumente:\n{1!r}"
             message = template.format(type(ex).__name__, ex.args)
             logger.error(message)
         # ------------------------------------------
         # set context
         # ------------------------------------------
-        context['courseproductgroup'] = courseproductgroup
-        context['courseproduct'] = courseproduct
         context['client_token'] = token
         return context
 
@@ -258,21 +244,20 @@ class PaymentView(
         # ------------------------------------------
         # get nonce
         # ------------------------------------------
-        logger.debug('===========in form valid')
         nonce = form.cleaned_data['payment_method_nonce']
+        logger.info('Das Token gefunden.')
         self.payment_success = False # memorize payemnt success or failure
         # ------------------------------------------
         # product data has to be fetched again
         # ------------------------------------------
-        courseproduct_slug = self.kwargs['slug']
         courseproduct = get_object_or_404(
             CourseProduct,
             slug=self.kwargs['slug'])
         user = self.request.user
         amount = courseproduct.sales_price
         currency = courseproduct.currency
-        logger.debug('''starting transaction for product [%s]
-                     user [%s] amount [%s] currency [%s]'''
+        logger.info('Die Transaction wird vorbereitet für Benutzer:[%s],'
+                     ' Produkt:[%s], Betrag:[%s] in der Währung:[%s]'
                      % (courseproduct,
                         user,
                         amount,
@@ -282,10 +267,16 @@ class PaymentView(
         # ----------------------------------------
         customer, created = Customer.objects.get_or_create(
             user=user)
-        logger.debug('customer [%s] created: [%s] braintree_id: [%s]'
-                     % (customer,
-                        created,
-                        customer.braintree_customer_id))
+        if created:
+            logger.info('Der Kunde [%s] wurde bei mentoki neu angelegt mit der '
+                         'braintree id [%s]'
+                         % (customer,
+                            customer.braintree_customer_id))
+        else:
+            logger.info('Der Kunde [%s] mit der '
+                         'braintree id [%s] wurde bei mentoki gefunden'
+                         % (customer,
+                            customer.braintree_customer_id))
         # ----------------------------------------
         # create or get order object
         # ----------------------------------------
@@ -299,9 +290,20 @@ class PaymentView(
                 'first_name':user.first_name,
                 'last_name':user.last_name}
         )
-        logger.debug('order [%s] created: [%s]'
-                     % (self.order,
-                        created))
+        if created:
+            logger.info('Ein Auftrag [%s] wurde bei neu mentoki angelegt.'
+                         % (self.order))
+        else:
+            logger.info('Es gab schon einen Auftrag [%s] im Status [%s] zu '
+                         'dieser Buchung, er wurde fürs Update vorbereitet.'
+                         % (self.order, self.order.order_status))
+            if not self.order.order_status in ORDER_STATUS_UNPAID:
+                logger.error('Die Bestellung [%s] ist bereits bezahlt: '
+                             'Status:[%s]'
+                             % (self.order,
+                                self.order.order_status))
+                return super(PaymentView, self).form_valid(form)
+                    #do not pay double!
         # ----------------------------------------
         # prepare transaction object
         # ----------------------------------------
@@ -315,30 +317,20 @@ class PaymentView(
             last_name=user.last_name,
             course=courseproduct.course
         )
-        logger.debug('transaction created: [%s]'
+        logger.info('Eine Transaktion [%s] wurde bei Mentoki angelegt und'
+                     ' fürs Update vorbereitet.'
                      % (self.transaction))
-        if not self.order.order_status in ORDER_STATUS_UNPAID:
-            logger.debug('order [%s] is already paid, status: [%s] '
-                         % (self.order,
-                            self.order.order_status))
-            self.transaction.flag_payment_sucess = False
-            self.transaction.error_code = TRANSACTION_ERROR_CODE.already_paid
-            self.transaction.save()
-            return super(PaymentView, self).form_valid(form)
         # ----------------------------------------
         # the transaction is attempted
         # it will contain customer data if the customer does not exist yet
         # ----------------------------------------
         transaction_data = {}
-        transaction_data['payment_method_nonce'] = nonce
         transaction_data['amount'] = str(amount)
         transaction_data['options'] = {
                     'submit_for_settlement': True,
                     'store_in_vault_on_success': True,
                 }
         transaction_data['order_id'] = self.order.id
-        #transaction_data['descriptor'] = order.courseproduct.descriptor
-
         # customer data will be created along with the transaction
         if not customer.braintree_customer_id:
             transaction_data['customer'] = {
@@ -346,15 +338,18 @@ class PaymentView(
                             "last_name": user.last_name,
                             "email": user.email
                           }
-        logger.debug('prepare transaction %s'
+        logger.info('Braintree Transaktion mit folgendem Input (Token wird '
+                    'nicht angezeigt): [%s]'
                      % (transaction_data))
+        transaction_data['payment_method_nonce'] = nonce
         result = braintree.Transaction.sale(transaction_data)
-        logger.debug('result [%s]'
-                     % (transaction_data))
         # ----------------------------------------
         # react on transaction result
         # ----------------------------------------
         if result.is_success:
+            logger.info('Die Transaktion hatte Erfolg. Diese Transaction'
+                        ' kam von braintree zurück: [%s]' %
+                        braintree.transaction)
             self.transaction.amount = result.transaction.amount
             self.transaction.flag_payment_sucess=True
             self.transaction.braintree_customer_id = \
@@ -365,17 +360,27 @@ class PaymentView(
             self.transaction.braintree_payment_token = \
                 result.transaction.credit_card['token']
             self.transaction.save()
+            logger.info('Die Transaktion wurde bei mentoki gespeichert: [%s]'
+                        % self.transaction)
             if not customer.braintree_customer_id:
                 customer.braintree_customer_id = \
                     result.transaction.customer['id']
                 customer.save()
+                logger.info('Der Kunde wurde bei mentoki upgedated: '
+                            '[%s] mit der braintree id [%s]'
+                            % (customer, customer.braintree_customer_id))
+
             self.order.order_status = ORDER_STATUS.paid
             self.order.save()
+            logger.info('Der Aufrag wurde bei mentoki gespeichert: '
+                        '[%s] mit dem Status: [%s]'
+                        % (self.order, self.order.order_status))
             self.payment_success = True
         # ----------------------------------------
         # register for courseevent on success
         # ----------------------------------------
-            if courseproduct.product_type.is_courseevent_participation:
+            if courseproduct.product_type and\
+                courseproduct.product_type.is_courseevent_participation:
                 # set up courseevent participation
                 participation, created =\
                 CourseEventParticipation.objects.get_or_create(

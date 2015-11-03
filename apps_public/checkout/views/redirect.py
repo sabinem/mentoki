@@ -49,8 +49,8 @@ class CheckoutStartView(
         wanted to go before he was forced to login or register
         :return: redirect_url
         """
-        logger.info('------------ starting payment process for %s'
-                    % self.request.user)
+        logger.info('%s ruft die Zahlung für %s auf'
+                    % (self.kwargs['slug'], self.request.user))
 
         user = self.request.user
 

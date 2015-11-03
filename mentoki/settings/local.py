@@ -25,9 +25,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR_PROJECT, 'htdocs', 'media')
 # overwrite email backend
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-# overwrite raven settings
-RAVEN_CONFIG = {'dsn': ''}
-
 #TODO: how can I overwrite just that one setting for DEBUG in templates?
 # templates overwrites
 TEMPLATES = [
@@ -48,3 +45,4 @@ TEMPLATES = [
         },
     },
 ]
+

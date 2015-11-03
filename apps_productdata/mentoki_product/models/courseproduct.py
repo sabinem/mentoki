@@ -1,27 +1,18 @@
 # coding: utf-8
 
-
 """
-Courseevents are for sale. This app handles the public data
-of coruseevents
+Here are the models for courseproducts, that are products that belong
+to one course.
 """
 
 from __future__ import unicode_literals, absolute_import
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.core.exceptions import ObjectDoesNotExist
-
-from model_utils.models import TimeStampedModel
-from model_utils.fields import MonitorField
-from model_utils import Choices
 
 from apps_data.courseevent.models.courseevent import CourseEvent
 from apps_data.course.models.course import Course
 
-from froala_editor.fields import FroalaField
-
-from ..constants import CURRENCY_CHOICES, PRODUCT_TO_CUSTOMER_CASES
 from .product import Product
 
 import logging
@@ -32,25 +23,6 @@ class CourseProductManager(models.Manager):
     """
     Querysets for CourseProducts
     """
-    def without_dependencies_by_course(self, course):
-        """
-        gets all courseproducts that have no dependencies for one course
-        """
-        return self.filter(
-            course=course,
-            dependencies=None)\
-            .order_by('display_nr')
-
-    def with_dependencies_by_course(self, course):
-        """
-        gets all courseproducts that have dependencies for one course
-        """
-        return self.filter(
-            course=course,
-            product_type__has_dependencies=True)\
-            .exclude(dependencies=None)\
-            .order_by('display_nr')
-
     def all_by_course(self, course):
         """
         gets all courseproducts that have dependencies for one course
@@ -77,7 +49,6 @@ class CourseProduct(Product):
 
     def __unicode__(self):
         return u'[%s] %s' % (self.id, self.name)
-
 
     @property
     def sales_price(self):

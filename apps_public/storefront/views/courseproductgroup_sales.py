@@ -38,7 +38,8 @@ class CourseGroupOfferView(
         context = super(CourseGroupOfferView, self).get_context_data()
         course = context['courseproductgroup'].course
         user=self.request.user
-        logger.info('offerpage view for course [%s]' % course)
+        logger.info('Jemand sieht sich die Angebotsseite für den Kurs [%s] an.' %
+                    course)
 
         # -------------------------------------------------------------
         # determine whether user is customers and whether orders exist

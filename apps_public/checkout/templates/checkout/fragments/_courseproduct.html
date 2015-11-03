@@ -5,9 +5,9 @@
                       <div class="item" >
                         <div class="content">
                     <div class="right floated content">
-                            {% if courseproduct.sales_price != courseproduct.price %}
+                            {% if sales_price != courseproduct.price %}
                                 jetzt<span style="color:#eb3d00">
-                                {{ courseproduct.sales_price }}</span>
+                                {{ sales_price }}</span>
                                 statt
                                 {{ courseproduct.price }}
                             {% else %}

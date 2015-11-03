@@ -1,70 +1,45 @@
-{% extends "base/base_public.html" %}
+{% extends "checkout/pages/base.html" %}
 
-{% block page_section_css_id %}standard_public_page_body_2{% endblock %}
+{% block checkout_product %}
 
-{% block main_content %}
-
-    <!-- text page -->
-    <div class="ui grid container" style="padding-bottom:100px;
-          padding-top:40px;"  >
-
-        <div class="content ui column sixteen wide">
-            <div class="ui two column stackable grid">
-                <div class="column five wide">
-
-                    <!-- courseproduct group -->
-                    <div class="ui cards centered">
-                        {% include 'checkout/fragments/_coursecard_details.html' with product=courseeventproduct %}
-                    </div>
-
-                </div>
-
-                <div class="column ten wide">
-
-                    {% include 'checkout/fragments/_2steps_checkout_2.html' %}
+{% include 'checkout/fragments/_2steps_checkout_2.html' %}
 
 
-                    <!-- participant data ----->
-                        <!-- payment data part of the form -->
-                        <h4 class="ui dividing header">Teilnehmer-Daten</h4>
+<!-- participant data ----->
+    <!-- payment data part of the form -->
+    <h4 class="ui dividing header">Teilnehmer-Daten</h4>
 
-                        <p>{{ user.first_name }} {{ user.last_name }}
-                            <br>{{ user.email }}<br>Benutzername: {{ user.username }}
-                        </p>
-                    <h4 class="ui dividing header">Buchung</h4>
-                    {% include 'checkout/fragments/_courseproduct.html' %}
-                    <form id="checkout-form" method="post" class="ui form" autocomplete="off">
-                        {% csrf_token %}
+    <p>{{ user.first_name }} {{ user.last_name }}
+        <br>{{ user.email }}<br>Benutzername: {{ user.username }}
+    </p>
+<h4 class="ui dividing header">Buchung</h4>
+{% include 'checkout/fragments/_courseproduct.html' %}
+<form id="checkout-form" method="post" class="ui form" autocomplete="off">
+    {% csrf_token %}
 
-                        {% if form.non_field_errors %}
-                            <div class="ui negative floating message">
-                                {{ form.non_field_errors }}
-                            </div>
-                        {% endif %}
-
-                        <!-- payment data part of the form -->
-                        <h4 class="ui dividing header">Zahlung</h4>
-                        {% include 'checkout/fragments/_payers_info_form.html' %}
-
-                        <p>Bitte entweder Paypal auswählen oder direkt Ihre Kreditkartendaten eingeben.</p>
-
-                        <div id="dropin-container"></div>
-                        <input class="ui button" type="submit" value="jetzt zahlen">
-                    </form>
-                <script src="https://js.braintreegateway.com/v2/braintree.js"></script>
-
-                <script type="text/javascript">
-                    // Execute on DOM Ready ($(function(){}))
-                    braintree.setup("{{ client_token }}", "dropin", {
-                      container: "dropin-container",  // id of the container div
-                      form: "checkout-form"  // id of the form
-                    });
-                </script>
-                </div>
-
-
-            </div>
+    {% if form.non_field_errors %}
+        <div class="ui negative floating message">
+            {{ form.non_field_errors }}
         </div>
-    </div>
+    {% endif %}
+
+    <!-- payment data part of the form -->
+    <h4 class="ui dividing header">Zahlung</h4>
+    {% include 'checkout/fragments/_payers_info_form.html' %}
+
+    <p>Bitte entweder Paypal auswählen oder direkt Ihre Kreditkartendaten eingeben.</p>
+
+    <div id="dropin-container"></div>
+    <input class="ui button" type="submit" value="jetzt zahlen">
+</form>
+<script src="https://js.braintreegateway.com/v2/braintree.js"></script>
+
+<script type="text/javascript">
+// Execute on DOM Ready ($(function(){}))
+braintree.setup("{{ client_token }}", "dropin", {
+  container: "dropin-container",  // id of the container div
+  form: "checkout-form"  // id of the form
+});
+</script>
 
 {% endblock %}

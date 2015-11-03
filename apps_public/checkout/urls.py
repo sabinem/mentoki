@@ -4,7 +4,6 @@ from django.conf.urls import patterns, url
 
 from .views.payment_result import PaymentSuccessView, PaymentFailureView
 from .views.payment import PaymentView
-from .views.checkout_failed import CheckoutFailedView
 from .views.redirect import CheckoutStartView
 
 urlpatterns = patterns('',
