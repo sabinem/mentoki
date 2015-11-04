@@ -163,25 +163,5 @@ class MentorsPageView(TemplateView):
 
         #get courses
         context['courseproductgroups'] = CourseProductGroup.objects.by_mentor(user=user)
-        print context
-
-        mentor_username = self.kwargs['username']
-        try:
-            textchunk = PublicTextChunks.objects.get(pagecode=pagecode)
-            logger.info('textchunk found')
-            return textchunk
-        except ObjectDoesNotExist:
-            logger.error('Text für die Seite [%s] nicht gefunden. Der '
-                         'Seitencode mit dem gesucht wurde war: [%s]. '
-                         'Gesucht wurde in der Tabelle [%s]'
-                         % (self.template_name, pagecode,
-                            PublicTextChunks.__name__))
-            raise Http404
-        except MultipleObjectsReturned:
-            logger.error('Für die Seite [%s] wurden mehrere Texte gefunden. '
-                         'Der Seitencode mit dem gesucht wurde war: [%s]. '
-                         'Gesucht wurde in der Tabelle [%s]'
-                         % (self.template_name, pagecode,
-                            PublicTextChunks.__name__))
-            raise Http404
         return context
+
