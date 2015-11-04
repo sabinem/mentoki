@@ -33,7 +33,6 @@ import braintree
 from braintree.exceptions import AuthenticationError, AuthorizationError, \
     DownForMaintenanceError, ServerError, UnexpectedError, NotFoundError
 
-
 from allauth.account.decorators import verified_email_required
 
 from apps_customerdata.customer.models.customer import Customer
@@ -49,9 +48,11 @@ from apps_customerdata.customer.constants import ORDER_STATUS, \
     ORDER_STATUS_UNPAID
 from apps_data.courseevent.models.courseevent import CourseEventParticipation
 
+from ..constants import BRAINTREE_ERROR_CODES
+
 import logging
-logger = logging.getLogger('public.payment.story')
-event_logger = logging.getLogger('public.payment.event')
+logger = logging.getLogger('public.payment')
+event_logger = logging.getLogger('public.events')
 
 
 # configure the global braintree object:
@@ -401,6 +402,14 @@ class PaymentView(
         # react on errors
         # ----------------------------------------
         else:
+            for error in result.errors.deep_errors:
+                logger.info('Fehler bei braintree: Code[%s] Nachricht:[%s]'
+                             % (error.code, error.message))
+            if error.code == BRAINTREE_ERROR_CODES.creditcard_nr_invalid:
+                message.error()
+
+
+
             self.transaction.flag_payment_sucess=False
             if self.transaction:
                 logger.info('transaction there [%s] but no success'

@@ -257,7 +257,7 @@ LOGGING = {
     },
     'formatters': {
         'verbose': {
-            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'format' : "[%(asctime)s] %(levelname)s [%(name)s][%(module)s:%(lineno)s] %(message)s",
             'datefmt' : "%d/%b/%Y %H:%M:%S"
         },
     },
@@ -304,12 +304,12 @@ LOGGING = {
             'handlers': ['console'],
             'propagate': False,
         },
-        'public.payment.event': {
+        'public.events': {
             'level': 'INFO',
             'handlers': ['sentryinfo'],
             'propagate': False,
         },
-        'public.payment.story': {
+        'public.payment': {
             'level': 'DEBUG',
             'handlers': ['paymentfile'],
             'propagate': False,
@@ -321,7 +321,7 @@ LOGGING = {
         },
         'public.dataintegrity': {
             'level': 'WARNING',
-            'handlers': ['sentrywarning'],
+            'handlers': ['sentry'],
             'propagate': False,
         },
     },

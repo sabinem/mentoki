@@ -16,6 +16,7 @@ class PublicTextChunksAdmin(admin.ModelAdmin):
     """
     General Text chunks like Agb, impressum are administerd here
     """
-    list_display = ('pagecode', 'modified', 'created', )
+    list_display = ('pagecode', 'meta_keywords', 'meta_description',
+                    'meta_title', 'modified' )
     list_filter = ('modified',)
 

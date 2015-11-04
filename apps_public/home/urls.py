@@ -17,8 +17,8 @@ Neue Urls (noch ohne Aufwand veränderbar)
 
 from django.conf.urls import patterns, url
 
-from .views import HomePageView, AboutPageView, MotivationPageView, \
-    MentorsPageView, StandardPageView, CourseAGBPageView, MentorsListView, \
+from .views import HomePageView, AboutPageView, \
+    MentorsPageView, StandardPageView, AGBPageView, MentorsListView, \
     ImpressumPageView, StarterkursPageView, TeachOnlinePageView,  \
     CourseReadyPageView, EducationMentoringPageView
 
@@ -60,11 +60,6 @@ urlpatterns = patterns("",
         name='home'),
 
     # neuer url: kann auch anderers heissen
-    url(r'^motivation$',
-        MotivationPageView.as_view(),
-        name='motivation'),
-
-    # neuer url: kann auch anderers heissen
     url(r'^standards$',
         StandardPageView.as_view(),
         {'pagecode': 'standards'},
@@ -72,7 +67,7 @@ urlpatterns = patterns("",
 
     # neuer url: kann auch anderers heissen
     url(r'^mentoki-allgemeine-geschaeftsbedingungen$',
-        CourseAGBPageView.as_view(),
+        AGBPageView.as_view(),
         {'pagecode': 'agb'},
         name='agb'),
 

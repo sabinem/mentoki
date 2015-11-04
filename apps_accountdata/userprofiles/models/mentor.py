@@ -11,21 +11,25 @@ from __future__ import unicode_literals, absolute_import
 from django.db import models
 
 from django.conf import settings
-from django.utils.functional import cached_property
-from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
-from django.core.validators import ValidationError
 
 from model_utils.models import TimeStampedModel
 
 from autoslug import AutoSlugField
 
-from apps_data.course.models.course import Course, CourseOwner
-from apps_data.courseevent.models.courseevent import CourseEvent
+from apps_data.course.models.course import Course
 
 import logging
 logger = logging.getLogger(__name__)
 
+
+class MentorsProfileManager(models.Manager):
+    def mentors_all(self):
+        """
+        gets all mentors ordered and including user data
+        :return: mentors queryset
+        """
+        return self.all().select_related('user').order_by('display_nr')
 
 def foto_location(instance, filename):
         """
@@ -50,6 +54,12 @@ class MentorsProfile(TimeStampedModel):
         verbose_name=_("Mentor"),
         on_delete=models.PROTECT
     )
+    slug = models.SlugField(
+        #populate_from=lambda instance: instance.user.get_full_name(),
+        #                 slugify=lambda value: value.replace(' ','-'),
+        default="x"
+    )
+
     at_mentoki = models.CharField(
         verbose_name=_('Rolle bei Mentoki'),
         blank=True,
@@ -84,6 +94,8 @@ class MentorsProfile(TimeStampedModel):
     display_nr = models.IntegerField(
         verbose_name=_('Anzeigereihenfolge'),
     )
+
+    objects = MentorsProfileManager()
 
     class Meta:
         verbose_name = _("Mentor")

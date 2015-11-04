@@ -46,3 +46,29 @@ TEMPLATES = [
     },
 ]
 
+
+LOGGING['loggers'].update({
+    # Uncomment to dump SQL statements.
+    # 'django.db.backends': {
+    #     'level': 'DEBUG',
+    #     'handlers': ['console'],
+    #     'propagate': False,
+    # },
+    'public.events': {
+        'level': 'INFO',
+        'handlers': ['console'],
+        'propagate': False,
+    },
+    'public.payment': {
+        'level': 'DEBUG',
+        'handlers': ['console'],
+        'propagate': False,
+    },
+    'public.customers': {
+        'level': 'INFO',
+        'handlers': ['console'],
+        'propagate': False,
+    },
+
+})
+
