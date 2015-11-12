@@ -23,13 +23,14 @@
 
                 </div>
                 <div class="column ten wide">
-                    <!-- page content -->
+
 
                     <div class="ui header">Hallo {{ request.user.first_name }} {{ request.user.last_name }}</div>
                 <p>Vielen Dank, für Ihr Interesse an {{ transaction.coursproduct.name }}.</p>
                 {{ transaction.error_message }}{{ transaction.error_code }}
                     {{ transaction }}
                 <p>Leider ist Ihre Zahlung fehlgschlagen ...
+                    {% include 'base/fragments/_messages_error.html' %}
                 <p>Mit lieben Grüssen</p>
                 <p id="signature">Sabine Maennel und Anette Pekrul</p>
 

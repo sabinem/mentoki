@@ -1,5 +1,7 @@
 # coding: utf-8
 
+from enum import Enum
+
 """
 Choices for currency: so far there are CHF and EUR
 
@@ -7,25 +9,60 @@ Choice for the reach of an offer: doese it apply to the whole course
     or just to an event or only to a product
 """
 from django.utils.translation import ugettext_lazy as _
-
-from model_utils import Choices
-
-CURRENCY_CHOICES = Choices(
-    ('EUR', 'euro',_('Euro')),
-    ('CHF', 'chf',_('Schweizer Franken')),
-)
-
-OFFERREACH_CHOICES = Choices(
-    ('course', 'course',_('course')),
-    ('courseevent', 'courseevent',_('courseevent')),
-    ('product', 'product',_('product')),
-)
+from django_enumfield import enum
 
 
-PRODUCT_TO_CUSTOMER_CASES = Choices(
-    ('booked', 'booked',_('schon gebucht')),
-    ('future', 'future',_('später buchbar')),
-    ('never', 'never',_('nie buchbar')),
-    ('now', 'now',_('jetzt buchbar')),
-    ('undetermined', 'undetermined',_('unbestimmt')),
-)
+class Currency(enum.Enum):
+    EUR = 1
+    CHF = 2
+
+    labels = {
+        EUR: _('EUR'),
+        CHF: _('CHF')
+    }
+
+class Offerreach(enum.Enum):
+    """
+    Eventually in the future the reach will be expanded to be specific to
+    a courseevent or to a product
+    """
+    COURSE = 1
+
+    labels = {
+        COURSE: _('Das Angebot bezieht sich auf alle Produkte der Kursgruppe'),
+    }
+
+class ProductToCustomer(enum.Enum):
+    """
+    Eventually in the future there will be more states, like the reason
+    why the customer cannot buy the product.
+    """
+    NOT_AVAILABLE = 0
+    AVAILABLE = 1
+    BOOKED = 2
+
+    labels = {
+        NOT_AVAILABLE: _('Der Kunde kann das Produkt nicht kaufen.'),
+        AVAILABLE: _('Der Kunde kann das Produkt kaufen.'),
+        BOOKED:_('Der Kunde hat das Produkt bereits gebucht')
+    }
+
+class Producttype(enum.Enum):
+    """
+    Eventually in the future there will be more states, like the reason
+    why the customer cannot buy the product.
+    """
+    COURSEEVENT_TIMED = 1
+    COURSEEVENT_DIRECT_ACCESS = 2
+    COURSEEVENT_PART = 10
+    OTHER = 20
+    OTHER_EMAIL_ACCESSCODE = 21
+
+
+    labels = {
+        COURSEEVENT_TIMED: _('Kurseereignis mit Termin'),
+        COURSEEVENT_DIRECT_ACCESS: _('Kursereignis mit direktem Zugang'),
+        COURSEEVENT_PART: _('Teil eines Kursereignisses'),
+        OTHER_EMAIL_ACCESSCODE: _('anderes mit Zugangscode'),
+        OTHER: _('etwas anderes')
+    }

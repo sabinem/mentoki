@@ -12,6 +12,8 @@ from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth import login
 from django.core.exceptions import ObjectDoesNotExist
 
+from braces.views import MessageMixin
+
 from braces.views import LoginRequiredMixin
 
 from apps_productdata.mentoki_product.models.courseproduct import \
@@ -57,6 +59,7 @@ class PaymentSuccessView(
 
 
 class PaymentFailureView(
+    MessageMixin,
     TemplateView):
     """
     This view informs the customer about a payment failure
@@ -69,7 +72,16 @@ class PaymentFailureView(
         """
         context = super(PaymentFailureView, self).get_context_data(**kwargs)
         try:
-            transaction = Transaction.objects.get(pk=self.kwargs['transaction_pk'])
+            order = Order.objects.get(pk=self.kwargs['order_pk'])
         except ObjectDoesNotExist:
             pass
+        courseproduct = order.courseproduct
+        user = self.request.user
+        courseproductgroup = CourseProductGroup.objects.get(
+           course=courseproduct.course)
+        product_type = courseproduct.product_type
+
+        context['order'] = order
+        context['courseproduct'] = courseproduct
+        context['courseproductgroup'] = courseproductgroup
         return context

@@ -9,8 +9,9 @@ from braces.views import MessageMixin, LoginRequiredMixin
 
 from accounts.models import User
 
+
 import logging
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('activity.users')
 
 
 class DeskRedirectView(
@@ -39,17 +40,26 @@ class DeskRedirectView(
             user.checkout_product_slug = None
             user.save()
             kwargs['slug'] = slug
+            logger.info('[%s] wird weitergeleitet zu Buchung [%s]'
+                        % self.request.user, slug)
             url = reverse('checkout:payment', kwargs=kwargs)
-            print "--------- REDIRECT URL = "
-            print url
             return url
 
         # is the user registered as a courseowner?
         elif self.request.user.teaching != []:
+            logger.info('[%s] wird weitergeleitet zu seinem Unterricht auf '
+                        'dem Schreibtisch'
+                        % self.request.user)
             return reverse('desk:teach')
 
         elif self.request.user.studying() != []:
+            logger.info('[%s] wird weitergeleitet zu seinen Lern-Kursen auf '
+                        'dem Schreibtisch'
+                        % self.request.user)
             return reverse('desk:learn')
 
         else:
+            logger.info('[%s] wird weitergeleitet zu seinen Profildaten '
+                        'dem Schreibtisch'
+                        % self.request.user)
             return reverse('desk:profile')

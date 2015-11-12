@@ -1,0 +1,1677 @@
+>>> from django.conf import settings
+>>> settings.configure() # required to convince Django it's properly configured
+>>> from mock_django.query import QuerySetMock
+>>> class Post(object): pass
+...
+>>> qs = QuerySetMock(Post, 1, 2, 3)
+>>> list(qs.all())
+[1, 2, 3]
+>>> qs.count()
+3
+>>> list(qs.all().filter())
+[1, 2, 3]
+
+Braintree result
+result.is_success
+# false
+
+result.transaction.status
+# "processor_declined"
+
+result.transaction.processor_response_code
+# e.g. "2001"
+
+result.transaction.processor_response_text
+# e.g. "Insufficient Funds"
+
+Result Object
+Read more about result objects.
+
+Success
+If the result is successful, the transaction will have either an authorized status, or (if the options.submit_for_settlement option was used) a submitted for settlement status.
+
+Python
+result.is_success
+# True
+
+transaction = result.transaction
+transaction.status
+# "authorized"
+Additionally, you may inspect the result to determine if the transaction was created using a specific payment method type (e.g. PayPal account or a credit card), using the provided format.
+
+Python
+transaction = result.transaction
+transaction.payment_instrument_type == PaymentInstrumentType.PayPalAccount
+# False
+transaction.payment_instrument_type == PaymentInstrumentType.CreditCard
+# True
+Unsuccessful result
+Success will return false if validations prevent the transaction from being created, if the processor declines the transaction, or if the gateway rejects the transaction.
+
+Validation errors
+If any parameters are invalid, then the success call will return false and the result object will contain validation errors indicating which parameters were invalid.
+
+Python
+result.is_success
+# False
+
+result.errors.deep_errors
+When receiving a validation error, the Transaction object will not be present on the result object.
+
+Processor declined
+If the processor declines the transaction during the authorization, the processor response will be available on the transaction object.
+
+Python
+result.is_success
+# false
+
+result.transaction.status
+# "processor_declined"
+
+result.transaction.processor_response_code
+# e.g. "2001"
+
+result.transaction.processor_response_text
+# e.g. "Insufficient Funds"
+As a supplement to the standardized processor response codes, we will return bank-specific Additional Processor Responses on the transaction object. The standardized code is what you should use when handling the result object, but the Additional Processor Response might provide further context.
+
+Python
+result.transaction.additional_processor_response
+# e.g. "05 : NOT AUTHORISED"
+Processor settlement declined
+If the processor declines the transaction at the settlement stage, the processor response will be available on the transaction object.
+
+Python
+result.is_success
+# false
+
+result.transaction.status
+# "settlement_declined"
+
+result.transaction.processor_settlement_response_code
+# e.g. "4001"
+
+result.transaction.processor_settlement_response_text
+# e.g. "Settlement Declined"
+Gateway rejection
+If the transaction is rejected by the gateway according to the configured AVS, CVV or duplicate processing rules or fraud rules you can check for a gateway rejection and a rejection reason.
+
+Python
+result.is_success
+# false
+
+result.transaction.status
+# "gateway_rejected"
+
+result.transaction.gateway_rejection_reason
+# e.g. "cvv"
+Risk data
+We will also return the risk data on all credit card transactions. The data includes the risk identifier and the risk decision, which can provide further context on how a transaction was scored by Braintree.
+
+Python
+result.transaction.risk_data.id
+# "1SG23YHM4BT5"
+result.transaction.risk_data.decision
+# "Decline"
+The possible values of the risk decision are Not Evaluated, Approve, Review, and Decline.
+
+Params retrieval
+Please see our documentation on Result Objects.
+
+Examples
+Currencies
+Each merchant account can only process transactions for a single currency. Setting which merchant account to use will also determine which currency the transaction is processed with.
+
+Python
+result.transaction.currency_iso_code
+# USD
+Settlement Status
+Check the result for success, and if it has failed, then first check for validation errors. If there are no validation errors, inspect the processor_settlement_response_code on the transaction, which will indicate if the processor declined the request.
+
+Python
+if result.is_success:
+  # transaction successfully submitted for settlement
+elif result.errors.deep_errors:
+    print(result.error.deep_errors)
+else:
+    print(result.transaction.processor_settlement_response_code)
+    print(result.transaction.processor_settlement_response_text)
+Processor settlement declined
+If the settlement request is declined by the processor, the processor response will be available on the transaction object.
+
+Python
+result.is_success
+# false
+
+result.transaction.status
+# "settlement_declined"
+
+result.transaction.processor_settlement_response_code
+# e.g. "4001"
+
+result.transaction.processor_settlement_response_text
+# e.g. "Settlement Declined"
+Voiding settlement
+If you submit a transaction for settlement and then decide you actually don't want to settle it, you can void it before it's settled. After it's settled, you'll need to refund it. To check if the transaction has been settled, find the transaction and check the status.
+
+Python
+transaction = braintree.Transaction.find("the_transaction_id")
+if transaction.status == braintree.Transaction.Status.SubmittedForSettlement:
+    # can void
+elif transaction.status == braintree.Transaction.Status.Settled:
+    # will have to refund it
+else:
+    # this example only expected one of the two above statuses
+
+
+Validation Errors/Overview
+Python SDK
+Validation errors will be returned on error result objects when we cannot process the API call because parameters are invalid. Validation errors contain the following:
+
+code - for programmatic consumption
+message - for human consumption
+attribute - the parameter that caused an error
+Hierarchy
+Errors are returned in a hierarchy that matches the parameter hierarchy. For example, when creating a customer with a credit card and billing address, the credit card is nested under customer, and the billing address under credit card.
+
+Python
+result = braintree.Customer.create({
+    "email": "invalid_email",
+    "credit_card": {
+        "number": "not_numeric",
+        "billing_address": {
+            "country_name": "not_a_valid_country"
+        }
+    }
+})
+You can get errors at all levels, errors at a specific level, or errors at a specific level on a specific attribute.
+
+All errors on all levels
+To get errors on all levels, you can iterate over result.errors.deep_errors
+
+Python
+for error in result.errors.deep_errors:
+    print(error.code)
+    print(error.message)
+Errors at specific levels
+To get errors at a specific level, use the for_object method. The attribute will indicate which attribute is invalid.
+
+Python
+for error in result.errors.for_object("customer"):
+    print(error.attribute)
+    print(error.code)
+    print(error.message)
+
+for error in result.errors.for_object("customer").for_object("credit_card"):
+    print(error.attribute)
+    print(error.code)
+    print(error.message)
+
+for error in result.errors.for_object("customer").for_object("credit_card").for_object("billing_address"):
+    print(error.attribute)
+    print(error.code)
+    print(error.message)
+From a specific level, you can also get the number of errors at that level using size.
+
+Python
+# number of errors on customer
+result.errors.for_object("customer").size
+len(result.errors.for_object("customer"))
+
+# number of errors on credit card
+result.errors.for_object("customer").for_object("credit_card").size
+len(result.errors.for_object("customer").for_object("credit_card"))
+
+# number of errors on billing address
+result.errors.for_object("customer").for_object("credit_card").for_object("billing_address").size
+len(result.errors.for_object("customer").for_object("credit_card").for_object("billing_address"))
+Errors on specific attribute
+You can also get errors at a specific level on a specific attribute. This is useful if you want to display error messages inline in your forms.
+
+Python
+result.errors.for_object("customer").on("email")
+result.errors.for_object("customer").for_object("credit_card").on("number")
+result.errors.for_object("customer").for_object("credit_card").for_object("billing_address").on("country_name")
+Base errors
+Sometimes validation errors aren't caused by a specific input parameter. For example, canceled subscriptions cannot be updated. For these validation errors, we use an attribute named "base" for the validation error.
+
+Python
+result = braintree.Subscription.update("the_subscription_id", {
+    "price": "10.00"
+})
+
+for error in result.errors.for_object("subscription").on("base"):
+    print(error.message)
+Errors on add-ons/discounts
+It is possible to add, update and remove many add-ons and discounts at once. If any of the add-ons or discounts contain errors, these errors will be indexed based on the order of the add-on or discount in the request (beginning at 0).
+
+Python
+result = braintree.Subscription.create({
+    "payment_method_token": "the_payment_method_token",
+    "plan_id": "the_plan_id",
+    "add_ons": {
+        "update": [
+            {
+                "existing_id": "increase_10",
+                "amount": "invalid"
+            },
+            {
+                "existing_id": "increase_20",
+                "quantity": -2
+            }
+        ]
+    }
+})
+
+for error in result.errors.for_object("subscription").for_object("add_ons").for_object("update").for_index(0).on("amount"):
+    print(error.message)
+
+for error in result.errors.for_object("subscription").for_object("add_ons").for_object("update").for_index(1).on("quantity"):
+    print(error.message)
+See also
+All Validation Errors
+
+Exceptions
+Python SDK
+Authentication Error
+braintree.exceptions.authentication_error.AuthenticationError
+
+You'll receive an authentication exception if your API keys are incorrect. If you're getting this exception when first integrating, double-check that you haven't accidentally tried to use your sandbox keys in production or vice-versa.
+
+Authorization Error
+braintree.exceptions.authorization_error.AuthorizationError
+
+You'll receive an authorization exception if the API key that you're using is not authorized to perform the attempted action according to the roles assigned to the user who owns the API key. This error can also occur if the data you submitted was malformed – either a parameter isn't in the allowed list, or it is at the wrong location in the nested parameters.
+
+Down For Maintenance
+braintree.exceptions.down_for_maintenance_error.DownForMaintenanceError
+
+You'll receive a down for maintenance error if a request times out. We originally used this exception during maintenance windows, but we never go down for maintenance anymore. In a future release of the client library we'll likely rename this, but we're keeping the current name to maintain backwards compatibility for client side exception handling.
+
+Forged Query String
+braintree.exceptions.forged_query_string_error.ForgedQueryStringError
+
+You'll receive this error if somebody hits your Transparent Redirect URL with an invalid hash in the query string.
+
+The reason why this error happens is because when the gateway receives the initial Transparent Redirect request, it generates a query string that includes a verification hash at the end to protect against tampering in the client. This hash is calculated based on the entire contents of the query string minus the hash. The client library uses the same method to check the hash, and so you'll get this error any time the query string passed into the confirm method is not exactly the same as the query string that the gateway redirected to.
+
+Note: Transparent Redirect is a deprecated integration method.
+
+Invalid Challenge
+braintree.exceptions.invalid_challenge_error.InvalidChallengeError
+
+You'll receive this error if the webhook challenge you attempt to verify is in an invalid format.
+
+Invalid Signature
+braintree.exceptions.invalid_signature_error.InvalidSignatureError
+
+You'll receive this error if the webhook notification you attempt to parse has an invalid signature.
+
+This could be caused by a payload being modified in transit or if you attempt to parse messages that did not originate from our servers.
+
+Not Found Error
+braintree.exceptions.not_found_error.NotFoundError
+
+You'll receive a not found exception when the record that you're trying to operate on cannot be found. For example, if you try to update a customer and the customer ID isn't valid. For references and associations, you'll receive a validation error if the reference is invalid. For example, when creating a credit card and specifying which customer ID it should be associated to, if the customer ID is invalid, it will be a validation error, not a not found exception.
+
+Server Error
+braintree.exceptions.server_error.ServerError
+
+You'll receive a server error if something goes wrong on the Braintree server when trying to process your request.
+
+Unexpected Error
+braintree.exceptions.unexpected_error.UnexpectedError
+
+Raised when an error occurs that the client library is not built to handle. If this happens, there's probably a bug in the client library.
+
+Upgrade Required Error
+braintree.exceptions.upgrade_required_error.UpgradeRequiredError
+
+You'll receive this error if you're trying to use a version of the library that is no longer supported. Note that we support all client library versions that are in use and we will not deprecate an existing version without first reaching out to anyone who needs to upgrade.
+
+No client updates needed
+Your client obtains its client token from your server, which is all the configuration it needs.
+
+Test transactions in production
+It is important to test your production account by creating a couple of low-value sale transactions for each of the payment method types you plan to accept. Be sure to submit the transactions for settlement, and then confirm that the funds have deposited into your bank account. This typically happens a few days after they have settled.
+
+Real payment methods must be used in the production environment. Test values from the sandbox testing page will not work. This means that every test transaction that you allow to settle in your production account will debit funds from the associated customer's account and fees will be assessed. Be sure to test with reasonable amounts and only run a limited number of transactions.
+Happy coding!
+Once you're up and running, use these sections to tailor your integration to your needs:
+
+Guides - a quick and clean approach to getting up and running with different tools, payment method types, and features
+Reference - the details of every API request and response object available, plus information on currency, country support, sandbox test values, processor responses, and more
+
+Validation Errors/All
+Python SDK
+All Validation Errors
+
+Address
+Customer
+Marketplace
+Merchant Account
+Payment Method
+Apple Pay
+Credit Card
+American Express Industry Data
+PayPal
+SEPA Direct Debit
+Europe Bank Account
+SEPA Mandate
+Recurring Billing
+Add-ons/Discounts
+Subscription
+Search
+Transaction
+Descriptor
+Address
+These validations apply when creating or updating addresses in the Vault directly, and also when providing billing and shipping details in requests like Transaction.sale() or PaymentMethod.create().
+
+Code	Text	Explanation
+81801	Addresses must have at least one field filled in.
+At least one of the address attributes must be present, but it doesn't matter which one. This doesn't apply when creating transactions—billing and shipping address can be blank unless AVS processing rules are configured to require billing street and postal.
+
+81802	Company is too long.
+Maximum 255 characters.
+
+81804	Extended address is too long.
+Maximum 255 characters.
+
+81805	First name is too long.
+Maximum 255 characters.
+
+81806	Last name is too long.
+Maximum 255 characters.
+
+81807	Locality is too long.
+Maximum 255 characters.
+
+81813	Postal code can only contain letters, numbers, spaces, and hyphens.
+There are also length limitations, but that's a different validation error.
+
+81808	Postal code is required.
+Applies when AVS rules are configured to require postal code.
+
+81809	Postal code may contain no more than 9 letter or number characters.
+The length only applies to letters or numbers; it ignores spaces, hyphens, and all other special characters.
+
+81810	Region is too long.
+Maximum 255 characters.
+
+81811	Street address is required.
+Applies when creating a transaction or performing card verification when AVS rules are configured to require street address.
+
+81812	Street address is too long.
+Maximum 255 characters.
+
+81827	US state codes must be two characters to meet PayPal Seller Protection requirements.
+US state codes must be two characters to meet PayPal Seller Protection requirements.
+
+91803	Country name is not an accepted country.
+We only accept specific country names.
+
+91815	Provided country information is inconsistent.
+You can only specify one of country name, country code alpha2, country code alpha3 and country code numeric.
+
+91816	Country code (alpha3) is not an accepted country.
+We only accept specific alpha-3 values.
+
+91817	Country code (numeric) is not an accepted country.
+We only accept specific numeric values.
+
+91814	Country code (alpha2) is not an accepted country.
+We only accept specific alpha-2 values
+
+91818	Customer has already reached the maximum of 50 addresses.
+You will get this validation error when trying to add an address to a customer which has already reached the maximum of 50 addresses.
+
+91819	First name must be a string.
+First name must be a string.
+
+91820	Last name must be a string.
+Last name must be a string.
+
+91821	Company must be a string.
+Company must be a string.
+
+91822	Street address must be a string.
+Street address must be a string.
+
+91823	Extended address must be a string.
+Extended address must be a string.
+
+91824	Locality must be a string.
+Locality must be a string.
+
+91825	Region must be a string.
+Region must be a string.
+
+91826	Postal code must be a string.
+Postal code must be a string of 5 or 9 digits, optionally separated by a dash or a space.
+
+Customer
+Code	Text	Explanation
+91602	Custom field is invalid:
+Custom field keys must match the API name of a custom field configured in the Control Panel. The error message for this validation error will contain a list of the invalid keys
+
+91609	Customer ID has already been taken.
+Customer IDs have to be unique
+
+91610	Customer ID is invalid (use only letters, numbers, '-', and '_').
+Valid characters are letters, numbers, dashes, and underscores.
+
+91611	Customer ID is not an allowed ID.
+We reserve a few words that can't be used as IDs. 'all' and 'new' currently cannot be used
+
+91612	Customer ID is too long.
+Maximum 36 characters
+
+91613	Customer ID is required.
+Customer ID is required when performing updates
+
+91617	Nonce references a vaulted payment instrument - cannot be transferred between customers
+Nonce references a vaulted payment instrument - cannot be transferred between customers
+
+81601	Company is too long.
+Maximum 255 characters
+
+81603	Custom field is too long:
+Custom field values must be less than or equal to 255 characters. The error message for this validation error will contain a list of the custom fields that were too long
+
+81604	Email is an invalid format.
+Email must be a well-formed email address. If you are migrating from a system that does not have this constraint and want to record the email address in the Vault, you can use custom_fields
+
+81605	Email is too long.
+Maximum 255 characters
+
+81606	Email is required if sending a receipt.
+This only applies when creating a transaction. If you specify that you want to send a receipt then the customer email will be required
+
+81607	Fax is too long.
+Maximum 255 characters
+
+81608	First name is too long.
+Maximum 255 characters
+
+81613	Last name is too long.
+Maximum 255 characters
+
+81614	Phone is too long.
+maximum 255 characters
+
+81615	Website is too long.
+maximum 255 characters
+
+81616	Website is an invalid format.
+Website must be well-formed. The http:// at the beginning is optional. If you want to provide websites that may be not well-formed you can use custom_fields
+
+Marketplace
+Merchant Account
+Code	Text	Explanation
+82602	Applicant merchant id is too long.
+The merchant account id cannot be longer than 32 characters.
+
+82603	Applicant merchant id format is invalid.
+You can only use letters, numbers, _ and - for the merchant account id.
+
+82604	Applicant merchant id is in use.
+Merchant account ids need to be unique
+
+82605	Applicant merchant id is not allowed.
+Merchant account ids may not be named 'all' or 'new'
+
+82606	Master merchant account ID is required.
+You must provide a master merchant account id when creating a merchant account
+
+82607	Master merchant account ID is invalid.
+You'll get this error if we cannot find a master merchant account with the id specified
+
+82608	Master merchant account must be active.
+You'll get this error if the supplied master merchant account id is not active
+
+82610	Terms Of Service needs to be accepted. Applicant tos_accepted required.
+You must indicate that the terms of service are accepted
+
+82675	Merchant account id can not be updated.
+You'll get this error if the ID cannot be updated
+
+82676	Master merchant account id can not be updated.
+You'll get this error if the merchant account ID cannot be updated
+
+82674	Merchant accounts with a status of pending or suspended cannot be updated.
+The merchant account cannot be updated.
+
+82609	Applicant first name is required.
+You must provide the first name of the applicant
+
+82637	Individual first name is required.
+Applicant first name is required.
+
+82611	Applicant last name is required.
+You must provide the last name of the applicant.
+
+82638	Individual last name is required.
+Applicant last name is required.
+
+82612	Applicant date of birth is required.
+You must provide the applicant's date of birth.
+
+82639	Individual date of birth is required.
+Individual date of birth is required.
+
+82613	Applicant routing number is required.
+You must provide the applicant's bank routing number
+
+82640	Funding routing number is required.
+Funding routing number is required.
+
+82614	Applicant account number is required.
+You must provide the applicant's bank account number
+
+82641	Funding account number is required.
+Funding account number is required.
+
+82615	Applicant SSN must be blank, last 4 digits, or full 9 digits.
+The applicant's social security number must be valid (full 9 digits, with or without dashes, or last 4 digits)
+
+82642	Individual SSN must be blank, last 4 digits, or full 9 digits.
+Individual SSN must be blank, last 4 digits, or full 9 digits.
+
+82616	Applicant email is invalid.
+The applicant's email must be valid
+
+82643	Individual email is invalid.
+Individual email is invalid.
+
+82627	Applicant first name is invalid.
+The applicant's first name must not contain '/', '\', '&', '<', '>' or any control characters
+
+82644	Individual first name is invalid.
+Individual first name is invalid.
+
+82628	Applicant last name is invalid.
+The applicant's last name must not contain '/', '\', '&', '<', '>' or any control characters
+
+82645	Individual last name is invalid.
+Applicant last name is invalid.
+
+82631	Applicant company name is invalid.
+The applicant's company name must contain only letters, numbers, and these characters: &-!@#$()'./+,". The maximum length is 40 characters.
+
+82632	Applicant tax ID is invalid.
+The applicant's tax id must be 9 digits long
+
+82647	Business tax ID is invalid.
+Business tax ID is invalid.
+
+82633	Applicant company name is required with tax ID.
+If the applicant's tax id is provided then the company name must be provided as well
+
+82634	Applicant tax ID is required with company name.
+If the applicant's company name is provided then the tax id must be provided as well
+
+82635	Applicant routing number is invalid.
+The applicant's bank routing number must be valid
+
+82649	Funding routing number is invalid.
+Funding routing number is invalid.
+
+82621	Applicant declined due to OFAC.
+The applicant has failed an OFAC check. The OFAC search confirms whether a sub-merchant is on the criminal and terrorists watch lists collected from databases around the world
+
+82622	Applicant declined due to MasterCard MATCH.
+The applicant has failed a Mastercard MATCH check. The Mastercard MATCH File is a database file used by payment processing banks to identify specific merchants and principals who may been terminated for reasons like fraud or violation(s) of Visa and/or Mastercard rules
+
+82623	Applicant declined due to failed KYC.
+The applicant has failed a Know Your Customer check
+
+82624	Applicant declined due to invalid SSN.
+The applicant's social security number is invalid. If you provide a social security number, you must provide either the entire number or the last four digits
+
+82625	Applicant declined due to SSN matching that of a deceased person.
+The applicant has been declined because the social security number provided appears in a database of social security numbers belonging to deceased persons
+
+82626	Applicant declined after review.
+After review, the applicant has been declined.
+
+82617	Applicant street address is required.
+You must provide the applicant's street address
+
+82657	Individual street address is required.
+Individual street address is required.
+
+82618	Applicant locality is required.
+You must provide the applicant's city, town, or municipality
+
+82658	Individual locality is required.
+Individual locality is required.
+
+82619	Applicant postal code is required.
+You must provide the applicant's postal code
+
+82659	Individual postal code is required.
+Individual postal code is required.
+
+82620	Applicant region is required.
+You must provide the applicant's region
+
+82660	Individual region is required.
+Individual region is required.
+
+82629	Applicant street address is invalid.
+You must provide a valid street address for the applicant that includes at least one digit
+
+82661	Individual street address is invalid.
+Individual street address is invalid.
+
+82664	Applicant region is invalid.
+You must provide a valid region for the applicant. Only two-letter abbreviations are accepted, e.g. 'CA' but not 'California'
+
+82668	Individual region is invalid.
+Individual region is invalid.
+
+82630	Applicant postal code is invalid.
+You must provide a valid postal code for the applicant
+
+82662	Individual postal code is invalid.
+Individual postal code is invalid.
+
+82636	Applicant phone is invalid.
+The provided phone is not valid
+
+82656	Individual phone is invalid.
+Individual phone is invalid.
+
+82663	Applicant date of birth is invalid
+You must provide a valid date of birth
+
+82666	Individual date of birth is invalid.
+Individual date of birth is invalid.
+
+82670	Applicant account number is invalid.
+The provided bank account number is not valid
+
+82671	Funding account number is invalid.
+Funding account number is invalid.
+
+82665	Applicant email is required.
+You must provide an email address
+
+82667	Individual email is required.
+Individual email is required.
+
+82672	Business tax ID must be blank unless business legal name is present.
+The tax id must be blank if no company name/legal name is provided
+
+82673	Applicant tax ID must be blank unless company name present.
+Applicant tax ID must be blank unless company name present.
+
+82646	Business DBA name is invalid.
+The provided DBA name is not valid. The applicant's company name must contain only letters, numbers, and these characters: &-!@#$()'./+,". The maximum length is 40 characters.
+
+82677	Business legal name is invalid.
+The provided legal name is not valid. The applicant's company name must contain only letters, numbers, letters, numbers, and these characters: &-!@#$()'./+,". The maximum length is 40 characters.
+
+82669	Business legal name is required with tax ID.
+You must provide a legal name if a tax id has been provided
+
+82648	Business tax ID is required with business legal name.
+You must provide a tax id if a legal name has been provided
+
+82685	Business street address is invalid.
+The provided business street address is not valid. It must contain at least one digit
+
+82686	Business postal code is invalid.
+The provided business zip code is not valid. It must be 5 digits followed by an optional hyphen, space, and an additional 4 digits
+
+82684	Business region is invalid.
+The provided business region is not valid. Only two-letter abbreviations are accepted, e.g. 'CA' but not 'California'
+
+82679	Funding destination is invalid.
+You must provide a valid funding destination
+
+82678	Funding destination is required.
+You must provide a funding destination
+
+82681	Funding email is invalid.
+The provided funding email address is not valid
+
+82680	Funding email is required when destination is email.
+You must provide a funding email address when your funding destination is email.
+
+82683	Funding mobile phone is invalid.
+The provided funding mobile phone is not valid
+
+82682	Funding mobile phone is required when destination is mobile phone.
+You must provide a funding mobile phone when your funding destination is mobile phone.
+
+Payment method
+Code	Text	Explanation
+93101	Payment method params are required.
+A top level payment method parameter is missing.
+
+93102	Nonce is invalid.
+The nonce that was received is not a valid nonce.
+
+93103	Nonce is required.
+A nonce was not provided.
+
+93104	Customer ID is required.
+A customer id was not provided.
+
+93105	Customer ID is invalid.
+The customer id does not reference a customer.
+
+93106	Cannot forward a payment method of this type.
+Only credit cards may be forwarded.
+
+93107	Cannot use a payment_method_nonce more than once.
+A payment method nonce may only be consumed once.
+
+93108	Unknown payment_method_nonce.
+The payment method nonce was not found.
+
+93109	Nonce is not vaultable
+Nonce is not vaultable
+
+93110	Cannot create a grant for a payment method of this type.
+Cannot create a grant for a payment method of this type.
+
+Apple Pay
+Code	Text	Explanation
+83501	Apple Pay cards are not accepted by this merchant account.
+Apple Pay cards are not accepted by this merchant account.
+
+83502	A customer ID is required to vault an Apple Pay Card.
+When storing an Apple Pay card in the vault, you must provide the customer ID of a customer already stored in the vault to whom the card will belong.
+
+93503	Apple Pay token is taken.
+Payment method tokens must be unique across all payment method types.
+
+93504	Cannot use a payment_method_nonce more than once.
+The payment method nonce has already been used.
+
+93505	Unknown payment_method_nonce.
+The payment method nonce could not be found.
+
+93506	Payment method nonce locked.
+Deprecated
+The payment method nonce must be unlocked before it is used.
+
+83518	Credit card type is not accepted by this merchant account.
+The specified merchant account is not configured to accept cards from this payment network. Please specify the correct payment networks when initializing a PKPaymentRequest.
+
+93507	Payment method nonces cannot be used to update an existing Apple Pay Card.
+A vaulted payment method cannot be updated with an Apple Pay nonce. Create a new payment method instead.
+
+93508	Number is required for Apple Pay Card
+The Apple Pay PKPaymentToken payment data was malformed (did not contain a card number).
+
+93509	Expiration Month is required for Apple Pay Card
+The Apple Pay PKPaymentToken payment data was malformed (did not contain an expiration month).
+
+93510	Expiration Year is required for Apple Pay Card
+The Apple Pay PKPaymentToken payment data was malformed (did not contain an expiration year).
+
+93511	Cryptogram is required for Apple Pay Card
+The Apple Pay PKPaymentToken payment data was malformed (did not contain a cryptogram). This is sometimes caused by misconfigured merchantCapabilities in the PKPaymentRequest. See our recommendations in the Apple Pay guide.
+
+83512	Apple Pay payment data decryption failed
+The Apple Pay PKPaymentToken payment data could not be decrypted. This occurs when (a) the Apple Pay merchant id used in your iOS App entitlements does not match the values provided to Braintree; (b) the provisioning profile you used to sign your iOS App does not correspond to the iOS Developer Account with which the Apple Pay certificate was generated; (c) the payment data was not valid as it was received by the Gateway. Call Braintree Support if you cannot resolve this error.
+
+93513	Apple Pay is disabled for this merchant
+Your merchant account is not configured for Apple Pay support. Please contact Braintree Support to configure and enable Apple Pay.
+
+93514	Apple Pay certificate, private key or merchant ID not configured
+Your merchant account is not configured for Apple Pay support. Please contact Braintree Support to configure and enable Apple Pay.
+
+93517	Certificate provided is not valid
+Certificate provided is not valid
+
+93519	Public key used to sign payment data does not match stored certificate
+Public key used to sign payment data does not match stored certificate
+
+83520	Payment data is malformed
+Payment data is malformed
+
+93521	Private key stored does not match private key used to encrypt payment data
+Private key stored does not match private key used to encrypt payment data
+
+93522	Certificate does not match stored key pair
+The Apple Pay certificate you uploaded does not match the key pair we have stored for your account. Please download a new CSR from the control panel and create a new certificate for your Apple Pay merchant ID using this CSR.
+
+Credit card
+Code	Text	Explanation
+91701	Cannot provide both a billing address and a billing address ID.
+When you create or update a credit card you can set the billing address using full billing address details, or you can set it to a billing address ID of an address already associated to the customer, but not both.
+
+91702	Billing address ID is invalid.
+If setting the billing address on a credit card using an ID, the ID must be an ID of an address associated to the customer.
+
+91704	Customer ID is required.
+When adding a credit card to an existing customer, the customer ID is required.
+
+91705	Customer ID is invalid.
+When specifying the customer ID to add a credit card to an existing customer, the ID must be the ID a customer stored in the Vault.
+
+91708	Cannot provide expirationdate if you are also providing expiration_month and expiration_year.
+You can provide the credit card expiration date as a single field, or as month and year separately, but not all 3.
+
+91718	Token is invalid (use only letters, numbers, '-', and '').
+If you're specifying the credit card token, you can use letters, numbers, '-', and '_'.
+
+91719	Credit card token is taken.
+Credit card tokens have to be unique.
+
+91720	Credit card token is too long.
+Maximum 36 characters.
+
+91721	Token is not an allowed token.
+We reserve a few tokens: 'new' and 'all'.
+
+91722	Payment Method token is required.
+When updating a credit card you can omit the token if you don't want to change it, but you can't set it to an empty string. If set to an empty string on creation, the gateway will generate a random token.
+
+91744	Billing address format is invalid.
+Billing address format is invalid.
+
+91746	Cannot provide both a billing address and a shared billing address ID.
+Cannot provide both a billing address and a shared billing address ID.
+
+91747	Shared billing address ID is invalid.
+Shared billing address ID is invalid.
+
+91748	Shared billing address ID is invalid.
+Shared billing address ID is invalid.
+
+81723	Cardholder name is too long.
+Maximum 175 characters.
+
+81703	Credit card type is not accepted by this merchant account.
+Applies when specifying a credit card in a sale or verification request. Not applicable when only storing in the Vault, since Vault records are not associated to specific merchant accounts.
+
+81718	Credit card number cannot be updated to an unsupported card type when it is associated to subscriptions.
+Only applies when using recurring billing. If a credit card is being used for recurring billing subscriptions, the card can only be updated to a card type that is accepted by the merchant account that is being used for the subscriptions.
+
+81706	CVV is required.
+CVV will only be required if CVV processing rules are configured to require it. If the rules are configured to require it, then CVV is required when storing a card in the Vault and performing card verification or when creating transactions.
+
+81707	CVV must be 4 digits for American Express and 3 digits for other card types.
+CVV must be 4 digits for American Express and 3 digits for other card types.
+
+81709	Expiration date is required.
+Expiration date can be provided as a single field or as month or year separate, but it's required one of the two ways.
+
+81710	Expiration date is invalid.
+Valid formats are M/YY, M/YYYY, MM/YY, and MM/YYYY. The month must be 1-12 or 01-12.
+
+81711	Expiration date year is invalid. It must be between 1975 and 2200.
+It must be between 1975 and 2200.
+
+81712	Expiration month is invalid.
+It must be 1-12 or 01-12.
+
+81713	Expiration year is invalid.
+It must be between 1976 and 2200.
+
+81714	Credit card number is required.
+You'll get this error if number is omitted or if it is an empty string.
+
+81715	Credit card number is invalid.
+The credit card number must pass a Luhn-10 check.
+
+81716	Credit card number must be 12-19 digits.
+Inclusive.
+
+81717	Credit card number is not an accepted test number.
+Only test numbers can be used in the sandbox.
+
+91723	Update Existing Token is invalid.
+Applies when updating a customer and credit card at the same time and specifying the token of the credit card to update. You'll get this error if the token specified is for a credit card that does not exist, or references a credit card that does not belong to the customer that is being updated.
+
+81724	Duplicate card exists in the vault.
+Duplicate card exists in the vault.
+
+81725	Credit card must include number, payment_method_nonce, or venmo_sdk_payment_method_code.
+Credit card must include number, payment_method_nonce, or venmo_sdk_payment_method_code.
+
+91726	Credit card type is not accepted by this merchant account.
+Credit card type is not accepted by this merchant account.
+
+91727	Invalid VenmoSDK payment method code
+Invalid VenmoSDK payment method code.
+
+91728	Verification Merchant Account ID is invalid.
+There must be a merchant account with this ID.
+
+91729	Update Existing Token is not allowed when creating a customer.
+Update Existing Token is not allowed when creating a customer.
+
+91730	Verifications are not supported on this merchant account
+This Merchant Account does not support Credit Card Verification.
+
+91731	Cannot use a payment_method_nonce more than once.
+The payment method nonce has already been used once.
+
+91732	Unknown payment_method_nonce.
+The payment method nonce could not be found.
+
+91733	Payment method nonce locked.
+Deprecated
+The payment method nonce must be unlocked before it is used.
+
+91734	Credit card type is not accepted by this merchant account.
+Applies when specifying a credit card when creating a transaction, but not when only storing in the Vault since Vault records are not associated to specific merchant accounts.
+
+91735	Payment method nonces cannot be used to update an existing card.
+A payment method nonce) cannot be used to update an existing credit card.
+
+91738	Payment method is not a credit card payment method.
+This operation requires a credit card, and the payment method you specified is not a credit card.
+
+91742	Verification Merchant Account is suspended.
+Verification Merchant Account is suspended.
+
+91743	The current user does not have access to the specified verification_merchant_account_id
+The current user does not have access to the specified verification_merchant_account_id
+
+81736	CVV verification failed.
+CVV was incorrect or not supplied.
+
+81737	Postal code verification failed.
+Postal code was incorrect or not supplied.
+
+91739	Verification amount cannot be negative.
+The amount you specified for verification was less than zero.
+
+91740	Verification amount is invalid.
+The amount you specified for verification had an invalid format.
+
+91741	Verification amount not supported by processor.
+The processor you are using for verification does not allow the verification amount you specified.
+
+91745	Payment method params supplied are not valid for updating a credit card.
+The payment method params you supplied are not valid for updating a credit card.
+
+American Express industry data
+Code	Text	Explanation
+93401	Industry type is invalid.
+Industry type is invalid.
+
+93402	Lodging data is empty.
+Lodging data is empty.
+
+93403	Folio number is invalid.
+Folio number is invalid.
+
+93404	Check in date is invalid.
+Check in date is invalid.
+
+93405	Check out date is invalid.
+Check out date is invalid.
+
+93406	Check out date must occur during or after the check in date.
+Check out date must occur during or after the check in date.
+
+93407	Data fields are unknown.
+Data fields are unknown.
+
+93408	Travel and Cruise data is empty.
+Travel and Cruise data is empty.
+
+93409	Data fields are unknown.
+Data fields are unknown.
+
+93410	Travel Package is invalid.
+Travel Package is invalid.
+
+93411	Departure date is invalid.
+Departure date is invalid.
+
+93412	Lodging check in date is invalid.
+Lodging check in date is invalid.
+
+93413	Lodging check out date is invalid.
+Lodging check out date is invalid.
+
+PayPal
+Code	Text	Explanation
+82901	Incomplete PayPal account information.
+You must specify an access token or a consent code for this operation.
+
+82902	Future Payment enabled PayPal account required for vaulting.
+When you vault a PayPal account, you must provide a payment method nonce) that was retrieved via the transaction flow.
+
+82903	Invalid PayPal account information.
+You cannot specify both an access token and a consent code for this operation.
+
+82904	PayPal Accounts are not accepted by this merchant account.
+Your account has not been enabled to accept PayPal.
+
+82905	A customer ID is required to vault a PayPal Account.
+When adding a PayPal account to an existing customer, the customer ID is required.
+
+92906	PayPal Account token is taken.
+PayPal account tokens have to be unique.
+
+92907	Cannot use a payment_method_nonce more than once.
+A payment method nonce may only be consumed once.
+
+92908	Unknown payment_method_nonce.
+The payment method nonce was not found.
+
+92909	Payment method nonce locked.
+Deprecated
+The payment method nonce) must be unlocked before it is used.
+
+92910	Error communicating with PayPal.
+There was an error communicating with PayPal.
+
+92911	PayPal authentication expired.
+Deprecated
+The authentication you received from your user has expired.
+
+92912	Funding source selection was given without an access token.
+You cannot specify a funding source without also specifying an access token.
+
+92913	Funding source object is invalid or missing required fields.
+You sent an invalid or incomplete funding source specification.
+
+92914	Payment method nonces cannot be used to update an existing PayPal account.
+A payment method nonce) cannot be used to update an existing PayPal account.
+
+92915	Payment method params supplied are not valid for updating a PayPal account.
+The payment method params you supplied are not valid for updating a PayPal account.
+
+SEPA direct debit
+Europe bank account
+Code	Text	Explanation
+93001	IBAN is required.
+IBAN is required.
+
+93002	BIC is required.
+BIC is required.
+
+93003	Account holder name is required.
+Account holder name is required.
+
+SEPA mandate
+Code	Text	Explanation
+83301	Account holder name is required.
+Account holder name is required.
+
+83302	BIC is required.
+BIC is required.
+
+83303	IBAN is required.
+IBAN is required.
+
+93304	Type is required.
+Type is required.
+
+83305	IBAN can only contain letters and number.
+IBAN can only contain letters and number.
+
+83306	BIC can only contain letters and number.
+BIC can only contain letters and number.
+
+83307	BIC must be 8 or 11 characters
+BIC must be 8 or 11 characters
+
+83308	BIC country is not an accepted country.
+BIC country is not an accepted country.
+
+83309	IBAN country is not an accepted country.
+IBAN country is not an accepted country.
+
+83310	IBAN format is invalid
+IBAN format is invalid
+
+93311	Locale is unsupported
+Locale is unsupported
+
+93312	Billing address country is required
+Billing address country is required
+
+93313	Type is invalid
+Type is invalid
+
+Recurring billing
+Add-ons/Discounts
+Code	Text	Explanation
+92001	Quantity is invalid.
+Quantity must be a number.
+
+92002	Amount is invalid.
+Amount must be formatted like '10' or '10.00'.
+
+92003	Amount cannot be blank.
+Blanks are not allowed.
+
+92004	Quantity cannot be blank.
+Blanks are not allowed.
+
+92005	Number of billing cycles is invalid.
+Number of billing cycles must be numeric.
+
+92010	Quantity must be greater than zero.
+Quantity must be greater than 0.
+
+92011	Existing ID is invalid.
+Modification ID must be associated with the subscription.
+
+92012	Existing ID is required.
+Modification ID is required to update a modification.
+
+92013	Inherited From ID is invalid.
+Modification with that inherited from ID is not available.
+
+92014	Inherited From ID is required.
+Must provide an inherited from ID.
+
+92015	Cannot update a removed add-on or discount.
+Cannot update and remove a modification at the same time.
+
+92016	Cannot remove add-on or discount if not already associated with subscription.
+Cannot remove add-on or discount if not already associated with subscription.
+
+92017	Number of billing cycles cannot be blank.
+Number Of Billing Cycles cannot be blank if the subscription expires.
+
+92018	Cannot specify both number of billing cycles and never expires as true.
+Number of billing cycles is blank and never expires is not set to true.
+
+92019	Number of billing cycles must be greater than zero.
+Number of billing cycles must be greater than 0.
+
+92020	Existing ID is not of the correct kind.
+Existing ID must be of the type of modification that is being edited.
+
+92021	ID to remove is incorrect kind.
+Existing ID must be of the type of modification that is being removed.
+
+92022	Cannot edit add-on or discount on a past due subscription.
+Unable to edit modifications on subscriptions that are past due.
+
+92023	Amount is too large.
+Amount cannot be greater than 99999.99.
+
+92024	Cannot pass null modification.
+Modification is missing from the API call.
+
+92025	ID to remove is invalid.
+ID to remove is invalid.
+
+Subscription
+Code	Text	Explanation
+81901	Cannot edit a canceled subscription.
+After a subscription has been canceled it cannot be updated.
+
+81902	ID has already been taken.
+Subscription IDs need to be unique.
+
+81903	Price cannot be blank.
+If you provide a price, it can't be an empty string. If you omit the price, then the subscription will inherit the price from the plan.
+
+81904	Price is an invalid format.
+Price must be formatted like '10' or '10.00'.
+
+81905	Subscription has already been canceled.
+You can't cancel subscriptions that have already been canceled.
+
+81906	ID is invalid (use only letters, numbers, '-', and '').
+If specifying the ID for the subscription, you can only use letters, numbers, and -.
+
+81907	Trial Duration is an invalid format.
+It must be 1-3 digits.
+
+81908	Trial Duration is required.
+It's required if trial period is set to true.
+
+81909	Trial Duration Unit is invalid.
+Valid values are "day" and "month".
+
+81910	Cannot edit an expired subscription.
+You cannot edit a subscription with Expired status.
+
+81923	Price is too large.
+The price of the subscriptions is too large.
+
+91901	Merchant Account ID is invalid.
+If specifying the merchant account to use to process transactions for this subscription it needs to be the ID for one of your merchant accounts.
+
+91902	Payment method token payment instrument type is not accepted by this merchant account.
+When providing a payment method token, your merchant account must be configured to accept the payment method type represented by the token.
+
+91903	Payment method token is invalid.
+You'll get this error if we can't find a payment method with the token specified.
+
+91904	Plan ID is invalid.
+You'll get this error if we can't find a plan with the given ID.
+
+91905	Payment method token does not belong to the subscription's customer.
+When updating a subscription and changing the payment method token, you can only use tokens associated to the same customer that the subscription is currently associated to.
+
+91906	Number Of Billing Cycles must be numeric.
+It must be a number.
+
+91907	Number Of Billing Cycles must be greater than zero.
+It must be greater than 0.
+
+91908	Cannot specify both number of billing cycles and never expires as true.
+You cannot specify both number of billing cycles and never expires as true.
+
+91909	Number Of Billing Cycles is less than the current billing cycle.
+You cannot edit a subscription and change the number of billing cycles to be below the current count of billing cycles.
+
+91911	Cannot add duplicate add-on or discount.
+Add-Ons and Discounts must be unique, but you can change the quantity.
+
+91912	Number Of Billing Cycles cannot be blank if the subscription expires.
+Blanks are not allowed.
+
+91913	Billing Day of Month must be numeric.
+It must be a number.
+
+91914	Billing Day of Month must be between 1 and 28, or 31.
+Billing day of month must be 1-28 or 31 (for the last day of every month).
+
+91915	First Billing Date is invalid.
+The first billing date is an incorrect format.
+
+91916	First Billing Date cannot be in the past.
+The first billing date cannot be in the past.
+
+91917	Cannot specify more than one type of start date.
+You can only specify one of trial period, start immediately, billing day of month, and first billing date.
+
+91918	Billing Day of Month cannot be updated.
+Billing day of month cannot be updated.
+
+91919	First Billing Date cannot be updated.
+First billing date cannot be updated.
+
+91920	Can only edit id, merchant account id, payment method token, and descriptor on a past due subscription.
+You cannot edit any fields which could change the price on a past due subscription.
+
+91921	Invalid request format.
+The add-ons and discounts are in an invalid format.
+
+91922	Cannot update subscription to a plan with a different billing frequency.
+You will get this validation if you try to update the plan on a subscription and the billing cycle for the new plan is not the same as the billing cycle of the old plan.
+
+91923	Subscription Plan currency must be the same as the merchant account's currency.
+Subscription Plan currency must be the same as the merchant account's currency.
+
+91924	Payment method nonce payment instrument type is not accepted by this merchant account.
+The supplied payment method nonce represents a payment method of a type that is not accepted by this merchant account.
+
+91925	Payment method nonce is invalid.
+The supplied payment method nonce was not in a valid format or is unknown.
+
+91926	Payment method nonce does not belong to the subscription's customer.
+The payment method nonce used to create a subscription must be vaulted and must belong to the customer owning the subscription
+
+91927	Payment method nonce represents an un-vaulted payment instrument.
+You cannot create a subscription with a nonce representing an unvaulted payment instrument. Use the payment method nonce to create a vaulted payment method first.
+
+91928	Payment instrument type is not valid for subscriptions.
+Payment instrument type is not valid for subscriptions.
+
+91929	Payment instrument type is not valid for subscriptions.
+Payment instrument type is not valid for subscriptions.
+
+91930	Merchant Account does not support the given payment instrument type.
+Merchant Account does not support the given payment instrument type.
+
+Transaction
+Code	Text	Explanation
+81501	Amount cannot be negative.
+Even if creating a credit transaction, the amount should be given as x.xx, not -x.xx.
+
+81502	Amount is required.
+You'll get this error if amount is not given or is blank.
+
+81503	Amount is an invalid format.
+Amount must be formatted like '10' or '10.00'.
+
+81528	Amount is too large.
+The maximum amount of a transaction varies depending on your region, but is generally between 8 and 10 characters including the decimal place.
+
+81509	Credit card type is not accepted by this merchant account.
+The credit card card type must be accepted by your merchant account. Note that there is a different error code when you get this error when creating transactions using tokens (91517).
+
+81527	Custom field is too long:
+Custom field values must be less than 255 characters. The error message for this validation error will contain a list of the custom fields that were too long.
+
+91501	Order ID is too long.
+Order ID must be less than 255 characters.
+
+91530	Cannot provide a billing address unless also providing a credit card.
+If you're creating a transaction using a credit card token, then we will use the billing address associated to that token in the Vault. You'll get this error if creating a transaction using a token and specifying a billing address
+
+91504	Transaction can only be voided if status is authorized or submitted_for_settlement.
+Unless the transaction status is authorized or submitted_for_settlement, it cannot be voided.
+
+91505	Credit transactions cannot be refunded.
+Only sale transactions can be refunded.
+
+91506	Cannot refund a transaction unless it is settled.
+Transaction status must be settled to refund it.
+
+91507	Cannot submit for settlement unless status is authorized.
+Transaction status must be authorized to submit the transaction for settlement.
+
+91508	Cannot determine payment method.
+You must specify the payment method to charge, either directly (by payment_method_nonce, payment_method_token, credit_card, paypal_account, etc.) or indirectly (by customer_id, subscription_id, etc.)
+
+91526	Custom field is invalid:
+Custom field keys must match the API name of a custom field configured in the control panel. The error message for this validation error will contain a list of the invalid keys.
+
+91510	Customer ID is invalid.
+You'll get this error if you create a transaction using a customer ID and the customer ID isn't in your Vault.
+
+91511	Customer does not have any credit cards.
+When creating a transaction using a customer ID, we'll use the customer's default credit card. If the customer does not have any credit cards associated to it, you'll get this error.
+
+91512	Transaction has already been completely refunded.
+Transactions can only be refunded once.
+
+91513	Merchant account ID is invalid.
+If you specify the merchant account ID to use to process a transaction and it does not match any of your merchant accounts, you'll get this error.
+
+91514	Merchant account is suspended.
+You'll get this error if you try to create a transaction using a suspended merchant account.
+
+91515	Cannot provide both payment_method_token and credit_card attributes.
+If you specify both a Vault token and a full credit card number you'll get this error.
+
+91516	Cannot provide both payment_method_token and customer_id unless the payment_method belongs to the customer.
+If you specify both a customer ID and a payment method token when creating a transaction, the payment_method_token must belong to the customer ID.
+
+91527	Cannot provide both payment_method_token and subscription_id unless the payment_method belongs to the subscription.
+If you specify both a payment method token and a subscription ID the subscription ID must be associated to the token given.
+
+91517	Payment instrument type is not accepted by this merchant account.
+When providing a payment method token, your merchant account must be configured to accept the payment method type represented by the token.
+
+91518	Payment method token is invalid.
+You'll get this error if the payment method token isn't in the Vault.
+
+91519	Processor authorization code cannot be set unless for a voice authorization.
+You can only set the processor authorization code for voice authorization transactions.
+
+91521	Refund amount is too large.
+You cannot refund more than the amount submitted for settlement.
+
+91538	Cannot refund a transaction with a suspended merchant account.
+You cannot refund a transaction associated with a suspended merchant account.
+
+91522	Settlement amount is too large.
+You cannot settle more than the authorized amount unless your industry and processor support settlement adjustment (settling a certain percentage over the authorized amount); contact our Accounts team for details.
+
+91529	Cannot provide both subscription_id and customer_id unless the subscription belongs to the customer.
+If you give both a customer ID and a subscription ID the subscription must be associated to the customer.
+
+91528	Subscription ID is invalid.
+You'll get this error if the subscription ID given isn't one of your subscriptions.
+
+91523	Transaction type is invalid.
+Valid transaction types are "sale" and "credit"
+
+91524	Transaction type is required.
+We need to know if you want to create a sale or a credit.
+
+91525	Vault is disabled.
+If you set the option to store in Vault, your Vault needs to be enabled.
+
+91531	Subscription status must be Past Due in order to retry.
+A subscription must be in past due status in order to manually retry the charge.
+
+91547	Merchant account does not support refunds.
+The merchant account account does not support refunds.
+
+81531	Amount must be greater than zero.
+The amount of a transaction cannot be zero.
+
+81534	Tax amount cannot be negative.
+The tax amount cannot be less than zero.
+
+81535	Tax amount is an invalid format.
+The tax amount must be a number
+
+81536	Tax amount is too large.
+The tax amount cannot be bigger than 9999999.99
+
+81571	Failed to authenticate, please try a different form of payment.
+Failed to authenticate, please try a different form of payment.
+
+91537	Purchase order number is too long.
+The purchase order number cannot be larger than 12 characters for AIB and 17 characters for other all other processors.
+
+91539	Voice Authorization is not allowed for this card type
+The specified card type does not support voice authorization codes.
+
+91540	Transaction cannot be cloned if payment method is stored in vault.
+Instead, create a new transaction using the payment method's token
+
+91541	Cannot clone voice authorization transactions.
+Cloning voice authorizations is currently unsupported.
+
+91542	Unsuccessful transaction cannot be cloned.
+Only transactions that were authorized or settled are cloneable.
+
+91543	Credits cannot be cloned.
+You may only clone sale transactions
+
+91544	Cannot clone transaction without submit_for_settlement flag.
+You must specify whether or not to submit the cloned transaction for settlement upon creation.
+
+91545	Voice Authorizations are not supported for this processor.
+Your processor does not support voice authorizations.
+
+91546	Credits are not supported by this processor.
+Your processor does not support credits.
+
+91548	Purchase order number is invalid.
+The purchase order number must be printable ASCII characters
+
+81520	Processor authorization code must be 6 characters.
+Processor authorization code must be 6 characters.
+
+91549	Cannot provide more than one of payment_method_token, payment_method_nonce, credit_card, and venmo_sdk_payment_method_code attributes.
+Cannot provide more than one of payment_method_token, payment_method_nonce, credit_card, and venmo_sdk_payment_method_code attributes.
+
+91550	Channel is too long.
+Channel is too long.
+
+91551	Settlement amount cannot be less than the service fee amount.
+The settlement amount must be greater than or equal to the service fee amount.
+
+91552	Credits not allowed with service fee.
+Service fees are allowed on sale transactions only.
+
+91553	Sub merchant account requires a service fee.
+Transactions for sub merchant accounts need a service fee amount.
+
+91554	Amount cannot be negative.
+Service fee amount must be greater than or equal to zero.
+
+91555	Amount is an invalid format.
+Service fee amount must be formatted like '10' or '10.00'.
+
+91556	Service fee amount is larger than transaction amount.
+Service fee amount must be less than the transaction amount.
+
+91557	Service fee not supported on master merchant account.
+Transactions for a master merchant account cannot have a service fee amount.
+
+91558	Merchant account does not support MOTO transactions unless configured by processor.
+This merchant account cannot be used for Mail Order/Telephone Order.
+
+91559	Cannot refund a transaction with a pending merchant account.
+A Merchant Account must be Active in order to refund a transaction.
+
+91560	Transaction could not be held in escrow.
+The Transaction cannot be held in escrow.
+
+91561	Cannot release a transaction that is not escrowed.
+Cannot release a transaction that is not escrowed.
+
+91562	Release can only be cancelled if the transaction is submitted for release.
+Release can only be cancelled if the transaction is submitted for release.
+
+91563	Escrowed transactions cannot be partially refunded.
+The Transaction must be fully refunded after being held in escrow.
+
+91564	Cannot use a payment_method_nonce more than once.
+The payment method nonce has already been consumed.
+
+91565	Unknown payment_method_nonce.
+The payment method nonce cannot be found among those generated for the merchant.
+
+91567	Payment instrument type is not accepted by this merchant account.
+Payment instrument type is not accepted by this merchant account.
+
+91568	Three D Secure Token is invalid.
+3D Secure token is invalid.
+
+91569	payment_method_nonce does not contain a valid payment instrument type.
+payment_method_nonce does not contain a valid payment instrument type.
+
+91572	Current payment method does not support use_billing_for_shipping flag.
+Current payment method does not support use_billing_for_shipping flag.
+
+91575	Cannot transition transaction to settled, settlement_confirmed, or settlement_declined
+Cannot transition transaction to settled, settlement_confirmed, or settlement_declined
+
+91576	PayPal is not enabled for your merchant account.
+PayPal is not enabled for your merchant account.
+
+91577	Merchant account does not support payment instrument.
+Merchant account does not support payment instrument.
+
+91570	Transaction data does not match data from Three D Secure verify call.
+The credit card number and expiration date used for 3D Secure verification must match the values used to create the transaction.
+
+91573	Transaction cannot be cloned if payment method is a PayPal account.
+Transaction cannot be cloned if payment method is a PayPal account.
+
+91574	Cannot refund a transaction transaction in settling status on this merchant account. Try again after the transaction has settled.
+Cannot refund a transaction transaction in settling status on this merchant account. Try again after the transaction has settled.
+
+91578	Service fee can not be applied on PayPal transactions.
+Service fee can not be applied on PayPal transactions.
+
+91580	PayPal custom fields must be less than 256 characters in length.
+PayPal custom fields must be less than 256 characters in length.
+
+91581	Shipping address customer does not match customer in request.
+Shipping address customer does not match customer in request.
+
+91582	PayPal unilateral transactions must also be submitted for settlement.
+A unilateral payment is a payment that is made to a receiver who does not have a PayPal account.
+
+91583	This PayPal account was not vaulted with the required data
+This PayPal account was not vaulted with the required data
+
+91584	Merchant account must match the 3D Secure authorization merchant account.
+The merchant account used for 3D Secure verification must match the merchant account used to create the transaction.
+
+91585	Amount must match the 3D Secure authorization amount.
+The amount used for 3D Secure verification must match the amount used to create the transaction.
+
+91586	Shared billing address ID cannot be used in the same call as a standard billing address ID
+Shared billing address ID cannot be used in the same call as a standard billing address ID
+
+91587	Shared customer ID cannot be used in the same call as a standard customer ID
+Shared customer ID cannot be used in the same call as a standard customer ID
+
+91588	Shared payment method token cannot be used in the same call as a standard payment method token
+Shared payment method token cannot be used in the same call as a standard payment method token
+
+91589	Shared payment method token cannot be used in the same call as a non-shared identifier param
+Shared payment method token cannot be used in the same call as a non-shared identifier param
+
+91590	Shared identifier param cannot be used with non-shared payment method token
+Shared identifier param cannot be used with non-shared payment method token
+
+91591	Shared shipping address ID cannot be used in the same call as a standard shipping address ID
+Shared shipping address ID cannot be used in the same call as a standard shipping address ID
+
+91592	Shared payment methods cannot be vaulted
+Shared payment methods cannot be vaulted
+
+91593	Shared payment methods cannot be vaulted
+Shared payment methods cannot be vaulted
+
+91594	Shared shipping addresses cannot be vaulted
+Shared shipping addresses cannot be vaulted
+
+91595	Shared payment methods cannot be updated
+Shared payment methods cannot be updated
+
+91597	Cannot provide both shared_payment_method_token and shared_customer_id unless the payment_method belongs to the customer.
+Cannot provide both shared_payment_method_token and shared_customer_id unless the payment_method belongs to the customer.
+
+91598	Payment instrument type is not accepted by this merchant account.
+Payment instrument type is not accepted by this merchant account.
+
+91599	Shared Shipping address customer does not match customer in request.
+Shared Shipping address customer does not match customer in request.
+
+91596	Shared payment method token is invalid.
+Shared payment method token is invalid.
+
+915100	Shared Customer ID is invalid.
+Shared Customer ID is invalid.
+
+915103	Cannot submit for partial settlement.
+Cannot submit for partial settlement.
+
+915101	Payment instrument type is not accepted.
+Payment instrument type is not accepted.
+
+915102	Partial settlements are not supported by this processor.
+Partial settlements are not supported by this processor.
+
+915104	Delayed settlements are not supported for this processor. The submit for settlement option is required.
+Delayed settlements are not supported for this processor. The submit for settlement option is required.
+
+915105	Merchant account does not support Amex rewards.
+Merchant account does not support Amex rewards.
+
+915106	Points amount is too large.
+Amex Pay with Points amount is too large.
+
+Descriptor
+Code	Text	Explanation
+92201	Company name/DBA section is invalid.
+The descriptor name is made up of two parts, company/DBA name and product separated by an asterisk (). Some examples of valid descriptor names are:
+
+• cmp\productdescription
+• companyproduct name
+• company namemyurl.com
+
+Company name/DBA section must be either 3, 7 or 12 characters and the product descriptor can be up to 18, 14, or 9 characters respectively (with an * in between for a total descriptor name of 22 characters). You can only use alphanumeric characters, spaces, and periods in your dynamic descriptors. URLs can use alphanumeric characters and periods.
+
+This validation doesn't apply for Marketplace transactions.
+92202	Phone number is invalid.
+Phone must be 10 - 14 characters and can only contain numbers, dashes, parentheses and periods. The phone number can be from 10 - 14 characters. Some example phone numbers are:
+
+3125556666
+312-555-6666
+(312)555-6666
+92203	Dynamic descriptors have not been enabled for this account. Please contact support@braintreepayments.com.
+Dynamic descriptors have not been enabled for this account. Please contact us.
+
+92204	Descriptor format is invalid.
+Descriptor name must be less than or equal to 15 characters and can only contain letters and numbers. This will be prefixed by the preset company name for this account.
+
+92205	International phone number is invalid.
+Deprecated
+Phone can only contain numbers, dashes and periods and must be less than or equal to 13 characters.
+
+92206	URL must be 13 characters or shorter.
+The url/web address to a customer's statement must be less than or equal to 13 characters.
+

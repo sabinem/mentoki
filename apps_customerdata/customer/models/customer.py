@@ -6,9 +6,6 @@ from django.conf import settings
 
 from model_utils.models import TimeStampedModel
 
-from apps_productdata.mentoki_product.models.courseproduct import CourseProduct
-from ..constants import ORDER_STATUS, ORDER_STATUS_UNPAID, ORDER_STATUS_PAID
-
 
 class CustomerManager(models.Manager):
     """

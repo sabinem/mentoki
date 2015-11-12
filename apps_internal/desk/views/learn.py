@@ -10,6 +10,9 @@ from django.views.generic import TemplateView
 
 from braces.views import LoginRequiredMixin
 
+import logging
+logger = logging.getLogger('activity.users')
+
 
 class DeskLearnView(
     LoginRequiredMixin,
@@ -26,9 +29,10 @@ class DeskLearnView(
         :param kwargs: None
         :return: context: queryset of courseevents, where the user is enrolled
         """
+        logger.info('[%s] sieht sich seine Kurse an, in denen er lernt'
+                    % self.request.user)
         context = super(DeskLearnView, self).get_context_data(**kwargs)
         context['study_courseevents'] = self.request.user.studying()
-        print context
 
         return context
 

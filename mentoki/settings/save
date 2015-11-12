@@ -1,0 +1,18 @@
+LOGGING['loggers'].update({
+    'public.events': {
+        'level': 'INFO',
+        'handlers': ['console'],
+        'propagate': False,
+    },
+    'public.payment': {
+        'level': 'DEBUG',
+        'handlers': ['console'],
+        'propagate': False,
+    },
+    'public.offerpages': {
+        'level': 'DEBUG',
+        'handlers': ['console'],
+        'propagate': False,
+    },
+
+})

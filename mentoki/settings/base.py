@@ -29,6 +29,7 @@ SITE_ID = 1
 
 # installed apps django
 INSTALLED_APPS = (
+    'suit',
     'django.contrib.admin',
     'django.contrib.admindocs',
     'django.contrib.auth',
@@ -37,11 +38,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites'
-)
-
-# sentry
-INSTALLED_APPS += (
-    'raven.contrib.django.raven_compat',
 )
 
 # installed apps thirdparty
@@ -248,6 +244,11 @@ CACHES = {
     }
 }
 
+# sentry
+RAVEN_CONFIG = {
+    'dsn': os.environ.get('SENTRY_DSN')
+}
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,
@@ -263,10 +264,6 @@ LOGGING = {
     },
     'handlers': {
         'sentry': {
-            'level': 'ERROR',
-            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
-        },
-        'sentryinfo': {
             'level': 'INFO',
             'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
         },
@@ -278,9 +275,13 @@ LOGGING = {
             'maxBytes': 500000,  # 500 kB
             'backupCount': 4  ,
         },
-        'sentrywarning': {
-            'level': 'WARNING',
-            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+        'useractivityfile': {
+            'filename': os.path.join(BASE_DIR, 'logfiles', 'users.log' ),
+            'formatter': 'verbose',
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'maxBytes': 500000,  # 500 kB
+            'backupCount': 4  ,
         },
         'console': {
             'level': 'DEBUG',
@@ -291,49 +292,29 @@ LOGGING = {
     'loggers': {
         'django.db.backends': {
             'level': 'ERROR',
-            'handlers': ['console'],
-            'propagate': False,
-        },
-        'raven': {
-            'level': 'DEBUG',
-            'handlers': ['console'],
-            'propagate': False,
-        },
-        'sentry.errors': {
-            'level': 'DEBUG',
-            'handlers': ['console'],
-            'propagate': False,
-        },
-        'public.events': {
-            'level': 'INFO',
-            'handlers': ['sentryinfo'],
-            'propagate': False,
-        },
-        'public.payment': {
-            'level': 'DEBUG',
-            'handlers': ['paymentfile'],
-            'propagate': False,
-        },
-        'public.customers': {
-            'level': 'INFO',
-            'handlers': ['sentryinfo'],
-            'propagate': False,
-        },
-        'public.dataintegrity': {
-            'level': 'WARNING',
             'handlers': ['sentry'],
             'propagate': False,
         },
+        'sentry': {
+            'level': 'INFO',
+            'handlers': ['sentry'],
+            'propagate': False,
+        },
+        'activity.users': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'activity.payments': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+
     },
 }
 
 # 3rd party apps:
-
-# sentry
-RAVEN_CONFIG = {
-    'dsn': os.environ.get('SENTRY_DSN')
-}
-
 
 # Login and redirect urls
 from django.core.urlresolvers import reverse_lazy
@@ -399,14 +380,14 @@ FONTAWESOME_CSS_URL = '/static/font-awesome-4.4.0/css/font-awesome.min.css'
 
 # braintree configuration for testing in the sandbox
 BRAINTREE = {
-    'merchant_id':os.environ.get('BRAINTREE_MERCHANT_ID'),
-    'merchant_account_id_chf':os.environ.get('BRAINTREE_MERCHANT_ACCOUNT_ID_CHF'),
-    'merchant_account_id_eur':os.environ.get('BRAINTREE_MERCHANT_ACCOUNT_ID_EUR'),
-    'public_key':os.environ.get('BRAINTREE_PUBLIC_KEY'),
-    'private_key':os.environ.get('BRAINTREE_PRIVATE_KEY'),
+    'merchant_id':os.environ.get('BRAINTREE_MERCHANT_ID_P'),
+    'merchant_account_id_chf':os.environ.get('BRAINTREE_MERCHANT_ACCOUNT_ID_CHF_P'),
+    'merchant_account_id_eur':os.environ.get('BRAINTREE_MERCHANT_ACCOUNT_ID_EUR_P'),
+    'public_key':os.environ.get('BRAINTREE_PUBLIC_KEY_P'),
+    'private_key':os.environ.get('BRAINTREE_PRIVATE_KEY_P'),
 }
 # set braintree environment: so far it is the sandbox
 import braintree
-BRAINTREE_ENVIRONMENT = braintree.Environment.Sandbox
+BRAINTREE_ENVIRONMENT = braintree.Environment.Production
 
 

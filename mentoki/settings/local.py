@@ -13,7 +13,8 @@ DEBUG = True
 # additional thirdparty apps
 INSTALLED_APPS += (
     'django_extensions',
-    'debug_toolbar'
+    'debug_toolbar',
+    'raven.contrib.django.raven_compat',
 )
 
 # ssl settings
@@ -46,29 +47,6 @@ TEMPLATES = [
     },
 ]
 
-
-LOGGING['loggers'].update({
-    # Uncomment to dump SQL statements.
-    # 'django.db.backends': {
-    #     'level': 'DEBUG',
-    #     'handlers': ['console'],
-    #     'propagate': False,
-    # },
-    'public.events': {
-        'level': 'INFO',
-        'handlers': ['console'],
-        'propagate': False,
-    },
-    'public.payment': {
-        'level': 'DEBUG',
-        'handlers': ['console'],
-        'propagate': False,
-    },
-    'public.customers': {
-        'level': 'INFO',
-        'handlers': ['console'],
-        'propagate': False,
-    },
-
-})
+# overwriting raven
+#RAVEN_CONFIG = {'dsn': ''}
 

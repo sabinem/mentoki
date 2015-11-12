@@ -14,8 +14,6 @@ from django.shortcuts import get_object_or_404
 
 from apps_productdata.mentoki_product.models.courseproductgroup \
     import CourseProductGroup
-from apps_productdata.mentoki_product.models.courseproduct \
-    import CourseProduct
 
 
 class CourseGroupMixin(object):

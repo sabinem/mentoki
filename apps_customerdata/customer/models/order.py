@@ -14,8 +14,9 @@ from model_utils.models import TimeStampedModel
 from apps_productdata.mentoki_product.models.courseproduct import CourseProduct
 from apps_customerdata.customer.models.customer import Customer
 from apps_data.course.models.course import Course
-from apps_productdata.mentoki_product.constants import CURRENCY_CHOICES
-from ..constants import ORDER_STATUS, ORDER_STATUS_PAID
+from apps_productdata.mentoki_product.constants import Currency
+from ..constants import OrderStatus
+from django_enumfield import enum
 
 
 import logging
@@ -31,10 +32,13 @@ class OrderManager(models.Manager):
             customer):
         product_ids = self.filter(
             customer=customer,
-            order_status__in=ORDER_STATUS_PAID,
+            order_status=OrderStatus.PAID,
             course=course).\
             values_list('courseproduct', flat=True)
         return CourseProduct.objects.filter(id__in=product_ids)
+
+    def by_customer(self, customer):
+        return self.filter(customer=customer)
 
 
 class Order(TimeStampedModel):
@@ -59,7 +63,7 @@ class Order(TimeStampedModel):
 
     # "user" data, at the point of time when the order was taken
     # these belong to the participant that will be later logged in
-    email=models.EmailField(
+    email = models.EmailField(
         _('Email des Teilnehmers'),
          default="x"
     )
@@ -72,12 +76,11 @@ class Order(TimeStampedModel):
         default="x"
     )
 
-    # status of the order
-    order_status = models.CharField(
-        max_length=12,
-        choices=ORDER_STATUS,
-        default=ORDER_STATUS.initial)
-
+    # transaction status
+    order_status = enum.EnumField(
+        OrderStatus,
+        default=OrderStatus.INITIAL
+    )
     # amount and currency that was paid
     amount = models.DecimalField(
         _("Betrag"),
@@ -85,8 +88,8 @@ class Order(TimeStampedModel):
         max_digits=20,
         default=0
     )
-    currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES,
-        default=CURRENCY_CHOICES.euro)
+    currency = enum.EnumField(Currency, default=Currency.EUR)
+
 
     objects = OrderManager()
 

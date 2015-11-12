@@ -144,7 +144,7 @@ class MentorsListView(TemplateView):
         context['mentors'] = mentors
         return context
 
-
+#TODO change this view and how it is called: it should be called with the slug!
 class MentorsPageView(TemplateView):
     """
     One mentor is displayed in detail along with his courses.
@@ -158,6 +158,7 @@ class MentorsPageView(TemplateView):
         user = User.objects.get(username=self.kwargs['username'])
 
         # get mentor_profile
+        #TODO change the error handling, see above for an example!
         mentor = get_object_or_404(MentorsProfile, user=user)
         context['mentor'] = mentor
 

@@ -28,7 +28,7 @@
         {% for item in product_list %}
             <div class="item">
 
-            {% if item.status == 'available' %}
+            {% if item.status == ProductToCustomer.AVAILABLE %}
 
                 {% url 'checkout:redirect_to_product' slug=item.courseproduct.slug as pay_url %}
 
@@ -43,7 +43,7 @@
                             jetzt kaufen für
                             {{ item.courseproduct.price }}
                         {% endif %}
-                        {{ item.courseproduct.currency }}
+                        {{ item.courseproduct.get_currency_display }}
                     </a>
                 </div>
 
@@ -63,7 +63,7 @@
                             jetzt kaufen für
                             {{ item.courseproduct.price }}
                         {% endif %}
-                        {{ item.courseproduct.currency }}
+                        {{ item.courseproduct.get_currency_display }}
                     </div>
                 </div>
 

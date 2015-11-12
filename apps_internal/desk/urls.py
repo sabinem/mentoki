@@ -12,6 +12,8 @@ from .views.profile import DeskProfileView
 
 
 urlpatterns = patterns('',
+    url(r'^profile$', DeskProfileView.as_view(), name='start' ),
+
     url(r'^profile$', DeskProfileView.as_view(), name='profile' ),
 
     url(r'^unterrichten$', DeskTeachView.as_view(), name='teach' ),

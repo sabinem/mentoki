@@ -34,3 +34,4 @@ static/less-old
 mentoki/settings/old_logging
 .gitignore
 mentoki/settings/logging.txt
+static/status-jquery-crawler-master

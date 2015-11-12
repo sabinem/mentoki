@@ -14,9 +14,10 @@ from apps_data.courseevent.models.courseevent import CourseEvent
 from apps_data.course.models.course import Course
 
 from .product import Product
+from ..constants import ProductToCustomer
 
 import logging
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('products.courseproduct')
 
 
 class CourseProductManager(models.Manager):
@@ -44,8 +45,8 @@ class CourseProduct(Product):
     objects = CourseProductManager()
 
     class Meta:
-        verbose_name = _("Kursangebote")
-        verbose_name_plural = _("Kursangebote")
+        verbose_name = _("Kursprodukt")
+        verbose_name_plural = _("Kursprodukte")
 
     def __unicode__(self):
         return u'[%s] %s' % (self.id, self.name)
@@ -76,28 +77,29 @@ class CourseProduct(Product):
         """
         checks for a given courseproduct and course whether it can be
         booked by a customer
+        return ProductToCustomerStatus
         """
         # if no products have been orded then the product is available
         # if it has no dependencies
         if not ordered_products:
             if self.dependency:
-                return False
+                return ProductToCustomer.NOT_AVAILABLE
         else:
         # case ordered products exists
             if self in ordered_products:
                 # product has been already ordered
-                return False
+                return ProductToCustomer.NOT_AVAILABLE
             else:
                 if self.dependency and not self.dependency in ordered_products:
                     # dependencies are not fullfilled
-                    return False
+                    return ProductToCustomer.NOT_AVAILABLE
                 for item in ordered_products:
                     if item.part_of == self:
                         # if parts of the products have been bought already
-                        return False
+                        return ProductToCustomer.NOT_AVAILABLE
                 if self.part_of in ordered_products:
                     # the whole of which the product is a part of has already
                     # been bought
-                    return False
-        return True
+                    return ProductToCustomer.NOT_AVAILABLE
+        return ProductToCustomer.AVAILABLE
 

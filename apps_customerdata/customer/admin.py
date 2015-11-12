@@ -29,8 +29,9 @@ class Transaction(admin.ModelAdmin):
     Transactions that occur when payment happens, they are also registered at braintree,
     the payment provider
     """
-    list_display = ('id', )
-
+    list_display = ('id', 'amount', 'currency', 'success', 'course', 'error_code',
+                    'braintree_transaction_id')
+    list_filter = ('course', 'created', 'success')
 
 @admin.register(Order)
 class Order(admin.ModelAdmin):
@@ -38,4 +39,4 @@ class Order(admin.ModelAdmin):
     Orders are between registered user only since they are listed here only after
     payment occured and the the users got registered
     """
-    list_display = ('id', 'courseproduct', 'customer', 'order_status' )
+    list_display = ('id', 'courseproduct', 'customer', )

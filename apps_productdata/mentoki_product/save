@@ -1,0 +1,15 @@
+    def test_that_all_products_for_course_are_found(self):
+        """
+        tests whether the right offer is found and applied to a product
+        """
+        courseproducts_course_1 = CourseProduct.objects.all_by_course(
+            self.course_1)
+        courseproducts_course_2 = CourseProduct.objects.all_by_course(
+            self.course_2)
+        self.assertQuerysetEqual(
+            courseproducts_course_1,
+            [repr(self.product_a_1), repr(self.product_c_1)],
+            ordered=False)
+        self.assertQuerysetEqual(
+            courseproducts_course_2,
+            [repr(self.product_b_2)])

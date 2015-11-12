@@ -1,9 +1,7 @@
 # coding: utf-8
 
-
 """
-Courseevents are for sale. This app handles the public data
-of coruseevents
+Products are the items that are for sale on the mentoki site
 """
 
 from __future__ import unicode_literals, absolute_import
@@ -16,8 +14,8 @@ from model_utils.fields import MonitorField
 
 from froala_editor.fields import FroalaField
 
-from ..constants import CURRENCY_CHOICES
-from .producttype import ProductType
+from ..constants import Currency, Producttype
+from django_enumfield import enum
 
 import logging
 logger = logging.getLogger(__name__)
@@ -25,7 +23,7 @@ logger = logging.getLogger(__name__)
 
 class ProductManager(models.Manager):
     """
-    Querysets for CourseEvents
+    Querysets for Products
     """
     pass
 
@@ -35,9 +33,6 @@ class Product(TimeStampedModel):
 
     description = FroalaField()
 
-    # for braintree, invoices, etc.
-    invoice_descriptor = models.CharField(max_length=250, default="x")
-
     # price with currency
     price = models.DecimalField(
         max_digits=12,
@@ -45,10 +40,7 @@ class Product(TimeStampedModel):
         null=True,
         blank=True,
         verbose_name=_('Verkaufspreis'))
-    currency = models.CharField(
-        max_length=3,
-        choices=CURRENCY_CHOICES,
-        default=CURRENCY_CHOICES.euro)
+    currency = enum.EnumField(Currency, default=Currency.EUR)
     price_changed = MonitorField(
                 monitor='price',
                 verbose_name=_("letzte Preisänderung am"))
@@ -62,12 +54,10 @@ class Product(TimeStampedModel):
     meta_description = models.CharField(max_length=200, default="x")
     meta_title = models.CharField(max_length=100, default="x")
 
-    product_type = models.ForeignKey(
-        ProductType,
-        verbose_name="Produktart",
-        null=True,
-        blank=True
-    )
+    # transaction status
+    product_type = enum.EnumField(
+        Producttype,
+        default=Producttype.OTHER)
 
     objects = ProductManager()
 

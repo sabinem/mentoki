@@ -12,16 +12,14 @@ from __future__ import unicode_literals
 from django.views.generic import TemplateView
 
 from apps_productdata.mentoki_product.models.courseproduct import CourseProduct
-from apps_productdata.mentoki_product.constants import PRODUCT_TO_CUSTOMER_CASES
 from apps_customerdata.customer.models.order import Order
-from apps_data.courseevent.models.courseevent import CourseEventParticipation
-from apps_data.courseevent.constants import PARTICIPANT_STATUS_CHOICES
+from apps_productdata.mentoki_product.constants import ProductToCustomer
 
 from .courseproductgroup_info import CourseGroupMixin
 
 import logging
-logger = logging.getLogger('public.customers')
-#logger = logging.getLogger(__name__)
+logger = logging.getLogger('public.offerpages')
+
 
 class CourseGroupOfferView(
     CourseGroupMixin,
@@ -38,24 +36,25 @@ class CourseGroupOfferView(
         context = super(CourseGroupOfferView, self).get_context_data()
         course = context['courseproductgroup'].course
         user=self.request.user
-        logger.info('Jemand sieht sich die Angebotsseite für den Kurs [%s] an.' %
+        logger.debug('Jemand sieht sich die Angebotsseite für den Kurs [%s] an.' %
                     course)
 
         # -------------------------------------------------------------
-        # determine whether user is customers and whether orders exist
+        # determines whether user is customers and whether orders exist
         # -------------------------------------------------------------
         if hasattr(user, 'customer'):
             customer=user.customer
-            logger.debug('1. user is a customer [%s]' % customer)
+            logger.debug('Es geht um einen Kunden [%s]' % customer)
             ordered_products = \
                 Order.objects.\
                 products_with_order_paid_for_course_and_customer(
                     course=course,
                     customer=user.customer)
-            logger.debug('- has already ordered products')
+            logger.debug('Der Kunde hat schon Kurse bei uns gebucht zu diesem '
+                         'Thema.')
         else:
             ordered_products=None
-            logger.debug('1. user is not a customer')
+            logger.debug('Zu diesem Thema hat der Kunde noch nichts gebucht.')
 
         # -------------------------------------------------------------
         # determine availablity of products for the user
@@ -63,24 +62,24 @@ class CourseGroupOfferView(
         courseproducts = \
             CourseProduct.objects.\
                 all_by_course(course=course)
-        logger.debug('2. fetched all courseproducts')
+        logger.debug('Kursprodukte der Gruppe aus der Datenbank geholt.')
         product_list = []
 
         for courseproduct in courseproducts:
 
-            logger.debug('- considering product [%s]' % courseproduct)
-            logger.debug('  - has dependency [product %s]' % courseproduct.dependency)
-            logger.debug('  - is part of [product %s]' % courseproduct.part_of)
+            logger.debug('Kursprodukt [%s]' % courseproduct)
+            logger.debug('  - Hat Abhängigkeit [product %s]' % courseproduct.dependency)
+            logger.debug('  - ist Teil von [product %s]' % courseproduct.part_of)
 
             if ordered_products and courseproduct in ordered_products:
                 logger.debug('  - schon gebucht')
-                status = 'booked'
+                status = ProductToCustomer.BOOKED
             elif courseproduct.available_with_past_orders(ordered_products):
                 logger.debug('  - jetzt buchbar')
-                status = 'available'
+                status = ProductToCustomer.AVAILABLE
             else:
                 logger.debug('  - jetzt nicht buchbar')
-                status = 'not_available'
+                status = ProductToCustomer.NOT_AVAILABLE
             logger.debug('  - status [%s]' % status)
 
             item = {
@@ -89,5 +88,6 @@ class CourseGroupOfferView(
             }
             product_list.append(item)
         context['product_list'] = product_list
+        context['ProductToCustomer'] = ProductToCustomer
         return context
 

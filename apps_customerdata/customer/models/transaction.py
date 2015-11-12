@@ -1,20 +1,25 @@
-#encoding: utf-8
+# coding: utf-8
 
 """
 Transactions are stored here. They correspond to braintree transactions.
 """
+
+from __future__ import unicode_literals, absolute_import
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from model_utils.models import TimeStampedModel
 
+from django_enumfield import enum
+
 from apps_data.course.models.course import Course
 from apps_customerdata.customer.models.order import Order
-from apps_productdata.mentoki_product.constants import CURRENCY_CHOICES
+from apps_productdata.mentoki_product.constants import Currency
 
-from ..constants import TRANSACTION_ERROR_CODE
+from ..constants import TransactionErrorCode
 from .customer import Customer
+from django_enumfield import enum
 
 
 class TransactionManager(models.Manager):
@@ -30,79 +35,116 @@ class Transaction(TimeStampedModel):
     they passed successfully.
     """
     # order must be present
-    order = models.ForeignKey(Order)
+    order = models.ForeignKey(
+        Order,
+        verbose_name=_('Auftrag'),
+    )
 
     # will be an index later on
-    course = models.ForeignKey(Course, blank=True, null=True)
+    course = models.ForeignKey(
+        Course,
+        verbose_name=('Kurs'),
+        blank=True,
+        null=True
+    )
 
     # customer that performs the transaction
     customer = models.ForeignKey(
         Customer,
+        verbose_name=('Kunde'),
         blank=True,
-        null=True)
+        null=True
+    )
 
     # payment intention
     amount = models.DecimalField(
-        _("amount"),
+        _('Betrag'),
         decimal_places=4,
-        max_digits=20)
-    currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES,
-        default=CURRENCY_CHOICES.euro )
+        max_digits=20
+    )
+    currency = enum.EnumField(
+        Currency,
+        default=Currency.EUR,
+        verbose_name=_('Währung'),
+    )
+
 
     # "customer" data, at the point of time when the transaction happened
     email=models.EmailField(
         _('Email des Teilnehmers'),
-         default="x"
+        blank=True
     )
     first_name = models.CharField(
         _('Vorname der Teilnehmers'),
-        default="x",
-        max_length=40)
+        blank=True,
+        max_length=40
+    )
     last_name = models.CharField(
+        _('Nachname der Teilnehmers'),
         max_length=40,
-        default="x"
+        blank=True
     )
 
     # braintree transaction data and the merchant key that was used
     braintree_transaction_id = models.CharField(
+        _('braintree Transaktionsnr.'),
         max_length=10,
-        blank=True)
+        blank=True
+    )
     braintree_customer_id = models.CharField(
         'braintree Kundennr.',
         max_length=10,
-        blank=True)
-    braintree_payment_token = models.CharField(
-        'braintree Kundennr.',
-        max_length=10,
-        blank=True)
-    braintree_merchant_account_id = models.CharField(
-        'braintree_merchant',
-        max_length=20,
-        blank=True)
-    braintree_amount = models.CharField(
-        _("amount form braintree"),
-        blank=True,
-        max_length=10)
-
-    # in case there was no success
-    braintree_error_details = models.TextField(
         blank=True
     )
-
-    # flag, whether the transaction had success
-    flag_payment_sucess = models.BooleanField(default=False)
-
-    # own error code
-    error_code = models.CharField(
-        max_length=12,
-        choices=TRANSACTION_ERROR_CODE,
+    braintree_payment_token = models.CharField(
+        'braintree Zahlunsmittel-Token.',
+        max_length=10,
+        blank=True
+    )
+    braintree_merchant_account_id = models.CharField(
+        'braintree Merchant Accountnr.',
+        max_length=20,
+        blank=True
+    )
+    braintree_amount = models.CharField(
+        _('braintree Betrag'),
+        help_text=_('Was braintree abgebucht hat'),
         blank=True,
-        default="")
-    # own error message
-    error_message = models.CharField(
+        max_length=10
+    )
+
+    # transaction status
+    success = models.BooleanField(
+        _('Flag ob die Transaktion erfolgreich war, insofern '
+          'als tatsächlich bezahlt wurde.'),
+        default=False
+    )
+
+    # eigener Fehlercode, der die Fehlerart grob anzeigt
+    error_code = enum.EnumField(
+        TransactionErrorCode,
+        default=TransactionErrorCode.NO_ERROR,
+    )
+    # in case there was no success
+    braintree_error_message = models.CharField(
+        _('aus braintree Fehlernachricht: besetzt im Fehlerfall '),
+        max_length=250,
+        blank=True
+    )
+    braintree_error_details = models.TextField(
+        _('aus braintree deep errors: besetzt im Fehlerfall '),
+        blank=True
+    )
+    braintree_processor_response_code = models.CharField(
+        _('Banken Processor Code: besetzt im Fehlerfall '),
+        max_length=4,
+        blank=True
+    )
+    braintree_processor_response_text = models.CharField(
+        _('Banken Processor Text: besetzt im Fehlerfall '),
         max_length=250,
         blank=True,
-        default="")
+    )
 
     objects = TransactionManager()
 
@@ -120,6 +162,6 @@ class Transaction(TimeStampedModel):
                   self.currency)
 
     def __repr__(self):
-        return '[%s] %s %s' \
-               % (self.id, self.user, self.course)
+        return '[%s] %s' \
+               % (self.id, self.course)
 

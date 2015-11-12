@@ -16,6 +16,10 @@ from allauth.account.models import EmailAddress
 
 from apps_accountdata.userprofiles.models.mentor import MentorsProfile
 from apps_customerdata.customer.models.customer import Customer
+from apps_customerdata.customer.models.order import Order
+
+import logging
+logger = logging.getLogger('activity.users')
 
 
 class DeskProfileView(
@@ -31,6 +35,8 @@ class DeskProfileView(
         """
         gets the users profile as mentor and customer
         """
+        logger.info('[%s] sieht sich sein Profil auf dem Schreibtisch an'
+                    % self.request.user)
         context = super(DeskProfileView, self).get_context_data(**kwargs)
         user = self.request.user
         context['user'] = user
@@ -46,6 +52,7 @@ class DeskProfileView(
         try:
             customer = Customer.objects.get(user=user)
             context['customer'] = customer
+            orders = Order.objects.by_customer(customer=customer)
         except ObjectDoesNotExist:
             # user is not a customer
             pass

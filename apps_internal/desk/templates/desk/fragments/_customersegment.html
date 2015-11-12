@@ -1,0 +1,13 @@
+
+ {% url 'home:mentor' username=mentor.user.username  as mentor_url %}
+
+  <div class="ui segment">
+      gebuchte Kurse
+      {% for order in orders %}
+     <div class="ui list">
+         <div class="item">
+             {{ order.name }}: {{ order.get_order_status_display }}
+         </div>
+     </div>
+      {% endfor %}
+  </div>
