@@ -380,14 +380,14 @@ FONTAWESOME_CSS_URL = '/static/font-awesome-4.4.0/css/font-awesome.min.css'
 
 # braintree configuration for testing in the sandbox
 BRAINTREE = {
-    'merchant_id':os.environ.get('BRAINTREE_MERCHANT_ID_P'),
-    'merchant_account_id_chf':os.environ.get('BRAINTREE_MERCHANT_ACCOUNT_ID_CHF_P'),
-    'merchant_account_id_eur':os.environ.get('BRAINTREE_MERCHANT_ACCOUNT_ID_EUR_P'),
-    'public_key':os.environ.get('BRAINTREE_PUBLIC_KEY_P'),
-    'private_key':os.environ.get('BRAINTREE_PRIVATE_KEY_P'),
+    'merchant_id':os.environ.get('BRAINTREE_MERCHANT_ID'),
+    'merchant_account_id_chf':os.environ.get('BRAINTREE_MERCHANT_ACCOUNT_ID_CHF'),
+    'merchant_account_id_eur':os.environ.get('BRAINTREE_MERCHANT_ACCOUNT_ID_EUR'),
+    'public_key':os.environ.get('BRAINTREE_PUBLIC_KEY'),
+    'private_key':os.environ.get('BRAINTREE_PRIVATE_KEY'),
 }
 # set braintree environment: so far it is the sandbox
 import braintree
-BRAINTREE_ENVIRONMENT = braintree.Environment.Production
+BRAINTREE_ENVIRONMENT = braintree.Environment.Sandbox
 
 
