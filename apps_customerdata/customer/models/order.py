@@ -88,9 +88,9 @@ class Order(TimeStampedModel):
         max_digits=20,
         default=0
     )
-    #currency = enum.EnumField(
-    #    Currency,
-    #    default=Currency.EUR)
+    currency = enum.EnumField(
+        Currency,
+        default=Currency.EUR)
 
 
     objects = OrderManager()
