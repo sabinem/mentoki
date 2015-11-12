@@ -7,10 +7,54 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('customer', '0010_auto_20151111_1702'),
+        ('customer', '0001_initial'),
     ]
 
     operations = [
+        migrations.RemoveField(
+            model_name='order',
+            name='currency',
+        ),
+        migrations.RemoveField(
+            model_name='order',
+            name='order_status',
+        ),
+        migrations.RemoveField(
+            model_name='transaction',
+            name='currency',
+        ),
+        migrations.RemoveField(
+            model_name='transaction',
+            name='error_code',
+        ),
+        migrations.RemoveField(
+            model_name='transaction',
+            name='error_message',
+        ),
+        migrations.RemoveField(
+            model_name='transaction',
+            name='flag_payment_sucess',
+        ),
+        migrations.AddField(
+            model_name='transaction',
+            name='braintree_error_message',
+            field=models.CharField(max_length=250, verbose_name='aus braintree Fehlernachricht: besetzt im Fehlerfall ', blank=True),
+        ),
+        migrations.AddField(
+            model_name='transaction',
+            name='braintree_processor_response_code',
+            field=models.CharField(max_length=4, verbose_name='Banken Processor Code: besetzt im Fehlerfall ', blank=True),
+        ),
+        migrations.AddField(
+            model_name='transaction',
+            name='braintree_processor_response_text',
+            field=models.CharField(max_length=250, verbose_name='Banken Processor Text: besetzt im Fehlerfall ', blank=True),
+        ),
+        migrations.AddField(
+            model_name='transaction',
+            name='success',
+            field=models.BooleanField(default=False, verbose_name='Flag ob die Transaktion erfolgreich war, insofern als tats\xe4chlich bezahlt wurde.'),
+        ),
         migrations.AlterField(
             model_name='transaction',
             name='amount',
@@ -28,11 +72,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterField(
             model_name='transaction',
-            name='braintree_error_message',
-            field=models.TextField(max_length=250, verbose_name='aus braintree Fehlernachricht: besetzt im Fehlerfall '),
-        ),
-        migrations.AlterField(
-            model_name='transaction',
             name='braintree_merchant_account_id',
             field=models.CharField(max_length=20, verbose_name='braintree Merchant Accountnr.', blank=True),
         ),
@@ -43,16 +82,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterField(
             model_name='transaction',
-            name='braintree_processor_response_code',
-            field=models.TextField(max_length=4, verbose_name='Banken Processor Code: besetzt im Fehlerfall ', blank=True),
-        ),
-        migrations.AlterField(
-            model_name='transaction',
-            name='braintree_processor_response_text',
-            field=models.TextField(max_length=250, verbose_name='Banken Processor Text: besetzt im Fehlerfall ', blank=True),
-        ),
-        migrations.AlterField(
-            model_name='transaction',
             name='braintree_transaction_id',
             field=models.CharField(max_length=10, verbose_name='braintree Transaktionsnr.', blank=True),
         ),
@@ -60,11 +89,6 @@ class Migration(migrations.Migration):
             model_name='transaction',
             name='course',
             field=models.ForeignKey(verbose_name='Kurs', blank=True, to='course.Course', null=True),
-        ),
-        migrations.AlterField(
-            model_name='transaction',
-            name='currency',
-            field=models.IntegerField(default=1, verbose_name='W\xe4hrung'),
         ),
         migrations.AlterField(
             model_name='transaction',
@@ -90,10 +114,5 @@ class Migration(migrations.Migration):
             model_name='transaction',
             name='order',
             field=models.ForeignKey(verbose_name='Auftrag', to='customer.Order'),
-        ),
-        migrations.AlterField(
-            model_name='transaction',
-            name='success',
-            field=models.BooleanField(default=False, verbose_name='Flag ob die Transaktion erfolgreich war, insofern als tats\xe4chlich bezahlt wurde.'),
         ),
     ]

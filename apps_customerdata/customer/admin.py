@@ -29,7 +29,7 @@ class Transaction(admin.ModelAdmin):
     Transactions that occur when payment happens, they are also registered at braintree,
     the payment provider
     """
-    list_display = ('id', 'amount', 'currency', 'success', 'course', 'error_code',
+    list_display = ('id', 'amount', 'success', 'course',
                     'braintree_transaction_id')
     list_filter = ('course', 'created', 'success')
 

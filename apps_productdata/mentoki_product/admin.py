@@ -28,7 +28,7 @@ class CourseProductAdmin(admin.ModelAdmin):
     """
     Course products are products related to Courses
     """
-    list_display = ('id', 'name', 'course', 'product_type',
+    list_display = ('id', 'name', 'course',
                     'dependency', 'part_of',
                     'price' , 'sales_price', 'display_nr')
     list_filter = ('modified', 'course')

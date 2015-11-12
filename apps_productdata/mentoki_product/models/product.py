@@ -54,7 +54,7 @@ class Product(TimeStampedModel):
     meta_description = models.CharField(max_length=200, default="x")
     meta_title = models.CharField(max_length=100, default="x")
 
-    # transaction status
+    # product type
     product_type = enum.EnumField(
         Producttype,
         default=Producttype.OTHER)
