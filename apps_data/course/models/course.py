@@ -247,13 +247,13 @@ class CourseOwner(TimeStampedModel):
         """
         return u'%s %s' % (self.course, self.user)
 
-    def get_absolute_url(self):
-        """
-        absolute url for courseownership relation
-        RETURN: relative url
-        """
-        return reverse('coursebackend:course:detail',
-                       kwargs={'course_slug': self.course.slug, 'pk': self.pk})
+    #def get_absolute_url(self):
+    #    """
+    #    absolute url for courseownership relation
+    #    RETURN: relative url
+    #    """
+    #    return reverse('coursebackend:course:detail',
+    #                   kwargs={'course_slug': self.course.slug, 'pk': self.pk})
 
     def clean(self):
         """
