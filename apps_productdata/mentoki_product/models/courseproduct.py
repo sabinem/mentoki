@@ -41,8 +41,8 @@ class CourseProduct(Product):
     course = models.ForeignKey(Course)
     courseproductgroup = models.ForeignKey(
         CourseProductGroup, default=1)
-    #courseproductsubgroup = models.ForeignKey(
-    #    CourseProductSubGroup, default=1)
+    courseproductsubgroup = models.ForeignKey(
+        CourseProductSubGroup, default=1)
 
     courseevent = models.ForeignKey(CourseEvent, blank=True, null=True)
     dependency = models.ForeignKey('self', null=True, blank=True, related_name="dependent_on")
