@@ -75,8 +75,26 @@ class CourseProductGroup(TimeStampedModel):
     objects = CourseProductGroupManager()
 
     class Meta:
-        verbose_name = _("Kursproduktgruppen")
+        verbose_name = _("Kursproduktgruppe")
         verbose_name_plural = _("Kursproduktgruppen")
+
+    def __unicode__(self):
+        return self.course.title
+
+
+class CourseProductSubGroup(TimeStampedModel):
+    """
+    These are courseproducts that can not be bought together since they are
+    paralell to each other, for example the same courseevent starting at
+    different dates
+    """
+    name = models.CharField(max_length=250)
+    course = models.ForeignKey(Course)
+    courseproductgroup = models.ForeignKey(CourseProductGroup, default=1)
+
+    class Meta:
+        verbose_name = _("Kursproduktuntergruppe")
+        verbose_name_plural = _("Kursproduktuntergruppen")
 
     def __unicode__(self):
         return self.course.title

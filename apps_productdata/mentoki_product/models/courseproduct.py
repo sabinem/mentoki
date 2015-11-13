@@ -14,6 +14,7 @@ from apps_data.courseevent.models.courseevent import CourseEvent
 from apps_data.course.models.course import Course
 
 from .product import Product
+from .courseproductgroup import CourseProductGroup, CourseProductSubGroup
 from ..constants import ProductToCustomer
 
 import logging
@@ -38,6 +39,11 @@ class CourseProduct(Product):
     Course Products are Products that belong to one Course
     """
     course = models.ForeignKey(Course)
+    courseproductgroup = models.ForeignKey(
+        CourseProductGroup, default=1)
+    #courseproductsubgroup = models.ForeignKey(
+    #    CourseProductSubGroup, default=1)
+
     courseevent = models.ForeignKey(CourseEvent, blank=True, null=True)
     dependency = models.ForeignKey('self', null=True, blank=True, related_name="dependent_on")
     part_of = models.ForeignKey('self', null=True, blank=True, related_name="belongs_to")

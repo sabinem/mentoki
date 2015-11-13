@@ -26,6 +26,7 @@ from django.core.urlresolvers import reverse
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext_lazy as _
 from django.core.validators import ValidationError
+from autoslug import AutoSlugField
 
 from model_utils.models import TimeStampedModel
 from model_utils.managers import QueryManager
@@ -64,6 +65,7 @@ class CourseEvent(TimeStampedModel):
     )
 
     slug = models.SlugField(unique=True)
+    autoslug = AutoSlugField(populate_from=('title', 'start_date'))
 
     title = models.CharField(
         verbose_name=_("Kurstitel"),
@@ -190,6 +192,7 @@ class CourseEvent(TimeStampedModel):
     class Meta:
         verbose_name = _("Kursereignis")
         verbose_name_plural = _("Kursereignisse")
+        unique_together = ('title', 'start_date')
 
     def __unicode__(self):
         return self.title

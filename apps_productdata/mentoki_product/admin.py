@@ -9,7 +9,8 @@ from __future__ import unicode_literals, absolute_import
 from django.contrib import admin
 
 from .models.courseproduct import CourseProduct
-from .models.courseproductgroup import CourseProductGroup
+from .models.courseproductgroup import CourseProductGroup, \
+    CourseProductSubGroup
 from .models.specialoffer import SpecialOffer
 
 
@@ -19,6 +20,16 @@ class CourseProductGroupAdmin(admin.ModelAdmin):
     CourseProductGroup is the Group of all products related to a course
     """
     list_display = ('id', 'course', 'display_nr')
+    list_filter = ('modified', 'course')
+    list_display_links = ('id',)
+
+
+@admin.register(CourseProductSubGroup)
+class CourseSubProductGroupAdmin(admin.ModelAdmin):
+    """
+    CourseProductGroup is the Group of all products related to a course
+    """
+    list_display = ('id', 'course', 'name')
     list_filter = ('modified', 'course')
     list_display_links = ('id',)
 
