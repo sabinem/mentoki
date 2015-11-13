@@ -97,4 +97,4 @@ class CourseProductSubGroup(TimeStampedModel):
         verbose_name_plural = _("Kursproduktuntergruppen")
 
     def __unicode__(self):
-        return self.course.title
+        return self.name
