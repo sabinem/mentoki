@@ -18,7 +18,7 @@ from apps_productdata.mentoki_product.constants import ProductToCustomer
 from .courseproductgroup_info import CourseGroupMixin
 
 import logging
-logger = logging.getLogger('public.offerpages')
+logger = logging.getLogger('activity.users')
 
 
 class CourseGroupOfferView(
@@ -31,17 +31,19 @@ class CourseGroupOfferView(
 
     def get_context_data(self, **kwargs):
         """
-        gets product detail context
+        lists all offers for a courseproductgroup
         """
         context = super(CourseGroupOfferView, self).get_context_data()
+
+        # the mixin already provides the courseproductgroup
+
         course = context['courseproductgroup'].course
         user=self.request.user
-        logger.debug('Jemand sieht sich die Angebotsseite für den Kurs [%s] an.' %
+        logger.info('Jemand sieht sich die Angebotsseite für den Kurs [%s] an.' %
                     course)
 
-        # -------------------------------------------------------------
-        # determines whether user is customers and whether orders exist
-        # -------------------------------------------------------------
+        # if the user is a customer he might have past orders
+
         if hasattr(user, 'customer'):
             customer=user.customer
             logger.debug('Es geht um einen Kunden [%s]' % customer)
@@ -50,18 +52,19 @@ class CourseGroupOfferView(
                 products_with_order_paid_for_course_and_customer(
                     course=course,
                     customer=user.customer)
-            logger.debug('Der Kunde hat schon Kurse bei uns gebucht zu diesem '
-                         'Thema.')
+            logger.info('Der Kunde hat schon Kurse bei uns gebucht zu diesem '
+                         'Thema. [%s]')
         else:
             ordered_products=None
-            logger.debug('Zu diesem Thema hat der Kunde noch nichts gebucht.')
+            logger.info('Zu diesem Thema hat der Kunde noch nichts gebucht.')
 
-        # -------------------------------------------------------------
-        # determine availablity of products for the user
-        # -------------------------------------------------------------
+        # determine availabilty of products
         courseproducts = \
             CourseProduct.objects.\
                 all_by_course(course=course)
+
+
+
         logger.debug('Kursprodukte der Gruppe aus der Datenbank geholt.')
         product_list = []
 

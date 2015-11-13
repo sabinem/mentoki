@@ -290,6 +290,7 @@ class PaymentView(
         """
         context = super(PaymentView, self).get_context_data(**kwargs)
         context['amount'] = self.amount
+        context['currency'] = self.courseproduct.get_currency_display
         context['courseproductgroup'] = self.courseproductgroup
         context['courseproduct'] = self.courseproduct
         context['client_token'] = self.token
