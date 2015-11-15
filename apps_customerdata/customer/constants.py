@@ -21,7 +21,6 @@ class TransactionErrorCode(enum.Enum):
     SUCCESS = 1
     TRY_TO_DOUBLE_PAY = 2
     BRAINTREE_CONNECTION_ERROR = 3
-
     FAILED_SYSTEMERROR = 4
     PAYMENT_DECLINED = 5
 
@@ -42,29 +41,13 @@ class OrderStatus(enum.Enum):
     why the customer cannot buy the product.
     """
     INITIAL = 0
-    PAID = 1
-    UNPAID = 2
-    CANCELED = 3
-    REFUNDED = 4
-    DECLINED = 5
-    ERROR_DURING_PAYMENT = 6
+    VALID = 1
+    CANCELED = 10
+    REFUNDED = 11
 
     labels = {
         INITIAL: _('angelegt'),
-        PAID: _('bezahlt'),
-        UNPAID: _('bezahlung war nicht erfolgreich'),
+        VALID: _('gültig'),
         CANCELED: _('abgesagt'),
         REFUNDED: _('zurückerstattet, nach einer Absage'),
-        DECLINED: _('Zahlung abgelehnt'),
-        ERROR_DURING_PAYMENT: _('Fehler bei der Zahlung aufgetreten'),
-    }
-
-class PaymentErrorCode(enum.Enum):
-    ORDER_ALREADY_PAID = 1
-    BRAINTREE_ERROR = 2
-    UNKNOWN_TOKEN_GENERATION_ERROR = 3
-
-    labels = {
-        ORDER_ALREADY_PAID: _('Der Kurs wurde bereits gebucht und bezahlt.'),
-        BRAINTREE_ERROR: _('Fehler beim Verbindungsaufbau zu braintree.'),
     }

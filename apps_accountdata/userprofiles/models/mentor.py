@@ -15,6 +15,8 @@ from django.utils.translation import ugettext_lazy as _
 
 from model_utils.models import TimeStampedModel
 
+from froala_editor.fields import FroalaField
+
 from autoslug import AutoSlugField
 
 from apps_data.course.models.course import Course
@@ -75,7 +77,7 @@ class MentorsProfile(TimeStampedModel):
         blank=True,
         max_length=250,
     )
-    text = models.TextField(
+    text = FroalaField(
         verbose_name=_('ausführliche Beschreibung'),
         blank=True
     )

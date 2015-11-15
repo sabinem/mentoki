@@ -43,9 +43,7 @@ from apps_productdata.mentoki_product.models.courseproduct import CourseProduct
 from apps_productdata.mentoki_product.constants import Currency
 from apps_customerdata.customer.constants import OrderStatus
 from apps_data.courseevent.models.courseevent import CourseEventParticipation
-from apps_productdata.mentoki_product.constants import ProductToCustomer
 
-from ..constants import PaymentErrorCode
 
 import logging
 logger = logging.getLogger('activity.payments')
@@ -72,29 +70,38 @@ class AuthMixin(UserPassesTestMixin):
         """
         courseproduct = get_object_or_404(
             CourseProduct,
-            slug=self.kwargs['slug'])
+            pk=self.kwargs['pk'])
         logger.info('Teste, ob Benutzer [%s] das Produkt [%s] kaufen kann.'
                      % (user, courseproduct))
         if hasattr(user, 'customer'):
             customer=user.customer
-            ordered_products = \
-                Order.objects.\
-                products_with_order_paid_for_course_and_customer(
-                    course=courseproduct.course,
-                    customer=user.customer)
-            if (courseproduct.available_with_past_orders(ordered_products)
-                == ProductToCustomer.AVAILABLE):
-                logger.info('ja, kann er, denn es verträgt'
-                    ' sich mit seinen bisher gekauften Produkten')
+            logger.info(' - Er ist schon Kunde [%s]' % customer)
+            order = courseproduct.get_order_object_for_customer(
+                customer=customer)
+            logger.info(' - Auftrag zum Produkt: [%s]' % order)
+            if order and order.started_to_pay and not order.fully_paid:
+                logger.info(' - Auftrag angezahlt')
                 return True
+            else:
+                logger.debug(' - Es gibt noch keinen Auftrag')
+                ordered_products = \
+                    Order.objects.\
+                    products_with_order_for_course_and_customer(
+                        course=courseproduct.course,
+                        customer=user.customer)
+                logger.debug(' - Der Kunde hat bereits andere Aufträge')
+                if not courseproduct.flag_similar_products_ordered(
+                ordered_products=ordered_products):
+                    logger.debug(' - Die anderen Aufträge überschneiden '
+                                 'sich nicht mit diesem neuen')
+                    return True
+            logger.debug(' - Der Kunde kann nicht kaufen')
             self.messages.warning('Du kannst dieses Produkt nicht buchen, '
                 'weil es sich mit Kursen überschneidet, '
                 'die Du bereits gebucht hast.')
-            logger.info('nein, kann er nicht: denn es verträgt sich nicht '
-                'mit den bereits bestellten Produkten.')
             return None
         else:
-            logger.info('nein, kann er, denn er ist noch kein Kunde')
+            logger.debug(' - kann kaufen, da noch kein Kunden')
             return True
 
 
@@ -139,7 +146,7 @@ class PaymentView(
         Also the back key should not bring back the payment form, once the
         payment is done (@cache_control).
         """
-        logger.info('-------------- neuer Zahlungsaufruf')
+        logger.info('neuer Zahlungsaufruf')
         return super(PaymentView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
@@ -163,16 +170,16 @@ class PaymentView(
         # courseproduct, that is to be bought
         self.courseproduct = get_object_or_404(
             CourseProduct,
-            slug=self.kwargs['slug'])
+            pk=self.kwargs['pk'])
         self.amount = self.courseproduct.sales_price
         self.currency = self.courseproduct.currency
-        logger.info('Zahlung gestartet für Benutzer [%s] Produkt [%s]'
+        logger.info(' - Zahlung gestartet für Benutzer [%s] Produkt [%s]'
                     % (user, self.courseproduct))
         self.courseproductgroup = get_object_or_404(
             CourseProductGroup,
             course=self.courseproduct.course)
         logger.info(
-            'Die Produktdaten: Normalpreis:[%s], Rabattpreis:[%s],'
+            ' - Die Produktdaten: Normalpreis:[%s], Rabattpreis:[%s],'
             ' Währung:[%s]'
                  % (self.courseproduct.price,
                     self.amount,
@@ -182,45 +189,49 @@ class PaymentView(
         self.customer, created = Customer.objects.get_or_create(
             user=user)
         if created:
-            logger.info('Der Kunde [%s] wurde bei mentoki neu angelegt mit der '
+            logger.info(' - Der Kunde [%s] wurde bei mentoki neu angelegt mit der '
                          'braintree id [%s]'
                          % (self.customer,
                             self.customer.braintree_customer_id))
         else:
-            logger.info('Der Kunde [%s] mit der '
+            logger.info(' - Der Kunde [%s] mit der '
                          'braintree id [%s] wurde bei mentoki gefunden'
                          % (self.customer,
                             self.customer.braintree_customer_id))
 
         # get or open order
-        self.order, created = Order.objects.get_or_create(
-            courseproduct=self.courseproduct,
-            customer=self.customer,
-            defaults={
-                'amount':self.amount,
-                'currency':self.courseproduct.currency,
-                'email':user.email,
-                'first_name':user.first_name,
-                'last_name':user.last_name}
-        )
-        if created:
-            logger.info('Ein Auftrag [%s] wurde bei neu mentoki angelegt.'
-                         % (self.order))
-        else:
+        try:
+            self.order = self.courseproduct.get_order_object_for_customer(
+                customer=self.customer)
             # Error case: order is already paid (might happen if customer works
             # on parallel screens?)
-            logger.info('Es gab schon einen Auftrag [%s] im Status [%s] zu '
+            logger.info('Es gab schon einen Auftrag [%s] zu '
                          'dieser Buchung, er wurde fürs Update vorbereitet.'
-                         % (self.order, self.order.order_status))
-            if self.order.order_status == OrderStatus.PAID:
+                         % (self.order))
+            if self.order.fully_paid:
                 logger.error_sentry('Versuch die Order [%s] doppelt zu bezahlen:'
                      'Transaktion[%s]'
                       % (self.order, self.transaction))
                 self.messages.error('''Der Kurs wurde bereits gebucht und
                 bezahlt. Er kann nicht doppelt bezahlt werden.''')
-                logger_sentry.error('Kunde hat versucht doppelt zu bezahlen.'
-                    'Transaktion: [%s]:' % self.transaction)
+                logger_sentry.error('Kunde hat versucht doppelt zu bezahlen.')
                 return self.redirect_on_error(**kwargs)
+        except:
+
+            self.order = Order.objects.create(
+                courseproduct=self.courseproduct,
+                customer=self.customer,
+                currency=self.courseproduct.currency,
+                email=user.email,
+                first_name=user.first_name,
+                last_name=user.last_name,
+                course=self.courseproduct.course,
+                pay_in_parts=self.courseproduct.can_be_bought_in_parts,
+                amount_per_payment=self.courseproduct.sales_price,
+                nr_parts_paid=0,
+                total_parts=self.courseproduct.nr_parts)
+            logger.info('Ein Auftrag [%s] wurde bei neu mentoki angelegt.'
+                         % (self.order))
 
         # create transaction
         self.transaction = Transaction.objects.create(
@@ -305,7 +316,7 @@ class PaymentView(
         return HttpResponseRedirect(reverse(
             'checkout:payment_failure',
             kwargs={'order_pk':self.order.pk,
-                    'slug':self.kwargs['slug']}))
+                    }))
 
 
     def post(self, request, *args, **kwargs):
@@ -441,7 +452,15 @@ class PaymentView(
 
             # update order
 
-            self.order.order_status = OrderStatus.PAID
+            self.order.started_to_pay = True
+            self.order.nr_parts_paid += 1
+            self.order.last_transaction_had_success = True
+            self.order.order_status = OrderStatus.VALID
+            if self.order.pay_in_parts:
+                if self.order.nr_parts_paid == self.order.total_parts:
+                    self.order.fully_paid = True
+            else:
+                self.order.fully_paid = True
             self.order.save()
             logger.info('Der Aufrag wurde upgedated: '
                         '[%s] mit dem Status: [%s]'
@@ -468,7 +487,7 @@ class PaymentView(
 
                 #update order
 
-                self.order.order_status = OrderStatus.DECLINED
+                self.order.order.last_transaction_had_success = False
                 self.order.save()
 
                 # log error
@@ -517,7 +536,7 @@ class PaymentView(
         """
         url = reverse('checkout:payment_success',
                       kwargs={'order_pk': self.order.pk,
-                              'slug': self.kwargs['slug']})
+                              })
         logger.info('in get success_url %s' % url)
         return url
 

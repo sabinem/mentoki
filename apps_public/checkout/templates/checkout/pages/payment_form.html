@@ -52,6 +52,7 @@
         {% endif %}
         <!-- payment data part of the form -->
         <h4 class="ui dividing header">Zahlung</h4>
+        {{ amount }} {{ currency }}
         {% include 'checkout/fragments/_payers_info_form.html' %}
 
         <p>Bitte entweder Paypal auswählen oder direkt Ihre Kreditkartendaten eingeben.</p>

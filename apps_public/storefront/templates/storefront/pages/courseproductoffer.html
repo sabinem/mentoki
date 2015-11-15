@@ -11,10 +11,6 @@
     <!-- urls --->
     {% url 'home:agb' as agb_url %}
 
-     <div class="froala-view">
-          {{ courseproductgroup.conditions | safe }}
-     </div>
-    <p style="color:grey;">* Es gelten unsere <a href="{{ agb_url }}">AGBs</a>.</p>
     {% if courseproductgroup.discount_text %}
         <!-- red: #eb3d00; -->
         <div class="extra content" style="color:#eb3d00; min-height: 150px;" >
@@ -27,59 +23,89 @@
 
         {% for item in product_list %}
             <div class="item">
+            {% url 'checkout:redirect_to_product' pk=item.courseproduct.id as pay_url %}
+            {% url 'desk:learn' as desk_url %}
 
-            {% if item.status == ProductToCustomer.AVAILABLE %}
+                 {% if item.can_buy %}
+                      <div class="right floated content">
+                            <div style="padding: 10px;">
+{% if item.has_parts %}
+                            <i class="icon green checkmark"></i>
+                              bereits bezahlt bis zu {{ item.order.nr_parts_paid }}. Etappe
 
-                {% url 'checkout:redirect_to_product' slug=item.courseproduct.slug as pay_url %}
+                       {% endif %}
+                            </div>
+                            <a href="{{ pay_url }}" class="ui button">
+                       {% if item.has_parts %}
 
-                <div class="right floated content">
-                    <a href="{{ pay_url }}" class="ui button">
-                        {% if item.courseproduct.sales_price != item.courseproduct.price %}
-                            jetzt<span style="color:#eb3d00">
-                            {{ item.courseproduct.sales_price }}</span>
-                            statt
-                            {{ item.courseproduct.price }}
-                        {% else %}
-                            jetzt kaufen für
-                            {{ item.courseproduct.price }}
-                        {% endif %}
-                        {{ item.courseproduct.get_currency_display }}
-                    </a>
-                </div>
+                           {{ item.buy_part_nr}}. Etappe:
+                       {% endif %}
+                                {% if item.is_on_sale %}
+                                    jetzt<span style="color:#eb3d00">
+                                    {{ item.amount_sale }}</span>
+                                    statt
+                                    {{ item.amount_original }}
+                                {% else %}
+                                    jetzt kaufen für
+                                    {{ item.amount_original }}
+                                {% endif %}
+                                {{ item.courseproduct.get_currency_display }}
+                            </a>
+                      </div>
 
-            {% else %}
+                 {% elif item.payment_complete %}
 
-                <div class="right floated content">
-                    {% if item.status == 'booked' %}
-                        <i class="icon green checkmark"></i>
-                    {% endif %}
-                    <div class="ui button basic">
-                        {% if item.courseproduct.sales_price != item.courseproduct.price %}
-                            jetzt<span style="color:#eb3d00">
-                            {{ item.courseproduct.sales_price }}</span>
-                            statt
-                            {{ item.courseproduct.price }}
-                        {% else %}
-                            jetzt kaufen für
-                            {{ item.courseproduct.price }}
-                        {% endif %}
-                        {{ item.courseproduct.get_currency_display }}
-                    </div>
-                </div>
+                      <div class="right floated content">
 
-            {% endif %}
+                            <div style="padding: 10px;">
 
+                                <i class="icon green checkmark"></i>
+                                Buchung komplett
+                            </div>
+                      </div>
 
-                <div class="content">
-                    <div class="header">
-                        {{ item.courseproduct.name }}
-                    </div>
-                    <p>{{ item.courseproduct.description | safe }}</p>
-                </div>
+                 {% else %}
+
+                       <div class="right floated content">
+
+                            <div class="ui button basic">
+                       {% if item.has_parts %}
+                           {{ item.buy_part_nr}}. Etappe:
+                       {% endif %}
+                                {% if item.is_on_sale %}
+                                    jetzt<span style="color:#eb3d00">
+                                    {{ item.amount_sale }}</span>
+                                    statt
+                                    {{ item.amount_original }}
+                                {% else %}
+                                    jetzt kaufen für
+                                    {{ item.amount_original }}
+                                {% endif %}
+                                {{ item.courseproduct.get_currency_display }}
+                            </div>
+                      </div>
+
+                 {% endif %}
+                 <div class="content">
+                     <div class="header">
+                              {% if item.payment_complete %}
+                                  <a href="{{ desk_url }}">{{ item.courseproduct.name }}</a>
+                              {% else %}
+                                  {{ item.courseproduct.name }}
+                              {% endif %}
+                     </div>
+                     <p>{{ item.courseproduct.description | safe }}</p>
+                 </div>
+
             </div>
 
         {% endfor %}
 
     </div>
+
+     <div class="froala-view" style="padding-top:50px;">
+          {{ courseproductgroup.conditions | safe }}
+     </div>
+     <p style="color:grey;">* Es gelten unsere <a href="{{ agb_url }}">AGBs</a>.</p>
 
 {% endblock %}

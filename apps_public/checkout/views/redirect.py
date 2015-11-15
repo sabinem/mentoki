@@ -50,7 +50,7 @@ class CheckoutStartView(
         :return: redirect_url
         """
         logger.info('%s ruft die Zahlung für %s auf'
-                    % (self.kwargs['slug'], self.request.user))
+                    % (self.kwargs['pk'], self.request.user))
 
         user = self.request.user
 
@@ -61,48 +61,27 @@ class CheckoutStartView(
 
             product_url = reverse('checkout:payment', kwargs=kwargs)
             # since the user will be able to checkout now
-            if kwargs.has_key('slug'):
+            if kwargs.has_key('pk'):
                 # product is in kwargs
 
                 logger.info(
                     'redirecting to url %s'
                     % product_url)
-                courseproduct = get_object_or_404(
-                    CourseProduct,
-                    slug=self.kwargs['slug'])
-                if hasattr(user, 'customer'):
-                    customer=user.customer
-                    logger.debug('1. user is a customer [%s]' % customer)
-                    ordered_products = \
-                        Order.objects.\
-                        products_with_order_paid_for_course_and_customer(
-                            course=courseproduct.course,
-                            customer=user.customer)
-                    if courseproduct.available_with_past_orders(ordered_products):
-                        return product_url
-                    else:
-                        self.messages.warning('''Du kannst dieses Produkt nicht buchen,
-                            weil es sich mit Kursen überschneidet,
-                            die Du bereits gebucht hast. Siehe die Liste unten,
-                            welche Kurse für Dich im Angebot sind.''')
-                        courseproductgroup = get_object_or_404(
-                            CourseProductGroup,
-                            course=courseproduct.course)
-                        coursegroup_url = reverse('storefront:offer', kwargs={
-                            'slug': courseproductgroup.slug
-                        })
-                        return coursegroup_url
-                else:
-                    return product_url
+                return product_url
 
             else:
-                # product is not defined
+
+                # no product yet specified: return to storefront list
+
                 list_url = reverse('storefront:list')
                 logger.info(
                     'redirecting to list since product slug was not given %s'
                     % list_url)
                 return list_url
         else:
+
+            # case anonymous user
+
             # message for the anonymous user about why he was thrown back to
             # the login view
             self.messages.info('''Bitte melde Dich an, bevor Du Dich für einen
@@ -114,7 +93,7 @@ class CheckoutStartView(
                            kwargs=kwargs)
             self.request.session['next'] = next
             self.request.session['unfinished_checkout'] = True
-            self.request.session['unfinished_product_slug'] = self.kwargs['slug']
+            self.request.session['unfinished_product_pk'] = self.kwargs['pk']
 
             # get url to contain a next part that bring the person back here
             # right after login

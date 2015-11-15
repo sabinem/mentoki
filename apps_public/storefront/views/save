@@ -1,0 +1,24 @@
+        for courseproduct in courseproducts:
+
+            logger.debug('Kursprodukt [%s]' % courseproduct)
+            logger.debug('  - Hat Abhängigkeit [product %s]' % courseproduct.dependency)
+            logger.debug('  - ist Teil von [product %s]' % courseproduct.part_of)
+
+            if ordered_products and courseproduct in ordered_products:
+                logger.debug('  - schon gebucht')
+                status = ProductToCustomer.BOOKED
+            elif courseproduct.available_with_past_orders(ordered_products):
+                logger.debug('  - jetzt buchbar')
+                status = ProductToCustomer.AVAILABLE
+            else:
+                logger.debug('  - jetzt nicht buchbar')
+                status = ProductToCustomer.NOT_AVAILABLE
+            logger.debug('  - status [%s]' % status)
+
+            item = {
+                'courseproduct': courseproduct,
+                'status': status,
+            }
+            product_list.append(item)
+        context['product_list'] = product_list
+        context['ProductToCustomer'] = ProductToCustomer

@@ -275,8 +275,16 @@ LOGGING = {
             'maxBytes': 500000,  # 500 kB
             'backupCount': 4  ,
         },
-        'useractivityfile': {
-            'filename': os.path.join(BASE_DIR, 'logfiles', 'users.log' ),
+        'publicfile': {
+            'filename': os.path.join(BASE_DIR, 'logfiles', 'public.log' ),
+            'formatter': 'verbose',
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'maxBytes': 500000,  # 500 kB
+            'backupCount': 4  ,
+        },
+        'datafile': {
+            'filename': os.path.join(BASE_DIR, 'logfiles', 'data.log' ),
             'formatter': 'verbose',
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
@@ -310,7 +318,16 @@ LOGGING = {
             'handlers': ['console'],
             'propagate': False,
         },
-
+        'data.productdata': {
+            'level': 'DEBUG',
+            'handlers': ['datafile'],
+            'propagate': False,
+        },
+        'public.offerpages': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        },
     },
 }
 

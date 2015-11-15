@@ -26,10 +26,17 @@ class Offerreach(enum.Enum):
     Eventually in the future the reach will be expanded to be specific to
     a courseevent or to a product
     """
-    COURSE = 1
+    PRODUCTGROUP = 1
+    PRODUCTSUBGROUP = 2
+    PRODUCT = 3
 
     labels = {
-        COURSE: _('Das Angebot bezieht sich auf alle Produkte der Kursgruppe'),
+        PRODUCTGROUP:
+            _('Kursgruppe'),
+        PRODUCTSUBGROUP:
+            _('Kursuntergruppe'),
+        PRODUCT:
+            _('EinzelProdukt'),
     }
 
 class ProductToCustomer(enum.Enum):

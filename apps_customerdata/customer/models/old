@@ -1,0 +1,23 @@
+    def by_customer(self, customer):
+        return self.filter(customer=customer)
+
+    def by_course_and_customer(self, course, customer):
+        return self.filter(customer=customer, course=course)
+
+    def all_by_course_and_customer(self, course, customer):
+        """
+        gets all courseproducts that have dependencies for one course
+        """
+        return self.filter(
+            course=course,
+            customer__order=customer).select_related('order')\
+            .order_by('display_nr')
+
+    def courseproducts_by_course_and_customer(self, course, customer):
+        return self.filter(customer=customer, course=course).\
+            select_related('courseproduct').order_by('courseproduct')
+
+    def courseproducts_by_course_and_customer_ids(self, course, customer):
+        return self.filter(customer=customer, course=course).\
+            select_related('courseproduct').\
+            values_list('courseproduct_id',flat=True)

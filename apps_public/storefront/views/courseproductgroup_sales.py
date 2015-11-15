@@ -19,6 +19,7 @@ from .courseproductgroup_info import CourseGroupMixin
 
 import logging
 logger = logging.getLogger('public.offerpages')
+logger_sentry = logging.getLogger('sentry.offerpages')
 
 
 class CourseGroupOfferView(
@@ -39,55 +40,120 @@ class CourseGroupOfferView(
         logger.debug('Jemand sieht sich die Angebotsseite für den Kurs [%s] an.' %
                     course)
 
-        # -------------------------------------------------------------
-        # determines whether user is customers and whether orders exist
-        # -------------------------------------------------------------
+        # for customers: get past orders
+
         if hasattr(user, 'customer'):
             customer=user.customer
             logger.debug('Es geht um einen Kunden [%s]' % customer)
+
             ordered_products = \
-                Order.objects.\
-                products_with_order_paid_for_course_and_customer(
-                    course=course,
-                    customer=user.customer)
-            logger.debug('Der Kunde hat schon Kurse bei uns gebucht zu diesem '
-                         'Thema.')
+                Order.objects.products_with_order_for_course_and_customer(
+                    customer=customer,
+                    course=course)
+            logger.debug('Der Kunde hat bereits Aufträge')
         else:
+            customer=None
             ordered_products=None
             logger.debug('Zu diesem Thema hat der Kunde noch nichts gebucht.')
 
-        # -------------------------------------------------------------
-        # determine availablity of products for the user
-        # -------------------------------------------------------------
+        # get all courseproducts
+
         courseproducts = \
             CourseProduct.objects.\
-                all_by_course(course=course)
-        logger.debug('Kursprodukte der Gruppe aus der Datenbank geholt.')
+                all_by_course_ordered_by_display_nr(course=course)
+        context['courseproducts'] = courseproducts
+        context['ProductToCustomer'] = ProductToCustomer
+
+        logger.debug('Alle Kursprodukte geladen')
+
         product_list = []
+
+        # decide on status of products in relation to the customer
 
         for courseproduct in courseproducts:
 
-            logger.debug('Kursprodukt [%s]' % courseproduct)
-            logger.debug('  - Hat Abhängigkeit [product %s]' % courseproduct.dependency)
-            logger.debug('  - ist Teil von [product %s]' % courseproduct.part_of)
-
-            if ordered_products and courseproduct in ordered_products:
-                logger.debug('  - schon gebucht')
-                status = ProductToCustomer.BOOKED
-            elif courseproduct.available_with_past_orders(ordered_products):
-                logger.debug('  - jetzt buchbar')
-                status = ProductToCustomer.AVAILABLE
-            else:
-                logger.debug('  - jetzt nicht buchbar')
-                status = ProductToCustomer.NOT_AVAILABLE
-            logger.debug('  - status [%s]' % status)
-
+            # prepare dictionary for displaying the item
             item = {
-                'courseproduct': courseproduct,
-                'status': status,
+                'courseproduct': courseproduct
             }
-            product_list.append(item)
-        context['product_list'] = product_list
-        context['ProductToCustomer'] = ProductToCustomer
-        return context
 
+            logger.info('Setup zum Produkt:[%s] wird geprüft' %
+             (courseproduct))
+
+            order = courseproduct.get_order_object_for_customer(
+                customer=customer)
+            item['order'] = order
+            logger.info(' - Es gibt einen Auftrag:[%s] für '
+                        'diesen Kunden zu diesem Produkt' %
+                         (order))
+
+            # initialize flags
+            item['payment_complete'] = False
+            item['payment_started'] = False
+            item['can_buy'] = False
+            item['has_parts'] = courseproduct.can_be_bought_in_parts
+            item['buy_part_nr'] = 1
+
+            if order and order.started_to_pay:
+                item['payment_started'] = True
+                logger.info(' - Es gibt einen Auftrag und es wurde bereits '
+                            'begonnen zu zahlen.')
+
+                if order.fully_paid:
+                    item['payment_complete'] = True
+                    logger.info(' - Der Auftrag wurde komplett bezahlt')
+                else:
+
+                    # es gibt noch was zu zahlen
+
+                    if courseproduct.can_be_bought_in_parts:
+                        logger.info(' - Der Auftrag kann in Teilen bezahlt werden')
+
+                        logger.info('... Bezahlung vorbereiten ...')
+                        item['can_buy'] = True
+                        item['has_parts'] = True
+                        item['buy_part_nr'] = order.nr_parts_paid + 1
+                    else:
+                        logger_sentry.error(' - Produkt ist nicht vollständig bezahlt, '
+                                         'aber kann nicht teilbezahlt werden.'
+                                            'Auftrag: [%s]' % (order)
+                                            )
+
+            else:
+
+                # no order for this product exists yet or payment on the
+                # order has not started yet
+
+                logger.info(' - Es gibt noch keinen Auftrag, bei dem '
+                            'begonnen wurde zu zahlen für dieses Produkt')
+                # check for similar products, that have been ordered
+                if not courseproduct.flag_similar_products_ordered(
+                ordered_products=ordered_products):
+                    logger.info(' - Es wurden noch keine Produkte aus der selben'
+                    ' Untergruppe gekauft')
+                    item['can_buy'] = True
+
+            # calculate price
+
+            if courseproduct.price != courseproduct.sales_price:
+                item['is_on_sale'] = True
+            else:
+                item['is_on_sale'] = False
+            item['amount_original'] = courseproduct.price
+            item['amount_sale'] = courseproduct.sales_price
+
+            logger.info(' - item, das angezeigt wird für dieses Produkt:'
+                        '(versteckte Felder [can_buy: %s, '
+                        'has_parts: %s, buy_part_nr: %s, '
+                        'payment_complete: %s, payment_started: %s]'
+                           % (
+                        item['can_buy'], item['has_parts'],
+                        item['buy_part_nr'], item['payment_complete'],
+                        item['payment_started']
+                        ))
+
+            product_list.append(item)
+
+        context['product_list'] = product_list
+
+        return context

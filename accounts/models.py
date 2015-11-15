@@ -68,7 +68,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     updated_at = models.DateTimeField(auto_now=True)
     profile_image = models.ImageField(upload_to="uploads", blank=False, null=False,
                                       default='/static/img/happyface.jpg' )
-    checkout_product_slug = models.SlugField(
+    checkout_product_pk = models.IntegerField(
         blank=True, null=True
     )
 

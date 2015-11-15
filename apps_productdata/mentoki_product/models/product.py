@@ -45,8 +45,6 @@ class Product(TimeStampedModel):
                 monitor='price',
                 verbose_name=_("letzte Preisänderung am"))
 
-    # for display: each product has its own product page
-    slug = models.SlugField()
     display_nr = models.IntegerField(default=1)
 
     # for search engines

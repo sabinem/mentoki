@@ -13,7 +13,9 @@
 {% block main_content %}
 
     <!-- urls -->
-    {% url 'courseoffer:list' as courselist_url %}
+    {% url 'storefront:list' as courselist_url %}
+    {% url 'home:educationmentor' as educationmonitor_url %}
+    {% url 'home:teachonline' as teachonline_url %}
 
     <!-- grid -->
     <div class="ui grid one column centered" id="homepage" style="padding-bottom:50px;">
@@ -63,7 +65,7 @@
                      <img class="ui image centered medium image"
                           src="/static/img/25236785_s.jpg">
                  </a>
-                 <a class="ui basic button large" href="{{ courselist_url }}">
+                 <a class="ui basic button large" href="{{ educationmonitor_url }}">
                      Zu unserem Angebot Bildungsmentoring
                  </a>
              </div>
@@ -76,7 +78,7 @@
                      <img class="ui image centered medium image"
                           src="/static/img/online_teaching.jpg">
                  </a>
-                 <a class="ui basic button large" href="{{ courselist_url }}">
+                 <a class="ui basic button large" href="{{ teachonline_url }}">
                      Zum Angebot Online-Unterrichten
                  </a>
             </div>

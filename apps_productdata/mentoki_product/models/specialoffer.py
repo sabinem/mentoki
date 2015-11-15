@@ -20,18 +20,41 @@ from model_utils.models import TimeStampedModel
 from froala_editor.fields import FroalaField
 
 from apps_data.course.models.course import Course
+from apps_productdata.mentoki_product.models.courseproduct import \
+    CourseProduct
+from apps_productdata.mentoki_product.models.courseproductgroup import \
+    CourseProductGroup, CourseProductSubGroup
 from django_enumfield import enum
 from ..constants import Offerreach
 
 import logging
-logger = logging.getLogger('__name__')
+logger = logging.getLogger('data.productdata')
+
+
+def calculate_sales_price(percentage_off, price):
+    """
+    Calculates the sale price from the original price and the precentage off
+    value
+    :param percentage_off:
+    :param price:
+    :return: sales price
+    """
+    percentage = 100 - percentage_off
+    sales_price = int(price) * percentage / 100.00
+    logger.info('Mit [%s] Procent off wurde aus dem Preis [%s] der '
+                'Verkaufspreis [%s] berechnet'
+                % (percentage_off, price, sales_price))
+    return sales_price
 
 
 class SpecialOfferManager(models.Manager):
     """
     Querysets for courseoffers
     """
-    def get_special_offer_courseproduct(self, courseproduct):
+    def apply_specialoffer_to_courseproduct(
+            self,
+            courseproduct,
+            price):
         """
         This function searches for the offer that applies to a courseproduct.
 
@@ -40,34 +63,67 @@ class SpecialOfferManager(models.Manager):
         :param courseproduct:
         :return: offer or None, if no offer exists
         """
-        logger.debug('Suche nach Rabatt für Produkt: [%s]'
-             % (courseproduct))
+        logger.debug('Suche nach Rabatt für Produkt: [%s], es soll auf Preis '
+                     '[%s] angewendet werden.'
+             % (courseproduct, price))
+
+         # try first option: offer for courseproduct
+
         try:
-            offer = self.get(
-                course=courseproduct.course,
-                offerreach=Offerreach.COURSE)
-            logger.debug('Kursgruppenangebot [%s] gefunden für Kursgruppe: [%s]'
-                        ', [%s] Prozent Rabatt'
-                     % (offer, offer.course, offer.percentage_off))
-            return offer
+            specialoffer = self.get(
+                courseproduct=courseproduct,
+                offerreach=Offerreach.PRODUCT)
+            logger.debug('Einzelangebot gefunden für [%s]: [%s] Rabatt'
+                     % (courseproduct, specialoffer.percentage_off))
+            return calculate_sales_price(specialoffer.percentage_off, price)
         except ObjectDoesNotExist:
-            logger.debug('Es gibt keinen Rabatt für dieses Produkt.')
-            return None
+            pass
+
+         # try next option: offer for courseproductsubgroup
+
+        try:
+            specialoffer = self.get(
+                courseproductsubgroup=courseproduct.courseproductsubgroup,
+                offerreach=Offerreach.PRODUCTSUBGROUP)
+            logger.debug('Untergruppenangebot gefunden für [%s]: [%s] Rabatt'
+                     % (courseproduct.courseproductsubgroup,
+                        specialoffer.percentage_off))
+            return calculate_sales_price(specialoffer.percentage_off, price)
+        except ObjectDoesNotExist:
+            pass
+
+        # try next option: offer for courseproductgroup
+
+        try:
+            specialoffer = self.get(
+                courseproductgroup=courseproduct.courseproductgroup,
+                offerreach=Offerreach.PRODUCTGROUP)
+            logger.debug('Gruppenangebot gefunden für [%s]: [%s] Rabatt'
+                     % (courseproduct.courseproductgroup,
+                        specialoffer.percentage_off))
+            return calculate_sales_price(specialoffer.percentage_off, price)
+        except ObjectDoesNotExist:
+            logger.debug('Es gibt keinen Rabatt für das Produkt [%s].'
+                         % courseproduct)
+
+            # return original price, if no offer was found
+            return price
 
     def count_course_offers_per_course(self, course):
         return self.filter(course=course, offerreach=Offerreach.COURSE).count()
 
 
-
 class SpecialOffer(TimeStampedModel):
 
+    courseproductgroup = models.ForeignKey(CourseProductGroup, blank=True, null=True)
+    courseproductsubgroup = models.ForeignKey(CourseProductSubGroup, blank=True, null=True)
+    courseproduct = models.ForeignKey(CourseProduct, blank=True, null=True)
     course = models.ForeignKey(Course, blank=True, null=True)
-
     name = models.CharField(max_length=200, default="25% Einführungsrabatt")
     description = FroalaField(blank=True, default="zur Einführung")
 
     percentage_off = models.IntegerField(default=0)
-    offerreach = enum.EnumField(Offerreach, default=Offerreach.COURSE)
+    offerreach = enum.EnumField(Offerreach, default=Offerreach.PRODUCTGROUP)
 
     objects = SpecialOfferManager()
 
@@ -79,9 +135,15 @@ class SpecialOffer(TimeStampedModel):
         return "%s: %s" % (self.name, self.offerreach)
 
     def clean(self, **kwargs):
-        if self.offerreach == Offerreach.COURSE:
+        if self.offerreach == Offerreach.PRODUCT:
+            if not self.courseproduct:
+                raise ValidationError(
+                    'Ein Rabatt der sich auf ein Produkt '
+                    'bezieht braucht ein Produkt')
             if not self.id: #insert
-                if SpecialOffer.objects.count_course_offers_per_course(
-                    course=self.course) > 0:
-                    raise ValidationError('Nur ein kursweiter Rabatt pro'
-                                          ' Kurs ist erlaubt.')
+                #if SpecialOffer.objects.count_course_offers_per_course(
+                #     course=self.course) > 1:
+                #    raise ValidationError('Nur ein kursweiter Rabatt pro'
+                #                          ' Kurs ist erlaubt.')
+                pass
+        #TODO: clean vervollständigen: genau ein ANgebot auf jeder Ebene möglich

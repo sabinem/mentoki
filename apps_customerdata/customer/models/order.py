@@ -27,18 +27,31 @@ class OrderManager(models.Manager):
     """
     Products that Mentoki sells
     """
-    def products_with_order_paid_for_course_and_customer(self,
+    #def products_with_order_paid_for_course_and_customer(self,
+    #        course,
+    #        customer):
+    #    product_ids = self.filter(
+    #        customer=customer,
+    #        order_status=OrderStatus.PARTIALLY_PAID,
+    #        course=course).\
+    #        values_list('courseproduct', flat=True)
+    #    return CourseProduct.objects.filter(id__in=product_ids)
+
+    def by_customer(self, customer):
+        return self.filter(customer=customer)
+
+    def by_course_and_customer(self, course, customer):
+        return self.filter(customer=customer, course=course)
+
+    def products_with_order_for_course_and_customer(self,
             course,
             customer):
         product_ids = self.filter(
             customer=customer,
-            order_status=OrderStatus.PAID,
+            started_to_pay=True,
             course=course).\
             values_list('courseproduct', flat=True)
         return CourseProduct.objects.filter(id__in=product_ids)
-
-    def by_customer(self, customer):
-        return self.filter(customer=customer)
 
 
 class Order(TimeStampedModel):
@@ -48,6 +61,9 @@ class Order(TimeStampedModel):
     of unregistered users, that will be registered automatically once the
     order was processed.
     """
+    # the course is part of the order since it may serve as an index
+    course = models.ForeignKey(Course, blank=True, null=True)
+
     courseproduct = models.ForeignKey(CourseProduct, blank=True, null=True)
 
     # for new users the customer is not set when the order is created
@@ -57,9 +73,6 @@ class Order(TimeStampedModel):
         verbose_name=_('Kunde, Teilnehmer, der gebucht hat'),
         blank=True,
         null=True)
-
-    # the course is part of the order since it may serve as an index
-    course = models.ForeignKey(Course, blank=True, null=True)
 
     # "user" data, at the point of time when the order was taken
     # these belong to the participant that will be later logged in
@@ -75,19 +88,34 @@ class Order(TimeStampedModel):
         max_length=40,
         default="x"
     )
+    started_to_pay = models.BooleanField(default=False)
+    fully_paid = models.BooleanField(default=False)
+    pay_in_parts = models.BooleanField(default=False)
 
-    # transaction status
+    # order status
     order_status = enum.EnumField(
         OrderStatus,
         default=OrderStatus.INITIAL
     )
-    # amount and currency that was paid
-    amount = models.DecimalField(
-        _("Betrag"),
+    last_transaction_had_success = models.BooleanField(default=False)
+
+    valid_until = models.DateField(
+        verbose_name=_("gültig bis"),
+        null=True, blank=True
+    )
+
+
+    # amount that was paid
+    amount_per_payment = models.DecimalField(
+        _("Betrag per Zahlung"),
         decimal_places=4,
         max_digits=20,
         default=0
     )
+    nr_parts_paid = models.IntegerField(default=1)
+    total_parts = models.IntegerField(default=1)
+
+    # currency of the payments
     currency = enum.EnumField(
         Currency,
         default=Currency.EUR)
@@ -111,3 +139,16 @@ class Order(TimeStampedModel):
     def save(self, **kwargs):
         self.course = self.courseproduct.course
         super(Order, self).save()
+
+    # amount that was paid
+    @property
+    def amount_paid(self):
+        return self.amount_per_payment * self.nr_parts_paid
+
+    @property
+    def amount_outstanding(self):
+        return self.amount_total - self.amount_outstanding
+
+    @property
+    def amount_total(self):
+        return self.amount_per_payment * self.total_parts

@@ -115,8 +115,7 @@ class Transaction(TimeStampedModel):
 
     # transaction status
     success = models.BooleanField(
-        _('Flag ob die Transaktion erfolgreich war, insofern '
-          'als tatsächlich bezahlt wurde.'),
+        _('erfolgreich?.'),
         default=False
     )
 
