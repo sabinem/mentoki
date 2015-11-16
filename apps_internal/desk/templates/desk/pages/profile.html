@@ -5,25 +5,146 @@
     <div class="ui grid">
 
         <div class="column sixteen wide">
-            <div class="ui cards stackable">
 
-            {% include 'desk/fragments/_profilecard.html' %}
+            <div class="ui segment">
+                <h2 class="ui left floated header">Kursbuchungen</h2>
+                <div class="ui clearing divider"></div>
+                {% if orders %}
+                    {% include 'desk/fragments/_order_table.html' %}
+                {% else %}
+                    <p> Du hast noch keinen Kurs bei Mentoki gebucht.</p>
+                {% endif %}
 
-            {% include 'desk/fragments/_mentorcard.html' %}
+                <h2 class="ui left floated header" style="margin-top:50px;">Profildaten</h2>
+                <div class="ui clearing divider"></div>
+                <div class="ui grid two columns stackable">
+                    <div class="ui column five wide ">
+                        <div class="ui list">
+                            <div class="item">
+                                <div class="header">Benutzername</div>
+                                {{ user.username }}
+                            </div>
+                            <div class="item">
+                                <div class="header">Email</div>
+                                {{ user.email }}
+                            </div>
+                            <div class="item">
+                                <div class="header">Name</div>
+                                {{ user.get_full_name }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui ten wide column">
+                        <div class="ui small image ">
+                            {% if user.profile_image %}
+                                <img src="{{ user.profile_image.url }}">
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <h2 class="ui left floated header" style="margin-top:50px;">Mentorenprofil</h2>
+                <div class="ui clearing divider"></div>
+
+                {% url 'profile:updatementor' pk=mentor.pk as mentor_url  %}
+                <h3><a href="{{ mentor_url }}">bearbeiten</a></h3>
+
+                <div class="ui grid two columns stackable">
+                    <div class="ui five wide column">
+                        <div class="ui list">
+                            <div class="item">
+                                <div class="header">Url</div>
+                                {{ mentor.slug }}
+                            </div>
+                            <div class="item">
+                                <div class="header">Rolle bei Mentoki</div>
+                                {{ mentor.at_mentoki }}
+                            </div>
+                            <div class="item">
+                                <div class="header">Superpower</div>
+                                {{ mentor.special_power }}
+                            </div>
+                            <div class="item">
+                            <div class="header">In einem Satz</div>
+                               {{ mentor.course_short }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui ten wide column">
+                        <div class="ui small image ">
+                            {% if mentor.foto %}
+                                <img src="{{ mentor.foto.url }}">
+                            {% endif %}
+                        </div>
+                        <div class="froala-view">
+                            {{ mentor.text | safe }}
+                        </div>
+                    </div>
+                </div>
+
+                {% for productgroup in productgroups %}
+
+                    <h2 class="ui left floated header" style="margin-top:50px;">{{ productgroup.course.title }}</h2>
+                    <div class="ui clearing divider"></div>
+                    {% url 'profile:updategroup' pk=productgroup.id as group_url  %}
+                    <h3><a href="{{ group_url }}">bearbeiten</a></h3>
+
+                    <div class="ui grid two columns stackable">
+                        <div class="ui five wide column">
+
+                            <div class="ui small image ">
+                                {% if productgroup.foto %}
+                                    <img src="{{ productgroup.foto.url }}">
+                                {% endif %}
+                            </div>
+                            <div class="ui list">
+                                <div class="item">
+                                    <div class="header">In einem Satz</div>
+                                    {{ productgroup.in_one_sentence }}
+                                </div>
+                                <div class="item">
+                                    <div class="header">Url</div>
+                                    {{ productgroup.slug }}
+                                </div>
+                                <div class="item">
+                                    <div class="header">Discount-Text(Übersichtseite)</div>
+                                    {{  productgroup.discount_text }}
+                                </div>
+                                <div class="item">
+                                    <div class="header">Discount-Text(Angebotseite)</div>
+                                    {{  productgroup.discount_text_long }}
+                                </div>
+                                <div class="item">
+                                    <div class="header">Titel</div>
+                                    {{ productgroup.title }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ui ten wide column">
+                            <h4 class="ui horizontal divider header">
+                                Kursthema
+                            </h4>
+                            <div class="froala-view">
+                                {{ productgroup.about | safe }}
+                            </div>
+                            <h4 class="ui horizontal divider header">
+                                Kursleitung
+                            </h4>
+                            <div class="froala-view">
+                                {{ productgroup.mentors | safe }}
+                            </div>
+                            <h4 class="ui horizontal divider header">
+                                Angebotbeschreibung
+                            </h4>
+                            <div class="froala-view">
+                                {{ productgroup.conditions | safe }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
-
-            {% include 'desk/fragments/_customersegment.html' %}
-
         </div>
-
     </div>
 
 {% endblock %}
-
-
-
-
-
-
-
-

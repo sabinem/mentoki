@@ -6,24 +6,15 @@ from django.conf.urls import patterns, url
 
 from .views import CourseProductGroupUpdateView, PublicTextChunksUpdateView, \
     MentorsProfileUpdateView
-from .views.learn import DeskLearnView
-from .views.teach import DeskTeachView
-from .views.admin import DeskAdminView
-from .views.profile import DeskProfileView
 
 
 urlpatterns = patterns('',
-    url(r'^profile$', DeskProfileView.as_view(), name='start' ),
+    url(r'^produktgruppe/(?P<pk>\d{1,4})/update$', CourseProductGroupUpdateView.as_view(),
+        name='updategroup' ),
 
-    url(r'^profile$', DeskProfileView.as_view(), name='profile' ),
-
-    url(r'^unterrichten$', DeskTeachView.as_view(), name='teach' ),
-
-    url(r'^lernen$', DeskLearnView.as_view(), name='learn' ),
-
-    url(r'^admin$', DeskAdminView.as_view(), name='admin' ),
-
-    url(r'^redirect$', DeskRedirectView.as_view(), name='redirect' ),
+    url(r'^mentor/(?P<pk>\d{1,4})/update$',
+        MentorsProfileUpdateView.as_view(),
+        name='updatementor' ),
 
 )
 

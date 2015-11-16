@@ -41,7 +41,10 @@ class OrderManager(models.Manager):
         return self.filter(customer=customer)
 
     def by_course_and_customer(self, course, customer):
-        return self.filter(customer=customer, course=course)
+        return self.filter(customer=customer, course=course).select_related(
+            'courseproduct__courseevent'
+        )
+
 
     def products_with_order_for_course_and_customer(self,
             course,
@@ -131,10 +134,6 @@ class Order(TimeStampedModel):
     def __unicode__(self):
         return 'Order: [%s: %s] ' \
                % (self.customer, self.courseproduct)
-
-    def __repr__(self):
-        return '[%s] %s %s' \
-               % (self.id, self.customer, self.courseproduct)
 
     def save(self, **kwargs):
         self.course = self.courseproduct.course

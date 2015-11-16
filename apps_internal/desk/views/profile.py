@@ -44,7 +44,12 @@ class DeskProfileView(
         # get mentor_profile
         try:
             mentor = MentorsProfile.objects.get(user=user)
+            logger.info(' - ist Mentor')
             context['mentor'] = mentor
+            productgroups = mentor.productgroups()
+            context['productgroups'] = productgroups
+
+
         except ObjectDoesNotExist:
             # user is not a mentor
             pass
@@ -52,9 +57,21 @@ class DeskProfileView(
         try:
             customer = Customer.objects.get(user=user)
             context['customer'] = customer
+            logger.info(' - ist Kunde :[%s]'
+                    % user.customer)
             orders = Order.objects.by_customer(customer=customer)
+            logger.info(' - hat Aufträge')
+            context['orders'] = orders
+            for order in orders:
+                print order.courseproduct.courseevent
         except ObjectDoesNotExist:
             # user is not a customer
+            pass
+
+        try:
+            mentor.teaching()
+        except AttributeError:
+            # user is not a mentor
             pass
 
         try:
@@ -62,6 +79,8 @@ class DeskProfileView(
         except ObjectDoesNotExist:
             # not yet verified, may be old user, before allauth was implemented
             pass
+
+        print context
 
         return context
 

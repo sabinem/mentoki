@@ -6,13 +6,15 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
 from .forms import CustomUserCreationForm, CustomUserChangeForm
-from .models import User
+from .models import User as MentokiUser
+from django.contrib.auth.admin import UserAdmin
 
 
-class UserAdmin(UserAdmin):
+class MentokiUserAdmin(UserAdmin):
     """
     Adminstration of Users
     """
+    model = MentokiUser
     form = CustomUserChangeForm
     add_form = CustomUserCreationForm
 
@@ -20,7 +22,7 @@ class UserAdmin(UserAdmin):
     list_filter = ('is_superuser', 'is_teacher', 'is_student')
 
     fieldsets = (
-        (None, {'fields': ('username', 'email', 'password', 'first_name', 'last_name', 'profile_image',
+        (None, {'fields': ('username', 'email', 'password', 'first_name', 'last_name', 'profile_image'
                            )}),
         ('Permissions', {'fields': ('is_active', 'is_superuser', 'is_staff')}),
     )
@@ -36,4 +38,4 @@ class UserAdmin(UserAdmin):
     ordering = ('email',)
     filter_horizontal = ('groups', 'user_permissions',)
 
-admin.site.register(User, UserAdmin)
+admin.site.register(MentokiUser, MentokiUserAdmin)

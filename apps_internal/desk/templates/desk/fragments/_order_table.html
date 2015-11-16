@@ -1,0 +1,31 @@
+<table class="ui table">
+    <thead>
+        <tr>
+            <th>Datum aufgesetzt</th>
+            <th>Datum letzte Zahlung</th>
+            <th>Kurs</th>
+            <th>Startdatum</th>
+            <th>bezahlt</th>
+            <th>Etappen</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+
+            <tr>
+                <td>{{ order.created | date:"SHORT_DATE_FORMAT" }}</td>
+                <td>{{ order.modified | date:"SHORT_DATE_FORMAT"}}</td>
+                <td>{{ order.courseproduct.courseevent.title }}</td>
+                <td>{{ order.courseproduct.courseevent.start_date | date:"SHORT_DATE_FORMAT" }}</td>
+                <td>{{ order.amount_paid |get_digit:"2" }}</td>
+                <td>
+                {% if order.has_parts %}
+                    {{ order.nr_parts_paid }} / {{ order.courseproduct.nr_parts_total }}
+                {% else %}
+                    n/a
+                {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

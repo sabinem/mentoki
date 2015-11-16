@@ -12,7 +12,7 @@ from .views.profile import DeskProfileView
 
 
 urlpatterns = patterns('',
-    url(r'^profile$', DeskProfileView.as_view(), name='start' ),
+    url(r'^profil$', DeskProfileView.as_view(), name='start' ),
 
     url(r'^profile$', DeskProfileView.as_view(), name='profile' ),
 

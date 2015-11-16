@@ -94,6 +94,8 @@ class CourseEvent(TimeStampedModel):
         null=True,
         blank=True)
 
+    classroom_open = models.BooleanField(default=False)
+
     EVENT_TYPE = Choices(('guided', 'guidedgroup', _('geführter Gruppenkurs')),
                          ('selflearn', 'selflearn', _('Selbstlernen')),
                          ('coached', 'coached', _('Selbstlernen mit Unterstützung'))

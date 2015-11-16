@@ -71,6 +71,10 @@ urlpatterns += i18n_patterns('',
     url(r'^schreibtisch/',
         include('apps_internal.desk.urls', namespace='desk')),
 
+    # desk: startpoint for all activities
+    url(r'^profil/',
+        include('apps_internal.adminproducts.urls', namespace='profile')),
+
     url(r'^accounts/', include('allauth.urls')),
 
 )

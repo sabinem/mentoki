@@ -20,6 +20,8 @@ from froala_editor.fields import FroalaField
 from autoslug import AutoSlugField
 
 from apps_data.course.models.course import Course
+from apps_productdata.mentoki_product.models.courseproductgroup \
+    import CourseProductGroup
 
 import logging
 logger = logging.getLogger(__name__)
@@ -73,7 +75,7 @@ class MentorsProfile(TimeStampedModel):
         max_length=250,
     )
     course_short = models.CharField(
-        verbose_name=_('Rolle bei Mentoki'),
+        verbose_name=_('Kurzbeschreibung'),
         blank=True,
         max_length=250,
     )
@@ -112,3 +114,7 @@ class MentorsProfile(TimeStampedModel):
 
     def teaching(self):
         return Course.objects.filter(courseowner__user=self.user)
+
+    def productgroups(self):
+        return CourseProductGroup.objects.filter(
+            course__in=self.teaching)

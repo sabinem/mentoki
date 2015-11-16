@@ -81,6 +81,7 @@ INSTALLED_APPS += (
     'apps_internal.desk',
     'apps_internal.coursebackend',
     'apps_internal.classroom',
+    'apps_internal.adminproducts',
 
     'apps_public.newsletter',
     'apps_public.contact',

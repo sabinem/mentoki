@@ -2,13 +2,13 @@
 
 {% block work %}
 
-    <div class="ui one column grid">
+    <div class="ui one column grid" style="padding-bottom:50px;">
 
         <div class="column">
 
-            <div class="ui cards">
+            <div class="ui cards centered">
                 {% for courseevent in study_courseevents %}
-                    <div class="ui card fluid">
+                    <div class="ui card">
                         {% include 'desk/fragments/_courseevent_learn_record.html' %}
                     </div>
                 {% empty %}

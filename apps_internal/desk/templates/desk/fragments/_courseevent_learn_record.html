@@ -4,18 +4,19 @@
 
     <div class="description">
 
-        {% if courseevent.start_date %}
-            gestartet vor {{ courseevent.start_date | timesince }}
-            <p>{{ courseevent.start_date }} - {{ courseevent.end_date }}</p>
-        {% endif %}
+       {% if courseevent.start_date %}
 
-        {{ courseevent.get_status_external_display }}
+       Start: {{ courseevent.start_date | date:"SHORT_DATE_FORMAT" }}
+
+        {% endif %}
 
     </div>
 
 </div>
-
+    {%  if courseevent.classroom_open %}
 <a class="ui bottom attached button" href="{% url 'classroom:start' slug=courseevent.slug %}">
+
     <i class="arrow right icon"></i>
     Zum Klassenzimmer gehen
 </a>
+{% endif %}
