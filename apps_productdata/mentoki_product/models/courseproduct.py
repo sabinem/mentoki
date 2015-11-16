@@ -44,13 +44,16 @@ class CourseProduct(Product):
     """
     Course Products are Products that belong to one Course
     """
+    courseevent = models.ForeignKey(CourseEvent, blank=True, null=True)
+    name = models.CharField(max_length=200, default="Kurs-Teilnahme")
+
     course = models.ForeignKey(Course)
     courseproductgroup = models.ForeignKey(
         CourseProductGroup, default=1)
     courseproductsubgroup = models.ForeignKey(
         CourseProductSubGroup, default=1)
 
-    courseevent = models.ForeignKey(CourseEvent, blank=True, null=True)
+
     can_be_bought_in_parts = models.BooleanField(default=False)
     nr_parts = models.IntegerField(
         default=1
@@ -61,6 +64,7 @@ class CourseProduct(Product):
     class Meta:
         verbose_name = _("Kursprodukt")
         verbose_name_plural = _("Kursprodukte")
+        unique_together = ('courseevent', 'name')
 
     def __unicode__(self):
         return u'[%s] %s' % (self.id, self.name)

@@ -89,12 +89,19 @@
                  <div class="content">
                      <div class="header">
                               {% if item.payment_complete %}
-                                  <a href="{{ desk_url }}">{{ item.courseproduct.name }}</a>
+                               <a href="{{ desk_url }}">
+                               {{ item.courseproduct.courseevent.title }}
+                                 {{ item.courseproduct.courseevent.start_date }}
+                              </a>
                               {% else %}
-                                  {{ item.courseproduct.name }}
+
+                               {{ item.courseproduct.courseevent.title }}
+                                 {{ item.courseproduct.courseevent.start_date }}
+
                               {% endif %}
                      </div>
-                     <p>{{ item.courseproduct.description | safe }}</p>
+                     <p>{{ item.courseproduct.name }}</p>
+                     <div class="froala-view">{{ item.courseproduct.description | safe }}</div>
                  </div>
 
             </div>
@@ -102,8 +109,13 @@
         {% endfor %}
 
     </div>
+<h3 class="ui left floated header" style="padding-top:50px;">
+    Leistungsbeschreibung im Detail
+</h3>
+  <div class="ui clearing divider"></div>
 
-     <div class="froala-view" style="padding-top:50px;">
+
+     <div class="froala-view" >
           {{ courseproductgroup.conditions | safe }}
      </div>
      <p style="color:grey;">* Es gelten unsere <a href="{{ agb_url }}">AGBs</a>.</p>

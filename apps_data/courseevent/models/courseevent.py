@@ -65,7 +65,7 @@ class CourseEvent(TimeStampedModel):
     )
 
     slug = models.SlugField(unique=True)
-    autoslug = AutoSlugField(populate_from=('title', 'start_date'))
+    #autoslug = AutoSlugField(populate_from=('title', 'start_date'))
 
     title = models.CharField(
         verbose_name=_("Kurstitel"),
@@ -114,9 +114,6 @@ class CourseEvent(TimeStampedModel):
         max_length=2,
         choices=STATUS_EXTERNAL,
         default=STATUS_EXTERNAL.not_public)
-    published_at = MonitorField(monitor='status_external', when=['booking'])
-    booking_closed_at = MonitorField(monitor='status_external', when=['booking_closed'])
-
     active = models.BooleanField(default=True)
 
     STATUS_INTERNAL = Choices(('0', 'draft', _('nicht veröffentlicht')),
@@ -128,12 +125,6 @@ class CourseEvent(TimeStampedModel):
         max_length=2,
         choices=STATUS_INTERNAL,
         default=STATUS_INTERNAL.draft)
-    accepted_at = MonitorField(
-        monitor='status_external',
-        when=['accepted'])
-    review_ready_at = MonitorField(
-        monitor='status_external',
-        when=['review'])
 
     # description of the courseevent
     excerpt = models.TextField(verbose_name="Abstrakt",
@@ -162,18 +153,6 @@ class CourseEvent(TimeStampedModel):
     prerequisites = models.TextField(
         verbose_name=_("Voraussetzungen"),
         blank=True)
-    pricemodel = models.TextField(
-        verbose_name=_("Preis Modell"),
-        help_text=_("""Skizziere Dein Wunsch-Preis-Modell für diesen Kurs."""),
-        blank=True)
-
-    price = models.DecimalField(
-        max_digits=12,
-        decimal_places=2,
-        null=True,
-        blank=True,
-        verbose_name=_('Preis')
-    )
 
     #participants
     participation = models.ManyToManyField(settings.AUTH_USER_MODEL, through="CourseEventParticipation", related_name='participation')

@@ -29,8 +29,6 @@ class ProductManager(models.Manager):
 
 class Product(TimeStampedModel):
 
-    name = models.CharField(max_length=200, default="Kurs-Teilnahme")
-
     description = FroalaField()
 
     # price with currency
@@ -46,11 +44,6 @@ class Product(TimeStampedModel):
                 verbose_name=_("letzte Preisänderung am"))
 
     display_nr = models.IntegerField(default=1)
-
-    # for search engines
-    meta_keywords = models.CharField(max_length=200, default="x")
-    meta_description = models.CharField(max_length=200, default="x")
-    meta_title = models.CharField(max_length=100, default="x")
 
     # product type
     product_type = enum.EnumField(
