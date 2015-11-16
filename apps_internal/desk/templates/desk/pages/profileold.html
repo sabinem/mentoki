@@ -7,7 +7,6 @@
         <div class="column sixteen wide">
 
             <div class="ui segment">
-
                 <h2 class="ui left floated header">Kursbuchungen</h2>
                 <div class="ui clearing divider"></div>
                 {% if orders %}
@@ -83,8 +82,67 @@
                     </div>
                 </div>
 
+                {% for productgroup in productgroups %}
 
+                    <h2 class="ui left floated header" style="margin-top:50px;">{{ productgroup.course.title }}</h2>
+                    <div class="ui clearing divider"></div>
+                    {% url 'profile:updategroup' pk=productgroup.id as group_url  %}
+                    <h3><a href="{{ group_url }}">bearbeiten</a></h3>
 
+                    <div class="ui grid two columns stackable">
+                        <div class="ui five wide column">
+
+                            <div class="ui small image ">
+                                {% if productgroup.foto %}
+                                    <img src="{{ productgroup.foto.url }}">
+                                {% endif %}
+                            </div>
+                            <div class="ui list">
+                                <div class="item">
+                                    <div class="header">In einem Satz</div>
+                                    {{ productgroup.in_one_sentence }}
+                                </div>
+                                <div class="item">
+                                    <div class="header">Url</div>
+                                    {{ productgroup.slug }}
+                                </div>
+                                <div class="item">
+                                    <div class="header">Discount-Text(Übersichtseite)</div>
+                                    {{  productgroup.discount_text }}
+                                </div>
+                                <div class="item">
+                                    <div class="header">Discount-Text(Angebotseite)</div>
+                                    {{  productgroup.discount_text_long }}
+                                </div>
+                                <div class="item">
+                                    <div class="header">Titel</div>
+                                    {{ productgroup.title }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ui ten wide column">
+                            <h4 class="ui horizontal divider header">
+                                Kursthema
+                            </h4>
+                            <div class="froala-view">
+                                {{ productgroup.about | safe }}
+                            </div>
+                            <h4 class="ui horizontal divider header">
+                                Kursleitung
+                            </h4>
+                            <div class="froala-view">
+                                {{ productgroup.mentors | safe }}
+                            </div>
+                            <h4 class="ui horizontal divider header">
+                                Angebotbeschreibung
+                            </h4>
+                            <div class="froala-view">
+                                {{ productgroup.conditions | safe }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
         </div>
     </div>
