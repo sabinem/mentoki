@@ -29,7 +29,7 @@ SITE_ID = 1
 
 # installed apps django
 INSTALLED_APPS = (
-    #'suit',
+    'suit',
     'django.contrib.admin',
     'django.contrib.admindocs',
     'django.contrib.auth',

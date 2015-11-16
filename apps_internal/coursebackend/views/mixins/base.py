@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 
-from braces.views import LoginRequiredMixin, FormValidMessageMixin, UserPassesTestMixin
+from braces.views import LoginRequiredMixin, UserPassesTestMixin
 
 from apps_data.courseevent.models.courseevent import CourseEvent
 from apps_data.course.models.course import Course
