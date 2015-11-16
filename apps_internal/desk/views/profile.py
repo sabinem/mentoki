@@ -69,12 +69,6 @@ class DeskProfileView(
             pass
 
         try:
-            mentor.teaching()
-        except AttributeError:
-            # user is not a mentor
-            pass
-
-        try:
             context['email'] = EmailAddress.objects.get(user=user)
         except ObjectDoesNotExist:
             # not yet verified, may be old user, before allauth was implemented
