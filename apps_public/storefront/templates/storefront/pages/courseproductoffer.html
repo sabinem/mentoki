@@ -8,7 +8,7 @@
 
 {% block course_detail %}
 
-    <div style="
+<div style="
           background: white;
           padding: 30px;
           ">
@@ -23,7 +23,7 @@
     <!-- urls --->
     {% url 'home:agb' as agb_url %}
 
-    <h3 class="ui left floated header" >
+    <h3 class="ui left floated header" style="color:#eb3d00;">
         Leistungsangebote im Detail
     </h3>
     <div class="ui clearing divider"></div>
@@ -35,8 +35,10 @@
      <p style="color:grey;">* Es gelten unsere <a href="{{ agb_url }}">AGBs</a>.</p>
 
 
-
-
+    <h3 class="ui left floated header" style="color:#eb3d00;">
+        Jetzt buchen
+    </h3>
+    <div class="ui clearing divider"></div>
     <div class="ui middle aligned divided list" >
 
         {% for item in product_list %}
