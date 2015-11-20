@@ -55,7 +55,13 @@
 
                        {% endif %}
                             </div>
-                            <a href="{{ pay_url }}" class="ui button red"
+                            <a href="{{ pay_url }}" class="ui button
+                           {% if item.is_on_sale %}
+                            red
+                           {% else %}
+                            grey
+                           {% endif %}
+                            "
                                style="
                                     #background: 0 0!important;
                                     #box-shadow: 0 0 0 2px #009c95 inset!important;
