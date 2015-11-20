@@ -13,6 +13,13 @@
           padding: 30px;
           ">
 
+    {% if courseproductgroup.discount_text %}
+        <!-- red: #eb3d00; -->
+        <div class="extra content" style="color:#eb3d00; min-height: 150px;" >
+            <img class="ui medium floated right image" src="/static/img/einfuehrungsrabatt.png">
+            <br> {{ courseproductgroup.discount_text_long }}
+        </div>
+    {% endif %}
     <!-- urls --->
     {% url 'home:agb' as agb_url %}
 
@@ -29,13 +36,6 @@
 
 
 
-    {% if courseproductgroup.discount_text %}
-        <!-- red: #eb3d00; -->
-        <div class="extra content" style="color:#eb3d00; min-height: 150px;" >
-            <img class="ui medium floated right image" src="/static/img/einfuehrungsrabatt.png">
-            <br> {{ courseproductgroup.discount_text_long }}
-        </div>
-    {% endif %}
 
     <div class="ui middle aligned divided list" >
 
