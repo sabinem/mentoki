@@ -10,12 +10,10 @@
     {% url 'storefront:mentors' slug=courseproductgroup.slug  as mentors_url %}
     {% url 'storefront:offer' slug=courseproductgroup.slug as offer_url %}
     <!-- text page -->
-    <div class="ui grid container" style="padding-bottom:100px;
-          padding-top:40px;"  >
 
-        <div class="content ui column sixteen wide">
 
-                <div class="ui two column stackable grid">
+                <div class="ui two column stackable grid"
+                     style="padding-top:20px; padding-bottom:20px;">
                     <div class="column five wide">
 
                         <!-- course card -->
@@ -84,8 +82,7 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
+
 
 {% endblock %}
 

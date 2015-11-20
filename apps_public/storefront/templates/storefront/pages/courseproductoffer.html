@@ -10,11 +10,24 @@
 
     <div style="
           background: white;
-          padding: 10px;
+          padding: 30px;
           ">
 
     <!-- urls --->
     {% url 'home:agb' as agb_url %}
+
+    <h3 class="ui left floated header" >
+        Leistungsangebote im Detail
+    </h3>
+    <div class="ui clearing divider"></div>
+
+
+     <div class="froala-view" >
+          {{ courseproductgroup.conditions | safe }}
+     </div>
+     <p style="color:grey;">* Es gelten unsere <a href="{{ agb_url }}">AGBs</a>.</p>
+
+
 
     {% if courseproductgroup.discount_text %}
         <!-- red: #eb3d00; -->
@@ -133,17 +146,7 @@
         {% endfor %}
 
     </div>
-<h3 class="ui left floated header" style="padding-top:50px;">
-    Leistungsbeschreibung im Detail
-</h3>
-  <div class="ui clearing divider"></div>
+    </div>
 
-
-     <div class="froala-view" >
-          {{ courseproductgroup.conditions | safe }}
-     </div>
-     <p style="color:grey;">* Es gelten unsere <a href="{{ agb_url }}">AGBs</a>.</p>
-
-</div>
 
 {% endblock %}
