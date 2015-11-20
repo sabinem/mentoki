@@ -28,6 +28,8 @@
      <div class="froala-view" >
           {{ courseproductgroup.conditions | safe }}
      </div>
+
+    {% if product_list %}
      <p style="color:grey;">* Es gelten unsere <a href="{{ agb_url }}">AGBs</a>.</p>
 
 
@@ -141,6 +143,8 @@
             </div>
 
         {% endfor %}
+
+    {% endif %}
 
     </div>
 
