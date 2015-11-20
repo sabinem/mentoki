@@ -74,7 +74,7 @@ class CourseProductGroupUpdateView(
     model = CourseProductGroup
     form_class = CourseProductGroupForm
     template_name = 'desk/pages/updategroup.html'
-    success_url = reverse_lazy('desk:profile')
+    success_url = reverse_lazy('desk:courseadmin')
 
 
 class MentorsProfileUpdateView(

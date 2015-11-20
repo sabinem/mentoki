@@ -86,7 +86,11 @@ href="{{ home_url }}">
     </div>
 </div>
 <div class="ui right dropdown item">
-    {{ request.user.username }}
+    {% if request.user.is_authenticated %}
+        {{ request.user.username }}
+    {% else %}
+        Benutzerbereich
+    {% endif %}
     <i class="dropdown icon"></i>
     <div class="menu">
         {% if request.user.is_authenticated %}

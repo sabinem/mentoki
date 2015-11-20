@@ -13,7 +13,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from braces.views import LoginRequiredMixin
 
 from apps_accountdata.userprofiles.models.mentor import MentorsProfile
-from apps_pagedata.public.models import StaticPublicPages
 
 import logging
 logger = logging.getLogger('activity.users')
