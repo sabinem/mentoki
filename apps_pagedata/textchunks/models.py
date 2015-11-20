@@ -87,74 +87,8 @@ class PublicTextChunks(TimeStampedModel):
         max_length=250
     )
     class Meta:
-        verbose_name = 'Öffentliche statische Seite'
-        verbose_name_plural = 'Öffentliche statische Seiten'
+        verbose_name = 'chunks'
+        verbose_name_plural = 'chunks'
 
     def __unicode__(self):
         return self.pagecode
-
-
-class StaticPublicPages(TimeStampedModel):
-    """
-    Public visible pages: each chunk corresponds to one page. It can be found
-    by its unique page code.
-    """
-    pagecode = models.CharField(
-        verbose_name=_('Seitencode'),
-        help_text=_('Der Seitencode ordnet die Textchunks eindeutig '
-                    'zu html Seiten zu. Die Views greifen die Seiten '
-                    'über den Seitencode ab.'),
-        max_length=20,
-        primary_key=True
-    )
-    text =  FroalaField(
-        verbose_name=_('Textchunk'),
-        help_text=_('Dieser Text wird als html chunk auf '
-                    'der Seite integriert. Der pagecode ordnet die Seite zu'),
-        blank=True
-    )
-    title = models.CharField(
-        verbose_name=_('Seitentitel'),
-        help_text=_('Der Seitentitel wird ebenfalls benutzt zum Aufbau der  '
-                    'zugeordenten html Seite'),
-        max_length=200,
-        blank=True
-    )
-    description = models.CharField(
-        verbose_name=_('interne Beschreibung der Seite'),
-        help_text=_('wird nicht nach aussen angezeigt.'),
-        max_length=250
-    )
-    banner = models.ImageField(
-        verbose_name=_('Banner'),
-        help_text=_('Optional kann ein Banner hochgeladen werden, dass nach'
-        ' aussen angezeigt werden kann.'),
-        upload_to=foto_location,
-        blank=True
-    )
-    meta_keywords = models.CharField(
-        verbose_name=_('Meta Keywords'),
-        help_text=_('HTML Meta Information zur Seite.'),
-        max_length=250
-    )
-    meta_description = models.CharField(
-        verbose_name=_('Meta Description'),
-        help_text=_('HTML Meta Information zur Seite.'),
-        max_length=250
-    )
-    meta_title = models.CharField(
-        verbose_name=_('Meta Titel'),
-        help_text=_('HTML Meta Information zur Seite.'),
-        max_length=250
-    )
-    slug = models.SlugField(blank=True, null=True)
-
-    class Meta:
-        verbose_name = 'Öffentliche statische Seite'
-        verbose_name_plural = 'Öffentliche statische Seiten'
-
-    def __unicode__(self):
-        return self.pagecode
-
-    def get_absolute_url(self):
-        return self.slug
