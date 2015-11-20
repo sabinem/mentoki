@@ -44,7 +44,7 @@ class CourseAdminView(
             logger.info(' - ist Mentor')
             context['mentor'] = mentor
             productgroups = mentor.productgroups()
-            logger.info(' - hat Kurse: [%s]' % productgroups)
+            logger.info(' - hat Kurse' % productgroups)
             context['productgroups'] = productgroups
 
         except ObjectDoesNotExist:
