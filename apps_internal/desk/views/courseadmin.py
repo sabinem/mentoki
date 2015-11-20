@@ -13,6 +13,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from braces.views import LoginRequiredMixin
 
 from apps_accountdata.userprofiles.models.mentor import MentorsProfile
+from apps_productdata.mentoki_product.models.courseproductgroup import CourseProductGroup
 
 import logging
 logger = logging.getLogger('activity.users')
@@ -37,18 +38,22 @@ class CourseAdminView(
         user = self.request.user
         context['user'] = user
 
-        # get mentor_profile
-        try:
-            mentor = MentorsProfile.objects.get(user=user)
-            logger.info(' - ist Mentor')
-            context['mentor'] = mentor
-            productgroups = mentor.productgroups()
-            logger.info(' - hat Kurse' % productgroups)
-            context['productgroups'] = productgroups
+        if user.is_superuser:
+            context['productgroups'] = CourseProductGroup.objects.all()
+        else:
 
-        except ObjectDoesNotExist:
-            # user is not a mentor
-            pass
+            # get mentor_profile
+            try:
+                mentor = MentorsProfile.objects.get(user=user)
+                logger.info(' - ist Mentor')
+                context['mentor'] = mentor
+                productgroups = mentor.productgroups()
+                logger.info(' - hat Kurse' % productgroups)
+                context['productgroups'] = productgroups
+
+            except ObjectDoesNotExist:
+                # user is not a mentor
+                pass
 
         return context
 
