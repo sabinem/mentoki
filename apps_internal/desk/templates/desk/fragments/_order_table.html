@@ -1,29 +1,29 @@
 <table class="ui table">
     <thead>
         <tr>
-            <th>Datum aufgesetzt</th>
-            <th>Datum letzte Zahlung</th>
+            <th>Thema</th>
             <th>Kurs</th>
             <th>Startdatum</th>
             <th>bezahlt</th>
-            <th>Etappen</th>
+            <th>noch offen</th>
         </tr>
     </thead>
     <tbody>
         {% for order in orders %}
 
             <tr>
-                <td>{{ order.created | date:"SHORT_DATE_FORMAT" }}</td>
-                <td>{{ order.modified | date:"SHORT_DATE_FORMAT"}}</td>
-                <td>{{ order.courseproduct.courseevent.title }}</td>
+                <td>{{ order.courseproduct.course.title }}</td>
+                <td>{{ order.courseproduct.name }}
+                </td>
                 <td>{{ order.courseproduct.courseevent.start_date | date:"SHORT_DATE_FORMAT" }}</td>
-                <td>{{ order.amount_paid |get_digit:"2" }}</td>
+                <td>{{ order.amount_paid }} {{ order.get_currency_display }}</td>
+
                 <td>
-                {% if order.has_parts %}
-                    {{ order.nr_parts_paid }} / {{ order.courseproduct.nr_parts_total }}
-                {% else %}
-                    n/a
-                {% endif %}
+                    {% if order.fully_paid %}
+                        <i class="icon checkmark green"></i>
+                    {% else %}
+                        {{ order.amount_outstanding}} {{ order.get_currency_display }}
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}

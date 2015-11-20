@@ -12,6 +12,7 @@ from django.db import models
 
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
+from django.core.urlresolvers import reverse_lazy
 
 from model_utils.models import TimeStampedModel
 
@@ -111,6 +112,10 @@ class MentorsProfile(TimeStampedModel):
         RETURN: ownership record representation
         """
         return u'%s' % (self.user)
+
+    def get_absolute_url(self):
+        return reverse_lazy('home:mentor',
+                       kwargs={'slug': self.slug})
 
     def teaching(self):
         return Course.objects.filter(courseowner__user=self.user)

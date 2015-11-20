@@ -11,17 +11,22 @@ from django.views.generic.base import TemplateView
 from django.conf import settings
 from django.views.defaults import *
 from django.conf.urls import url, include
-
+from django.contrib.sitemaps.views import sitemap
 
 from django_downloadview import ObjectDownloadView
 
 from apps_data.material.models.material import Material
+
+from .views import MentokiSitemap
 
 # for the download of files
 download = ObjectDownloadView.as_view(model=Material, file_field='file')
 
 from apps_public.newsletter.feeds import LatestNewsletterFeed
 
+sitemaps = {
+    'public': MentokiSitemap()
+}
 
 # The Admin Site
 urlpatterns = i18n_patterns('',
@@ -33,13 +38,21 @@ urlpatterns = i18n_patterns('',
     (r'^mail-queue/', include('mailqueue.urls')),
 )
 
+# seo
+urlpatterns += i18n_patterns('',
+
+    # robots
+    (r'^robots\.txt/$',
+        TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),
+
+    #sitemap
+    url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
+        name='django.contrib.sitemaps.views.sitemap')
+)
+
 
 # Public urls
 urlpatterns += i18n_patterns('',
-
-    # homepage
-    url(r'^',
-        include('apps_public.home.urls', namespace='home')),
 
     # courseevent offers
     url(r'^checkout/',
@@ -70,10 +83,6 @@ urlpatterns += i18n_patterns('',
     # desk: startpoint for all activities
     url(r'^schreibtisch/',
         include('apps_internal.desk.urls', namespace='desk')),
-
-    # desk: startpoint for all activities
-    url(r'^profil/',
-        include('apps_internal.adminproducts.urls', namespace='profile')),
 
     url(r'^accounts/', include('allauth.urls')),
 
@@ -125,11 +134,14 @@ urlpatterns += i18n_patterns('',
     url(r'^froala_editor/',
         include('froala_editor.urls')),
 
-    # robots
-    (r'^robots\.txt/$',
-        TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),
 )
 
+# utilities
+urlpatterns += i18n_patterns('',
+    # homepage
+    url(r'^',
+        include('apps_public.home.urls', namespace='home')),
+)
 
 if settings.DEBUG:
     urlpatterns += patterns('',

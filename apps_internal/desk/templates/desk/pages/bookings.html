@@ -1,0 +1,13 @@
+{% extends "desk/pages/base.html" %}
+{% block desk_header %}Deine Kursbuchungen{% endblock %}
+{% block work %}
+
+
+    {% if orders %}
+        {% include 'desk/fragments/_order_table.html' %}
+    {% else %}
+        <p> Du hast noch keinen Kurs bei Mentoki gebucht.</p>
+    {% endif %}
+
+
+{% endblock %}

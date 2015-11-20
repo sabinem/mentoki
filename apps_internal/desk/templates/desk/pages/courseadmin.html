@@ -1,0 +1,55 @@
+{% extends "desk/pages/base.html" %}
+{% block desk_header %}Deine Kursausschreibungen{% endblock %}
+{% block work %}
+
+    {% for productgroup in productgroups %}
+
+         <div class="ui segment teal">
+        {% url 'profile:updategroup' pk=productgroup.id as group_url  %}
+        <div class="ui top attached tabular menu" style="margin-bottom:20px;">
+        <a class="active item"><h3>{{ productgroup.course.title }}</h3></a>
+        <a href="{{ productgroup.get_absolute_url }}" class="item">Auf der Webseite</a>
+        <a href="{{ group_url }}" class="item">Bearbeiten</a>
+        </div>
+
+        <div class="ui grid two columns stackable">
+            <div class="ui five wide column">
+
+                <div class="ui medium image ">
+                    {% if productgroup.foto %}
+                        <img src="{{ productgroup.foto.url }}">
+                    {% endif %}
+                </div>
+                <div class="ui list">
+                    <div class="item">
+                        <div class="header">In einem Satz</div>
+                        {{ productgroup.in_one_sentence }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui ten wide column">
+                <h4 class="ui horizontal divider header">
+                    Kursthema
+                </h4>
+                <div class="froala-view">
+                    {{ productgroup.about | safe }}
+                </div>
+                <h4 class="ui horizontal divider header">
+                    Kursleitung
+                </h4>
+                <div class="froala-view">
+                    {{ productgroup.mentors | safe }}
+                </div>
+                <h4 class="ui horizontal divider header">
+                    Angebotbeschreibung
+                </h4>
+                <div class="froala-view">
+                    {{ productgroup.conditions | safe }}
+                </div>
+            </div>
+        </div>
+        </div>
+    {% endfor %}
+
+{% endblock %}

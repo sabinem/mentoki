@@ -30,8 +30,10 @@ class CourseProductManager(models.Manager):
         """
         gets all courseproducts that have dependencies for one course
         """
-        return self.filter(
-            course=course)\
+        return self\
+            .filter(
+                course=course,
+                published=True)\
             .order_by('display_nr')
 
     def ordered_subgroups(self, ordered_products):
@@ -53,7 +55,15 @@ class CourseProduct(Product):
     courseproductsubgroup = models.ForeignKey(
         CourseProductSubGroup, default=1)
 
-
+    prebook = models.BooleanField(
+        default=False
+    )
+    ready_for_sale = models.BooleanField(
+        default=False
+    )
+    published = models.BooleanField(
+        default=False
+    )
     can_be_bought_in_parts = models.BooleanField(default=False)
     nr_parts = models.IntegerField(
         default=1

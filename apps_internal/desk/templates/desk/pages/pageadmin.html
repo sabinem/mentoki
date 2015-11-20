@@ -1,0 +1,24 @@
+{% extends "desk/pages/base.html" %}
+{% block desk_header %}Seiten-Administration{% endblock %}
+{% block work %}
+
+    {% for page in pages %}
+        <div class="ui segment teal">
+        {% url 'profile:updatepage' pk=page.pagecode as page_url  %}
+        <div class="ui top attached tabular menu" style="margin-bottom:20px;">
+        <a class="active item"><h3>{{ page.title }}</h3></a>
+        <a href="{{ page.get_absolute_url }}" class="item">Auf der Webseite</a>
+        <a href="{{ page_url }}" class="item">Bearbeiten</a>
+        </div>
+        <div class="ui fluid image ">
+            {% if page.banner %}
+                <img src="{{ page.banner.url }}">
+            {% endif %}
+        </div>
+        <div class="froala-view">
+            {{ page.text | safe }}
+        </div>
+        </div>
+    {% endfor %}
+
+{% endblock %}

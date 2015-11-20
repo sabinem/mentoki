@@ -51,3 +51,21 @@ class OrderStatus(enum.Enum):
         CANCELED: _('abgesagt'),
         REFUNDED: _('zurückerstattet, nach einer Absage'),
     }
+
+
+class ContactReason(enum.Enum):
+    """
+    Eventually in the future there will be more states, like the reason
+    why the customer cannot buy the product.
+    """
+    TEACH = 0
+    LEARN = 1
+    STARTERCOURSE = 10
+    OTHER = 11
+
+    labels = {
+        TEACH: _('ich möchte unterrichten'),
+        LEARN: _('ich interessiere mich für einen Kurs'),
+        STARTERCOURSE: _('Ich interessiere mich für den Mentoki Starterkurs'),
+        OTHER: _('es geht um etwas anderes'),
+    }

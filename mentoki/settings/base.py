@@ -37,7 +37,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites'
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
 )
 
 # installed apps thirdparty
@@ -72,6 +73,7 @@ INSTALLED_APPS += (
     'apps_productdata.mentoki_product',
 
     'apps_pagedata.textchunks',
+    'apps_pagedata.public',
 
     'apps_data.course',
     'apps_data.courseevent',
@@ -81,7 +83,7 @@ INSTALLED_APPS += (
     'apps_internal.desk',
     'apps_internal.coursebackend',
     'apps_internal.classroom',
-    'apps_internal.adminproducts',
+
 
     'apps_public.newsletter',
     'apps_public.contact',
@@ -178,26 +180,26 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
-# TODO: Simon fragen warum das nicht funktioniert hat: base templates were not found
+
 # templates
-#TEMPLATES = [
-#    {
-#        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-#        'DIRS': ['templates'],
-#        'APP_DIRS': True,
-#        'OPTIONS': {
-#            'context_processors': [
-#                'django.contrib.auth.context_processors.auth',
-#                'django.template.context_processors.debug',
-#                'django.template.context_processors.i18n',
-#                'django.template.context_processors.media',
-#                'django.template.context_processors.static',
-#                'django.template.context_processors.tz',
-#                'django.contrib.messages.context_processors.messages',
-#            ],
-#        },
-#    },
-#]
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': ['templates'],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
 
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'templates'),

@@ -43,7 +43,16 @@
 
     <body id="mentoki">
         <!-- keep wrapper to have the footer at the bottom of the viewport -->
-        <div id="wrapper">
+        <div id="wrapper"
+                style=" min-height: 100%;
+                height: auto !important;
+                height: 100%;
+                margin: 0 auto -142px;
+                {% block background_image %}{% endblock %}
+                background-size: cover;
+                background-attachment: fixed;"
+
+                >
             <div id="content" style="padding-bottom:0px;">
                 {% block navbar %}{% endblock %}
 
@@ -57,10 +66,13 @@
                 <script src="/static/js/main.js"></script>
                 {% block bottom_js_extra_tools %}{% endblock %}
             </div>
-            <div id="footer">
+
+        <div class="push" style="height: 142px;"></div>
+        </div>
+            <div id="footer" style="bottom: 0;
+                         height: 142px;">
                 {% block footer %}{% endblock %}
             </div>
-        </div>
     </body>
 
 </html>

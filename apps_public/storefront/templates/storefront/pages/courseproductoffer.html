@@ -1,12 +1,17 @@
 {% extends "storefront/pages/base_detail.html" %}
 {% load i18n %}
 
-{% block meta_title %}Mentoki - Lehr- und Lernplattform | Lernen und Lehren lebenslang{% endblock %}
+{% block meta_title %}{{ courseproductgroup.meta_title }}{% endblock %}
 
-{% block meta_description %}Wir sind eine Lehr- und Lern-Plattform für unabhängiger Mentoren und ihre Schüler{% endblock %}
-{% block meta_keywords %}mentoren netzwerk, lern plattform, erwachsenen bildung, online unterrichten, lehr plattform{% endblock %}
+{% block meta_description %}{{ courseproductgroup.meta_description }}{% endblock %}
+{% block meta_keywords %}{{ courseproductgroup.meta_keywords }}{% endblock %}
 
 {% block course_detail %}
+
+    <div style="
+          background: white;
+          padding: 10px;
+          ">
 
     <!-- urls --->
     {% url 'home:agb' as agb_url %}
@@ -19,7 +24,7 @@
         </div>
     {% endif %}
 
-    <div class="ui middle aligned divided list">
+    <div class="ui middle aligned divided list" >
 
         {% for item in product_list %}
             <div class="item">
@@ -29,13 +34,18 @@
                  {% if item.can_buy %}
                       <div class="right floated content">
                             <div style="padding: 10px;">
-{% if item.has_parts %}
+                       {% if item.has_parts %}
                             <i class="icon green checkmark"></i>
                               bereits bezahlt bis zu {{ item.order.nr_parts_paid }}. Etappe
 
                        {% endif %}
                             </div>
-                            <a href="{{ pay_url }}" class="ui button">
+                            <a href="{{ pay_url }}" class="ui button teal basic"
+                               style="
+                                    background: 0 0!important;
+                                    box-shadow: 0 0 0 2px #009c95 inset!important;
+                                    color: #009c95!important;"
+                                    >
                        {% if item.has_parts %}
 
                            {{ item.buy_part_nr}}. Etappe:
@@ -62,6 +72,20 @@
                                 <i class="icon green checkmark"></i>
                                 Buchung komplett
                             </div>
+                      </div>
+
+                 {% elif item.prebook %}
+
+                       <div class="right floated content">
+
+                            <a href="{{prebook_url }}" class="ui button basic teal"
+                                    style="
+                                    background: 0 0!important;
+                                    box-shadow: 0 0 0 2px #009c95 inset!important;
+                                    color: #009c95!important;"
+                                    >
+                                Bitte benachrichtigen sobald die Buchung geöffnet ist
+                            </a>
                       </div>
 
                  {% else %}
@@ -119,5 +143,7 @@
           {{ courseproductgroup.conditions | safe }}
      </div>
      <p style="color:grey;">* Es gelten unsere <a href="{{ agb_url }}">AGBs</a>.</p>
+
+</div>
 
 {% endblock %}

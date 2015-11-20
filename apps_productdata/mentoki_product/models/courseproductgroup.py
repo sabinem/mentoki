@@ -10,6 +10,7 @@ from __future__ import unicode_literals, absolute_import
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.core.urlresolvers import reverse_lazy
 
 import logging
 logger = logging.getLogger(__name__)
@@ -25,13 +26,32 @@ class CourseProductGroupManager(models.Manager):
     """
     Querysets for CourseEvents
     """
-    def by_mentor(self, user):
-        return self.filter(course__courseowner__user=user).\
-            select_related('course').order_by('display_nr')
+    def published_by_mentor(self, user):
+        return self\
+            .filter(course__courseowner__user=user,
+                    published=True)\
+            .select_related('course')\
+            .order_by('display_nr')
 
     def published(self):
-        return self.filter(published=True).\
-            select_related('course').order_by('display_nr')
+        return self\
+            .filter(published=True)\
+            .select_related('course')\
+            .order_by('display_nr')
+
+    def book_now(self):
+        return self\
+            .filter(published=True,
+                    can_be_booked_now=True)\
+            .select_related('course')\
+            .order_by('display_nr')
+
+    def preview(self):
+        return self\
+            .filter(published=True,
+                    can_be_booked_now=False)\
+            .select_related('course')\
+            .order_by('display_nr')
 
 
 def foto_location(instance, filename):
@@ -61,7 +81,63 @@ class CourseProductGroup(TimeStampedModel):
         help_text=_('beschreibe den Kurs in einem Satz'),
         max_length=250)
 
-    published = models.BooleanField(default=True)
+    meta_keywords_description = models.CharField(
+        verbose_name=_('Meta Keywords'),
+        default="Mentoki",
+        help_text=_('HTML Meta Information zur Seite.'),
+        max_length=250
+    )
+    meta_description_description = models.CharField(
+        verbose_name=_('Meta Description'),
+        default="Mentoki",
+        help_text=_('HTML Meta Information zur Seite.'),
+        max_length=250
+    )
+    meta_title_description = models.CharField(
+        verbose_name=_('Meta Titel'),
+        default="Mentoki",
+        help_text=_('HTML Meta Information zur Seite.'),
+        max_length=250
+    )
+    meta_keywords_offers = models.CharField(
+        verbose_name=_('Meta Keywords'),
+        default="Mentoki",
+        help_text=_('HTML Meta Information zur Seite.'),
+        max_length=250
+    )
+    meta_description_offers = models.CharField(
+        verbose_name=_('Meta Description'),
+        default="Mentoki",
+        help_text=_('HTML Meta Information zur Seite.'),
+        max_length=250
+    )
+    meta_title_offers  = models.CharField(
+        verbose_name=_('Meta Titel'),
+        default="Mentoki",
+        help_text=_('HTML Meta Information zur Seite.'),
+        max_length=250
+    )
+    meta_keywords_mentors = models.CharField(
+        verbose_name=_('Meta Keywords'),
+        default="Mentoki",
+        help_text=_('HTML Meta Information zur Seite.'),
+        max_length=250
+    )
+    meta_description_mentors = models.CharField(
+        verbose_name=_('Meta Description'),
+        default="Mentoki",
+        help_text=_('HTML Meta Information zur Seite.'),
+        max_length=250
+    )
+    meta_title_mentors = models.CharField(
+        verbose_name=_('Meta Titel'),
+        default="Mentoki",
+        help_text=_('HTML Meta Information zur Seite.'),
+        max_length=250
+    )
+
+    published = models.BooleanField(default=False)
+    can_be_booked_now = models.BooleanField(default=False)
     display_nr = models.IntegerField(default=1)
 
     slug = models.SlugField(default="x")
@@ -80,6 +156,11 @@ class CourseProductGroup(TimeStampedModel):
 
     def __unicode__(self):
         return self.course.title
+
+    def get_absolute_url(self):
+        return reverse_lazy('storefront:offer',
+                       kwargs={'slug': self.slug})
+
 
 
 class CourseProductSubGroup(TimeStampedModel):

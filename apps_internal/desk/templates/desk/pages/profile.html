@@ -7,16 +7,22 @@
         <div class="column sixteen wide">
 
             <div class="ui segment">
-                <h2 class="ui left floated header">Kursbuchungen</h2>
-                <div class="ui clearing divider"></div>
+                <h2 class="ui header">Kursbuchungen</h2>
+
                 {% if orders %}
                     {% include 'desk/fragments/_order_table.html' %}
                 {% else %}
                     <p> Du hast noch keinen Kurs bei Mentoki gebucht.</p>
                 {% endif %}
 
-                <h2 class="ui left floated header" style="margin-top:50px;">Profildaten</h2>
-                <div class="ui clearing divider"></div>
+                {% url 'profile:updateprofile' pk=user.pk as userprofile_url  %}
+
+                <div class="ui medium header" >Benutzer-Profil</div>
+                <div class="ui top attached tabular menu" style="margin-bottom:20px;">
+                    <a class="active item"><h3>Benutzer-Profil</h3></a>
+
+                    <a href="{{ userprofile_url }}" class="item">Bearbeiten</a>
+                    </div>
                 <div class="ui grid two columns stackable">
                     <div class="ui column five wide ">
                         <div class="ui list">
@@ -45,103 +51,111 @@
 
                 {% if mentor %}
 
-                <h2 class="ui left floated header" style="margin-top:50px;">Mentorenprofil</h2>
-                <div class="ui clearing divider"></div>
-
-                {% url 'profile:updatementor' pk=mentor.pk as mentor_url  %}
-                <h3><a href="{{ mentor_url }}">bearbeiten</a></h3>
-
-                <div class="ui grid two columns stackable">
-                    <div class="ui five wide column">
-                        <div class="ui list">
-                            <div class="item">
-                                <div class="header">Url</div>
-                                {{ mentor.slug }}
-                            </div>
-                            <div class="item">
-                                <div class="header">Rolle bei Mentoki</div>
-                                {{ mentor.at_mentoki }}
-                            </div>
-                            <div class="item">
-                                <div class="header">Superpower</div>
-                                {{ mentor.special_power }}
-                            </div>
-                            <div class="item">
-                            <div class="header">In einem Satz</div>
-                               {{ mentor.course_short }}
-                            </div>
-                        </div>
+                    {% url 'profile:updatementor' pk=mentor.pk as mentor_url  %}
+                    <div class="ui top attached tabular menu" style="margin-bottom:20px;">
+                    <a class="active item"><h3>Mentorenprofil</h3></a>
+                    <a href="{{ mentor.get_absolute_url }}" class="item">Auf der Webseite</a>
+                    <a href="{{ mentor_url }}" class="item">Bearbeiten</a>
                     </div>
-                    <div class="ui ten wide column">
-                        <div class="ui small image ">
-                            {% if mentor.foto %}
-                                <img src="{{ mentor.foto.url }}">
-                            {% endif %}
-                        </div>
-                        <div class="froala-view">
-                            {{ mentor.text | safe }}
-                        </div>
-                    </div>
-                </div>
-
-                {% for productgroup in productgroups %}
-
-                    <h2 class="ui left floated header" style="margin-top:50px;">{{ productgroup.course.title }}</h2>
-                    <div class="ui clearing divider"></div>
-                    {% url 'profile:updategroup' pk=productgroup.id as group_url  %}
-                    <h3><a href="{{ group_url }}">bearbeiten</a></h3>
 
                     <div class="ui grid two columns stackable">
                         <div class="ui five wide column">
-
-                            <div class="ui small image ">
-                                {% if productgroup.foto %}
-                                    <img src="{{ productgroup.foto.url }}">
-                                {% endif %}
-                            </div>
                             <div class="ui list">
                                 <div class="item">
-                                    <div class="header">In einem Satz</div>
-                                    {{ productgroup.in_one_sentence }}
+                                    <div class="header">Rolle bei Mentoki</div>
+                                    {{ mentor.at_mentoki }}
                                 </div>
                                 <div class="item">
-                                    <div class="header">Discount-Text(Übersichtseite)</div>
-                                    {{  productgroup.discount_text }}
-                                </div>
-                                <div class="item">
-                                    <div class="header">Discount-Text(Angebotseite)</div>
-                                    {{  productgroup.discount_text_long }}
-                                </div>
-                                <div class="item">
-                                    <div class="header">Titel</div>
-                                    {{ productgroup.title }}
+                                    <div class="header">Charakteristik</div>
+                                    {{ mentor.special_power }}
                                 </div>
                             </div>
                         </div>
-
                         <div class="ui ten wide column">
-                            <h4 class="ui horizontal divider header">
-                                Kursthema
-                            </h4>
-                            <div class="froala-view">
-                                {{ productgroup.about | safe }}
+                            <div class="ui small image ">
+                                {% if mentor.foto %}
+                                    <img src="{{ mentor.foto.url }}">
+                                {% endif %}
                             </div>
-                            <h4 class="ui horizontal divider header">
-                                Kursleitung
-                            </h4>
                             <div class="froala-view">
-                                {{ productgroup.mentors | safe }}
-                            </div>
-                            <h4 class="ui horizontal divider header">
-                                Angebotbeschreibung
-                            </h4>
-                            <div class="froala-view">
-                                {{ productgroup.conditions | safe }}
+                                {{ mentor.text | safe }}
                             </div>
                         </div>
                     </div>
-                {% endfor %}
+                    {% if productgroups %}
+                        <h2 class="ui header" style="margin-top:50px;">Deine Kurse</h2>
+                    {% endif %}
 
+                    {% for productgroup in productgroups %}
+                        {% url 'profile:updategroup' pk=productgroup.id as group_url  %}
+                        <div class="ui top attached tabular menu" style="margin-bottom:20px;">
+                        <a class="active item"><h3>{{ productgroup.course.title }}</h3></a>
+                        <a href="{{ productgroup.get_absolute_url }}" class="item">Auf der Webseite</a>
+                        <a href="{{ group_url }}" class="item">Bearbeiten</a>
+                        </div>
+
+                        <div class="ui grid two columns stackable">
+                            <div class="ui five wide column">
+
+                                <div class="ui medium image ">
+                                    {% if productgroup.foto %}
+                                        <img src="{{ productgroup.foto.url }}">
+                                    {% endif %}
+                                </div>
+                                <div class="ui list">
+                                    <div class="item">
+                                        <div class="header">In einem Satz</div>
+                                        {{ productgroup.in_one_sentence }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="ui ten wide column">
+                                <h4 class="ui horizontal divider header">
+                                    Kursthema
+                                </h4>
+                                <div class="froala-view">
+                                    {{ productgroup.about | safe }}
+                                </div>
+                                <h4 class="ui horizontal divider header">
+                                    Kursleitung
+                                </h4>
+                                <div class="froala-view">
+                                    {{ productgroup.mentors | safe }}
+                                </div>
+                                <h4 class="ui horizontal divider header">
+                                    Angebotbeschreibung
+                                </h4>
+                                <div class="froala-view">
+                                    {{ productgroup.conditions | safe }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                {% endif %}
+                {% if user.is_staff %}
+                    <h2 class="ui header" style="margin-top:50px;">Administration</h2>
+                {% endif %}
+
+
+                {% if user.is_staff %}
+                    {% for page in pages %}
+                        {% url 'profile:updatepage' pk=page.pagecode as page_url  %}
+                        <div class="ui top attached tabular menu" style="margin-bottom:20px;">
+                        <a class="active item"><h3>{{ page.title }}</h3></a>
+                        <a href="{{ page.get_absolute_url }}" class="item">Auf der Webseite</a>
+                        <a href="{{ page_url }}" class="item">Bearbeiten</a>
+                        </div>
+                        <div class="ui fluid image ">
+                            {% if page.banner %}
+                                <img src="{{ page.banner.url }}">
+                            {% endif %}
+                        </div>
+                        <div class="froala-view">
+                            {{ page.text | safe }}
+                        </div>
+                    {% endfor %}
                 {% endif %}
             </div>
         </div>

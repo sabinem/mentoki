@@ -1,9 +1,20 @@
 {% extends "base/base_pusher.html" %}
 {% load activelink %}
 
-{% block page_section_css_id %}coursebackend{% endblock %}
+{% block background_image %}
+    background-image: url('/static/img/45169729_ml.jpg');
+{% endblock %}
 
-{% block page_header %}Kursereignis {{ courseevent.title }}: {{ course.teachersrecord }}{% endblock %}
+{% block page_header %}
+     <h2 style="
+         padding:20px;
+         margin:0px -20px;
+         opacity:0.5;
+         background:white;
+         ">
+         Kursereignis {{ courseevent.title }}: {{ course.teachersrecord }}
+     </h2>
+{% endblock %}
 
 {% block css_breadcrumbs %}coursebackend_background{% endblock %}
 

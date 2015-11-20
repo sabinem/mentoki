@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {% url "account_logout" as logout_url %}
-{% url 'desk:start' as desk_url %}
+{% url 'desk:learn' as desk_url %}
 {% url 'coursebackend:menu:preview' course_slug=cs slug=es as coursebackend_url %}
 
 <div class="ui fluid vertical menu" id="coursebackend_menu">
@@ -10,7 +10,7 @@
     <div class="header item huge" style="font-size:1.5em;">
         Hallo {{ user.username }}!
     </div>
-    <a  href="{% url 'desk:start' %}" class="item" style="font-size:1.1em;">
+    <a  href="{% url 'desk:learn' %}" class="item" style="font-size:1.1em;">
         Zurück zum Schreibtisch
     </a>
 

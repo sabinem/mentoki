@@ -17,12 +17,13 @@ from allauth.account.models import EmailAddress
 from apps_accountdata.userprofiles.models.mentor import MentorsProfile
 from apps_customerdata.customer.models.customer import Customer
 from apps_customerdata.customer.models.order import Order
+from apps_pagedata.public.models import StaticPublicPages
 
 import logging
 logger = logging.getLogger('activity.users')
 
 
-class DeskProfileView(
+class UserProfileView(
     LoginRequiredMixin,
     TemplateView):
     """
@@ -68,11 +69,9 @@ class DeskProfileView(
             # user is not a customer
             pass
 
-        try:
-            context['email'] = EmailAddress.objects.get(user=user)
-        except ObjectDoesNotExist:
-            # not yet verified, may be old user, before allauth was implemented
-            pass
+        if user.is_staff:
+            pages = StaticPublicPages.objects.all()
+            context['pages'] = pages
 
         print context
 

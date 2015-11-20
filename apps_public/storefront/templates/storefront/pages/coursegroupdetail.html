@@ -7,7 +7,11 @@
 {% block meta_keywords %}{{ courseeventproduct.meta_keywords }}{% endblock %}
 
 {% block course_detail %}
-     <div class="froala-view">
+     <div class="froala-view"
+          style="
+          background: white;
+          padding: 10px;
+          ">
          {{ courseproductgroup.about |safe }}
      </div>
 {% endblock %}

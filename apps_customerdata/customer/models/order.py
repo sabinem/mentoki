@@ -146,7 +146,7 @@ class Order(TimeStampedModel):
 
     @property
     def amount_outstanding(self):
-        return self.amount_total - self.amount_outstanding
+        return self.amount_total - self.amount_paid
 
     @property
     def amount_total(self):

@@ -48,7 +48,11 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     # redefine fields that would normally be in User
     email = models.EmailField(unique=True)
-    username = models.CharField(max_length=40, unique=True)
+    username = models.CharField(
+        verbose_name='Benutzername',
+        max_length=40,
+        unique=True
+    )
 
     first_name = models.CharField(max_length=40, blank=True)
     last_name = models.CharField(max_length=40, blank=True)
@@ -57,17 +61,21 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
 
     # this field is calculated in the save method, no manual update
-    is_teacher = models.BooleanField(default=False, editable=False)
+    is_teacher = models.BooleanField(default=False)
 
     is_female = models.BooleanField(default=True)
 
     # this field is calculated in the save method, no manual update
-    is_student = models.BooleanField(default=False, editable=False)
+    is_student = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    profile_image = models.ImageField(upload_to="uploads", blank=False, null=False,
-                                      default='/static/img/happyface.jpg' )
+    profile_image = models.ImageField(
+        verbose_name='Profilbild',
+        upload_to="uploads",
+        blank=False,
+        null=False,
+        default='/static/img/happyface.jpg')
     checkout_product_pk = models.IntegerField(
         blank=True, null=True
     )

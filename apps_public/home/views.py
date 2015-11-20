@@ -16,6 +16,7 @@ from apps_accountdata.userprofiles.models.mentor import MentorsProfile
 from apps_pagedata.textchunks.models import PublicTextChunks
 from accounts.models import User
 from apps_productdata.mentoki_product.models.courseproductgroup import CourseProductGroup
+from apps_pagedata.public.models import StaticPublicPages
 
 import logging
 logger = logging.getLogger('public.dataintegrity')
@@ -132,6 +133,16 @@ class StarterkursPageView(
     template_name = "home/pages/starterkurs.html"
 
 
+class PublicPageView(
+    DetailView):
+    """
+    public page
+    """
+    model = StaticPublicPages
+    template_name = "home/pages/publicpage.html"
+    context_object_name = 'pagedata'
+
+
 class MentorsListView(TemplateView):
     """
     List of all of Mentokis mentors.
@@ -144,25 +155,23 @@ class MentorsListView(TemplateView):
         context['mentors'] = mentors
         return context
 
+
 #TODO change this view and how it is called: it should be called with the slug!
-class MentorsPageView(TemplateView):
+class MentorsPageView(DetailView):
     """
     One mentor is displayed in detail along with his courses.
     """
+    models = MentorsProfile
+    context_object_name = 'mentor'
     template_name = "home/pages/mentor.html"
+
+    def get_queryset(self):
+        return MentorsProfile.objects.filter(slug=self.kwargs['slug'])
 
     def get_context_data(self, **kwargs):
         context = super(MentorsPageView, self).get_context_data()
-
-        # get user from username
-        user = User.objects.get(username=self.kwargs['username'])
-
-        # get mentor_profile
-        #TODO change the error handling, see above for an example!
-        mentor = get_object_or_404(MentorsProfile, user=user)
-        context['mentor'] = mentor
-
-        #get courses
-        context['courseproductgroups'] = CourseProductGroup.objects.by_mentor(user=user)
+        mentor = context['mentor']
+        context['courseproductgroups'] = \
+            CourseProductGroup.objects.published_by_mentor(user=mentor.user)
         return context
 

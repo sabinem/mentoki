@@ -1,0 +1,36 @@
+
+<!-- starterkurs.html -->
+<div class="ui grid container centered" style="padding-bottom:100px;">
+
+    <div class="sixteen wide tablet fourteen wide computer column">
+
+            <div class="ui header center aligned  large" style="color:#19aaa6;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2em;
+            font-weight: 400;
+            line-height: 1.5em;
+            -webkit-font-smoothing: antialiased;
+            ">
+                {{ pagedata.title }}
+            </div>
+            {% url 'storefront:offer' slug='mentoki-starterkurs' as starterkurs_url %}
+
+            <div class="froala_view">
+                {{ pagedata.text | safe }}
+            </div>
+                    <div class="ui two column stackable grid" style="padding-top:0px">
+            <div class="column five wide">
+
+            </div>
+            <div class="column ten wide">
+            <a class="ui basic button medium" href="{{ starterkurs_url }}">
+            Zum Angebot des Starterkurses
+            </a>
+            </div>
+            </div>
+     </div>
+     
+
+
+    </div>
+

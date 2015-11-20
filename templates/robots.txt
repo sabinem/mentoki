@@ -17,3 +17,7 @@ Disallow:/danke
 Disallow:/impressum
 
 Disallow:/login
+
+Disallow:/account
+Disallow:/*?*
+Disallow:/checkout

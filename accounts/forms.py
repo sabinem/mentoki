@@ -6,14 +6,14 @@ import floppyforms.__future__ as forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 
-from .models import User
+from .models import User as MentokiUser
 
 class CustomUserCreationForm(UserCreationForm):
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Password Confirmation', widget=forms.PasswordInput)
 
     class Meta(UserCreationForm.Meta):
-        model = User
+        model = MentokiUser
         fields = ('username', 'email')
 
     def clean_username(self):
@@ -52,8 +52,9 @@ class CustomUserChangeForm(UserChangeForm):
                                          this form</a>.""")
 
     class Meta(UserChangeForm.Meta):
-        model = User
-        fields = ('username', 'email', 'password', 'is_active', 'is_staff', 'is_superuser', 'user_permissions')
+        model = MentokiUser
+        fields = ('username', 'email', 'password', 'is_teacher',
+                  'is_active', 'is_staff', 'is_superuser', 'user_permissions')
 
     def clean_password(self):
         # Regardless of what the user provides, return the initial value.

@@ -1,23 +1,16 @@
 {% extends "desk/pages/base.html" %}
-
+{% block desk_header %}Dein Lernen{% endblock %}
 {% block work %}
 
-    <div class="ui one column grid" style="padding-bottom:50px;">
 
-        <div class="column">
-
-            <div class="ui cards centered">
-                {% for courseevent in study_courseevents %}
-                    <div class="ui card">
-                        {% include 'desk/fragments/_courseevent_learn_record.html' %}
-                    </div>
-                {% empty %}
-                    Du hast noch keinen Kurs gebucht.
-                {% endfor %}
+    <div class="ui cards centered" style="padding-top:20px; padding-bottom:30px;">
+        {% for courseevent in study_courseevents %}
+            <div class="ui card">
+                {% include 'desk/fragments/_courseevent_learn_record.html' %}
             </div>
-
-        </div>
-
+        {% empty %}
+            Du hast noch keinen Kurs gebucht.
+        {% endfor %}
     </div>
 
 {% endblock %}

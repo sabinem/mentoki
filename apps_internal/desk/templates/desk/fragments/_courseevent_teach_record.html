@@ -12,17 +12,3 @@
     <i class="wrench icon"></i>
     Kursvorlage bearbeiten
 </a>
-{% for courseevent in course.courseevent_set.all %}
-    {% if courseevent.active %}
-<a class="ui bottom attached  button"
-   href="{{ teach_url }}">
-    <i class="wrench icon"></i>
-    {{ courseevent.title }}: Unterricht vorbereiten
-</a>
-<a class="ui bottom attached  button"
-   href="{{ teach_url }}">
-    <i class="wrench icon"></i>
-     {{ courseevent.title }}: ins Klassenzimmer
-</a>
-    {% endif %}
-{% endfor %}

@@ -2,16 +2,24 @@
 
 from django.conf.urls import patterns, url
 
-from .views.courseproductgroup_info import \
+from .views.info import \
     CourseGroupDetailView, CourseGroupMentorsView
-from .views.courseproductgroup_list import CourseProductGroupsListView
-from .views.courseproductgroup_sales import CourseGroupOfferView
+from .views.list import CourseProductGroupsListView, \
+    ListNowView, ListPreviewView
+from .views.sales import CourseGroupOfferView
+from .views.prebook import ProductPrebookView
 
 
 urlpatterns = patterns('',
 
     url(r'^$',
         CourseProductGroupsListView.as_view(), name='list'),
+
+    url(r'^jetzt-buchbar$',
+        ListNowView.as_view(), name='list_now'),
+
+    url(r'^vorschau$',
+        ListPreviewView.as_view(), name='list_preview'),
 
     url(r'^(?P<slug>[a-z0-9_-]{3,50})/$',
         CourseGroupDetailView.as_view(), name='detail'),
