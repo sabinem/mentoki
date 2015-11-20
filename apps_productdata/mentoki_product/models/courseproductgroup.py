@@ -78,7 +78,7 @@ class CourseProductGroup(TimeStampedModel):
     )
     in_one_sentence = models.CharField(
         verbose_name=_("in einem Satz"),
-        help_text=_('beschreibe den Kurs in einem Satz'),
+        help_text=_('Beschreibe den Kurs in einem Satz'),
         max_length=250)
 
     meta_keywords_description = models.CharField(
@@ -142,9 +142,15 @@ class CourseProductGroup(TimeStampedModel):
 
     slug = models.SlugField(default="x")
     title = models.CharField(max_length=100, default="x")
-    conditions = FroalaField()
-    about = FroalaField()
-    mentors = FroalaField()
+    conditions = FroalaField(
+        verbose_name="Zu den Angeboten"
+    )
+    about = FroalaField(
+        verbose_name="Kursbeschreibung"
+    )
+    mentors = FroalaField(
+        verbose_name="Kursleitung"
+    )
     discount_text = models.CharField(max_length=100, blank=True, default="")
     discount_text_long = models.CharField(max_length=200, blank=True, default="")
 

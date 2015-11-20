@@ -49,15 +49,11 @@ class StaticPublicPages(TimeStampedModel):
         primary_key=True
     )
     text =  FroalaField(
-        verbose_name=_('Textchunk'),
-        help_text=_('Dieser Text wird als html chunk auf '
-                    'der Seite integriert. Der pagecode ordnet die Seite zu'),
+        verbose_name=_('Text'),
         blank=True
     )
     title = models.CharField(
         verbose_name=_('Seitentitel'),
-        help_text=_('Der Seitentitel wird ebenfalls benutzt zum Aufbau der  '
-                    'zugeordenten html Seite'),
         max_length=200,
         blank=True
     )
@@ -68,8 +64,7 @@ class StaticPublicPages(TimeStampedModel):
     )
     banner = models.ImageField(
         verbose_name=_('Banner'),
-        help_text=_('Optional kann ein Banner hochgeladen werden, dass nach'
-        ' aussen angezeigt werden kann.'),
+        help_text=_('Optional'),
         upload_to=foto_location,
         blank=True
     )

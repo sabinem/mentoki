@@ -1,5 +1,5 @@
 {% extends "desk/pages/base.html" %}
-
+{% block desk_header %}{{ page.title }}{% endblock %}
 {% block work %}
 
     <div class="ui segment">
@@ -10,8 +10,6 @@
 <form class="ui form" method="post" action="" enctype="multipart/form-data">
 
     {% csrf_token %}
-
-    <div class="ui dividing large header">{{ page.title }} bearbeiten</div>
 
     {% include 'coursebackend/forms/fragments/_form_non_field_errors.html' %}
 
