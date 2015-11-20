@@ -176,7 +176,7 @@ class CourseEvent(TimeStampedModel):
         unique_together = ('title', 'start_date')
 
     def __unicode__(self):
-        return self.title
+        return "%s %s" % (self.title, self.start_date)
 
     @cached_property
     def teachers(self):

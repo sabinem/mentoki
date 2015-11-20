@@ -77,7 +77,7 @@ class CourseProduct(Product):
         unique_together = ('courseevent', 'name')
 
     def __unicode__(self):
-        return u'[%s] %s' % (self.id, self.name)
+        return u'[%s] %s' % (self.name)
 
     @property
     def sales_price(self):
