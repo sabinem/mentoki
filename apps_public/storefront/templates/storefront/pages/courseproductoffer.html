@@ -55,19 +55,20 @@
 
                        {% endif %}
                             </div>
-                            <a href="{{ pay_url }}" class="ui button teal basic"
+                            <a href="{{ pay_url }}" class="ui button red"
                                style="
-                                    background: 0 0!important;
-                                    box-shadow: 0 0 0 2px #009c95 inset!important;
-                                    color: #009c95!important;"
+                                    #background: 0 0!important;
+                                    #box-shadow: 0 0 0 2px #009c95 inset!important;
+                                    #color: #009c95!important;"
+                                    color:white;
                                     >
                        {% if item.has_parts %}
 
                            {{ item.buy_part_nr}}. Etappe:
                        {% endif %}
                                 {% if item.is_on_sale %}
-                                    jetzt<span style="color:#eb3d00">
-                                    {{ item.amount_sale }}</span>
+                                    jetzt
+                                    {{ item.amount_sale }}
                                     statt
                                     {{ item.amount_original }}
                                 {% else %}
@@ -126,20 +127,8 @@
 
                  {% endif %}
                  <div class="content">
-                     <div class="header">
-                              {% if item.payment_complete %}
-                               <a href="{{ desk_url }}">
-                               {{ item.courseproduct.courseevent.title }}
-                                 {{ item.courseproduct.courseevent.start_date }}
-                              </a>
-                              {% else %}
 
-                               {{ item.courseproduct.courseevent.title }}
-                                 {{ item.courseproduct.courseevent.start_date }}
-
-                              {% endif %}
-                     </div>
-                     <p>{{ item.courseproduct.name }}</p>
+                     <h3 class="ui header">{{ item.courseproduct.name }}</h3>
                      <div class="froala-view">{{ item.courseproduct.description | safe }}</div>
                  </div>
 
