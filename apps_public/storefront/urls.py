@@ -30,5 +30,8 @@ urlpatterns = patterns('',
     url(r'^(?P<slug>[a-z0-9_-]{3,50})/kursleitung$',
         CourseGroupMentorsView.as_view(), name='mentors'),
 
+    url(r'^(?P<slug>[a-z0-9_-]{3,50})/warteliste$',
+        ProductPrebookView.as_view(), name='prebook'),
+
 )
 

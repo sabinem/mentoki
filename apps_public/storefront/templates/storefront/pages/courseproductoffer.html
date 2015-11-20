@@ -17,7 +17,7 @@
         </div>
     {% endif %}
     <!-- urls --->
-    {% url 'home:agb' as agb_url %}
+    {% url 'home:public' slug="mentoki-agbs" as agbs_url %}
 
     <h3 class="ui left floated header" style="color:#eb3d00;">
         Leistungsangebote im Detail
@@ -28,9 +28,17 @@
      <div class="froala-view" >
           {{ courseproductgroup.conditions | safe }}
      </div>
+    {% url 'storefront:prebook' slug=courseproductgroup.slug as prebook_url %}
+    {% if not product_list %}
 
-    {% if product_list %}
-     <p style="color:grey;">* Es gelten unsere <a href="{{ agb_url }}">AGBs</a>.</p>
+        <a
+           class="ui button"
+           href="{{ prebook_url }}">
+           Lassen Sie sich gerne in unsere Warteliste eintragen
+        </a>
+
+    {% else %}
+     <p style="color:grey;">* Es gelten unsere <a href="{{ agbs_url }}">AGBs</a>.</p>
 
 
     <h3 class="ui left floated header" style="color:#eb3d00;">

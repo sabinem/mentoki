@@ -53,5 +53,5 @@ class ProductPrebookView(
     """
     model = Prebooking
     form_class = PrebookingForm
-    template_name = 'desk/pages/prebook.html'
+    template_name = 'storefront/pages/prebook.html'
     success_url = reverse_lazy('desk:bookings')
