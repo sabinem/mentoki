@@ -35,7 +35,7 @@
 
 {% load activelink %}
 {% if request.user.is_authenticated %}
-    <a class="header item">
+    <a class="header item" style="background:#8fb2b2; color:white;">
         Hallo {{ request.user }}
     </a>
     {% if request.user.is_authenticated %}
@@ -72,8 +72,10 @@
         </a>
     {% endif %}
 {% endif %}
-<a href="{{ course_url }}" class="header item" id="logo_mobile_menu">
-    Kurse
+<a class="header item"
+   style="background:#8fb2b2; color:white;"
+   id="logo_mobile_menu">
+    Lernen bei mentoki
 </a>
 <a href="{{ course_now_url }}" class="item">
     Aktuelle Kurse
@@ -81,182 +83,40 @@
 <a href="{{ course_preview_url }}" class="item">
     Vorschau
 </a>
-<a class="item
-    {% ifactive course_url %}
+<a class="item{% ifactive course_url %}
         active
-    {% endifactive %}" href="{{ course_url }}">
+    {% endifactive %}"
+    href="{{ course_url }}">
     Das gesamte Angebot
 </a>
-<a class="item
-    {% ifactive course_url %}
-        active
-    {% endifactive %}
-    " href="{{ course_url }}">
-    Aktuelle Kurse
+<a class="header item"
+   style="background:#8fb2b2; color:white;"
+   id="logo_mobile_menu">
+    Unterrichten bei mentoki
 </a>
-<a class="item
-    {% ifactive standards_url %}
-        active
-    {% endifactive %}
-    " href="{{ standards_url }}">
-    Mentoki Standards
-</a>
-<a class="header item
-    {% ifactive mentorslist_url %}
-        active
-    {% endifactive %}
-    " href="{{ mentorslist_url }}">
-    Mentoren
-</a>
-<a class="item
-    {% ifactive educationmentor_url %}
-        active
-    {% endifactive %}
-    " href="{{ educationmentor_url }}">
-    Bildungsmentoring
-</a>
-<a class="item header"
-     href="{{ teachonline_url }}">
-    Unterrichten
+<a href="{{ teachonline_url }}" class="item">
+    Zwei Wege
 </a>
 <a href="{{ starterkurs_url }}" class="item">
-    Mentor werden
+    Der Starterkurs
 </a>
-<a href="{{ teachready_url }}" class="item">
-    Online-Kurs anbieten
+<a class="item" href="{{ teachready_url }}">
+    Wenn Sie bereits Online unterrichten
 </a>
-<a class="header item
-    " href="{{ about_url }}">
-    Über uns
-</a>
-<a class="item
-    " href="{{ contact_url }}">
-    Kontakt
-</a>
-
-<!-- urls ----->
-{% url 'home:home' as home_url %}
-
-
-{% url 'storefront:list' as course_url %}
-{% url 'storefront:list_now' as course_now_url %}
-{% url 'storefront:list_preview' as course_preview_url %}
-
-{% url 'home:mentorslist' as mentorslist_url %}
-
-{% url 'contact:contact' as contact_url %}
-
-{% url 'account_login' as login_url %}
-{% url 'account_logout' as logout_url %}
-{% url 'desk:userprofile' as desk_url %}
-{% url 'desk:learn' as learn_url %}
-{% url 'desk:courseadmin' as courseadmin_url %}
-{% url 'desk:pageadmin' as pageadmin_url %}
-{% url 'desk:learn' as learn_url %}
-{% url 'desk:teach' as teach_url %}
-{% url 'desk:bookings' as bookings_url %}
-
-{% url 'home:public' slug="mentoki-starterkurs" as starterkurs_url %}
-{% url 'home:public' slug="online-unterrichten" as teachonline_url %}
-{% url 'home:public' slug="online-kurs-anbieten" as teachready_url %}
-{% url 'home:public' slug="mentoki-standards" as standards_url %}
-{% url 'home:public' slug="mentoki-agbs" as agbs_url %}
-{% url 'home:public' slug="mentoki-kurse" as course_about_url %}
-{% url 'home:public' slug="team" as about_url %}
-
-
-<a class="item" id="logo_navbar_pc"
-href="{{ home_url }}">
-<img  id="logo_img_navbar" src="/static/img/mentoki_logo.png"
->
-</a>
-<div class="ui left dropdown item">
-    Lernen bei mentoki
-    <i class="dropdown icon"></i>
-    <div class="menu">
-        <a href="{{ course_now_url }}" class="item">
-            Aktuelle Kurse
-        </a>
-        <a href="{{ course_preview_url }}" class="item">
-            Vorschau
-        </a>
-        <a class="item" href="{{ course_url }}">
-            Das gesamte Angebot
-        </a>
-    </div>
-</div>
-<div class="ui left dropdown item">
-    Unterrichten bei mentoki
-    <i class="dropdown icon"></i>
-    <div class="menu">
-        <a href="{{ teachonline_url }}" class="item">
-            Zwei Wege
-        </a>
-        <a href="{{ starterkurs_url }}" class="item">
-            Der Starterkurs
-        </a>
-        <a class="item" href="{{ teachready_url }}">
-            Wenn Sie bereits Online unterrichten
-        </a>
-    </div>
-</div>
-<div class="ui left dropdown item">
+<a class="header item"
+   style="background:#8fb2b2; color:white;"
+   id="logo_mobile_menu">
     über mentoki
-    <i class="dropdown icon"></i>
-    <div class="menu">
-        <a href="{{ about_url }}" class="item">
-            Das Team
-        </a>
-        <a href="{{ mentorslist_url }}" class="item">
-            Die Mentoren
-        </a>
-        <a class="item" href="{{ standards_url }}">
-            Standards
-        </a>
-        <a class="item" href="{{ conditions_url }}">
-            Konditionen
-        </a>
-        <a class="item" href="{{ contact_url }}">
-            Kontaktiere uns
-        </a>
-    </div>
-</div>
-<div class="ui right dropdown item">
-    Dein Bereich
-    <i class="dropdown icon"></i>
-    <div class="menu">
-        {% if request.user.is_authenticated %}
-            <a href="{{ desk_url }}" class="item">
-                Benutzerprofil
-            </a>
-            <a href="{{ learn_url }}" class="item">
-                Dein Lernen
-            </a>
-            <a href="{{ teach_url }}" class="item">
-                Dein Unterricht
-            </a>
-            {% if request.user.customer %}
-                <a href="{{ bookings_url }}" class="item">
-                    Deine Kursbuchungen
-                </a>
-            {% endif %}
-            {% if request.user.is_teacher %}
-                <a href="{{ courseadmin_url }}" class="item">
-                    Deine Kursauschreibungen
-                </a>
-            {% endif %}
-            {% if request.user.is_staff %}
-                <a href="{{ pageadmin_url }}" class="item">
-                    Statische Seiten
-                </a>
-            {% endif %}
-            <a class="item" href="{{ logout_url }}">
-            Abmelden
-            </a>
-        {% else %}
-            <a class="item" href="{{ login_url }}">
-            Anmelden
-            </a>
-        {% endif %}
-    </div>
-</div>
+</a>
+<a href="{{ about_url }}" class="item">
+    Das Team
+</a>
+<a href="{{ mentorslist_url }}" class="item">
+    Die Mentoren
+</a>
+<a class="item" href="{{ standards_url }}">
+    Standards
+</a>
+<a class="item" href="{{ contact_url }}">
+    Kontaktiere uns
+</a>

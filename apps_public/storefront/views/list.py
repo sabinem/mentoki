@@ -28,12 +28,13 @@ class CourseProductGroupsListView(TemplateView):
 
         # build list of course events
         context['courseproductgroups'] = CourseProductGroup.objects.published()
-
+        context['listheader'] = "Gesamtsortiment"
         return context
 
 
 class ListNowView(TemplateView):
     template_name = "storefront/pages/courselist.html"
+    listheader = "x"
 
     def get_context_data(self, **kwargs):
         """
@@ -45,7 +46,7 @@ class ListNowView(TemplateView):
 
         # build list of course events
         context['courseproductgroups'] = CourseProductGroup.objects.book_now()
-
+        context['listheader'] = "Jetzt buchbar"
         return context
 
 
@@ -62,5 +63,5 @@ class ListPreviewView(TemplateView):
 
         # build list of course events
         context['courseproductgroups'] = CourseProductGroup.objects.preview()
-
+        context['listheader'] = "In Vorankündigung"
         return context
