@@ -63,5 +63,5 @@ class ListPreviewView(TemplateView):
 
         # build list of course events
         context['courseproductgroups'] = CourseProductGroup.objects.preview()
-        context['listheader'] = "In Vorankündigung"
+        context['listheader'] = "Vorschau"
         return context
