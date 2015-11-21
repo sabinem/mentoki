@@ -16,13 +16,13 @@
                 <td>{{ order.courseproduct.name }}
                 </td>
                 <td>{{ order.courseproduct.courseevent.start_date | date:"SHORT_DATE_FORMAT" }}</td>
-                <td>{{ order.amount_paid }} {{ order.get_currency_display }}</td>
+                <td>{{ order.amount_paid |floatformat:2}} {{ order.get_currency_display }}</td>
 
                 <td>
                     {% if order.fully_paid %}
                         <i class="icon checkmark green"></i>
                     {% else %}
-                        {{ order.amount_outstanding}} {{ order.get_currency_display }}
+                        {{ order.amount_outstanding|floatformat:2}} {{ order.get_currency_display }}
                     {% endif %}
                 </td>
             </tr>

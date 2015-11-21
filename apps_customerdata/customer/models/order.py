@@ -40,6 +40,9 @@ class OrderManager(models.Manager):
     def by_customer(self, customer):
         return self.filter(customer=customer)
 
+    def by_customer_started_to_pay(self, customer):
+        return self.filter(customer=customer, started_to_pay=True)
+
     def by_course_and_customer(self, course, customer):
         return self.filter(customer=customer, course=course).select_related(
             'courseproduct__courseevent'

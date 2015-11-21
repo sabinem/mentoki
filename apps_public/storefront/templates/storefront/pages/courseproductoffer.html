@@ -84,12 +84,12 @@
                        {% endif %}
                                 {% if item.is_on_sale %}
                                     jetzt
-                                    {{ item.amount_sale }}
+                                    {{ item.amount_sale |floatformat:2}}
                                     statt
-                                    {{ item.amount_original }}
+                                    {{ item.amount_original|floatformat:2 }}
                                 {% else %}
                                     jetzt kaufen für
-                                    {{ item.amount_original }}
+                                    {{ item.amount_original |floatformat:2}}
                                 {% endif %}
                                 {{ item.courseproduct.get_currency_display }}
                             </a>
@@ -130,12 +130,12 @@
                        {% endif %}
                                 {% if item.is_on_sale %}
                                     jetzt<span style="color:#eb3d00">
-                                    {{ item.amount_sale }}</span>
+                                    {{ item.amount_sale |floatformat:2 }}</span>
                                     statt
-                                    {{ item.amount_original }}
+                                    {{ item.amount_original|floatformat:2 }}
                                 {% else %}
                                     jetzt kaufen für
-                                    {{ item.amount_original }}
+                                    {{ item.amount_original|floatformat:2 }}
                                 {% endif %}
                                 {{ item.courseproduct.get_currency_display }}
                             </div>

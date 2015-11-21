@@ -44,7 +44,7 @@ class BookingsView(
             context['customer'] = customer
             logger.info(' - ist Kunde :[%s]'
                     % user.customer)
-            orders = Order.objects.by_customer(customer=customer)
+            orders = Order.objects.by_customer_started_to_pay(customer=customer)
             logger.info(' - hat Aufträge')
             context['orders'] = orders
             for order in orders:
