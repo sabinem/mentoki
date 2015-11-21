@@ -39,7 +39,7 @@ class CourseProductAdmin(admin.ModelAdmin):
     """
     Course products are products related to Courses
     """
-    list_display = ('id', 'name', 'course', 'courseproductsubgroup',
+    list_display = ('id', 'name', 'course', 'courseevent', 'courseproductsubgroup',
                     'price' , 'sales_price', 'display_nr')
     list_filter = ('modified', 'course')
     list_display_links = ('id',)
