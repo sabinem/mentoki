@@ -11,6 +11,7 @@ from django.contrib import admin
 from .models.customer import Customer
 from .models.transaction import Transaction
 from .models.order import Order
+from .models.contact import Prebooking
 
 #TODO determine later on what exactly is needed in the admin
 
@@ -44,3 +45,11 @@ class Order(admin.ModelAdmin):
                     'amount_per_payment',
                     'total_parts', 'started_to_pay', 'fully_paid', 'pay_in_parts')
     list_filter = ('courseproduct', 'customer', 'course')
+
+@admin.register(Prebooking)
+class CustomerAdmin(admin.ModelAdmin):
+    """
+    Customers that pay and are registered at braintree, the payment provider
+    """
+    list_display = ( 'id', 'email', 'interested_in_learning', 'created')
+    list_filter = ('email', 'created')
