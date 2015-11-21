@@ -28,7 +28,7 @@ class CourseEventAdmin(admin.ModelAdmin):
     """
     CourseEvents are the actual Events associated with Courses.
     """
-    list_display = ('id', 'slug', 'title', 'course', 'teachersrecord',
+    list_display = ('id', 'slug', 'start_date', 'classroom_open', 'title', 'course', 'teachersrecord',
                     'modified', 'created',
                     'event_type', 'status_external', 'status_internal')
     list_filter =  ('course','status_external', 'modified')
