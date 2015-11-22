@@ -1,28 +1,17 @@
 {% extends "contact/pages/base.html" %}
 
-{% block contact_page_image %}
-
-    <img class="ui image centered huge image" src="/static/img/danke.jpg" style="width:300px;">
-
-{% endblock %}
-
+{% block background_image %}background: url('/static/img/board3.jpg');{% endblock %}
 {% block contact_content %}
 
-    {% if messages %}
+    <div class="ui segment">
 
-        {% for message in messages %}
-            <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>
-                {{ message | safe }}
-            </p>
+    <h2>Hallo {{ request.session.name  }}</h2>
 
-        {% endfor %}
-    {% else %}
-
-        Danke für Deine Nachricht, Du hörst bald von uns!
-
-    {% endif %}
+    Danke für Deine Nachricht, Du hörst bald von uns!
 
     <p>Mit lieben Grüssen</p>
     <p id="signature">Sabine Maennel und Anette Pekrul</p>
+
+    </div>
 
 {% endblock %}

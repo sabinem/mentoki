@@ -7,7 +7,7 @@ from .views.info import \
 from .views.list import CourseProductGroupsListView, \
     ListNowView, ListPreviewView
 from .views.sales import CourseGroupOfferView
-from .views.prebook import ProductPrebookView
+from .views.prebook import ProductPrebookView, AnswerView
 
 
 urlpatterns = patterns('',
@@ -32,6 +32,9 @@ urlpatterns = patterns('',
 
     url(r'^(?P<slug>[a-z0-9_-]{3,50})/warteliste$',
         ProductPrebookView.as_view(), name='prebook'),
+
+    url(r'^(?P<pk>\d{1,4})/danke$',
+        AnswerView.as_view(), name='prebooking_sucess'),
 
 )
 

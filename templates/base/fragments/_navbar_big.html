@@ -27,7 +27,7 @@
 
 {% url 'home:public' slug="mentoki-kurse" as course_about_url %}
 {% url 'home:public' slug="team" as about_url %}
-
+{% load activelink %}
 
 <a class="item" style="padding:0px; margin: 0px;"
 href="{{ home_url }}">
@@ -38,13 +38,25 @@ href="{{ home_url }}">
     Lernen bei mentoki
     <i class="dropdown icon"></i>
     <div class="menu">
-        <a href="{{ course_now_url }}" class="item">
+        <a href="{{ course_now_url }}" class="item
+            {% ifactive course_now_url %}
+                active
+            {% endifactive %}
+        ">
             Aktuelle Kurse
         </a>
-        <a href="{{ course_preview_url }}" class="item">
+        <a href="{{ course_preview_url }}" class="item
+            {% ifactive course_preview_url %}
+                active
+            {% endifactive %}
+        ">
             Vorschau
         </a>
-        <a class="item" href="{{ course_url }}">
+        <a class="item
+            {% ifactive course_url %}
+                active
+            {% endifactive %}
+        " href="{{ course_url }}">
             Das gesamte Angebot
         </a>
     </div>
@@ -53,13 +65,25 @@ href="{{ home_url }}">
     Unterrichten bei mentoki
     <i class="dropdown icon"></i>
     <div class="menu">
-        <a href="{{ teachonline_url }}" class="item">
+        <a href="{{ teachonline_url }}" class="item
+            {% ifactive teachonline_url %}
+                active
+            {% endifactive %}
+        ">
             Zwei Wege
         </a>
-        <a href="{{ starterkurs_url }}" class="item">
+        <a href="{{ starterkurs_url }}" class="item
+            {% ifactive starterkurs_url %}
+                active
+            {% endifactive %}
+        ">
             Der Starterkurs
         </a>
-        <a class="item" href="{{ teachready_url }}">
+        <a class="item
+            {% ifactive teachready_url %}
+                active
+            {% endifactive %}
+        " href="{{ teachready_url }}">
             Wenn Sie bereits Online unterrichten
         </a>
     </div>
@@ -68,16 +92,32 @@ href="{{ home_url }}">
     über mentoki
     <i class="dropdown icon"></i>
     <div class="menu">
-        <a href="{{ about_url }}" class="item">
+        <a href="{{ about_url }}" class="item
+            {% ifactive about_url %}
+                active
+            {% endifactive %}
+        ">
             Das Team
         </a>
-        <a href="{{ mentorslist_url }}" class="item">
+        <a href="{{ mentorslist_url }}" class="item
+            {% ifactive mentorslist_url %}
+                active
+            {% endifactive %}
+        ">
             Die Mentoren
         </a>
-        <a class="item" href="{{ standards_url }}">
+        <a class="item
+            {% ifactive standards_url %}
+                active
+            {% endifactive %}
+        " href="{{ standards_url }}">
             Standards
         </a>
-        <a class="item" href="{{ contact_url }}">
+        <a class="item
+            {% ifactive contact_url %}
+                active
+            {% endifactive %}
+        " href="{{ contact_url }}">
             Kontaktiere uns
         </a>
     </div>
@@ -91,27 +131,51 @@ href="{{ home_url }}">
     <i class="dropdown icon"></i>
     <div class="menu">
         {% if request.user.is_authenticated %}
-            <a href="{{ desk_url }}" class="item">
+            <a href="{{ desk_url }}" class="item
+            {% ifactive desk_url %}
+                active
+            {% endifactive %}
+            ">
                 Benutzerprofil
             </a>
-            <a href="{{ learn_url }}" class="item">
+            <a href="{{ learn_url }}" class="item
+            {% ifactive learn_url %}
+                active
+            {% endifactive %}
+            ">
                 Dein Lernen
             </a>
-            <a href="{{ teach_url }}" class="item">
+            <a href="{{ teach_url }}" class="item
+            {% ifactive teach_url %}
+                active
+            {% endifactive %}
+            ">
                 Dein Unterricht
             </a>
             {% if request.user.customer %}
-                <a href="{{ bookings_url }}" class="item">
+                <a href="{{ bookings_url }}" class="item
+            {% ifactive bookings_url %}
+                active
+            {% endifactive %}
+                ">
                     Deine Kursbuchungen
                 </a>
             {% endif %}
             {% if request.user.is_teacher %}
-                <a href="{{ courseadmin_url }}" class="item">
+                <a href="{{ courseadmin_url }}" class="item
+            {% ifactive courseadmin_url %}
+                active
+            {% endifactive %}
+                ">
                     Deine Kursauschreibungen
                 </a>
             {% endif %}
             {% if request.user.is_staff %}
-                <a href="{{ pageadmin_url }}" class="item">
+                <a href="{{ pageadmin_url }}" class="item
+            {% ifactive pageadmin_url %}
+                active
+            {% endifactive %}
+                ">
                     Statische Seiten
                 </a>
             {% endif %}

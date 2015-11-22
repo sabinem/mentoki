@@ -49,16 +49,27 @@ class Prebooking(TimeStampedModel):
     """
     Prebooking for Courses
     """
-    first_name = models.CharField(max_length=40, blank=True)
-    last_name = models.CharField(max_length=40, blank=True)
+    first_name = models.CharField(
+        verbose_name="Vorname",
+        max_length=40, blank=True)
+    last_name = models.CharField(
+        verbose_name="Nachname",
+        max_length=40, blank=True)
     email = models.EmailField(
+        verbose_name="Email"
     )
-    interested_in_learning = models.ForeignKey(CourseProductGroup)
-    message = models.TextField()
+    interested_in_learning = models.ForeignKey(
+        CourseProductGroup,
+        verbose_name="Kurs",
+    )
+    message = models.TextField(
+        verbose_name="Ihre Nachricht"
+    )
 
     class Meta:
-        verbose_name = 'Vorbestellung'
-        verbose_name_plural = 'Vorbestellungen'
+        verbose_name = 'Voranmeldung'
+        verbose_name_plural = 'Voranmeldung'
+        unique_together = ('email', 'interested_in_learning')
 
     objects = ContactManager()
 

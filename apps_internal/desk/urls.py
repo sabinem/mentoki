@@ -29,7 +29,7 @@ urlpatterns = patterns('',
 
     url(r'^kursauschreibungen$', CourseAdminView.as_view(), name='courseadmin' ),
 
-    url(r'^kursbuchunge$', BookingsView.as_view(), name='bookings' ),
+    url(r'^kursbuchungen$', BookingsView.as_view(), name='bookings' ),
 
     url(r'^redirect$', DeskRedirectView.as_view(), name='redirect' ),
 
