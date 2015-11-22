@@ -1,8 +1,14 @@
 {% extends "contact/pages/base.html" %}
 
 {% block background_image %}background: url('/static/img/board3.jpg');{% endblock %}
-{% block contact_content %}
 
+{% block main_content %}
+ <div class="ui grid one column centered" style="padding-bottom:50px;
+ padding-top:100px;
+ ">
+<div class="center aligned fourteen wide tablet eight wide computer column" id="whitepaper">
+
+         <!-- one column -->
     <div class="ui segment">
 
     <h2>Hallo {{ request.session.name  }}</h2>
@@ -13,5 +19,11 @@
     <p id="signature">Sabine Maennel und Anette Pekrul</p>
 
     </div>
+
+         </div>
+
+    </div>
+
+
 
 {% endblock %}
