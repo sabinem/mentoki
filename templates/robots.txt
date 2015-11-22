@@ -21,3 +21,4 @@ Disallow:/de/checkout
 Disallow:/uploads
 Disallow:/*?*
 Disallow:/*danke
+Disallow:/*warteliste

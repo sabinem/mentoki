@@ -70,8 +70,8 @@
 
 {% block footer %}
 
-    {% url 'home:agb'  as agb_url %}
-    {% url 'home:impressum'  as impressum_url %}
+    {% url 'home:public' slug='agbs' as agbs_url %}
+    {% url 'home:public' slug='impressum' as impressum_url %}
     {% url 'contact:contact' as contact_url %}
 
     <div class="ui grey inverted vertical footer segment">
@@ -90,10 +90,8 @@
                 <div class="four wide column">
                     <h4 class="ui inverted header">Geschäftbedingungen</h4>
                     <div class="ui inverted link list">
-                        {% url 'home:public' slug="mentoki-agbs" as agbs_url %}
-                        {% url 'home:public' slug="mentoki-impressum" as impressum_url %}
                         <a href="{{ impressum_url }}" class="item">Impressum</a>
-                        <a href="{{ agbs_url }}" class="item">AGB</a>
+                        <a href="{{ agbs_url }}" class="item">AGBs</a>
                     </div>
                 </div>
                 <div class="four wide column">
