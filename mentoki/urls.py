@@ -17,7 +17,7 @@ from django_downloadview import ObjectDownloadView
 
 from apps_data.material.models.material import Material
 
-from .views import MentokiSitemap
+from .views import StaticViewSitemap, PublicViewSitemap, ProductViewSitemap
 
 # for the download of files
 download = ObjectDownloadView.as_view(model=Material, file_field='file')
@@ -25,7 +25,9 @@ download = ObjectDownloadView.as_view(model=Material, file_field='file')
 from apps_public.newsletter.feeds import LatestNewsletterFeed
 
 sitemaps = {
-    'public': MentokiSitemap()
+    'static': StaticViewSitemap(),
+    'public': PublicViewSitemap(),
+    'products': ProductViewSitemap()
 }
 
 # The Admin Site

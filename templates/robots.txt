@@ -5,19 +5,19 @@ Disallow:/admin
 Disallow:/kursvorlage
 Disallow:/forum
 Disallow:/klassenzimmer
-Disallow:/uploads
+
 Disallow:/accounts
-Disallow:/klassenzimmer
+Disallow:/de/accounts
+Disallow:/account
 Disallow:/user
+Disallow:/login
 
 Disallow:/media
 Disallow:/static
 
 Disallow:/danke
-Disallow:/impressum
-
-Disallow:/login
-
-Disallow:/account
-Disallow:/*?*
 Disallow:/checkout
+Disallow:/de/checkout
+Disallow:/uploads
+Disallow:/*?*
+Disallow:/*danke
