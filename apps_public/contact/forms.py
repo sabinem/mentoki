@@ -48,7 +48,7 @@ class ContactForm(forms.Form):
         # this method is called with cleaned from data
         subject = "Deine Nachricht an Mentoki"
         to = [self.cleaned_data['email']]
-        from_mail = 'info@mentoki.com'
+        from_mail = 'mentoki@mentoki.com'
 
         # prepare template
         context = {
