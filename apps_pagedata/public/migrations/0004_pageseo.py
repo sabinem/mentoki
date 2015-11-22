@@ -28,9 +28,4 @@ class Migration(migrations.Migration):
                 'abstract': False,
             },
         ),
-        migrations.AddField(
-            model_name='staticpublicpages',
-            name='page_seo',
-            field=models.ForeignKey(blank=True, to='public.PageSEO', null=True),
-        ),
     ]

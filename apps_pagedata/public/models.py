@@ -84,7 +84,7 @@ class StaticPublicPages(TimeStampedModel):
         upload_to=foto_location,
         blank=True
     )
-    page_seo = models.ForeignKey(PageSEO, blank=True, null=True)
+    #page_seo = models.ForeignKey(PageSEO, blank=True, null=True)
     meta_keywords = models.CharField(
         verbose_name=_('Meta Keywords'),
         help_text=_('HTML Meta Information zur Seite.'),
