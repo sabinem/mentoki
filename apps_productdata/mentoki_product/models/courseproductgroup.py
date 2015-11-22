@@ -81,61 +81,56 @@ class CourseProductGroup(TimeStampedModel):
         help_text=_('Beschreibe den Kurs in einem Satz'),
         max_length=250)
 
-    meta_keywords_description = models.CharField(
-        verbose_name=_('Meta Keywords'),
+    meta_title_description = models.CharField(
+        verbose_name=_('Meta Title Detail Seite'),
         default="Mentoki",
-        help_text=_('HTML Meta Information zur Seite.'),
         max_length=250
     )
     meta_description_description = models.CharField(
-        verbose_name=_('Meta Description'),
+        verbose_name=_('Meta Description Detail Seite'),
         default="Mentoki",
-        help_text=_('HTML Meta Information zur Seite.'),
         max_length=250
     )
-    meta_title_description = models.CharField(
-        verbose_name=_('Meta Titel'),
+    meta_keywords_description = models.CharField(
+        verbose_name=_('Meta Keywords Detail Seite'),
         default="Mentoki",
-        help_text=_('HTML Meta Information zur Seite.'),
         max_length=250
     )
-    meta_keywords_offers = models.CharField(
-        verbose_name=_('Meta Keywords'),
+
+    meta_title_mentors = models.CharField(
+        verbose_name=_('Meta Title Mentoren Seite'),
+        default="Mentoki",
+        max_length=250
+    )
+    meta_description_mentors = models.CharField(
+        verbose_name=_('Meta Description Mentoren Seite'),
+        default="Mentoki",
+        max_length=250
+    )
+    meta_keywords_mentors = models.CharField(
+        verbose_name=_('Meta Keywords Mentoren Seite'),
+        default="Mentoki",
+        max_length=250
+    )
+
+    meta_title_offers  = models.CharField(
+        verbose_name=_('Meta Title Angebot Seite'),
         default="Mentoki",
         help_text=_('HTML Meta Information zur Seite.'),
         max_length=250
     )
     meta_description_offers = models.CharField(
-        verbose_name=_('Meta Description'),
+        verbose_name=_('Meta Description Angebot Seite'),
         default="Mentoki",
         help_text=_('HTML Meta Information zur Seite.'),
         max_length=250
     )
-    meta_title_offers  = models.CharField(
-        verbose_name=_('Meta Titel'),
+    meta_keywords_offers = models.CharField(
+        verbose_name=_('Meta Keywords Angebot Seite'),
         default="Mentoki",
         help_text=_('HTML Meta Information zur Seite.'),
         max_length=250
     )
-    meta_keywords_mentors = models.CharField(
-        verbose_name=_('Meta Keywords'),
-        default="Mentoki",
-        help_text=_('HTML Meta Information zur Seite.'),
-        max_length=250
-    )
-    meta_description_mentors = models.CharField(
-        verbose_name=_('Meta Description'),
-        default="Mentoki",
-        help_text=_('HTML Meta Information zur Seite.'),
-        max_length=250
-    )
-    meta_title_mentors = models.CharField(
-        verbose_name=_('Meta Titel'),
-        default="Mentoki",
-        help_text=_('HTML Meta Information zur Seite.'),
-        max_length=250
-    )
-
     published = models.BooleanField(default=False)
     can_be_booked_now = models.BooleanField(default=False)
     display_nr = models.IntegerField(default=1)
