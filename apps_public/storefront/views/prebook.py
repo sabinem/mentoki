@@ -32,7 +32,7 @@ class PrebookingForm(forms.ModelForm):
     """
     class Meta:
         model = Prebooking
-        fields = ('interested_in_learning', 'first_name', 'last_name', 'email',
+        fields = ('interested_in_learning', 'name', 'email',
                   'message')
 
 class ProductPrebookView(

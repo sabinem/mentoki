@@ -14,11 +14,20 @@ Disallow:/login
 
 Disallow:/media
 Disallow:/static
+Disallow:/markdown
+Disallow:/download
+Disallow:/froala_editor
+Disallow:/kurseintern
 
 Disallow:/danke
 Disallow:/checkout
-Disallow:/de/checkout
 Disallow:/uploads
 Disallow:/*?*
 Disallow:/*danke
 Disallow:/*warteliste
+
+Disallow:/mail-queue
+Disallow:/newsletter
+
+Disallow:/feed
+Disallow:/schreibtisch

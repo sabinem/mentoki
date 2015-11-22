@@ -49,12 +49,9 @@ class Prebooking(TimeStampedModel):
     """
     Prebooking for Courses
     """
-    first_name = models.CharField(
-        verbose_name="Vorname",
-        max_length=40, blank=True)
-    last_name = models.CharField(
-        verbose_name="Nachname",
-        max_length=40, blank=True)
+    name = models.CharField(
+        verbose_name="Name",
+        max_length=80, blank=True)
     email = models.EmailField(
         verbose_name="Email"
     )
@@ -69,7 +66,7 @@ class Prebooking(TimeStampedModel):
     class Meta:
         verbose_name = 'Voranmeldung'
         verbose_name_plural = 'Voranmeldung'
-        unique_together = ('email', 'interested_in_learning')
+        unique_together = (('email', 'interested_in_learning'),)
 
     objects = ContactManager()
 

@@ -99,6 +99,24 @@ class MentorsProfile(TimeStampedModel):
     display_nr = models.IntegerField(
         verbose_name=_('Anzeigereihenfolge'),
     )
+    meta_keywords_mentors = models.CharField(
+        verbose_name=_('Meta Keywords'),
+        default="Mentoki",
+        help_text=_('HTML Meta Information zur Seite.'),
+        max_length=250
+    )
+    meta_description_mentors = models.CharField(
+        verbose_name=_('Meta Description'),
+        default="Mentoki",
+        help_text=_('HTML Meta Information zur Seite.'),
+        max_length=250
+    )
+    meta_title_mentors = models.CharField(
+        verbose_name=_('Meta Titel'),
+        default="Mentoki",
+        help_text=_('HTML Meta Information zur Seite.'),
+        max_length=250
+    )
 
     objects = MentorsProfileManager()
 

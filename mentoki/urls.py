@@ -68,6 +68,9 @@ urlpatterns += i18n_patterns('',
     url(r'^kontakt/',
         include('apps_public.contact.urls', namespace='contact')),
 
+    url(r'^kontakt',
+        include('apps_public.contact.urls', namespace='contact')),
+
     # file newsletter ...
     url(r'^newsletter/',
         include('apps_public.newsletter.urls', namespace='newsletter')),
@@ -97,7 +100,7 @@ urlpatterns += i18n_patterns('',
     url(r'^unterricht/',
         include('apps_data.lesson.urls', namespace='lesson')),
 
-    url(r'^kurse/',
+    url(r'^kurseintern/',
         include('apps_data.courseevent.urls', namespace='courseevent')),
 )
 
@@ -125,8 +128,6 @@ urlpatterns += i18n_patterns('',
 
     url(r'^download/(?P<slug>[a-zA-Z0-9_-]+)/$',
         download, name="download"),
-
-    url(r'^webhooks/', include('apps_core.webhooks.urls')),
 
     # file markdown ...
     url(r'^markdown/',
