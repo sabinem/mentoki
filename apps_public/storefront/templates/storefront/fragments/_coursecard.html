@@ -1,7 +1,8 @@
-
-{% url 'storefront:detail' slug=courseproductgroup.slug as detail_url %}
-
-{% url 'storefront:offer' slug=courseproductgroup.slug as offer_url %}
+{% if courseproductgroup.can_be_booked_now %}
+    {% url 'storefront:detail' slug=courseproductgroup.slug as offer_url %}
+{% else %}
+    {% url 'storefront:detail' slug=courseproductgroup.slug as offer_url %}
+{% endif %}
 <div class="card">
 
     <a class="image" href="#">

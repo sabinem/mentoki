@@ -1,28 +1,44 @@
 
-<!-- courseready.html -->
+<!-- onlineunterrichten.html -->
 <div class="ui grid container centered" style="padding-bottom:100px;">
 
     <div class="sixteen wide tablet twelve wide computer column">
+       <div class="ui segment">
+        <img class="ui image fluid"
+                     src="{{ pagedata.banner.url }}" style="margin-top:0px;"
+                >
 
             <div class="ui header center aligned  large" style="color:#19aaa6;
             font-family: 'Montserrat', sans-serif;
             font-size: 2em;
             font-weight: 400;
             line-height: 1.5em;
+            padding-top:0px; margin-top:0px;
             -webkit-font-smoothing: antialiased;
             ">
                 {{ pagedata.title }}
             </div>
             {% url 'contact:contact' as contact_url %}
 
+
             <div class="froala_view">
                 {{ pagedata.text | safe }}
             </div>
 
-            <a class="ui basic button large" href="{{ contact_url }}">
-                zum Kontaktformular
+            <div class="ui header center aligned">
+            <a class="ui button fluid "
+                  style="
+            background: 0 0 #8fb2b2 !important;
+            box-shadow: 0 0 0 2px #8fb2b2; inset!important;
+            #color: #8fb2b2!important;
+            color:white;"
+
+               href="{{ contact_url }}">
+            Dann nehmen Sie Kontakt mit uns auf!
             </a>
+                </div>
 
+            </div>
     </div>
-
+</div>
 </div>

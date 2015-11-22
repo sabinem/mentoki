@@ -1,10 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+{% extends "email/base_internal_email.html" %}
 
-</body>
-</html>
+{% block email_to %}
+    Danke für Dein Interesse an Mentoki
+{% endblock %}
+
+{% block email_title %}
+    Hallo {{ name }},
+{% endblock %}
+
+{% block email_text %}
+<p>Du erhältst diese Nachricht, weil Du auf mentoki.com ins Kontaktformular geschrieben hast.</p>
+
+<p style="color:grey;">
+    Danke für Dein Interesse an Mentoki. Wir haben Deine Nachricht erhalten und
+    werden Dir innerhalb von 48 Stunden antworten.
+</p>
+<p style="padding-left: 30px;  color:grey;">
+    Mit freundlichen Grüssen
+</p>
+<p style="padding-left: 50px; color:grey;">
+Das Mentoki Team
+</p>
+<p style="padding-left: 80px; color:grey;">
+Sabine Maennel & Anette Pekrul
+</p>
+{% endblock %}
+{% block email_content %}
+
+{% endblock %}

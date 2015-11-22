@@ -9,7 +9,10 @@ diese email bei Ihrem Account angegeben hat.
 
 Um zu bestätigen, dass diese email korrekt ist, bestätige sie bitte unter
 mit diesem Link: {{ activate_url }}
-{% endblocktrans %}{% endautoescape %}
-{% blocktrans with site_name=current_site.name site_domain=current_site.domain %}Danke von
-{{ site_name }}!
-{{ site_domain }}{% endblocktrans %}
+
+Mit lieben Grüssen
+Sabine Mannel und Anette Pekrul
+       von mentoki.com
+{% endblocktrans %}
+{% endautoescape %}
+

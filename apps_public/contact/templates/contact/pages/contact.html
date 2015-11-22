@@ -1,17 +1,19 @@
 {% extends "contact/pages/base.html" %}
 {% load i18n %}
-
+{% block background_image %}background: url('/static/img/45169729_l_l.jpg');{% endblock %}
 {% block meta_title %}Kontakt | Mentoki{% endblock %}
 
 {% block meta_description %}Kontaktiere uns, wenn Du Fragen zu unseren Online-Kursen hast oder, wenn Du auf Mentoki unterrichten möchtest.{% endblock %}
 {% block meta_keywords %}online lernen, online unterrichten, lernen und lehren lebenslang{% endblock %}
 
 {% block contact_page_image %}
-    <img class="ui image centered huge image" src="/static/img/anette_and_sabine.jpg">
+
 {% endblock %}
 
 {% block contact_content %}
+<div class="ui segment">
 
+<img class="ui image centered huge image" src="/static/img/anette_and_sabine.jpg">
     <!--page content -->
     <h2 class="ui header ">{% trans 'Kontaktiere uns!' %}
         <div class="sub header">Wir freuen uns auf Deine Nachricht.</div>
@@ -25,6 +27,7 @@
             Abschicken
         </button>
     </form>
+    </div>
 
 {% endblock %}
 

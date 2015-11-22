@@ -21,6 +21,22 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+class PageSEO(TimeStampedModel):
+    meta_title = models.CharField(
+        verbose_name=_('Meta Titel'),
+        max_length=250
+    )
+    meta_description = models.CharField(
+        verbose_name=_('Meta Description'),
+        max_length=250
+    )
+    meta_keywords = models.CharField(
+        verbose_name=_('Meta Keywords'),
+        max_length=250
+    )
+    include_in_sitemap = models.BooleanField()
+
+
 def foto_location(instance, filename):
         """
         location where the banner is stored
@@ -68,6 +84,7 @@ class StaticPublicPages(TimeStampedModel):
         upload_to=foto_location,
         blank=True
     )
+    page_seo = models.ForeignKey(PageSEO, blank=True, null=True)
     meta_keywords = models.CharField(
         verbose_name=_('Meta Keywords'),
         help_text=_('HTML Meta Information zur Seite.'),
@@ -96,3 +113,5 @@ class StaticPublicPages(TimeStampedModel):
     def get_absolute_url(self):
         return reverse_lazy('home:public',
                        kwargs={'slug': self.slug})
+
+

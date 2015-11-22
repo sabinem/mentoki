@@ -16,7 +16,7 @@ from apps_productdata.mentoki_product.models.courseproductgroup import CoursePro
 
 
 class CourseProductGroupsListView(TemplateView):
-    template_name = "storefront/pages/courselist.html"
+    template_name = "storefront/pages/courselist_all.html"
 
     def get_context_data(self, **kwargs):
         """
@@ -33,7 +33,7 @@ class CourseProductGroupsListView(TemplateView):
 
 
 class ListNowView(TemplateView):
-    template_name = "storefront/pages/courselist.html"
+    template_name = "storefront/pages/courselist_now.html"
     listheader = "x"
 
     def get_context_data(self, **kwargs):
@@ -46,12 +46,11 @@ class ListNowView(TemplateView):
 
         # build list of course events
         context['courseproductgroups'] = CourseProductGroup.objects.book_now()
-        context['listheader'] = "Jetzt buchbar"
         return context
 
 
 class ListPreviewView(TemplateView):
-    template_name = "storefront/pages/courselist.html"
+    template_name = "storefront/pages/courselist_preview.html"
 
     def get_context_data(self, **kwargs):
         """
@@ -63,5 +62,4 @@ class ListPreviewView(TemplateView):
 
         # build list of course events
         context['courseproductgroups'] = CourseProductGroup.objects.preview()
-        context['listheader'] = "Vorschau"
         return context
