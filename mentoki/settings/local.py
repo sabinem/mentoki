@@ -49,4 +49,6 @@ TEMPLATES = [
 
 # overwriting raven
 #RAVEN_CONFIG = {'dsn': ''}
+import braintree
+BRAINTREE_ENVIRONMENT = braintree.Environment.Production
 

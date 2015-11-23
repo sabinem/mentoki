@@ -3,7 +3,7 @@
         <tr>
             <th>Thema</th>
             <th>Kurs</th>
-            <th>Startdatum</th>
+            <th style="background: #8fb2b2; color:white; opacity:0.9;">Startdatum</th>
             <th>Stückpreis</th>
             <th>Total</th>
         </tr>
@@ -15,17 +15,24 @@
                 <td>{{ order.courseproduct.course.title }}</td>
                 <td>{{ order.courseproduct.name }}
                 </td>
-                <td>{{ order.courseproduct.courseevent.start_date | date:"SHORT_DATE_FORMAT" }}</td>
+                <td style="background: #8fb2b2; color:white; opacity:0.9;">
+                    {% if order.courseproduct.courseevent.start_date %}
+                    {{ order.courseproduct.courseevent.start_date | date:"SHORT_DATE_FORMAT" }}
+                    {% else %}
+                        jederzeit
+                    {% endif %}
+                </td>
                 <td>{{ order.amount_per_payment|floatformat:2}} {{ order.get_currency_display }}</td>
 
                 <td>
                     {% if order.fully_paid %}
-                        {{ order.amount_paid|floatformat:2}} {{ order.get_currency_display }} vollständig bezahlt <i class="icon checkmark green"></i>
+                        {{ order.amount_paid|floatformat:2}} {{ order.get_currency_display }}
+                        vollständig bezahlt <i class="icon checkmark teal"></i>
                     {% else %}
                          {{ order.nr_parts_paid }} von
                         {{ order.total_parts }} Etappen:
                         {{ order.amount_paid|floatformat:2}} {{ order.get_currency_display }}
-                        <i class="icon checkmark green"></i>
+                        <i class="icon checkmark teal"></i>
                     {% endif %}
                 </td>
             </tr>

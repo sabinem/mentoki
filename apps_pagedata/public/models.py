@@ -34,7 +34,8 @@ class PageSEO(TimeStampedModel):
         verbose_name=_('Meta Keywords'),
         max_length=250
     )
-    include_in_sitemap = models.BooleanField()
+    priority = models.DecimalField(max_digits=2, default=0.5, decimal_places=1)
+    include_in_sitemap = models.BooleanField(default=False)
 
 
 def foto_location(instance, filename):
@@ -64,6 +65,7 @@ class StaticPublicPages(TimeStampedModel):
         max_length=20,
         primary_key=True
     )
+    seo = models.ForeignKey(PageSEO, null=True, blank=True)
     text =  FroalaField(
         verbose_name=_('Text'),
         blank=True
