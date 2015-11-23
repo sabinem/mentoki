@@ -54,7 +54,7 @@ class PaymentSuccessView(
         courseproductgroup = CourseProductGroup.objects.get(
            course=courseproduct.course)
         product_type = courseproduct.product_type
-
+        context['user'] = user
         context['order'] = order
         context['courseproduct'] = courseproduct
         context['courseproductgroup'] = courseproductgroup
