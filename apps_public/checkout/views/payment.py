@@ -68,6 +68,9 @@ class AuthMixin(UserPassesTestMixin):
         """
         tests whether the logged in user may book this product
         """
+        logger.info('---------------------------')
+        logger.info(    'in test_func')
+        logger.info('---------------------------')
         courseproduct = get_object_or_404(
             CourseProduct,
             pk=self.kwargs['pk'])
@@ -83,7 +86,8 @@ class AuthMixin(UserPassesTestMixin):
                 logger.info(' - Auftrag angezahlt')
                 return True
             else:
-                logger.debug(' - Es gibt noch keinen Auftrag')
+                logger.debug(' - Es wurde noch nicht angefangen zu zahlen, '
+                             'aber der Auftrag ist auch noch nicht voll bezahlt')
                 ordered_products = \
                     Order.objects.\
                     products_with_order_for_course_and_customer(
@@ -146,7 +150,12 @@ class PaymentView(
         Also the back key should not bring back the payment form, once the
         payment is done (@cache_control).
         """
-        logger.info('neuer Zahlungsaufruf')
+        logger.info('===========================')
+        logger.info(    'neuer Zahlungsaufruf')
+        logger.info('===========================')
+        logger.info('---------------------------')
+        logger.info(    'in dispatch')
+        logger.info('---------------------------')
         return super(PaymentView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
@@ -165,6 +174,9 @@ class PaymentView(
         - braintree_merchant_id according to the currency of the payment
         """
         # user from request
+        logger.info('---------------------------')
+        logger.info(    'in get')
+        logger.info('---------------------------')
         user=self.request.user
 
         # courseproduct, that is to be bought
@@ -258,8 +270,12 @@ class PaymentView(
                 'Unbekannte Währung [%s] bei Kursprodukt:[%s]' %
                 (self.currency, self.courseproduct))
         self.transaction.save()
-        logger.info('Eine Transaktion [%s] wurde bei Mentoki angelegt'
-                     % (self.transaction))
+
+        logger.info('Eine Transaktion [%s] wurde bei Mentoki angelegt mit der '
+                    'Währung [%s] und dem merchant account [%s]'
+                     % (self.transaction,
+                        self.transaction.currency,
+                        self.transaction.braintree_merchant_account_id))
 
         # create token for braintree communication
         self.token=None
@@ -299,6 +315,9 @@ class PaymentView(
         :param the view (self)
         :return: context
         """
+        logger.info('---------------------------')
+        logger.info(    'in get_context_data')
+        logger.info('---------------------------')
         context = super(PaymentView, self).get_context_data(**kwargs)
         context['amount'] = self.amount
         context['currency'] = self.courseproduct.get_currency_display
@@ -312,6 +331,9 @@ class PaymentView(
         redirects on error to a error page
         :return: response that redirects to the error page
         """
+        logger.info('---------------------------')
+        logger.info(    'in redirect_on_error')
+        logger.info('---------------------------')
         logger.info('im error redirect.')
         return HttpResponseRedirect(reverse(
             'checkout:payment_failure',
@@ -324,6 +346,9 @@ class PaymentView(
         Handles POST requests: the payment data are recovered from the
         transaction id that has been memorized in the session.
         """
+        logger.info('---------------------------')
+        logger.info(    'in post')
+        logger.info('---------------------------')
         try:
             self.transaction = \
                 Transaction.objects.get(
@@ -359,6 +384,9 @@ class PaymentView(
         Now the actual payment takes place.
         """
         # get the payment nonce from the form
+        logger.info('---------------------------')
+        logger.info(    'in form_valid')
+        logger.info('---------------------------')
         nonce = form.cleaned_data['payment_method_nonce']
         self.success = False
         logger.info('Das Token wurde gefunden.')
@@ -381,8 +409,8 @@ class PaymentView(
                             "last_name": self.transaction.last_name,
                             "email": self.transaction.email
                       }
-            transaction_data['merchant_account_id'] = \
-                self.merchant_account_id
+        transaction_data['merchant_account_id'] = \
+            self.merchant_account_id
         logger.info('Braintree Transaktion mit folgendem Input (Token wird '
                     'nicht angezeigt): [%s]'
                      % (transaction_data))
@@ -534,6 +562,9 @@ class PaymentView(
         redirects to success page in case of payment success
         :return: url
         """
+        logger.info('---------------------------')
+        logger.info(    'in get_success_url')
+        logger.info('---------------------------')
         url = reverse('checkout:payment_success',
                       kwargs={'order_pk': self.order.pk,
                               'transaction_pk': self.transaction.pk
