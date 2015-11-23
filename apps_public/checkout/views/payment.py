@@ -281,8 +281,9 @@ class PaymentView(
         # create token for braintree communication
         self.token=None
         braintree_token_args = {}
-        braintree_token_args['customer_id'] \
-            = self.transaction.braintree_customer_id
+        if self.transaction.braintree_customer_id:
+            braintree_token_args['customer_id'] \
+                = self.transaction.braintree_customer_id
         braintree_token_args['merchant_account_id'] = \
             self.transaction.braintree_merchant_account_id
         try:
