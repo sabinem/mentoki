@@ -9,7 +9,7 @@ email verified in order to be able to pay.
 """
 
 from __future__ import unicode_literals, absolute_import
-
+import json
 from django import forms
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
@@ -21,7 +21,7 @@ from django.http import HttpResponseRedirect
 from django.db import IntegrityError
 from django.utils.encoding import smart_str
 from django.views.decorators.cache import cache_control
-
+from django.core.serializers.json import DjangoJSONEncoder
 from django.conf import settings
 
 from braces.views import MessageMixin, UserPassesTestMixin, FormMessagesMixin
@@ -36,6 +36,7 @@ from apps_customerdata.customer.models.customer import Customer
 from apps_customerdata.customer.models.transaction import Transaction
 from apps_customerdata.customer.models.order import Order
 from apps_customerdata.customer.constants import TransactionErrorCode
+from apps_customerdata.customer.models.braintreelog import BraintreeLog
 
 from apps_productdata.mentoki_product.models.courseproductgroup import \
     CourseProductGroup
@@ -415,8 +416,16 @@ class PaymentView(
                     'nicht angezeigt): [%s]'
                      % (transaction_data))
         transaction_data['payment_method_nonce'] = nonce
+
+
         result = braintree.Transaction.sale(transaction_data)
 
+        transaction_data_json = json.dumps(transaction_data, cls=DjangoJSONEncoder)
+        BraintreeLog.objects.create(
+            result=result.is_success,
+            transaction_data=transaction_data_json,
+            mentoki_transaction = self.transaction
+        )
         # store transaction result
 
         if result.transaction:

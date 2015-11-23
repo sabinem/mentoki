@@ -12,6 +12,7 @@ from .models.customer import Customer
 from .models.transaction import Transaction
 from .models.order import Order
 from .models.contact import Prebooking
+from .models.braintreelog import BraintreeLog
 
 #TODO determine later on what exactly is needed in the admin
 
@@ -53,3 +54,12 @@ class CustomerAdmin(admin.ModelAdmin):
     """
     list_display = ( 'id', 'email', 'interested_in_learning', 'created')
     list_filter = ('email', 'created')
+
+
+@admin.register(BraintreeLog)
+class BraintreeLogAdmin(admin.ModelAdmin):
+    """
+    Customers that pay and are registered at braintree, the payment provider
+    """
+    list_display = ( 'id', 'mentoki_transaction', 'created')
+    list_filter = ('created', )
