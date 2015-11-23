@@ -18,4 +18,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR_PROJECT, 'htdocs', 'media')
 
 
 # ssl settings
-SSLIFY_DISABLE = True
+#SSLIFY_DISABLE = True
