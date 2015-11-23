@@ -50,10 +50,11 @@ import logging
 logger = logging.getLogger('activity.payments')
 logger_sentry = logging.getLogger('sentry.payments')
 
+environment = braintree.environment.Production
 
 # configure the global braintree object:
 braintree.Configuration.configure(
-    environment=settings.BRAINTREE_ENVIRONMENT,
+    environment=environment,
     merchant_id=settings.BRAINTREE['merchant_id'],
     public_key=settings.BRAINTREE['public_key'],
     private_key=settings.BRAINTREE['private_key'],
