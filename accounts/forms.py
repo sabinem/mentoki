@@ -8,6 +8,10 @@ from django.core.exceptions import ValidationError, ObjectDoesNotExist
 
 from .models import User as MentokiUser
 
+import logging
+logger = logging.getLogger('activity.users')
+
+
 class CustomUserCreationForm(UserCreationForm):
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Password Confirmation', widget=forms.PasswordInput)
@@ -82,6 +86,8 @@ class SignupForm(forms.Form):
 
         if request.session.has_key('unfinished_checkout'):
 
-            user.checkout_product_slug=\
-                request.session['unfinished_product_slug']
+            user.checkout_product_pk=\
+                request.session['unfinished_product_pk']
+            logger.info('Benutzer [%s] wird gespeichert mit Wunsch: [%s]'
+                                % (user, user.checkout_product_pk))
         user.save()

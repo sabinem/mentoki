@@ -47,8 +47,6 @@ class BookingsView(
             orders = Order.objects.by_customer_started_to_pay(customer=customer)
             logger.info(' - hat Aufträge')
             context['orders'] = orders
-            for order in orders:
-                print order.courseproduct.courseevent
         except ObjectDoesNotExist:
             # user is not a customer
             pass

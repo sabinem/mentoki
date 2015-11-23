@@ -1,6 +1,5 @@
 {% extends "base/base_public.html" %}
 
-{% block page_section_css_id %}standard_public_page_body_2{% endblock %}
 
 {% block main_content %}
 
@@ -12,6 +11,7 @@
         <div class="content ui column sixteen wide">
 
             {% url 'desk:learn' as desk_url %}
+            {% url 'desk:bookings' as desk_bookings_url %}
             <div class="ui two column stackable grid">
 
                 <div class="column five wide">
@@ -57,22 +57,14 @@
                         {% endif %}
 
 
-                {% if not request.user.is_authenticated %}
-                    <div class="ui header medium">Setze Dein Passwort!</div>
-                    <p>Du bist bereits im System registriert. Damit Du Dich einloggen kannst,
-                    wurde eine email zu Setzen Deines Passworts an Dich geschickt.
-                    </p>
-
-                        <p></p>
-                        <p>Wenn Du sonst noch Fragen hast, schreibe uns gerne:
-                        <strong>mentoki@mentoki.com</strong></p>
-                    </p>
-                {% else %}
-
-                {% endif %}
-
                     <p>Den Zugang zum Kurs findest Du auf Deinem
-                        <a href="{{ desk_url }}">Schreibtisch.</a></p>
+                        <a href="{{ desk_url }}">Schreibtisch.
+                        </a> Von dort kommst Du ins Klassenzimmer, sobald der Kurs beginnt.
+                    </p>
+                    <p>Deine Buchungen findest Du ebenfalls auf Deinem
+                        <a href="{{ desk_bookings_url }}">Schreibtisch.
+                        </a>Ausserdem haben wir Dir gerade noch per email eine Buchungsbestätigung geschickt.
+                    </p>
                 <p>Mit lieben Grüssen</p>
                 <p id="signature">Sabine Maennel und Anette Pekrul</p>
 

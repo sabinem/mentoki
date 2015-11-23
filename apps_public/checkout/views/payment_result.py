@@ -15,6 +15,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from braces.views import MessageMixin
 
 from braces.views import LoginRequiredMixin
+from apps_core.email.utils.payment import send_receipt
 
 from apps_productdata.mentoki_product.models.courseproduct import \
     CourseProduct
@@ -25,7 +26,8 @@ from apps_customerdata.customer.models.transaction import Transaction
 from apps_data.courseevent.models.courseevent import CourseEventParticipation
 
 import logging
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('activity.payments')
+logger_sentry = logging.getLogger('sentry.payments')
 
 
 class PaymentSuccessView(
@@ -43,8 +45,10 @@ class PaymentSuccessView(
         context = super(PaymentSuccessView, self).get_context_data(**kwargs)
         try:
             order = Order.objects.get(pk=self.kwargs['order_pk'])
+            transaction = \
+                Transaction.objects.get(pk=self.kwargs['transaction_pk'])
         except ObjectDoesNotExist:
-            pass
+            logger_sentry.error('Nach der Zahlung fehlten Transaction oder Auftrag')
         courseproduct = order.courseproduct
         user = self.request.user
         courseproductgroup = CourseProductGroup.objects.get(
@@ -55,6 +59,12 @@ class PaymentSuccessView(
         context['courseproduct'] = courseproduct
         context['courseproductgroup'] = courseproductgroup
 
+        send_receipt(
+            transaction = transaction,
+            order=order,
+            user=user,
+            module=self.__module__,
+        )
         return context
 
 
@@ -74,7 +84,7 @@ class PaymentFailureView(
         try:
             order = Order.objects.get(pk=self.kwargs['order_pk'])
         except ObjectDoesNotExist:
-            pass
+            logger_sentry.error('Nach der Zahlung fehlte der Auftrag')
         courseproduct = order.courseproduct
         user = self.request.user
         courseproductgroup = CourseProductGroup.objects.get(

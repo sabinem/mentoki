@@ -8,7 +8,7 @@ from __future__ import unicode_literals, absolute_import
 
 from django.contrib import admin
 
-from .models import StaticPublicPages
+from .models import StaticPublicPages, PageSEO
 
 
 @admin.register(StaticPublicPages)
@@ -19,4 +19,12 @@ class PublicPagesAdmin(admin.ModelAdmin):
     list_display = ('pagecode', 'slug', 'title',
                     'meta_title', 'modified' )
     list_filter = ('modified',)
+
+
+@admin.register(PageSEO)
+class PageSEOAdmin(admin.ModelAdmin):
+    """
+    General Text chunks like Agb, impressum are administerd here
+    """
+    list_display = ('id' ,)
 

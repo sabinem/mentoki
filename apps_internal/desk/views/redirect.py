@@ -33,6 +33,8 @@ class DeskRedirectView(
         """
         # was there an unfinished checkout?
         user = User.objects.get(id=self.request.user.id)
+        logger.info('[%s] kommt auf seinen Schreibtisch mit Wunsch: [%s]'
+                                % (user, user.checkout_product_pk))
 
         if self.request.user.checkout_product_pk:
             user = User.objects.get(id=self.request.user.id)
@@ -41,7 +43,8 @@ class DeskRedirectView(
             user.save()
             kwargs['pk'] = pk
             logger.info('[%s] wird weitergeleitet zu Buchung [%s]'
-                        % self.request.user, pk)
+                        % (self.request.user, pk))
+
             url = reverse('checkout:payment', kwargs=kwargs)
             return url
 

@@ -94,6 +94,8 @@ class CheckoutStartView(
             self.request.session['next'] = next
             self.request.session['unfinished_checkout'] = True
             self.request.session['unfinished_product_pk'] = self.kwargs['pk']
+            logger.info('Wunsch [%s] wird in der Session gemerkt'
+                        % (self.request.session['unfinished_product_pk']))
 
             # get url to contain a next part that bring the person back here
             # right after login

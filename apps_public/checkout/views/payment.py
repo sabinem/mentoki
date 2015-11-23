@@ -510,7 +510,7 @@ class PaymentView(
 
                 #update order
 
-                self.order.order_status = OrderStatus.ERROR_DURING_PAYMENT
+                self.order.last_transaction_had_success = False
                 self.order.save()
 
                 #log error
@@ -536,6 +536,7 @@ class PaymentView(
         """
         url = reverse('checkout:payment_success',
                       kwargs={'order_pk': self.order.pk,
+                              'transaction_pk': self.transaction.pk
                               })
         logger.info('in get success_url %s' % url)
         return url
