@@ -28,8 +28,8 @@
 
 
                     <div class="ui header">Hallo {{ order.customer.first_name }} {{ order.customer.last_name }}</div>
-                <p>Vielen Dank, wir haben Deine Zahlung erhalten
-                    und Du bist jetzt angemeldet für:</p>
+                <p>Vielen Dank, wir haben Ihre Zahlung erhalten
+                    und Sie sind jetzt angemeldet für:</p>
                 <h4 class="ui dividing header">Kurs-Daten</h4>
                                      <div class="ui middle aligned divided list">
                       <div class="item" >
@@ -37,7 +37,7 @@
                             <div class="header">
                           {{ courseproduct.name }}
                             </div>
-                           <p>{{ courseproduct.description | safe }}</p>
+                           <p style="color:black !important;">{{ courseproduct.description | safe }}</p>
                         </div>
                       </div>
                          </div>
