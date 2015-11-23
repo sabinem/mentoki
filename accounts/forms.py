@@ -23,8 +23,8 @@ class CustomUserCreationForm(UserCreationForm):
     def clean_username(self):
         username = self.cleaned_data.get('username')
         try:
-            User._default_manager.get(username=username)
-        except User.DoesNotExist:
+            MentokiUser._default_manager.get(username=username)
+        except MentokiUser.DoesNotExist:
             return username
         raise forms.ValidationError(self.error_messages('Duplicate username'))
 

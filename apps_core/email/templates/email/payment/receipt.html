@@ -26,34 +26,33 @@
     {% if not order.fully_paid %}
         Damit hast Du jetzt {{ order.nr_parts_paid }} von
     {{ order.total_parts }} Etappen des Kurses bezahlt. </p><p>Zahlung gesamt:
-        {{ order.amount_paid |floatformat:2 }} {{ order.get_currency_display }}</p>
+        {{ order.amount_paid |floatformat:2 }} {{ order.get_currency_display }}
     {% endif %}
         </p>
-    {% if courseevent.start_date %}
+<p>Du kannst Deine Buchungen auf Deinem Schreibtisch bei Mentoki finden:
+    </p><p>
+    <a href="http://{{ site }}{%  url 'desk:bookings' %}">
+        Link zur Buchungsübersicht
+    </a></p>
     <h4>Kursbeginn:</h4>
-    <p>Dein Kursbeginn: {{ order.courseproduct.courseevent.start_date | date:"SHORT_DATE_FORMAT" }}</p>
+    {% if courseevent.start_date %}
+
+    <p>Dein Kursbeginn ist der {{ order.courseproduct.courseevent.start_date | date:"SHORT_DATE_FORMAT" }}.
+      Sobald der Kurs startet erhältst Du von der Kursleitung eine Benachrichtigung.
+    Danke für Dein Vertrauen in Mentoki.</p>
     {% else %}
     <p>Du kannst gleich loslegen. Der Zugang zum Kurs liegt auf Deinem Schreibtisch bereit.</p>
     <a href="http://{{ site }}{%  url 'desk:learn' %}">
         Link zum Kurs auf Deinem Schreibtisch
     </a>
     {% endif %}
-    <h4>Dein Schreibtisch bei Mentoki:</h4>
-    <p>Du kannst Deine Buchungen auf Deinem Schreibtisch bei Mentoki finden:
-    </p><p>
-    <a href="http://{{ site }}{%  url 'desk:bookings' %}">
-        Link zur Buchungsübersicht
-    </a></p>
-    <p>Auf Deinem Schreibtisch findest Du auch den Zugang zum Kurs:</p>
-    <a href="http://{{ site }}{%  url 'desk:learn' %}">
-        Link zu Deinen Kursen
-    </a>
-    <p>
-    Sobald der Kurs startet erhältst Du von der Kursleitung eine Benachrichtigung.
-    Danke für Dein Vertrauen in Mentoki.</p>
+    <p>Alles Gute für Deinen Kursstart und melde Dich gerne bei uns, wenn Du Fragen hast
+        oder Probleme auftreten.</p>
 
     <p style="padding-left: 30px;  color:grey;">
-    Mit freundlichen Grüssen
+
+
+        Mit freundlichen Grüssen
 </p>
 <p style="padding-left: 50px; color:grey;">
 Das Mentoki Team
