@@ -406,8 +406,6 @@ BRAINTREE = {
     'public_key':os.environ.get('BRAINTREE_PUBLIC_KEY'),
     'private_key':os.environ.get('BRAINTREE_PRIVATE_KEY'),
 }
-# set braintree environment: so far it is the sandbox
-import braintree
-BRAINTREE_ENVIRONMENT = braintree.Environment.Production
+
 
 

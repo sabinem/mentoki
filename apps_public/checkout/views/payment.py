@@ -61,6 +61,7 @@ braintree.Configuration.configure(
     merchant_account_id_eur=settings.BRAINTREE['merchant_account_id_eur'],
 )
 
+
 class AuthMixin(UserPassesTestMixin):
 
     redirect_field_name = settings.COURSE_LIST_URL

@@ -48,21 +48,8 @@ class DeskRedirectView(
             url = reverse('checkout:payment', kwargs=kwargs)
             return url
 
-        # is the user registered as a courseowner?
-        elif self.request.user.teaching != []:
-            logger.info('[%s] wird weitergeleitet zu seinem Unterricht auf '
-                        'dem Schreibtisch'
-                        % self.request.user)
-            return reverse('desk:teach')
-
-        elif self.request.user.studying() != []:
+        else:
             logger.info('[%s] wird weitergeleitet zu seinen Lern-Kursen auf '
                         'dem Schreibtisch'
                         % self.request.user)
             return reverse('desk:learn')
-
-        else:
-            logger.info('[%s] wird weitergeleitet zu seinen Profildaten '
-                        'dem Schreibtisch'
-                        % self.request.user)
-            return reverse('desk:profile')

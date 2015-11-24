@@ -19,3 +19,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR_PROJECT, 'htdocs', 'media')
 
 # ssl settings
 #SSLIFY_DISABLE = True
+
+# overwriting raven
+#RAVEN_CONFIG = {'dsn': ''}
+import braintree
+BRAINTREE_ENVIRONMENT = braintree.Environment.Production

@@ -9,6 +9,8 @@ from django.utils.translation import ugettext_lazy as _
 from apps_data.course.models.course import Course
 from apps_data.courseevent.models.courseevent import CourseEvent
 from apps_data.courseevent.constants import PARTICIPANT_STATUS_CHOICES
+from .constants import StartDesk
+from django_enumfield import enum
 
 
 class UserManager(BaseUserManager):
@@ -79,7 +81,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     checkout_product_pk = models.IntegerField(
         blank=True, null=True
     )
-
+    #start_desk = enum.EnumField(
+    #    StartDesk,
+    #    default=StartDesk.INITIAL
+    #)
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
