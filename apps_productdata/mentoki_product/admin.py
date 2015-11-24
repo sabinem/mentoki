@@ -19,7 +19,7 @@ class CourseProductGroupAdmin(admin.ModelAdmin):
     """
     CourseProductGroup is the Group of all products related to a course
     """
-    list_display = ('id', 'course', 'display_nr')
+    list_display = ('id', 'course', 'display_nr', 'slug')
     list_filter = ('modified', 'course')
     list_display_links = ('id',)
 
