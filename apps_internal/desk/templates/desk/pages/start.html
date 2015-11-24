@@ -1,78 +1,17 @@
-{% extends "base/base_public.html" %}
+{% extends "desk/pages/base.html" %}
+{% block desk_header %}Einführung auf mentoki{% endblock %}
+{% block work %}
+    <div class="ui grid center aligned">
+    <div class="ui segment centered">
+<p><span contenteditable="false" class="f-video-editor fr-fvn fr-tnv">
+    <iframe width="640" height="360" src="//www.youtube.com/embed/kOMoNR0POWA" frameborder="0" allowfullscreen="">
 
-{% block page_section_css_id %}desk{% endblock %}
-
-{% block main_content %}
-
-    <!-- text page -->
-    <div class="ui grid container" style="padding-bottom:100px; padding-top:10px;
-    min-height:400px;">
-        <div class="content ui column sixteen wide">
-            <div class="sixteen wide column" id="whitepaper">
-
-                <div class="ui large header">Dein Schreibtisch: {{ request.user.get_full_name }}</div>
-
-                {% include 'desk/fragments/_menu.html' %}
-
-                {% include 'base/fragments/_messages.html' %}
-
-                <div class="ui two column stackable grid">
-
-                    <div class="column">
-
-                        <!-- learn -->
-
-                        <h2 class="ui header inverted center aligned" id="desk_teach">
-                            Dein Lernenxx
-                        </h2>
-
-                        <div class="ui cards">
-                            {% for courseevent in study_courseevents %}
-                                <div class="ui card fluid">
-                                    {% include 'desk/fragments/_courseevent_learn_record.html' %}
-                                </div>
-                            {% empty %}
-                                Du hast noch keinen Kurs gebucht.
-                            {% endfor %}
-                        </div>
-                    </div>
-
-
-
-                    <div class="column">
-
-                        <!-- teach only -->
-                        {% if teach_courses %}
-
-                            <h2 class="ui header inverted center aligned">
-                                Dein Unterricht
-                            </h2>
-
-                            <div class="ui cards">
-                                {% for course in teach_courses %}
-                                    <div class="ui card fluid">
-                                        {% include 'desk/fragments/_courseevent_teach_record.html' %}
-                                    </div>
-                                {% endfor %}
-                            </div>
-
-                        {% endif %}
-
-                    </div>
-
-                            {% block admin_access %}{% endblock %}
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
+</iframe></span></p>
+</div>
     </div>
 
 {% endblock %}
+
 
 
 

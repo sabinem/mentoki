@@ -37,3 +37,11 @@ class DeskLearnView(
         return context
 
 
+class DeskStartView(
+    LoginRequiredMixin,
+    TemplateView):
+    """
+    This View shows all the classes where the user is enrolled and
+    serves as entry point for these classes
+    """
+    template_name = 'desk/pages/start.html'

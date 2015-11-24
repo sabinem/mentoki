@@ -75,16 +75,16 @@ class User(AbstractBaseUser, PermissionsMixin):
     profile_image = models.ImageField(
         verbose_name='Profilbild',
         upload_to="uploads",
-        blank=False,
-        null=False,
-        default='/static/img/happyface.jpg')
+        blank=True,
+        null=True,
+        )
     checkout_product_pk = models.IntegerField(
         blank=True, null=True
     )
-    #start_desk = enum.EnumField(
-    #    StartDesk,
-    #    default=StartDesk.INITIAL
-    #)
+    start_desk = enum.EnumField(
+        StartDesk,
+        default=StartDesk.INITIAL
+    )
     objects = UserManager()
 
     USERNAME_FIELD = 'email'

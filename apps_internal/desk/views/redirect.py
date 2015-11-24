@@ -8,6 +8,7 @@ from django.views.generic import RedirectView
 from braces.views import MessageMixin, LoginRequiredMixin
 
 from accounts.models import User
+from accounts.constants import StartDesk
 
 
 import logging
@@ -47,7 +48,10 @@ class DeskRedirectView(
 
             url = reverse('checkout:payment', kwargs=kwargs)
             return url
-
+        #elif user.start_desk == StartDesk.INITIAL:
+        #    user.start_desk == StartDesk.LEARN
+        #    user.save()
+        #    return reverse('desk:start')
         else:
             logger.info('[%s] wird weitergeleitet zu seinen Lern-Kursen auf '
                         'dem Schreibtisch'

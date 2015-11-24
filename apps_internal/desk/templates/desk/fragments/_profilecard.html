@@ -4,12 +4,13 @@
 <div class="ui card">
     <div class="image" >
         {% if user.profile_image %}
+            xx
             <img src="{{ user.profile_image.url }}">
         {% endif %}
     </div>
     <div class="content">
         <div class="header">
-            {{ user.get_full_name }}
+            {{ user.get_full_name }}{{ user.profile_image }}
         </div>
     </div>
       <div class="content">

@@ -52,7 +52,7 @@ class UserProfileUpdateForm(forms.ModelForm):
     """
     class Meta:
         model = User
-        fields = ('username', 'profile_image', )
+        fields = ('username', 'profile_image', 'start_desk' )
 
 
 class PageForm(forms.ModelForm):

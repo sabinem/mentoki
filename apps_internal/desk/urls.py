@@ -5,7 +5,7 @@ from __future__ import unicode_literals, absolute_import
 from django.conf.urls import patterns, url
 
 from .views.redirect import DeskRedirectView
-from .views.learn import DeskLearnView
+from .views.learn import DeskLearnView, DeskStartView
 from .views.teach import DeskTeachView
 from .views.pageadmin import PageAdminView
 from .views.courseadmin import CourseAdminView
@@ -24,6 +24,8 @@ urlpatterns = patterns('',
     url(r'^unterrichten$', DeskTeachView.as_view(), name='teach' ),
 
     url(r'^lernen$', DeskLearnView.as_view(), name='learn' ),
+
+    url(r'^start$', DeskStartView.as_view(), name='start' ),
 
     url(r'^webseite$', PageAdminView.as_view(), name='pageadmin' ),
 
