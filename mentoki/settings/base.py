@@ -60,6 +60,7 @@ INSTALLED_APPS += (
     'pagedown',
     'django_markdown',
     'formtools',
+    'seohelper',
 )
 
 # installed apps mentoki

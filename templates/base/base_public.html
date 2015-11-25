@@ -1,17 +1,16 @@
 {% extends 'base/base.html' %}
 {% load activelink %}
 {% load i18n %}
+{% block pre_html %}
+    {% load seo_helper %}
+    {% seo_helper request.path as meta %}
+{% endblock %}
 
 {% block meta %}
-
-    <!-- BLOCK: Meta description -->
-    <meta name="description" content="{% block meta_description %}{% endblock %}">
-
-    <!-- BLOCK: Meta keywords -->
-    <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
-
-    <!-- BLOCK: Meta title -->
-    <title>{% block meta_title %}{% endblock %}</title>
+    <title>{{ meta.title }}</title>
+    <meta name="description" content="{{ meta.description }}" />
+    <meta name="keywords" content="{{ meta.keywords }}" />
+    <meta name="robots" content="{{ meta.robot_tags }}" />
 
 {% endblock %}
 
@@ -59,12 +58,16 @@
     <div class="ui labeled icon wide left inline vertical sidebar menu mobile only" id="mobile_menu">
         {% include 'base/fragments/_navbar_mobile.html' %}
     </div>
+    {% if request.user.is_superuser %}
+        <div class="ui message warning">
+            Title:<strong>{{ meta.title }}</strong>,
+            Description:{{ meta.description }},
+            Keywörter:{{ meta.keywords }},
+            Robots:{{ meta.robot_tags }}
+        </div>
+    {% endif %}
+    {% block main_content %}{% endblock %}
 
-    <div id="{% block page_section_css_id %}public{% endblock %}">
-
-        {% block main_content %}{% endblock %}
-
-    </div>
 
 {% endblock %}
 
