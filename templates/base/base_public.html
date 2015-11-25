@@ -60,10 +60,10 @@
     </div>
     {% if request.user.is_superuser %}
         <div class="ui message warning">
-            Title:<strong>{{ meta.title }}</strong>,
-            Description:{{ meta.description }},
-            Keywörter:{{ meta.keywords }},
-            Robots:{{ meta.robot_tags }}
+            <strong>{{ meta.title }}</strong>
+            <p>{{ meta.description }}</p><p></p>
+            <p style="color:grey;">{{ meta.keywords }}<p></p>
+            <p style="color:grey;">{{ meta.robot_tags }}</p>
         </div>
     {% endif %}
     {% block main_content %}{% endblock %}
