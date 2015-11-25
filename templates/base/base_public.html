@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block meta %}
-    <title>{{ meta.title }}</title>
+    <title>{{ meta.title }} | Mentoki: Lernen und Lehren lebenslang</title>
     <meta name="description" content="{{ meta.description }}" />
     <meta name="keywords" content="{{ meta.keywords }}" />
     <meta name="robots" content="{{ meta.robot_tags }}" />
@@ -60,7 +60,7 @@
     </div>
     {% if request.user.is_superuser %}
         <div class="ui message warning">
-            <strong>{{ meta.title }}</strong>
+            <strong>{{ meta.title }} | Mentoki: Lernen und Lehren lebenslang</strong>
             <p>{{ meta.description }}</p><p></p>
             <p style="color:grey;">{{ meta.keywords }}<p></p>
             <p style="color:grey;">{{ meta.robot_tags }}</p>
