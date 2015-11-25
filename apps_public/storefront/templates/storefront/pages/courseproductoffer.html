@@ -1,10 +1,8 @@
 {% extends "storefront/pages/base_detail.html" %}
 {% load i18n %}
 
-{% block meta_title %}{{ courseproductgroup.meta_title_offers }} | Mentoki{% endblock %}
-
-{% block meta_description %}{{ courseproductgroup.meta_description_offers }}{% endblock %}
-{% block meta_keywords %}{{ courseproductgroup.meta_keywords_offers }}{% endblock %}
+{% block meta_post_title %}{{ courseproductgroup.course.title }} bei mentoki{% endblock %}
+{% block meta_post_title_tmp %}Kurse bei mentoki{% endblock %}
 
 {% block course_detail %}
 
