@@ -61,7 +61,9 @@
     </div>
     {% if request.user.is_superuser %}
         <div class="ui message warning">
-            <strong>{{ meta.title }}</strong>
+            <strong>{{ meta.title }} |
+            {% block meta_post_title_tmp %}{% endblock %}
+            </strong>
             <p>{{ meta.description }}</p><p></p>
             <p style="color:grey;">{{ meta.keywords }}<p></p>
             <p style="color:grey;">{{ meta.robot_tags }}</p>
