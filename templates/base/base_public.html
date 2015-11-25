@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block meta %}
-    <title>{{ meta.title }} | {% block meta_post_title %}{% endblock %}
+    <title>{% block meta_post_title %}{% endblock %}
         </title>
     <meta name="description" content="{{ meta.description }}" />
     <meta name="keywords" content="{{ meta.keywords }}" />
@@ -61,7 +61,7 @@
     </div>
     {% if request.user.is_superuser %}
         <div class="ui message warning">
-            <strong>{{ meta.title }} |
+            <strong>
             {% block meta_post_title_tmp %}{% endblock %}
             </strong>
             <p>{{ meta.description }}</p><p></p>
