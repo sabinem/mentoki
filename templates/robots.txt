@@ -31,3 +31,4 @@ Disallow:/newsletter
 
 Disallow:/feed
 Disallow:/schreibtisch
+Disallow:/de/kurse/schneller-lesen/kursleitung
