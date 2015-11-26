@@ -22,6 +22,7 @@ Disallow:/kurseintern
 Disallow:/danke
 Disallow:/checkout
 Disallow:/uploads
+Disallow:/upload
 Disallow:/*?*
 Disallow:/*danke
 Disallow:/*warteliste
