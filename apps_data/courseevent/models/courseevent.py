@@ -46,7 +46,9 @@ class CourseEventManager(models.Manager):
         """
         all Courseevents for a course
         """
-        return self.filter(course=course)
+        return self\
+            .filter(course=course)\
+            .order_by('start_date')
 
     def active_courseevents_for_course(self, course):
         """
@@ -54,7 +56,9 @@ class CourseEventManager(models.Manager):
         teachers
         RETURN: queryset of courseevents
         """
-        return self.filter(course=course, active=True)
+        return self\
+            .filter(course=course, active=True)\
+            .order_by('start_date')
 
 
 class CourseEvent(TimeStampedModel):
@@ -294,6 +298,10 @@ class CourseEventParticipation(TimeStampedModel):
 
     def __unicode__(self):
         return u'%s / %s' % (self.courseevent, self.user)
+
+    @cached_property
+    def course(self):
+        return self.courseevent.course
 
     def hide(self):
         self.hidden = True

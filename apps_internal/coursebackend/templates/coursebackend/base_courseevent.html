@@ -12,7 +12,10 @@
          opacity:0.5;
          background:white;
          ">
-         Kursereignis {{ courseevent.title }}: {{ course.teachersrecord }}
+         {{ courseevent.title }}
+         {% if courseevent.start_date %}
+             {{ courseevent.start_date }}
+         {% endif %}
      </h2>
 {% endblock %}
 

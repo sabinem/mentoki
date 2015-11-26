@@ -71,8 +71,11 @@
         {% url "coursebackend:classlesson:start" course_slug=cs slug=event.slug as classlesson_url %}
         {% url "coursebackend:material:list" course_slug=cs slug=event.slug as material_url %}
 
-        <div class="header item huge" style="font-size:1.5em;">
-            Klassenzimmer {{ courseevent }}
+        <div class="header item large" style="font-size:1.5em;">
+          {{ event.title }}<br>
+         {% if event.start_date %}
+             {{ event.start_date }}
+         {% endif %}
         </div>
 
         <a href="{{ classroom_url }}" class="item" style="font-size:1.1em;">

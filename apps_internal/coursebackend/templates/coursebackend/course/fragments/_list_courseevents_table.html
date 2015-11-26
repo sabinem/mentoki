@@ -15,7 +15,6 @@ for list
                 <th>Dauer</th>
                 <th>Teilnehmeranzahl</th>
                 <th>Startdatum</th>
-                <th>Preis</th>
             </tr>
         </tr>
     </thead>
@@ -58,13 +57,6 @@ for list
                         n/a
                     {% else %}
                         -
-                    {% endif %}
-                </td>
-                <td>
-                    {% if courseevent.price %}
-                        {{ courseevent.price }}
-                    {% else %}
-                        noch nicht bestimmt
                     {% endif %}
                 </td>
             </tr>

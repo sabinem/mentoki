@@ -40,7 +40,7 @@ class CourseEventParticipationAdmin(admin.ModelAdmin):
     Here the relationship between users and Courseevents is established:
     the participation as students.
     """
-    list_display = ('id', 'user', 'courseevent', 'hidden')
+    list_display = ('id', 'user', 'course', 'courseevent', 'hidden')
     list_filter = ('user', 'courseevent', 'modified')
 
 

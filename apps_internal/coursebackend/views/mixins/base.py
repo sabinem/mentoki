@@ -52,7 +52,10 @@ class CourseMenuMixin(AuthMixin):
         context['cs'] = context['course'].slug
 
         if not 'courseevents' in context:
-            context['courseevents'] = CourseEvent.objects.active_courseevents_for_course(course=context['course'])
+            context['courseevents'] = \
+                CourseEvent.objects.active_courseevents_for_course(
+                    course=context['course']
+                )
 
         if 'slug' in self.kwargs:
             if not 'courseevent' in context:

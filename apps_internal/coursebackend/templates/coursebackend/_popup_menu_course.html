@@ -57,7 +57,12 @@
                     {% url 'coursebackend:classlesson:start' slug=ce.slug course_slug=cs as courseevent_url %}
 
                     <a href="{{ courseevent_url }}" class="item">
-                        {{ ce }}<i class="icon external"></i>
+                           {{ courseevent.title }}
+                             {% if courseevent.start_date %}
+                                 {{ courseevent.start_date }}
+                             {% endif %}
+
+                        <i class="icon external"></i>
                     </a>
                 {% endfor %}
 
