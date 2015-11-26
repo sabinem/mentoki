@@ -19,32 +19,32 @@
             <div class="ui link list">
 
                 <a href="{{ course_url }}" class="item
-                    {% ifstartswith course_url %}active{% endifstartswith %}">
+                    {% ifstartswith course_url %}active teal{% endifstartswith %}">
                     Kursvorlage
                 </a>
 
                 <a href="{{ courseowner_url }}" class="item
-                    {% ifstartswith courseowner_url %}active{% endifstartswith %}">
+                    {% ifstartswith courseowner_url %}active teal{% endifstartswith %}">
                     Kursleitung
                 </a>
 
                 <a href="{{ courseevents_url }}" class="item
-                    {% ifstartswith courseevents_url %}active{% endifstartswith %}">
+                    {% ifstartswith courseevents_url %}active teal{% endifstartswith %}">
                     Liste der Kurseereignisse
                 </a>
 
                 <a href="{{ lesson_url }}" class="item
-                    {% ifstartswith lesson_url %}active{% endifstartswith %}">
+                    {% ifstartswith lesson_url %}active teal{% endifstartswith %}">
                     Unterricht
                 </a>
 
                 <a href="{{ material_url }}" class="item
-                    {% ifstartswith material_url %}active{% endifstartswith %}">
+                    {% ifstartswith material_url %}active teal{% endifstartswith %}">
                     Materialien
                 </a>
 
                 <a class="item
-                    {% ifstartswith homework_url %}active {% endifstartswith %}
+                    {% ifstartswith homework_url %}active teal{% endifstartswith %}
                     " href="{{ homework_url }}" style="font-size:1.1em;">
                     Aufgaben
                 </a>
@@ -57,9 +57,9 @@
                     {% url 'coursebackend:classlesson:start' slug=ce.slug course_slug=cs as courseevent_url %}
 
                     <a href="{{ courseevent_url }}" class="item">
-                           {{ courseevent.title }}
-                             {% if courseevent.start_date %}
-                                 {{ courseevent.start_date }}
+                           {{ ce.title }}
+                             {% if ce.start_date %}
+                                 {{ ce.start_date }}
                              {% endif %}
 
                         <i class="icon external"></i>
