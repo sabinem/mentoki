@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from django.conf.urls import patterns, url
+from django.shortcuts import redirect
+from django.http import HttpResponsePermanentRedirect
+from django.core.urlresolvers import reverse
+
 
 from .views.info import \
     CourseGroupDetailView, CourseGroupMentorsView
@@ -8,6 +12,8 @@ from .views.list import CourseProductGroupsListView, \
     ListNowView, ListPreviewView
 from .views.sales import CourseGroupOfferView
 from .views.prebook import ProductPrebookView, AnswerView
+
+
 
 
 urlpatterns = patterns('',
@@ -35,6 +41,7 @@ urlpatterns = patterns('',
 
     url(r'^(?P<pk>\d{1,4})/danke$',
         AnswerView.as_view(), name='prebooking_sucess'),
+
 
 )
 
