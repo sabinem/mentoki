@@ -81,6 +81,9 @@ urlpatterns += i18n_patterns('',
     (r'^robots\.txt/$',
         TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),
 
+    (r'^googleb739bc2feb0d0b27\.html/$',
+        TemplateView.as_view(template_name='googleb739bc2feb0d0b27.html')),
+
     #sitemap
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
         name='django.contrib.sitemaps.views.sitemap')
