@@ -3,12 +3,16 @@
 # Mentoki Project
 Mentoki is a platform for teaching and learning. The platform provides 
 infrastructure to teachers/mentors for holding up online classes. 
-There will be a payment system integrated in the near future. So far it is not.
-What is also still missing are extended user profiles.
+For payments of the courses braintree is used as payment provider
 #Structure
 The platform splits up into a public part and a private part.
 The private part is only accessible by registered users, mostly
 teachers and their students.
+Also generally data-handling and data-viewing are kept in seperate apps.
+
+##Public apps
+###apps-public
+
 #App-Structure
 * apps_data: handling data, models and the like
 * apps_internal: handling views for registered users: classroom, teaching, etc.

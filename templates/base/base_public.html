@@ -59,16 +59,6 @@
     <div class="ui labeled icon wide left inline vertical sidebar menu mobile only" id="mobile_menu">
         {% include 'base/fragments/_navbar_mobile.html' %}
     </div>
-    {% if request.user.is_superuser %}
-        <div class="ui message warning">
-            <strong>
-            {% block meta_post_title_tmp %}{% endblock %}
-            </strong>
-            <p>{{ meta.description }}</p><p></p>
-            <p style="color:grey;">{{ meta.keywords }}<p></p>
-            <p style="color:grey;">{{ meta.robot_tags }}</p>
-        </div>
-    {% endif %}
     {% block main_content %}{% endblock %}
 
 
