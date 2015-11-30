@@ -13,6 +13,10 @@ from apps_data.lesson.models.lesson import Lesson
 from .mixins.base import CourseMenuMixin, FormCourseEventKwargsMixin, FormCourseKwargsMixin
 from .classlessonupdate import ClassLessonRedirectListMixin
 
+import logging
+
+logger = logging.getLogger('activity.lessoncopy')
+
 
 class ClassLessonBLockUnlockView(
     CourseMenuMixin,

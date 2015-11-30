@@ -337,6 +337,17 @@ LOGGING = {
             'handlers': ['console'],
             'propagate': False,
         },
+        'activity.lessoncopy': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'activity.lessonview': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+
     },
 }
 

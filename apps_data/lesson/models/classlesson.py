@@ -123,8 +123,13 @@ class ClassLessonManager(LessonManager):
         """
         gets complete tree for courseevent including materials
         """
-        return self.filter(courseevent=courseevent, level=0).\
+        tree = self.filter(courseevent=courseevent, level=0).\
             get_descendants(include_self=True).order_by('nr').select_related('material')
+        for node in tree:
+            print node.id
+            print node.courseevent
+        return tree
+
 
     def blocks_for_courseevent(self, courseevent):
         return self.filter(courseevent=courseevent,
@@ -202,6 +207,23 @@ class ClassLesson(BaseLesson):
 
     class MPTTMeta:
         order_insertion_by = ['course', 'courseevent', 'nr']
+
+    def __unicode__(self):
+        """
+        blocks are just shown by their title,
+        lessons are shown as <block-title>: <lesson_nr>. <lesson_title>
+        and lessonsteps are shown as <lesson_nr>. <lesson_title>
+        :return: self representation
+        """
+        if self.level == 0:
+            return u'Wurzel: %s' % (self.courseevent)
+        elif self.level == 1:
+            return u'Block: %s %s' % (self.courseevent, self.title)
+        elif self.level == 2:
+            return u'%s: %s. %s %s' % (self.courseevent, self.parent.title, self.lesson_nr, self.title)
+        elif self.level == 3:
+            return u'%s %s %s' % (self.courseevent, self.lesson_nr, self.title)
+
 
     def get_breadcrumbs_with_self_published(self):
         return self.get_ancestors(include_self=True).filter(published=True)
@@ -297,12 +319,6 @@ class ClassLesson(BaseLesson):
             return self.get_ancestors(include_self=True).filter(level=2)
         elif self.is_step():
             return self.get_ancestors(include_self=True).filter(level__gt=1)
-
-    def save(self, copy=False):
-        if not copy:
-            self.is_original_lesson = False
-            self.modified = datetime.datetime.now()
-        super(ClassLesson, self).save()
 
     def cut_block_connection(self):
         nodes = self.get_delete_tree()

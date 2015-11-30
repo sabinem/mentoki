@@ -21,6 +21,10 @@ from apps_data.courseevent.models.courseevent import CourseEvent
 
 from .mixins.base import CourseMenuMixin, FormCourseEventKwargsMixin, FormCourseKwargsMixin
 
+import logging
+
+logger = logging.getLogger('activity.lessonview')
+
 
 class ClassLessonStartView(
     CourseMenuMixin,
@@ -34,12 +38,11 @@ class ClassLessonStartView(
 
     def get_context_data(self, **kwargs):
         context = super(ClassLessonStartView, self).get_context_data(**kwargs)
-
+        courseevent = context['courseevent']
+        logger.info('Alle Kurslektionen werden gesucht zu Kurs [%s]' % courseevent)
         context['nodes'] = \
             ClassLesson.objects.complete_tree_for_courseevent(
-                courseevent=context['courseevent'])
-        print context['nodes']
-        print context['courseevent']
+                courseevent=courseevent)
         return context
 
 
