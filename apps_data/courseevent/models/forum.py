@@ -25,6 +25,10 @@ class ForumManager(TreeManager):
         return self.filter(courseevent=courseevent, level=0).\
             get_descendants(include_self=True)
 
+    def forums_for_courseevent_without_root(self, courseevent):
+        return self.filter(courseevent=courseevent, level=0).\
+            get_descendants(include_self=False)
+
     def classroom_menu(self, courseevent):
         return self.filter(courseevent=courseevent, level=1)
 

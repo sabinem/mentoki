@@ -7,26 +7,30 @@
 
     {% if node.is_visible_in_classroom %}
         <a href="{{ class_url }}" class="published_in_class">
-            {{ node.title }}<i class="icon student"></i>
+            {{ node.title }} ({{ node.display_nr }}) <i class="icon student"></i>
         </a>
-    {% elif node != forum %}
+    {% elif not node.is_root_node %}
        <a href="{{ detail_url }}">
-            {{ node.title }}
+            {{ node.title }} ({{ node.display_nr }})
        </a>
     {% else %}
         {{ node.title }}
     {% endif %}
 
+    {% if not node.is_root_node %}
     {% if node.can_have_threads %}
         <div class="ui circular label">
             {{ node.thread_count }}
         </div>
     {% endif %}
+    {% endif %}
 
+    {% if not node.is_root_node %}
     <a class= "item"
        href="{{ update_url }}">
         <i class="write blue icon"></i>
     </a>
+    {% endif %}
     {% if not node.is_root_node %}
         {% if not node.is_visible_in_classroom %}
             <a class= "item"

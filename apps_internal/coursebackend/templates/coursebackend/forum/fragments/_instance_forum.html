@@ -1,7 +1,7 @@
 {% url 'classroom:forum:detail' slug=es pk=forum.pk as class_url %}
 
 <div class="ui header">
-   {% include 'coursebackend/forum/fragments/_instance_hode_header.html' with node=forum %}
+   {% include 'coursebackend/forum/fragments/_instance_node_header.html' with node=forum %}
 </div>
 
 {{ forum.text | safe }}
