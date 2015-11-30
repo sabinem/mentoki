@@ -31,4 +31,4 @@ class ClassLessonAdmin(admin.ModelAdmin):
     list_display = ('id', 'course', 'courseevent', 'lesson_nr', 'title',
                     'original_lesson_id', 'is_original_lesson', 'modified',
                     'created', 'lesson_type', 'level')
-    list_filter = ('course', 'courseevent', 'level', 'modified', 'original_lesson_id')
+    list_filter = ('course', 'courseevent', 'level', 'modified', 'is_original_lesson')
