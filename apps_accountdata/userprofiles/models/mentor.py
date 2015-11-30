@@ -1,11 +1,9 @@
 # coding: utf-8
 
 """
-Courses are the timeindependent representation of Lessons.
-In this file there are two classes: the database representation of Courses
-and the many-to-many relationship of Courses to Owners: these are the teachers
-teaching the courses, that are the only persons eligible to change their data.
+Mentors are Users that teach courses.
 """
+
 from __future__ import unicode_literals, absolute_import
 
 from django.db import models
@@ -16,30 +14,34 @@ from django.core.urlresolvers import reverse_lazy
 
 from model_utils.models import TimeStampedModel
 
-from froala_editor.fields import FroalaField
+from autoslug.fields import AutoSlugField
 
-from autoslug import AutoSlugField
+from froala_editor.fields import FroalaField
 
 from apps_data.course.models.course import Course
 from apps_productdata.mentoki_product.models.courseproductgroup \
     import CourseProductGroup
 
 import logging
-logger = logging.getLogger(__name__)
+
+logger = logging.getLogger('data.userdata')
 
 
 class MentorsProfileManager(models.Manager):
     def mentors_all(self):
         """
-        gets all mentors ordered and including user data
+        gets all mentors ordered, including their user data
         :return: mentors queryset
         """
-        return self.all().select_related('user').order_by('display_nr')
+        return self.all()\
+            .select_related('user').\
+            order_by('display_nr')
+
 
 def foto_location(instance, filename):
         """
         location where the teachers foto is stored
-        IN: CourseOwner, filename
+        IN: mentor instance, filename
         RETURN: path <course-slug>/<filename>
         """
         path = '/'.join([instance.user.username, filename])
@@ -51,18 +53,15 @@ def foto_location(instance, filename):
 
 class MentorsProfile(TimeStampedModel):
     """
-    Relationship of Courses to Users through the Relationship of teaching
-    / owning the course.
+    Mentor is the role of teaching at mentoki
     """
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         verbose_name=_("Mentor"),
         on_delete=models.PROTECT
     )
-    slug = models.SlugField(
-        #populate_from=lambda instance: instance.user.get_full_name(),
-        #                 slugify=lambda value: value.replace(' ','-'),
-        default="x"
+    slug = AutoSlugField(
+        populate_from='get_full_name'
     )
 
     at_mentoki = models.CharField(
@@ -138,3 +137,7 @@ class MentorsProfile(TimeStampedModel):
     def productgroups(self):
         return CourseProductGroup.objects.filter(
             course__in=self.teaching)
+
+    @property
+    def get_full_name(self):
+        return self.user.get_full_name()

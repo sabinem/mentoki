@@ -327,6 +327,11 @@ LOGGING = {
             'handlers': ['datafile'],
             'propagate': False,
         },
+        'data.userdata': {
+            'level': 'DEBUG',
+            'handlers': ['datafile'],
+            'propagate': False,
+        },
         'public.offerpages': {
             'level': 'DEBUG',
             'handlers': ['console'],

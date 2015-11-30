@@ -1,8 +1,8 @@
-#accounts
-Mentoki makes use of a custom user model and also of the django app allauth.
-
-##templates
-the templates overwrite the allaut templates
+#app userprofiles
+Extra data for different roles that users have. 
+This is a data app, handling data only.
+##models
+###mentor
 
 
  

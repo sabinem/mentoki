@@ -43,8 +43,6 @@ class ForumManager(TreeManager):
         published_forum_ids = \
             ClassroomMenuItem.objects.forums_for_courseevent(
                 courseevent=courseevent).values_list('forum_id', flat=True)
-        print "========================"
-        print published_forum_ids
         return self.filter(id__in=published_forum_ids).\
             get_descendants(include_self=True)
 
@@ -118,10 +116,6 @@ class Forum(MPTTModel, TimeStampedModel):
     def __unicode__(self):
         return u'%s' % (self.title)
 
-    def get_absolute_url(self):
-        return reverse('coursebackend:forum:detail',
-                       kwargs={'course_slug':self.course_slug, 'slug': self.slug, 'pk':self.pk })
-
     def get_next_sibling(self):
         next = super(Forum, self).get_next_sibling()
         try:
@@ -156,12 +150,6 @@ class Forum(MPTTModel, TimeStampedModel):
     def decendants_thread_count(self):
         decendants_ids = self.get_descendants(include_self=True).values_list('id', flat=True)
         return Thread.objects.filter(forum__in=decendants_ids).count()
-
-    def get_absolute_url(self):
-        return reverse('coursebackend:forum:detail',
-                       kwargs={'course_slug':self.course_slug,
-                               'slug':self.slug,
-                               'pk':self.pk})
 
     @property
     def is_visible_in_classroom(self):
