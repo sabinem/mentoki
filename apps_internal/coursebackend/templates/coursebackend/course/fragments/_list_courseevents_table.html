@@ -9,19 +9,22 @@ for list
 <table class="ui table">
     <thead>
         <tr>
-            <tr>
-                <th>Titel</th>
-                <th>Kursformat</th>
-                <th>Dauer</th>
-                <th>Teilnehmeranzahl</th>
-                <th>Startdatum</th>
-            </tr>
+            <th>Titel</th>
+            <th>Startdatum</th>
+            <th>Kursformat</th>
+            <th>anzeigen</th>
+            <th>Klassenzimmer</th>
+            <th>Aktion</th>
         </tr>
     </thead>
     <tbody>
         {% for courseevent in courseevents %}
 
             {% url 'coursebackend:courseevent:detail' course_slug=cs slug=courseevent.slug as detail_url %}
+            {% url 'coursebackend:course:alter_courseevent' course_slug=cs pk=courseevent.pk action=AlterCourseEvent.HIDE as hide_url %}
+            {% url 'coursebackend:course:alter_courseevent' course_slug=cs pk=courseevent.pk action=AlterCourseEvent.UNHIDE as unhide_url %}
+            {% url 'coursebackend:course:alter_courseevent' course_slug=cs pk=courseevent.pk action=AlterCourseEvent.OPEN as open_url %}
+            {% url 'coursebackend:course:alter_courseevent' course_slug=cs pk=courseevent.pk action=AlterCourseEvent.CLOSE as close_url %}
 
             <tr>
                 <td>
@@ -30,33 +33,34 @@ for list
                     </a>
                 </td>
                 <td>
-                    {{ courseevent.get_event_type_display }}
-                </td>
-                <td>
-                    {% if courseevent.nr_weeks %}
-                       {{ courseevent.nr_weeks }} Wochen
-                    {% elif not courseevent.event_type == courseevent.EVENT_TYPE.guidedgroup %}
-                        n/a
-                    {% else %}
-                        -
-                    {% endif %}
-                </td>
-                <td>
-                    {% if courseevent.max_participants %}
-                       {{ courseevent.max_participants }} Teilnehmer
-                    {% elif not courseevent.event_type == courseevent.EVENT_TYPE.guidedgroup %}
-                        n/a
-                    {% else %}
-                        -
-                    {% endif %}
-                </td>
-                <td>
                     {% if courseevent.start_date %}
                        {{ courseevent.start_date }}
                     {% elif not courseevent.event_type == courseevent.EVENT_TYPE.guidedgroup %}
                         n/a
                     {% else %}
                         -
+                    {% endif %}
+                </td>
+                <td>
+                    {{ courseevent.get_event_type_display }}
+                </td>
+                <td>
+                    {{ courseevent.active }}
+                </td>
+                <td>
+                    {{ courseevent.classroom_open }}
+                </td>
+                <td>
+                    {% if courseevent.active %}
+                       <a href="{{ hide_url }}"><i class="icon hide"></i>verstecken</a>
+                    {% else %}
+                        <a href="{{ unhide_url }}"><i class="icon unhide"></i>zeigen</a>
+                    {% endif %}
+                    {% if courseevent.classroom_open %}
+                       <a href="{{ close_url }}"><i class="icon lock"></i>schliessen</a>
+                    {% else %}
+                        <a href="{{ open_url }}"><i class="icon unlock"></i>öffen</a>
+                        {{ open_url }}
                     {% endif %}
                 </td>
             </tr>

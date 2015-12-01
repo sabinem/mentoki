@@ -8,16 +8,27 @@ with text that is fetched from the database.
 from __future__ import unicode_literals
 
 from django.views.generic import TemplateView, DetailView
+from django.conf import settings
 
 from apps_accountdata.userprofiles.models.mentor import MentorsProfile
 from apps_productdata.mentoki_product.models.courseproductgroup import CourseProductGroup
 from apps_pagedata.public.models import StaticPublicPages
 
+#from maintenance_mode.core import get_maintenance_mode
+
 import logging
 logger = logging.getLogger('public.dataintegrity')
 
+class MaintenanceModeMixin(object):
+    def get_context_data(self, **kwargs):
+        context = super(MaintenanceModeMixin, self).get_context_data()
 
-class HomePageView(TemplateView):
+
+        context['maintenance_mode'] = settings.MAINTENANCE_MODE
+        return context
+
+
+class HomePageView(MaintenanceModeMixin, TemplateView):
     """
     Homepage
     """
@@ -25,6 +36,7 @@ class HomePageView(TemplateView):
 
 
 class PublicPageView(
+    MaintenanceModeMixin,
     DetailView):
     """
     diverse public pages, which text that is taken from the database
@@ -34,7 +46,9 @@ class PublicPageView(
     context_object_name = 'pagedata'
 
 
-class MentorsListView(TemplateView):
+class MentorsListView(
+    MaintenanceModeMixin,
+    TemplateView):
     """
     List of all of Mentokis mentors.
     """
@@ -52,7 +66,9 @@ class MentorsListView(TemplateView):
         return context
 
 
-class MentorsPageView(DetailView):
+class MentorsPageView(
+    MaintenanceModeMixin,
+    DetailView):
     """
     One mentor is displayed in detail along with his courses.
     in: slug of the mentor

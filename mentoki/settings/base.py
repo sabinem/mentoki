@@ -347,6 +347,11 @@ LOGGING = {
             'handlers': ['console'],
             'propagate': False,
         },
+        'activity.courseeventupdate': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        },
 
     },
 }

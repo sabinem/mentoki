@@ -36,6 +36,8 @@ from model_utils import Choices
 from apps_data.course.models.course import Course
 from ..constants import PARTICIPANT_STATUS_CHOICES
 
+import logging
+logger = logging.getLogger('activity.courseeventupdate')
 
 class CourseEventManager(models.Manager):
     """
@@ -235,6 +237,25 @@ class CourseEvent(TimeStampedModel):
         else:
             return False
 
+    def hide(self):
+        self.active = False
+        self.save()
+        logger.info('Kursereignis [%s] wurde versteckt' % self)
+
+    def unhide(self):
+        self.active = True
+        self.save()
+        logger.info('Kursereignis [%s] wurde versteckt' % self)
+
+    def open(self):
+        self.open_classroom = True
+        self.save()
+        logger.info('Kursereignis [%s] wurde versteckt' % self)
+
+    def close(self):
+        self.open_classroom = False
+        self.save()
+        logger.info('Kursereignis [%s] wurde versteckt' % self)
 
     def get_absolute_url(self):
         return reverse('coursebackend:courseevent:detail',

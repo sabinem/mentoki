@@ -20,7 +20,6 @@ from .models.courseevent import CourseEvent, CourseEventParticipation
 from .models.forum import Forum, Thread, Post
 from .models.menu import ClassroomMenuItem
 from .models.homework import StudentsWork
-from apps_data.lesson.admin import LessonAdmin
 
 
 @admin.register(CourseEvent)

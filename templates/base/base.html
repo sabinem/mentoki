@@ -54,8 +54,15 @@
                 >
             <div id="content" style="padding-bottom:0px;">
                 {% block navbar %}{% endblock %}
+                 {% if maintenance_mode %}
+                    <div class="ui message floating error">
+                        <div class="ui header large">Seite im Wartungsmodus</div>
+                    </div>
+                {% endif %}
 
-                {% block page %}{% endblock %}
+                {% block page %}
+
+                {% endblock %}
 
                 {% block sidebar %}{% endblock %}
 

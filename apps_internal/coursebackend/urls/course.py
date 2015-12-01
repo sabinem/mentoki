@@ -4,7 +4,9 @@ from __future__ import unicode_literals
 
 from django.conf.urls import patterns, url
 
-from ..views.course import CourseDetailView, CourseUpdateView, CourseEventListView
+from ..views.course import CourseDetailView, \
+    CourseUpdateView, CourseEventListView, alter_courseevent
+
 
 
 urlpatterns = patterns('',
@@ -19,4 +21,8 @@ urlpatterns = patterns('',
     url(r'^kursliste$',
         CourseEventListView.as_view(),
         {'template':'coursebackend/course/pages/list.html'}, name='list'),
+
+    url(r'^(?P<pk>\d+)/(?P<action>\d+)/$', alter_courseevent,
+        name='alter_courseevent'),
+
 )

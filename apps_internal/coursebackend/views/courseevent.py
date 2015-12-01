@@ -3,19 +3,21 @@
 from __future__ import unicode_literals
 
 from django.forms.models import modelform_factory
-from django.forms.models import model_to_dict
 from django.forms.widgets import NumberInput, DateInput,TextInput, Select, \
     CheckboxInput
 from django.views.generic import DetailView, UpdateView, TemplateView
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+from django.contrib import messages
 
 from braces.views import FormValidMessageMixin
 
 from froala_editor.widgets import FroalaEditor
 
 from apps_data.courseevent.models.courseevent import CourseEvent
-from apps_data.course.models.course import Course
+from .constants import AlterCourseEvent
+
 
 from .mixins.base import CourseMenuMixin
 
@@ -78,3 +80,6 @@ class CopyCourseDescriptionView(
     """
     Update the course one field at a time
     """
+
+
+
