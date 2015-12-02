@@ -74,7 +74,12 @@ class CourseEventListView(
     def get_context_data(self, **kwargs):
         context = super(CourseEventListView, self).get_context_data(**kwargs)
 
-        context['courseevents'] = CourseEvent.objects.active_courseevents_for_course(course=context['course'])
+        context['courseevents'] = \
+            CourseEvent.objects.\
+                active_courseevents_for_course(course=context['course'])
+        context['courseevents_hidden'] = \
+            CourseEvent.objects.\
+                hidden_courseevents_for_course(course=context['course'])
         context['AlterCourseEvent'] = AlterCourseEvent
         return context
 

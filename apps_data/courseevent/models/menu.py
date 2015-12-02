@@ -33,7 +33,6 @@ from .forum import Forum
 from apps_data.lesson.models.classlesson import ClassLesson
 
 
-
 def switch_start_item(menuitem):
     """
     The start item of a courseevent is changed to a given new menuitem
@@ -58,6 +57,22 @@ class ClassroomMenuItemManager(models.Manager):
         get all menuitems that are shortlinks for a courseevent
         """
         return self.filter(courseevent=courseevent, is_shortlink=True).order_by('display_nr')
+
+    def lessons_published_in_class(self, courseevent):
+        """
+        get flat list of lesson ids that are published in class
+        """
+        return self.filter(courseevent=courseevent,
+                           item_type__in=['lesson'],
+                           ).select_related('classlesson')
+
+    def forums_published_in_class(self, courseevent):
+        """
+        get flat list of lesson ids that are published in class
+        """
+        return self.filter(courseevent=courseevent,
+                           item_type__in=['forum'],
+                           ).select_related('forum')
 
     def lesson_ids_published_in_class(self, courseevent):
         """

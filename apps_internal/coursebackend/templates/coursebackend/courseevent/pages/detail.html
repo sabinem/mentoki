@@ -2,10 +2,9 @@
 
 {% block courseevent_menu_items %}
 
-    {% url 'courseoffer:detail' slug=cs as courseoffer_url %}
-
-    <a class="item" href="{{ courseoffer_url }}">
-        <i class="unhide icon blue"></i>Vorschau
+    {% url 'classroom:start'  slug=es as classroom_url %}
+    <a class="item" href="{{ classroom_url }}">
+        <i class="student icon blue"></i>Klassenzimmer
     </a>
 
 {% endblock %}

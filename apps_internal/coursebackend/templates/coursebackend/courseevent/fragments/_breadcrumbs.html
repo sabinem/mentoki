@@ -3,7 +3,10 @@
 <div class="ui large breadcrumb" id ="page-breadcrumb">
 
     <div class="section active">
-        Kursereignis {{ courseevent.title }}
+   {{ courseevent.title }}
+   {% if courseevent.start_date %}
+       {{ courseevent.startdate }}
+   {% endif %}
     </div>
 
 </div>

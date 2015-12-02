@@ -5,7 +5,7 @@ from __future__ import unicode_literals, absolute_import
 from django.http import HttpResponseRedirect
 from django.views.generic import DeleteView, TemplateView
 
-from braces.views import FormValidMessageMixin
+from braces.views import FormValidMessageMixin, MessageMixin
 
 from apps_data.lesson.models.classlesson import ClassLesson
 from apps_data.lesson.models.lesson import Lesson
@@ -48,27 +48,30 @@ class ClassLessonBLockUnlockView(
 
 
 class CopyBlockListView(
+    MessageMixin,
     CourseMenuMixin,
     TemplateView):
     """
-    Lists all lessons and provide the option to copy them as classlessons
-    for a courseevent
+    Lists all blocks for copying from the course into the
+    courseevent.
+    If they have already been copied, they can be unlocked, to develop
+    independently form the course blocks.
+    Blocks that have already been unlocked are also listed.
     :param slug: of courseevent
     :param course_slug: slug of course
-    :return: lessons: all lessons of the course
-             copied_lesson_ids: ids of all lessons of the course that have
-             already been copied
+    :return: lessonblocks: all lessonblocks of the course
+             along with buttons to copy or split from the course block
     """
 
     def get_context_data(self, **kwargs):
         context = super(CopyBlockListView, self).get_context_data(**kwargs)
         context['copied_blocks'] = \
-            ClassLesson.objects.copied_blocks(courseevent=context['courseevent'])
+            ClassLesson.objects.\
+                copied_blocks(courseevent=context['courseevent'])
         context['uncopied_blocks'] = \
-            Lesson.objects.uncopied_blocks(
-                courseevent=context['courseevent'])
+            Lesson.objects.\
+                uncopied_blocks(courseevent=context['courseevent'])
         context['independent_blocks'] = \
-            ClassLesson.objects.independent_blocks(
-                courseevent=context['courseevent'])
-        print context
+            ClassLesson.objects.\
+                independent_blocks(courseevent=context['courseevent'])
         return context

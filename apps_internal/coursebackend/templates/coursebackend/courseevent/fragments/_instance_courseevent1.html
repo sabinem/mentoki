@@ -1,0 +1,297 @@
+{% comment %}
+
+instance courseevent
+
+for detail
+
+{% endcomment %}
+
+{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="max_participants" as update_particpants_url %}
+{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="title" as update_title_url %}
+{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="excerpt" as update_excerpt_url %}
+{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="target_group" as update_target_group_url %}
+{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="prerequisites" as update_prerequisites_url %}
+{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="text" as update_text_url %}
+{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="project" as update_project_url %}
+{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="structure" as update_structure_url %}
+{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="workload" as update_work_url %}
+{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="event_type" as update_type_url %}
+{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="status_internal" as update_internal_url %}
+{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="nr_weeks" as update_weeks_url %}
+{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="start_date" as update_start_url %}
+{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="video_url" as update_video_url %}
+{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="format" as update_format_url %}
+{% url 'coursebackend:courseevent:copy' course_slug=cs slug=es as copy_url %}
+{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="email_greeting" as update_email_greeting_url %}
+{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="you_okay" as update_you_okay_url %}
+{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="pricemodel" as update_pricemodel_url %}
+
+<div class="ui huge header">
+   {{ courseevent.title }}
+</div>
+
+<div class="ui dividing large header">Öffentliche Kursparamenter</div>
+
+<div class="ui two column doubling page grid">
+<div class="column">
+    <div class="ui large relaxed divided list">
+
+    <div class="item">
+        <i class="middle aligned icon info"></i>
+        <div class="content">
+            <div class="header">Kursart</div>
+            <div class="description">
+                {{ courseevent.get_event_type_display }}
+                <a href="{{ update_type_url }}" class="item">
+                    <i class="write blue icon"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="item">
+        <i class=" middle aligned icon label tag"></i>
+        <div class="content">
+            <div class="header">Preis</div>
+            <div class="description">
+                {% if courseevent.price %}
+                    {{ courseevent.price }}
+                {% else %}
+                    noch nicht bestimmt
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="item">
+        <i class=" middle aligned icon info"></i>
+        <div class="content">
+            <div class="header">Externer Status</div>
+            <div class="description">
+                {{ courseevent.get_status_external_display }}
+            </div>
+        </div>
+    </div>
+    </div>
+  </div>
+   <div class="column">
+
+    {% if courseevent.event_type == courseevent.EVENT_TYPE.guidedgroup %}
+       <div class="ui large relaxed divided list">
+        <div class="item">
+            <i class=" middle aligned icon users"></i>
+            <div class="content">
+                <div class="header">Maximale Teilnehmeranzahl</div>
+                <div class="description">
+                    {% if courseevent.max_participants  %}
+                        {{ courseevent.max_participants }}
+                    {% else %}
+                        -
+                    {% endif %}
+                    <a href="{{ update_particpants_url }}" class="item">
+                       <i class="write blue icon"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <i class="middle aligned icon sidebar "></i>
+            <div class="content">
+                <div class="header">Wochenanzahl</div>
+                <div class="description">
+                    {% if courseevent.nr_weeks  %}
+                        {{ courseevent.nr_weeks }}
+                    {% else %}
+                        -
+                    {% endif %}
+                     <a href="{{ update_weeks_url }}" class="item">
+                       <i class="write blue icon"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <i class=" middle aligned icon calendar "></i>
+            <div class="content">
+                <div class="header">Startdatum</div>
+                <div class="description">
+                    {% if courseevent.start_date  %}
+                        {{ courseevent.start_date }}
+                    {% else %}
+                        -
+                    {% endif %}
+                    <a href="{{ update_start_url }}" class="item">
+                       <i class="write blue icon"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        </div>
+    {% endif %}
+</div>
+</div>
+
+
+<div class="ui dividing large header">Interne Kursparamenter</div>
+
+<div class="ui two column doubling page grid">
+<div class="column">
+    <div class="ui large relaxed divided list">
+
+    <div class="item">
+        <i class="middle aligned icon comment outline"></i>
+        <div class="content">
+            <div class="header">Ansprache</div>
+            <div class="description">
+                {{ courseevent.you_okay | yesno:"'Du','Sie'" }}
+                <a href="{{ update_you_okay_url }}" class="item">
+                    <i class="write blue icon"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="item">
+        <i class=" middle aligned mail outline icon"></i>
+        <div class="content">
+            <div class="header">Email Betreff</div>
+            <div class="description">
+                {{ courseevent.email_greeting }}
+                <a href="{{ update_email_greeting_url }}" class="item">
+                    <i class="write blue icon"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="column">
+    <div class="ui large relaxed divided list">
+    <div class="item">
+        <i class=" middle aligned icon info"></i>
+        <div class="content">
+            <div class="header">Interner Status</div>
+            <div class="description">
+                {{ courseevent.get_status_internal_display }}
+                <a href="{{ update_internal_url }}" class="item">
+                   <i class="write blue icon"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+</div>
+
+<h3 class="ui header">
+    Wunsch-Preimodell
+    <a href="{{ update_pricemodel_url }}" class="item">
+       <i class="write blue icon"></i>
+    </a>
+</h3>
+{{ courseevent.pricemodel | safe }}
+
+
+<div class="ui dividing large header">Kursbeschreibung</div>
+<p>Die öffentliche Ausschreibung des Kurses</p>
+<a href="{{ copy_url }}" class="ui button">
+    <i class="icon copy  blue"></i>Beschreibungen aus der Kursvorlage kopieren
+</a>
+
+<h3 class="ui header">
+    Abstrakt
+    <a href="{{ update_excerpt_url }}" class="item">
+       <i class="write blue icon"></i>
+    </a>
+</h3>
+{{ courseevent.excerpt | safe }}
+
+<h3 class="ui header">
+    Video:
+    <a href="{{ update_video_url }}" class="item">
+       <i class="write blue icon"></i>
+    </a>
+</h3>
+
+{% if courseevent.video_url %}
+
+    <div class="ui segment">
+
+        <style>
+            .embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        </style>
+
+        <div class='embed-container'>
+
+            <iframe src='http://www.youtube.com/embed/{{ courseevent.video_url }}?rel=0&controls=0&showinfo=0' frameborder='0' allowfullscreen>
+            </iframe>
+
+        </div>
+
+    </div>
+
+{% endif %}
+
+<h3 class="ui header">
+    Zielgruppe:
+    <a href="{{ update_target_group_url }}" class="item">
+       <i class="write blue icon"></i>
+    </a>
+</h3>
+{{ courseevent.target_group | safe }}
+
+
+<h3 class="ui header">
+    Voraussetzungen:
+    <a href="{{ update_prerequisites_url }}" class="item">
+       <i class="write blue icon"></i>
+    </a>
+</h3>
+{{ courseevent.prerequisites | safe }}
+
+
+<h3 class="ui header">
+    Was nimmt der Teilnehmer aus dem Kurs mit:
+    <a href="{{ update_project_url }}" class="item">
+       <i class="write blue icon"></i>
+    </a>
+</h3>
+{{ courseevent.project | safe }}
+
+
+<h3 class="ui header">
+    Gliederung:
+    <a href="{{ update_structure_url }}" class="item">
+       <i class="write blue icon"></i>
+    </a>
+</h3>
+{{ courseevent.structure | safe  }}
+
+
+<h3 class="ui header">
+    Freie Kursbeschreibung:
+    <a href="{{ update_text_url }}" class="item">
+       <i class="write blue icon"></i>
+    </a>
+</h3>
+{{ courseevent.text | safe }}
+
+
+<h3 class="ui header">
+    Kursformat:
+    <a href="{{ update_format_url }}" class="item">
+       <i class="write blue icon"></i>
+    </a>
+</h3>
+{{ courseevent.format | safe }}
+
+
+<h3 class="ui header">
+    Arbeitsbelastung:
+    <a href="{{ update_work_url }}" class="item">
+       <i class="write blue icon"></i>
+    </a>
+</h3>
+{{ courseevent.workload | safe }}

@@ -25,7 +25,7 @@
 
 
     <div class="header item huge" style="font-size:1.5em;">
-        Dashboard {{ course.title }}
+        {{ course.title }}
     </div>
 
     <a class="item
@@ -66,6 +66,7 @@
     {% for event in courseevents %}
 
         {% url 'classroom:start' slug=event.slug as classroom_url %}
+        {% url 'coursebackend:courseevent:detail' course_slug=cs slug=event.slug as detail_url %}
         {% url 'coursebackend:participant:list' course_slug=cs slug=event.slug as participants_url %}
         {% url 'coursebackend:forum:list' course_slug=cs slug=event.slug as forum_url %}
         {% url 'coursebackend:announcement:list' course_slug=cs slug=event.slug as announcements_url %}
@@ -74,19 +75,21 @@
         {% url "coursebackend:classlesson:start" course_slug=cs slug=event.slug as classlesson_url %}
         {% url "coursebackend:material:list" course_slug=cs slug=event.slug as material_url %}
 
-        <div class="header item large" style="font-size:1.5em;">
+        <div class="header item medium" style="font-size:1.5em;">
           {{ event.title }}<br>
          {% if event.start_date %}
              {{ event.start_date }}
          {% endif %}
         </div>
-
+        <a href="{{ detail_url }}" class="item" style="font-size:1.1em;">
+            <i class="icon rocket green"></i>Startseite
+        </a>
         <a href="{{ classroom_url }}" class="item" style="font-size:1.1em;">
             <i class="icon student blue"></i>ins Klassenzimmer gehen
         </a>
         <a href="{{ announcements_url }}" class="item
             {% ifactive announcements_url %}active teal{% endifactive %}" style="font-size:1.1em;" >
-            <i class="list icon"></i>Ankündigungen
+            <i class="announcement orange icon"></i>Ankündigungen
         </a>
         <a href="{{ menu_url }}" class="item
             {% ifactive menu_url %}active{% endifactive %}" style="font-size:1.1em;" >

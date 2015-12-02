@@ -1,297 +1,192 @@
-{% comment %}
 
-instance courseevent
-
-for detail
-
-{% endcomment %}
-
-{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="max_participants" as update_particpants_url %}
-{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="title" as update_title_url %}
-{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="excerpt" as update_excerpt_url %}
-{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="target_group" as update_target_group_url %}
-{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="prerequisites" as update_prerequisites_url %}
-{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="text" as update_text_url %}
-{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="project" as update_project_url %}
-{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="structure" as update_structure_url %}
-{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="workload" as update_work_url %}
-{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="event_type" as update_type_url %}
-{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="status_internal" as update_internal_url %}
-{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="nr_weeks" as update_weeks_url %}
-{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="start_date" as update_start_url %}
-{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="video_url" as update_video_url %}
-{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="format" as update_format_url %}
-{% url 'coursebackend:courseevent:copy' course_slug=cs slug=es as copy_url %}
 {% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="email_greeting" as update_email_greeting_url %}
-{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="you_okay" as update_you_okay_url %}
-{% url 'coursebackend:courseevent:update' course_slug=cs slug=es field="pricemodel" as update_pricemodel_url %}
-
-<div class="ui huge header">
-   {{ courseevent.title }}
+{% url 'coursebackend:classlesson:copy'  slug=es course_slug=cs as copy_url %}
+{% url 'coursebackend:menu:preview'  slug=es course_slug=cs as menu_url %}
+{% url 'coursebackend:forum:list'  slug=es course_slug=cs as forum_url %}
+{% url 'coursebackend:classlesson:start'  slug=es course_slug=cs as classlesson_url %}
+{% url 'coursebackend:announcement:list'  slug=es course_slug=cs as announcement_url %}
+{% url 'coursebackend:participant:list'  slug=es course_slug=cs as participant_url %}
+{% url 'classroom:start'  slug=es as classroom_url %}
+<div class="ui large header">
+   Checkliste - was vor dem Kursstart zu erledigen ist:
 </div>
+<p>Was vor dem Kursstart zu erledigen ist.</p>
 
-<div class="ui dividing large header">Öffentliche Kursparamenter</div>
+<div class="ui dividing medium header">1. Unterricht kopieren</div>
 
-<div class="ui two column doubling page grid">
-<div class="column">
-    <div class="ui large relaxed divided list">
-
-    <div class="item">
-        <i class="middle aligned icon info"></i>
-        <div class="content">
-            <div class="header">Kursart</div>
-            <div class="description">
-                {{ courseevent.get_event_type_display }}
-                <a href="{{ update_type_url }}" class="item">
-                    <i class="write blue icon"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <div class="item">
-        <i class=" middle aligned icon label tag"></i>
-        <div class="content">
-            <div class="header">Preis</div>
-            <div class="description">
-                {% if courseevent.price %}
-                    {{ courseevent.price }}
-                {% else %}
-                    noch nicht bestimmt
-                {% endif %}
-            </div>
-        </div>
-    </div>
-
-    <div class="item">
-        <i class=" middle aligned icon info"></i>
-        <div class="content">
-            <div class="header">Externer Status</div>
-            <div class="description">
-                {{ courseevent.get_status_external_display }}
-            </div>
-        </div>
-    </div>
-    </div>
-  </div>
-   <div class="column">
-
-    {% if courseevent.event_type == courseevent.EVENT_TYPE.guidedgroup %}
-       <div class="ui large relaxed divided list">
-        <div class="item">
-            <i class=" middle aligned icon users"></i>
-            <div class="content">
-                <div class="header">Maximale Teilnehmeranzahl</div>
-                <div class="description">
-                    {% if courseevent.max_participants  %}
-                        {{ courseevent.max_participants }}
-                    {% else %}
-                        -
-                    {% endif %}
-                    <a href="{{ update_particpants_url }}" class="item">
-                       <i class="write blue icon"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <i class="middle aligned icon sidebar "></i>
-            <div class="content">
-                <div class="header">Wochenanzahl</div>
-                <div class="description">
-                    {% if courseevent.nr_weeks  %}
-                        {{ courseevent.nr_weeks }}
-                    {% else %}
-                        -
-                    {% endif %}
-                     <a href="{{ update_weeks_url }}" class="item">
-                       <i class="write blue icon"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <i class=" middle aligned icon calendar "></i>
-            <div class="content">
-                <div class="header">Startdatum</div>
-                <div class="description">
-                    {% if courseevent.start_date  %}
-                        {{ courseevent.start_date }}
-                    {% else %}
-                        -
-                    {% endif %}
-                    <a href="{{ update_start_url }}" class="item">
-                       <i class="write blue icon"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-        </div>
-    {% endif %}
-</div>
-</div>
-
-
-<div class="ui dividing large header">Interne Kursparamenter</div>
-
-<div class="ui two column doubling page grid">
-<div class="column">
-    <div class="ui large relaxed divided list">
-
-    <div class="item">
-        <i class="middle aligned icon comment outline"></i>
-        <div class="content">
-            <div class="header">Ansprache</div>
-            <div class="description">
-                {{ courseevent.you_okay | yesno:"'Du','Sie'" }}
-                <a href="{{ update_you_okay_url }}" class="item">
-                    <i class="write blue icon"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <div class="item">
-        <i class=" middle aligned mail outline icon"></i>
-        <div class="content">
-            <div class="header">Email Betreff</div>
-            <div class="description">
-                {{ courseevent.email_greeting }}
-                <a href="{{ update_email_greeting_url }}" class="item">
-                    <i class="write blue icon"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-</div>
-
-<div class="column">
-    <div class="ui large relaxed divided list">
-    <div class="item">
-        <i class=" middle aligned icon info"></i>
-        <div class="content">
-            <div class="header">Interner Status</div>
-            <div class="description">
-                {{ courseevent.get_status_internal_display }}
-                <a href="{{ update_internal_url }}" class="item">
-                   <i class="write blue icon"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-
-</div>
-</div>
-</div>
-
-<h3 class="ui header">
-    Wunsch-Preimodell
-    <a href="{{ update_pricemodel_url }}" class="item">
-       <i class="write blue icon"></i>
-    </a>
-</h3>
-{{ courseevent.pricemodel | safe }}
-
-
-<div class="ui dividing large header">Kursbeschreibung</div>
-<p>Die öffentliche Ausschreibung des Kurses</p>
-<a href="{{ copy_url }}" class="ui button">
-    <i class="icon copy  blue"></i>Beschreibungen aus der Kursvorlage kopieren
-</a>
-
-<h3 class="ui header">
-    Abstrakt
-    <a href="{{ update_excerpt_url }}" class="item">
-       <i class="write blue icon"></i>
-    </a>
-</h3>
-{{ courseevent.excerpt | safe }}
-
-<h3 class="ui header">
-    Video:
-    <a href="{{ update_video_url }}" class="item">
-       <i class="write blue icon"></i>
-    </a>
-</h3>
-
-{% if courseevent.video_url %}
-
-    <div class="ui segment">
-
-        <style>
-            .embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-        </style>
-
-        <div class='embed-container'>
-
-            <iframe src='http://www.youtube.com/embed/{{ courseevent.video_url }}?rel=0&controls=0&showinfo=0' frameborder='0' allowfullscreen>
-            </iframe>
-
-        </div>
-
-    </div>
-
+{% if not blocks_for_courseevent %}
+    <span style="color:red;">Es gibt noch keinen Unterricht!<i class="icon red warning sign"></i></span>
+    <br>
+    <a href="{{ copy_url }}">Willst Du jetzt Unterrichtsblöcke aus der Vorlage kopieren?</a>
+{% else %}
+    Unterricht vorhanden <i class="icon checkmark green"></i>
+    <br>
+    <a href="{{ classlesson_url }}">Zum Unterricht</a>
+    <br>
+    <a href="{{ copy_url }}">Zum Kopieren/Abkoppeln von Unterrichtsblöcken</a>
 {% endif %}
+<div class="ui message">
+    <div class="ui list bulleted">
+        <div class="ui item">Der Unterricht wird <strong>blockweise</strong> aus der Vorlage kopiert.
+        </div>
+        <div class="ui item">
+            Du kannst den <strong>Master</strong>
+            entweder bei der Vorlage lassen oder aber die Blöcke abkoppeln und im Kurs weiterentwickeln.
+        </div>
+        <div class="ui item">Später wird es auch eine Möglichkeit geben Unterricht vom Kurs in die Vorlage als
+            neuen Unterrichtsblock zurückzukopieren.
+        </div>
+    </div>
+</div>
+<div class="ui message success">
+    Im Klassenzimmer sichtbar sind als Lektionen
+    <div class="ui list divided">
+         {%  for menuitem in published_lessons %}
+            <div class="item">
+               {{ menuitem.classlesson.lesson_nr }}. {{ menuitem.classlesson.title }}
+            </div>
+        {% endfor %}
+    </div>
+</div>
 
-<h3 class="ui header">
-    Zielgruppe:
-    <a href="{{ update_target_group_url }}" class="item">
-       <i class="write blue icon"></i>
-    </a>
-</h3>
-{{ courseevent.target_group | safe }}
+<div class="ui dividing medium header">2. Das Menü einrichten</div>
+{% if not menuitems_for_courseevent %}
+    <span style="color:red;">Es gibt noch keinen Menü-Einträge!<i class="icon red warning sign"></i></span>
+    <br>
+    <a href="{{ menu_url }}">Willst Du jetzt das Menü bearbeiten?</a>
+{% else %}
+    Menü-Einträge vorhanden <i class="icon checkmark green"></i>
+    <br>
+    <a href="{{ menu_url }}">Willst Du am Menü arbeiten?</a>
+{% endif %}
+<div class="ui message">
+    <p>Das Menü steuert, was im Klassenzimmer sichtbar ist. Auch der Unterricht wird erst
+    nach dem Menüeintrag im Klassenzimmer sichtbar!</p>
+    <p>Mögliche Menüeinträge:</p>
+    <div class="ui list bulleted">
+        <div class="ui item">Lektionen oder Lernabschnitte
+        </div>
+        <div class="ui item">
+            Foren
+        </div>
+        <div class="ui item">Ankündigungsliste
+        </div>
+    </div>
+    <p>Du kannst auch bestimmen, welcher Menüpunkt der Startpunkt ist, ein Schüler sich zuerst ins
+    Klassenzimmer einloggt.</p>
+    <p>Und Du kannst bestimmen ob der Eintrag auch ins Kurzmenü kommen soll. Das ist das Menü, dass aufklappt,
+    wenn man mit der Maus drüberfährt.</p>
+</div>
 
+<div class="ui dividing medium header">3. Das Forum einrichten</div>
+{% if not forums_for_courseevent %}
+    <span style="color:red;">Es gibt noch kein Forum!<i class="icon red warning sign"></i></span>
+    <br>
+    <a href="{{ forum_url }}">Willst Du jetzt ein Forum anlegen?</a>
+{% else %}
+    Foren vorhanden <i class="icon checkmark green"></i>
+    <br>
+    <a href="{{ forum_url }}">Willst Du an den Foren arbeiten?</a>
+{% endif %}<br>
+{% if not menuitems_forum %}
+    <span style="color:red;">Es gibt noch kein Forum im Klassenzimmer!
+        <i class="icon red warning sign"></i></span>
+    <br>
+    <a href="{{ menu_url }}">Willst Du ein Forum ins Menü eintragen?</a>
+{% else %}
+    Foren sind auch im Klassenzimmer bereits vorhanden <i class="icon checkmark green"></i>
+    <br>
+    <a href="{{ menu_url }}">Willst Du ein Forum ins Menü eintragen?</a>
+{% endif %}<br>
+<div class="ui message">
+    <p>Foren diesen der Kommunikation im Klassenzimmer </p>
+    <div class="ui list bulleted">
+        <div class="ui item">Foren müssen zuerst angelegt werden
+        </div>
+        <div class="ui item">
+            Im Klassenzimmer werde sie erst durch den Menüeintrag sichtbar
+        </div>
+    </div>
+</div>
+<div class="ui message success">
+    Foren, die im Klassenzimmer sichtbar sind als Lektionen
+    <div class="ui list divided">
+         {%  for menuitem in published_forums %}
+            <div class="item">
+               <i class="folder outline icon"></i>{{ menuitem.forum.title }}
+            </div>
+        {% endfor %}
+    </div>
+</div>
 
-<h3 class="ui header">
-    Voraussetzungen:
-    <a href="{{ update_prerequisites_url }}" class="item">
-       <i class="write blue icon"></i>
-    </a>
-</h3>
-{{ courseevent.prerequisites | safe }}
+<div class="ui dividing medium header">5. Ankündigungen schreiben?</div>
+{% if not announcements_for_courseevent %}
+    <span style="color:red;">Es gibt noch kein veröffentlichten Ankündigungen!<i class="icon red warning sign"></i></span>
+    <br>
+    <a href="{{ announcement_url }}">Willst Du jetzt eine Ankündigung schreiben?</a>
+{% else %}
+    Es gibt schon eine Ankündigung im Klassenzimmer<i class="icon checkmark green"></i>
+    <br>
+    <a href="{{ announcement_url }}">Neue Anküdingung schreiben</a>
+{% endif %}
+<div class="ui message">
+    <p>Ankündigungen deinen der Kommunikation mit den Teilnehmern. Sie haben einen Lebenszyklus
+    von 3 Stufen</p>
+    <div class="ui list ordered">
+        <div class="ui item">Sie beginnen als Entwurf.
+        </div>
+        <div class="ui item">
+            Beim Veröffentlichen werden sie an die Teilnehmer verschickt und ausserdem im Klassenzimmer
+            angezeigt.
+        </div>
+        <div class="ui item">
+            Durch Archivieren verschwinden sie wieder aus dem Klassenzimmer.
+        </div>
+    </div>
+    <p>Welche Überschrift haben Eure Kurs-Nachrichten?</p>
+    <div class="ui header medium">{{ courseevent.email_greeting }}
+    <a href="{{ update_email_greeting_url }}"><i class="write icon"></i>
+    <i class="checkmark green icon"></i></a>
+    </div>
+</div>
+<div class="ui dividing medium header">6. Überprüfe Deine Teilnehmerliste</div>
+<p>Auch Foren müssen ins Menü eingehängt werden, dass mit sie im Klassenzimmer sichtbar sind.</p>
 
+{% if not participants_for_courseevent %}
+    <span style="color:red;">Es gibt noch keine sichtbaren Teilnehmer!
+        <i class="icon red warning sign"></i>
+    </span>
+    <br>
+    <a href="{{ participant_url }}">Willst Du zur Teilnehmerliste?</a>
+{% else %}
+    Teilnehmer im Klassenzimmer vorhanden <i class="icon checkmark green"></i>
+    <br>
+    <a href="{{ participant_url }}">Willst Du zur Teilnehmerliste?</a>
+{% endif %}
+<div class="ui message">
+    <p>Teilnehmer kannst Du nicht selbst eintragen, dass kann nur der Administrator oder
+    sie werden zu Teilnehmern durch die Buchung Deines Kurses.
+    </p>
+    <div class="ui list bulleted">
+        <div class="ui item">Teilnehmer können auf unsichtbar geschaltet werden,
+            dann sind sie im Klassenzimmer nicht sichtbar.
+        </div>
+        <div class="ui item">
+            Teilnehmer austragen kann ebenfalls nur der Administrator
+        </div>
+    </div>
+</div>
 
-<h3 class="ui header">
-    Was nimmt der Teilnehmer aus dem Kurs mit:
-    <a href="{{ update_project_url }}" class="item">
-       <i class="write blue icon"></i>
-    </a>
-</h3>
-{{ courseevent.project | safe }}
-
-
-<h3 class="ui header">
-    Gliederung:
-    <a href="{{ update_structure_url }}" class="item">
-       <i class="write blue icon"></i>
-    </a>
-</h3>
-{{ courseevent.structure | safe  }}
-
-
-<h3 class="ui header">
-    Freie Kursbeschreibung:
-    <a href="{{ update_text_url }}" class="item">
-       <i class="write blue icon"></i>
-    </a>
-</h3>
-{{ courseevent.text | safe }}
-
-
-<h3 class="ui header">
-    Kursformat:
-    <a href="{{ update_format_url }}" class="item">
-       <i class="write blue icon"></i>
-    </a>
-</h3>
-{{ courseevent.format | safe }}
-
-
-<h3 class="ui header">
-    Arbeitsbelastung:
-    <a href="{{ update_work_url }}" class="item">
-       <i class="write blue icon"></i>
-    </a>
-</h3>
-{{ courseevent.workload | safe }}
+<div class="ui dividing medium header">7. Fertig?</div>
+{% if not courseevent.classroom_open %}
+    <span style="color:red;">Dein Klassenzimmer ist noch für die Teilnehmer geschlossen
+        <i class="icon red warning sign"></i>
+    </span>
+    <br>
+    <a href="{{ courseeventlist_url }}">Zum Öffenen des Klassenzimmers</a>
+{% else %}
+    Dein Klassenzimmer ist geöffnet<i class="icon checkmark green"></i>
+    <br>
+{% endif %}
+<br>
+<a href="{{ classroom_url }}">Willst Du jetzt ins Klassenzimmer?</a>

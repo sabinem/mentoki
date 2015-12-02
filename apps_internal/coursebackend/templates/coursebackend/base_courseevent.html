@@ -36,7 +36,15 @@
         </a>
 
         {% include 'coursebackend/_popup_menu_courseevent.html' %}
+        {% url 'coursebackend:courseevent:detail' course_slug=cs slug=es as checklist_url %}
+        {% if request.user in course.teachers or request.user.is_superuser %}
 
+            <!-- work link in coursebackend -->
+            <a href="{{ checklist_url }}" class="item" >
+                <i class="rocket icon green"></i>
+            </a>
+
+        {% endif %}
         {% block courseevent_menu_items %}{% endblock %}
 
     </div>

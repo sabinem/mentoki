@@ -18,7 +18,7 @@ django-fontawesome==0.2.4
 django-formtools==1.0
 django-froala-editor==1.2.7
 django-mail-queue==2.2.2
-django-maintenancemode==0.11.0
+django-maintenancemode==0.11.1
 django-markdown==0.8.4
 django-model-utils==2.3.1
 django-mptt==0.7.4

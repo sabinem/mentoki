@@ -33,6 +33,11 @@ $(document).ready(function(){
       .checkbox()
     ;
 
+// embed video
+    $('.ui.embed')
+        .embed()
+    ;
+
 
 // this checkbox displays the particpants form fields in preparation for
 // payment, when requested

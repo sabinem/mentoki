@@ -5,16 +5,18 @@ table of courseevents
 for list
 
 {% endcomment %}
-
+<p>Wenn das <strong>Klassenzimmer geöffnet</strong> ist gibt es
+    für die Teilnehmer einen Link zum Klassenzimmer auf ihrem Schreibtisch.</p>
+<p>Wenn der <strong>Kurs unsichtbar</strong> gemacht wird, heisst, dass nur, dass er für Euch im Menü gerade nicht sichtbar ist.
+Dadurch wird der Kursraum nicht geschlossen. Ihr könnt das also vorübergehend machen , um an einem Eurer Kurse
+zu arbeiten.
+</p>
 <table class="ui table">
     <thead>
         <tr>
-            <th>Titel</th>
-            <th>Startdatum</th>
-            <th>Kursformat</th>
-            <th>anzeigen</th>
-            <th>Klassenzimmer</th>
-            <th>Aktion</th>
+            <th>Kurs</th>
+            <th>im Menü sichtbar machen (bearbeiten?)</th>
+            <th>Status Klassenzimmer</th>
         </tr>
     </thead>
     <tbody>
@@ -29,38 +31,61 @@ for list
             <tr>
                 <td>
                     <a href="{{ detail_url }}">
-                        {{ courseevent.title  }}
+                        {{ courseevent.title  }}<br>
+                        {% if courseevent.start_date %}
+                           Start: {{ courseevent.start_date }}
+                        {% endif %}
+
                     </a>
                 </td>
                 <td>
-                    {% if courseevent.start_date %}
-                       {{ courseevent.start_date }}
-                    {% elif not courseevent.event_type == courseevent.EVENT_TYPE.guidedgroup %}
-                        n/a
-                    {% else %}
-                        -
-                    {% endif %}
+                    {{ courseevent.active | yesno:"angezeigt, versteckt" }}
+                    <i class="icon checkmark green"></i>
+                    <br>
+                    <a href="{{ hide_url }}">verstecken?</a>
                 </td>
                 <td>
-                    {{ courseevent.get_event_type_display }}
-                </td>
-                <td>
-                    {{ courseevent.active }}
-                </td>
-                <td>
-                    {{ courseevent.classroom_open }}
-                </td>
-                <td>
-                    {% if courseevent.active %}
-                       <a href="{{ hide_url }}"><i class="icon hide"></i>verstecken</a>
-                    {% else %}
-                        <a href="{{ unhide_url }}"><i class="icon unhide"></i>zeigen</a>
-                    {% endif %}
+                    {{ courseevent.classroom_open | yesno:"geöffnet, geschlossen" }}
                     {% if courseevent.classroom_open %}
-                       <a href="{{ close_url }}"><i class="icon lock"></i>schliessen</a>
+                        <i class="icon checkmark green"></i>
+                        <br>
+                        <a href="{{ close_url }}"></i>schliessen?</a>
                     {% else %}
-                        <a href="{{ open_url }}"><i class="icon unlock"></i>öffen</a>
-                        {{ open_url }}
+                        <i class="icon lock red"></i><br><a href="{{ open_url }}">öffen?</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+
+        {% for courseevent in courseevents_hidden %}
+
+            {% url 'coursebackend:courseevent:detail' course_slug=cs slug=courseevent.slug as detail_url %}
+            {% url 'coursebackend:course:alter_courseevent' course_slug=cs pk=courseevent.pk action=AlterCourseEvent.HIDE as hide_url %}
+            {% url 'coursebackend:course:alter_courseevent' course_slug=cs pk=courseevent.pk action=AlterCourseEvent.UNHIDE as unhide_url %}
+            {% url 'coursebackend:course:alter_courseevent' course_slug=cs pk=courseevent.pk action=AlterCourseEvent.OPEN as open_url %}
+            {% url 'coursebackend:course:alter_courseevent' course_slug=cs pk=courseevent.pk action=AlterCourseEvent.CLOSE as close_url %}
+
+            <tr style="color:grey;">
+                <td>
+                    {{ courseevent.title  }}<br>
+                    {% if courseevent.start_date %}
+                       Start: {{ courseevent.start_date }}
+                    {% endif %}
+                </td>
+                <td>
+                    {{ courseevent.active | yesno:"angezeigt, versteckt" }} <i class="icon hide"></i>
+                    <br><a href="{{ unhide_url }}">
+                    anzeigen?</a>
+                </td>
+                <td>
+                    {{ courseevent.classroom_open | yesno:"geöffnet, geschlossen" }}
+                    {% if courseevent.classroom_open %}
+                       <i class="icon checkmark green"></i><br>
+                       <a href="{{ close_url }}">
+                           schliessen?</a>
+                    {% else %}
+                        <i class="icon lock red"></i>
+                        <br><a href="{{ open_url }}">öffen?</a>
                     {% endif %}
                 </td>
             </tr>

@@ -52,11 +52,27 @@ def copy_block_for_courseevent(self, block_pk, courseevent_pk):
                                    course=courseevent.course)
     logger.info('Vorlagewurzel gefunden [%s]' % lessonroot)
 
-    classlessonroot = ClassLesson.objects.get(
-            original_lesson_id=lessonroot.id,
-            courseevent=courseevent)
-    logger.info('Kurswurzel gefunden [%s] [%s]' % (classlessonroot,
-                classlessonroot.id))
+    try:
+        classlessonroot = ClassLesson.objects.get(
+                original_lesson_id=lessonroot.id,
+                courseevent=courseevent)
+        logger.info('Kurswurzel gefunden [%s] [%s]' % (classlessonroot,
+                    classlessonroot.id))
+    except ObjectDoesNotExist:
+        classlessonroot = ClassLesson(course=courseevent.course,
+                       courseevent=courseevent,
+                       title=courseevent.title,
+                       description="Unterrichtswurzel für %s" % (courseevent.title),
+                       text="",
+                       nr=1,
+                       is_original_lesson = True,
+                       original_lesson=lessonroot,
+                       lesson_nr=1
+                       )
+        classlessonroot.insert_at(None)
+        classlessonroot.save()
+        logger.info('Kurswurzel gefunden [%s] [%s]' % (classlessonroot,
+                    classlessonroot.id))
 
     # copy block
     classblock = _copy_any_level_lesson(lesson=lessonblock,

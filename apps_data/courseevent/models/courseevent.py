@@ -63,6 +63,17 @@ class CourseEventManager(models.Manager):
             .order_by('start_date')
 
 
+    def hidden_courseevents_for_course(self, course):
+        """
+        all active courseevents for a course
+        teachers
+        RETURN: queryset of courseevents
+        """
+        return self\
+            .filter(course=course, active=False)\
+            .order_by('start_date')
+
+
 class CourseEvent(TimeStampedModel):
 
     course = models.ForeignKey(
@@ -245,17 +256,21 @@ class CourseEvent(TimeStampedModel):
     def unhide(self):
         self.active = True
         self.save()
-        logger.info('Kursereignis [%s] wurde versteckt' % self)
+        logger.info('Kursereignis [%s] wurde sichtbar gemacht' % self)
 
     def open(self):
-        self.open_classroom = True
+        self.classroom_open = True
         self.save()
-        logger.info('Kursereignis [%s] wurde versteckt' % self)
+        logger.info(
+            'Das Klassenzimmer für Kursereignis [%s] wurde geöffnet'
+            % self)
 
     def close(self):
-        self.open_classroom = False
+        self.classroom_open = False
         self.save()
-        logger.info('Kursereignis [%s] wurde versteckt' % self)
+        logger.info(
+            'Das Klassenzimmer für Kursereignis [%s] wurde geschlossen'
+            % self)
 
     def get_absolute_url(self):
         return reverse('coursebackend:courseevent:detail',
