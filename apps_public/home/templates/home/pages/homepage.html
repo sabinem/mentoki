@@ -4,70 +4,79 @@
 {% block main_content %}
 
     <!-- urls -->
-    {% url 'storefront:list' as courselist_url %}
+    {% url 'storefront:list_now' as courselist_url %}
     {% url 'home:educationmentor' as educationmonitor_url %}
     {% url 'home:public' slug="online-unterrichten" as teachonline_url %}
 
     <!-- grid -->
-    <div class="ui grid one column centered" id="homepage" style="padding-bottom:50px;">
+    <div class="ui grid one column centered" id="homepage" style="padding-bottom:0px;">
 
          <!-- one column -->
          <div class="sixteen wide column">
 
              <!-- logo -->
-             <img class="ui image centered large image" src="/static/img/mentoki_logo_untertitel.jpg">
+             <img class="ui image centered large image" src="/static/img/mentoki_logo_untertitel.jpg"
+                  style="opacity:0.9;"
+                     alt="mentoki lernen und lehren lebenslang">
              <!-- image -->
              <img class="ui image fluid" src="/static/img/mentoki_start.jpg">
 
          </div>
+    </div>
 
-    <div class="sixteen wide tablet twelve wide computer column">
+    <div class="sixteen wide tablet twelve wide computer column"
+         style="background: url('/static/img/45169729_l_l.jpg'); opacity:0.9; padding-top:50px;
+         margin-top:0px;">
         <div class="ui grid centered">
 
-             <div class="two column stackable row">
-                 <div class="column">
-                     <div class="ui header center aligned large mentoki_nice_font">
-                         Mit unseren Online-Kursen
-                         stehen wir für
-                         projektbegleitendes
-                         unterstützendes Lernen:
-                     </div>
-                 </div>
-                 <div class="column">
-                     <div class="ui header center aligned large mentoki_nice_font">
-                         Wir unterstützen Sie bei Ihrem
-                         Einstieg in den Online-Unterricht
-                    </div>
-                 </div>
-             </div>
-             <div class="two column stackable row">
-                 <div class="column">
-                        <img class="ui image centered medium image"
-                              src="/static/img/42308644_s.jpg">
-                 </div>
-                 <div class="column">
-                      <img class="ui image centered medium image"
-                              src="/static/img/42198953_s.jpg">
-                 </div>
-             </div>
-             <div class="two column stackable row">
-                 <div class="column">
-                     <div class="ui header centered aligned">
-                         <a class="ui basic button large" href="{{ courselist_url }}">
-                             Hier geht es zu unserem Kursprogramm
-                         </a>
-                     </div>
-                 </div>
-                     <div class="column">
-                         <div class="ui header centered aligned">
-                             <a class="ui basic button large" href="{{ teachonline_url }}">
-                                 Zum Angebot Online-Unterrichten
-                             </a>
-                         </div>
-                     </div>
-                 </div>
-             </div>
+
+                <div class="ui header center aligned  large" style="color:black; opacity:0.7;
+                font-family: 'Montserrat', sans-serif;
+                font-size: 2em;
+                font-weight: 400;
+                line-height: 1.5em;
+                -webkit-font-smoothing: antialiased;
+                ">
+                    mentokis unterstützt Sie in der Online-Bildung
+                    <br><a  href="{{ courselist_url }}"
+                           style="">beim Lernen
+                                      <div class="extra content" style="color:#eb3d00;">
+                      Jetzt Einführungsrabatte!
+
+                  </div>
+
+                </a>
+                    <br>
+                    <a href="{{ teachonline_url }}"
+                       >und beim Unterrichten!
+
+                    </a>
+                    <br>Das Besondere an Mentoki:
+
+
+                </div>
+                <div class="ui header center aligned  large" style="color:teal;
+                font-family: 'Montserrat', sans-serif;
+                padding-top:0px;
+                margin-top:0px;
+                font-size: 1.5em;
+                font-weight: 400;
+                line-height: 1.2em;
+                -webkit-font-smoothing: antialiased;
+                padding-bottom:30px;
+                ">
+                    <div class="ui list">
+                    <div class="item">Wir sind eine Lerngemeinschaft.</div>
+                    <div class="item">Wir begleiten Lernprojekte statt zu belehren.</div>
+                    <div class="item">Wir engagieren uns in Themen, die gesellschaftlich relevant sind.</div>
+                    <div class="item">Wir sind für Sie da!</div>
+                    <div class="item">Wir glauben daran, dass Sie alles lernen können!</div>
+
+            </div>
+
         </div>
+    </div>
+    </div>
     </div>
 {% endblock %}
 

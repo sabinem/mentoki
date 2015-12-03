@@ -28,14 +28,6 @@
             {{ courseproductgroup.in_one_sentence }}
         </div>
     </div>
- {% if courseproductgroup.discount_text %}
-     <!-- red: #eb3d00; -->
-          <div class="extra content" style="color:#eb3d00;">
-              <img class="ui small image" src="/static/img/einfuehrungsrabatt.png">
-               <br> {{ courseproductgroup.discount_text }}
-
-          </div>
- {% endif %}
     <a class="ui bottom attached button" href="{{ offer_url }}">
 
         Angebote ansehen
