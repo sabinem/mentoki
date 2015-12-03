@@ -1,15 +1,26 @@
-{% extends "storefront/pages/base_detail.html" %}
+{% extends "base/base_public.html" %}
 {% load i18n %}
 
 {% block meta_post_title %}{{ meta.title }} | Kurse bei mentoki{% endblock %}
 {% block meta_post_title_tmp %}{{ meta.title }} | Kurse bei mentoki{% endblock %}
 
-{% block course_detail %}
-     <div class="froala-view"
-          style="
-          background: white;
-          padding: 10px;
-          ">
-         {{ courseproductgroup.about |safe }}
-     </div>
+{% block  main_content %}
+
+<div class="ui internally celled stackable grid">
+  <div class="row">
+    <div class="four wide column">
+         <div class="froala-view ">
+             {{ courseproductgroup.mentors | safe }}
+         </div>
+    </div>
+    <div class="eight wide column" >
+          <div class="froala-view ">
+             {{ courseproductgroup.about | safe }}
+         </div>
+    </div>
+    <div class="four wide column" >
+      {% include 'storefront/fragments/_offers.html' %}
+    </div>
+  </div>
+
 {% endblock %}

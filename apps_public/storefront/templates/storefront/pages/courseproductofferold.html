@@ -1,0 +1,159 @@
+{% extends "storefront/pages/base_detail.html" %}
+{% load i18n %}
+
+{% block meta_post_title %}{{ meta.title }}{% endblock %}
+{% block meta_post_title_tmp %}{{ meta.title }}{% endblock %}
+
+{% block course_detail %}
+
+
+    {% if courseproductgroup.discount_text %}
+        <!-- red: #eb3d00; -->
+        <div class="extra content" style="color:#eb3d00; min-height: 150px;" >
+            <img class="ui medium floated right image" src="/static/img/einfuehrungsrabatt.png">
+            <br> {{ courseproductgroup.discount_text_long }}
+        </div>
+    {% endif %}
+    <!-- urls --->
+    {% url 'home:public' slug="agbs" as agbs_url %}
+
+    <h3 class="ui left floated header" style="color:#eb3d00;">
+        Leistungsangebote im Detail
+    </h3>
+    <div class="ui clearing divider"></div>
+
+
+     <div class="froala-view" >
+          {{ courseproductgroup.conditions | safe }}
+     </div>
+    {% url 'storefront:prebook' slug=courseproductgroup.slug as prebook_url %}
+    {% if not product_list %}
+
+        <a
+           class="ui button"
+           href="{{ prebook_url }}">
+           Lassen Sie sich gerne in unsere Warteliste eintragen
+        </a>
+
+    {% else %}
+     <p style="color:grey;">* Es gelten unsere <a href="{{ agbs_url }}">AGBs</a>.</p>
+
+
+    <h3 class="ui left floated header" style="color:#eb3d00;">
+        Jetzt buchen
+    </h3>
+    <div class="ui clearing divider"></div>
+    <div class="ui middle aligned divided list" >
+
+        {% for item in product_list %}
+            <div class="item">
+            {% url 'checkout:redirect_to_product' pk=item.courseproduct.id as pay_url %}
+            {% url 'desk:learn' as desk_url %}
+
+                 {% if item.can_buy %}
+                      <div class="right floated content">
+                            <div style="padding: 10px;">
+                       {% if item.has_parts  and item.payment_started %}
+                            <i class="icon green checkmark"></i>
+                              bereits bezahlt bis zu {{ item.order.nr_parts_paid }}. Etappe
+
+                       {% endif %}
+                            </div>
+                            <a href="{{ pay_url }}" class="ui button"
+                           {% if item.is_on_sale %}
+                               style="
+                                    background: 0 0 rgba(235, 61, 0, 0.8) !important;
+                                    box-shadow: 0 0 0 2px rgba(235, 61, 0, 0.8); inset!important;
+                                    #color: #eb3d00!important;
+                                    color:white;"
+                           {% else %}
+                               style="
+                                    background: 0 0 #8fb2b2 !important;
+                                    box-shadow: 0 0 0 2px #8fb2b2; inset!important;
+                                    #color: #8fb2b2!important;
+                                    color:white;"
+                           {% endif %}
+
+
+                                    >
+                       {% if item.has_parts %}
+
+                           {{ item.buy_part_nr}}. Etappe:
+                       {% endif %}
+                                {% if item.is_on_sale %}
+                                    jetzt
+                                    {{ item.amount_sale |floatformat:2}}
+                                    statt
+                                    {{ item.amount_original|floatformat:2 }}
+                                {% else %}
+                                    jetzt kaufen für
+                                    {{ item.amount_original |floatformat:2}}
+                                {% endif %}
+                                {{ item.courseproduct.get_currency_display }}
+                            </a>
+                      </div>
+
+                 {% elif item.payment_complete %}
+
+                      <div class="right floated content">
+
+                            <div style="padding: 10px;">
+
+                                <i class="icon green checkmark"></i>
+                                Buchung komplett
+                            </div>
+                      </div>
+
+                 {% elif item.prebook %}
+
+                       <div class="right floated content">
+
+                            <a href="{{prebook_url }}" class="ui button basic teal"
+                                    style="
+                                    background: 0 0!important;
+                                    box-shadow: 0 0 0 2px #009c95 inset!important;
+                                    color: #009c95!important;"
+                                    >
+                                Bitte benachrichtigen sobald die Buchung geöffnet ist
+                            </a>
+                      </div>
+
+                 {% else %}
+
+                       <div class="right floated content">
+
+                            <div class="ui button basic">
+                       {% if item.has_parts %}
+                           {{ item.buy_part_nr}}. Etappe:
+                       {% endif %}
+                                {% if item.is_on_sale %}
+                                    jetzt<span style="color:#eb3d00">
+                                    {{ item.amount_sale |floatformat:2 }}</span>
+                                    statt
+                                    {{ item.amount_original|floatformat:2 }}
+                                {% else %}
+                                    jetzt kaufen für
+                                    {{ item.amount_original|floatformat:2 }}
+                                {% endif %}
+                                {{ item.courseproduct.get_currency_display }}
+                            </div>
+                      </div>
+
+                 {% endif %}
+                 <div class="content">
+
+                     <h4 class="ui header">{{ item.courseproduct.name }}</h4>
+                     <div class="froala-view">{{ item.courseproduct.description | safe }}</div>
+                 </div>
+
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+    </div>
+
+
+
+{% endblock %}
