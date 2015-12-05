@@ -36,12 +36,20 @@
                             </a>
 
                  {% else %}
+                 {% elif item.payment_complete %}
 
-                 {% if  item.payment_started %}
+                            <div style="padding: 10px;">
+
+                                <i class="icon green checkmark"></i>
+                                Buchung komplett
+                            </div>
+
+                 {% endif %}
+                 {% if  item.payment_started and not item.payment_complete %}
                             <i class="icon green checkmark"></i>
                               bereits bezahlt bis zu {{ item.order.nr_parts_paid }}. Etappe
-
-                 {% else %}
+                 {% endif %}
+                 {% if not item.payment_complete %}
                              <a class="ui button"
                                {% if item.is_on_sale %}
                                                               style="
@@ -74,7 +82,6 @@
 
                  {% endif %}
 
-                 {% endif %}
 
    {% comment %}
 
