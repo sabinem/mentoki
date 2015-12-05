@@ -24,9 +24,10 @@
 {% endblock %}
 
 {% block page %}
-     <div style="padding-top:50px; padding-left:10px; padding-right:10px;">
-     {% block main_content %}{% endblock %}
-    </div>
+     <div id="filler_top_for_mobile" style="padding-top:70px;"></div>
+     <div style="padding-left:10px; padding-right:10px;">
+         {% block main_content %}{% endblock %}
+     </div>
 {% endblock %}
 
 

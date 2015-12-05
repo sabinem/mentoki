@@ -76,7 +76,7 @@ class CourseProductGroup(TimeStampedModel):
         help_text=_('''Hier kannst Du ein Foto für Deinen Kurs hochladen.'''),
         upload_to=foto_location, blank=True
     )
-    in_one_sentence = models.TextField(
+    in_one_sentence = FroalaField(
         verbose_name=_("in einem Satz"),
         help_text=_('Beschreibe den Kurs in einem Satz'),
     )

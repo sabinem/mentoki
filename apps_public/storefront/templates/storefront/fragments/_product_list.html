@@ -1,24 +1,15 @@
-    <div class="ui middle aligned divided list" >
 
-        {% for item in product_list %}
-            <div class="item">
-            {% url 'checkout:redirect_to_product' pk=item.courseproduct.id as pay_url %}
-            {% url 'desk:learn' as desk_url %}
-                 <div class="ui two column stackable grid">
-                     <div class="column ten wide">
-                         <h4 class="ui header">
-                             {{ item.courseproduct.name }}
-                         </h4>
-                         <div class="froala-view">
-                             {{ item.courseproduct.description | safe }}
-                         </div>
-                     </div>
-                     <div class="column five wide">
-                         {% include 'storefront/fragments/_button_buy.html' %}
-                     </div>
-                 </div>
-            </div>
 
-        {% endfor %}
 
-    </div>
+<table class="ui definition table">
+
+  <tbody>
+  {% for item in product_list %}
+    <tr>
+      <td>{{ item.courseproduct.name }}</td>
+      <td> {{ item.courseproduct.description | safe }}</td>
+      <td>  {% include 'storefront/fragments/_pay.html' %}</td>
+    </tr>
+   {% endfor %}
+
+</tbody></table>

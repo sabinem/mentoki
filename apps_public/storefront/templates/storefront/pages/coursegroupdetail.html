@@ -6,7 +6,8 @@
 
 {% block  main_content %}
     {% url 'home:home' as home_url %}
-    <div class="ui menu fixed center aligned top three item fluid" >
+
+    <div class="ui menu fixed center aligned top three item fluid" id="coursemenu_pc">
 
             <a class="item" style="padding:0px; margin: 0px;"
             href="{{ home_url }}">
@@ -19,8 +20,8 @@
                  {{ courseproductgroup.menu_name }}
                 <i class="dropdown icon"></i>
                 <div class="menu">
-            <a class="item" href="#start">
-                <i class="icon home"></i> Seitenanfang
+            <a class="item" href="#start" style="color: #eb3d00!important;">
+                jetzt buchen!
             </a>
 
                     {% for product_field in product_fields %}
@@ -31,12 +32,12 @@
 
                 </div>
             </div>
-            <a class="item" href="#preise" style="color: #eb3d00;">
-                jetzt buchen! {{ courseproductgroup.discount_text_long }}
+            <a class="item" href="#start" style="color: #eb3d00;">
+                jetzt buchen!
             </a>
 
         </div>
-        <div class="ui menu fixed center aligned top two item fluid" id="mobile_navbar">
+        <div class="ui menu fixed center aligned top two item fluid" id="coursemenu_mobile">
 
             <a class="item" style="padding:0px; margin: 0px;"
             href="{{ home_url }}">
@@ -52,7 +53,7 @@
             <a class="item" href="#start">
                 <i class="icon home"></i> Seitenanfang
             </a>
-            <a class="item" href="#preise" style="color: #eb3d00!important;">
+            <a class="item" href="#start" style="color: #eb3d00!important;">
                 jetzt buchen! {{ courseproductgroup.discount_text_long }}
             </a>
                     {% for product_field in product_fields %}
@@ -67,37 +68,39 @@
         </div>
 
 <div class="ui centered grid" id="start" style="padding-left:50px;
-padding-right:50px; padding-top:100px;">
+padding-right:50px; padding-top:60px;
+background: url('/static/img/board3.jpg');
+">
 
 <div class="sixteen wide tablet twelve wide computer column"
      >
-        <a class="image ui floated left medium" href="#">
-        {% if courseproductgroup.foto %}
-
-          <img src="{{ courseproductgroup.foto.url }}">
-        {% endif %}
-    </a>
  <h1 class="ui center aligned header large"
          style="color:#19aaa6;
                 font-family: 'Montserrat', sans-serif;
-                font-size: 1.6em;
+                font-size: 1.3em;
                 font-weight: 400;
                 line-height: 1.5em;
+                color:white;
                 -webkit-font-smoothing: antialiased;
                 "
          >{{ courseproductgroup.course.title }}<br> von
  {{ courseproductgroup.course.teachersrecord }}</h1>
-     <p>{{ courseproductgroup.in_one_sentence }}</p>
+                 <div class="ui two column stackable grid">
+                     <div class="column four wide">
+                        {% if courseproductgroup.foto %}
 
-</div>
-</div>
+                          <img class="ui image" src="{{ courseproductgroup.foto.url }}">
+                        {% endif %}
+                     </div>
+                     <div class="column twelve wide">
+
+     <div style="color:white!important ;">{{ courseproductgroup.in_one_sentence | safe}}</div>
+                     </div>
+                 </div>
 
 
-<div class="ui centered  grid" id="preise" style="padding-left:50px;
-padding-right:50px; padding-top:150px;">
 
-<div class="sixteen wide tablet twelve wide computer column"
-    >
+
 
 
             {% include 'storefront/fragments/_product_list.html' %}
@@ -110,7 +113,7 @@ padding-right:50px; padding-top:150px;">
 
      {% for product_field in product_fields %}
 <div class="ui centered  grid" id="{{ product_field.pagemark }}" style="padding-left:50px;
-padding-right:50px; padding-top:150px;">
+padding-right:50px; padding-top:90px;">
 
 <div class="sixteen wide tablet twelve wide computer column">
 
