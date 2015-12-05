@@ -4,16 +4,21 @@
 
                  {% if not item.has_parts  %}
 
-                       <div class="content">
 
                             <a class="ui button"
+                               {% if item.is_on_sale %}
                                                               style="
                                     background: 0 0 rgba(235, 61, 0, 0.8) !important;
                                     box-shadow: 0 0 0 2px rgba(235, 61, 0, 0.8); inset!important;
                                     #color: #eb3d00!important;
                                     color:white;"
-
-
+                               {% else %}
+                                style="
+                                    background: 0 0 #8fb2b2 !important;
+                                    box-shadow: 0 0 0 2px #8fb2b2; inset!important;
+                                    #color: #8fb2b2!important;
+                                    color:white;"
+                               {% endif %}
                             href="{{ pay_url }}">
 
                                 {% if item.is_on_sale %}
@@ -29,7 +34,45 @@
                                 {{ item.courseproduct.get_currency_display }}
 
                             </a>
-                      </div>
+
+                 {% else %}
+
+                 {% if  item.payment_started %}
+                            <i class="icon green checkmark"></i>
+                              bereits bezahlt bis zu {{ item.order.nr_parts_paid }}. Etappe
+
+                 {% else %}
+                             <a class="ui button"
+                               {% if item.is_on_sale %}
+                                                              style="
+                                    background: 0 0 rgba(235, 61, 0, 0.8) !important;
+                                    box-shadow: 0 0 0 2px rgba(235, 61, 0, 0.8); inset!important;
+                                    #color: #eb3d00!important;
+                                    color:white;"
+                               {% else %}
+                                style="
+                                    background: 0 0 #8fb2b2 !important;
+                                    box-shadow: 0 0 0 2px #8fb2b2; inset!important;
+                                    #color: #8fb2b2!important;
+                                    color:white;"
+                               {% endif %}
+                            href="{{ pay_url }}">
+                                {{ item.buy_part_nr}}. Etappe:
+                                {% if item.is_on_sale %}
+                                    jetzt
+                                    {{ item.amount_sale |floatformat:2 }}
+                                    statt
+                                    {{ item.amount_original|floatformat:2 }}
+                                {% else %}
+                                    jetzt kaufen für
+                                    {{ item.amount_original|floatformat:2 }}
+                                {% endif %}
+
+                                {{ item.courseproduct.get_currency_display }}
+
+                            </a>
+
+                 {% endif %}
 
                  {% endif %}
 

@@ -69,34 +69,13 @@
 
 <div class="ui centered grid" id="start" style="padding-left:50px;
 padding-right:50px; padding-top:60px;
-background: url('/static/img/board3.jpg');
+background: url('/static/img/15447605_xxl1.jpg');
 ">
 
 <div class="sixteen wide tablet twelve wide computer column"
      >
- <h1 class="ui center aligned header large"
-         style="color:#19aaa6;
-                font-family: 'Montserrat', sans-serif;
-                font-size: 1.3em;
-                font-weight: 400;
-                line-height: 1.5em;
-                color:white;
-                -webkit-font-smoothing: antialiased;
-                "
-         >{{ courseproductgroup.course.title }}<br> von
- {{ courseproductgroup.course.teachersrecord }}</h1>
-                 <div class="ui two column stackable grid">
-                     <div class="column four wide">
-                        {% if courseproductgroup.foto %}
 
-                          <img class="ui image" src="{{ courseproductgroup.foto.url }}">
-                        {% endif %}
-                     </div>
-                     <div class="column twelve wide">
 
-     <div style="color:white!important ;">{{ courseproductgroup.in_one_sentence | safe}}</div>
-                     </div>
-                 </div>
 
 
 
@@ -110,20 +89,22 @@ background: url('/static/img/board3.jpg');
 
 </div>
 
+<div style="background: url('/static/img/15447605_xxl1.jpg');">
 
      {% for product_field in product_fields %}
 <div class="ui centered  grid" id="{{ product_field.pagemark }}" style="padding-left:50px;
 padding-right:50px; padding-top:90px;">
 
 <div class="sixteen wide tablet twelve wide computer column">
-
+<div class="ui segment">
             <h2 class="ui center aligned header large">{{ product_field.title }}</h2>
             {{ product_field.text | safe }}
-
+</div>
 </div>
 </div>
 
         {% endfor %}
 
-<div style="padding-bottom:100px;"></div>
+</div>
+
 {% endblock %}
