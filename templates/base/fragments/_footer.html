@@ -1,10 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
 
-</body>
-</html>
+    {% url 'home:public' slug='agbs' as agbs_url %}
+    {% url 'home:public' slug='impressum' as impressum_url %}
+    {% url 'contact:contact' as contact_url %}
+
+    <div class="ui grey inverted vertical footer segment">
+        <div class="ui center aligned container">
+            <div class="ui stackable inverted grid">
+                <div class="four wide column">
+                    <h4 class="ui inverted header">Anschrift</h4>
+                    <div class="ui inverted link list">
+                        <div class="item">Mentoki</div>
+                        <div class="item">Leimbachstr. 223</div>
+                        <div class="item">8041 Zürich</div>
+                        <div class="item">Schweiz</div>
+                        <div class="item">Tel. +41 43 53 778 74</div>
+                    </div>
+                </div>
+                <div class="four wide column">
+                    <h4 class="ui inverted header">Geschäftsbedingungen</h4>
+                    <div class="ui inverted link list">
+                        <a href="{{ impressum_url }}" class="item">Impressum</a>
+                        <a href="{{ agbs_url }}" class="item">AGBs</a>
+                    </div>
+                </div>
+                <div class="four wide column">
+                    <h4 class="ui inverted header">Kontakt</h4>
+                    <div class="ui inverted link list">
+                        <div class="item">email: mentoki@mentoki.com</div>
+                        <a href="{{ contact_url }}" class="item">Kontaktformular</a>
+                    </div>
+                </div>
+                <div class="four wide column">
+                    <h4 class="ui inverted header">Folge uns</h4>
+                    <div class="ui inverted link list">
+                        <a class="item" href="https://twitter.com/Mentoki_com" rel="publisher">
+                            <i class="icon twitter"></i>Twitter
+                        </a>
+                        <a class="item" href="https://www.facebook.com/internetteachers" rel="publisher">
+                            <i class="icon facebook"></i>Facebook
+                        </a>
+                        <a class="item"  href="https://plus.google.com/+Mentoki3l" rel="publisher">
+                           <i class="icon google plus"></i>Google+
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

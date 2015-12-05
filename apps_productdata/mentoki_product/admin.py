@@ -10,7 +10,7 @@ from django.contrib import admin
 
 from .models.courseproduct import CourseProduct
 from .models.courseproductgroup import CourseProductGroup, \
-    CourseProductSubGroup
+    CourseProductSubGroup, CourseProductGroupField
 from .models.specialoffer import SpecialOffer
 
 
@@ -54,3 +54,12 @@ class SpecialOfferAdmin(admin.ModelAdmin):
     list_filter = ('modified', 'course')
     list_display_links = ('id',)
 
+
+@admin.register(CourseProductGroupField)
+class CourseProductGroupFieldAdmin(admin.ModelAdmin):
+    """
+    CourseProductGroup is the Group of all products related to a course
+    """
+    list_display = ('id', 'course', 'courseproductgroup', 'title', 'pagemark', 'display_nr')
+    list_filter = ('modified', 'course')
+    list_display_links = ('id',)

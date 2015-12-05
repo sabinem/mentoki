@@ -28,8 +28,15 @@
             {{ courseproductgroup.in_one_sentence }}
         </div>
     </div>
-    <a class="ui bottom attached button" href="{{ offer_url }}">
+    <a class="ui bottom attached inverted button"
+       style="
+            background: 0 0 rgba(235, 61, 0, 0.8) !important;
+            box-shadow: 0 0 0 2px rgba(235, 61, 0, 0.8); inset!important;
+            opacity:0.7;
+            #color: #eb3d00!important;
+            color:white;"
+       href="{{ offer_url }}">
         {{ courseproductgroup.discount_text_long }}
-        Angebote ansehen
+
     </a>
 </div>

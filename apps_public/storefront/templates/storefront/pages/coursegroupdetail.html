@@ -1,156 +1,126 @@
-{% extends "base/base_public.html" %}
+{% extends "base/base_course.html" %}
 {% load i18n %}
-
+{% load activelink %}
 {% block meta_post_title %}{{ meta.title }} | Kurse bei mentoki{% endblock %}
 {% block meta_post_title_tmp %}{{ meta.title }} | Kurse bei mentoki{% endblock %}
 
 {% block  main_content %}
-<div class="ui grid">
-<div class="ui left fixed vertical menu">
-  <div class="item">
-    <img class="ui mini image" src="/images/logo.png">
-  </div>
-  <a class="item">Features</a>
-  <a class="item">Testimonials</a>
-  <a class="item">Sign-in</a>
-</div>
-<div class="ui right fixed vertical menu">
-  <div class="item">
-    <img class="ui mini image" src="/images/logo.png">
-  </div>
-  <a class="item">Features</a>
-  <a class="item">Testimonials</a>
-  <a class="item">Sign-in</a>
-</div>
-</div>
-<p></p>
-<p></p>
-<div class="ui centered grid">
-<div class="ui grid">
-  <div class="four wide column">
-    <div class="ui vertical fluid tabular menu">
-      <a class="active item" href="#start">
-        Bio
-      </a>
-      <a class="item" href="#termine">
-        Pics
-      </a>
-      <a class="item" href="#kursleitung">
-        Companies
-      </a>
-      <a class="item" href="#gliederung">
-        Links
-      </a>
-    </div>
-  </div>
-  <div class="twelve wide stretched column">
-    <div class="ui segment">
-      This is an stretched grid column. This segment will always match the tab height
-    </div>
-  </div>
-</div>
-  <div class="six wide column" style="background: url('/static/img/board3.jpg');">
-    <div class="ui vertical fluid tabular menu">
-      <a class="active item" href="#start">
-        Bio
-      </a>
-      <a class="item" href="#termine">
-        Pics
-      </a>
-      <a class="item" href="#kursleitung">
-        Companies
-      </a>
-      <a class="item" href="#gliederung">
-        Links
-      </a>
-    </div>
-  </div>
-</div>
-  <div class="sixteen wide tablet eight wide computer column center aligned">
-    <div class="ui segment" id="start">
-            <h1 class="ui center aligned header large">{{ courseproductgroup.course.title }}</h1>
-            {{ courseproductgroup.video | safe }}
-    </div>
-  </div>
+    {% url 'home:home' as home_url %}
+    <div class="ui menu fixed center aligned top three item fluid" >
 
-</div>
-    <div class="sixteen wide tablet eight wide computer column center aligned">
-<h3>Kursformat</h3>
+            <a class="item" style="padding:0px; margin: 0px;"
+            href="{{ home_url }}">
+            <img  class="ui image" style="padding:0px; margin: 0px;" src="/static/img/mentoki_logo_65.png"
+            >
+            </a>
 
-<p>Der Kurs wird als gef&uuml;hrter Gruppenkurs angeboten</p>
 
-<h3>Starttermine</h3>
+            <div class="ui left dropdown item" id="#start">
+                 {{ courseproductgroup.menu_name }}
+                <i class="dropdown icon"></i>
+                <div class="menu">
+            <a class="item" href="#start">
+                <i class="icon home"></i> Seitenanfang
+            </a>
 
-<p>Zur Einf&uuml;hrung des Kurses ist zun&auml;chst ein Termin geplant</p>
+                    {% for product_field in product_fields %}
+                    <a class="item" href="#{{ product_field.pagemark }}" style="line-height:1em">
+                        {{ product_field.title }}
+                    </a>
+                    {% endfor %}
 
-<ul>
-  <li>24.3.2016</li>
-</ul>
+                </div>
+            </div>
+            <a class="item" href="#preise" style="color: #eb3d00;">
+                jetzt buchen! {{ courseproductgroup.discount_text_long }}
+            </a>
 
-<h3>Teilnehmerzahl</h3>
+        </div>
+        <div class="ui menu fixed center aligned top two item fluid" id="mobile_navbar">
 
-<p>Mindestteilnehmerzahl ist 10, maximale Teilnehmerzahl 30.&nbsp; Sollte ein Kurs die Minimalteilnehmerzahl nicht erreichen, so erhalten gebuchte Interessenten ihre bereits gezahlten Kursgeb&uuml;hren in voller H&ouml;he zur&uuml;ck. Dar&uuml;ber hinausgehende Anspr&uuml;che sind ausgeschlossen.</p>
+            <a class="item" style="padding:0px; margin: 0px;"
+            href="{{ home_url }}">
+            <img  class="ui image" style="padding:0px; margin: 0px;" src="/static/img/mentoki_logo_65.png"
+            >
+            </a>
 
-<h3>Kursdauer: 20 Wochen&nbsp;&nbsp;</h3>
 
-<p>Eine Einf&uuml;hrungswoche, sieben thematische Etappen von jeweils zwei Wochen und eine Abschlusswoche</p>
+            <div class="ui left dropdown item" id="#start">
+                 {{ courseproductgroup.menu_name }}
+                <i class="dropdown icon"></i>
+                <div class="menu">
+            <a class="item" href="#start">
+                <i class="icon home"></i> Seitenanfang
+            </a>
+            <a class="item" href="#preise" style="color: #eb3d00!important;">
+                jetzt buchen! {{ courseproductgroup.discount_text_long }}
+            </a>
+                    {% for product_field in product_fields %}
+                    <a class="item" href="#{{ product_field.pagemark }}" style="line-height:1em">
+                        {{ product_field.title }}
+                    </a>
+                    {% endfor %}
 
-<h3>Buchungsarten</h3>
+                </div>
+            </div>
 
-<p>Der Kurs kann nur als ganzes Paket gebucht werden.</p>
         </div>
 
-    <div class="ui centered grid" id="termine">
+<div class="ui centered grid" id="start" style="padding-left:50px;
+padding-right:50px; padding-top:100px;">
 
-        <div class="sixteen wide tablet eight wide computer column">
-             {% include 'storefront/fragments/_offers.html' %}
-        </div>
-    </div>
-    <div class="ui centered grid" id="kursleitung">
+<div class="sixteen wide tablet twelve wide computer column"
+     >
+        <a class="image ui floated left medium" href="#">
+        {% if courseproductgroup.foto %}
 
-         <div class="froala-view ">
-             {{ courseproductgroup.mentors | safe }}
-         </div>
-    </div>
+          <img src="{{ courseproductgroup.foto.url }}">
+        {% endif %}
+    </a>
+ <h1 class="ui center aligned header large"
+         style="color:#19aaa6;
+                font-family: 'Montserrat', sans-serif;
+                font-size: 1.6em;
+                font-weight: 400;
+                line-height: 1.5em;
+                -webkit-font-smoothing: antialiased;
+                "
+         >{{ courseproductgroup.course.title }}<br> von
+ {{ courseproductgroup.course.teachersrecord }}</h1>
+     <p>{{ courseproductgroup.in_one_sentence }}</p>
 
-    <div class="ui centered grid" id="termine">
-
-        <div class="sixteen wide tablet eight wide computer column">
-             {% include 'storefront/fragments/_offers.html' %}
-        </div>
-    </div>
-    <div class="eight wide column" id="gliederung" >
-          <div class="froala-view ">
-             {{ courseproductgroup.about | safe }}
-         </div>
-    </div>
-   </div>
 </div>
-      <div class="ui centered grid">
-
-
-<div class="row">
-
- <div class="sixteen wide tablet twelve wide computer column">
- <div class="sixteen wide tablet twelve wide computer column">
-{{ courseproductgroup.about | safe }}
 </div>
-    </div>
- </div>
+
+
+<div class="ui centered  grid" id="preise" style="padding-left:50px;
+padding-right:50px; padding-top:150px;">
+
+<div class="sixteen wide tablet twelve wide computer column"
+    >
+
+
+            {% include 'storefront/fragments/_product_list.html' %}
+
 </div>
-<div class="ui internally celled stackable grid" id="angebote">
-  <div class="row">
-    <div class="four wide column">
 
-    </div>
-    <div class="eight wide column" >
-          <div class="froala-view ">
-             {{ courseproductgroup.about | safe }}
-         </div>
-    </div>
-    <div class="four wide column" >
-      {% include 'storefront/fragments/_offers.html' %}
-    </div>
-  </div>
 
+</div>
+
+
+     {% for product_field in product_fields %}
+<div class="ui centered  grid" id="{{ product_field.pagemark }}" style="padding-left:50px;
+padding-right:50px; padding-top:150px;">
+
+<div class="sixteen wide tablet twelve wide computer column">
+
+            <h2 class="ui center aligned header large">{{ product_field.title }}</h2>
+            {{ product_field.text | safe }}
+
+</div>
+</div>
+
+        {% endfor %}
+
+<div style="padding-bottom:100px;"></div>
 {% endblock %}

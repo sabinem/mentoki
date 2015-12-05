@@ -21,9 +21,7 @@ $(document).ready(function(){
  * dropdown menu for public pages
  */
     $('.ui.sticky')
-      .sticky({
-        context: '#context'
-    })
+      .sticky()
     ;
 
 
@@ -36,6 +34,14 @@ $(document).ready(function(){
 // embed video
     $('.ui.embed')
         .embed()
+    ;
+
+// sidebar with context
+    $('.context.example .ui.sidebar')
+      .sidebar({
+        context: $('.context.example .bottom.segment')
+      })
+      .sidebar('attach events', '.context.example .menu .item')
     ;
 
 
