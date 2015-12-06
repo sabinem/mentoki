@@ -20,6 +20,16 @@
 
                 <!-- product ------>
                 <h4 class="ui dividing header">Buchung</h4>
+                <h1 style="color:#19aaa6;
+                    font-family: 'Montserrat', sans-serif;
+                    font-size: 1.3em;
+                    font-weight: 400;
+                    line-height: 1.2em;
+                    -webkit-font-smoothing: antialiased;
+                ">
+                        {{ courseproductgroup.course.title }}<br> von
+                        {{ courseproductgroup.course.teachersrecord }}
+                        </h1>
                 <div class="ui middle aligned divided list">
                     <div class="item" >
                         <div class="content">
@@ -36,16 +46,7 @@
                                 {{ currency }}
                             </div>
                             <div class="header">
-                         <h1 style="color:#19aaa6;
-                    font-family: 'Montserrat', sans-serif;
-                    font-size: 1.6em;
-                    font-weight: 400;
-                    line-height: 1.2em;
-                    -webkit-font-smoothing: antialiased;
-                ">
-                        {{ courseproductgroup.course.title }}<br> von
-                        {{ courseproductgroup.course.teachersrecord }}
-                        </h1>
+
                                 {{ courseproduct.name }}
                             </div>
                             <p>
