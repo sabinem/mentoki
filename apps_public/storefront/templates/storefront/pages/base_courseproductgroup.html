@@ -29,9 +29,15 @@
                  {{ courseproductgroup.menu_name }}
                 <i class="dropdown icon"  style="color: #eb3d00!important;"></i>
                 <div class="menu">
+                {% if courseproductgroup.can_be_booked_now %}
             <a class="item" href="#start" style="color: #eb3d00!important;">
                 jetzt buchen!
             </a>
+                    {% else %}
+            <a class="item" href="#start" >
+                Vorschau
+            </a>
+                {% endif %}
 
                     {% for product_field in product_fields %}
                     <a class="item" href="#{{ product_field.pagemark }}" style="line-height:1em">
@@ -41,10 +47,16 @@
 
                 </div>
             </div>
+    {% if courseproductgroup.can_be_booked_now %}
             <a class="item" href="#start" style="color: #eb3d00;">
                 jetzt buchen!
             </a>
+        {% else %}
+          <div class="item">
+             Vorschau
+          </div>
 
+{% endif %}
         </div>
         <div class="ui menu fixed center aligned top two item fluid" id="coursemenu_mobile">
 
@@ -66,12 +78,15 @@
                  {{ courseproductgroup.menu_name }}
                 <i class="dropdown icon" style="color: #eb3d00!important;"></i>
                 <div class="menu">
-            <a class="item" href="#start">
-                <i class="icon home"></i> Seitenanfang
-            </a>
+                {% if courseproductgroup.can_be_booked_now %}
             <a class="item" href="#start" style="color: #eb3d00!important;">
-                jetzt buchen! {{ courseproductgroup.discount_text_long }}
+                jetzt buchen!
             </a>
+                {% else %}
+             <a class="item" href="#start" >
+                Vorschau
+            </a>
+                {% endif %}
                     {% for product_field in product_fields %}
                     <a class="item" href="#{{ product_field.pagemark }}" style="line-height:1em">
                         {{ product_field.title }}

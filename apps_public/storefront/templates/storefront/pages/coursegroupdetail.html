@@ -1,5 +1,9 @@
 {% extends "storefront/pages/base_courseproductgroup.html" %}
+
+
 {% block courseproductpage %}
+
+  {% url 'home:public' slug='agbs' as agb_url %}
     <div style="background: url('/static/img/15447605_xxl1.jpg');">
         <div class="ui centered grid" id="start" style="
             padding-top:60px;">
@@ -24,6 +28,8 @@
                     </div>
                     <div class="ui column">
                         {{ courseproductgroup.in_one_sentence | safe}}
+                        <p>
+                        * Es gelten unsere <a href="{{ agb_url }}">AGBs</a>.</p>
                         </div>
                     </div>
                 </div>
