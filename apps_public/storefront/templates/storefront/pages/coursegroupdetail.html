@@ -90,44 +90,23 @@
 
         </div>
 
-<div class="ui centered grid" id="start" style="
-padding-top:60px;
-background: url('/static/img/15447605_xxl2.jpg');
-">
-
-<div class="sixteen wide tablet twelve wide computer column"
-     >
-
-
-
-
-
-
-
-
-            {% include 'storefront/fragments/_product_list.html' %}
-
-</div>
-
-
-</div>
-
 <div style="background: url('/static/img/15447605_xxl1.jpg');">
-
-     {% for product_field in product_fields %}
-<div class="ui centered  grid" id="{{ product_field.pagemark }}"
-     style="padding-top:60px;padding-bottom:60px;">
-
-<div class="sixteen wide tablet twelve wide computer column">
-<div class="ui segment">
-            <h2 class="ui center aligned header large">{{ product_field.title }}</h2>
-            {{ product_field.text | safe }}
+    <div class="ui centered grid" id="start" style="
+        padding-top:60px;">
+        <div class="sixteen wide tablet twelve wide computer column">
+            {% include 'storefront/fragments/_product_list.html' %}
+        </div>
+    </div>
+    {% for product_field in product_fields %}
+         <div class="ui centered  grid" id="{{ product_field.pagemark }}"
+             style="padding-top:60px;padding-bottom:60px;">
+             <div class="sixteen wide tablet twelve wide computer column">
+                 <div class="ui segment">
+                     <h2 class="ui center aligned header large">{{ product_field.title }}</h2>
+                     {{ product_field.text | safe }}
+                 </div>
+             </div>
+         </div>
+    {% endfor %}
 </div>
-</div>
-</div>
-
-        {% endfor %}
-
-</div>
-
 {% endblock %}
