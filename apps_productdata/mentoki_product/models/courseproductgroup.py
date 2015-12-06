@@ -127,6 +127,7 @@ class CourseProductSubGroup(TimeStampedModel):
     name = models.CharField(max_length=250)
     course = models.ForeignKey(Course)
     courseproductgroup = models.ForeignKey(CourseProductGroup, default=1)
+    description = FroalaField()
 
     class Meta:
         verbose_name = _("Kursproduktuntergruppe")
