@@ -9,6 +9,9 @@
             padding-top:60px;">
             <div class="sixteen wide tablet twelve wide computer column">
             <div class="ui segment">
+
+                <div class="ui two column stackable grid">
+                    <div class="ui column">
                 <h1 style="color:#19aaa6;
                     font-family: 'Montserrat', sans-serif;
                     font-size: 1.6em;
@@ -19,8 +22,6 @@
                 {{ courseproductgroup.course.title }}<br> von
                 {{ courseproductgroup.course.teachersrecord }}
                 </h1>
-                <div class="ui two column stackable grid">
-                    <div class="ui column">
                         {% if courseproductgroup.foto %}
                             <img class="ui image medium floated left"
                                  src="{{ courseproductgroup.foto.url }}">
