@@ -1,23 +1,15 @@
 # -*- coding: utf-8 -*-
 
 from django.conf.urls import patterns, url
-from django.shortcuts import redirect
-from django.http import HttpResponsePermanentRedirect
-from django.core.urlresolvers import reverse
 
 
 from .views.info import \
-    CourseGroupDetailView, CourseGroupMentorsView
+    CourseGroupDetailView
 from .views.list import CourseProductGroupsListView, \
     ListNowView, ListPreviewView
-from .views.sales import CourseGroupOfferView
 from .views.prebook import ProductPrebookView, AnswerView
 
-
-
-
 urlpatterns = patterns('',
-
     url(r'^$',
         CourseProductGroupsListView.as_view(), name='list'),
 
@@ -31,17 +23,15 @@ urlpatterns = patterns('',
         CourseGroupDetailView.as_view(), name='detail'),
 
     url(r'^(?P<slug>[a-z0-9_-]{3,50})/angebot$',
-        CourseGroupOfferView.as_view(), name='offer'),
+        CourseGroupDetailView.as_view(), name='offer'),
 
     url(r'^(?P<slug>[a-z0-9_-]{3,50})/kursleitung$',
-        CourseGroupMentorsView.as_view(), name='mentors'),
+        CourseGroupDetailView.as_view(), name='mentors'),
 
     url(r'^(?P<slug>[a-z0-9_-]{3,50})/warteliste$',
         ProductPrebookView.as_view(), name='prebook'),
 
     url(r'^(?P<pk>\d{1,4})/danke$',
         AnswerView.as_view(), name='prebooking_sucess'),
-
-
 )
 

@@ -86,6 +86,9 @@ class PaymentFailureView(
         except ObjectDoesNotExist:
             logger_sentry.error('Nach der Zahlung fehlte der Auftrag')
         courseproduct = order.courseproduct
+        print "======="
+        print courseproduct
+        print "-----------"
         user = self.request.user
         courseproductgroup = CourseProductGroup.objects.get(
            course=courseproduct.course)

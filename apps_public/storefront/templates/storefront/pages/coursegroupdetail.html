@@ -1,15 +1,45 @@
-{% extends "storefront/pages/base_detail.html" %}
-{% load i18n %}
-
-{% block meta_post_title %}{{ meta.title }} | Kurse bei mentoki{% endblock %}
-{% block meta_post_title_tmp %}{{ meta.title }} | Kurse bei mentoki{% endblock %}
-
-{% block course_detail %}
-     <div class="froala-view"
-          style="
-          background: white;
-          padding: 10px;
-          ">
-         {{ courseproductgroup.about |safe }}
-     </div>
+{% extends "storefront/pages/base_courseproductgroup.html" %}
+{% block courseproductpage %}
+    <div style="background: url('/static/img/15447605_xxl1.jpg');">
+        <div class="ui centered grid" id="start" style="
+            padding-top:60px;">
+            <div class="sixteen wide tablet twelve wide computer column">
+            <div class="ui segment">
+                <h1 style="color:#19aaa6;
+                    font-family: 'Montserrat', sans-serif;
+                    font-size: 1.6em;
+                    font-weight: 400;
+                    line-height: 1.2em;
+                    -webkit-font-smoothing: antialiased;
+                ">
+                {{ courseproductgroup.course.title }}<br> von
+                {{ courseproductgroup.course.teachersrecord }}
+                </h1>
+                <div class="ui two column stackable grid">
+                    <div class="ui column">
+                        {% if courseproductgroup.foto %}
+                            <img class="ui image medium floated left"
+                                 src="{{ courseproductgroup.foto.url }}">
+                        {% endif %}
+                    </div>
+                    <div class="ui column">
+                        {{ courseproductgroup.in_one_sentence | safe}}
+                        </div>
+                    </div>
+                </div>
+                {% include 'storefront/fragments/_product_list.html' %}
+            </div>
+        </div>
+        {% for product_field in product_fields %}
+             <div class="ui centered  grid" id="{{ product_field.pagemark }}"
+                 style="padding-top:60px;padding-bottom:60px;">
+                 <div class="sixteen wide tablet twelve wide computer column">
+                     <div class="ui segment">
+                         <h2 class="ui center aligned header large">{{ product_field.title }}</h2>
+                         {{ product_field.text | safe }}
+                     </div>
+                 </div>
+             </div>
+        {% endfor %}
+    </div>
 {% endblock %}

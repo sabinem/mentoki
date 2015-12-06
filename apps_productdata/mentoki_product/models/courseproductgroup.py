@@ -76,61 +76,15 @@ class CourseProductGroup(TimeStampedModel):
         help_text=_('''Hier kannst Du ein Foto für Deinen Kurs hochladen.'''),
         upload_to=foto_location, blank=True
     )
-    in_one_sentence = models.CharField(
+    in_one_sentence = FroalaField(
         verbose_name=_("in einem Satz"),
         help_text=_('Beschreibe den Kurs in einem Satz'),
-        max_length=250)
+    )
+    video = models.TextField(
+        verbose_name="Video", blank=True
+    )
+    menu_name = models.CharField(max_length=100)
 
-    meta_title_description = models.CharField(
-        verbose_name=_('Meta Title Detail Seite'),
-        default="Mentoki",
-        max_length=250
-    )
-    meta_description_description = models.CharField(
-        verbose_name=_('Meta Description Detail Seite'),
-        default="Mentoki",
-        max_length=250
-    )
-    meta_keywords_description = models.CharField(
-        verbose_name=_('Meta Keywords Detail Seite'),
-        default="Mentoki",
-        max_length=250
-    )
-
-    meta_title_mentors = models.CharField(
-        verbose_name=_('Meta Title Mentoren Seite'),
-        default="Mentoki",
-        max_length=250
-    )
-    meta_description_mentors = models.CharField(
-        verbose_name=_('Meta Description Mentoren Seite'),
-        default="Mentoki",
-        max_length=250
-    )
-    meta_keywords_mentors = models.CharField(
-        verbose_name=_('Meta Keywords Mentoren Seite'),
-        default="Mentoki",
-        max_length=250
-    )
-
-    meta_title_offers  = models.CharField(
-        verbose_name=_('Meta Title Angebot Seite'),
-        default="Mentoki",
-        help_text=_('HTML Meta Information zur Seite.'),
-        max_length=250
-    )
-    meta_description_offers = models.CharField(
-        verbose_name=_('Meta Description Angebot Seite'),
-        default="Mentoki",
-        help_text=_('HTML Meta Information zur Seite.'),
-        max_length=250
-    )
-    meta_keywords_offers = models.CharField(
-        verbose_name=_('Meta Keywords Angebot Seite'),
-        default="Mentoki",
-        help_text=_('HTML Meta Information zur Seite.'),
-        max_length=250
-    )
     published = models.BooleanField(default=False)
     can_be_booked_now = models.BooleanField(default=False)
     display_nr = models.IntegerField(default=1)
@@ -173,6 +127,7 @@ class CourseProductSubGroup(TimeStampedModel):
     name = models.CharField(max_length=250)
     course = models.ForeignKey(Course)
     courseproductgroup = models.ForeignKey(CourseProductGroup, default=1)
+    description = FroalaField()
 
     class Meta:
         verbose_name = _("Kursproduktuntergruppe")
@@ -180,3 +135,33 @@ class CourseProductSubGroup(TimeStampedModel):
 
     def __unicode__(self):
         return self.name
+
+
+class CourseProductGroupFieldManager(models.Manager):
+    """
+    Querysets for CourseEvents
+    """
+    def fields_for_courseproduct(self, courseproductgroup):
+        return self\
+            .filter(courseproductgroup=courseproductgroup)\
+            .order_by('display_nr')
+
+
+class CourseProductGroupField(TimeStampedModel):
+
+    course = models.ForeignKey(Course)
+    courseproductgroup = models.ForeignKey(CourseProductGroup)
+    title = models.CharField(max_length=200)
+    text = FroalaField()
+    pagemark = models.CharField(max_length=200)
+    display_nr = models.IntegerField()
+    display_left = models.BooleanField(default=True)
+
+    objects = CourseProductGroupFieldManager()
+
+    class Meta:
+        verbose_name = _("Kursproduktgruppefeld")
+        verbose_name_plural = _("Kursproduktgruppenfelder")
+
+    def __unicode__(self):
+        return "%s %s" % (self.title, self.course)

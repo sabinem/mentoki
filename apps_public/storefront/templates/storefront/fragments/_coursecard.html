@@ -25,19 +25,23 @@
             </a>
         </div>
         <div class="description">
-            {{ courseproductgroup.in_one_sentence }}
+            {{ courseproductgroup.in_one_sentence | safe }}
         </div>
     </div>
- {% if courseproductgroup.discount_text %}
-     <!-- red: #eb3d00; -->
-          <div class="extra content" style="color:#eb3d00;">
-              <img class="ui small image" src="/static/img/einfuehrungsrabatt.png">
-               <br> {{ courseproductgroup.discount_text }}
+    <a class="ui bottom attached inverted button"
+       style="
+            background: 0 0 white !important;
+            box-shadow: 0 0 0 2px white; inset!important;
+            opacity:0.7;
+            font-family: 'Montserrat', sans-serif;
+                font-size: 1em;
+                font-weight: 400;
+                line-height: 1.5em;
+                -webkit-font-smoothing: antialiased;
+            color:#eb3d00!important;
+            "
+       href="{{ offer_url }}">
+        {{ courseproductgroup.discount_text_long }}
 
-          </div>
- {% endif %}
-    <a class="ui bottom attached button" href="{{ offer_url }}">
-
-        Angebote ansehen
     </a>
 </div>

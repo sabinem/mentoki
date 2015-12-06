@@ -1,43 +1,33 @@
-{% extends "base/base_public.html" %}
-
-{% block page_section_css_id %}standard_public_page_body_2{% endblock %}
-
-{% block main_content %}
-
-    <!-- text page -->
-    <div class="ui grid container" style="padding-bottom:100px;
-          padding-top:40px;"  >
-
-        <div class="content ui column sixteen wide">
-
-
-            <div class="ui two column stackable grid">
-
-                <div class="column five wide">
-
-                    <!-- courseevent detail -->
-
-                    <div class="ui cards centered">
-                        {% include 'checkout/fragments/_coursecard_details.html' with product=courseeventproduct %}
-                    </div>
-
-                </div>
-                <div class="column ten wide">
-
-
+{% extends "storefront/pages/base_courseproductgroup_pay.html" %}
+{% block courseproductpage %}
+    <div style="background: url('/static/img/15447605_xxl1.jpg');">
+        <div class="ui centered grid" id="start" style="
+            padding-top:60px;padding-bottom:80px;">
+            <div class="sixteen wide tablet twelve wide computer column">
+                <div class="ui segment">
                     <div class="ui header">Hallo {{ request.user.first_name }} {{ request.user.last_name }}</div>
-                <p>Vielen Dank, für Ihr Interesse an {{ transaction.coursproduct.name }}.</p>
-                {{ transaction.error_message }}{{ transaction.error_code }}
-                    {{ transaction }}
-                <p>Leider ist Ihre Zahlung fehlgschlagen ...
-                    {% include 'base/fragments/_messages_error.html' %}
-                <p>Mit lieben Grüssen</p>
-                <p id="signature">Sabine Maennel und Anette Pekrul</p>
-
+                    <p>Vielen Dank, für Ihr Interesse an</p>
+                                        <h1 style="color:#19aaa6;
+                    font-family: 'Montserrat', sans-serif;
+                    font-size: 1.3em;
+                    font-weight: 400;
+                    line-height: 1.2em;
+                    -webkit-font-smoothing: antialiased;
+                ">
+                        {{ courseproductgroup.course.title }}<br> von
+                        {{ courseproductgroup.course.teachersrecord }}
+                        </h1>
+                        <p>{{ courseproduct.name }}</p>
+                        <p>{{ courseproduct.courseproductsubgroup.description }}
+                    </p>
+                    {{ transaction.error_message }}{{ transaction.error_code }}
+                        {{ transaction }}
+                    <p>Leider ist Ihre Zahlung fehlgschlagen. Kontaktieren Sie uns gerne!
+                        {% include 'base/fragments/_messages_error.html' %}
+                    <p>Mit lieben Grüssen</p>
+                    <p id="signature">Sabine Maennel und Anette Pekrul</p>
                 </div>
             </div>
-
         </div>
-
     </div>
 {% endblock %}

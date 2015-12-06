@@ -1,0 +1,76 @@
+
+{% url 'desk:bookings' as desk_url %}
+{% url 'checkout:redirect_to_product' pk=item.courseproduct.id as pay_url %}
+{% if item.payment_complete %}
+
+    <div style="padding: 10px;">
+
+        <i class="icon green checkmark"></i>
+        Buchung komplett<br>
+        <a href="{{ desk_url }}">Zum Schreibtisch</a>
+    </div>
+{% else %}
+    {% if not item.has_parts  %}
+
+        <a class="ui button basic"
+           {% if item.is_on_sale %}
+                                          style="
+                border:2px solid #eb3d00!important;
+                color:#eb3d00!important;"
+           {% else %}
+            style="
+                border:2px solid #19aaa6;!important;
+                color:#19aaa6!important;"
+           {% endif %}
+        href="{{ pay_url }}">
+
+            {% if item.is_on_sale %}
+                jetzt
+                {{ item.amount_sale |floatformat:2 }}
+                statt
+                {{ item.amount_original|floatformat:2 }}
+            {% else %}
+                jetzt kaufen für
+                {{ item.amount_original|floatformat:2 }}
+            {% endif %}
+
+            {{ item.courseproduct.get_currency_display }}
+
+        </a>
+
+    {% else %}
+
+         {% if  item.payment_started  %}
+              <i class="icon green checkmark"></i>
+              bereits bezahlt bis zu {{ item.order.nr_parts_paid }}. Etappe
+         {% endif %}
+
+         <a class="ui button basic"
+           {% if item.is_on_sale %}
+                                          style="
+                border:2px solid #eb3d00!important;
+                color:#eb3d00!important;"
+           {% else %}
+            style="
+                border:2px solid #19aaa6;!important;
+                color:#19aaa6!important;"
+           {% endif %}
+        href="{{ pay_url }}">
+            {{ item.buy_part_nr}}. Etappe:
+            {% if item.is_on_sale %}
+                jetzt
+                {{ item.amount_sale |floatformat:2 }}
+                statt
+                {{ item.amount_original|floatformat:2 }}
+            {% else %}
+                jetzt kaufen für
+                {{ item.amount_original|floatformat:2 }}
+            {% endif %}
+
+            {{ item.courseproduct.get_currency_display }}
+
+        </a>
+
+    {% endif %}
+{% endif %}
+

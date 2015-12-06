@@ -1,0 +1,91 @@
+                 {% if item.can_buy %}
+                      <div class="content">
+                            <div style="padding: 10px;">
+                               {% if item.has_parts  and item.payment_started %}
+                                    <i class="icon green checkmark"></i>
+                                      bereits bezahlt bis zu {{ item.order.nr_parts_paid }}. Etappe
+
+                               {% endif %}
+                            </div>
+                            <a href="{{ pay_url }}" class="ui button"
+                           {% if item.is_on_sale %}
+                               style="
+                                    background: 0 0 rgba(235, 61, 0, 0.8) !important;
+                                    box-shadow: 0 0 0 2px rgba(235, 61, 0, 0.8); inset!important;
+                                    #color: #eb3d00!important;
+                                    color:white;"
+                           {% else %}
+                               style="
+                                    background: 0 0 #8fb2b2 !important;
+                                    box-shadow: 0 0 0 2px #8fb2b2; inset!important;
+                                    #color: #8fb2b2!important;
+                                    color:white;"
+                           {% endif %}
+
+
+                                    >
+                       {% if item.has_parts %}
+
+                           {{ item.buy_part_nr}}. Etappe:
+                       {% endif %}
+                                {% if item.is_on_sale %}
+                                    jetzt
+                                    {{ item.amount_sale |floatformat:2}}
+                                    statt
+                                    {{ item.amount_original|floatformat:2 }}
+                                {% else %}
+                                    jetzt kaufen für
+                                    {{ item.amount_original |floatformat:2}}
+                                {% endif %}
+                                {{ item.courseproduct.get_currency_display }}
+                            </a>
+                      </div>
+
+                 {% elif item.payment_complete %}
+
+                      <div class="content">
+
+                            <div style="padding: 10px;">
+
+                                <i class="icon green checkmark"></i>
+                                Buchung komplett
+                            </div>
+                      </div>
+
+                 {% elif item.prebook %}
+
+                       <div class="content">
+
+                            <a href="{{prebook_url }}" class="ui button basic teal"
+                                    style="
+                                    background: 0 0!important;
+                                    box-shadow: 0 0 0 2px #009c95 inset!important;
+                                    color: #009c95!important;"
+                                    >
+                                Bitte benachrichtigen sobald die Buchung geöffnet ist
+                            </a>
+                      </div>
+
+                 {% else %}
+
+                       <div class="content">
+
+                            <div class="ui button basic">
+                       {% if item.has_parts %}
+                           {{ item.buy_part_nr}}. Etappe:
+                       {% endif %}
+                                {% if item.is_on_sale %}
+                                    jetzt<span style="color:#eb3d00">
+                                    {{ item.amount_sale |floatformat:2 }}</span>
+                                    statt
+                                    {{ item.amount_original|floatformat:2 }}
+                                {% else %}
+                                    jetzt kaufen für
+                                    {{ item.amount_original|floatformat:2 }}
+                                {% endif %}
+                                {{ item.courseproduct.get_currency_display }}
+                            </div>
+                      </div>
+
+                 {% endif %}
+                 </div>
