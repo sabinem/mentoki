@@ -21,13 +21,28 @@
                 <p>Vielen Dank, wir haben Ihre Zahlung erhalten
                     und Sie sind jetzt angemeldet für:</p>
                 <h4 class="ui dividing header">Kurs-Daten</h4>
+                            <h1 style="color:#19aaa6;
+                    font-family: 'Montserrat', sans-serif;
+                    font-size: 1.3em;
+                    font-weight: 400;
+                    line-height: 1.2em;
+                    -webkit-font-smoothing: antialiased;
+                ">
+                        {{ courseproductgroup.course.title }}<br> von
+                        {{ courseproductgroup.course.teachersrecord }}
+                        </h1>
                                      <div class="ui middle aligned divided list">
                       <div class="item" >
                         <div class="content">
                             <div class="header">
                           {{ courseproduct.name }}
                             </div>
-                           <p style="color:black !important;">{{ courseproduct.description | safe }}</p>
+                            <p>
+                                {{ courseproduct.description | safe }}
+                            </p>
+                            <p>
+                                {{ courseproduct.courseproductsubgroup.description | safe }}
+                            </p>
                         </div>
                       </div>
                          </div>
