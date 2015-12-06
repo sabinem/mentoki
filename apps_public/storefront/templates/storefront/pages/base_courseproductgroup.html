@@ -40,7 +40,8 @@
                 {% endif %}
 
                     {% for product_field in product_fields %}
-                    <a class="item" href="#{{ product_field.pagemark }}" style="line-height:1em">
+                    <a class="item" href="#{{ product_field.pagemark }}"
+                       style="line-height:0.2em">
                         {{ product_field.title }}
                     </a>
                     {% endfor %}
@@ -88,7 +89,7 @@
             </a>
                 {% endif %}
                     {% for product_field in product_fields %}
-                    <a class="item" href="#{{ product_field.pagemark }}" style="line-height:1em">
+                    <a class="item" href="#{{ product_field.pagemark }}" style="line-height:0.2em">
                         {{ product_field.title }}
                     </a>
                     {% endfor %}
