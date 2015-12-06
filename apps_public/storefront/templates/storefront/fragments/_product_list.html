@@ -5,6 +5,7 @@
         {% for item in product_list %}
             <tr>
                 <td>{{ item.courseproduct.name }}</td>
+                <td>{{ item.courseproduct.courseproductsubgroup.description | safe }}</td>
                 <td>{{ item.courseproduct.description | safe }}</td>
                 <td>{% include 'storefront/fragments/_pay.html' %}</td>
             </tr>

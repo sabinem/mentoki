@@ -12,19 +12,15 @@
 {% else %}
     {% if not item.has_parts  %}
 
-        <a class="ui button"
+        <a class="ui button basic"
            {% if item.is_on_sale %}
                                           style="
-                background: 0 0 rgba(235, 61, 0, 0.8) !important;
-                box-shadow: 0 0 0 2px rgba(235, 61, 0, 0.8); inset!important;
-                #color: #eb3d00!important;
-                color:white;"
+                border:2px solid #eb3d00!important;
+                color:#eb3d00!important;"
            {% else %}
             style="
-                background: 0 0 #8fb2b2 !important;
-                box-shadow: 0 0 0 2px #8fb2b2; inset!important;
-                #color: #8fb2b2!important;
-                color:white;"
+                border:2px solid #19aaa6;!important;
+                color:#19aaa6!important;"
            {% endif %}
         href="{{ pay_url }}">
 
@@ -49,19 +45,15 @@
               bereits bezahlt bis zu {{ item.order.nr_parts_paid }}. Etappe
          {% endif %}
 
-         <a class="ui button"
+         <a class="ui button basic"
            {% if item.is_on_sale %}
                                           style="
-                background: 0 0 rgba(235, 61, 0, 0.8) !important;
-                box-shadow: 0 0 0 2px rgba(235, 61, 0, 0.8); inset!important;
-                #color: #eb3d00!important;
-                color:white;"
+                border:2px solid #eb3d00!important;
+                color:#eb3d00!important;"
            {% else %}
             style="
-                background: 0 0 #8fb2b2 !important;
-                box-shadow: 0 0 0 2px #8fb2b2; inset!important;
-                #color: #8fb2b2!important;
-                color:white;"
+                border:2px solid #19aaa6;!important;
+                color:#19aaa6!important;"
            {% endif %}
         href="{{ pay_url }}">
             {{ item.buy_part_nr}}. Etappe:
