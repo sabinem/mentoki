@@ -13,19 +13,16 @@ from django.views.generic import TemplateView
 from django.shortcuts import get_object_or_404
 
 from apps_productdata.mentoki_product.models.courseproductgroup \
-    import CourseProductGroup, CourseProductGroupField
+    import CourseProductGroupField
 
-
+from apps_productdata.mentoki_product.models.courseproductgroup import CourseProductGroup
 from apps_productdata.mentoki_product.models.courseproduct import CourseProduct
 from apps_customerdata.customer.models.order import Order
 from apps_productdata.mentoki_product.constants import ProductToCustomer
 
-
-
 import logging
 logger = logging.getLogger('public.offerpages')
 logger_sentry = logging.getLogger('sentry.offerpages')
-
 
 
 class CourseGroupMixin(object):
@@ -34,28 +31,12 @@ class CourseGroupMixin(object):
     """
     def get_context_data(self, **kwargs):
         """
-        adds CourseProductGroup to the request context
+        gets product detail context
         """
         context = super(CourseGroupMixin, self).get_context_data()
         courseproductgroup = get_object_or_404(CourseProductGroup,slug=self.kwargs['slug'])
         context['courseproductgroup'] =courseproductgroup
 
-        return context
-
-
-class CourseGroupDetailView(
-    CourseGroupMixin,
-    TemplateView):
-    """
-    Deteil Page where the Course topic is described
-    """
-    template_name = "storefront/pages/coursegroupdetail.html"
-
-    def get_context_data(self, **kwargs):
-        """
-        gets product detail context
-        """
-        context = super(CourseGroupDetailView, self).get_context_data()
         course = context['courseproductgroup'].course
         user=self.request.user
         courseproductgroup = context['courseproductgroup']
@@ -67,8 +48,6 @@ class CourseGroupDetailView(
         )
 
         context['product_fields'] = product_fields
-
-
 
         # for customers: get past orders
 
@@ -197,12 +176,13 @@ class CourseGroupDetailView(
         return context
 
 
-class CourseGroupMentorsView(
+class CourseGroupDetailView(
     CourseGroupMixin,
     TemplateView):
     """
-    Teachers Page, where the Course teachers introduce themselves
+    Deteil Page where the Course topic is described
     """
-    template_name = "storefront/pages/courseproductmentors.html"
+    template_name = "storefront/pages/coursegroupdetail.html"
+
 
 
