@@ -33,7 +33,9 @@
                         </div>
                     </div>
                 </div>
+                {% if courseproductgroup.can_be_booked_now %}
                 {% include 'storefront/fragments/_product_list.html' %}
+                {% endif %}
             </div>
         </div>
         {% for product_field in product_fields %}
