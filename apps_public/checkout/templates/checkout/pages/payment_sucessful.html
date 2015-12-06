@@ -1,28 +1,19 @@
 {% extends "storefront/pages/base_courseproductgroup.html" %}
 {% block courseproductpage %}
-
+    <div style="background: url('/static/img/15447605_xxl1.jpg');">
+        <div class="ui centered grid" id="start" style="
+            padding-top:60px;">
+            <div class="sixteen wide tablet twelve wide computer column">
+            <div class="ui segment">
 
     {% url 'account_reset_password' as password_reset_url %}
     <!-- text page -->
-    <div class="ui grid container" style="padding-bottom:100px;
-          padding-top:40px;"  >
 
-        <div class="content ui column sixteen wide">
 
             {% url 'desk:learn' as desk_url %}
             {% url 'desk:bookings' as desk_bookings_url %}
-            <div class="ui two column stackable grid">
 
-                <div class="column five wide">
 
-                    <!-- courseevent detail -->
-
-                    <div class="ui cards centered">
-                        {% include 'checkout/fragments/_coursecard_details.html' with product=courseeventproduct %}
-                    </div>
-
-                </div>
-                <div class="column ten wide">
                     <!-- page content -->
 
 
@@ -68,10 +59,10 @@
                 <p>Mit lieben Grüssen</p>
                 <p id="signature">Sabine Maennel und Anette Pekrul</p>
 
+
+
                 </div>
             </div>
-
         </div>
-
     </div>
 {% endblock %}
