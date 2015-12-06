@@ -6,15 +6,26 @@
 
 {% block  main_content %}
     {% url 'home:home' as home_url %}
+    {% url 'storefront:list_now' as course_url %}
 
     <div class="ui menu fixed center aligned top three item fluid" id="coursemenu_pc">
 
-            <a class="item" style="padding:0px; margin: 0px;"
-            href="{{ home_url }}">
-            <img  class="ui image" style="padding:0px; margin: 0px;" src="/static/img/mentoki_logo_65.png"
+            <div class="ui left dropdown item" id="#start" style="padding:0px; margin: 0px;">
+            <img  class="ui image" style="padding:0px; margin: 0px;"
+                  src="/static/img/mentoki_logo_65.png"
             >
+                <i class="dropdown icon"></i>
+                <div class="menu">
+            <a class="item" href="{{ home_url }}" >
+                zurück zur Homepage
+            </a>
+            <a class="item" href="{{ course_url }}" >
+                zurück zur Kursübersicht
             </a>
 
+
+                </div>
+            </div>
 
             <div class="ui left dropdown item" id="#start">
                  {{ courseproductgroup.menu_name }}
@@ -39,11 +50,23 @@
         </div>
         <div class="ui menu fixed center aligned top two item fluid" id="coursemenu_mobile">
 
-            <a class="item" style="padding:0px; margin: 0px;"
-            href="{{ home_url }}">
-            <img  class="ui image" style="padding:0px; margin: 0px;" src="/static/img/mentoki_logo_65.png"
+            <div class="ui left dropdown item" id="#start" style="padding:0px; margin: 0px;">
+            <img  class="ui image" style="padding:0px; margin: 0px;"
+                  src="/static/img/mentoki_logo_65.png"
             >
+                <i class="dropdown icon"></i>
+                <div class="menu">
+            <a class="item" href="{{ home_url }}" >
+                zurück zur Homepage
             </a>
+            <a class="item" href="{{ course_url }}" >
+                zurück zur Kursübersicht
+            </a>
+
+
+                </div>
+            </div>
+
 
 
             <div class="ui left dropdown item" id="#start">
@@ -67,8 +90,8 @@
 
         </div>
 
-<div class="ui centered grid" id="start" style="padding-left:50px;
-padding-right:50px; padding-top:60px;
+<div class="ui centered grid" id="start" style="
+padding-top:60px;
 background: url('/static/img/15447605_xxl1.jpg');
 ">
 
@@ -92,8 +115,8 @@ background: url('/static/img/15447605_xxl1.jpg');
 <div style="background: url('/static/img/15447605_xxl1.jpg');">
 
      {% for product_field in product_fields %}
-<div class="ui centered  grid" id="{{ product_field.pagemark }}" style="padding-left:50px;
-padding-right:50px; padding-top:90px;">
+<div class="ui centered  grid" id="{{ product_field.pagemark }}"
+     style="padding-top:60px;padding-bottom:60px;">
 
 <div class="sixteen wide tablet twelve wide computer column">
 <div class="ui segment">

@@ -36,18 +36,19 @@
     <div class="ui menu fixed center aligned top fluid five item" id="medium_navbar">
         {% include 'base/fragments/_navbar_medium.html' %}
     </div>
-    <div class="ui menu fixed center aligned top three item fluid" id="mobile_navbar" >
+    <div class="ui menu fixed center aligned top two item fluid" id="mobile_navbar" >
 
-            <a class="item" style="padding:0px; margin: 0px;"
+
+
+            <div class="ui left dropdown item" id="#start" >
+            <div class="item" style="padding:0px; margin: 0px;"
             href="{{ home_url }}">
-            <img  class="ui image" style="padding:0px; margin: 0px;" src="/static/img/mentoki_logo_65.png"
+            <img  class="ui image" style="padding:0px; margin: 0px;"
+                  src="/static/img/mentoki_logo_65.png"
             >
-            </a>
-
-            <div class="ui left dropdown item" id="#start">
-                Menu
+            </div>
                 <i class="dropdown icon"></i>
-                <div class="menu" style="background:teal; color:white!important!;">
+                <div class="menu" >
 
         <a href="{{ course_now_url }}" style="color: #eb3d00!important;" class="item
             {% ifactive course_now_url %}
@@ -56,7 +57,7 @@
         ">
             Aktuelle Kurse
         </a>
-        <a href="{{ course_preview_url }}" style="color: white!important;" class="item
+        <a href="{{ course_preview_url }}" class="item
             {% ifactive course_preview_url %}
                 active
             {% endifactive %}
