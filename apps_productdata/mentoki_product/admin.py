@@ -50,7 +50,7 @@ class SpecialOfferAdmin(admin.ModelAdmin):
     """
     Offers and their reach on products
     """
-    list_display = ('id', 'offerreach', 'course',)
+    list_display = ('id', 'offerreach', 'course', 'percentage_off')
     list_filter = ('modified', 'course')
     list_display_links = ('id',)
 
