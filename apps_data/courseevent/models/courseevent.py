@@ -202,9 +202,10 @@ class CourseEvent(TimeStampedModel):
     def teachers(self):
         return self.course.teachers
 
+    #TODO: still needed?
     @cached_property
     def teachers_emails(self):
-        return self.course.teachers.emai
+        return self.course.teachers.emails
 
     @cached_property
     def teachersrecord(self):

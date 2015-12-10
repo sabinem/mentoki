@@ -6,24 +6,17 @@ Braintree Integration Payment Form
 
 from __future__ import unicode_literals, absolute_import
 
-from django.shortcuts import get_object_or_404
-from django.views.generic import FormView, TemplateView
-from django.contrib.auth.forms import PasswordResetForm
-from django.contrib.auth import login
+from django.views.generic import TemplateView
 from django.core.exceptions import ObjectDoesNotExist
 
 from braces.views import MessageMixin
 
-from braces.views import LoginRequiredMixin
 from apps_core.email.utils.payment import send_receipt
 
-from apps_productdata.mentoki_product.models.courseproduct import \
-    CourseProduct
 from apps_productdata.mentoki_product.models.courseproductgroup import \
     CourseProductGroup
 from apps_customerdata.customer.models.order import Order
 from apps_customerdata.customer.models.transaction import Transaction
-from apps_data.courseevent.models.courseevent import CourseEventParticipation
 
 import logging
 logger = logging.getLogger('activity.payments')
