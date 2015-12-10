@@ -18,7 +18,7 @@ from apps_data.courseevent.models.courseevent import CourseEventParticipation
 from apps_data.course.models.course import CourseOwner
 
 import logging
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('activity.payments')
 
 def send_receipt(order, transaction, user, module):
 
