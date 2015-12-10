@@ -29,7 +29,7 @@ def send_receipt(order, transaction, user, module):
     courseevent = courseproduct.courseevent
     teachers_emails = \
         list(CourseOwner.objects.teachers_emails(course=courseevent.course))
-    bcc_mentoki = list(settings.MENTOKI_COURSE_EMAIL)
+    bcc_mentoki = [settings.MENTOKI_COURSE_EMAIL]
     bcc_list = bcc_mentoki + teachers_emails
     bcc_send = ", ".join(bcc_list)
     context = {
@@ -55,8 +55,9 @@ def send_receipt(order, transaction, user, module):
     )
     mail_message.save()
 
-    logger.info("[%s] Buchungsbestätigung geschickt an [%s]"
+    logger.info("Auftrag [%s]: Buchungsbestätigung geschickt an [%s], bcc [%s]"
             % (order.id,
+               bcc_send,
                user.email,
                ))
     message_send = True
