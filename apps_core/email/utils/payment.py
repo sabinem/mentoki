@@ -27,7 +27,11 @@ def send_receipt(order, transaction, user, module):
     student_email = user.email
     courseproduct = order.courseproduct
     courseevent = courseproduct.courseevent
-
+    teachers_emails = \
+        list(CourseOwner.objects.teachers_emails(course=courseevent.course))
+    bcc_mentoki = list(settings.MENTOKI_COURSE_EMAIL)
+    bcc_list = bcc_mentoki + teachers_emails
+    bcc_send = ", ".join(bcc_list)
     context = {
         'site': Site.objects.get_current(),
         'order': order,
@@ -41,7 +45,7 @@ def send_receipt(order, transaction, user, module):
 
     mail_message = MailerMessage(
        subject = "Buchungsbestätigung für Ihre Buchung bei Mentoki",
-       bcc_address = settings.MENTOKI_COURSE_EMAIL,
+       bcc_address = bcc_send,
        to_address = user.email,
        from_address = settings.MENTOKI_COURSE_EMAIL,
        content = "Buchungsbestätigung für den Mentokikurs %s" % courseproduct.name,
