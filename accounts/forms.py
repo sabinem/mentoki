@@ -1,4 +1,8 @@
 # coding: utf-8
+
+"""
+Forms for Custom User Model
+"""
 from __future__ import unicode_literals, absolute_import
 
 import floppyforms.__future__ as forms
@@ -29,7 +33,7 @@ class CustomUserCreationForm(UserCreationForm):
         raise forms.ValidationError(self.error_messages('Duplicate username'))
 
     def clean_password2(self):
-        #chack that the two password entries match
+        #check that the two password entries match
         password1 = self.cleaned_data.get("password1")
         password2 = self.cleaned_data.get("password2")
 
@@ -39,10 +43,6 @@ class CustomUserCreationForm(UserCreationForm):
     def save(self,commit=True):
         # save the provided password in hashed format
         user = super(CustomUserCreationForm,self).save(commit=False)
-        attrs = vars(user)
-        # {'kids': 0, 'name': 'Dog', 'color': 'Spotted', 'age': 10, 'legs': 2, 'smell': 'Alot'}
-        # now dump this in some way or another
-
         user.set_password(self.cleaned_data['password1'])
         if commit:
             user.save()
@@ -50,6 +50,9 @@ class CustomUserCreationForm(UserCreationForm):
 
 
 class CustomUserChangeForm(UserChangeForm):
+    """
+    Change Form for Custom User Model
+    """
     password = ReadOnlyPasswordHashField(label="password",
                                          help_text="""Raw passwords are not stored, so there is no way to see this
                                          user's password, but you can change the password using <a href=\"password/\">
@@ -68,19 +71,32 @@ class CustomUserChangeForm(UserChangeForm):
 
 
 class SignupForm(forms.Form):
-    first_name = forms.CharField(label='Vorname',
-                               max_length=30,
-                               widget=forms.TextInput(
-                                   attrs={'placeholder':
-                                          'Vorname',
-                                          'autofocus': 'autofocus'}))
-    last_name = forms.CharField(label='Nachname',
-                               max_length=30,
-                               widget=forms.TextInput(
-                                   attrs={'placeholder':
-                                          'Nachname'}))
+    """
+    User Signup Form
+    """
+    first_name = forms.CharField(
+        label='Vorname',
+        max_length=30,
+        widget=forms.TextInput(
+           attrs={'placeholder':
+                  'Vorname',
+                  'autofocus': 'autofocus'}))
+    last_name = forms.CharField(
+        label='Nachname',
+        max_length=30,
+        widget=forms.TextInput(
+           attrs={'placeholder':
+                  'Nachname'}))
 
     def signup(self, request, user):
+        """
+        signup of users
+        if an anonymous user was redirected to the signup form, it is
+        memorized, what he wanted to buy in the "unfinshed_product_pk".
+        :param request:
+        :param user:
+        :return: None
+        """
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']
 

@@ -6,7 +6,7 @@ Entry point for unit tests.
 """
 
 from __future__ import absolute_import, unicode_literals
-from .base import *  # noqa
+from .base import *
 
 # overwriting database for test
 DATABASES = {

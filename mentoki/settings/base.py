@@ -295,6 +295,14 @@ LOGGING = {
             'maxBytes': 500000,  # 500 kB
             'backupCount': 4  ,
         },
+        'file_usersignup': {
+            'filename': os.path.join(BASE_DIR, 'logfiles', 'data.log' ),
+            'formatter': 'verbose',
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'maxBytes': 500000,  # 500 kB
+            'backupCount': 4  ,
+        },
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
@@ -352,7 +360,11 @@ LOGGING = {
             'handlers': ['console'],
             'propagate': False,
         },
-
+        'activity.usersignup': {
+            'level': 'DEBUG',
+            'handlers': ['file_usersignup'],
+            'propagate': False,
+        },
     },
 }
 

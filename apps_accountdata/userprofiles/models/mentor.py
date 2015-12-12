@@ -23,7 +23,6 @@ from apps_productdata.mentoki_product.models.courseproductgroup \
     import CourseProductGroup
 
 import logging
-
 logger = logging.getLogger('data.userdata')
 
 

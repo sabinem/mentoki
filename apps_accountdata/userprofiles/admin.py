@@ -1,7 +1,7 @@
 # coding: utf-8
 
 """
-Admin for Course and its relation to User: CourseOwner
+Admin for MentorsProfile
 """
 
 from __future__ import unicode_literals, absolute_import
