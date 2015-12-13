@@ -144,9 +144,7 @@ gettext = lambda x: x
 
 from django.utils.translation import ugettext_lazy as _
 LANGUAGES = (
-    ('en',_('English')),
-    ('de',_('German')),
-    ('es',_('Spanish')),
+    ('de',_('German'))
 )
 
 LANGUAGE_CODE = 'de'
