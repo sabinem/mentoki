@@ -29,13 +29,12 @@
                  {{ courseproductgroup.menu_name }}
                 <i class="dropdown icon"  style="color: #eb3d00!important;"></i>
                 <div class="menu">
+        <a class="item" href="#start" >
+            Seitenanfang
+        </a>
                 {% if courseproductgroup.can_be_booked_now %}
-            <a class="item" href="#start" style="color: #eb3d00!important;">
+            <a class="item" href="#bookingoptions" style="color: #eb3d00!important;">
                 jetzt buchen!
-            </a>
-                    {% else %}
-            <a class="item" href="#start" >
-                Vorschau
             </a>
                 {% endif %}
 
@@ -49,7 +48,7 @@
                 </div>
             </div>
     {% if courseproductgroup.can_be_booked_now %}
-            <a class="item" href="#start" style="color: #eb3d00;">
+            <a class="item" href="#bookingoptions" style="color: #eb3d00;">
                 jetzt buchen!
             </a>
         {% else %}
@@ -79,13 +78,12 @@
                  {{ courseproductgroup.menu_name }}
                 <i class="dropdown icon" style="color: #eb3d00!important;"></i>
                 <div class="menu">
-                {% if courseproductgroup.can_be_booked_now %}
-            <a class="item" href="#start" style="color: #eb3d00!important;">
-                jetzt buchen!
+            <a class="item" href="#start" >
+                Seitenanfang
             </a>
-                {% else %}
-             <a class="item" href="#start" >
-                Vorschau
+                {% if courseproductgroup.can_be_booked_now %}
+            <a class="item" href="#bookingoptions" style="color: #eb3d00!important;">
+                jetzt buchen!
             </a>
                 {% endif %}
                     {% for product_field in product_fields %}

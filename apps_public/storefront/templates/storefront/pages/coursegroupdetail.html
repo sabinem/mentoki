@@ -35,8 +35,11 @@
                     </div>
                 </div>
                 {% if courseproductgroup.can_be_booked_now %}
+                <div id="bookingoptions" style="padding-top:80px;padding-bottom:60px;">
                 {% include 'storefront/fragments/_product_list.html' %}
+                </div>
                 {% endif %}
+
             </div>
         </div>
         {% for product_field in product_fields %}

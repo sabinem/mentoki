@@ -18,7 +18,7 @@
                         {{ courseproductgroup.course.teachersrecord }}
                         </h1>
                         <p>{{ courseproduct.name }}</p>
-                        <p>{{ courseproduct.courseproductsubgroup.description }}
+                        <p>{{ courseproduct.courseproductsubgroup.description |safe }}
                     </p>
                     {{ transaction.error_message }}{{ transaction.error_code }}
                         {{ transaction }}

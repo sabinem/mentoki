@@ -12,21 +12,22 @@
 {% else %}
     {% if not item.has_parts  %}
 
-        <a class="ui button basic"
+        <a class="ui button"
            {% if item.is_on_sale %}
-                                          style="
-                border:2px solid #eb3d00!important;
-                color:#eb3d00!important;"
+                style="
+                color:white;
+                background:#819a91;"
            {% else %}
             style="
-                border:2px solid #19aaa6;!important;
-                color:#19aaa6!important;"
+
+                color:white;
+                background:#819a91;"
            {% endif %}
         href="{{ pay_url }}">
 
             {% if item.is_on_sale %}
                 jetzt
-                {{ item.amount_sale |floatformat:2 }}
+                <span style="color:#ffc2a8;"> {{ item.amount_sale |floatformat:2 }}</span>
                 statt
                 {{ item.amount_original|floatformat:2 }}
             {% else %}
@@ -45,23 +46,25 @@
               bereits bezahlt bis zu {{ item.order.nr_parts_paid }}. Etappe
          {% endif %}
 
-         <a class="ui button basic"
+         <a class="ui button "
            {% if item.is_on_sale %}
-                                          style="
-                border:2px solid #eb3d00!important;
-                color:#eb3d00!important;"
+            style="
+                background:#819a91;
+                color:white;"
            {% else %}
             style="
-                border:2px solid #19aaa6;!important;
-                color:#19aaa6!important;"
+                background:#819a91;
+                color:white;"
            {% endif %}
         href="{{ pay_url }}">
             {{ item.buy_part_nr}}. Etappe:
             {% if item.is_on_sale %}
-                jetzt
-                {{ item.amount_sale |floatformat:2 }}
+                jetzt<span style="color:#ffc2a8;">
+                {{ item.amount_sale |floatformat:2 }}</span>
                 statt
+
                 {{ item.amount_original|floatformat:2 }}
+
             {% else %}
                 jetzt kaufen für
                 {{ item.amount_original|floatformat:2 }}
