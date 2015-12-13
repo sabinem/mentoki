@@ -18,8 +18,4 @@ Disallow:/impressum
 
 Disallow:/login
 
-Disallow:/kurse/schneller-lesen
-
-Disallow:/kurse/keine-angst-vorm-alter
-
-Disallow:/kurse/event-management
+Disallow:/kurse/*/angebot
