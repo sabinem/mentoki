@@ -7,8 +7,7 @@
 {% endblock %}
 
 {% block meta %}
-    <title>{% block meta_post_title %}{% endblock %}
-        </title>
+    <title>{{ meta.title }}</title>
     <meta name="description" content="{{ meta.description }}" />
     <meta name="keywords" content="{{ meta.keywords }}" />
     <meta name="robots" content="{{ meta.robot_tags }}" />
