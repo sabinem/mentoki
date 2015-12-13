@@ -111,6 +111,20 @@ class Course(TimeStampedModel):
             namesstring += teacher.get_full_name()
         return namesstring
 
+    @property
+    def mentorsrecord(self):
+        teachers = self.teachers
+        if teachers.count() > 1:
+            prefix = 'Mentoren: '
+        else:
+            for teacher in teachers:
+                if teacher.is_female:
+                    prefix = "Mentorin: "
+                else:
+                    prefix = "Mentor: "
+        namesstring = prefix + self.teachersrecord
+        return namesstring
+
     def is_owner(self, user):
         """
         Is this person a teacher in this course? (Then he may work on it.)

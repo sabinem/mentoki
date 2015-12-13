@@ -25,7 +25,9 @@ class MentokiUserAdmin(UserAdmin):
     list_filter = ('is_superuser', 'is_teacher', 'is_student')
 
     fieldsets = (
-        (None, {'fields': ('username', 'email', 'password', 'first_name', 'is_teacher', 'last_name', 'profile_image'
+        (None, {'fields': ('username', 'email', 'password', 'first_name', 'is_teacher',
+                           'is_female',
+                           'last_name', 'profile_image'
                            )}),
         ('Permissions', {'fields': ('is_active', 'is_superuser', 'is_staff')}),
     )

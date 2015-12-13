@@ -118,6 +118,8 @@ class CourseProductGroup(TimeStampedModel):
 
 
 
+
+
 class CourseProductSubGroup(TimeStampedModel):
     """
     These are courseproducts that can not be bought together since they are
