@@ -230,3 +230,27 @@ class UserTest(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         #self.assertContains(response, _('Beitrag'))
+    def test_create_user_username_unique(self):
+        """
+        existing test4@gmail.com should be rejected
+        """
+        with self.assertRaises(IntegrityError):
+        User.objects.create_user(
+            username='username5',
+            email='test1@gmail.com',
+            first_name='vorname5',
+            last_name='nachname5',
+            password=None)
+        self.assertEquals(User.objects.all().count(), 5)
+
+    def test_create_user_email_unique(self):
+        """
+        existing username4 should be rejected
+        """
+        with self.assertRaises(IntegrityError):
+            User.objects.create_user(
+                username='username1',
+                email='test5@gmail.com',
+                first_name='vorname5',
+                last_name='nachname5',
+                password=None)

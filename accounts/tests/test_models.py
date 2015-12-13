@@ -150,27 +150,3 @@ class QuerysetsUserTest(TestCase):
                 last_name='nachname4',
                 password=None)
 
-    def test_create_user_username_unique(self):
-        """
-        existing test4@gmail.com should be rejected
-        """
-        with self.assertRaises(IntegrityError):
-        User.objects.create_user(
-            username='username5',
-            email='test1@gmail.com',
-            first_name='vorname5',
-            last_name='nachname5',
-            password=None)
-        self.assertEquals(User.objects.all().count(), 5)
-
-    def test_create_user_email_unique(self):
-        """
-        existing username4 should be rejected
-        """
-        with self.assertRaises(IntegrityError):
-            User.objects.create_user(
-                username='username1',
-                email='test5@gmail.com',
-                first_name='vorname5',
-                last_name='nachname5',
-                password=None)
