@@ -43,34 +43,6 @@ urlpatterns = i18n_patterns('',
     (r'^mail-queue/', include('mailqueue.urls')),
 )
 
-def contact_redirect(request):
-    return HttpResponsePermanentRedirect(reverse('contact:contact'))
-
-def starterkurs_redirect(request):
-    return HttpResponsePermanentRedirect(reverse(
-        'storefront:detail',
-        kwargs={'slug':'mentoki-starterkurs'}))
-
-urlpatterns += i18n_patterns('',
-
-    url(r'^kontakt/kontakt$', contact_redirect,
-        ),
-
-    url(r'^starterkurs/video$', starterkurs_redirect,
-        ),
-)
-
-# old links redirects
-urlpatterns += i18n_patterns('',
-
-    # robots
-    (r'^kontakt/kontakt$',
-        TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),
-
-    #sitemap
-    url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
-        name='django.contrib.sitemaps.views.sitemap')
-)
 
 # seo
 urlpatterns += i18n_patterns('',

@@ -22,16 +22,5 @@ urlpatterns = patterns('',
     url(r'^(?P<slug>[a-z0-9_-]{3,50})/$',
         CourseGroupDetailView.as_view(), name='detail'),
 
-    url(r'^(?P<slug>[a-z0-9_-]{3,50})/angebot$',
-        CourseGroupDetailView.as_view(), name='offer'),
-
-    url(r'^(?P<slug>[a-z0-9_-]{3,50})/kursleitung$',
-        CourseGroupDetailView.as_view(), name='mentors'),
-
-    url(r'^(?P<slug>[a-z0-9_-]{3,50})/warteliste$',
-        ProductPrebookView.as_view(), name='prebook'),
-
-    url(r'^(?P<pk>\d{1,4})/danke$',
-        AnswerView.as_view(), name='prebooking_sucess'),
 )
 
