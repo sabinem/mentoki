@@ -20,6 +20,7 @@ htmlcov/**
 
 # log-files
 *.log
+logfiles/**
 
 #static
 static/img-reserve/**
