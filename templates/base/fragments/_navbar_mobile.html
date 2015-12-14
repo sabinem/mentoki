@@ -68,24 +68,15 @@
                 Deine Kursbuchungen
             </a>
         {% endif %}
-        {% if request.user.is_teacher %}
-            <a href="{{ courseadmin_url }}" class="item
+            {% if request.user.is_editor or request.user.is_superuser %}
+                <a href="{{ courseadmin_url }}" class="item
             {% ifactive courseadmin_url %}
                 active
             {% endifactive %}
-            ">
-                Deine Kursauschreibungen
-            </a>
-        {% endif %}
-        {% if request.user.is_staff %}
-            <a href="{{ pageadmin_url }}" class="item
-            {% ifactive pageadmin_url %}
-                active
-            {% endifactive %}
-            ">
-                Statische Seiten
-            </a>
-        {% endif %}
+                ">
+                    Administration
+                </a>
+            {% endif %}
         <a class="item" href="{{ logout_url }}">
         Abmelden
         </a>

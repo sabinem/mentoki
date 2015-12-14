@@ -24,7 +24,7 @@ from braces.views import FormValidMessageMixin
 from froala_editor.widgets import FroalaEditor
 
 from apps_productdata.mentoki_product.models.courseproductgroup \
-    import CourseProductGroup
+    import CourseProductGroup, CourseProductGroupField
 from apps_accountdata.userprofiles.models.mentor import MentorsProfile
 from apps_pagedata.public.models import StaticPublicPages
 
@@ -34,7 +34,17 @@ class CourseProductGroupForm(forms.ModelForm):
     """
     class Meta:
         model = CourseProductGroup
-        fields = ('about', 'mentors', 'conditions', 'in_one_sentence', 'foto' )
+        fields = ('in_one_sentence', 'foto' )
+
+
+class CourseProductGroupFieldForm(forms.ModelForm):
+    """
+    used update CourseProductGroup
+    """
+    class Meta:
+        model = CourseProductGroupField
+        fields = ('title', 'text' )
+
 
 
 class MentorsProfileForm(forms.ModelForm):
@@ -74,6 +84,19 @@ class CourseProductGroupUpdateView(
     model = CourseProductGroup
     form_class = CourseProductGroupForm
     template_name = 'desk/pages/updategroup.html'
+    success_url = reverse_lazy('desk:courseadmin')
+
+
+class CourseProductGroupFieldUpdateView(
+    LoginRequiredMixin,
+    #StaffuserRequiredMixin,
+    UpdateView):
+    """
+    List everything a teacher may update
+    """
+    model = CourseProductGroupField
+    form_class = CourseProductGroupFieldForm
+    template_name = 'desk/pages/updategroupfield.html'
     success_url = reverse_lazy('desk:courseadmin')
 
 

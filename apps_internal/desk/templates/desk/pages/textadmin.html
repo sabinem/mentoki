@@ -1,0 +1,67 @@
+{% extends "desk/pages/base.html" %}
+
+{% block desk_header %}Text-Korrekturen{% endblock %}
+
+{% block work %}
+    <div class="ui segment">
+    {% url 'storefront:list' as view_url  %}
+    <div class="ui header medium">Kursliste-Gesamt
+    <a href="{{ view_url }}">
+        ansehen
+    </a>
+    </div>
+    <div class="ui list">
+    {% for productgroup in productgroups %}
+            {% url 'desk:updategroup' pk=productgroup.id as group_url  %}
+            <div class="item">{{ productgroup.course.title }} <a href="{{ group_url }}">bearbeiten</a></div>
+    {% endfor %}
+    </div>
+    </div>
+
+    <div class="ui segment">
+    <div class="ui header medium">Kurseeinzelseiten</div>
+    {% for course in courselist %}
+        <div class="ui header small">{{ course.group }}
+        {% url 'storefront:detail' slug=course.group.slug as group_url  %}
+        <a href="{{ group_url }}">ansehen</a>
+        </div>
+
+            <div class="ui list">
+            {% for field in course.field_list %}
+                    {% url 'desk:updategroupfield' pk=field.id as fieldupdate_url  %}
+                    <div class="item">{{field.title }} <a href="{{ fieldupdate_url }}">bearbeiten</a></div>
+            {% endfor %}
+            </div>
+
+    {% endfor %}
+    </div>
+
+    <div class="ui segment">
+    <div class="ui header medium">Allgemeine Seiten
+    </div>
+    <div class="ui list">
+    {% for page in staticpublicpages %}
+            {% url 'home:public' slug=page.slug as page_url  %}
+            {% url 'desk:updatepage' pk=page.pk as pageupdate_url  %}
+            <div class="item">{{ page.title }} <a href="{{ pageupdate_url }}">bearbeiten</a>
+            <a href="{{ page_url }}">ansehen</a>
+            </div>
+    {% endfor %}
+    </div>
+    </div>
+
+    <div class="ui segment">
+    <div class="ui header medium">Mentoren-Seiten
+    </div>
+    <div class="ui list">
+    {% for mentor in mentors %}
+            {% url 'home:mentor' slug=mentor.slug as mentor_url  %}
+            {% url 'desk:updatementor' pk=mentor.pk as mentorupdate_url  %}
+            <div class="item">{{ mentor.get_full_name }} <a href="{{ mentorupdate_url }}">bearbeiten</a>
+            <a href="{{ mentor_url }}">ansehen</a>
+            </div>
+    {% endfor %}
+    </div>
+    </div>
+
+{% endblock %}

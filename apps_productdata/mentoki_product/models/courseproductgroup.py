@@ -102,6 +102,7 @@ class CourseProductGroup(TimeStampedModel):
     )
     discount_text = models.CharField(max_length=100, blank=True, default="")
     discount_text_long = models.CharField(max_length=200, blank=True, default="")
+    is_ready = models.BooleanField(default=False)
 
     objects = CourseProductGroupManager()
 
@@ -158,6 +159,7 @@ class CourseProductGroupField(TimeStampedModel):
     pagemark = models.CharField(max_length=200)
     display_nr = models.IntegerField()
     display_left = models.BooleanField(default=True)
+    is_ready = models.BooleanField(default=False)
 
     objects = CourseProductGroupFieldManager()
 

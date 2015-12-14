@@ -13,7 +13,7 @@ from .views.userprofile import UserProfileView
 from .views.bookings import BookingsView
 
 from .views.updates import CourseProductGroupUpdateView, PublicPagesUpdateView, \
-    MentorsProfileUpdateView, UserProfileUpdateView
+    MentorsProfileUpdateView, UserProfileUpdateView, CourseProductGroupFieldUpdateView
 
 
 urlpatterns = patterns('',
@@ -37,7 +37,8 @@ urlpatterns = patterns('',
 
     url(r'^produktgruppe/(?P<pk>\d{1,4})/update$', CourseProductGroupUpdateView.as_view(),
         name='updategroup' ),
-
+    url(r'^produktgruppenfeld/(?P<pk>\d{1,4})/update$', CourseProductGroupFieldUpdateView.as_view(),
+        name='updategroupfield' ),
     url(r'^mentor/(?P<pk>\d{1,4})/update$',
         MentorsProfileUpdateView.as_view(),
         name='updatementor' ),

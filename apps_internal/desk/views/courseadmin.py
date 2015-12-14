@@ -13,7 +13,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from braces.views import LoginRequiredMixin
 
 from apps_accountdata.userprofiles.models.mentor import MentorsProfile
-from apps_productdata.mentoki_product.models.courseproductgroup import CourseProductGroup
+from apps_productdata.mentoki_product.models.courseproductgroup import \
+    CourseProductGroup, CourseProductGroupField
+from apps_pagedata.public.models import StaticPublicPages
 
 import logging
 logger = logging.getLogger('activity.users')
@@ -26,7 +28,7 @@ class CourseAdminView(
     This view shows the users profile with his different roles
     as mentor and as customer
     """
-    template_name = 'desk/pages/courseadmin.html'
+    template_name = 'desk/pages/textadmin.html'
 
     def get_context_data(self, **kwargs):
         """
@@ -39,21 +41,18 @@ class CourseAdminView(
         context['user'] = user
 
         if user.is_superuser:
-            context['productgroups'] = CourseProductGroup.objects.all()
-        else:
+            productgroups = CourseProductGroup.objects.all()
+            context['productgroups'] = productgroups
 
-            # get mentor_profile
-            try:
-                mentor = MentorsProfile.objects.get(user=user)
-                logger.info(' - ist Mentor')
-                context['mentor'] = mentor
-                productgroups = mentor.productgroups()
-                logger.info(' - hat Kurse' % productgroups)
-                context['productgroups'] = productgroups
-
-            except ObjectDoesNotExist:
-                # user is not a mentor
-                pass
+            list=[]
+            for group in productgroups:
+                groupfields = {'group': group }
+                fields = CourseProductGroupField.objects.filter(courseproductgroup=group)
+                groupfields['field_list'] = fields
+                list.append(groupfields)
+            context['courselist'] = list
+            context['staticpublicpages'] = StaticPublicPages.objects.all()
+            context['mentors'] = MentorsProfile.objects.all()
 
         return context
 
