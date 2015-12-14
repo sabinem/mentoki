@@ -104,6 +104,7 @@ class StaticPublicPages(TimeStampedModel):
     )
     slug = models.SlugField(blank=True, null=True)
     template_name = models.CharField(max_length=100, blank=True)
+    is_ready = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = 'Öffentliche statische Seite'

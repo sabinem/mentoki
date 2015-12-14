@@ -107,6 +107,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_student = models.BooleanField(
         default=False
     )
+    is_lektor = models.BooleanField(
+        default=False
+    )
     # timestamp fields
     created_at = models.DateTimeField(
         auto_now_add=True

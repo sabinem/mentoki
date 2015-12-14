@@ -17,6 +17,6 @@ class MentorsProfileAdmin(admin.ModelAdmin):
     Courses are time independent collections of teaching material, that are
     set up and owned by teachers.
     """
-    list_display = ('id', 'user', 'modified', 'created')
+    list_display = ('id', 'user', 'slug', 'modified', 'created')
     list_filter = ('modified',)
     list_display_links = ('id',)
