@@ -26,12 +26,12 @@
         href="{{ pay_url }}">
 
             {% if item.is_on_sale %}
-                jetzt
+                jetzt buchen für
                 <span style="color:#ffc2a8;"> {{ item.amount_sale |floatformat:2 }}</span>
                 statt
                 {{ item.amount_original|floatformat:2 }}
             {% else %}
-                jetzt kaufen für
+                jetzt buchen für
                 {{ item.amount_original|floatformat:2 }}
             {% endif %}
 
@@ -59,14 +59,14 @@
         href="{{ pay_url }}">
             {{ item.buy_part_nr}}. Etappe:
             {% if item.is_on_sale %}
-                jetzt<span style="color:#ffc2a8;">
+                jetzt buchen für <span style="color:#ffc2a8;">
                 {{ item.amount_sale |floatformat:2 }}</span>
                 statt
 
                 {{ item.amount_original|floatformat:2 }}
 
             {% else %}
-                jetzt kaufen für
+                jetzt buchen für
                 {{ item.amount_original|floatformat:2 }}
             {% endif %}
 
