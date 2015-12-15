@@ -10,30 +10,7 @@
         background: transparent;
         padding:0;
         ">
-        {% url 'desk:updateprofile' pk=user.pk as userprofile_url  %}
-        <div class="ui top attached tabular two item fluid stackable  menu"
-             style="
-             margin-bottom:0px;
-             background:transparent;
-             ">
-            <a  href="{{ back_url }}" class="item"
-                style="
-                background:white;
-                opacity:0.8;
-                ">
-                <h3>Mentoren-Profil</h3>
-            </a>
-            <a href="{{ userprofile_url }}" class="item active"
-                style="
-                #background-color:#19aaa6;
-                backgroundcolor:white;
-                #color:white;
-                color:black;
-                #opacity:0.6;
-                ">
-                Bearbeiten
-            </a>
-        </div>
+        <div class="ui header"
 
         {{ form.media }}
 

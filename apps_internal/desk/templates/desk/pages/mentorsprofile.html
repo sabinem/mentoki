@@ -1,8 +1,4 @@
-{% extends "desk/pages/base.html" %}
-
-{% block desk_header %}Deine Profildaten{% endblock %}
-
-{% block work %}
+    {% if mentor %}
 
     <div class="ui segment"
         style="
@@ -10,8 +6,8 @@
         border:none;
         padding:0;
         ">
-        {% url 'desk:updateprofile' pk=user.pk as userprofile_url  %}
-        <div class="ui top attached two item fluid stackable tabular menu"
+        {% url 'desk:updatementor' pk=mentor.pk as mentor_url  %}
+        <div class="ui top attached tabular menu three item fluid stackable  "
              style="
              margin-bottom:0px;
              background:transparent;
@@ -24,9 +20,16 @@
                 color:black;
                 #opacity:0.6;
                 ">
-                <h3>Benutzer-Profil</h3>
+                <h3>Mentorenprofil</h3>
             </a>
-            <a href="{{ userprofile_url }}" class="item"
+            <a href="{{ mentor.get_absolute_url }}" class="item"
+                style="
+                background:white;
+                opacity:0.8;
+                ">
+                Auf der Webseite
+            </a>
+            <a href="{{ mentor_url }}" class="item"
                 style="
                 background:white;
                 opacity:0.8;
@@ -38,33 +41,32 @@
         <div class="ui grid two columns stackable"
             style="
             margin:0px 0px;
-            padding:20px;
             background:white;
+            padding:20px;
             ">
-            <div class="ui column five wide ">
+
+            <div class="ui five wide column">
                 <div class="ui list">
                     <div class="item">
-                        <div class="header">Benutzername</div>
-                        {{ user.username }}
+                        <div class="header">Rolle bei Mentoki</div>
+                        {{ mentor.at_mentoki }}
                     </div>
                     <div class="item">
-                        <div class="header">Email</div>
-                        {{ user.email }}
-                    </div>
-                    <div class="item">
-                        <div class="header">Name</div>
-                        {{ user.get_full_name }}
+                        <div class="header">Charakteristik</div>
+                        {{ mentor.special_power }}
                     </div>
                 </div>
             </div>
             <div class="ui ten wide column">
                 <div class="ui small image ">
-                    {% if user.profile_image %}
-                        <img src="{{ user.profile_image.url }}">
+                    {% if mentor.foto %}
+                        <img src="{{ mentor.foto.url }}">
                     {% endif %}
+                </div>
+                <div class="froala-view">
+                    {{ mentor.text | safe }}
                 </div>
             </div>
         </div>
     </div>
-
-{% endblock %}
+    {% endif %}
