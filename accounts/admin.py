@@ -21,12 +21,12 @@ class MentokiUserAdmin(UserAdmin):
     form = CustomUserChangeForm
     add_form = CustomUserCreationForm
 
-    list_display = ('id', 'username', 'email', 'checkout_product_pk', 'is_staff', 'is_superuser', 'is_teacher', 'is_student', 'studying')
+    list_display = ('id', 'username', 'email', 'checkout_product_pk', 'is_staff', 'is_superuser', 'is_lektor', 'is_teacher', 'is_student', 'studying')
     list_filter = ('is_superuser', 'is_teacher', 'is_student')
 
     fieldsets = (
         (None, {'fields': ('username', 'email', 'password', 'first_name', 'is_teacher',
-                           'is_female',
+                           'is_female', 'is_lektor',
                            'last_name', 'profile_image'
                            )}),
         ('Permissions', {'fields': ('is_active', 'is_superuser', 'is_staff')}),
