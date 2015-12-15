@@ -102,7 +102,10 @@ class CourseProductGroup(TimeStampedModel):
     )
     discount_text = models.CharField(max_length=100, blank=True, default="")
     discount_text_long = models.CharField(max_length=200, blank=True, default="")
-    is_ready = models.BooleanField(default=False)
+    is_ready = models.BooleanField(
+        verbose_name="fertig",
+        default=False
+    )
 
     objects = CourseProductGroupManager()
 
@@ -114,7 +117,7 @@ class CourseProductGroup(TimeStampedModel):
         return self.course.title
 
     def get_absolute_url(self):
-        return reverse_lazy('storefront:offer',
+        return reverse_lazy('storefront:detail',
                        kwargs={'slug': self.slug})
 
 
@@ -159,7 +162,10 @@ class CourseProductGroupField(TimeStampedModel):
     pagemark = models.CharField(max_length=200)
     display_nr = models.IntegerField()
     display_left = models.BooleanField(default=True)
-    is_ready = models.BooleanField(default=False)
+    is_ready = models.BooleanField(
+        verbose_name="fertig",
+        default=False
+    )
 
     objects = CourseProductGroupFieldManager()
 

@@ -112,7 +112,10 @@ class MentorsProfile(TimeStampedModel):
         default="Mentoki",
         max_length=250
     )
-    is_ready = models.BooleanField(default=False)
+    is_ready = models.BooleanField(
+        verbose_name="fertig",
+        default=False
+    )
 
     objects = MentorsProfileManager()
 

@@ -13,7 +13,15 @@
     <div class="ui list">
     {% for productgroup in productgroups %}
             {% url 'desk:updategroup' pk=productgroup.id as group_url  %}
-            <div class="item">{{ productgroup.course.title }} <a href="{{ group_url }}">bearbeiten</a></div>
+            <div class="item">
+                    {% if productgroup.is_ready %}
+                        <i class="icon checkmark green"></i>
+                    {% endif %}
+                    <div class="content">
+                {{ productgroup.course.title }}
+                <a href="{{ group_url }}">bearbeiten</a>
+       </div>
+        </div>
     {% endfor %}
     </div>
     </div>
@@ -29,7 +37,16 @@
             <div class="ui list">
             {% for field in course.field_list %}
                     {% url 'desk:updategroupfield' pk=field.id as fieldupdate_url  %}
-                    <div class="item">{{field.title }} <a href="{{ fieldupdate_url }}">bearbeiten</a></div>
+                    <div class="item">
+                    {% if field.is_ready %}
+                        <i class="icon checkmark green"></i>
+                    {% endif %}
+                    <div class="content">
+                        {{field.title }}
+                        <a href="{{ fieldupdate_url }}">bearbeiten</a>
+                    </div>
+
+                </div>
             {% endfor %}
             </div>
 
@@ -43,9 +60,14 @@
     {% for page in staticpublicpages %}
             {% url 'home:public' slug=page.slug as page_url  %}
             {% url 'desk:updatepage' pk=page.pk as pageupdate_url  %}
-            <div class="item">{{ page.title }} <a href="{{ pageupdate_url }}">bearbeiten</a>
+            <div class="item">
+                    {% if page.is_ready %}
+                        <i class="icon checkmark green"></i>
+                    {% endif %}
+                    <div class="content">
+                {{ page.title }} <a href="{{ pageupdate_url }}">bearbeiten</a>
             <a href="{{ page_url }}">ansehen</a>
-            </div>
+            </div></div>
     {% endfor %}
     </div>
     </div>
@@ -57,8 +79,14 @@
     {% for mentor in mentors %}
             {% url 'home:mentor' slug=mentor.slug as mentor_url  %}
             {% url 'desk:updatementor' pk=mentor.pk as mentorupdate_url  %}
-            <div class="item">{{ mentor.get_full_name }} <a href="{{ mentorupdate_url }}">bearbeiten</a>
+            <div class="item">
+                    {% if mentor.is_ready %}
+                        <i class="icon checkmark green"></i>
+                    {% endif %}
+                    <div class="content">
+                {{ mentor.get_full_name }} <a href="{{ mentorupdate_url }}">bearbeiten</a>
             <a href="{{ mentor_url }}">ansehen</a>
+           </div>
             </div>
     {% endfor %}
     </div>

@@ -34,7 +34,7 @@ class CourseProductGroupForm(forms.ModelForm):
     """
     class Meta:
         model = CourseProductGroup
-        fields = ('in_one_sentence', 'foto' )
+        fields = ('in_one_sentence', 'foto', 'is_ready' )
 
 
 class CourseProductGroupFieldForm(forms.ModelForm):
@@ -43,7 +43,7 @@ class CourseProductGroupFieldForm(forms.ModelForm):
     """
     class Meta:
         model = CourseProductGroupField
-        fields = ('title', 'text' )
+        fields = ('title', 'text' , 'is_ready')
 
 
 
@@ -53,7 +53,7 @@ class MentorsProfileForm(forms.ModelForm):
     """
     class Meta:
         model = MentorsProfile
-        fields = ('text', 'foto', 'special_power', 'at_mentoki')
+        fields = ('text', 'foto', 'special_power', 'at_mentoki', 'is_ready')
 
 
 class UserProfileUpdateForm(forms.ModelForm):
@@ -71,7 +71,7 @@ class PageForm(forms.ModelForm):
     """
     class Meta:
         model = StaticPublicPages
-        fields = ('text', 'title', 'banner')
+        fields = ('text', 'title', 'banner', 'is_ready')
 
 
 class CourseProductGroupUpdateView(
@@ -95,6 +95,7 @@ class CourseProductGroupFieldUpdateView(
     List everything a teacher may update
     """
     model = CourseProductGroupField
+    context_object_name = 'field'
     form_class = CourseProductGroupFieldForm
     template_name = 'desk/pages/updategroupfield.html'
     success_url = reverse_lazy('desk:courseadmin')
@@ -110,7 +111,7 @@ class MentorsProfileUpdateView(
     model = MentorsProfile
     form_class = MentorsProfileForm
     template_name = 'desk/pages/updatementor.html'
-    success_url = reverse_lazy('desk:userprofile')
+    success_url = reverse_lazy('desk:courseadmin')
 
 
 class PublicPagesUpdateView(
@@ -124,7 +125,7 @@ class PublicPagesUpdateView(
     form_class = PageForm
     context_object_name = 'page'
     template_name = 'desk/pages/updatepage.html'
-    success_url = reverse_lazy('desk:pageadmin')
+    success_url = reverse_lazy('desk:courseadmin')
 
 
 

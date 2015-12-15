@@ -41,7 +41,7 @@ class CourseAdminView(
         context['user'] = user
 
         if user.is_superuser:
-            productgroups = CourseProductGroup.objects.all()
+            productgroups = CourseProductGroup.objects.published()
             context['productgroups'] = productgroups
 
             list=[]
