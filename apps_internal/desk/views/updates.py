@@ -76,7 +76,6 @@ class PageForm(forms.ModelForm):
 
 class CourseProductGroupUpdateView(
     LoginRequiredMixin,
-    #StaffuserRequiredMixin,
     UpdateView):
     """
     List everything a teacher may update
@@ -89,7 +88,6 @@ class CourseProductGroupUpdateView(
 
 class CourseProductGroupFieldUpdateView(
     LoginRequiredMixin,
-    #StaffuserRequiredMixin,
     UpdateView):
     """
     List everything a teacher may update
@@ -103,7 +101,6 @@ class CourseProductGroupFieldUpdateView(
 
 class MentorsProfileUpdateView(
     LoginRequiredMixin,
-    #StaffuserRequiredMixin,
     UpdateView):
     """
     Update the course one field at a time
@@ -116,7 +113,6 @@ class MentorsProfileUpdateView(
 
 class PublicPagesUpdateView(
     LoginRequiredMixin,
-    StaffuserRequiredMixin,
     UpdateView):
     """
     Update the course one field at a time
@@ -131,7 +127,6 @@ class PublicPagesUpdateView(
 
 class UserProfileUpdateView(
     LoginRequiredMixin,
-    #StaffuserRequiredMixin,
     UpdateView):
     """
     Update the course one field at a time
