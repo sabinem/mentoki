@@ -40,7 +40,7 @@ class CourseAdminView(
         user = self.request.user
         context['user'] = user
 
-        if user.is_superuser:
+        if user.is_superuser or user.is_lektor:
             productgroups = CourseProductGroup.objects.published()
             context['productgroups'] = productgroups
 

@@ -29,7 +29,7 @@ urlpatterns = patterns('',
 
     url(r'^webseite$', PageAdminView.as_view(), name='pageadmin' ),
 
-    url(r'^kursauschreibungen$', CourseAdminView.as_view(), name='courseadmin' ),
+    url(r'^lektorat$', CourseAdminView.as_view(), name='courseadmin' ),
 
     url(r'^kursbuchungen$', BookingsView.as_view(), name='bookings' ),
 
