@@ -1,6 +1,6 @@
 {% extends "desk/pages/base.html" %}
 
-{% block desk_header %}Dein Mentoren-Profil{% endblock %}
+{% block desk_header %}{{ mentorsprofile.user.get_full_name }}{% endblock %}
 {% block work %}
 
     {% url 'desk:courseadmin' as back_url %}
