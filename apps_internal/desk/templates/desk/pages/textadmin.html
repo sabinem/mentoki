@@ -5,21 +5,23 @@
 {% block work %}
     <div class="ui segment">
     {% url 'storefront:list' as view_url  %}
-    <div class="ui header medium">Kursliste-Gesamt
-    <a href="{{ view_url }}">
-        ansehen
-    </a>
+    <div class="ui header medium">Kurse Listenansicht
+
     </div>
     <div class="ui list">
     {% for productgroup in productgroups %}
             {% url 'desk:updategroup' pk=productgroup.id as group_url  %}
+            {% url 'storefront:admin' pk=productgroup.pk as view_url  %}
             <div class="item">
                     {% if productgroup.is_ready %}
                         <i class="icon checkmark green"></i>
                     {% endif %}
                     <div class="content">
-                {{ productgroup.course.title }}
+                {{ productgroup.course.title }} |
+
+                <a href="{{ view_url }}">ansehen</a> |
                 <a href="{{ group_url }}">bearbeiten</a>
+
        </div>
         </div>
     {% endfor %}
@@ -27,11 +29,11 @@
     </div>
 
     <div class="ui segment">
-    <div class="ui header medium">Kurseeinzelseiten</div>
+    <div class="ui header medium">Kurse Einzelseiten</div>
     {% for course in courselist %}
         <div class="ui header small">{{ course.group }}
         {% url 'storefront:detail' slug=course.group.slug as group_url  %}
-        <a href="{{ group_url }}">ansehen</a>
+
         </div>
 
             <div class="ui list">
@@ -42,8 +44,11 @@
                         <i class="icon checkmark green"></i>
                     {% endif %}
                     <div class="content">
-                        {{field.title }}
+                        {{field.title }} |
+                        <a href="{{ group_url }}#{{ field.pagemark }}">ansehen</a> |
                         <a href="{{ fieldupdate_url }}">bearbeiten</a>
+
+
                     </div>
 
                 </div>
@@ -65,8 +70,9 @@
                         <i class="icon checkmark green"></i>
                     {% endif %}
                     <div class="content">
-                {{ page.title }} <a href="{{ pageupdate_url }}">bearbeiten</a>
-            <a href="{{ page_url }}">ansehen</a>
+                {{ page.title }} |
+            <a href="{{ page_url }}">ansehen</a> |
+                        <a href="{{ pageupdate_url }}">bearbeiten</a>
             </div></div>
     {% endfor %}
     </div>
@@ -84,8 +90,9 @@
                         <i class="icon checkmark green"></i>
                     {% endif %}
                     <div class="content">
-                {{ mentor.get_full_name }} <a href="{{ mentorupdate_url }}">bearbeiten</a>
-            <a href="{{ mentor_url }}">ansehen</a>
+                {{ mentor.get_full_name }} |
+            <a href="{{ mentor_url }}">ansehen</a> |
+                        <a href="{{ mentorupdate_url }}">bearbeiten</a>
            </div>
             </div>
     {% endfor %}

@@ -11,6 +11,8 @@ from __future__ import unicode_literals
 
 from django.views.generic import TemplateView
 
+from braces.views import LoginRequiredMixin
+
 from apps_productdata.mentoki_product.models.courseproductgroup import CourseProductGroup
 
 
@@ -62,4 +64,23 @@ class ListPreviewView(TemplateView):
 
         # build list of course events
         context['courseproductgroups'] = CourseProductGroup.objects.preview()
+        return context
+
+
+class ListSingleView(
+    LoginRequiredMixin,
+    TemplateView):
+    template_name = "storefront/pages/courselist_single.html"
+
+    def get_context_data(self, **kwargs):
+        """
+        Courseproductgroups are shown as entry points to the special pages
+        that describe all products that one teacher has to offer on a toipc.
+        They correspond the Courses
+        """
+        context = super(ListSingleView, self).get_context_data()
+
+        # build list of course events
+        context['courseproductgroups'] = \
+            CourseProductGroup.objects.filter(pk=kwargs['pk'])
         return context
