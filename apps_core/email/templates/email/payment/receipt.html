@@ -1,7 +1,7 @@
 {% extends "email/base_internal_email.html" %}
 
 {% block email_to %}
-    Betreff: Buchungsbestätigung für Deine Buchung bei Mentoki
+    Betreff: Buchungsbestätigung für Ihre Buchung bei Mentoki
 {% endblock %}
 
 {% block email_title %}
@@ -13,23 +13,23 @@
 
 
 <p style="color:grey;">
-    Hiermit bestätigen wir Deine Buchung des Mentoki-Kurses
+    Hiermit bestätigen wir Ihre Buchung des Mentoki-Kurses
 </p>
     <h4>{{ order.courseproduct.name }}</h4>
     <p> </p>
-    <p>Deine Zahlung haben wir erhalten:</p>
+    <p>Ihre Zahlung haben wir erhalten:</p>
     <p>{{ transaction.created | date:"SHORT_DATE_FORMAT" }} {{ order.courseproduct.name }}
         {% if courseproduct.can_be_bought_in_parts %}
         ,{{ order.nr_parts_paid }}. Etappe{% endif %}
         {{ transaction.amount |floatformat:2 }} {{ order.get_currency_display }}
     </p><p>
     {% if not order.fully_paid %}
-        Damit hast Du jetzt {{ order.nr_parts_paid }} von
+        Damit haben Sie jetzt {{ order.nr_parts_paid }} von
     {{ order.total_parts }} Etappen des Kurses bezahlt. </p><p>Zahlung gesamt:
         {{ order.amount_paid |floatformat:2 }} {{ order.get_currency_display }}
     {% endif %}
         </p>
-<p>Du kannst Deine Buchungen auf Deinem Schreibtisch bei Mentoki finden:
+<p>Sie können Ihre Buchungen auf Deinem Schreibtisch bei Mentoki finden:
     </p><p>
     <a href="http://{{ site }}{%  url 'desk:bookings' %}">
         Link zur Buchungsübersicht
@@ -37,16 +37,16 @@
     <h4>Kursbeginn:</h4>
     {% if courseevent.start_date %}
 
-    <p>Dein Kursbeginn ist der {{ order.courseproduct.courseevent.start_date | date:"SHORT_DATE_FORMAT" }}.
-      Sobald der Kurs startet erhältst Du von der Kursleitung eine Benachrichtigung.
-    Danke für Dein Vertrauen in Mentoki.</p>
+    <p>Ihr Kursbeginn ist der {{ order.courseproduct.courseevent.start_date | date:"SHORT_DATE_FORMAT" }}.
+      Sobald der Kurs startet, erhalten Sie von der Kursleitung eine Benachrichtigung.
+    Danke für Ihr Vertrauen in Mentoki.</p>
     {% else %}
-    <p>Du kannst gleich loslegen. Der Zugang zum Kurs liegt auf Deinem Schreibtisch bereit.</p>
+    <p>Sie können gleich loslegen. Der Zugang zum Kurs liegt auf Ihrem Schreibtisch bereit.</p>
     <a href="http://{{ site }}{%  url 'desk:learn' %}">
-        Link zum Kurs auf Deinem Schreibtisch
+        Link zum Kurs auf Ihrem Schreibtisch
     </a>
     {% endif %}
-    <p>Alles Gute für Deinen Kursstart und melde Dich gerne bei uns, wenn Du Fragen hast
+    <p>Alles Gute für Ihren Kursstart und melden Sie sich gerne bei uns, wenn Sie Fragen haben
         oder Probleme auftreten.</p>
 
     <p style="padding-left: 30px;  color:grey;">
