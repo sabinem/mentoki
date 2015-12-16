@@ -7,12 +7,14 @@
 {% block content %}
     {% url 'contact:contact' as contact_url  %}
 
-    <h1>{% trans "Verify Your E-mail Address" %}</h1>
+    <h1>Bitte bestätigen Sie Ihre Email-Adresse</h1>
 
-    <p>Wir haben Dir eine email geschickt, damit Du Deine email-Adresse verfizieren kannst.<p>
+    <p>Wir haben Ihnen eine Email geschickt. Bitte klicken Sie auf den Link darin, um
+    Ihre Email-Adresse zu bestätigen.<p>
 
-    <p>Falls Sie nicht ankommt, sieh in Deinem Spam-Folder nach, oder
-        <a href="{{ contact_url }}">kontaktiere uns</a>.
+    <p>Falls die Email nicht bei Ihnen ankommt, sehen Sie bitte auch in Ihrem in
+        Spam-Ordner nach, oder
+        <a href="{{ contact_url }}">kontaktiere Sie uns</a>.
     </p>
 
 {% endblock %}
