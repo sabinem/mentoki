@@ -35,7 +35,7 @@ href="{{ home_url }}">
 >
 </a>
 <div class="ui left dropdown item">
-    Lernen bei mentoki
+    Lernen bei mentoki<sub>&reg;</sub>
     <i class="dropdown icon"></i>
     <div class="menu">
         <a href="{{ course_now_url }}" class="item
@@ -62,7 +62,7 @@ href="{{ home_url }}">
     </div>
 </div>
 <div class="ui left dropdown item">
-    Unterrichten bei mentoki
+    Unterrichten bei mentoki<sub>&reg;</sub>
     <i class="dropdown icon"></i>
     <div class="menu">
         <a href="{{ teachonline_url }}" class="item
@@ -89,7 +89,7 @@ href="{{ home_url }}">
     </div>
 </div>
 <div class="ui left dropdown item">
-    über mentoki
+    Über mentoki<sub>&reg;</sub>
     <i class="dropdown icon"></i>
     <div class="menu">
         <a href="{{ about_url }}" class="item
@@ -126,7 +126,7 @@ href="{{ home_url }}">
     {% if request.user.is_authenticated %}
         {{ request.user.username }}
     {% else %}
-        Benutzerbereich
+        Ihr Benutzerbereich
     {% endif %}
     <i class="dropdown icon"></i>
     <div class="menu">
@@ -136,21 +136,21 @@ href="{{ home_url }}">
                 active
             {% endifactive %}
             ">
-                Benutzerprofil
+                Ihr Benutzerprofil
             </a>
             <a href="{{ learn_url }}" class="item
             {% ifactive learn_url %}
                 active
             {% endifactive %}
             ">
-                Dein Lernen
+                Ihr Lernen
             </a>
             <a href="{{ teach_url }}" class="item
             {% ifactive teach_url %}
                 active
             {% endifactive %}
             ">
-                Dein Unterricht
+                Ihr Unterricht
             </a>
             {% if request.user.customer %}
                 <a href="{{ bookings_url }}" class="item
@@ -158,7 +158,7 @@ href="{{ home_url }}">
                 active
             {% endifactive %}
                 ">
-                    Deine Kursbuchungen
+                    Ihre Kursbuchungen
                 </a>
             {% endif %}
             {% if request.user.is_lektor or request.user.is_superuser %}
