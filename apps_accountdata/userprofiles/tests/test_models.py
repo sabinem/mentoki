@@ -15,8 +15,7 @@ from ..models import User
 from .factories import UserFactory, CourseFactory, CourseEventFactory
 
 
-
-class QuerysetsUserTest(TestCase):
+class MentorsProfileTest(TestCase):
     """
     Test the Custom User Model
     """

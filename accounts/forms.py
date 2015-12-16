@@ -13,7 +13,7 @@ from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from .models import User as MentokiUser
 
 import logging
-logger = logging.getLogger('activity.users')
+logger = logging.getLogger('activity.usersignup')
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -44,6 +44,7 @@ class CustomUserCreationForm(UserCreationForm):
         # save the provided password in hashed format
         user = super(CustomUserCreationForm,self).save(commit=False)
         user.set_password(self.cleaned_data['password1'])
+        logging.info('Benutzer [%s]: neues Passwort' % self)
         if commit:
             user.save()
         return user

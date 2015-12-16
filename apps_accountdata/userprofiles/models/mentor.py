@@ -1,7 +1,9 @@
 # coding: utf-8
 
 """
-Mentors are Users that teach courses.
+Mentors are users that teach courses.
+Here are their profile data stored. These data are
+publically displayed.
 """
 
 from __future__ import unicode_literals, absolute_import

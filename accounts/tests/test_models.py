@@ -6,7 +6,7 @@ Tests of Custom User Model
 
 from __future__ import unicode_literals, absolute_import
 
-from django.test import TestCase, Client
+from django.test import TestCase
 from django.db import IntegrityError
 
 from apps_data.course.models.course import CourseOwner
@@ -15,7 +15,8 @@ from ..models import User
 from .factories import UserFactory, CourseFactory, CourseEventFactory
 
 
-class QuerysetsUserTest(TestCase):
+
+class CustomUserModelTest(TestCase):
     """
     Test the Custom User Model
     """
@@ -114,7 +115,7 @@ class QuerysetsUserTest(TestCase):
         """
         create a regular user with username, email, first and lastname.
         Check whether the databasecount of users is raised one afterwards.
-        :return:
+        Check alos that the user is created without special permissions
         """
         usercount = User.objects.all().count()
         User.objects.create_user(
@@ -125,6 +126,13 @@ class QuerysetsUserTest(TestCase):
             password=None)
         usercount_after = usercount + 1
         self.assertEquals(User.objects.all().count(), usercount_after)
+        user = User.objects.get(username='username4')
+        self.assertEquals(user.is_lektor, False)
+        self.assertEquals(user.is_superuser, False)
+        self.assertEquals(user.is_teacher, False)
+        self.assertEquals(user.is_staff, False)
+        self.assertEquals(user.is_student, False)
+
 
     def test_create_user_username_required(self):
         """
@@ -134,8 +142,8 @@ class QuerysetsUserTest(TestCase):
             User.objects.create_user(
                 email='test5@gmail.com',
                 username='',
-                first_name='vorname4',
-                last_name='nachname4',
+                first_name='vorname5',
+                last_name='nachname5',
                 password=None)
 
     def test_create_user_email_required(self):
@@ -146,7 +154,24 @@ class QuerysetsUserTest(TestCase):
             User.objects.create_user(
                 username='username5',
                 email='',
-                first_name='vorname4',
-                last_name='nachname4',
+                first_name='vorname5',
+                last_name='nachname5',
                 password=None)
 
+    def test_no_double_user_email(self):
+        with self.assertRaises(IntegrityError):
+            User.objects.create_user(
+                username='username5',
+                email='test1@gmail.com',
+                first_name='vorname5',
+                last_name='nachname5',
+                password=None)
+
+    def test_no_double_username(self):
+        with self.assertRaises(IntegrityError):
+            User.objects.create_user(
+                username='username1',
+                email='test5@gmail.com',
+                first_name='vorname5',
+                last_name='nachname5',
+                password=None)

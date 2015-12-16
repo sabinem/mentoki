@@ -62,6 +62,7 @@ INSTALLED_APPS += (
     'django_markdown',
     'formtools',
     'seohelper',
+    'bandit',
 )
 
 # installed apps mentoki
@@ -360,6 +361,9 @@ LOGGING = {
             'handlers': ['console'],
             'propagate': False,
         },
+        # logs user signup activity such as user creation
+        # and also userdata updates
+        # app 'accounts'
         'activity.usersignup': {
             'level': 'DEBUG',
             'handlers': ['file_usersignup'],

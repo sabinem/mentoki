@@ -1,8 +1,8 @@
 #app userprofiles
-Extra data for different roles that users have. 
-This is a data app, handling data only.
+Userprofiles depending on the role a user has on the platform
 ##models
 ###mentor
+profiles for mentors: these are dsiplayed publically on the website
 
 
  

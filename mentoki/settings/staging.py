@@ -22,3 +22,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR_PROJECT, 'htdocs', 'media')
 # set braintree environment: so far it is the sandbox
 import braintree
 BRAINTREE_ENVIRONMENT = braintree.Environment.Sandbox
+
+# django-email-bandit
+EMAIL_BACKEND = 'bandit.backends.smtp.HijackSMTPBackend'
+BANDIT_EMAIL = 'sabine.maennel@gmail.com'

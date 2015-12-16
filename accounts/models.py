@@ -97,7 +97,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(
         default=False
     )
-    # fields that are so far entered manually
+    # fields that are so far entered manually and that describe subgroups
+    # that the user belongs to
     is_teacher = models.BooleanField(
         default=False
     )
@@ -154,6 +155,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         """
         #TODO which emails should be considered as equal?
         #self.email = self.email.lower()
+        logging.info('Benutzer wurde geändert [%s]' % self)
         super(User, self).save(*args, **kwargs)
 
     def get_full_name(self):
