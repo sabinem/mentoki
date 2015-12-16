@@ -11,6 +11,20 @@
 Bevor Sie bei uns einen Kurs buchen können, benötigen wir Ihre Kontaktdaten. Bitte
 melden Sie sich bei uns an.
 
+<p>Die Anmeldung erfolgt in zwei Schritten:</p>
+
+<div class="ui list bulleted">
+<div class="ui item">
+    Nach der Anmeldung erhalten Sie eine Email von uns.
+</div>
+<div class="ui item">
+    Bitte klicken Sie darin auf den Bestätigungslink, damit wir sicher sind,
+    dass wir Sie über die von Ihnen angegebene Email-Adresse auch tatsächlich erreichen können.
+</div>
+</div>
+    <p>Mit bestem Dank im Voraus für Ihre Mühe</p>
+          <p>Ihr mentoki<sub>&reg;</sub>-Team</p>
+
 <form class="signup ui form" id="signup_form" method="post" action="{% url 'account_signup' %}">
 
   {% csrf_token %}
@@ -22,28 +36,30 @@ melden Sie sich bei uns an.
     {% endif %}
 
     <div class="ui dividing medium header">Kontaktdaten</div>
-
-    <div class="fields inline">
-
-        <label>Name: Vorname / Nachname</label>
-
-        <div class="field eight wide">
-            {{ form.first_name }}
-        </div>
-        <div class="field eight wide">
-            {{ form.last_name }}
-        </div>
-    </div>
     {% if form.first_name.errors or form.last_name.errors  %}
         <div class="ui negative floating message">
             {{ form.first_name.errors }}
             {{ form.last_name.errors }}
         </div>
     {% endif %}
+    <div class="fields inline stackable">
+
+         <label>Vorname</label>
+         <div class="field eight wide">
+
+            {{ form.first_name }}
+         </div>
+
+        <label>Nachname</label>
+        <div class="field eight wide">
+            {{ form.last_name }}
+        </div>
+    </div>
+
 
     <div class="fields inline">
-        <div class="field sixteen wide">
-            {{ form.email.label_tag }}
+         <label>Email</label>
+        <div class="field twelve wide">
             {{ form.email }}
         </div>
     </div>
@@ -53,8 +69,14 @@ melden Sie sich bei uns an.
         </div>
     {% endif %}
 
-    <div class="ui dividing medium header">Benutzername auf Mentoki</div>
+    <div class="ui dividing medium header">Benutzername auf mentoki<sub>&reg;</sub></div>
+    <p>Mit diesem Benutzernamen werden Sie auf mentoki<sub>&reg;</sub> geführt.</p>
 
+    {% if form.username.errors %}
+        <div class="ui negative floating message">
+            {{ form.username.errors }}
+        </div>
+    {% endif %}
     <div class="fields inline">
 
         <div class="field sixteen wide">
@@ -62,29 +84,24 @@ melden Sie sich bei uns an.
             {{ form.username }}
         </div>
     </div>
-    {% if form.username.errors %}
-        <div class="ui negative floating message">
-            {{ form.username.errors }}
-        </div>
-    {% endif %}
+
 
     <div class="ui dividing medium header">Passwort setzen</div>
-
-    <div class="fields inline">
-        <label>Passwort</label>
-        <div class="field eight wide">
-            {{ form.password1 }}
-        </div>
-        <div class="field eight wide">
-            {{ form.password2 }}
-        </div>
-    </div>
     {% if form.password1.errors or form.password2.errors  %}
         <div class="ui negative floating message">
             {{ form.password1.errors }}
             {{ form.password2.errors }}
         </div>
     {% endif %}
+        <p>Bitte setzen Sie ein Passwort und wiederholen Sie es.</p>
+        <div class="field">
+            {{ form.password1 }}
+        </div>
+        <div class="field">
+            {{ form.password2 }}
+        </div>
+
+
 
   {% if redirect_field_value %}
 
@@ -92,7 +109,7 @@ melden Sie sich bei uns an.
 
   {% endif %}
 
-  <button class="ui button" type="submit">{% trans "Sign Up" %} &raquo;</button>
+  <button class="ui button" type="submit">Registrieren Sie sich jetzt &raquo;</button>
 
 </form>
 

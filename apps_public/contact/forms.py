@@ -17,7 +17,7 @@ class ContactForm(forms.Form):
     name = forms.CharField(
         required=True,
         max_length=100,
-        label='Name',
+        label='Ihr Name',
         widget=forms.TextInput(
            attrs={'placeholder':
                   'Name',
@@ -25,16 +25,16 @@ class ContactForm(forms.Form):
     email = forms.EmailField(
         required=True,
         max_length=100,
-        label='Email',
+        label='Ihre Email',
         widget=forms.TextInput(
            attrs={'placeholder':
                   'Email'}))
     message = forms.CharField(
         required=True,
-        label='Nachricht',
+        label='Ihre Nachricht',
         widget=forms.Textarea(
             attrs={'placeholder':
-                  'Deine Nachricht'}))
+                  'Nachricht'}))
 
     OUTGOING=u'Kontakt: Bestätigungsmail an den Kunden'
     INTERNAL=u'Weiterleitung Kontaktanfrage, bitte beantworten!'

@@ -1,5 +1,5 @@
 {% extends "desk/pages/base.html" %}
-{% block desk_header %}Dein Lernen{% endblock %}
+{% block desk_header %}Ihr Lernen{% endblock %}
 {% block work %}
 
 
@@ -9,7 +9,9 @@
                 {% include 'desk/fragments/_courseevent_learn_record.html' %}
             </div>
         {% empty %}
-            Du hast noch keinen Kurs gebucht.
+            {% url 'storefront:list_now' %}
+            Hier geht es zu mentoki<sub>&reg;</sub>s Kursangebot
+            <a href="{{ course_url }}"></a>
         {% endfor %}
     </div>
 

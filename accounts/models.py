@@ -76,6 +76,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     # redefine fields that would
     # normally be in User
     email = models.EmailField(
+        verbose_name="Email-Adresse",
         unique=True
     )
     username = models.CharField(
