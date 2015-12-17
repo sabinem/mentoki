@@ -245,7 +245,7 @@ MENTOKI_COURSE_EMAIL = u'mentoki@mentoki.com'
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-        'LOCATION': 'cache_table',
+        'LOCATION': 'cache_table_public',
     }
 }
 
