@@ -46,7 +46,7 @@ class ContactForm(forms.Form):
     def send_email_visitor(self):
         # send email to requesting email
         # this method is called with cleaned from data
-        subject = "Deine Nachricht an Mentoki"
+        subject = "Ihre Nachricht an mentoki"
         to = [self.cleaned_data['email']]
         from_mail = 'mentoki@mentoki.com'
 
@@ -55,7 +55,7 @@ class ContactForm(forms.Form):
             'name': self.cleaned_data['name'],
             'email': self.cleaned_data['email'],
             'message': self.cleaned_data['message'],
-            'betreff': "Deine Nachricht",
+            'betreff': "Ihre Nachricht",
         }
         message = get_template('email/contact/to_customer.html').render(Context(context))
         #msg = EmailMessage(subject, message, to=to, from_email=from_mail)
@@ -63,7 +63,7 @@ class ContactForm(forms.Form):
         #msg.send()
 
         to_customer = MailerMessage()
-        to_customer.subject = "Deine Nachricht an Mentoki"
+        to_customer.subject = "Ihre Nachricht an mentoki"
         to_customer.to_address = self.cleaned_data['email']
         to_customer.from_address = ContactForm.CONTACT_EMAIL
         to_customer.content = ContactForm.OUTGOING
@@ -82,12 +82,12 @@ class ContactForm(forms.Form):
             'name': self.cleaned_data['name'],
             'email': self.cleaned_data['email'],
             'message': self.cleaned_data['message'],
-            'betreff': "Nachricht an Mentoki",
+            'betreff': "Nachricht an mentoki",
         }
         message = get_template('email/contact/to_mentoki.html').render(Context(context))
 
         to_mentoki = MailerMessage()
-        to_mentoki.subject = "Kontaktanfrage an Mentoki"
+        to_mentoki.subject = "Kontaktanfrage an mentoki"
         to_mentoki.to_address = ContactForm.CONTACT_EMAIL
         to_mentoki.from_address = self.cleaned_data['email']
         to_mentoki.content = ContactForm.INTERNAL
