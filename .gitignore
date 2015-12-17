@@ -1,16 +1,18 @@
 # git ignore file
 # hidden files
 .idea
+.idea
+.DS_Store
+.env
 *.pyc
 **/*.pyc
 
 # extra files for the project
 projectdocs/**
 
-# some hidden toplevel files
-.idea
-.DS_Store
-.env
+#tools
+reload-database.sh
+live.sql
 
 # paramico: What is this?
 paramiko*
@@ -23,19 +25,14 @@ htmlcov/**
 logfiles/**
 
 #static
-static/img-reserve/**
-static/img-old/**
-static/css-old
 static/font-awesome-4.4.0/**
-static/froala_editor/**
-static/Semantic-UI-2.0.7_2/**
-static/deadsimple-less-watch-compiler-master/**
-static/less-old
+!static/font-awesome-4.4.0/css/font-awesome.min.css
 
-mentoki/settings/old_logging
-.gitignore
-mentoki/settings/logging.txt
-static/status-jquery-crawler-master
-bookmarks.plist
-35516583_s.jpg
-live.sql
+static/froala_editor/**
+!static/froala_editor/css/froala_editor.min.css
+!static/froala_editor/css/froala_style.min.css
+!static/froala_editor/js/froala_editor.min.js
+
+static/Semantic-UI-2.0.7_2/**
+!static/Semantic-UI-2.0.7_2/dist/semantic.min.js
+!static/Semantic-UI-2.0.7_2/dist/semantic.min.css
