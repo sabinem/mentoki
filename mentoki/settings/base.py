@@ -418,6 +418,11 @@ FROALA_EDITOR_OPTIONS = {
     'key': os.environ.get('FROALA_ACTIVATION_KEY'),
 }
 
+FROALA_EDITOR_PLUGINS = ('align', 'char_counter', 'code_beautifier' ,'code_view', 'colors', 'emoticons',
+        'entities', 'file', 'font_family', 'font_size', 'fullscreen', 'image_manager', 'image', 'inline_style',
+        'line_breaker', 'link', 'lists', 'paragraph_format', 'paragraph_style', 'quote', 'save', 'table',
+        'url', 'video')
+
 # 3rd party app Braintree:
 
 # braintree configuration for testing in the sandbox
