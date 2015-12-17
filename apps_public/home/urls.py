@@ -26,9 +26,9 @@ urlpatterns = patterns("",
         name='mentorslist'),
 
     url(r'^(?P<slug>[a-z0-9_-]+)/$',
-        cache_page(60*60)(
-            PublicPageView.as_view()
-        ),
+        #cache_page(60*60)(
+            PublicPageView.as_view(),
+        #),
         name='public'),
 
 )
