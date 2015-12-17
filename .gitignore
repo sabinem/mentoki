@@ -36,4 +36,4 @@ static/froala_editor/**
 static/Semantic-UI-2.0.7_2/**
 !static/Semantic-UI-2.0.7_2/dist/semantic.min.js
 !static/Semantic-UI-2.0.7_2/dist/semantic.min.css
-!static/Semantic-UI-2.0.7_2/dist/themes/default/assets/fonts/**
+!static/Semantic-UI-2.0.7_2/dist/themes/default/assets/fonts/icons.eot
