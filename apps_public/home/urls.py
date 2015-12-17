@@ -14,21 +14,27 @@ from .views import HomePageView,  \
 urlpatterns = patterns("",
 
     url(r'^$',
-        HomePageView.as_view(),
+        cache_page(60*60)(
+            HomePageView.as_view(),
+        ),
         name='home'),
 
     url(r'^mentor/(?P<slug>[a-z0-9_-]+)/$',
-        MentorsPageView.as_view(),
+        cache_page(60*60)(
+            MentorsPageView.as_view(),
+        ),
         name='mentor'),
 
     url(r'^mentoren-team/$',
-        MentorsListView.as_view(),
+        cache_page(60*60)(
+            MentorsListView.as_view()
+        ),
         name='mentorslist'),
 
     url(r'^(?P<slug>[a-z0-9_-]+)/$',
-        #cache_page(60*60)(
+        cache_page(60*60)(
             PublicPageView.as_view(),
-        #),
+        ),
         name='public'),
 
 )

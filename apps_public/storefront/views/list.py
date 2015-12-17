@@ -16,7 +16,6 @@ from braces.views import LoginRequiredMixin
 from apps_productdata.mentoki_product.models.courseproductgroup import CourseProductGroup
 
 
-
 class CourseProductGroupsListView(TemplateView):
     template_name = "storefront/pages/courselist_all.html"
 
