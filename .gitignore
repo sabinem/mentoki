@@ -26,7 +26,7 @@ logfiles/**
 static/img-reserve/**
 static/img-old/**
 static/css-old
-static/font-awesome-4.4.0
+static/font-awesome-4.4.0/**
 static/froala_editor/**
 static/Semantic-UI-2.0.7_2/**
 static/deadsimple-less-watch-compiler-master/**
@@ -37,14 +37,5 @@ mentoki/settings/old_logging
 mentoki/settings/logging.txt
 static/status-jquery-crawler-master
 bookmarks.plist
-static/img/Radikalismus-praevention.cmproj/media/1448635527.831256/47452099_s.jpg
 35516583_s.jpg
-static/img/Radikalismus-praevention.cmproj/media/1448635527.837132
-static/img/Radikalismus-praevention.cmproj/media/1448635527.827311
-static/img/Radikalismus-praevention.cmproj/media/1448635527.839813
-static/img/Radikalismus-praevention.cmproj/media/1448635527.839589
-static/img/Radikalismus-praevention.cmproj/media/1448635527.840025
-static/img/Radikalismus-praevention.cmproj/project.xml
-static/img/Radikalismus-praevention.cmproj/media/1448635527.833271
-static/img/Radikalismus-praevention.cmproj
 live.sql
