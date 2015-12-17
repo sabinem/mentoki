@@ -28,10 +28,6 @@ logfiles/**
 static/font-awesome-4.4.0/**
 !static/font-awesome-4.4.0/css/font-awesome.min.css
 
-static/froala_editor/**
-!static/froala_editor/css/froala_editor.min.css
-!static/froala_editor/css/froala_style.min.css
-!static/froala_editor/js/froala_editor.min.js
 
 static/Semantic-UI-2.0.7_2/components/**
 static/Semantic-UI-2.0.7_2/test/**
