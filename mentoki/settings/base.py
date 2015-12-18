@@ -416,12 +416,23 @@ MARKDOWN_EDITOR_SKIN = 'simple'
 # different activation key for each website: staging, production, etc.)
 FROALA_EDITOR_OPTIONS = {
     'key': os.environ.get('FROALA_ACTIVATION_KEY'),
+    'inlineMode': False,
+    'toolbarFixed': False,
+    'minHeight': 300,
+    'buttons': ['bold', 'italic', 'underline',
+                        'strikeThrough', 'subscript',
+                        'superscript', 'fontFamily', 'fontSize',
+                        'color', 'formatBlock', 'blockStyle',
+                        'inlineStyle', 'align', 'insertOrderedList',
+                        'insertUnorderedList', 'outdent', 'indent',
+                        'selectAll', 'createLink', 'insertImage',
+                        'insertVideo', 'table', 'undo',
+                        'redo', 'html',
+                        'insertHorizontalRule'],
 }
 
-FROALA_EDITOR_PLUGINS = ('align', 'char_counter', 'code_beautifier' ,'code_view', 'colors', 'emoticons',
-        'entities', 'file', 'font_family', 'font_size', 'fullscreen', 'image_manager', 'image', 'inline_style',
-        'line_breaker', 'link', 'lists', 'paragraph_format', 'paragraph_style', 'quote', 'save', 'table',
-        'url', 'video')
+# 3rd party app fontawesome: location of css file
+FONTAWESOME_CSS_URL = '/static/font-awesome-4.4.0/css/font-awesome.min.css'
 
 # 3rd party app Braintree:
 
