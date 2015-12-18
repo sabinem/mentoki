@@ -1,26 +1,19 @@
 ##tests
 * tests?
   
-##logging
-activity.usersignup
-    
-##uploads  
-* change
-upload_to=uploads
+
 
 #TODO
 
-##model changes
-* remove field start_desk from User model
+##tests
 
-##method changes
-* save(): what emails should be considered equal?
-  google considers emails equal even if they have more or less points in them:
-  sabine.m@gmail.com is the same as sabinem@gmail.com
-  
-## bring templates to apps directory
-the templates are now located in the templates directory, but I would like to have 
-them here 
+##model changes
+* add field published to model, see below
+
+##add field published to model 
+* add field
+* add queryset to manager methods
+* make sure, that only published mentors are displayed in the home model
 
  
  

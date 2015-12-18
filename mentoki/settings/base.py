@@ -296,8 +296,18 @@ LOGGING = {
             'maxBytes': 500000,  # 500 kB
             'backupCount': 4  ,
         },
+        # log for usersignup and account handling events
         'file_usersignup': {
-            'filename': os.path.join(BASE_DIR, 'logfiles', 'data.log' ),
+            'filename': os.path.join(BASE_DIR, 'logfiles', 'usersignup.log' ),
+            'formatter': 'verbose',
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'maxBytes': 500000,  # 500 kB
+            'backupCount': 4  ,
+        },
+        # log for handling of userprofile data
+        'file_data_userprofile': {
+            'filename': os.path.join(BASE_DIR, 'logfiles', 'userprofile_data.log' ),
             'formatter': 'verbose',
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
@@ -311,6 +321,21 @@ LOGGING = {
         }
     },
     'loggers': {
+        # logs user signup activity such as user creation
+        # and also userdata updates
+        # app 'accounts'
+        'activity.usersignup': {
+            'level': 'DEBUG',
+            'handlers': ['file_usersignup'],
+            'propagate': False,
+        },
+        # logs handling of user profile data
+        # app 'accountdata'
+        'data.userprofile': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        },
         'django.db.backends': {
             'level': 'ERROR',
             'handlers': ['sentry'],
@@ -336,11 +361,6 @@ LOGGING = {
             'handlers': ['datafile'],
             'propagate': False,
         },
-        'data.userdata': {
-            'level': 'DEBUG',
-            'handlers': ['datafile'],
-            'propagate': False,
-        },
         'public.offerpages': {
             'level': 'DEBUG',
             'handlers': ['console'],
@@ -359,14 +379,6 @@ LOGGING = {
         'activity.courseeventupdate': {
             'level': 'DEBUG',
             'handlers': ['console'],
-            'propagate': False,
-        },
-        # logs user signup activity such as user creation
-        # and also userdata updates
-        # app 'accounts'
-        'activity.usersignup': {
-            'level': 'DEBUG',
-            'handlers': ['file_usersignup'],
             'propagate': False,
         },
     },

@@ -1,14 +1,6 @@
-##tests
-* tests?
-  
-##logging
-activity.usersignup
-    
-##uploads  
-* change
-upload_to=uploads
-
 #TODO
+
+##finish tests
 
 ##model changes
 * remove field start_desk from User model

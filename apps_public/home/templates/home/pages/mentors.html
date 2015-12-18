@@ -9,66 +9,65 @@
 
     <div class="ui grid centered container" style="padding-bottom:100px;">
 
+        <div class="sixteen wide tablet twelve wide computer column">
 
-
-            <div class="sixteen wide tablet twelve wide computer column">
-
-                <div class="ui header center aligned  large" style="color:#19aaa6;
-                font-family: 'Montserrat', sans-serif;
-                font-size: 2em;
-                font-weight: 400;
-                line-height: 1.5em;
-                -webkit-font-smoothing: antialiased;
-                ">
-                    mentoki<sub>&reg;</sub> Mentoren
-                </div>
-                <p>Stöbern Sie bei unseren Mentoren und finden Sie heraus, was sie bei mentoki<sub>&reg;</sub> unterrichten!
-</p>
-                {% comment %}
-                <p>Das sind unsere Mentoren, wenn Ihr auf die Links klickt, könnt Ihr direkt sehen,
-                was sie bei Mentoki unterrichten. Wir selbst, die beiden Gründerinnen, gehören auch
-                mit zum Mentoren-Team.</p>
-                {% endcomment %}
+            <div class="ui header center aligned  large" style="color:#19aaa6;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2em;
+            font-weight: 400;
+            line-height: 1.5em;
+            -webkit-font-smoothing: antialiased;
+            ">
+                mentoki<sub>&reg;</sub> Mentoren
             </div>
-    <div class="sixteen wide column">
-                 <div class="ui cards centered">
+            <p>
+                Stöbern Sie bei unseren Mentoren und finden Sie heraus,
+                was sie bei mentoki<sub>&reg;</sub> unterrichten!
+            </p>
+        </div>
+        <div class="sixteen wide column">
+            <div class="ui cards centered">
 
-                {% for mentor in mentors %}
+            {% for mentor in mentors %}
 
-                 {% url 'home:mentor' slug=mentor.slug  as mentor_url %}
+                {% url 'home:mentor' slug=mentor.slug  as mentor_url %}
 
-                  <div class="card">
+                <div class="card">
                     <div class="image" >
                         {% if mentor.foto %}
-                            <img src="{{ mentor.foto.url }}">
+                        <img src="{{ mentor.foto.url }}">
                         {% endif %}
                     </div>
 
                     <div class="content">
-                      <div class="header">{{ mentor.user.get_full_name }}</div>
+                        <div class="header">
+                            {{ mentor.user.get_full_name }}
+                        </div>
                     </div>
-                      <div class="content">
-                          <div class="event">
-                              <h4 class="ui sub header">bei Mentoki</h4>
-                              <div class="content">
-      {{ mentor.at_mentoki }}</div>
+                    <div class="content">
+                        <div class="event">
+                            <h4 class="ui sub header">bei Mentoki</h4>
+                            <div class="content">
+                                {{ mentor.at_mentoki }}
                             </div>
-                       </div>
-                       <div class="content">
+                        </div>
+                    </div>
+                    <div class="content">
                         <div class="description">
-                        {{ mentor.special_power }}
-
-                      </div>
+                            {{ mentor.special_power }}
+                        </div>
                     </div>
                     <a class="ui bottom attached button" href="{{ mentor_url }}">
-                      mehr lesen
+                        mehr lesen
                     </a>
-                  </div>
-
-                 {% endfor %}
-
                 </div>
 
+            {% endfor %}
+
+            </div>
+
+        </div>
+
     </div>
-</div>
+
 {% endblock %}

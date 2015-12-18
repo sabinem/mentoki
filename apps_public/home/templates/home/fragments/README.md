@@ -1,9 +1,7 @@
-#app userprofiles
-Userprofiles depending on the role a user has on the platform
-##models
-###mentor
-profiles for mentors: these are dsiplayed publically on the website
-
+#app home: template fragments
+These fragments are included in the template publicpage.html. 
+They are attached via the table StaticPublicPages, that contains
+the template_name for each page.
 
  
  
