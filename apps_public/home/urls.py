@@ -5,7 +5,6 @@ mentoki urls : should be maintained from the old site
 """
 
 from django.conf.urls import patterns, url
-from django.views.decorators.cache import cache_page
 
 from .views import HomePageView,  \
     MentorsPageView, MentorsListView, \
@@ -14,27 +13,19 @@ from .views import HomePageView,  \
 urlpatterns = patterns("",
 
     url(r'^$',
-        cache_page(60*60)(
-            HomePageView.as_view(),
-        ),
+        HomePageView.as_view(),
         name='home'),
 
     url(r'^mentor/(?P<slug>[a-z0-9_-]+)/$',
-        cache_page(60*60)(
-            MentorsPageView.as_view(),
-        ),
+        MentorsPageView.as_view(),
         name='mentor'),
 
     url(r'^mentoren-team/$',
-        cache_page(60*60)(
-            MentorsListView.as_view()
-        ),
+        MentorsListView.as_view(),
         name='mentorslist'),
 
     url(r'^(?P<slug>[a-z0-9_-]+)/$',
-        cache_page(60*60)(
-            PublicPageView.as_view(),
-        ),
+        PublicPageView.as_view(),
         name='public'),
 
 )
