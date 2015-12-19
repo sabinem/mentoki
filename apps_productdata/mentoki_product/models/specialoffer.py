@@ -41,6 +41,8 @@ def calculate_sales_price(percentage_off, price):
     """
     percentage = 100 - percentage_off
     sales_price = int(price) * percentage / 100.00
+    sales_price = round(sales_price,0)
+
     logger.info('Mit [%s] Procent off wurde aus dem Preis [%s] der '
                 'Verkaufspreis [%s] berechnet'
                 % (percentage_off, price, sales_price))
