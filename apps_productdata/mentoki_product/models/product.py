@@ -29,7 +29,7 @@ class ProductManager(models.Manager):
 
 class Product(TimeStampedModel):
 
-    description = FroalaField()
+    description = FroalaField(blank=True)
 
     # price with currency
     price = models.DecimalField(
