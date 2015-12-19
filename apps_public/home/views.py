@@ -62,15 +62,15 @@ class MentorsPageView(
     models = MentorsProfile
     context_object_name = 'mentor'
     template_name = "home/pages/mentor.html"
-    slug_url_kwarg = 'slug'
-    slug_field = 'slug'
+    #slug_url_kwarg = 'slug'
+    #slug_field = 'slug'
 
-    #def get_queryset(self):
-    #    """
-    #    mentor is fetched according to the given slug
-    #    :return: context of this mentor along with his courseproducts
-    #    """
-    #    return MentorsProfile.objects.filter(slug=self.kwargs['slug'])
+    def get_queryset(self):
+        """
+        mentor is fetched according to the given slug
+        :return: context of this mentor along with his courseproducts
+        """
+        return MentorsProfile.objects.filter(slug=self.kwargs['slug'])
 
     def get_context_data(self, **kwargs):
         """
@@ -78,7 +78,7 @@ class MentorsPageView(
         :return: context of this mentor along with his courseproducts
         """
         context = super(MentorsPageView, self).get_context_data()
-        #mentor = context['mentor']
+        mentor = context['mentor']
         context['courseproductgroups'] = \
             CourseProductGroup.objects.published_by_mentor(user=mentor.user)
         return context
