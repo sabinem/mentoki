@@ -1,12 +1,16 @@
 
+{% url 'home:public' slug='fertigen-online-kurs-anbieten' as ready_url %}
+{% url 'home:public' slug='mentoki-starterkurs' as starterkurs_url %}
+
 <!-- onlineunterrichten.html -->
 <div class="ui grid container centered" style="padding-bottom:100px;">
 
     <div class="sixteen wide tablet twelve wide computer column">
-       <div class="ui segment">
-        <img class="ui image fluid"
-                     src="{{ pagedata.banner.url }}" style="margin-top:0px;"
-                >
+
+
+
+            <img class="ui image fluid"
+                src="{{ pagedata.banner.url }}" style="margin-top:0px;">
 
             <div class="ui header center aligned  large" style="color:#19aaa6;
             font-family: 'Montserrat', sans-serif;
@@ -18,37 +22,34 @@
             ">
                 {{ pagedata.title }}
             </div>
-            {% url 'home:public' slug='fertigen-online-kurs-anbieten' as ready_url %}
-             {% url 'home:public' slug='mentoki-starterkurs' as starterkurs_url %}
 
             <div class="froala_view">
                 {{ pagedata.text | safe }}
             </div>
             <div class="ui two column stackable grid">
-            <div class="column">
-            <a class="ui button "
-                  style="
-            background: 0 0 #8fb2b2 !important;
-            box-shadow: 0 0 0 2px #8fb2b2; inset!important;
-            #color: #8fb2b2!important;
-            color:white;"
-
-               href="{{ starterkurs_url }}">
-            Mehr über den Starterkurs erfahren
-            </a>
-            </div>
-            <div class="column">
-            <a class="ui button "
-                  style="
-            background: 0 0 #8fb2b2 !important;
-            box-shadow: 0 0 0 2px #8fb2b2; inset!important;
-            #color: #8fb2b2!important;
-            color:white;"
-            href="{{ ready_url }}">
-            Mich interessiert die Adaption meines Kurses
-            </a>
-            </div>
+                <div class="column">
+                    <a class="ui button "
+                        style="
+                background: 0 0 #8fb2b2 !important;
+                box-shadow: 0 0 0 2px #8fb2b2; inset!important;
+                #color: #8fb2b2!important;
+                color:white;" href="{{ starterkurs_url }}">
+                        Mehr über den Starterkurs erfahren
+                    </a>
+                </div>
+                <div class="column">
+                    <a class="ui button "
+                        style="
+                    background: 0 0 #8fb2b2 !important;
+                    box-shadow: 0 0 0 2px #8fb2b2; inset!important;
+                    #color: #8fb2b2!important;
+                    color:white;"
+                        href="{{ ready_url }}">
+                        Mich interessiert die Adaption meines Kurses
+                    </a>
+                </div>
             </div>
     </div>
-</div>
+
+
 </div>
