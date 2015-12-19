@@ -1,15 +1,16 @@
 {% extends "base/base_course.html" %}
 {% load i18n %}
 {% load activelink %}
-{% block meta_post_title %}Kursbuchung{% endblock %}
-{% block meta_post_title_tmp %}Kursbuchung{% endblock %}
+{% block meta_post_title %}{{ meta.title }}{% endblock %}
+{% block meta_post_title_tmp %}{{ meta.title }}{% endblock %}
 
 {% block  main_content %}
     {% url 'home:home' as home_url %}
     {% url 'storefront:list_now' as course_url %}
-    {% url 'storefront:detail' slug=courseproductgroup.slug as group_url %}
+
     <div class="ui menu fixed center aligned top three item fluid" id="coursemenu_pc">
-    <div class="ui left dropdown item" id="#start" style="padding:0px; margin: 0px;
+
+        <div class="ui left dropdown item" id="#start" style="padding:0px; margin: 0px;
         background:white!important;">
         <img  class="ui image" style="padding:0px; margin: 0px;
             "
@@ -25,29 +26,42 @@
         </a>
             </div>
         </div>
-                <a class="item" href="{{ group_url }}" >
-                {{ courseproductgroup.menu_name }}
-            </a>
-            <a class="item"  >
-                Buchung
-            </a>
-    </div>
-    <div class="ui menu fixed center aligned top three item fluid" id="coursemenu_pc">
 
-        <div class="ui left dropdown item" id="#start" style="padding:0px; margin: 0px;">
-        <img  class="ui image" style="padding:0px; margin: 0px;"
-              src="/static/img/mentoki_logo_65.png"
-        >
-            <i class="dropdown icon"></i>
-            <div class="menu">
-        <a class="item" href="{{ home_url }}" >
-            zurück zur Homepage
-        </a>
-        <a class="item" href="{{ course_url }}" >
-            zurück zur Kursübersicht
-        </a>
+            <div class="ui item" id="#start" style=" background:white!important;">
+                 {{ courseproductgroup.menu_name }}
+                
             </div>
+    {% if courseproductgroup.can_be_booked_now %}
+            <a class="item" href="#bookingoptions" style="color: #eb3d00;">
+                jetzt buchen!
+            </a>
+        {% else %}
+          <div class="item" href="#start">
+             Vorschau
+          </div>
+
+{% endif %}
         </div>
+
+        <div class="ui menu fixed center aligned top one item fluid" id="coursemenu_mobile">
+
+            <div class="ui left dropdown item" id="#start" style="background:white!important;">
+             <img  class="ui image" style="padding:0px; margin: 0px;
+            padding-right:5px; "
+                  src="/static/img/mentoki_logo_33.png"
+            >
+                 {{ courseproductgroup.menu_name }}
+                <i class="dropdown icon" style="color: #eb3d00!important;"></i>
+                <div class="menu">
+
+             <a class="item" href="{{ home_url }}" >
+                zurück zur Homepage
+            </a>
+            <a class="item" href="{{ course_url }}" >
+                zurück zur Kursübersicht
+            </a>
+                </div>
+            </div>
 
         </div>
         {% block courseproductpage %}
