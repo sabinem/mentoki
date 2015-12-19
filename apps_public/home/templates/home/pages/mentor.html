@@ -12,15 +12,6 @@
 
             <div class="sixteen wide column" >
 
-                <div class="ui header center aligned medium" style="color:#24678d;
-                font-family: 'Montserrat', sans-serif;
-                font-size: 1.5em;
-                font-weight: 400;
-                line-height: 1.5em;
-                -webkit-font-smoothing: antialiased;
-                ">
-                    Mentor: {{ mentor.user.get_full_name }}
-                </div>
                 <div class="ui two column stackable grid">
                     <div class="column five wide">
                         {% if mentor.foto_detail_page %}
@@ -30,7 +21,16 @@
                         {% endif %}
                     </div>
                     <div class="column ten wide">
-                        <p>
+                        <div class="ui header medium" style="color:#24678d;
+                        font-family: 'Montserrat', sans-serif;
+                        font-size: 1.5em;
+                        font-weight: 400;
+                        line-height: 1.5em;
+                        -webkit-font-smoothing: antialiased;
+                        ">
+                            {{ mentor.mentorsrecord }}
+                        </div>
+                        <p style="color:grey;">
                         {{ mentor.at_mentoki }}
                         </p>
 

@@ -64,10 +64,9 @@ class MentorsProfile(TimeStampedModel):
         populate_from='get_full_name'
     )
 
-    at_mentoki = models.CharField(
+    at_mentoki = FroalaField(
         verbose_name=_('Rolle bei Mentoki'),
         blank=True,
-        max_length=250,
     )
     special_power = models.CharField(
         verbose_name=_('Spezielle Eigenschaft'),
@@ -145,3 +144,13 @@ class MentorsProfile(TimeStampedModel):
     @property
     def get_full_name(self):
         return self.user.get_full_name()
+
+    @property
+    def mentorsrecord(self):
+        name = self.user.get_full_name()
+        if self.user.is_female:
+            prefix = "Mentorin: "
+        else:
+            prefix = "Mentor: "
+        namesstring = prefix + name
+        return namesstring
