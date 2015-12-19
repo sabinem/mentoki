@@ -9,7 +9,7 @@
                      src="{{ pagedata.banner.url }}" style="margin-top:0px;"
                 >
 
-            <div class="ui header center aligned  large" style="color:#19aaa6;
+            <div class="ui header center aligned froala-view large" style="color:#19aaa6;
             font-family: 'Montserrat', sans-serif;
             font-size: 2em;
             font-weight: 400;
@@ -17,7 +17,7 @@
             padding-top:0px; margin-top:0px;
             -webkit-font-smoothing: antialiased;
             ">
-                {{ pagedata.title }}
+                {{ pagedata.title | safe }}
             </div>
             {% url 'contact:contact' as contact_url %}
 
