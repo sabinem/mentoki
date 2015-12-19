@@ -70,9 +70,8 @@ class StaticPublicPages(TimeStampedModel):
         verbose_name=_('Text'),
         blank=True
     )
-    title = models.CharField(
+    title = FroalaField(
         verbose_name=_('Seitentitel'),
-        max_length=200,
         blank=True
     )
     description = models.CharField(
