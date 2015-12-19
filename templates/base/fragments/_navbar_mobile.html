@@ -31,6 +31,85 @@
     href="{{ home_url }}">
     <img  id="logo_img_mobile" src="/static/img/mentoki_logo.png">
 </a>
+<a class="header item" >
+    Lernen bei mentoki<sub>&reg;</sub>
+</a>
+        <a href="{{ course_now_url }}" class="item
+            {% ifactive course_now_url %}
+                active
+            {% endifactive %}
+        ">
+            Aktuelle Kurse
+        </a>
+        <a href="{{ course_preview_url }}" class="item
+            {% ifactive course_preview_url %}
+                active
+            {% endifactive %}
+        ">
+            Vorschau
+        </a>
+        <a class="item
+            {% ifactive course_url %}
+                active
+            {% endifactive %}
+        " href="{{ course_url }}">
+            Das gesamte Angebot
+        </a>
+<a class="header item" >
+    Unterrichten bei mentoki<sub>&reg;</sub>
+</a>
+        <a href="{{ teachonline_url }}" class="item
+            {% ifactive teachonline_url %}
+                active
+            {% endifactive %}
+        ">
+            Zwei Wege
+        </a>
+        <a href="{{ starterkurs_url }}" class="item
+            {% ifactive starterkurs_url %}
+                active
+            {% endifactive %}
+        ">
+            Der Starterkurs
+        </a>
+        <a class="item
+            {% ifactive teachready_url %}
+                active
+            {% endifactive %}
+        " href="{{ teachready_url }}">
+            Wenn Sie bereits online unterrichten
+        </a>
+<a class="header item" >
+    Über mentoki<sub>&reg;</sub>
+</a>
+        <a href="{{ about_url }}" class="item
+            {% ifactive about_url %}
+                active
+            {% endifactive %}
+        ">
+            Das Team
+        </a>
+        <a href="{{ mentorslist_url }}" class="item
+            {% ifactive mentorslist_url %}
+                active
+            {% endifactive %}
+        ">
+            Die Mentoren
+        </a>
+        <a class="item
+            {% ifactive standards_url %}
+                active
+            {% endifactive %}
+        " href="{{ standards_url }}">
+            Standards
+        </a>
+        <a class="item
+            {% ifactive contact_url %}
+                active
+            {% endifactive %}
+        " href="{{ contact_url }}">
+            Kontaktieren Sie uns
+        </a>
 
 {% load activelink %}
 {% if request.user.is_authenticated %}

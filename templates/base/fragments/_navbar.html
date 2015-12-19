@@ -40,68 +40,14 @@
 
 
 
-            <div class="ui left dropdown item" id="#start" >
             <div class="item" style="padding:0px; margin: 0px;"
             href="{{ home_url }}">
             <img  class="ui image" style="padding:0px; margin: 0px;"
                   src="/static/img/mentoki_logo_65.png"
             >
             </div>
-                <i class="dropdown icon"></i>
-                <div class="menu" >
 
-        <a href="{{ course_now_url }}" style="color: #eb3d00!important;" class="item
-            {% ifactive course_now_url %}
-                active
-            {% endifactive %}
-        ">
-            Aktuelle Kurse
-        </a>
-        <a href="{{ course_preview_url }}" class="item
-            {% ifactive course_preview_url %}
-                active
-            {% endifactive %}
-        ">
-            Vorschau
-        </a>
-        <a class="item
-            {% ifactive course_url %}
-                active
-            {% endifactive %}
-        " href="{{ course_url }}">
-            Das gesamte Angebot
-        </a>
 
-        <a href="{{ about_url }}" class="item
-            {% ifactive about_url %}
-                active
-            {% endifactive %}
-        ">
-            Das Team
-        </a>
-        <a href="{{ mentorslist_url }}" class="item
-            {% ifactive mentorslist_url %}
-                active
-            {% endifactive %}
-        ">
-            Die Mentoren
-        </a>
-        <a class="item
-            {% ifactive standards_url %}
-                active
-            {% endifactive %}
-        " href="{{ standards_url }}">
-            Standards
-        </a>
-        <a class="item
-            {% ifactive contact_url %}
-                active
-            {% endifactive %}
-        " href="{{ contact_url }}">
-            Kontaktieren Sie uns
-        </a>
-                </div>
-            </div>
                 <a class="item" id="mobile_button">
           <i class="sidebar icon"></i>
         </a>
