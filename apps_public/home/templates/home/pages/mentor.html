@@ -30,9 +30,9 @@
                         ">
                             {{ mentor.mentorsrecord }}
                         </div>
-                        <p style="color:grey;">
-                        {{ mentor.at_mentoki }}
-                        </p>
+                        <div class="froala-view" style="color:grey;">
+                            {{ mentor.at_mentoki | safe }}
+                        </div>
 
                         <div class="froala-view" style="color:grey;">
                         {{ mentor.text | safe }}
