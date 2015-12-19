@@ -29,16 +29,13 @@
 
             <div class="ui item" id="#start" style=" background:white!important;">
                  {{ courseproductgroup.menu_name }}
-                
+
             </div>
-    {% if courseproductgroup.can_be_booked_now %}
-            <a class="item" href="#bookingoptions" style="color: #eb3d00;">
-                jetzt buchen!
-            </a>
-        {% else %}
-          <div class="item" href="#start">
-             Vorschau
-          </div>
+
+            <div class="item" href="#bookingoptions" style="color: #eb3d00;">
+                Kursbuchung
+            </div>
+
 
 {% endif %}
         </div>
