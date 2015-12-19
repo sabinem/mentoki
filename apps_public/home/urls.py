@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-mentoki urls : should be maintained from the old site
+urls for the homepage and other public pages
 """
 
 from django.conf.urls import patterns, url
@@ -12,18 +12,22 @@ from .views import HomePageView,  \
 
 urlpatterns = patterns("",
 
+    # mentoki homepage
     url(r'^$',
         HomePageView.as_view(),
         name='home'),
 
+    # single mentor page
     url(r'^mentor/(?P<slug>[a-z0-9_-]+)/$',
         MentorsPageView.as_view(),
         name='mentor'),
 
+    # list of all mentors
     url(r'^mentoren-team/$',
         MentorsListView.as_view(),
         name='mentorslist'),
 
+    # all other public pages
     url(r'^(?P<slug>[a-z0-9_-]+)/$',
         PublicPageView.as_view(),
         name='public'),

@@ -11,24 +11,12 @@ from django.views.generic import TemplateView, DetailView
 from django.conf import settings
 
 from apps_accountdata.userprofiles.models.mentor import MentorsProfile
-from apps_productdata.mentoki_product.models.courseproductgroup import CourseProductGroup
+from apps_productdata.mentoki_product.models.courseproductgroup \
+    import CourseProductGroup
 from apps_pagedata.public.models import StaticPublicPages
 
-#from maintenance_mode.core import get_maintenance_mode
 
-import logging
-logger = logging.getLogger('public.dataintegrity')
-
-class MaintenanceModeMixin(object):
-    def get_context_data(self, **kwargs):
-        context = super(MaintenanceModeMixin, self).get_context_data()
-
-
-        context['maintenance_mode'] = settings.MAINTENANCE_MODE
-        return context
-
-
-class HomePageView(MaintenanceModeMixin, TemplateView):
+class HomePageView(TemplateView):
     """
     Homepage
     """
@@ -36,10 +24,9 @@ class HomePageView(MaintenanceModeMixin, TemplateView):
 
 
 class PublicPageView(
-    MaintenanceModeMixin,
     DetailView):
     """
-    diverse public pages, which text that is taken from the database
+    diverse public pages, where the text is taken from the database
     """
     model = StaticPublicPages
     template_name = "home/pages/publicpage.html"
@@ -47,10 +34,9 @@ class PublicPageView(
 
 
 class MentorsListView(
-    MaintenanceModeMixin,
     TemplateView):
     """
-    List of all of Mentokis mentors.
+    List of all of mentokis mentors.
     """
     template_name = "home/pages/mentors.html"
 
@@ -60,14 +46,13 @@ class MentorsListView(
         out: context that provides all mentors from the database
         """
         context = super(MentorsListView, self).get_context_data()
-
         mentors = MentorsProfile.objects.mentors_all()
         context['mentors'] = mentors
         return context
 
 
+#TODO: change this not very elegant!
 class MentorsPageView(
-    MaintenanceModeMixin,
     DetailView):
     """
     One mentor is displayed in detail along with his courses.
@@ -77,12 +62,21 @@ class MentorsPageView(
     models = MentorsProfile
     context_object_name = 'mentor'
     template_name = "home/pages/mentor.html"
+    #slug_url_kwarg = 'slug'
+    #slug_field = 'slug'
 
     def get_queryset(self):
-        ""
+        """
+        mentor is fetched according to the given slug
+        :return: context of this mentor along with his courseproducts
+        """
         return MentorsProfile.objects.filter(slug=self.kwargs['slug'])
 
     def get_context_data(self, **kwargs):
+        """
+        mentor is fetched according to the given slug
+        :return: context of this mentor along with his courseproducts
+        """
         context = super(MentorsPageView, self).get_context_data()
         mentor = context['mentor']
         context['courseproductgroups'] = \

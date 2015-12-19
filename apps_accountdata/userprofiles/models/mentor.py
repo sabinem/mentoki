@@ -3,13 +3,12 @@
 """
 Mentors are users that teach courses.
 Here are their profile data stored. These data are
-publically displayed.
+displayed on public pages.
 """
 
 from __future__ import unicode_literals, absolute_import
 
 from django.db import models
-
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse_lazy
@@ -25,7 +24,7 @@ from apps_productdata.mentoki_product.models.courseproductgroup \
     import CourseProductGroup
 
 import logging
-logger = logging.getLogger('data.userdata')
+logger = logging.getLogger('data.userprofile')
 
 
 class MentorsProfileManager(models.Manager):
