@@ -149,7 +149,8 @@ class CourseProductGroupFieldManager(models.Manager):
     """
     def fields_for_courseproduct(self, courseproductgroup):
         return self\
-            .filter(courseproductgroup=courseproductgroup)\
+            .filter(courseproductgroup=courseproductgroup,
+                    published=True)\
             .order_by('display_nr')
 
 
@@ -162,6 +163,7 @@ class CourseProductGroupField(TimeStampedModel):
     pagemark = models.CharField(max_length=200)
     display_nr = models.IntegerField()
     display_left = models.BooleanField(default=True)
+    published = models.BooleanField(default=True)
     is_ready = models.BooleanField(
         verbose_name="fertig",
         default=False
