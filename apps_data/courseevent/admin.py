@@ -82,8 +82,14 @@ class ForumAdmin(admin.ModelAdmin):
     """
     A Forum serves for the communication in class.
     """
-    list_display = ( 'title', 'display_nr', 'tree_id','lft', 'rght', 'level' )
-    list_filter = ( 'courseevent','level', 'modified')
+    list_display = ( 'id', 'belongs_to_course', 'courseevent', 'title', 'display_nr', 'tree_id', 'lft', 'rght', 'level' )
+    list_filter = ( 'courseevent__course', 'courseevent','level', 'modified', )
+
+    def belongs_to_course(self, obj):
+        return obj.courseevent.course
+    belongs_to_course.short_description = 'belongs to course'
+
+
 
 @admin.register(Thread)
 class ThreadAdmin(admin.ModelAdmin):
