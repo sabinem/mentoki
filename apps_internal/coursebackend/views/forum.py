@@ -130,7 +130,7 @@ class ForumCreateView(
     form_valid_message = "Das Forum wurde angelegt!"
 
     def form_valid(self, form):
-        courseevent = get_object_or_404(CourseEvent, slug=self.kwargs['course_slug'])
+        courseevent = get_object_or_404(CourseEvent, slug=self.kwargs['slug'])
         self.object = Forum.objects.create(
             courseevent=courseevent,
             title=form.cleaned_data['title'],
