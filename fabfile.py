@@ -13,6 +13,18 @@ def gitclean():
     """
     local('git rm --cached `git ls-files -i -X .gitignore`')
 
+def gitlist():
+    """
+    shows files that are in gitignore, but tracked or commited
+    """
+    local('git ls-files -i --exclude-standard')
+
+
+def gitlist2():
+    """
+    shows files that are in gitignore, but tracked or commited
+    """
+    local('git ls-files -i -X .gitignore')
 
 def stage():
     """

@@ -33,4 +33,14 @@ static/Semantic-UI-2.0.7_2/components/**
 static/Semantic-UI-2.0.7_2/test/**
 
 
-static/froala_editor
+static/froala_editor/*
+
+#     /*
+#     !/foo
+#     /foo/*
+#     !/foo/bar
+# exclude everything except directory foo/bar
+#/*
+#!/foo
+#/foo/*
+#!/foo/bar
