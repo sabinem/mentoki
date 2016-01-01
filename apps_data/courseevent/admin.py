@@ -40,7 +40,7 @@ class CourseEventParticipationAdmin(admin.ModelAdmin):
     the participation as students.
     """
     list_display = ('id', 'user', 'course', 'courseevent', 'hidden')
-    list_filter = ('user', 'courseevent', 'modified')
+    list_filter = ('courseevent__course', 'courseevent',  'user', 'modified')
 
 
 @admin.register(Announcement)
@@ -51,7 +51,7 @@ class AnnouncementAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'courseevent', 'is_archived',
                     'published_at', 'published',
                     'mail_distributor', 'modified', 'created')
-    list_filter = ('courseevent', 'published', 'modified')
+    list_filter = ( 'courseevent__course', 'courseevent', 'published', 'modified')
 
 
 @admin.register(ClassroomMenuItem)
@@ -62,7 +62,7 @@ class ClassroomMenuItemAdmin(admin.ModelAdmin):
     list_display = ('id', 'display_nr', 'display_title',
                     'item_type', 'is_shortlink', 'forum', 'classlesson',
                     'is_start_item', )
-    list_filter = ('courseevent','modified' )
+    list_filter = ('courseevent__course', 'courseevent','modified' )
 
 
 @admin.register(StudentsWork)
@@ -74,7 +74,7 @@ class StudentsWorkAdmin(admin.ModelAdmin):
     """
     list_display = ('id', 'courseevent', 'publish_count', 'republished_at',
                     'published_at', 'published', 'title', 'homework')
-    list_filter = ('courseevent', 'homework', 'published', 'modified')
+    list_filter = ('courseevent__course', 'courseevent', 'homework', 'published', 'modified')
 
 
 @admin.register(Forum)
@@ -98,7 +98,7 @@ class ThreadAdmin(admin.ModelAdmin):
     """
     list_display = ( 'id', 'courseevent', 'forum', 'title', 'post_count',
                      'author', 'last_author', 'modified', 'created')
-    list_filter = ( 'courseevent', 'author', 'modified')
+    list_filter = ( 'courseevent__course', 'courseevent', 'author', 'modified')
     readonly_fields = ('modified', 'last_author' )
 
 
@@ -108,5 +108,5 @@ class PostAdmin(admin.ModelAdmin):
     The threads in the forum have posts.
     """
     list_display = ( 'id', 'courseevent', 'thread', 'id', 'title', 'author', 'modified', 'created')
-    list_filter = ( 'courseevent', 'author', 'modified')
+    list_filter = ( 'courseevent__course', 'courseevent', 'author', 'modified')
 

@@ -45,7 +45,7 @@ class Order(admin.ModelAdmin):
                     'order_status', 'last_transaction_had_success', 'amount_paid',
                     'amount_per_payment',
                     'total_parts', 'started_to_pay', 'fully_paid', 'pay_in_parts')
-    list_filter = ('courseproduct', 'customer', 'course')
+    list_filter = ('courseproduct__course', 'courseproduct', 'customer', 'course')
 
 @admin.register(Prebooking)
 class CustomerAdmin(admin.ModelAdmin):

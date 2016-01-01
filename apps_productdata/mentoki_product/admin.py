@@ -20,7 +20,7 @@ class CourseProductGroupAdmin(admin.ModelAdmin):
     CourseProductGroup is the Group of all products related to a course
     """
     list_display = ('id', 'course', 'display_nr', 'slug')
-    list_filter = ('modified', 'course')
+    list_filter = ('course', 'modified')
     list_display_links = ('id',)
 
 
@@ -30,7 +30,7 @@ class CourseSubProductGroupAdmin(admin.ModelAdmin):
     CourseProductGroup is the Group of all products related to a course
     """
     list_display = ('id', 'course', 'name')
-    list_filter = ('modified', 'course')
+    list_filter = ('course', 'modified')
     list_display_links = ('id',)
 
 
@@ -41,7 +41,7 @@ class CourseProductAdmin(admin.ModelAdmin):
     """
     list_display = ('id', 'name', 'course', 'courseevent', 'courseproductsubgroup',
                     'price' , 'sales_price', 'display_nr')
-    list_filter = ('modified', 'course')
+    list_filter = ('course', 'modified')
     list_display_links = ('id',)
 
 
@@ -51,7 +51,7 @@ class SpecialOfferAdmin(admin.ModelAdmin):
     Offers and their reach on products
     """
     list_display = ('id', 'offerreach', 'course', 'percentage_off')
-    list_filter = ('modified', 'course')
+    list_filter = ('course', 'modified')
     list_display_links = ('id',)
 
 
@@ -61,5 +61,5 @@ class CourseProductGroupFieldAdmin(admin.ModelAdmin):
     CourseProductGroup is the Group of all products related to a course
     """
     list_display = ('id', 'course', 'courseproductgroup', 'published', 'title', 'pagemark', 'display_nr')
-    list_filter = ('modified', 'course')
+    list_filter = ('course', 'modified')
     list_display_links = ('id',)
