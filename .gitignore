@@ -34,11 +34,7 @@ static/Semantic-UI-2.0.7_2/test/**
 
 
 static/froala_editor/*
-!static/froala_editor/css
-static/froala_editor/css/plugins
-static/froala_editor/css/themes
-static/froala_editor/css/*
-!static/froala_editor/css/*.min.css
+
 
 
 
