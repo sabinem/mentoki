@@ -2,6 +2,28 @@
  * Created by sabinemaennel on 06.08.15.
  */
 
+$.fn.embed.settings.sources = {
+    youtube: {
+        name: 'youtube',
+        type: 'video',
+        icon: 'video play',
+        domain: 'youtube.com',
+        url: '//www.youtube.com/embed/{id}',
+        parameters: function (settings) {
+            return {
+                autohide: !settings.showUI,
+                rel: 0,
+                autoplay: settings.autoplay,
+                color: settings.colors || undefined,
+                hq: settings.hd,
+                jsapi: settings.api,
+                modestbranding: 1
+            };
+        }
+    }
+}
+
+
 $(document).ready(function(){
 
    // Mobile button for sidebar
@@ -132,8 +154,6 @@ $(document).ready(function(){
         this.disabled=true;
         this.form.submit();
     });
-
-
 
 
 
