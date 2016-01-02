@@ -21,7 +21,7 @@ class CustomerAdmin(admin.ModelAdmin):
     """
     Customers that pay and are registered at braintree, the payment provider
     """
-    list_display = ( 'id', 'user', 'braintree_customer_id', 'created')
+    list_display = ( 'id', 'created', 'user', 'braintree_customer_id')
     list_filter = ('user', 'created')
 
 
@@ -31,9 +31,10 @@ class Transaction(admin.ModelAdmin):
     Transactions that occur when payment happens, they are also registered at braintree,
     the payment provider
     """
-    list_display = ('id', 'order', 'success', 'course',
+    list_display = ('id', 'created', 'order', 'success', 'course',
                     'braintree_transaction_id')
     list_filter = ('course', 'created', 'success' ,'order')
+
 
 @admin.register(Order)
 class Order(admin.ModelAdmin):
@@ -41,18 +42,19 @@ class Order(admin.ModelAdmin):
     Orders are between registered user only since they are listed here only after
     payment occured and the the users got registered
     """
-    list_display = ('id', 'courseproduct', 'customer', 'course',
+    list_display = ('id', 'created', 'modified', 'courseproduct', 'customer', 'course',
                     'order_status', 'last_transaction_had_success', 'amount_paid',
                     'amount_per_payment',
                     'total_parts', 'started_to_pay', 'fully_paid', 'pay_in_parts')
-    list_filter = ('courseproduct__course', 'courseproduct', 'customer', 'course')
+    list_filter = ('courseproduct__course', 'created', 'modified', 'courseproduct', 'customer', 'course')
+
 
 @admin.register(Prebooking)
-class CustomerAdmin(admin.ModelAdmin):
+class PrebookingAdmin(admin.ModelAdmin):
     """
     Customers that pay and are registered at braintree, the payment provider
     """
-    list_display = ( 'id', 'email', 'interested_in_learning', 'created')
+    list_display = ('created', 'id',  'email', 'interested_in_learning', 'created')
     list_filter = ('email', 'created')
 
 
@@ -61,5 +63,5 @@ class BraintreeLogAdmin(admin.ModelAdmin):
     """
     Customers that pay and are registered at braintree, the payment provider
     """
-    list_display = ( 'id', 'mentoki_transaction', 'created')
+    list_display = ( 'id', 'created', 'mentoki_transaction', 'created')
     list_filter = ('created', )
