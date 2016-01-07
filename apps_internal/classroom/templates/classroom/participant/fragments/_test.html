@@ -1,10 +1,4 @@
-<h1>TABLEX</h1>
-{% for participant in participants %}
 
-            <p>{{ participant.user.email }}</p>
-
-
-        {% endfor %}
 <table class="ui table">
 
     <thead>
@@ -19,7 +13,7 @@
     {% for participant in participants %}
        <tr>
 
-           <td></td>
+           <td>{{ participant.user.username }}</td>
            <td>{{ participant.user.first_name }} {{ participant.user.last_name }}</td>
            <td>{{ participant.user.email }}</td>
 
