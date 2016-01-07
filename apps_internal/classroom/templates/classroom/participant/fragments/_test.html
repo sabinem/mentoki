@@ -14,4 +14,16 @@
             <th>Email</th>
         </tr>
     </thead>
+
+    <tbody>
+    {% for participant in participants %}
+       <tr>
+
+           <td></td>
+           <td>{{ participant.user.first_name }} {{ participant.user.last_name }}</td>
+           <td>{{ participant.user.email }}</td>
+
+       </tr>
+     {% endfor %}
+    </tbody>
 </table>
