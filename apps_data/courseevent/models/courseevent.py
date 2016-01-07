@@ -37,7 +37,7 @@ from apps_data.course.models.course import Course
 from ..constants import PARTICIPANT_STATUS_CHOICES
 
 import logging
-logger = logging.getLogger('activity.courseeventupdate')
+logger = logging.getLogger('data.courseevent')
 
 class CourseEventManager(models.Manager):
     """
@@ -293,6 +293,7 @@ class ParticipationManager(models.Manager):
         return self.filter(courseevent=courseevent).select_related('user')
 
     def active_learners(self, courseevent):
+        logger.info('suche aktive Lernende für Kurs %s' % courseevent.slug)
         return self.filter(courseevent=courseevent, hidden=False).select_related('user')
 
     def learners_emails(self, courseevent):

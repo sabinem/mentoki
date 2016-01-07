@@ -8,6 +8,8 @@ from apps_data.courseevent.models.courseevent import CourseEventParticipation
 
 from .mixins.base import ClassroomMenuMixin
 
+import logging
+logger = logging.getLogger('display.classroom')
 
 class CourseParticipantListView(ClassroomMenuMixin, TemplateView):
     """
@@ -18,5 +20,7 @@ class CourseParticipantListView(ClassroomMenuMixin, TemplateView):
 
         context['participants'] = CourseEventParticipation.objects.active_learners(
             courseevent=context['courseevent'])
+        logger.info('Teilnehmerliste im Kurs %s: Anzahl %s' %
+                    (context['courseevent'].slug, context['participants'].count()))
 
         return context

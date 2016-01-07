@@ -314,6 +314,25 @@ LOGGING = {
             'maxBytes': 500000,  # 500 kB
             'backupCount': 4  ,
         },
+        # log for handling of userprofile data
+        'file_classroom': {
+            'filename': os.path.join(BASE_DIR, 'logfiles', 'classroom_display.log' ),
+            'formatter': 'verbose',
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'maxBytes': 500000,  # 500 kB
+            'backupCount': 4  ,
+        },
+        # log for handling of userprofile data
+        'file_courseevent': {
+            'filename': os.path.join(BASE_DIR, 'logfiles', 'courseevent_data.log' ),
+            'formatter': 'verbose',
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'maxBytes': 500000,  # 500 kB
+            'backupCount': 4  ,
+        },
+
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
@@ -379,6 +398,16 @@ LOGGING = {
         'activity.courseeventupdate': {
             'level': 'DEBUG',
             'handlers': ['console'],
+            'propagate': False,
+        },
+        'display.classroom' : {
+            'level': 'DEBUG',
+            'handlers': ['file_classroom'],
+            'propagate': False,
+        },
+        'data.courseevent' : {
+            'level': 'DEBUG',
+            'handlers': ['file_courseevent'],
             'propagate': False,
         },
     },
