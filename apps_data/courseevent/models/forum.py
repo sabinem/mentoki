@@ -233,8 +233,7 @@ class ThreadManager(models.Manager):
 class Thread(ForumContributionModel):
 
     forum = models.ForeignKey(
-        Forum,
-        on_delete=models.PROTECT
+        Forum
     )
 
     title = models.CharField(
@@ -289,8 +288,7 @@ class Post(ForumContributionModel):
     title = models.CharField(max_length=100)
 
     thread = models.ForeignKey(
-        Thread,
-        on_delete=models.PROTECT
+        Thread
     )
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
