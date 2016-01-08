@@ -80,7 +80,7 @@ class CourseEventManager(models.Manager):
         courseevents = self\
             .filter(active=True, classroom_open=True)\
             .select_related('course')\
-            .order_by('course')
+            .order_by('start_date')
 
         if courses_ids:
             return courseevents.filter(course_id__in=courses_ids)
@@ -94,8 +94,8 @@ class CourseEventManager(models.Manager):
         courseevents = self\
             .filter(active=True, classroom_open=False)\
             .select_related('course')\
-            .order_by('course')
-        
+            .order_by('start_date')
+
         if courses_ids:
             return courseevents.filter(course_id__in=courses_ids)
         else:
