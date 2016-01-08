@@ -9,9 +9,13 @@
                 {% include 'desk/fragments/_courseevent_learn_record.html' %}
             </div>
         {% empty %}
+            <div class="ui segment">
             {% url 'storefront:list_now' %}
-            Hier geht es zu mentoki<sub>&reg;</sub>s Kursangebot
-            <a href="{{ course_url }}"></a>
+            Sie haben noch keinen Kurs bei mentoki<sub>&reg;</sub> gebucht
+            <a href="{{ course_url }}">
+                Hier geht es zu unserem Kursangebot
+            </a>
+            </div>
         {% endfor %}
     </div>
 
