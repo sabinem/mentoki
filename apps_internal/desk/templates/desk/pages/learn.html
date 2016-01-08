@@ -10,10 +10,15 @@
             </div>
         {% empty %}
             <div class="ui segment">
-            {% url 'storefront:list_now' %}
-            Sie haben noch keinen Kurs bei mentoki<sub>&reg;</sub> gebucht
+            {% url 'storefront:list_now' as course_url %}
+            <div class="ui header medium">Hallo {{ request.user.first_name }}
+            {{ request.user.last_name }}!
+            </div>
+            Willkommen bei  bei mentoki<sub>&reg;</sub>!
+                <p>
+                Sie haben noch keinen Kurs bei uns gebucht.</p>
             <a href="{{ course_url }}">
-                Hier geht es zu unserem Kursangebot
+                Hier geht es zu unserem Kursangebot.
             </a>
             </div>
         {% endfor %}
