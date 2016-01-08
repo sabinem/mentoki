@@ -1,0 +1,132 @@
+{% extends "desk/pages/base.html" %}
+{% block desk_header %}Kurszugang für Mentoren{% endblock %}
+{% block work %}
+    <div class="ui segment teal">
+
+    <div class="ui header large">Laufende Kurse</div>
+
+    <table class="ui table">
+
+        <thead>
+            <tr>
+                <th>Kurs</th>
+                <th>Kursereignis</th>
+                <th>Links</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for courseevent in courseevents_open %}
+           {% url 'coursebackend:courseevent:detail' course_slug=courseevent.course.slug slug=courseevent.slug as launchpad_url %}
+           {% url 'classroom:start' slug=courseevent.slug as classroom_url %}
+
+           <tr>
+
+                <td>
+                      {{ courseevent.course.title }}
+                </td>
+
+                <td>
+                        {{ courseevent.title  }}
+                        {% if courseevent.start_date %}
+                           Start: {{ courseevent.start_date }}
+                        {% endif %}
+                </td><td>
+                        {% if courseevent.classroom_open %}
+                            Klassenzimmer geöffnet
+                            <i class="icon checkmark green"></i>
+
+                        {% else %}
+                            <i class="icon lock red"></i>
+                        {% endif %}
+                        <br>
+                        <a href="{{ launchpad_url }}">
+                        Zur Vorbereitung
+                        <i class="rocket icon green"></i>
+                        </a>
+                        <br>
+                        <a href="{{ classroom_url }}">
+                        Zum Klassenzimmer
+                        <i class="student icon"></i>
+                        </a>
+
+               </td>
+
+
+           </tr>
+         {% endfor %}
+        </tbody>
+    </table>
+
+   </div>
+   <div class="ui segment teal">
+   <div class="ui header large">Kursvorlagen</div>
+
+   {% for course in courses %}
+
+       <div class="header ui small">{{ course.title }}</div>
+       {% url 'coursebackend:lesson:start' course_slug=course.slug as course_url %}
+       {% url 'coursebackend:lesson:start' course_slug=course.slug as lesson_url %}
+
+        <div class="ui list bulleted">
+           <a class="item" href="{{ lesson_url }}">Unterricht</a>
+           <a class="item" href="{{ course_url }}">Material</a>
+       </div>
+   {% endfor %}
+
+   </div>
+
+
+
+    <div class="ui segment teal">
+
+    <div class="ui header large">Geschlossene Aktive Kurseereignisse</div>
+
+    <table class="ui table">
+
+        <thead>
+            <tr>
+                <th>Kurs</th>
+                <th>Kursereignis</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for courseevent in courseevents_active %}
+           {% url 'coursebackend:courseevent:detail' course_slug=courseevent.course.slug slug=courseevent.slug as launchpad_url %}
+           {% url 'classroom:start' slug=courseevent.slug as classroom_url %}
+
+           <tr>
+
+                <td>
+                      {{ courseevent.course.title }}
+                </td>
+
+                <td>
+                        {{ courseevent.title  }}
+                        {% if courseevent.start_date %}
+                           Start: {{ courseevent.start_date }}
+                        {% endif %}
+                        {% if courseevent.classroom_open %}
+                            <i class="icon checkmark green"></i>
+                        {% else %}
+                            <i class="icon lock red"></i>
+                        {% endif %}
+                        <a href="{{ launchpad_url }}">
+                        <i class="rocket icon green"></i>
+                        </a>
+                        <a href="{{ classroom_url }}">
+                        <i class="student icon"></i>
+                        </a>
+
+               </td>
+
+
+           </tr>
+         {% endfor %}
+        </tbody>
+    </table>
+
+   </div>
+
+{% endblock %}

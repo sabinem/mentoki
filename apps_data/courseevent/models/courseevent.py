@@ -73,23 +73,33 @@ class CourseEventManager(models.Manager):
             .filter(course=course, active=False)\
             .order_by('start_date')
 
-    def active_open_courseevents(self):
+    def active_open_courseevents(self, courses_ids=None):
         """
         all Courseevents for a course
         """
-        return self\
+        courseevents = self\
             .filter(active=True, classroom_open=True)\
             .select_related('course')\
             .order_by('course')
 
-    def active_closed_courseevents(self):
+        if courses_ids:
+            return courseevents.filter(course_id__in=courses_ids)
+        else:
+            return courseevents
+
+    def active_closed_courseevents(self,courses_ids=None):
         """
         all Courseevents for a course
         """
-        return self\
+        courseevents = self\
             .filter(active=True, classroom_open=False)\
             .select_related('course')\
             .order_by('course')
+        
+        if courses_ids:
+            return courseevents.filter(course_id__in=courses_ids)
+        else:
+            return courseevents
 
 
 class CourseEvent(TimeStampedModel):

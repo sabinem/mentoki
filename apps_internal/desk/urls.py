@@ -6,7 +6,7 @@ from django.conf.urls import patterns, url
 
 from .views.redirect import DeskRedirectView
 from .views.learn import DeskLearnView, DeskStartView
-from .views.teach import DeskTeachView
+from .views.mentor_admin import DeskTeachView
 from .views.pageadmin import PageAdminView
 from .views.courseadmin import CourseAdminView
 from .views.courseentry_admin import CourseEntryAdminView
