@@ -14,8 +14,9 @@
     {% for participant in participants %}
        <tr>
             <td>
-            {% if participant.profile_image %}
-                <img class="ui image small circular" src="{{ participant.profile_image.url }}">
+            {% if participant.user.profile_image %}
+
+                <img class="ui avatar image" src="{{ participant.user.profile_image.url }}">
 
             {% else %}
                 <i class="user icon"></i>
