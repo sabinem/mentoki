@@ -9,6 +9,7 @@ from .views.learn import DeskLearnView, DeskStartView
 from .views.teach import DeskTeachView
 from .views.pageadmin import PageAdminView
 from .views.courseadmin import CourseAdminView
+from .views.courseentry_admin import CourseEntryAdminView
 from .views.userprofile import UserProfileView
 from .views.bookings import BookingsView
 
@@ -30,6 +31,8 @@ urlpatterns = patterns('',
     url(r'^webseite$', PageAdminView.as_view(), name='pageadmin' ),
 
     url(r'^lektorat$', CourseAdminView.as_view(), name='courseadmin' ),
+
+    url(r'^kurszugang-admin$', CourseEntryAdminView.as_view(), name='courseentry_admin' ),
 
     url(r'^kursbuchungen$', BookingsView.as_view(), name='bookings' ),
 

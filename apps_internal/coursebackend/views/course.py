@@ -15,7 +15,7 @@ from django.views.generic import DetailView, UpdateView, TemplateView
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
-from braces.views import FormValidMessageMixin
+from braces.views import FormValidMessageMixin, MessageMixin
 
 from froala_editor.widgets import FroalaEditor
 
@@ -67,6 +67,7 @@ class CourseUpdateView(
 
 class CourseEventListView(
     CourseMenuMixin,
+    MessageMixin,
     TemplateView):
     """
     Start in this section of the website: it shows the course and its attributes
@@ -96,19 +97,19 @@ def alter_courseevent(request, course_slug, pk, action):
         if action_code == AlterCourseEvent.CLOSE:
             courseevent.close()
             logger.info('Klassenzimmer geschlossen')
-            messages.success(request, 'Das Klassenzimmer wurde geschlossen')
+            messages.success(request, 'Das Klassenzimmer von [%s] wurde geschlossen.' % courseevent.slug)
         elif action_code == AlterCourseEvent.OPEN:
             courseevent.open()
             logger.info('Klassenzimmer geöffnet')
-            messages.success(request, 'Das Klassenzimmer wurde geöffnet')
+            messages.success(request, 'Das Klassenzimmer von [%s] wurde geöffnet.' % courseevent.slug)
         elif action_code == AlterCourseEvent.HIDE:
             courseevent.hide()
             logger.info('Kursereignis versteckt')
-            messages.success(request, 'Der Kurs wird versteckt')
+            messages.success(request, 'Der Kursereignis [%s] wurde versteckt.' % courseevent.slug)
         elif action_code == AlterCourseEvent.UNHIDE:
             courseevent.unhide()
-            logger.info('Kursereignis sichtbar gemacht')
-            messages.success(request, 'Der Kurs wird angezeigt')
+            logger.info('Kursereignis wurde sichtbar gemacht')
+            messages.success(request, 'Kursereignis [%s] wurde sichtbar gemacht' % courseevent.slug)
         else:
             logger.info('keine Aktion ausgewählt')
             messages.error(request, "Keine Aktion ausgewählt")

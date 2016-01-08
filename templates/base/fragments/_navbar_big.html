@@ -15,6 +15,7 @@
 {% url 'desk:userprofile' as desk_url %}
 {% url 'desk:learn' as learn_url %}
 {% url 'desk:courseadmin' as courseadmin_url %}
+{% url 'desk:courseentry_admin' as courseentry_admin_url %}
 {% url 'desk:pageadmin' as pageadmin_url %}
 {% url 'desk:learn' as learn_url %}
 {% url 'desk:teach' as teach_url %}
@@ -27,6 +28,8 @@
 
 {% url 'home:public' slug="mentoki-kurse" as course_about_url %}
 {% url 'home:public' slug="team" as about_url %}
+
+
 {% load activelink %}
 
 <a class="item" style="padding:0px; margin: 0px;"
@@ -167,7 +170,16 @@ href="{{ home_url }}">
                 active
             {% endifactive %}
                 ">
-                    Administration
+                    Administration Seiten
+                </a>
+            {% endif %}
+            {% if request.user.is_superuser %}
+                <a href="{{ courseentry_admin_url }}" class="item
+            {% ifactive courseentry_admin_url %}
+                active
+            {% endifactive %}
+                ">
+                    Administration Kurse
                 </a>
             {% endif %}
             <a class="item" href="{{ logout_url }}">
