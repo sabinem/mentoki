@@ -1,17 +1,6 @@
 {% extends "desk/pages/base.html" %}
 {% block desk_header %}Kurszugang für Adminstratoren{% endblock %}
 {% block work %}
-
-   <div class="ui segment teal">
-   <div class="ui header large">Kursvorlagen</div>
-   <div class="ui list">
-   {% for course in courses %}
-       {% url 'coursebackend:lesson:start' course_slug=course.slug as course_url %}
-       <a class="item" href="{{ course_url }}">{{ course.title }}</a>
-   {% endfor %}
-   </div>
-   </div>
-
     <div class="ui segment teal">
 
     <div class="ui header large">Offene Kurseereignisse</div>
@@ -62,6 +51,17 @@
     </table>
 
    </div>
+   <div class="ui segment teal">
+   <div class="ui header large">Kursvorlagen</div>
+   <div class="ui list">
+   {% for course in courses %}
+       {% url 'coursebackend:lesson:start' course_slug=course.slug as course_url %}
+       <a class="item" href="{{ course_url }}">{{ course.title }}</a>
+   {% endfor %}
+   </div>
+   </div>
+
+
 
     <div class="ui segment teal">
 
