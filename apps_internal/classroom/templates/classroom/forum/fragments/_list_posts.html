@@ -7,8 +7,13 @@
         <div class="comment">
 
             <a class="avatar">
+            {% if post.author.profile_image %}
+                <img src="{{ post.author.profile_image.url }}">
 
-                    <img src="{{ post.author.profile_image.url }}">
+            {% else %}
+                <i class="user icon"></i>
+            {% endif %}
+
 
             </a>
 

@@ -3,6 +3,7 @@
 
     <thead>
         <tr>
+            <th></th>
             <th>Benutzername</th>
             <th>Name</th>
             <th>Email</th>
@@ -12,7 +13,14 @@
     <tbody>
     {% for participant in participants %}
        <tr>
+            <td>
+            {% if participant.profile_image %}
+                <img class="ui image small circular" src="{{ participant.profile_image.url }}">
 
+            {% else %}
+                <i class="user icon"></i>
+            {% endif %}
+           </td>
            <td>{{ participant.user.username }}</td>
            <td>{{ participant.user.first_name }} {{ participant.user.last_name }}</td>
            <td>{{ participant.user.email }}</td>
