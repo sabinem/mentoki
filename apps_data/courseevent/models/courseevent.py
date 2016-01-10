@@ -325,7 +325,7 @@ class ParticipationManager(models.Manager):
         return self.filter(courseevent=courseevent, hidden=False).select_related('user')
 
     def learners_emails(self, courseevent):
-        return self.filter(courseevent=courseevent).select_related('user').\
+        return self.filter(courseevent=courseevent, hidden=False).select_related('user').\
             values_list('user__email', flat=True)
 
     def active(self,courseevent):

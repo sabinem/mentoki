@@ -282,6 +282,10 @@ class PostManager(models.Manager):
         return set(self.filter(thread=thread).select_related('author')\
             .values_list('author__email', flat=True))
 
+    def contributors_ids(self, thread):
+        return set(self.filter(thread=thread).select_related('author')\
+            .values_list('author__id', flat=True))
+
 
 class Post(ForumContributionModel):
 

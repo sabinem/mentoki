@@ -1,17 +1,14 @@
 {% extends "email/base_internal_email.html" %}
 
 {% block email_to %}
-     {{ courseevent.email_greeting }}:
+     {{ courseevent.title }}: Forum
 {% endblock %}
 
 {% block email_title %}
-    Es gibt einen neuen Post von {{ post.author }} zu dem Beitrag "{{ thread.title }}".
+    Es gibt einen neuen Post von {{ post.author }} zu dem Beitrag "{{ thread.title }}":
 {% endblock %}
 
 {% block email_text %}
-    <p>Du erhältst diese Nachricht, weil Du selbst dazu gepostet hast oder weil Du ein</p>
-    Kursleiter bist.
-    <hr>
     <h2>{{ post.title }}</h2>
     <p>{{ post.text | safe}}</p>
     <a href="http://{{ site }}{%  url 'classroom:forum:thread' pk=thread.pk slug=courseevent.slug %}">

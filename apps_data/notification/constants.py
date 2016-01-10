@@ -12,20 +12,17 @@ from django.utils.translation import ugettext_lazy as _
 from django_enumfield import enum
 
 
-# coding: utf-8
-
-
-class NotificationSetting(enum.Enum):
+class NotificationType(enum.Enum):
     """
     Eventually in the future there will be more states, like the reason
     why the customer cannot buy the product.
     """
-    SHOW_NOTIFICATIONS = 1
-    SEND_EMAIL = 2
-    BOTH = 3
+    THREAD_CREATED = 1
+    POST_CREATED = 2
+    ANNOUNCEMENT = 3
 
     labels = {
-        SHOW_NOTIFICATIONS: _('nur Nachrichten'),
-        SEND_EMAIL: _('nur Emails'),
-        BOTH: _('beides: emails und Nachrichten'),
+        THREAD_CREATED: _('neuer Beitrag'),
+        POST_CREATED: _('neuer Post'),
+        ANNOUNCEMENT: _('Ankündingung'),
     }

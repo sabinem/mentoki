@@ -90,7 +90,7 @@ class ClassroomMenuItemManager(models.Manager):
                            item_type__in=['lessonstep', 'lesson'],
                            ).values_list('classlesson_id', flat=True)
         return ClassLesson.objects.filter(id__in=ids).get_descendants(include_self=True).\
-            filter(level=3, is_homework=True)
+            filter(level=3, is_homework=True, show_work_area=True)
 
     def forum_ids_published_in_class(self, courseevent):
         """

@@ -10,6 +10,8 @@ from django.views.generic import TemplateView
 
 from braces.views import LoginRequiredMixin
 
+from apps_data.notification.models.classroomnotification import ClassroomNotification
+
 import logging
 logger = logging.getLogger('activity.users')
 
@@ -33,6 +35,10 @@ class DeskLearnView(
                     % self.request.user)
         context = super(DeskLearnView, self).get_context_data(**kwargs)
         context['study_courseevents'] = self.request.user.studying()
+        context['notifications'] = ClassroomNotification.objects.notification_by_user(
+            user = self.request.user,
+
+        )
 
         return context
 

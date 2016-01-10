@@ -18,6 +18,8 @@ from mailqueue.models import MailerMessage
 
 from apps_data.course.models.course import CourseOwner
 from apps_data.courseevent.models.forum import Post
+from apps_data.notification.models.classroomnotification import ClassroomNotification
+from accounts.models import User
 
 import logging
 logger = logging.getLogger(__name__)
@@ -25,6 +27,19 @@ logger = logging.getLogger(__name__)
 def send_post_notification(post, thread, courseevent, module):
 
     course = courseevent.course
+    contributors_ids = Post.objects.contributors_ids(thread=thread)
+    contributors = User.objects.filter(id__in=contributors_ids)
+
+    for contributor in contributors:
+        ClassroomNotification.objects.create(
+            user = contributor,
+            courseevent=courseevent,
+            thread = post.thread,
+            description = "Neuer Post zum Beitrag %s." %
+                thread.title
+        )
+
+
     thread_emails = \
         list(Post.objects.contributors_emails(thread=thread))
     teachers_emails = \
@@ -42,9 +57,8 @@ def send_post_notification(post, thread, courseevent, module):
 
     message = get_template('email/forum/newpost.html').render(Context(context))
 
-    mail_message = MailerMessage()
     mail_message = MailerMessage(
-       subject = courseevent.email_greeting,
+       subject = "%s: Forum" % courseevent.title,
        bcc_address = settings.MENTOKI_COURSE_EMAIL,
        to_address = send_all,
        from_address = settings.MENTOKI_COURSE_EMAIL,

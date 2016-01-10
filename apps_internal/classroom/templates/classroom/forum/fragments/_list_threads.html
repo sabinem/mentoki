@@ -8,6 +8,10 @@
 
     {% for thread in threads %}
 
+        {% url 'classroom:forum:thread' slug=courseevent.slug pk=thread.pk as detail_url %}
+        {% url 'classroom:forum:thread_update' slug=courseevent.slug pk=thread.pk as update_url %}
+        {% url 'classroom:forum:thread_delete' slug=courseevent.slug pk=thread.pk as delete_url %}
+
     <div class="comment">
 
 
@@ -23,7 +27,7 @@
 
         <div class="content">
 
-            <a href="{% url 'classroom:forum:thread' slug=courseevent.slug pk=thread.pk %}" class="author">
+            <a href="{{ detail_url }}" class="author">
 
                 {{ thread.author }}: {{ thread.title }}
 
@@ -34,7 +38,7 @@
 
                 gestartet:
                 <span class="date">{{ thread.created | date:"D d M" }}, </span>
-{% if thread.post_count > 0 %}
+            {% if thread.post_count > 0 %}
                 <p>Antworten:
 
                     <div class="ui circular label">
@@ -44,15 +48,17 @@
                 </p>
                 letzter Post: <span class="date">{{ thread.modified | date:"D d M" }}</span>
                     von <span class="author">{{ thread.last_author }}</span>
-
-     {% endif %}
+            {% else %}
+                <a href="{{ update_url }}"><i class="icon write"></i></a>
+                <a href="{{ delete_url }}"><i class="icon trash"></i></a>
+            {% endif %}
 
             </div>
 
 
             <p>{{ thread.text | safe | truncatewords:20 }}</p>
 
-                <a class="reply ui button mini" href="{% url 'classroom:forum:thread' slug=courseevent.slug pk=thread.pk %}">
+                <a class="reply ui button mini" href="{{ detail_url }}">
                 mehr lesen / antworten?
                 </a>
 

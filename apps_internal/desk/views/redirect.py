@@ -8,7 +8,6 @@ from django.views.generic import RedirectView
 from braces.views import MessageMixin, LoginRequiredMixin
 
 from accounts.models import User
-from accounts.constants import StartDesk
 
 
 import logging

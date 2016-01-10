@@ -5,13 +5,13 @@
 {% endblock %}
 
 {% block email_title %}
-    Es gibt einen neuen Beitrag von {{ thread.author }} im Forum {{ forum.title }}:
+    {{ thread.author }} hat seinen Beitrag "{{ thread.title }}" im Forum {{ forum.title }} gelöscht:
 {% endblock %}
 
 {% block email_text %}
     <h2>{{ thread.title }}</h2>
     <p>{{ thread.text | safe}}</p>
-    <a href="http://{{ site }}{%  url 'classroom:forum:thread' pk=thread.pk slug=courseevent.slug %}">
-        Link zum Beitrag im Klassenzimmer
+    <a href="http://{{ site }}{%  url 'classroom:forum:detail' pk=thread.forum_id slug=courseevent.slug %}">
+        Link zum Forum im Klassenzimmer
     </a>
 {% endblock %}

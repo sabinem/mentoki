@@ -82,6 +82,7 @@ INSTALLED_APPS += (
     'apps_data.courseevent',
     'apps_data.material',
     'apps_data.lesson',
+    'apps_data.notification',
 
     'apps_internal.desk',
     'apps_internal.coursebackend',
