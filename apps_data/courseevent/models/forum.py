@@ -305,7 +305,7 @@ class Post(ForumContributionModel):
     class Meta:
         verbose_name = "Post (Forum)"
         verbose_name_plural = "Posts (Forum)"
-        ordering = [ '-modified' ]
+        ordering = [ 'modified' ]
 
     def __unicode__(self):
         return u'%s: %s: %s' % (str(self.courseevent_id), str(self.thread_id), self.title)
