@@ -17,6 +17,7 @@ from django.conf import settings
 from mailqueue.models import MailerMessage
 
 from apps_data.course.models.course import CourseOwner
+from apps_data.courseevent.models.courseevent import CourseEvent
 
 import logging
 logger = logging.getLogger(__name__)
@@ -25,10 +26,12 @@ logger = logging.getLogger(__name__)
 def send_thread_notification(author, thread, forum, courseevent, module):
 
     course = courseevent.course
+    participants_emails = \
+        list(CourseEvent.objects.learners_emails(courseevent=courseevent))
     teachers_emails = \
         list(CourseOwner.objects.teachers_emails(course=course))
-    all_emails = set(teachers_emails + [author.email])
-    send_all = ", ".join(all_emails)
+    all_emails = set(participants_emails + teachers_emails)
+    send_all = (", ".join(all_emails))
 
     context = {
         'site': Site.objects.get_current(),
