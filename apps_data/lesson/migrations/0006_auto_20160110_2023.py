@@ -14,11 +14,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='classlesson',
             name='show_work_area',
-            field=models.BooleanField(default=True),
+            field=models.BooleanField(default=False),
         ),
         migrations.AddField(
             model_name='lesson',
             name='show_work_area',
-            field=models.BooleanField(default=True),
+            field=models.BooleanField(default=False),
         ),
     ]

@@ -27,17 +27,17 @@ logger = logging.getLogger(__name__)
 def send_post_notification(post, thread, courseevent, module):
 
     course = courseevent.course
-    contributors_ids = Post.objects.contributors_ids(thread=thread)
-    contributors = User.objects.filter(id__in=contributors_ids)
+    #contributors_ids = Post.objects.contributors_ids(thread=thread)
+    #contributors = User.objects.filter(id__in=contributors_ids)
 
-    for contributor in contributors:
-        ClassroomNotification.objects.create(
-            user = contributor,
-            courseevent=courseevent,
-            thread = post.thread,
-            description = "Neuer Post zum Beitrag %s." %
-                thread.title
-        )
+    #for contributor in contributors:
+    #    ClassroomNotification.objects.create(
+    #        user = contributor,
+    #        courseevent=courseevent,
+    #        thread = post.thread,
+    #        description = "Neuer Post zum Beitrag %s." %
+    #            thread.title
+    #    )
 
 
     thread_emails = \
