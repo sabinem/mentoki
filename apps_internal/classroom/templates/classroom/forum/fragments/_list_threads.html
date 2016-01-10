@@ -31,18 +31,21 @@
 
             <div class="metadata">
 
-                {% if thread.post_count > 0 %}
+
+                gestartet:
+                <span class="date">{{ thread.created | date:"D d M" }}, </span>
+{% if thread.post_count > 0 %}
+                <p>Antworten:
+
                     <div class="ui circular label">
                         {{ thread.post_count }}
                     </div>
-                {% endif %}
 
-                <span class="date">{{ thread.modified | date:"D d M" }}, </span>
-
-                letzter Post: <span class="date">{{ thread.created | date:"D d M" }}</span>
+                </p>
+                letzter Post: <span class="date">{{ thread.modified | date:"D d M" }}</span>
                     von <span class="author">{{ thread.last_author }}</span>
 
-
+     {% endif %}
 
             </div>
 
@@ -50,7 +53,7 @@
             <p>{{ thread.text | safe | truncatewords:20 }}</p>
 
                 <a class="reply ui button mini" href="{% url 'classroom:forum:thread' slug=courseevent.slug pk=thread.pk %}">
-                mehr
+                mehr lesen / antworten?
                 </a>
 
         </div>
