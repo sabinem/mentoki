@@ -5,7 +5,13 @@
     <div class="comment">
 
         <a class="avatar">
-            <img src="{{ thread.author.profile_image.url }}">
+            {% if thread.author.profile_image %}
+                <img src="{{ thread.author.profile_image.url }}">
+
+            {% else %}
+                <i class="user icon"></i>
+            {% endif %}
+
         </a>
 
         <div class="content">
