@@ -12,21 +12,20 @@ from django.utils.translation import ugettext_lazy as _
 from django_enumfield import enum
 
 
-class StartDesk(enum.Enum):
+# coding: utf-8
+
+
+class NotificationSetting(enum.Enum):
     """
     Eventually in the future there will be more states, like the reason
     why the customer cannot buy the product.
     """
-    INITIAL = 0
-    LEARN = 1
-    TEACH = 2
-    ACCOUNT = 3
-    PROFILE = 4
+    SHOW_NOTIFICATIONS = 1
+    SEND_EMAIL = 2
+    BOTH = 3
 
     labels = {
-        INITIAL: _('Start'),
-        LEARN: _('Kurse zum Lernen'),
-        TEACH: _('Eigener Unterricht'),
-        ACCOUNT: _('Buchungsübersicht'),
-        PROFILE: _('Profildaten')
+        SHOW_NOTIFICATIONS: _('nur Nachrichten'),
+        SEND_EMAIL: _('nur Emails'),
+        BOTH: _('beides: emails und Nachrichten'),
     }

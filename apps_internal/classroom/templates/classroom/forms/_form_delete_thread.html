@@ -1,6 +1,6 @@
 {{ form.media }}
+{% url 'classroom:forum:detail' slug=courseevent.slug pk=thread.forum_id as back_url %}
 
-{% url 'classroom:classlesson:privatelist' slug=es pk=lessonstep.pk as back_url %}
 <form class="ui form" method="post" action="" >{% csrf_token %}
 
     {% include 'classroom/forms/form_fields/_form_non_field_errors.html' %}

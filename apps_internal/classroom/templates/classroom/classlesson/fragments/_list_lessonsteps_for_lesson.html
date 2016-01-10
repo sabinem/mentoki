@@ -17,12 +17,16 @@
                     </a>
                     {% if lessonstep.is_homework %}
                         <a class="ui orange label">interaktiv</a>
+
+                        {% if lessonstep.show_work_area %}
+
                         <a href="{{ turnedin_url }}">
                             <div class="ui label medium">
                                 {{ lessonstep.studentswork_count }}
                                 Beiträge abgegeben
                             </div>
                         </a>
+                        {% endif %}
                     {% endif %}
                 </div>
                 <div>

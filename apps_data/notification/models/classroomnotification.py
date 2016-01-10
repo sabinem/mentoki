@@ -11,11 +11,12 @@ from __future__ import unicode_literals, absolute_import
 from django.db import models
 
 from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
 
 
 from model_utils.models import TimeStampedModel
 
-from apps_data.courseevent.models.courseevent import CourseEventParticipation
+from apps_data.courseevent.models.courseevent import CourseEvent
 from apps_data.courseevent.models.forum import Thread
 from ..constants import NotificationType
 from django_enumfield import enum
@@ -25,24 +26,20 @@ logger = logging.getLogger('data.userprofile')
 
 
 class ClassroomNotificationManager(models.Manager):
-    def notification_user_courseevent(self, cou):
+    def notification_by_user(self, user):
         """
-        gets all mentors ordered, including their user data
-        :return: mentors queryset
+        Notification Manager
         """
         return self.filter(user=user)\
-            .select_related('user').\
+            .select_related('thread').\
             order_by('created')
 
 
 class ClassroomNotification(TimeStampedModel):
     """
-    Mentor is the role of teaching at mentoki
     """
-    courseeventparticipation = models.ForeignKey(
-        CourseEventParticipation,
-        verbose_name=_("Kurs-Teilnahme"),
-    )
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
+    courseevent = models.ForeignKey(CourseEvent, blank=True, null=True)
     notification_type = enum.EnumField(
         NotificationType,
         default=NotificationType.POST_CREATED,
@@ -51,7 +48,9 @@ class ClassroomNotification(TimeStampedModel):
         Thread,
         blank=True,
         null=True)
-    description = models.TextField()
+    description = models.TextField(
+        verbose_name="Beschreibung",
+    )
 
     objects = ClassroomNotificationManager()
 

@@ -26,9 +26,15 @@
 
             <h4 class="ui horizontal divider header">
                 <i class="write icon"></i>
-                Einen neuen Beitrag schreiben?
+                Beitrag löschen
             </h4>
-            {% include 'classroom/forms/_form_thread.html' %}
+
+            {% include 'classroom/forum/fragments/_instance_thread.html' %}
+            <div class="ui message warning">
+                Willst Du diesen Beitrag wirklich löschen?
+
+            </div>
+            {% include 'classroom/forms/_form_delete_thread.html' %}
 
         </div>
     </div>

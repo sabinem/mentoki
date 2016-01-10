@@ -41,7 +41,7 @@ def send_work_published_notification(studentswork, courseevent, module):
     message = get_template('email/homework/newhomework.html').render(Context(context))
 
     mail_message = MailerMessage(
-       subject = courseevent.email_greeting,
+       subject = "%s: Aufgaben" % courseevent.title,
        bcc_address = settings.MENTOKI_COURSE_EMAIL,
        to_address = send_all,
        from_address = settings.MENTOKI_COURSE_EMAIL,

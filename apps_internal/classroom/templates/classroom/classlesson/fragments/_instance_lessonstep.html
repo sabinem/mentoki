@@ -38,9 +38,13 @@
 
     {% endif %}
 
-    <!-- homework -->
     {% if lessonstep.is_homework %}
-        <a class="ui orange label">interaktiv</a>
+
+    <a class="ui orange label">interaktiv</a>
+
+    {% endif %}
+    <!-- homework -->
+    {% if lessonstep.is_homework and lessonstep.show_work_area %}
 
         <br>
 
@@ -54,7 +58,7 @@
 
 </div>
 
-{% if lessonstep.is_homework %}
+{% if lessonstep.is_homework and lessonstep.show_work_area %}
     {% include 'classroom/classlesson/fragments/_menu_work.html' %}
 {% endif %}
 
@@ -80,7 +84,7 @@
 
 
 <!-- homework -->
-{% if lessonstep.is_homework %}
+{% if lessonstep.is_homework and lessonstep.show_work_area %}
 
     {% if lessonstep.due_date %}
         <p>

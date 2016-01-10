@@ -46,7 +46,7 @@ def send_work_comment_notification(studentswork, comment, courseevent, module):
     message = get_template('email/homework/newcomment.html').render(Context(context))
 
     mail_message = MailerMessage(
-       subject = courseevent.email_greeting,
+       subject = "%s: Aufgaben" % courseevent.title,
        bcc_address = settings.MENTOKI_COURSE_EMAIL,
        to_address = send_all,
        from_address = settings.MENTOKI_COURSE_EMAIL,

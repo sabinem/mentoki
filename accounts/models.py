@@ -13,7 +13,7 @@ from django.utils.translation import ugettext_lazy as _
 from apps_data.course.models.course import Course
 from apps_data.courseevent.models.courseevent import CourseEvent
 
-from .constants import StartDesk
+from .constants import NotificationSetting
 from django_enumfield import enum
 
 import logging
@@ -131,12 +131,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     checkout_product_pk = models.IntegerField(
         blank=True, null=True
     )
-    #TODO: remove this field?
-    # this field is not use so far, it is meant to determine a users
-    # preference about what is on his desk when he logs in
-    start_desk = enum.EnumField(
-        StartDesk,
-        default=StartDesk.INITIAL
+    notification_setting = enum.EnumField(
+        NotificationSetting,
+        default=NotificationSetting.BOTH
     )
     objects = UserManager()
 

@@ -41,7 +41,7 @@ def send_thread_notification(author, thread, forum, courseevent, module):
     message = get_template('email/forum/newthread.html').render(Context(context))
 
     mail_message = MailerMessage(
-       subject = courseevent.email_greeting,
+       subject = "%s: Forum" % courseevent.title,
        bcc_address = settings.MENTOKI_COURSE_EMAIL,
        to_address = send_all,
        from_address = settings.MENTOKI_COURSE_EMAIL,
@@ -53,6 +53,50 @@ def send_thread_notification(author, thread, forum, courseevent, module):
     mail_message.save()
 
     logger.info("[%s] [Forum %s %s][Beitrag %s %s][Email %s %s]: gesendet an %s"
+            % (courseevent,
+               forum.id,
+               forum.title,
+               thread.id,
+               thread.title,
+               mail_message.id,
+               mail_message,
+               send_all))
+
+    return send_all
+
+
+def send_thread_delete_notification(author, thread, forum, courseevent, module):
+
+    course = courseevent.course
+    teachers_emails = \
+        list(CourseOwner.objects.teachers_emails(course=course))
+    all_emails = set(teachers_emails + [author.email])
+    send_all = ", ".join(all_emails)
+
+    context = {
+        'site': Site.objects.get_current(),
+        'courseevent': courseevent,
+        'author': author,
+        'thread': thread,
+        'betreff': courseevent.email_greeting
+    }
+
+    message = get_template('email/forum/deletedthread.html').render(Context(context))
+
+    mail_message = MailerMessage(
+       subject = "%s: Forum" % courseevent.title,
+       bcc_address = settings.MENTOKI_COURSE_EMAIL,
+       to_address = send_all,
+       from_address = settings.MENTOKI_COURSE_EMAIL,
+       content = "%s hat seinen Beitrag %s gelöscht" % (author.username, thread.title),
+       html_content = message,
+       reply_to = None,
+       app = module
+    )
+
+    mail_message.save()
+
+    logger.info("[%s] [Forum %s %s][Beitrag gelöscht %s %s][Email %s %s]: gesendet an %s"
             % (courseevent,
                forum.id,
                forum.title,

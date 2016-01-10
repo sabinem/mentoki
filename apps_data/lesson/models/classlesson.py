@@ -162,7 +162,7 @@ class ClassLessonManager(LessonManager):
 
         return self.filter(courseevent=courseevent,
                            is_homework=True,
-
+                           show_work_area=True,
                            ).order_by('created')
 
 

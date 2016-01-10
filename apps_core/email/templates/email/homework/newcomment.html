@@ -1,17 +1,14 @@
 {% extends "email/base_internal_email.html" %}
 
 {% block email_to %}
-    {{ courseevent.email_greeting }}:
+    {{ courseevent.title }}: Aufgaben
 {% endblock %}
 
 {% block email_title %}
-    Es gibt einen neuen Kommentar von {{ comment.author }} zu "{{ studentswork.title }}".
+    Es gibt einen neuen Kommentar von {{ comment.author }} zu "{{ studentswork.title }}":
 {% endblock %}
 
 {% block email_text %}
-    <p style="color:grey; font-size:12px;">Du erhältst diese Nachricht, weil Du selbst kommentriert hast, Kursleiter bist
-    oder der Arbeitsgruppe angehörst.</p>
-    <hr>
     <h2>{{ comment.title }}</h2>
     <p>{{ comment.text | safe}}</p>
     <a href="http://{{ site }}{%  url 'classroom:classlesson:publicstudentswork' work_pk=studentswork.pk pk=homework.pk slug=courseevent.slug %}">

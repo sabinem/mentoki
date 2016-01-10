@@ -102,9 +102,18 @@
             {{ form.is_homework.errors }}
         </div>
     {% endif %}
-     <p>Beinhaltet dieser Lernabschnitt eine Aufgabe?</p>
-    {{ form.is_homework }}
-    <p></p>
+     <p>{{ form.is_homework }} Beinhaltet dieser Lernabschnitt eine Aufgabe?
+
+    </p>
+    {% if form.show_work_area.errors %}
+        <div class="ui negative floating message">
+            {{ form.show_work_area.errors }}
+        </div>
+    {% endif %}
+    <p>{{ form.show_work_area }} Soll der private Arbeitsbereich benutzt werden?</p>
+
+
+
 
     <div class="ui dividing large header">Aufgabe: Ergänzungen/Abgabedatum</div>
     <p>Diesen Bereich bitte nur ausfüllen, wenn es sich um eine Aufgabe handelt</p>

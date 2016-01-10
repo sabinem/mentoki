@@ -126,6 +126,7 @@ class BaseLesson(MPTTModel):
         null=True)
 
     is_homework = models.BooleanField(default=False)
+    show_work_area = models.BooleanField(default=False)
 
     objects = BaseLessonManager()
 
