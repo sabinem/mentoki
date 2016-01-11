@@ -49,8 +49,10 @@
                 letzter Post: <span class="date">{{ thread.modified | date:"D d M" }}</span>
                     von <span class="author">{{ thread.last_author }}</span>
             {% else %}
+                {% if request.user == thread.author %}
                 <a href="{{ update_url }}"><i class="icon write"></i></a>
                 <a href="{{ delete_url }}"><i class="icon trash"></i></a>
+                {% endif %}
             {% endif %}
 
             </div>
