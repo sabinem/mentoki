@@ -42,6 +42,7 @@ def send_post_notification(post, thread, courseevent, module):
 
     thread_emails = \
         list(Post.objects.contributors_emails(thread=thread))
+    thread_emails.append(thread.author.email)
     teachers_emails = \
         list(CourseOwner.objects.teachers_emails(course=course))
     all_emails = set(thread_emails + teachers_emails)
