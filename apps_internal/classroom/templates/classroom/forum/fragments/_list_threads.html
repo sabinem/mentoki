@@ -51,7 +51,6 @@
             {% else %}
                 {% if request.user == thread.author %}
                 <a href="{{ update_url }}"><i class="icon write"></i></a>
-                <a href="{{ delete_url }}"><i class="icon trash"></i></a>
                 {% endif %}
             {% endif %}
 
