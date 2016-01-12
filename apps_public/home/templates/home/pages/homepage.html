@@ -2,22 +2,20 @@
 {% load i18n %}
 {% block main_content %}
 
-    <!-- urls -->
     {% url 'storefront:list_now' as courselist_url %}
     {% url 'home:educationmentor' as educationmonitor_url %}
     {% url 'home:public' slug="online-unterrichten" as teachonline_url %}
 
-    <!-- grid -->
     <div class="ui grid one column centered" id="homepage" style="padding-bottom:0px;">
 
-         <!-- one column -->
+
          <div class="sixteen wide column">
 
-             <!-- logo -->
+
              <img class="ui image centered large image" src="/static/img/mentoki_logo_untertitel.jpg"
                   style="opacity:0.9;"
-                     alt="mentoki lernen und lehren lebenslang">
-             <!-- image -->
+                     alt="mentoki logo: lernen und lehren lebenslang">
+
              <img class="ui image fluid" src="/static/img/mentoki_homepage1.jpg"
                      alt="Leute verschiedenen Alters, die online lernen">
 
@@ -78,7 +76,9 @@
                         </div>
 
                             <img class="ui image centered medium image"
-                                  src="/static/img/42308644_s.jpg">
+                                  src="/static/img/42308644_s.jpg"
+                                    alt="Zwei Menschen, die zusammensitzen und lernen"
+                                    >
 
                         <div class="ui header centered aligned" style="padding-bottom:30px;">
                             <a class="ui basic button large" href="{{ courselist_url }}">
@@ -99,7 +99,8 @@
                         </div>
 
                             <img class="ui image centered medium image"
-                                src="/static/img/42198953_s.jpg">
+                                src="/static/img/42198953_s.jpg"
+                                alt="Ein Becher mit Stiften vor einer beschreibenen Tafel">
 
                         <div class="ui header centered aligned" style="padding-bottom:30px;">
                             <a class="ui basic button large" href="{{ teachonline_url }}">
@@ -139,11 +140,13 @@
                 <div class="two column computer only row">
                     <div class="column six wide">
                             <img class="ui image centered medium image"
-                                  src="/static/img/42308644_s.jpg">
+                                  src="/static/img/42308644_s.jpg"
+                                  alt="Zwei Menschen, die zusammensitzen und lernen"  >
                     </div>
                     <div class="column six wide">
                             <img class="ui image centered medium image"
-                                  src="/static/img/42198953_s.jpg">
+                                  src="/static/img/42198953_s.jpg"
+                                  alt="Ein Becher mit Stiften vor einer beschreibenen Tafel"  >
                     </div>
                 </div>
                 <div class="two column computer only row">
@@ -193,11 +196,13 @@
                 <div class="two column tablet only row">
                     <div class="column six wide">
                             <img class="ui image centered medium image"
-                                  src="/static/img/42308644_s.jpg">
+                                  src="/static/img/42308644_s.jpg"
+                                  alt="Zwei Menschen, die zusammensitzen und lernen"  >
                     </div>
                     <div class="column six wide">
                             <img class="ui image centered medium image"
-                                  src="/static/img/42198953_s.jpg">
+                                  src="/static/img/42198953_s.jpg"
+                                  alt="Ein Becher mit Stiften vor einer beschreibenen Tafel"  >
                     </div>
                 </div>
                 <div class="two column tablet only row">
