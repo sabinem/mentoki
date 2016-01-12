@@ -26,11 +26,12 @@ logger = logging.getLogger(__name__)
 def send_thread_notification(author, thread, forum, courseevent, module):
 
     course = courseevent.course
-    participants_emails = \
-        list(CourseEventParticipation.objects.learners_emails(courseevent=courseevent))
+    #participants_emails = \
+    #    list(CourseEventParticipation.objects.learners_emails(courseevent=courseevent))
     teachers_emails = \
         list(CourseOwner.objects.teachers_emails(course=course))
-    all_emails = set(participants_emails + teachers_emails)
+    #all_emails = set(participants_emails + teachers_emails)
+    all_emails = set(teachers_emails)
     send_all = (", ".join(all_emails))
 
     context = {
