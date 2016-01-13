@@ -331,7 +331,15 @@ LOGGING = {
             'maxBytes': 500000,  # 500 kB
             'backupCount': 4  ,
         },
-
+        # log for handling of email
+        'file_email': {
+            'filename': os.path.join(BASE_DIR, 'logfiles', 'email_sendlog.log' ),
+            'formatter': 'verbose',
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'maxBytes': 500000,  # 500 kB
+            'backupCount': 4  ,
+        },
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
@@ -409,6 +417,12 @@ LOGGING = {
             'handlers': ['file_courseevent'],
             'propagate': False,
         },
+        'email.sendout' : {
+            'level': 'DEBUG',
+            'handlers': ['file_email'],
+            'propagate': False,
+        },
+
     },
 }
 
