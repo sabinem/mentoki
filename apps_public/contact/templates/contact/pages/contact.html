@@ -1,7 +1,7 @@
 {% extends "base/base_public.html" %}
 {% load i18n %}
 {% load cache %}
-{% cache 5000 contact_page_background %}
+{% cache contact_page_background %}
 {% block background_image %}background: url('/static/img/45169729_l_l.jpg');{% endblock %}
 {% endcache %}
 {% block meta_post_title %}{{ meta.title }} | mentoki{% endblock %}

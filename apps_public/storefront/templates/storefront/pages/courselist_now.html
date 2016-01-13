@@ -5,12 +5,12 @@
 {% block meta_post_title %}{{ meta.title }} | Kurse bei mentoki{% endblock %}
 {% block meta_post_title_tmp %}{{ meta.title }} | Kurse bei mentoki{% endblock %}
 
-{% cache 5000 courses_background %}
+{% cache courses_background %}
 {% block background_image %}background: url('/static/img/45169729_l_l.jpg');{% endblock %}
 {% endcache %}
 
 {% block main_content %}
-{% cache 5000 list_now_page %}
+{% cache list_now_page %}
 
     <div class="ui grid container" style="padding-bottom:100px;">
 
