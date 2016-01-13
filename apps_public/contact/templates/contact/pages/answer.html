@@ -1,6 +1,6 @@
 {% extends "base/base_public.html" %}
 {% load cache %}
-{% cache contact_answer_background %}
+{% cache 50000 contact_answer_background %}
 {% block background_image %}background: url('/static/img/45169729_l_l.jpg');{% endblock %}
 {% endcache %}
 {% block main_content %}

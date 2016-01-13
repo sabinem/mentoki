@@ -7,7 +7,7 @@
 {% block meta_post_title_tmp %}{{ meta.title }}{% endblock %}
 
 {% block  main_content %}
-{% cache productgroup_menu courseproductgroup.slug %}
+{% cache 50000 productgroup_menu courseproductgroup.slug %}
     {% url 'home:home' as home_url %}
     {% url 'storefront:list_now' as course_url %}
 

@@ -41,7 +41,7 @@
 
             </div>
         </div>
-        {% cache 5000 productgroup_fields courseproductgroup.slug %}
+        {% cache 50000 productgroup_fields courseproductgroup.slug %}
         {% for product_field in product_fields %}
              <div class="ui centered  grid" id="{{ product_field.pagemark }}"
                  style="padding-top:60px;padding-bottom:60px;">

@@ -6,7 +6,7 @@
 {% block meta_post_title_tmp %}{{ meta.title }}{% endblock %}
 
 {% block main_content %}
-    {% cache public_page pagedata.slug %}
+    {% cache 50000 public_page pagedata.slug %}
         {% include pagedata.template_name %}
     {% endcache %}
 {% endblock %}

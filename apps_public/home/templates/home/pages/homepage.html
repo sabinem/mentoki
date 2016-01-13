@@ -3,7 +3,7 @@
 {% load cache %}
 
 {% block main_content %}
-{% cache main_homepage %}
+{% cache 50000 main_homepage %}
 
     {% url 'storefront:list_now' as courselist_url %}
     {% url 'home:educationmentor' as educationmonitor_url %}
