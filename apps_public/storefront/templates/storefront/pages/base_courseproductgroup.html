@@ -1,10 +1,13 @@
 {% extends "base/base_course.html" %}
 {% load i18n %}
+{% load cache %}
+{% comment %}USED BY info.py{% endcomment %}
 {% load activelink %}
 {% block meta_post_title %}{{ meta.title }}{% endblock %}
 {% block meta_post_title_tmp %}{{ meta.title }}{% endblock %}
 
 {% block  main_content %}
+{% cache 5000 productgroup_menu courseproductgroup.slug %}
     {% url 'home:home' as home_url %}
     {% url 'storefront:list_now' as course_url %}
 
@@ -97,6 +100,7 @@
             </div>
 
         </div>
+{% endcache %}
         {% block courseproductpage %}
 
         {% endblock %}

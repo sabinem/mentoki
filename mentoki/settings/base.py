@@ -75,7 +75,6 @@ INSTALLED_APPS += (
 
     'apps_productdata.mentoki_product',
 
-    'apps_pagedata.textchunks',
     'apps_pagedata.public',
 
     'apps_data.course',
@@ -87,7 +86,6 @@ INSTALLED_APPS += (
     'apps_internal.desk',
     'apps_internal.coursebackend',
     'apps_internal.classroom',
-
 
     'apps_public.newsletter',
     'apps_public.contact',

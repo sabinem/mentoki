@@ -1,11 +1,12 @@
 {% extends "base/base_public.html" %}
 {% load i18n %}
+{% load cache %}
 
 {% block meta_post_title %}{{ meta.title }}{% endblock %}
 {% block meta_post_title_tmp %}{{ meta.title }}{% endblock %}
 
 {% block main_content %}
-
-    {% include pagedata.template_name %}
-
+    {% cache 5000 public_page pagedata.slug %}
+        {% include pagedata.template_name %}
+    {% endcache %}
 {% endblock %}

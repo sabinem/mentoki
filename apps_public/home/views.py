@@ -2,7 +2,7 @@
 
 """
 Public pages that describe mentoki. Most of these pages are build dynamically
-with text that is fetched from the database.
+and the text is fetched from the database.
 """
 
 from __future__ import unicode_literals
@@ -51,7 +51,6 @@ class MentorsListView(
         return context
 
 
-#TODO: change this not very elegant!
 class MentorsPageView(
     DetailView):
     """
@@ -59,18 +58,9 @@ class MentorsPageView(
     in: slug of the mentor
     out: context of mentor and his courseproducts
     """
-    models = MentorsProfile
+    model = MentorsProfile
     context_object_name = 'mentor'
     template_name = "home/pages/mentor.html"
-    #slug_url_kwarg = 'slug'
-    #slug_field = 'slug'
-
-    def get_queryset(self):
-        """
-        mentor is fetched according to the given slug
-        :return: context of this mentor along with his courseproducts
-        """
-        return MentorsProfile.objects.filter(slug=self.kwargs['slug'])
 
     def get_context_data(self, **kwargs):
         """
@@ -78,8 +68,7 @@ class MentorsPageView(
         :return: context of this mentor along with his courseproducts
         """
         context = super(MentorsPageView, self).get_context_data()
-        mentor = context['mentor']
         context['courseproductgroups'] = \
-            CourseProductGroup.objects.published_by_mentor(user=mentor.user)
+            CourseProductGroup.objects.published_by_mentor(user=context['mentor'].user)
         return context
 

@@ -15,16 +15,14 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from django.views.generic import FormView
 from django.core.exceptions import ObjectDoesNotExist
-from django.forms import ValidationError
 from django.utils.decorators import method_decorator
 from django.http import HttpResponseRedirect
 from django.db import IntegrityError
 from django.utils.encoding import smart_str
-from django.views.decorators.cache import cache_control
 from django.core.serializers.json import DjangoJSONEncoder
 from django.conf import settings
 
-from braces.views import MessageMixin, UserPassesTestMixin, FormMessagesMixin
+from braces.views import MessageMixin, UserPassesTestMixin
 
 import braintree
 

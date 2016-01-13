@@ -1,17 +1,15 @@
 # -*- coding: utf-8 -*-
 
+"""
+redirects to the product that the customer wanted to buy or to the login page
+if he is not logged in yet
+"""
 from __future__ import unicode_literals
 
 from django.core.urlresolvers import reverse
 from django.views.generic import RedirectView
-from django.shortcuts import get_object_or_404
 
 from braces.views import MessageMixin
-
-from apps_customerdata.customer.models.order import Order
-from apps_productdata.mentoki_product.models.courseproduct import CourseProduct
-from apps_productdata.mentoki_product.models.courseproductgroup import CourseProductGroup
-
 
 import logging
 logger = logging.getLogger('public.customers')

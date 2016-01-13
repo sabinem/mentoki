@@ -1,6 +1,9 @@
 {% extends "base/base_public.html" %}
 {% load i18n %}
+{% load cache %}
+{% cache 5000 contact_page_background %}
 {% block background_image %}background: url('/static/img/45169729_l_l.jpg');{% endblock %}
+{% endcache %}
 {% block meta_post_title %}{{ meta.title }} | mentoki{% endblock %}
 {% block meta_post_title_tmp %}{{ meta.title }} | mentoki{% endblock %}
 
@@ -10,8 +13,10 @@
 
     <div class="sixteen wide tablet twelve wide computer column">
        <div class="ui segment">
-           <img class="ui image fluid" src="/static/img/anette_and_sabine.jpg">
-
+           {% cache 5000 contact_image_background %}
+           <img class="ui image fluid" src="/static/img/anette_and_sabine.jpg"
+                   alt="mentokis Gründerinnen: Sabine Maennel und Anette Pekrul">
+           {% endcache %}
 
             <div class="ui header center aligned  large" style="color:#19aaa6;
             font-family: 'Montserrat', sans-serif;

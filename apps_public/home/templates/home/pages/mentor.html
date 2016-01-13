@@ -1,10 +1,13 @@
 {% extends "base/base_public.html" %}
 {% load i18n %}
 
+{% load cache %}
+
 {% block meta_post_title %}{{ meta.title }} | Mentoren bei mentoki{% endblock %}
 {% block meta_post_title_tmp %}{{ meta.title }} | Mentoren bei mentoki{% endblock %}
 
 {% block main_content %}
+{% cache 5000 mentor_page mentor.slug %}
 
     <div class="ui grid container" style="padding-bottom:100px; padding-top:20px;">
 
@@ -15,9 +18,11 @@
                 <div class="ui two column stackable grid">
                     <div class="column five wide">
                         {% if mentor.foto_detail_page %}
-                            <img src="{{ mentor.foto_detail_page.url }}">
+                            <img src="{{ mentor.foto_detail_page.url }}"
+                                 alt="{{ mentor.user.get_full_name }}: Mentor bei mentoki">
                         {% elif mentor.foto %}
-                            <img src="{{ mentor.foto.url }}">
+                            <img src="{{ mentor.foto.url }}"
+                                 alt="{{ mentor.user.get_full_name }}: Mentor bei mentoki">
                         {% endif %}
                     </div>
                     <div class="column ten wide">
@@ -55,7 +60,7 @@
 
                 <div class="ui cards centered">
                     {% for courseproductgroup in courseproductgroups %}
-                        {% include 'storefront/fragments/_coursecard.html' %}
+                        {% include 'home/fragments/_coursecard.html' %}
                     {% endfor %}
                 </div>
 
@@ -63,4 +68,5 @@
         </div>
     </div>
 
+{% endcache %}
 {% endblock %}

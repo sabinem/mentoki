@@ -1,11 +1,13 @@
 {% extends "base/base_public.html" %}
 {% load i18n %}
+{% load cache %}
 
 {% block meta_post_title %}{{ meta.title }} | Mentoren bei mentoki{% endblock %}
 {% block meta_post_title_tmp %}{{ meta.title }} | Mentoren bei mentoki{% endblock %}
 {% block background_image %}background: url('/static/img/45169729_l_l.jpg');{% endblock %}
 
 {% block main_content %}
+{% cache 5000 main_mentorspage %}
 
     <div class="ui grid centered container" style="padding-bottom:100px;">
 
@@ -69,4 +71,5 @@
 
     </div>
 
+{% endcache %}
 {% endblock %}

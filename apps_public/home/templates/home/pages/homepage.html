@@ -1,6 +1,9 @@
 {% extends "base/base_public.html" %}
 {% load i18n %}
+{% load cache %}
+
 {% block main_content %}
+{% cache 5000 main_homepage %}
 
     {% url 'storefront:list_now' as courselist_url %}
     {% url 'home:educationmentor' as educationmonitor_url %}
@@ -225,5 +228,6 @@
         </div>
     </div>
 
+{% endcache %}
 {% endblock %}
 

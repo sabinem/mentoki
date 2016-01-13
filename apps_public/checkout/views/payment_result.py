@@ -1,7 +1,7 @@
 # coding: utf-8
 
 """
-Braintree Integration Payment Form
+Payment Result Views: show payment success or Payment Failure to the Customer
 """
 
 from __future__ import unicode_literals, absolute_import

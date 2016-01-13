@@ -12,7 +12,9 @@ from mailqueue.models import MailerMessage
 
 
 class ContactForm(forms.Form):
-    # Kontaktformular
+    """
+    Contact Form
+    """
 
     name = forms.CharField(
         required=True,
@@ -58,10 +60,6 @@ class ContactForm(forms.Form):
             'betreff': "Ihre Nachricht",
         }
         message = get_template('email/contact/to_customer.html').render(Context(context))
-        #msg = EmailMessage(subject, message, to=to, from_email=from_mail)
-        #msg.content_subtype = 'html'
-        #msg.send()
-
         to_customer = MailerMessage()
         to_customer.subject = "Ihre Nachricht an mentoki"
         to_customer.to_address = self.cleaned_data['email']
@@ -74,10 +72,9 @@ class ContactForm(forms.Form):
 
 
     def send_email_self(self):
-        # send email to self
-        #subject = "Beantworten: Nachricht an Mentoki"
-        #to = ['info@mentoki.com']
-        #from_mail = self.cleaned_data['email']
+        """
+        email is send to mentoki
+        """
         context = {
             'name': self.cleaned_data['name'],
             'email': self.cleaned_data['email'],

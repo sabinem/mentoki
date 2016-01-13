@@ -1,10 +1,13 @@
 # coding: utf-8
 
+"""
+Contact Form and Answer Page
+"""
+
 from __future__ import unicode_literals
 
 from django.views.generic import FormView, TemplateView
 from django.core.urlresolvers import reverse
-from django.utils.safestring import mark_safe
 
 from braces.views import MessageMixin
 
@@ -16,8 +19,9 @@ class ContactView(TemplateMixin, MessageMixin, FormView):
     form_class = ContactForm
 
     def form_valid(self, form):
-        # This method is called when valid form data has been POSTed.
-        # It should return an HttpResponse.
+        """
+        An email is send to mentoki and to the visitor
+        """
         form.send_email_visitor()
         form.send_email_self()
 
@@ -25,10 +29,16 @@ class ContactView(TemplateMixin, MessageMixin, FormView):
         return super(ContactView, self).form_valid(form)
 
     def get_success_url(self):
+        """
+        an answer page is shown
+        """
         return reverse(
             'contact:answer'
         )
 
 
 class AnswerView(TemplateMixin, TemplateView):
+    """
+    Answer Page
+    """
     pass

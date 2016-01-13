@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 
 """
-Infopages of one CourseProductGroup corresponding to Course
-
-There are two info pages: one describes the Course topic and what the teachers
-want to teach their students in general terms.
+Listing of all Products that belong to one Course. This the actual landing page
+for Selling the Courseevents
 """
+
 
 from __future__ import unicode_literals
 
@@ -180,7 +179,7 @@ class CourseGroupDetailView(
     CourseGroupMixin,
     TemplateView):
     """
-    Deteil Page where the Course topic is described
+    Detail Page where the Course topic is described
     """
     template_name = "storefront/pages/coursegroupdetail.html"
 

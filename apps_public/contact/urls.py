@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+"""
+Urls for the Contact Form and for the Answer Page
+"""
+
 from __future__ import unicode_literals
 
 from django.conf.urls import patterns, url
