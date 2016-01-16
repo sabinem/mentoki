@@ -8,10 +8,8 @@
             <div class="ui segment">
                 {% include 'checkout/fragments/_2steps_checkout_2.html' %}
 
-                <!-- messages -->
                 {% for message in messages %}{{ message }}{% endfor %}
 
-                <!-- participant data ----->
                 <h4 class="ui dividing header">Teilnehmer-Daten</h4>
                 <p>
                     {{ user.first_name }} {{ user.last_name }}
@@ -19,7 +17,6 @@
                     <br>Benutzername: {{ user.username }}
                 </p>
 
-                <!-- product ------>
                 <h4 class="ui dividing header">Buchung</h4>
                 <h1 style="color:#19aaa6;
                     font-family: 'Montserrat', sans-serif;
@@ -61,7 +58,6 @@
                     </div>
                 </div>
 
-                <!-- payment form -->
                 <form id="checkout-form" method="post" class="ui form" autocomplete="off">
                     {% csrf_token %}
                     {% if form.non_field_errors %}
@@ -69,7 +65,6 @@
                             {{ form.non_field_errors }}
                         </div>
                     {% endif %}
-                    <!-- payment data part of the form -->
                     <h4 class="ui dividing header">Zahlung</h4>
                     {{ amount }} {{ currency }}
                     {% include 'checkout/fragments/_payers_info_form.html' %}
@@ -91,6 +86,5 @@
             </div>
         </div>
     </div>
-
 
 {% endblock %}
