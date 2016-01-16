@@ -44,7 +44,9 @@
     #coursemenu_mobile{
       display:none;
     }
-
+    .homepage_fixed {
+      height:150px;
+    }
 }
 
 /* media tablet */
@@ -63,6 +65,10 @@
     }
     #coursemenu_mobile{
       display:none;
+    }
+
+    .homepage_fixed {
+      height:200px;
     }
 
 }
@@ -111,6 +117,11 @@
     height:50px; width:auto;
 }
 
+/* only on homepage */
+#mentoki_logo_homepage {
+  opacity:0.9;
+}
+
 /* --------------------------------- */
 /* Styling homepage                  */
 /* --------------------------------- */
@@ -121,15 +132,34 @@
   }
 }
 
-#homepage .mentoki_nice_font {
-    color:#232323;
+#homepage_main_grid {
+  padding:0px;
+  .mentoki_nice_font {
+    color: black;
+    opacity: 0.7;
     font-family: 'Montserrat', sans-serif;
     font-size: 1.3em;
     font-weight: 400;
     line-height: 1.5em;
     -webkit-font-smoothing: antialiased;
+  }
+  #homepage_title {
+    padding-top:0px;
+    margin-top:0px;
+    font-size: 2em;
+    line-height: 1.2em;
+    padding-bottom:0px;
+  }
+  .image_container {
+    height: 200px;
+  }
+  .button_container {
+    padding-bottom:30px;
+  }
+  .public_button {
+    height:80px;
+  }
 }
-
 
 
 /* ------------------------- */
