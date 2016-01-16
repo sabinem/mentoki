@@ -1,31 +1,27 @@
 {% extends "base/base_public.html" %}
 {% load cache %}
 {% cache 50000 contact_answer_background %}
-{% block background_image %}background: url('/static/img/45169729_l_l.jpg');{% endblock %}
+    {% block background_image %}
+        background: url('/static/img/45169729_l_l.jpg');
+    {% endblock %}
 {% endcache %}
 {% block main_content %}
- <div class="ui grid one column centered" style="padding-bottom:50px;
+     <div class="ui grid one column centered" style="padding-bottom:50px;
  padding-top:100px;
  ">
-<div class="center aligned fourteen wide tablet eight wide computer column" id="whitepaper">
+         <div class="center aligned fourteen wide tablet eight wide computer column" id="whitepaper">
 
-         <!-- one column -->
-    <div class="ui segment">
+             <div class="ui segment">
 
-    <h2>Hallo {{ request.session.name  }}</h2>
+                 <h2>Hallo {{ request.session.name  }}</h2>
 
-    Danke für Ihre Nachricht, Sie hören bald von uns!
+                 Danke für Ihre Nachricht, Sie hören bald von uns!
 
-    <p>Mit lieben Grüssen</p>
-        Ihr mentoki<sub>&reg;</sub>-Team
-    <p id="signature">Sabine Maennel und Anette Pekrul</p>
+                 <p>Mit lieben Grüssen</p>
+                 <p>Ihr mentoki<sub>&reg;</sub>-Team</p>
+                 <p id="signature">Sabine Maennel und Anette Pekrul</p>
 
-    </div>
-
+             </div>
          </div>
-
     </div>
-
-
-
 {% endblock %}

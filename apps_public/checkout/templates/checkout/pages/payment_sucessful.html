@@ -7,14 +7,10 @@
             <div class="ui segment">
 
     {% url 'account_reset_password' as password_reset_url %}
-    <!-- text page -->
 
 
             {% url 'desk:learn' as desk_url %}
             {% url 'desk:bookings' as desk_bookings_url %}
-
-
-                    <!-- page content -->
 
 
                     <div class="ui header">Hallo {{ user.get_full_name }}!</div>
@@ -46,8 +42,7 @@
                         </div>
                       </div>
                          </div>
-                    <!-- participant data ----->
-                        <!-- payment data part of the form -->
+
                         <h4 class="ui dividing header">Teilnehmer-Daten</h4>
 
                         {% if user.is_authenticated %}
