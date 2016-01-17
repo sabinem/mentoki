@@ -19,19 +19,19 @@
 
 {% block navbar %}
     {% include 'base/fragments/_navbar.html' %}
-
 {% endblock %}
 
 {% block page %}
      <div id="filler_top_for_mobile" style="padding-top:70px;"></div>
-     <div style="padding-left:10px; padding-right:10px;">
+     <main style="padding-left:10px; padding-right:10px;">
          {% block main_content %}{% endblock %}
-     </div>
+     </main>
 {% endblock %}
 
 
 {% block footer %}
-    {% include 'base/fragments/_footer.html' %}
-
+    <footer id="footer" style="bottom: 0;height: 142px;">
+        {% include 'base/fragments/_footer.html' %}
+    </footer>
 {% endblock %}
 

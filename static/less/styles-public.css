@@ -17,10 +17,8 @@
     display: none;
   }
   #content {
-    padding-top: 70px;
-  }
-  #filler_top_for_mobile {
-    display: none;
+    padding-top: 0px;
+    padding-bottom: 0px;
   }
   #coursemenu_mobile {
     display: none;
@@ -37,11 +35,8 @@
     display: none;
   }
   #content {
-    padding-top: 70px;
-    padding-bottom: 50px;
-  }
-  #filler_top_for_mobile {
-    display: none;
+    padding-top: 0px;
+    padding-bottom: 0px;
   }
   #coursemenu_mobile {
     display: none;
@@ -62,6 +57,7 @@
   }
   #content {
     padding-top: 0;
+    padding-bottom: 0px;
   }
   #public,
   #desk {
@@ -74,6 +70,16 @@
   #coursemenu_pc {
     display: none;
   }
+}
+/* --------------------------------- */
+/* Base template                     */
+/* --------------------------------- */
+#wrapper {
+  min-height: 100%;
+  height: auto !important;
+  margin: 0 auto -142px;
+  background-size: cover;
+  background-attachment: fixed;
 }
 /* --------------------------------- */
 /* Logo in the navbar                */
@@ -111,6 +117,10 @@
   font-weight: 400;
   line-height: 1.5em;
   -webkit-font-smoothing: antialiased;
+}
+#homepage_main_grid .mentoki_color {
+  color: #148582;
+  font-size: 1.1em;
 }
 #homepage_main_grid #homepage_title {
   padding-top: 0px;

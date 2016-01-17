@@ -34,7 +34,9 @@
 
 <a class="item" style="padding:0px; margin: 0px;"
 href="{{ home_url }}">
-<img  class="ui image" style="padding:0px; margin: 0px;" src="/static/img/mentoki_logo_65.png"
+<img  class="ui image"
+      style="padding:0px; margin: 0px;"
+      src="/static/img/mentoki_logo_65.png"
 >
 </a>
 <div class="ui left dropdown item">
@@ -148,6 +150,7 @@ href="{{ home_url }}">
             ">
                 Ihr Lernen
             </a>
+            {% if request.user.is_teacher %}
             <a href="{{ teach_url }}" class="item
             {% ifactive teach_url %}
                 active
@@ -155,6 +158,7 @@ href="{{ home_url }}">
             ">
                 Ihr Unterricht
             </a>
+            {% endif %}
             {% if request.user.customer %}
                 <a href="{{ bookings_url }}" class="item
             {% ifactive bookings_url %}

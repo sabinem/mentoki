@@ -5,6 +5,7 @@
 // the bluegreen mentoki logo color
 @base-url: "/static/img";
 @mentoki_color: #19aaa6;
+@mentoki_color_dark:#148582;
 @desk_background_img: url("@{base-url}/normaldesk.jpg");
 @desk_header_color:#aeb3a4;
 
@@ -35,12 +36,9 @@
     }
     // the content makes space for the navbar
     #content {
-      padding-top:70px;
+      padding-top:0px;
+      padding-bottom:0px;
     }
-    #filler_top_for_mobile{
-      display:none;
-    }
-
     #coursemenu_mobile{
       display:none;
     }
@@ -57,11 +55,8 @@
     }
 
     #content {
-      padding-top:70px;
-      padding-bottom:50px;
-    }
-    #filler_top_for_mobile{
-      display:none;
+      padding-top:0px;
+      padding-bottom:0px;
     }
     #coursemenu_mobile{
       display:none;
@@ -84,6 +79,7 @@
     }
     #content {
       padding-top:0;
+      padding-bottom:0px;
     }
 
     #public, #desk {
@@ -99,6 +95,27 @@
     }
 
 }
+
+/* --------------------------------- */
+/* Base template                     */
+/* --------------------------------- */
+
+#wrapper {
+  min-height: 100%;
+  height: auto !important;
+  margin: 0 auto -142px;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+#footer {
+
+}
+
+#main {
+
+}
+
 
 /* --------------------------------- */
 /* Logo in the navbar                */
@@ -125,7 +142,6 @@
 /* --------------------------------- */
 /* Styling homepage                  */
 /* --------------------------------- */
-
 #homepage {
   blockquote {
     color: @mentoki_color;
@@ -143,6 +159,11 @@
     line-height: 1.5em;
     -webkit-font-smoothing: antialiased;
   }
+  .mentoki_color {
+    color:@mentoki_color_dark;
+    font-size: 1.1em;
+  }
+
   #homepage_title {
     padding-top:0px;
     margin-top:0px;
@@ -160,16 +181,12 @@
     height:80px;
   }
 }
-
-
 /* ------------------------- */
 /* desk page                 */
 /* ------------------------- */
 
 #desk {
   .fixed-background-image(@desk_background_img);
-
-
 }
 
 
