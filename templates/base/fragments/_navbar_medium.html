@@ -145,6 +145,7 @@ href="{{ home_url }}">
             ">
                 Ihr Lernen
             </a>
+            {% if request.user.is_teacher %}
             <a href="{{ teach_url }}" class="item
             {% ifactive teach_url %}
                 active
@@ -152,6 +153,7 @@ href="{{ home_url }}">
             ">
                 Ihr Unterricht
             </a>
+            {% endif %}
             {% if request.user.customer %}
                 <a href="{{ bookings_url }}" class="item
             {% ifactive bookings_url %}
@@ -159,15 +161,6 @@ href="{{ home_url }}">
             {% endifactive %}
                 ">
                     Ihre Kursbuchungen
-                </a>
-            {% endif %}
-            {% if request.user.is_lektor or request.user.is_superuser %}
-                <a href="{{ courseadmin_url }}" class="item
-            {% ifactive courseadmin_url %}
-                active
-            {% endifactive %}
-                ">
-                    Administration
                 </a>
             {% endif %}
             <a class="item" href="{{ logout_url }}">
