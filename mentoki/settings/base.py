@@ -67,7 +67,6 @@ INSTALLED_APPS += (
     'django_markdown',
     'formtools',
     'seohelper',
-    'bandit',
 )
 
 # ------------------------------------------------------------------------
