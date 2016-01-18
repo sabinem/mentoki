@@ -1,44 +1,5 @@
-
-{% url 'home:home' as home_url %}
-
-
-{% url 'storefront:list' as course_url %}
-{% url 'storefront:list_now' as course_now_url %}
-{% url 'storefront:list_preview' as course_preview_url %}
-
-{% url 'home:mentorslist' as mentorslist_url %}
-
-{% url 'contact:contact' as contact_url %}
-
-{% url 'account_login' as login_url %}
-{% url 'account_logout' as logout_url %}
-{% url 'desk:userprofile' as desk_url %}
-{% url 'desk:learn' as learn_url %}
-{% url 'desk:courseadmin' as courseadmin_url %}
-{% url 'desk:courseentry_admin' as courseentry_admin_url %}
-{% url 'desk:pageadmin' as pageadmin_url %}
-{% url 'desk:learn' as learn_url %}
-{% url 'desk:teach' as teach_url %}
-{% url 'desk:bookings' as bookings_url %}
-
-{% url 'home:public' slug="mentoki-starterkurs" as starterkurs_url %}
-{% url 'home:public' slug="online-unterrichten" as teachonline_url %}
-{% url 'home:public' slug="fertigen-online-kurs-anbieten" as teachready_url %}
-{% url 'home:public' slug="mentoki-standards" as standards_url %}
-
-{% url 'home:public' slug="mentoki-kurse" as course_about_url %}
-{% url 'home:public' slug="team" as about_url %}
-
-
 {% load activelink %}
-
-<a class="item" style="padding:0px; margin: 0px;"
-href="{{ home_url }}">
-<img  class="ui image"
-      style="padding:0px; margin: 0px;"
-      src="/static/img/mentoki_logo_65.png"
->
-</a>
+{% include 'base/fragments/_logo_navbar.html' %}
 <div class="ui left dropdown item">
     Lernen bei mentoki<sub>&reg;</sub>
     <i class="dropdown icon"></i>

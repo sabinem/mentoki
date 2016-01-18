@@ -5,10 +5,10 @@
 /* Mixins                    */
 /* ------------------------- */
 /* ------------------------- */
-/* Homepage                  */
-/* determines the navbar     */
-/* of public pages for       */
+/* base templates for        */
 /* different media           */
+/*                           */
+/*                           */
 /* ------------------------- */
 @media only screen and (min-width: 1160px) {
   #mobile_menu,
@@ -16,7 +16,7 @@
   #medium_navbar {
     display: none;
   }
-  #content {
+  #base_content {
     padding-top: 0px;
     padding-bottom: 0px;
   }
@@ -34,7 +34,7 @@
   #pc_navbar {
     display: none;
   }
-  #content {
+  #base_content {
     padding-top: 0px;
     padding-bottom: 0px;
   }
@@ -55,7 +55,7 @@
   #home .divider_header.ui.header {
     font-size: 1.5em;
   }
-  #content {
+  #base_content {
     padding-top: 0;
     padding-bottom: 0px;
   }
@@ -74,42 +74,36 @@
 /* --------------------------------- */
 /* Base template                     */
 /* --------------------------------- */
-#wrapper {
+#base_wrapper {
   min-height: 100%;
   height: auto !important;
   margin: 0 auto -142px;
   background-size: cover;
   background-attachment: fixed;
 }
-/* --------------------------------- */
-/* Logo in the navbar                */
-/* Proportions of the logo for pc    */
-/* --------------------------------- */
-/* logo in the navbar in the pc version: tablet and computer */
-#logo_navbar_pc {
-  padding: 0;
-  margin: 0;
-  padding-left: 30px;
-}
-/* size of logo img in the navbar */
-#logo_img_navbar {
-  height: 50px;
-  width: auto;
-}
-/* only on homepage */
-#mentoki_logo_homepage {
-  opacity: 0.9;
-}
-/* --------------------------------- */
-/* Styling homepage                  */
-/* --------------------------------- */
-#homepage blockquote {
-  color: #19aaa6;
-}
-#homepage_main_grid {
+#base_navbar_logo {
   padding: 0px;
+  margin: 0px;
 }
-#homepage_main_grid .mentoki_nice_font {
+#base_navbar_logo img {
+  padding: 0px;
+  margin: 0px;
+}
+#base_navbar_logo_mobile {
+  padding: 0px;
+  margin: 0px;
+}
+#base_navbar_logo_mobile img {
+  padding: 0px;
+  margin: 0px;
+}
+#base_public_main {
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 70px;
+  padding-bottom: 142px;
+}
+#base_public_main .mentoki_nice_font {
   color: black;
   opacity: 0.7;
   font-family: 'Montserrat', sans-serif;
@@ -118,11 +112,21 @@
   line-height: 1.5em;
   -webkit-font-smoothing: antialiased;
 }
+/* --------------------------------- */
+/* Styling homepage                  */
+/* --------------------------------- */
+#homepage_main_grid {
+  padding: 0px;
+  /* Logo on homepage */
+}
 #homepage_main_grid .mentoki_color {
   color: #148582;
   font-size: 1.1em;
 }
-#homepage_main_grid #homepage_title {
+#homepage_main_grid #mentoki_logo_homepage {
+  opacity: 0.9;
+}
+#homepage_main_grid h1.ui.header {
   padding-top: 0px;
   margin-top: 0px;
   font-size: 2em;

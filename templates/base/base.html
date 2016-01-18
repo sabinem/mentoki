@@ -27,9 +27,9 @@
        {% block head_extra_tools %}{% endblock %}
     </head>
     <body>
-        <div id="wrapper"
+        <div id="base_wrapper"
             style="{% block background_image %}{% endblock %}">
-            <div id="content">
+            <div id="base_content">
                 {% block navbar %}{% endblock %}
                 {% block page %}{% endblock %}
                 {% block sidebar %}{% endblock %}
@@ -38,7 +38,6 @@
                 <script src="/static/js/main.js"></script>
                 {% block bottom_js_extra_tools %}{% endblock %}
             </div>
-            <div class="push" style="height: 142px;"></div>
         </div>
         {% block footer %}{% endblock %}
     </body>
