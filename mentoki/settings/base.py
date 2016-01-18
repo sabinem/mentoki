@@ -1,33 +1,36 @@
-# coding: utf-8
+# coding=utf-8
+# ------------------------------------------------------------------------
+# Settings for mentoki project
+# ------------------------------------------------------------------------
 
-"""
-Settings for mentoki project
-"""
 
-# path
+# ------------------------------------------------------------------------
+# General Path Settings
+
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(
     os.path.abspath(__file__)))
 )
-#path above the project
+
 BASE_DIR_PROJECT = os.path.abspath(os.path.join(BASE_DIR, os.pardir))
 
-# secret key
+# ------------------------------------------------------------------------
+# Standard Django Settings
+
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
-# Debug settings
 DEBUG = False
 
-# hosts
 ALLOWED_HOSTS = ['*']
 
-#admins
 ADMINS = (('Sabine', 'sabine.maennel@gmail.com'),)
 
-#site
 SITE_ID = 1
 
-# installed apps django
+# ------------------------------------------------------------------------
+# Installed django apps (standard configuration
+# plus django-suit for the admin
+
 INSTALLED_APPS = (
     'suit',
     'django.contrib.admin',
@@ -42,7 +45,9 @@ INSTALLED_APPS = (
     'django.contrib.redirects'
 )
 
-# installed apps thirdparty
+# ------------------------------------------------------------------------
+# Installed third party apps
+
 INSTALLED_APPS += (
     'braces',
     'model_utils',
@@ -65,7 +70,9 @@ INSTALLED_APPS += (
     'bandit',
 )
 
-# installed apps mentoki
+# ------------------------------------------------------------------------
+# Custom Apps
+
 INSTALLED_APPS += (
     'accounts',
 
@@ -98,10 +105,18 @@ INSTALLED_APPS += (
     'apps_core.webhooks',
 )
 
-# custom user model
+# ------------------------------------------------------------------------
+# Custom User Model
+
 AUTH_USER_MODEL = 'accounts.User'
 
-# middleware
+# ------------------------------------------------------------------------
+# Middleware
+# - includes SSLify
+# - django-maintenance-mode
+# - django-redirects
+# what else?
+
 MIDDLEWARE_CLASSES = (
     'sslify.middleware.SSLifyMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -117,13 +132,19 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.redirects.middleware.RedirectFallbackMiddleware'
 )
 
-# urls
+# ------------------------------------------------------------------------
+# url file
+
 ROOT_URLCONF = 'mentoki.urls'
 
-# wsgi
+# ------------------------------------------------------------------------
+# wsgi Application
+
 WSGI_APPLICATION = 'mentoki.wsgi.application'
 
+# ------------------------------------------------------------------------
 # database
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -134,10 +155,10 @@ DATABASES = {
     }
 }
 
-MAINTENANCE_MODE = False
+# ------------------------------------------------------------------------
+# internationalization
+# - only language so far: German
 
-
-# Internationalization
 
 # language settings
 gettext = lambda x: x
@@ -154,7 +175,8 @@ LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale','apps_internal','classroom'),
 )
 
-# date time formats
+# ------------------------------------------------------------------------
+# Date Time settings
 
 TIME_ZONE = 'Europe/Zurich'
 
@@ -166,9 +188,12 @@ USE_TZ = True
 
 DATE_FORMAT = 'd.m.Y'
 
+# ------------------------------------------------------------------------
+# Media and static files
+#
+# TODO: das neue media und static file statement hatte einen Fehler!
+# deshalb steht es in Kommentare, bei Gelegenheit ersetzten!
 
-# TODO: brauche ich dieses setup so? Oder ist es veraltet?
-# static and media urls
 MEDIA_URL = '/media/'
 STATIC_URL = '/static/'
 
@@ -180,7 +205,6 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
-
 
 # templates
 #TEMPLATES = [
@@ -220,7 +244,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.messages.context_processors.messages",
 )
 
-# ignore certain urls
+# ------------------------------------------------------------------------
+# Fehlermeldungen unterdrücken für bestimmte urls
+
 import re
 IGNORABLE_404_URLS = (
     re.compile(r'^/apple-touch-icon.*\.png$'),
@@ -228,7 +254,9 @@ IGNORABLE_404_URLS = (
     re.compile(r'^/robots\.txt$'),
 )
 
-# email settings for google mail
+# ------------------------------------------------------------------------
+# google mail ist das Email backend
+
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
@@ -236,11 +264,15 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-# mentoki mail adresses
+# ------------------------------------------------------------------------
+# mentoki emails: werden sie beide gebraucht?
+
 MENTOKI_INFO_EMAIL = u'mentoki@mentoki.com'
 MENTOKI_COURSE_EMAIL = u'mentoki@mentoki.com'
 
+# ------------------------------------------------------------------------
 # database caching
+
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
@@ -249,10 +281,8 @@ CACHES = {
     }
 }
 
-# sentry
-RAVEN_CONFIG = {
-    'dsn': os.environ.get('SENTRY_DSN')
-}
+# ------------------------------------------------------------------------
+# Logging muss noch überarbeitet werden
 
 LOGGING = {
     'version': 1,
@@ -427,23 +457,35 @@ LOGGING = {
     },
 }
 
-# 3rd party apps:
+# ------------------------------------------------------------------------
+# Third party apps
 
-# Login and redirect urls
+
+# ------------------------------------------------------------------------
+# django-maintenance-mode
+
+MAINTENANCE_MODE = False
+
+# ------------------------------------------------------------------------
+# Konfiguration von raven für Sentry
+
+RAVEN_CONFIG = {
+    'dsn': os.environ.get('SENTRY_DSN')
+}
+
+# ------------------------------------------------------------------------
+# Allauth and redirect urls
+
 from django.core.urlresolvers import reverse_lazy
 LOGIN_URL = reverse_lazy("account_login")
 LOGIN_REDIRECT_URL = reverse_lazy("desk:redirect")
 LOGOUT_URL = reverse_lazy("home:home")
 COURSE_LIST_URL = reverse_lazy('storefront:list')
 
-# 3rd party app allauth:
-# allauth backends
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 )
-# other allauth settings
-from django.core.urlresolvers import reverse_lazy
 # authenticate by email
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 # email must be unique
@@ -462,23 +504,28 @@ ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = None
 ACCOUNT_SIGNUP_FORM_CLASS = 'accounts.forms.SignupForm'
 
-#  3rd party app markdown:
+# ------------------------------------------------------------------------
+# markdown für den newsletter der noch nicht eingebunden ist
+
 MARKDOWN_EDITOR_SKIN = 'simple'
 
-# 3rd party app Froala Editor
 
-# Froala settings
-# different activation key for each website: staging, production, etc.)
+
+# ------------------------------------------------------------------------
+# Froala Editor
+
 FROALA_EDITOR_OPTIONS = {
     'key': os.environ.get('FROALA_ACTIVATION_KEY'),
 }
 
-# 3rd party app fontawesome: location of css file
+# ------------------------------------------------------------------------
+# Fontawesome wird auch für Froala gebraucht
+
 FONTAWESOME_CSS_URL = '/static/font-awesome-4.4.0/css/font-awesome.min.css'
 
-# 3rd party app Braintree:
+# ------------------------------------------------------------------------
+# braintree für die Zahlungsanbindung
 
-# braintree configuration for testing in the sandbox
 BRAINTREE = {
     'merchant_id':os.environ.get('BRAINTREE_MERCHANT_ID'),
     'merchant_account_id_chf':os.environ.get('BRAINTREE_MERCHANT_ACCOUNT_ID_CHF'),

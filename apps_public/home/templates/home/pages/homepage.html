@@ -1,17 +1,13 @@
 {% extends "base/base_public.html" %}
 {% load i18n %}
 {% load cache %}
-
 {% block main_content %}
     {% cache 50000 main_homepage %}
-
         {% url 'storefront:list_now' as courselist_url %}
         {% url 'home:educationmentor' as educationmonitor_url %}
         {% url 'home:public' slug="online-unterrichten" as teachonline_url %}
-
         <div class="ui grid one column centered"
              id="homepage_main_grid">
-
             <div class="sixteen wide column">
                 <img class="ui image centered large image"
                      src="/static/img/logo/mentoki_logo_mit_untertitel.jpg"
@@ -20,11 +16,10 @@
                      alt="mentoki logo mit der Unterschrift:
                           lernen und lehren lebenslang">
                 <img class="ui image fluid"
-                     src="/static/img/mentoki_homepage1.jpg"
+                     src="/static/img/mentoki/zusammen-online-lernen-macht-spass.jpg"
                      title="Online Lernen macht in jedem Alter Spass"
                      alt="Leute verschiedenen Alters, die online lernen">
             </div>
-
             <div class="sixteen wide tablet fourteen wide computer column">
                 <div class="ui grid centered">
                     <div class="row">
@@ -43,7 +38,6 @@
                 </div>
             </div>
         </div>
-
     {% endcache %}
 {% endblock %}
 
