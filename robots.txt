@@ -12,6 +12,7 @@ Disallow:/user
 
 Disallow:/media
 Disallow:/static
+Allow:/static/css
 
 Disallow:/danke
 Disallow:/impressum
