@@ -44,7 +44,7 @@ def send_announcement(announcement, courseevent, module):
        bcc_address = settings.MENTOKI_COURSE_EMAIL,
        to_address = send_all,
        from_address = settings.MENTOKI_COURSE_EMAIL,
-       content = "Neue Nachricht von %s and die Teilnehmer" % courseevent.title,
+       content = "Neue Nachricht von %s an die Teilnehmer" % courseevent.title,
        html_content = message,
        reply_to = send_all,
        app = module
