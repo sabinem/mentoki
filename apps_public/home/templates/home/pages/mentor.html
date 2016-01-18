@@ -19,9 +19,13 @@
                     <div class="column five wide">
                         {% if mentor.foto_detail_page %}
                             <img src="{{ mentor.foto_detail_page.url }}"
+                                 title = "{{ mentor.user.get_full_name }}"
+                                 class="ui image"
                                  alt="{{ mentor.user.get_full_name }}: Mentor bei mentoki">
                         {% elif mentor.foto %}
                             <img src="{{ mentor.foto.url }}"
+                                 title = "{{ mentor.user.get_full_name }}"
+                                 class="ui image"
                                  alt="{{ mentor.user.get_full_name }}: Mentor bei mentoki">
                         {% endif %}
                     </div>
