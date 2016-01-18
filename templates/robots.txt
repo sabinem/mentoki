@@ -15,6 +15,10 @@ Disallow:/login
 Disallow:/media
 Disallow:/static
 Allow:/static/css
+Allow:/static/img/public
+Allow:/static/js
+Allow:/static/Semantic-UI-2.0.7_2/dist/semantic.min.css
+Allow:/static/Semantic-UI-2.0.7_2/dist/semantic.min.js
 
 Disallow:/markdown
 Disallow:/download
