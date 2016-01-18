@@ -14,6 +14,8 @@ Disallow:/login
 
 Disallow:/media
 Disallow:/static
+Allow:/static/css
+
 Disallow:/markdown
 Disallow:/download
 Disallow:/froala_editor
@@ -33,3 +35,11 @@ Disallow:/newsletter
 Disallow:/feed
 Disallow:/schreibtisch
 Disallow:/de/kurse/schneller-lesen/kursleitung
+
+User-agent:*
+
+Disallow:/admin
+
+
+
+
