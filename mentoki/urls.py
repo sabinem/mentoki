@@ -11,7 +11,7 @@ from django.views.generic.base import TemplateView
 from django.conf import settings
 from django.views.defaults import *
 from django.conf.urls import url, include
-from django.contrib.sitemaps.views import sitemap
+from django.contrib.sitemaps import views
 from django.http import HttpResponsePermanentRedirect
 from django.core.urlresolvers import reverse
 
@@ -20,7 +20,8 @@ from django_downloadview import ObjectDownloadView
 
 from apps_data.material.models.material import Material
 
-from .views import StaticViewSitemap, PublicViewSitemap, ProductViewSitemap
+from .views import PublicViewSitemap, CoursesViewSitemap, \
+    MentorsViewSitemap, StaticViewSitemap, CourseListViewSitemap
 
 # for the download of files
 download = ObjectDownloadView.as_view(model=Material, file_field='file')
@@ -28,10 +29,13 @@ download = ObjectDownloadView.as_view(model=Material, file_field='file')
 from apps_public.newsletter.feeds import LatestNewsletterFeed
 
 sitemaps = {
-    'static': StaticViewSitemap(),
-    'public': PublicViewSitemap(),
-    'products': ProductViewSitemap()
+    'mentoki': PublicViewSitemap(),
+    'homepage': StaticViewSitemap(),
+    'kurse': CoursesViewSitemap(),
+    'mentoren': MentorsViewSitemap(),
+    'kurslisten': CourseListViewSitemap
 }
+
 
 # The Admin Site
 urlpatterns = i18n_patterns('',
@@ -57,9 +61,9 @@ urlpatterns += i18n_patterns('',
     (r'^kurse/googleb739bc2feb0d0b27\.html/$',
         TemplateView.as_view(template_name='googleb739bc2feb0d0b27.html')),
 
-    #sitemap
-    url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
-        name='django.contrib.sitemaps.views.sitemap')
+    #sitemaps
+    url(r'^sitemap\.xml$', views.index, {'sitemaps': sitemaps}),
+    url(r'^sitemap-(?P<section>.+)\.xml$', views.sitemap, {'sitemaps': sitemaps}),
 )
 
 

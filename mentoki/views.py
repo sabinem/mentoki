@@ -7,6 +7,7 @@ from django.core.urlresolvers import reverse
 from apps_productdata.mentoki_product.models.courseproductgroup \
     import CourseProductGroup
 from apps_pagedata.public.models import StaticPublicPages
+from apps_accountdata.userprofiles.models.mentor import MentorsProfile
 
 
 def server_error(request):
@@ -24,7 +25,6 @@ def maintenance_mode(request):
     return response
 
 
-
 class StaticViewSitemap(Sitemap):
     changefreq = "monthly"
 
@@ -40,6 +40,7 @@ class StaticViewSitemap(Sitemap):
         else:
             return 0.5
 
+
 class PublicViewSitemap(Sitemap):
     changefreq = "monthly"
 
@@ -47,44 +48,48 @@ class PublicViewSitemap(Sitemap):
         return StaticPublicPages.objects.all()
 
     def priority(self, item):
-        if item.slug == 'mentoki-starterkurs':
-            return 0.9
-        elif item.slug == 'impressum':
-            return 0.3
-        else:
-            return 0.5
+        return 0.5
 
 
-
-class ProductViewSitemap(Sitemap):
-    changefreq = "weekly"
+class CoursesViewSitemap(Sitemap):
+    changefreq = "monthly"
 
     def items(self):
-        groups = CourseProductGroup.objects.published()
-        list =[]
-        for group in groups:
-            list.append({'productgroup_slug':group.slug,
-                         'page': 'detail',
-                         'productgroup':group})
-            list.append({'productgroup_slug':group.slug,
-                         'page': 'offer',
-                         'productgroup':group})
-            list.append({'productgroup_slug':group.slug,
-                         'page': 'mentors',
-                         'productgroup':group})
-        #for group in groups:
-        #    url = ('storefront:detail',
-        #           kwargs={'slug': group.slug})
-        #    list.append(url)
-        return list
-
-    def location(self, item):
-        url = reverse('storefront:' + item['page'],
-                      kwargs={'slug': item['productgroup_slug']})
-        return url
+        courseproductgroup = CourseProductGroup.objects.published()
+        return courseproductgroup
 
     def priority(self, item):
-        if item['productgroup'].can_be_booked_now:
+        if item.can_be_booked_now:
+            return 1.0
+        else:
+            return 0.5
+
+
+class CourseListViewSitemap(Sitemap):
+    changefreq = "monthly"
+
+    def items(self):
+        return ['storefront:list_now', 'storefront:list', 'storefront:list_preview']
+
+    def location(self, item):
+        return reverse(item)
+
+    def priority(self, item):
+        if item == 'storefront:list_now':
+            return 0.8
+        else:
+            return 0.5
+
+
+class MentorsViewSitemap(Sitemap):
+    changefreq = "monthly"
+
+    def items(self):
+        mentors = MentorsProfile.objects.mentors_all()
+        return mentors
+
+    def priority(self, item):
+        if item == 'home:home':
             return 0.5
         else:
-            return 0.8
+            return 0.5
