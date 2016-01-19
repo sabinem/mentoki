@@ -18,8 +18,8 @@ class LessonAdmin(admin.ModelAdmin):
                     'modified', 'created', 'lesson_type', 'level',
                     )
     list_filter = ('course', 'level', 'modified')
-    raw_id_fields = ['parent']
-    readonly_fields = ['course']
+    #raw_id_fields = ['parent']
+    #readonly_fields = ['course']
 
 
 @admin.register(ClassLesson)
