@@ -11,8 +11,9 @@
             <div class="comment">
 
                 <a class="avatar">
-
+                     {% if comment.author.profile_image %}
                         <img src="{{ comment.author.profile_image.url }}">
+                     {% endif %}
 
                 </a>
 

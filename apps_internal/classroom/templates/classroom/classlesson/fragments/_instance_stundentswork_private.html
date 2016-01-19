@@ -28,7 +28,9 @@
           <div class="ui horizontal list">
               {% for worker in studentswork.workers.all %}
                   <div class="item">
-                     <img class="ui mini image" src="{{ worker.profile_image.url }}">
+                     {% if worker.profile_image %}
+                         <img class="ui mini image" src="{{ worker.profile_image.url }}">
+                     {% endif %}
                     <div class="content">
                       <div class="header">{{ worker.username }}</div>
                     </div>
