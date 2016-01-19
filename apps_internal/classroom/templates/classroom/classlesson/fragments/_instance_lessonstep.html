@@ -47,13 +47,21 @@
     {% if lessonstep.is_homework and lessonstep.show_work_area %}
 
         <br>
-
+        {% if lessonstep.studentswork_count > 0 %}
         <a href="{{ turnedin_url }}">
+
             <div class="ui label large">
-                {{ lessonstep.studentswork_count }}
-                Beiträge abgegeben
+            {% if lessonstep.studentswork_count == 1 %}
+                1
+                Beitrag abgegeben
+
+            {% else %}
+               {{ lessonstep.studentswork_count }}
+               Beiträge abgegeben
+            {% endif %}
             </div>
         </a>
+        {% endif %}
     {% endif %}
 
 </div>
