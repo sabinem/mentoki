@@ -110,10 +110,10 @@ class StudentsWork(TimeStampedModel):
     def team_size(self):
         return self.team.count()
 
-    def get_absolute_url(self):
-        return reverse('classroom:studentswork:detail',
-                       kwargs={'slug':self.slug,
-                               'pk':self.pk})
+    #def get_absolute_url(self):
+    #    return reverse('classroom:studentswork:detail',
+    #                   kwargs={'slug':self.slug,
+    #                           'pk':self.pk})
 
 
 class CommentManager(models.Manager):
