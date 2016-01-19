@@ -17,6 +17,9 @@ from apps_data.courseevent.models.courseevent import CourseEvent
 
 class StudentsWorkManager(models.Manager):
 
+    def turnedin_homework_count(self, classlesson):
+        self.filter(homework=classlesson, published=True).count()
+
     def turnedin_homework(self, homework):
         return self.filter(homework=homework, published=True).order_by('-published_at')
 

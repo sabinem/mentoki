@@ -330,4 +330,4 @@ class ClassLesson(BaseLesson):
     def studentswork_count(self):
         if self.is_homework:
             from apps_data.courseevent.models.homework import StudentsWork
-            return StudentsWork.objects.filter(homework=self).count()
+            return StudentsWork.objects.turnedin_homework_count(classlesson=self)
