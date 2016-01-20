@@ -124,7 +124,9 @@ class BaseLesson(MPTTModel):
         help_text="Material der Lektion",
         blank=True,
         null=True)
-
+    show_number = models.BooleanField(
+        default=True,
+        verbose_name="Nummerierung anzeigen")
     is_homework = models.BooleanField(default=False)
     show_work_area = models.BooleanField(default=False)
 
@@ -196,7 +198,7 @@ class BaseLesson(MPTTModel):
         lessonstep: <lesson_nr> <title>
         :return: representation in breadcrumbs
         """
-        if self.level == 1:
+        if self.level == 1 or not self.show_number:
             return u'%s' % (self.title)
         elif self.level == 2:
             return u'%s. %s' % (self.lesson_nr, self.title)

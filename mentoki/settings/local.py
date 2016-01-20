@@ -17,6 +17,17 @@ INSTALLED_APPS += (
     'raven.contrib.django.raven_compat',
 )
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'gitbranch_blocks_special',
+        'USER': os.environ.get('DATABASE_USER'),
+	    'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
+	    'HOST': os.environ.get('DATABASE_HOST'),
+    }
+}
+
+
 # ssl settings
 SSLIFY_DISABLE = True
 

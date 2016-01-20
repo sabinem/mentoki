@@ -27,7 +27,8 @@ class ClassLessonManager(LessonManager):
     or block. But he can also leave the master at the course and continue to
     changes over to the courseevent.
     """
-    def create_classlessonblock(self, nr, title, text, description, courseevent):
+    def create_classlessonblock(self, nr, title, text, description,
+                                show_number, courseevent):
         """
         this creates a classlesson
         """
@@ -37,6 +38,7 @@ class ClassLessonManager(LessonManager):
         classlesson = ClassLesson(course=courseevent.course,
                        courseevent=courseevent,
                        title=title,
+                       show_number=show_number,
                        description=description,
                        text=text,
                        nr=nr,
@@ -47,7 +49,9 @@ class ClassLessonManager(LessonManager):
         ClassLesson.objects.rebuild()
         return classlesson
 
-    def create_classlesson(self, nr, title, text, description, courseevent, parent):
+    def create_classlesson(self, nr, title, text,
+                           show_number,
+                           description, courseevent, parent):
         """
         this creates a classlesson
         """
@@ -55,6 +59,7 @@ class ClassLessonManager(LessonManager):
                        courseevent=courseevent,
                        title=title,
                        description=description,
+                       show_number=show_number,
                        text=text,
                        nr=nr,
                        lesson_nr=lesson_nr_lesson(nr=nr)
@@ -65,6 +70,7 @@ class ClassLessonManager(LessonManager):
         return classlesson
 
     def create_classstep(self, nr, title, text, description, courseevent,
+                         show_number,
                          parent, material, is_homework):
         """
         this creates a classlessonstep
@@ -74,6 +80,7 @@ class ClassLessonManager(LessonManager):
                        title=title,
                        description=description,
                        text=text,
+                       show_number=show_number,
                        nr=nr,
                        lesson_nr=lesson_nr_step(nr=nr, parent_nr=parent.nr),
                        material=material,

@@ -21,7 +21,7 @@ class ClassLessonBlockForm(forms.ModelForm):
 
     class Meta:
         model = ClassLesson
-        fields = ('nr', 'title', 'description', 'text' )
+        fields = ('nr', 'title', 'description', 'text', 'show_number' )
 
 
 class ClassLessonForm(forms.ModelForm):
@@ -29,7 +29,7 @@ class ClassLessonForm(forms.ModelForm):
 
     class Meta:
         model = ClassLesson
-        fields = ('parent', 'nr', 'title', 'description', 'text' )
+        fields = ('parent', 'nr', 'show_number', 'title', 'description', 'text' )
 
     def __init__(self, *args, **kwargs):
 
@@ -49,7 +49,7 @@ class ClassLessonStepForm(forms.ModelForm):
 
     class Meta:
         model = ClassLesson
-        fields = ('nr', 'title', 'parent', 'description', 'text', 'material', 'is_homework',
+        fields = ('nr', 'show_number', 'title', 'parent', 'description', 'text', 'material', 'is_homework',
                   'show_work_area', 'due_date', 'extra_text' )
 
     def __init__(self, *args, **kwargs):

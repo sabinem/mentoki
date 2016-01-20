@@ -6,21 +6,30 @@
 <!-- forward -->
 {% if next_node %}
     <a href="{{ forward_url }}" class="ui button basic right floated">
-        {{ next_node.lesson_nr }}.<i class="right arrow icon"></i>
+        {% if node.show_number %}
+        {{ next_node.lesson_nr }}.
+        {% endif %}
+        <i class="right arrow icon"></i>
     </a>
 {% endif %}
 
 <!-- back -->
 {% if previous_node %}
     <a href="{{ backward_url }}" class="ui button basic right floated">
-        <i class="left arrow icon"></i>{{ previous_node.lesson_nr }}.
+        <i class="left arrow icon"></i>
+        {% if node.show_number %}
+        {{ previous_node.lesson_nr }}.
+        {% endif %}
     </a>
 {% endif %}
 
 <div class="ui header medium">
-
+    {% if lesson.show_number %}
     <!-- title -->
     {{ lesson.lesson_nr }}. {{ lesson.title }}
+    {% else %}
+    ({{ lesson.nr }}) {{ lesson.title }}
+    {% endif %}
 
     <!-- update -->
     <a href="{{ lessonupdate_url }}">

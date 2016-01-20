@@ -16,7 +16,7 @@ from .base import lesson_nr_block, lesson_nr_lesson, lesson_nr_step
 
 class LessonManager(BaseLessonManager):
 
-    def create_block(self, nr, title, text, description, course):
+    def create_block(self, nr, title, text, description, course, show_number):
         """
         creates a block
         :param nr:
@@ -32,6 +32,7 @@ class LessonManager(BaseLessonManager):
                        description=description,
                        text=text,
                        nr=nr,
+                       show_number=show_number,
                        lesson_nr=lesson_nr_block(nr=nr)
                        )
         block.insert_at(lessonroot)
@@ -39,7 +40,7 @@ class LessonManager(BaseLessonManager):
         Lesson.objects.rebuild()
         return block
 
-    def create_lesson(self, nr, title, text, description, course, parent):
+    def create_lesson(self, nr, title, text, description, course, parent, show_number):
         """
         creates a lesson
         :param nr:
@@ -55,6 +56,7 @@ class LessonManager(BaseLessonManager):
                        description=description,
                        text=text,
                        nr=nr,
+                       show_number=show_number,
                        lesson_nr=lesson_nr_lesson(nr=nr)
                        )
         lesson.insert_at(parent)
@@ -62,7 +64,9 @@ class LessonManager(BaseLessonManager):
         Lesson.objects.rebuild()
         return lesson
 
-    def create_step(self, nr, title, text, description, course, parent, material, is_homework):
+    def create_step(self, nr, title, text, description,
+                    show_number,
+                    course, parent, material, is_homework):
         """
         creates a step
         :param nr:
@@ -79,6 +83,7 @@ class LessonManager(BaseLessonManager):
                        description=description,
                        text=text,
                        nr=nr,
+                       show_number=show_number,
                        lesson_nr=lesson_nr_step(nr=nr, parent_nr=parent.nr),
                        material=material,
                        is_homework=is_homework,
