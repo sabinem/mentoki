@@ -28,7 +28,7 @@ class ClassLessonManager(LessonManager):
     changes over to the courseevent.
     """
     def create_classlessonblock(self, nr, title, text, description,
-                                show_number, courseevent):
+                               courseevent):
         """
         this creates a classlesson
         """
@@ -38,7 +38,6 @@ class ClassLessonManager(LessonManager):
         classlesson = ClassLesson(course=courseevent.course,
                        courseevent=courseevent,
                        title=title,
-                       show_number=show_number,
                        description=description,
                        text=text,
                        nr=nr,

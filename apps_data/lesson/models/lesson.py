@@ -16,7 +16,7 @@ from .base import lesson_nr_block, lesson_nr_lesson, lesson_nr_step
 
 class LessonManager(BaseLessonManager):
 
-    def create_block(self, nr, title, text, description, course, show_number):
+    def create_block(self, nr, title, text, description, course):
         """
         creates a block
         :param nr:
@@ -32,7 +32,6 @@ class LessonManager(BaseLessonManager):
                        description=description,
                        text=text,
                        nr=nr,
-                       show_number=show_number,
                        lesson_nr=lesson_nr_block(nr=nr)
                        )
         block.insert_at(lessonroot)

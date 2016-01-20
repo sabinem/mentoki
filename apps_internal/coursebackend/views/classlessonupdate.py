@@ -148,8 +148,7 @@ class ClassLessonBlockCreateView(
             title=form.cleaned_data['title'],
             description=form.cleaned_data['description'],
             text=form.cleaned_data['text'],
-            nr=form.cleaned_data['nr'],
-            show_nr = form.cleaned_data['show_nr'],
+            nr=form.cleaned_data['nr']
         )
         return HttpResponseRedirect(self.get_success_url())
 
@@ -177,7 +176,7 @@ class ClassLessonCreateView(
             text=form.cleaned_data['text'],
             parent=form.cleaned_data['parent'],
             nr=form.cleaned_data['nr'],
-            show_nr = form.cleaned_data['show_nr'],
+            show_number = form.cleaned_data['show_number'],
         )
         return HttpResponseRedirect(self.get_success_url())
 
@@ -208,6 +207,6 @@ class ClassLessonStepCreateView(
             nr=form.cleaned_data['nr'],
             parent=form.cleaned_data['parent'],
             is_homework = form.cleaned_data['is_homework'],
-            show_nr = form.cleaned_data['show_nr'],
+            show_number = form.cleaned_data['show_number'],
         )
         return HttpResponseRedirect(self.get_success_url())

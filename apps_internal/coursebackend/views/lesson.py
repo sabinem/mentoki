@@ -248,7 +248,6 @@ class BlockCreateView(
             description=form.cleaned_data['description'],
             text=form.cleaned_data['text'],
             nr=form.cleaned_data['nr'],
-            show_number = form.cleaned_data['show_number'],
         )
         return super(BlockCreateView, self).form_valid(form)
 
