@@ -248,6 +248,7 @@ class BlockCreateView(
             description=form.cleaned_data['description'],
             text=form.cleaned_data['text'],
             nr=form.cleaned_data['nr'],
+            show_number = form.cleaned_data['show_number'],
         )
         return super(BlockCreateView, self).form_valid(form)
 
@@ -275,6 +276,7 @@ class LessonCreateView(
             text=form.cleaned_data['text'],
             parent=form.cleaned_data['parent'],
             nr=form.cleaned_data['nr'],
+            show_number = form.cleaned_data['show_number'],
         )
         print "______________in form valid after create"
         return super(LessonCreateView, self).form_valid(form)
@@ -306,5 +308,6 @@ class LessonStepCreateView(
             nr=form.cleaned_data['nr'],
             parent=form.cleaned_data['parent'],
             is_homework = form.cleaned_data['is_homework'],
+            show_number = form.cleaned_data['show_number'],
         )
         return super(LessonStepCreateView, self).form_valid(form)

@@ -42,7 +42,22 @@
             {{ form.nr }}
 
         </div>
+        {% comment %}
+        <div class="field four wide">
+            {{ form.show_number.label_tag }}
+            <p>{{ form.show_number.help_text }}</p>
 
+            {% if form.show_number.errors %}
+                <div class="ui negative floating message">
+                    {{ form.show_number.errors }}
+                </div>
+            {% endif %}
+            <br>
+
+            {{ form.show_number }}
+
+        </div>
+        {% endcomment %}
         <div class="field twelve wide">
             <p>Lektions-Titel</p>
 

@@ -119,7 +119,7 @@ def _copy_any_level_lesson(lesson, courseevent, parent):
     classlesson.text=lesson.text
     classlesson.lesson_nr=lesson.lesson_nr
     classlesson.nr=lesson.nr
-
+    classlesson.show_number=lesson.show_number
     classlesson.description=lesson.description
     classlesson.material=lesson.material
     classlesson.is_homework=lesson.is_homework

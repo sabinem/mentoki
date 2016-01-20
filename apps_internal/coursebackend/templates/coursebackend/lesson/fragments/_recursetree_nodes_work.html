@@ -20,7 +20,9 @@
         
             <!-- icon -->
             {% if node.is_block %}
-                <i class="top aligned cube icon">{{ node.lesson_nr }}</i>
+                <i class="top aligned cube icon">({{ node.nr }})</i>
+            {% elif not node.show_number %}
+                <i class="top aligned icon">({{ node.nr }})</i>
             {% else %}
                 <i class="top aligned icon">{{ node.lesson_nr }}</i>
             {% endif %}

@@ -49,7 +49,7 @@ class ClassLessonStepForm(forms.ModelForm):
 
     class Meta:
         model = ClassLesson
-        fields = ('nr', 'title', 'parent', 'description', 'text', 'material', 'is_homework',
+        fields = ('nr',  'title', 'parent', 'description', 'text', 'material', 'is_homework',
                   'show_work_area', 'due_date', 'extra_text' )
 
     def __init__(self, *args, **kwargs):
