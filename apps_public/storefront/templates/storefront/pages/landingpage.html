@@ -1,0 +1,38 @@
+{% extends "base/base_landing.html" %}
+{% load i18n %}
+{% load cache %}
+{% comment %}USED BY info.py{% endcomment %}
+{% load activelink %}
+{% block meta_post_title %}{{ meta.title }}{% endblock %}
+{% block meta_post_title_tmp %}{{ meta.title }}{% endblock %}
+
+
+{% block  main_content %}
+
+        <h1 style="color:#19aaa6;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.6em;
+            font-weight: 400;
+            line-height: 1.2em;
+            -webkit-font-smoothing: antialiased;
+        ">
+        {{ courseproductgroup.courseproductgroup.title }}
+        </h1>
+
+        {% for product_field in product_fields %}
+             <div class="ui centered  grid" id="{{ product_field.pagemark }}"
+                 style="padding-top:60px;padding-bottom:60px;">
+                 <div class="sixteen wide tablet twelve wide computer column">
+                     <div class="ui segment">
+                         <h2 class="ui center aligned header large">{{ product_field.title }}</h2>
+                        <div class="fr-view">
+                         {{ product_field.text | safe }}
+                       </div>
+                     </div>
+                 </div>
+             </div>
+
+        {% endfor %}
+
+
+{% endblock %}

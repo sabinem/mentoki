@@ -58,6 +58,7 @@ TEMPLATES = [
     },
 ]
 
+
 # overwriting raven
 RAVEN_CONFIG = {'dsn': ''}
 
