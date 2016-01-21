@@ -10,7 +10,7 @@
             line-height: 1.5em;
             -webkit-font-smoothing: antialiased;
             ">
-                {{ pagedata.title }}
+                {{ pagedata.title  | safe }}
             </div>
             {% url 'contact:contact' as contact_url %}
 
