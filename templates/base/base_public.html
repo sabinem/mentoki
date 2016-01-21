@@ -1,10 +1,8 @@
 {% extends 'base/base.html' %}
 {% load activelink %}
 {% load i18n %}
-{% block pre_html %}
-    {% load seo_helper %}
-    {% seo_helper request.path as meta %}
-{% endblock %}
+{% load seo_helper %}
+{% seo_helper request.path as meta %}
 {% block meta %}
     <title>{{ meta.title }}</title>
     <meta name="description" content="{{ meta.description }}" />
