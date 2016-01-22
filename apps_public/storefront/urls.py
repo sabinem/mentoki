@@ -6,7 +6,7 @@ from .views.info import \
     CourseGroupDetailView
 from .views.list import CourseProductGroupsListView, \
     ListNowView, ListPreviewView, ListSingleView
-from .views.landingpage import CourseLandingPageView
+from .views.landingpage import CourseLandingPageView, CourseOfferPageView
 
 
 urlpatterns = patterns('',
@@ -33,5 +33,15 @@ urlpatterns = patterns('',
     url(r'^(?P<pk>\d{1,4})/admin$',
         ListSingleView.as_view(),
         name='admin'),
+)
+
+
+urlpatterns += patterns('',
+    url(r'^(?P<slug>[a-z0-9_-]{3,50})/test$',
+        CourseLandingPageView.as_view(),
+        name='landingpage'),
+    url(r'^(?P<slug>[a-z0-9_-]{3,50})/angebot$',
+        CourseOfferPageView.as_view(),
+        name='offer'),
 )
 
