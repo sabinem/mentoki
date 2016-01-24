@@ -83,6 +83,7 @@ class CourseProductGroup(TimeStampedModel):
     video = models.TextField(
         verbose_name="Video", blank=True
     )
+    background_color_hex = models.CharField(max_length=7)
     menu_name = models.CharField(max_length=100)
 
     published = models.BooleanField(default=False)

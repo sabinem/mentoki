@@ -1,0 +1,56 @@
+{% load mptt_tags %}
+
+<div class="ui divided list">
+
+    {% recursetree nodes %}
+
+    {% url 'coursebackend:lessontest:lesson'  course_slug=cs pk=node.pk as detail_url%}
+    {% url 'coursebackend:lessontest:lessonupdate'  course_slug=cs pk=node.pk as update_url %}
+    {% url 'coursebackend:lessontest:delete'  course_slug=cs pk=node.pk as delete_url %}
+
+        <div class="item">
+        
+            <!-- icon -->
+
+            {% if not node.show_number %}
+                <i class="top aligned icon">({{ node.nr }})</i>
+            {% else %}
+                <i class="top aligned icon">{{ node.lesson_nr }}</i>
+            {% endif %}
+
+            <div class="content">
+
+                <div class="header">
+
+                     <div class="ui header large">{{ node.title }}</div>
+                        <a href="{{ detail_url }}">
+                             {{ node.title }}
+                        </a>
+                        {% if node.is_homework %}
+                             <a class="ui orange label">interaktiv</a>
+                        {% endif %}
+                    <a href="{{ update_url }}">
+                       <i class="icon write"></i>
+                    </a>
+                    <a href="{{ delete_url }}">
+                       <i class="icon trash"></i>
+                    </a>
+
+                </div>
+                <p style="font-size: 0.9em; color:grey; font-weight:normal;">
+                   angelegt: {{ node.created |date:'d.m.Y' }}, letzte Änderung: {{ node.modified |date:'d.m.Y' }}
+                </p>
+                <!-- description -->
+                {% if node.decription != "" %}
+                    <p>
+                        {{ node.description }}
+                    </p>
+                {% endif %}
+
+            </div>
+        </div>
+
+    {% endrecursetree %}
+
+</div>
+

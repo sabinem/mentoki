@@ -1,0 +1,34 @@
+{% url 'coursebackend:lessontest:start' course_slug=cs as back_url %}
+
+{{ form.media }}
+
+<form id="edit" class="ui form" method="post" action="#target" onsubmit="return checkForm(this);">
+
+    {% csrf_token %}
+
+    {% include 'coursebackend/forms/fragments/_form_non_field_errors.html' %}
+
+
+
+    <div class="field ">
+
+        {% if lessonblock_to.parent.errors %}
+            <div class="ui negative floating message">
+                {{ lessonblock_to.parent.errors }}
+            </div>
+        {% endif %}
+        <br>
+        {{ form.lessonblock_to.label_tag }}
+        {{ form.lessonblock_to }}
+
+    </div>
+
+
+    <button type="submit" value="post" class="ui button" id="formsubmitonce">
+        Jetzt Kopieren!
+    </button>
+    <a href="{{ request.session.last_url }}" class="ui button">
+        Abbruch
+    </a>
+
+</form>

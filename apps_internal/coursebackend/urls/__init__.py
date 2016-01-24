@@ -25,6 +25,9 @@ urlpatterns = patterns('',
     url(r'^unterricht/',
         include('apps_internal.coursebackend.urls.lesson', namespace='lesson')),
 
+    url(r'^unterricht/test/',
+        include('apps_internal.coursebackend.urls.lessontest', namespace='lessontest')),
+
     url(r'^aufgaben/',
         include('apps_internal.coursebackend.urls.homework', namespace='homework')),
 

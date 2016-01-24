@@ -4,9 +4,11 @@
 {% url 'coursebackend:courseowner:list' course_slug=cs as courseowner_url %}
 {% url 'coursebackend:courseevents:list' course_slug=cs as courseevents_url %}
 {% url "coursebackend:lesson:start" course_slug=cs as lesson_url %}
+{% url "coursebackend:lessontest:blockswithlessons" course_slug=cs as lesson_new_url %}
 {% url "coursebackend:lesson:meta" course_slug=cs as lessonmeta_url %}
 {% url 'coursebackend:material:list' course_slug=course.slug as material_url %}
 {% url 'coursebackend:homework:list' course_slug=course.slug as homework_url %}
+{% url 'coursebackend:lessontest:homeworklist' course_slug=course.slug as homework_new_url %}
 
 <div class="ui popup bottom fluid left transition hidden" style="max-width:350px;">
 

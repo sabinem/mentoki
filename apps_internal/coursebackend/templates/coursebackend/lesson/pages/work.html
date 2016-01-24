@@ -13,6 +13,14 @@
     <div class="row coursebackend_white">
         <div class="sixteen wide column"  id="whitepaper">
 
+             {% url 'coursebackend:lessontest:blockswithlessons'  course_slug=cs  as test_url %}
+            <div class="ui secondary menu" >
+              <a class="item active"
+              href="{{ test_url }}">
+                  Testversion: hier kannst Du das neue Layout der Vorlage testen
+
+              </a>
+            </div>
             <!-- messages -->
             {% include 'base/fragments/_messages.html' %}
 

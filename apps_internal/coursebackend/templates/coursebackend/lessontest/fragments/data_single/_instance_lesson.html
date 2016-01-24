@@ -1,0 +1,49 @@
+{% url 'coursebackend:lessontest:lessonupdate'  course_slug=cs pk=lesson.pk as lessonupdate_url %}
+{% url 'coursebackend:lessontest:lessoncopy'  course_slug=cs pk=lesson.pk as copy_url %}
+{% url 'coursebackend:lessontest:delete'  course_slug=cs pk=lesson.pk as delete_url %}
+{% url 'coursebackend:lessontest:lesson' course_slug=cs pk=next_node.pk as forward_url %}
+{% url 'coursebackend:lessontest:lesson' course_slug=cs pk=previous_node.pk as backward_url %}
+
+{% if next_node %}
+    <a href="{{ forward_url }}" class="ui button basic right floated">
+        {% if node.show_number %}
+        {{ next_node.lesson_nr }}.
+        {% endif %}
+        <i class="right arrow icon"></i>
+    </a>
+{% endif %}
+
+{% if previous_node %}
+    <a href="{{ backward_url }}" class="ui button basic right floated">
+        <i class="left arrow icon"></i>
+        {% if node.show_number %}
+        {{ previous_node.lesson_nr }}.
+        {% endif %}
+    </a>
+{% endif %}
+
+<div class="ui header medium">
+    {% if lesson.show_number %}
+    {{ lesson.lesson_nr }}. {{ lesson.title }}
+    {% else %}
+    ({{ lesson.nr }}) {{ lesson.title }}xx
+    {% endif %}
+
+    <a href="{{ lessonupdate_url }}">
+       <i class="icon write"></i>
+    </a>
+
+    <a href="{{ delete_url }}">
+       <i class="icon trash"></i>
+    </a>
+    <a href="{{ copy_url }}">
+       <i class="icon copy"></i>
+    </a>
+    <span style="color:gray; font-weight: normal; font-size:0.8em;">
+    {{ lesson.modified |date:'d.m.Y' }}</span>
+
+</div>
+
+    <div class="fr-view">
+       {{ lesson.text | safe }}
+    </div>

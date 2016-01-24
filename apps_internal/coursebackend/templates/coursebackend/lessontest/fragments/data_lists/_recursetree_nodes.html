@@ -1,0 +1,45 @@
+{% load mptt_tags %}
+<div class="ui divided list">
+
+    {% recursetree nodes %}
+
+        <div class="item">
+
+            <!-- icon -->
+            {% if node.is_block %}
+                <i class="top aligned cube icon">{{ node.lesson_nr }}</i>
+            {% else %}
+                <i class="top aligned icon">{{ node.lesson_nr }}</i>
+            {% endif %}
+
+            <div class="content">
+
+                <!-- title -->
+                {{ node.title }}
+
+                <!-- homework -->
+                {% if node.is_homework %}
+                     <a class="ui orange label">interaktiv</a>
+                {% endif %}
+
+                <!-- description -->
+                {% if node.decription != "" %}
+                    <p>
+                        {{ node.description }}
+                    </p>
+                {% endif %}
+
+                {% if not is_leaf %}
+                    <div class="list">
+                        {{ children }}
+                    </div>
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    {% endrecursetree %}
+
+</div>
+

@@ -1,0 +1,105 @@
+{% extends "base/base_landing.html" %}
+{% load i18n %}
+{% load cache %}
+{% comment %}USED BY info.py{% endcomment %}
+{% load activelink %}
+{% block meta_post_title %}{{ meta.title }}{% endblock %}
+{% block meta_post_title_tmp %}{{ meta.title }}{% endblock %}
+
+{% block page %}
+    {% url 'home:home' as home_url%}
+    <div class="ui vertical segment">
+        <div class="ui header center aligned" >
+            <a class=item" href="{{ home_url }}">
+                 <img  class="ui image center aligned
+                    " src="/static/img/logo/mentoki_logo_navbar.png">
+            </a>
+        </div>
+    </div>
+
+
+    <main id="base_public_main" style="background: {{ courseproductgroup.background_color_hex }};">
+
+    <div class="ui grid container "  style="padding-bottom:100px;">
+    <div clss="column">
+                <h1 class="item ui header huge" >
+
+                {{ courseproductgroup.title }}         <a href="">
+                <img class="ui image medium floated left "
+                 src="{{ courseproductgroup.foto.url }}">
+                </a>
+
+                </h1>
+    </div>
+    <div class="ui two column stackable  row">
+        <div class="column">
+
+            <div class="ui embed" data-url="https://www.youtube.com/embed/N9CTb0j4rCA"
+                 data-placeholder="/static/img/kurse/schreibwerkstatt/schreibwerkstatt_abgabe.jpg">
+                <img class="placeholder ui image fr-dib fr-fin"
+                     src="/static/img/kurse/schreibwerkstatt/schreibwerkstatt_abgabe.jpg">
+            </div>
+
+        </div>
+        <div class="column" >
+            <h2 class="ui header medium">Sind Sie Stundent, kurz vor dem Abschluss?</h2>
+            <h2 class="ui header medium">Brauchen Sie Hilfe bei Ihren akademischen Arbeiten?</h2>
+            <p>Sie stehen kurz vor der Abgabe Ihrer Studeinarbeit?</p><p> Sie sind nervös, wie
+            Sie es bis zum Abgabetermin pünktlich schaffen sollen? Haben Sie richtig zitiert?
+            Wie gehen Sie mit Quellen um?
+
+            </p>
+        </div>
+
+      </div>
+    <div class="ui two column stackable row">
+    <div class="column ten wide">
+        <h2 class="ui header medium">Schreibwerkstatt Blog</h2>
+        <p>10 beste Schreibtipps
+        </p>
+        <h2 class="ui header medium">
+
+            Meine 10 besten Schreibtipps
+        </h2>
+        <p class="ui floated right">21.1.2016</p>
+        <p>...
+        </p>
+
+    </div>
+    {% url 'storefront:offer' slug=courseproductgroup.slug as offer_url %}
+    <div class="column five wide">
+        <a class="ui button large blue "
+           style="margin-top:20px;"
+           href="{{ offer_url }}"     >
+            Ich lerne am liebsten selbst!
+        </a>
+
+        <a class="ui button large blue "
+           style="margin-top:20px;"
+           href="{{ offer_url }}"     >
+           Selbstlernen und mit Betreunung bitte!
+        </a>
+        <a class="ui button large blue "
+           style="margin-top:20px;"
+           href="{{ offer_url }}"     >
+           Lernen in der Gruppe wäre toll!
+        </a>
+        <div class="ui segment blue">
+        <div class="ui form">
+          <div class="field">
+            <label>Name</label>
+            <input type="text">
+          </div>
+
+          <div class="field">
+            <label>Email</label>
+            <input type="text">
+          </div>
+        </div>
+        <div class="ui button small blue">Ja, ich möchte <br>den Gratis Schreibkompetenztest mitmachen!</div>
+        </div>
+        </div>
+    </div>
+    </div>
+    </main>
+{% endblock %}

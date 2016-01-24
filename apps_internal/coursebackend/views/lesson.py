@@ -43,7 +43,7 @@ class HomeworkListView(
     """
     def get_context_data(self, **kwargs):
         context = super(HomeworkListView, self).get_context_data(**kwargs)
-
+        self.request.session['last_url'] = self.request.path
         context['homeworks'] = Lesson.objects.homeworks(course=context['course'])
 
         return context

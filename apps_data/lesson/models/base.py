@@ -4,7 +4,7 @@ from __future__ import unicode_literals, absolute_import
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.shortcuts import get_object_or_404
+from django_enumfield import enum
 
 from mptt.models import MPTTModel, TreeForeignKey, TreeManager
 
@@ -14,6 +14,9 @@ from model_utils.choices import Choices
 
 from apps_data.course.models.course import Course
 from apps_data.material.models.material import Material
+
+from ..constants import LessonType
+
 
 
 class BaseLessonManager(TreeManager):
@@ -133,10 +136,10 @@ class BaseLesson(MPTTModel):
     objects = BaseLessonManager()
 
     # lesson type: blocks > lesson > step having levels: 0, 1, 2
-    LESSON_TYPE = Choices(
-                     ('block', _('Block')),
-                     ('lesson', _('Lesson')),
-                     ('step', _('Step')),)
+    #LESSON_TYPE = Choices(
+    #                 ('block', _('Block')),
+    #                 ('lesson', _('Lesson')),
+    #                 ('step', _('Step')),)
 
     class Meta:
         verbose_name = "Lektion"
@@ -175,6 +178,20 @@ class BaseLesson(MPTTModel):
                 self.lesson_nr = lesson_nr_step(nr=self.nr, parent_nr=self.parent.nr)
         super(BaseLesson, self).save(*args, **kwargs)
 
+    #@property
+    #def lesson_type(self):
+    #    """
+    #    this just translates the internal level of the lesson into a level type,
+    #    see above.
+    #    :return: lesson_type: block, lesson or step
+    #    """
+    #    if self.level == 1 :
+    #        return self.LESSON_TYPE.block
+    #    elif self.level == 2 :
+    #        return self.LESSON_TYPE.lesson
+    #    elif self.level == 3 :
+    #        return self.LESSON_TYPE.step
+
     @property
     def lesson_type(self):
         """
@@ -182,12 +199,14 @@ class BaseLesson(MPTTModel):
         see above.
         :return: lesson_type: block, lesson or step
         """
-        if self.level == 1 :
-            return self.LESSON_TYPE.block
+        if self.level == 0 :
+            return LessonType.ROOT
+        elif self.level == 1 :
+            return LessonType.BLOCK
         elif self.level == 2 :
-            return self.LESSON_TYPE.lesson
+            return LessonType.LESSON
         elif self.level == 3 :
-            return self.LESSON_TYPE.step
+            return LessonType.LESSONSTEP
 
 
     def breadcrumb(self):

@@ -1,0 +1,26 @@
+{% extends "coursebackend/base_course.html" %}
+
+{% block course_menu_items %}
+    {% include 'coursebackend/lessontest/fragments/menus/_links_create.html' %}
+{% endblock %}
+
+{% block breadcrumbs %}
+    {% include 'coursebackend/lessontest/fragments/breadcrumbs/_breadcrumbs_blocks.html' %}
+    {% include 'coursebackend/lessontest/fragments/menus/_menu_blocks.html' %}
+{% endblock %}
+
+{% block page_content %}
+
+    <div class="row coursebackend_white">
+        <div class="sixteen wide column"  id="whitepaper">
+
+            <!-- messages -->
+            {% include 'base/fragments/_messages.html' %}
+
+            <!-- nodetree -->
+            {% include 'coursebackend/lessontest/fragments/data_lists/_recursetree_blocks_with_lessons.html' %}
+
+        </div>
+    </div>
+
+{% endblock %}

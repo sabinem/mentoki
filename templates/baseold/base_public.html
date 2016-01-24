@@ -1,0 +1,36 @@
+{% extends 'base/base.html' %}
+{% load activelink %}
+{% load i18n %}
+{% load seo_helper %}
+{% seo_helper request.path as meta %}
+{% block meta %}
+    <title>{{ meta.title }}</title>
+    <meta name="description" content="{{ meta.description }}" />
+    <meta name="keywords" content="{{ meta.keywords }}" />
+    <meta name="robots" content="{{ meta.robot_tags }}" />
+{% endblock %}
+{% block head_extra_css %}
+    <link href="/static/css/styles-public.css" rel="stylesheet">
+{% endblock %}
+{% block body %}
+
+
+
+
+{% endblock %}
+
+{% block navbar %}
+    {% include 'base/fragments/_navbar.html' %}
+{% endblock %}
+{% block page %}
+    <main id="base_public_main">
+        {% block main_content %}{% endblock %}
+    </main>
+{% endblock %}
+{% block footer %}
+    <footer id="footer">
+        {% include 'base/fragments/_footer.html' %}
+    </footer>
+{% endblock %}
+
+

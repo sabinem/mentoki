@@ -1,0 +1,24 @@
+{% extends "coursebackend/base_course.html" %}
+
+{% block breadcrumbs %}
+    {% include 'coursebackend/lessontest/fragments/breadcrumbs/_breadcrumbs.html' %}
+{% endblock %}
+
+{% block page_content %}
+
+    <div class="row classroom_emphasis">
+        <div class="sixteen wide column" id="whitepaper">
+
+            <div class="ui message warning">
+                Vorsicht: Der gesamte abgebildetet Baum wird bei dieser Aktion gelöscht!
+            </div>
+
+            <!-- nodetree -->
+            {% include 'coursebackend/lessontest/fragments/data_lists/_recursetree_nodes.html' %}
+
+            <!-- delete form -->
+            {% include 'coursebackend/lessontest/fragments/forms/_delete_lesson.html' %}
+
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,42 @@
+    <table class="ui table">
+
+        <thead>
+                <tr>
+                    <th>Blöcke im Kurs {{ course.title }}</th>
+                    <th>Beschreibung</th>
+                </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for block in blocks %}
+
+                {% url 'coursebackend:lessontest:blockupdate' course_slug=cs pk=block.pk as update_url %}
+                {% url 'coursebackend:lessontest:block' course_slug=cs pk=block.pk as detail_url %}
+
+                <tr>
+                    <td>
+
+                        <!-- title -->
+                        <a href="{{ detail_url }}">
+                            {{ block.title }}
+                        </a>
+
+                        <!-- update -->
+                        <a href="{{ update_url }}">
+                            <i class="icon write blue"></i>
+                        </a>
+
+                    </td>
+                    <td><strong>{{ block.description }}</strong>
+                    <p>{{ block.text | safe }}</p>
+                    </td>
+                </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+

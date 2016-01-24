@@ -1,0 +1,123 @@
+{% url 'classroom:classlesson:step' slug=es pk=next_node.pk as forward_url %}
+{% url 'classroom:classlesson:step' slug=es pk=previous_node.pk as backward_url %}
+{% url 'classroom:classlesson:publiclist' slug=es pk=lessonstep.pk as turnedin_url %}
+
+<!-- forward -->
+{% if next_node %}
+    <a href="{{ forward_url }}" class="ui button basic right floated">
+        {{ next_node.lesson_nr }}.<i class="right arrow icon"></i>
+    </a>
+{% endif %}
+
+<!-- back -->
+{% if previous_node %}
+    <a href="{{ backward_url }}" class="ui button basic right floated">
+        <i class="left arrow icon"></i>{{ previous_node.lesson_nr }}.
+    </a>
+{% endif %}
+
+<div class="ui header medium">
+
+    <!-- title -->
+    {{ lessonstep.lesson_nr }} {{ lessonstep.title }}
+
+    <!-- material links -->
+    {% if lessonstep.material %}
+
+        <!-- link to file -->
+        <a href="{{ lessonstep.material.file.url }}">
+            <i class="icon file"></i>
+        </a>
+
+        <!-- download-link -->
+        {% if lessonstep.material.pdf_download_link %}
+            <a href="{% url 'download' slug=lessonstep.material.slug %}">
+                <i class="download icon blue"></i>
+            </a>
+        {% endif %}
+
+    {% endif %}
+
+    {% if lessonstep.is_homework %}
+
+    <a class="ui orange label">interaktiv</a>
+
+    {% endif %}
+    <!-- homework -->
+    {% if lessonstep.is_homework and lessonstep.show_work_area %}
+
+        <br>
+        {% if lessonstep.studentswork_count > 0 %}
+        <a href="{{ turnedin_url }}">
+
+            <div class="ui label large">
+            {% if lessonstep.studentswork_count == 1 %}
+                1
+                Beitrag abgegeben
+
+            {% else %}
+               {{ lessonstep.studentswork_count }}
+               Beiträge abgegeben
+            {% endif %}
+            </div>
+        </a>
+        {% endif %}
+    {% endif %}
+
+</div>
+
+{% if lessonstep.is_homework and lessonstep.show_work_area %}
+    {% include 'classroom/classlesson/fragments/_menu_work.html' %}
+{% endif %}
+
+{% if lessonstep.text != '' %}
+
+    <!-- froala -->
+    <div class="fr-view">
+       {{ lessonstep.text | safe }}
+    </div>
+
+{% endif %}
+
+<!-- material viewer -->
+{% if lessonstep.material %}
+
+    {% if lessonstep.material.pdf_viewer %}
+        <object data="{{ lessonstep.material.file.url }}"
+                type="application/pdf" width="100%" height="800px">
+        </object>
+    {% endif %}
+
+{% endif %}
+
+
+<!-- homework -->
+{% if lessonstep.is_homework and lessonstep.show_work_area %}
+
+    {% if lessonstep.due_date %}
+        <p>
+            Abgabedatum: {{ lessonstep.due_date | date:'d.m.Y' }}
+        </p>
+    {% endif %}
+
+    <!-- froala -->
+    <div class="fr-view">
+        {{ lessonstep.extra_text | safe }}
+    </div>
+
+    <a href="{{ turnedin_url }}" class="ui header medium">
+        Abgegebene Beiträge (Kurzübersicht)
+    </a>
+    <div class="ui list bulleted">
+          {% for worker in studentswork.workers.all %}
+              <a class="item"  href="{{ detail_url }}" >
+
+                <div class="content">
+                  <div class="header">{{ worker.username }}</div>
+                  {{ studentswork.title }}
+                </div>
+
+              </a>
+          {% endfor %}
+    </div>
+{% endif %}

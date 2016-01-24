@@ -1,0 +1,97 @@
+{% load mptt_tags %}
+
+<div class="ui divided list">
+
+    {% recursetree nodes %}
+
+        {% if node.is_block %}
+            {% url 'coursebackend:lessontest:block'  course_slug=cs pk=node.pk as detail_url %}
+            {% url 'coursebackend:lessontest:blockupdate'  course_slug=cs pk=node.pk as update_url %}
+        {% elif node.is_lesson %}
+            {% url 'coursebackend:lessontest:lesson'  course_slug=cs pk=node.pk as detail_url%}
+            {% url 'coursebackend:lessontest:lessonupdate'  course_slug=cs pk=node.pk as update_url %}
+             {% url 'coursebackend:lessontest:lessoncopy'  course_slug=cs pk=node.pk as copy_url %}
+        {% endif %}
+        {% url 'coursebackend:lessontest:delete'  course_slug=cs pk=node.pk as delete_url %}
+
+        <div class="item" {% if node.is_block %}style="padding-top:30px"{% endif %}>
+        
+            <!-- icon -->
+            {% if node.is_block %}
+                <i class="top aligned cube icon">({{ node.nr }})</i>
+            {% elif not node.show_number %}
+                <i class="top aligned icon">(L{{ node.nr }})</i>
+            {% else %}
+                <i class="top aligned icon">{{ node.lesson_nr }}</i>
+            {% endif %}
+
+            <div class="content">
+
+                <div class="header">
+
+                    <!-- root node -->
+                    {% if node.is_root_node %}
+                        <div class="ui header large">{{ node.title }}</div>
+
+                    {% else %}
+
+                        <!-- node title -->
+                        <a href="{{ detail_url }}">
+                             {{ node.title }}
+                        </a>
+
+                        <!-- homework -->
+                        {% if node.is_homework %}
+                             <a class="ui orange label">interaktiv</a>
+                        {% endif %}
+
+                    {% endif %}
+
+                    <!-- update -->
+                    {% if not node.is_root_node %}
+                        <a href="{{ update_url }}">
+                           <i class="icon write"></i>
+                        </a>
+
+                        <!-- delete -->
+                        <a href="{{ delete_url }}">
+                           <i class="icon trash"></i>
+                        </a>
+                        {% if node.is_lesson %}
+
+                        <a href="{{ copy_url }}">
+                           <i class="icon copy"></i>
+                        </a>
+                        {% endif %}
+
+                <span style="font-size: 0.9em; color:grey; font-weight:normal;">
+                   {{ node.modified |date:'d.m.Y' }}
+                </span>
+                    {% endif %}
+
+                    <!-- material -->
+                    {% if node.material %}
+                        {% url 'coursebackend:material:update' course_slug=cs pk=node.material_id as material_url %}
+                        <a href="{{ material_url }}">
+                            <i class="icon file outline"></i>
+                        </a>
+                    {% endif %}
+
+                </div>
+
+
+                        {{ node.description }}
+
+                {% if not node.is_lesson %}
+                    <div class="list">
+                        {{ children }}
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+
+    {% endrecursetree %}
+
+</div>
+

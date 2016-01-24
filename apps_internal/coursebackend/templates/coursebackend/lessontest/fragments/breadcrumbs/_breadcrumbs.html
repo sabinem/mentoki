@@ -1,0 +1,64 @@
+{% url 'coursebackend:lessontest:blockswithlessons' course_slug=cs as start_url %}
+
+<div class="ui large breadcrumb" id ="page-breadcrumb">
+
+    {% if not breadcrumbs %}
+
+        {% if url_name == 'start' %}
+
+            <!-- section active: lesson start -->
+            <div class="section active">
+                Unterricht {{ course.title }} (Vorlage)
+            </div>
+
+        {% elif url_name == 'list' %}
+
+            <!-- section active: homeworks list -->
+            <div class="section active">
+                Aufgaben {{ course.title }}
+            </div>
+
+        {% endif %}
+
+    {% else %}
+
+        <!-- section link -->
+        <a href="{{ start_url }}" class="section">
+            <i class="home icon"></i>
+        </a>
+
+        {% for breadcrumb in breadcrumbs %}
+
+            <!-- get links -->
+            {% if breadcrumb.is_block %}
+                {% url 'coursebackend:lessontest:block'  course_slug=cs pk=breadcrumb.pk as detail_url %}
+            {% elif breadcrumb.is_lesson %}
+                {% url 'coursebackend:lessontest:lesson'  course_slug=cs pk=breadcrumb.pk as detail_url%}
+            {% elif breadcrumb.is_step %}
+                {% url 'coursebackend:lessontest:step'  course_slug=cs pk=breadcrumb.pk as detail_url%}
+            {% endif %}
+
+                 <i class="right chevron icon divider"></i>
+
+                {% if forloop.last %}
+
+                     <!-- active breadcrumb -->
+                     <div class="section active">
+                         {% if breadcrumb.is_block %}<i class="icon cube"></i>{% endif %}
+                         {{ breadcrumb.breadcrumb }}
+                     </div>
+
+                {% else %}
+
+                     <!-- link breadcrumb -->
+                     <a href="{{ detail_url }}" class="section">
+                         {% if breadcrumb.is_block %}<i class="icon cube"></i>{% endif %}
+                         {{ breadcrumb.breadcrumb }}
+                     </a>
+                {% endif %}
+
+        {% endfor %}
+
+    {% endif %}
+
+</div>
