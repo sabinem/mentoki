@@ -4,12 +4,13 @@ from __future__ import unicode_literals
 
 from django.conf.urls import patterns, url
 
-from ..views.lessontest import BlockDetailView, \
-    LessonDetailView, StepDetailView, BlockUpdateView, LessonStepUpdateView, \
-    LessonUpdateView, LessonDeleteView, \
-    BlockCreateView, LessonCreateView, LessonStepCreateView, \
-    BlockListView, BlockLessonsView, LessonCopyView, HomeworkListView
-
+from ..views.lesson.copy import LessonCopyView
+from ..views.lesson.lesson import LessonUpdateView, LessonCreateView
+from ..views.lesson.lessonblock import BlockUpdateView, BlockCreateView
+from ..views.lesson.lessonstep import LessonStepUpdateView, LessonStepCreateView
+from ..views.lesson.list import BlockListView, BlockLessonsView, HomeworkListView
+from ..views.lesson.detail import BlockDetailView, LessonDetailView, StepDetailView
+from ..views.lesson.delete import LessonDeleteView
 
 urlpatterns = patterns('',
     url(r'^$', BlockListView.as_view(),
@@ -54,13 +55,13 @@ urlpatterns += patterns('',
 urlpatterns += patterns('',
 
     url(r'^anlegen/block$', BlockCreateView.as_view(),
-        {'template':'coursebackend/lessontest/pages/update/lessonblockupdate.html'}, name='blockcreate'),
+        {'template':'coursebackend/lessontest/pages/update/lessonblockcreate.html'}, name='blockcreate'),
 
     url(r'^anlegen/lektion$', LessonCreateView.as_view(),
-        {'template':'coursebackend/lessontest/pages/update/lessonupdate.html'}, name='lessoncreate'),
+        {'template':'coursebackend/lessontest/pages/update/lessoncreate.html'}, name='lessoncreate'),
 
     url(r'^anlegen/abschnitt$', LessonStepCreateView.as_view(),
-        {'template':'coursebackend/lessontest/pages/update/lessonstepupdate.html'}, name='stepcreate'),
+        {'template':'coursebackend/lessontest/pages/update/lessonstepcreate.html'}, name='stepcreate'),
 
     url(r'^kopieren/lektion/(?P<pk>\d+)$', LessonCopyView.as_view(),
         {'template':'coursebackend/lessontest/pages/update/lessoncopy.html'}, name='lessoncopy'),

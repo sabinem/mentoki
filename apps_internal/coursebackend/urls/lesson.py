@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 from django.conf.urls import patterns, url
 
-from ..views.lesson import BlockDetailView, LessonStartView,\
+from ..views.lessonold import BlockDetailView, LessonStartView,\
     LessonDetailView, StepDetailView, BlockUpdateView, LessonStepUpdateView, \
     LessonUpdateView, LessonDeleteView, \
     BlockCreateView, LessonCreateView, LessonStepCreateView
