@@ -64,9 +64,11 @@ def copy_lesson_to_block(block, lesson_pk):
 def _copy_any_level_lesson(old_lesson, new_parent):
     # from lesson
     new_lesson = Lesson()
+    new_lesson.nr = old_lesson.nr
+    new_lesson.lesson_nr = old_lesson.lesson_nr
     new_lesson.title = old_lesson.title
     new_lesson.text = old_lesson.text
-    new_lesson.lesson_nr = old_lesson.lesson_nr
+    new_lesson.show_number = old_lesson.show_number
     new_lesson.description = old_lesson.description
     new_lesson.material = old_lesson.material
     new_lesson.is_homework = old_lesson.is_homework
