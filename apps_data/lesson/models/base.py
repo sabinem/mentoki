@@ -131,6 +131,7 @@ class BaseLesson(MPTTModel):
         default=True,
         verbose_name="Nummerierung anzeigen")
     is_homework = models.BooleanField(default=False)
+    allow_questions = models.BooleanField(default=False)
     show_work_area = models.BooleanField(default=False)
 
     objects = BaseLessonManager()

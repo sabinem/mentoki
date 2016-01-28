@@ -73,6 +73,7 @@ def _copy_any_level_lesson(old_lesson, new_parent):
     new_lesson.material = old_lesson.material
     new_lesson.is_homework = old_lesson.is_homework
     new_lesson.show_work_area = old_lesson.show_work_area
+    new_lesson.allow_questions = old_lesson.allow_questions
     new_lesson.course = old_lesson.course
     new_lesson.insert_at(new_parent)
     new_lesson.save()

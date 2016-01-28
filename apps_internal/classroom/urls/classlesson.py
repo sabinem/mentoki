@@ -12,6 +12,7 @@ from ..views.classlessonstep import ClassLessonStepDetailView, \
 from ..views.classlessonstepwork import StudentsWorkUpdatePublicView, \
     StudentsWorkCommentView, StudentsWorkAddTeamView, StudentsWorkCreateView, \
     StudentsWorkDeleteView, StudentsWorkUpdatePrivateView
+from ..views.questions import QuestionsView
 
 
 urlpatterns = patterns('',
@@ -50,6 +51,10 @@ urlpatterns += patterns('',
 
 
 urlpatterns += patterns('',
+    url(r'^abschnitt/(?P<pk>\d+)/fragen$',
+        QuestionsView.as_view(),
+        {'template':'classroom/classlesson/pages/question.html'}, name='question'),
+
     url(r'^abschnitt/(?P<pk>\d+)/kommentieren/(?P<work_pk>\d{1,4})/kommentieren$',
         StudentsWorkCommentView.as_view(),
         {'template':'classroom/classlesson/pages/comment.html'}, name='comment'),

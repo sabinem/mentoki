@@ -9,6 +9,7 @@ from django.http import HttpResponseRedirect
 
 from apps_data.courseevent.models.homework import StudentsWork,Comment
 from apps_data.courseevent.models.courseevent import CourseEvent
+from apps_data.lesson.models.classlesson import Question
 from apps_data.lesson.models.classlesson import ClassLesson
 from apps_core.email.utils.comment import send_work_comment_notification
 
@@ -41,10 +42,13 @@ class ClassLessonStepDetailView(
     """
     def get_context_data(self, **kwargs):
         context = super(ClassLessonStepDetailView, self).get_context_data(**kwargs)
-
-        if context['lessonstep'].is_homework:
+        lessonstep = context['lessonstep']
+        if lessonstep.is_homework:
             context['studentsworks'] = \
-                StudentsWork.objects.turnedin_homework(homework=context['lessonstep'])
+                StudentsWork.objects.turnedin_homework(homework=lessonstep)
+        if lessonstep.allow_questions:
+            context['questions'] = \
+                Question.objects.question_to_lessonstep(classlessonstep=lessonstep)
         return context
 
 

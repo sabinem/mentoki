@@ -1,6 +1,7 @@
 {% url 'classroom:classlesson:step' slug=es pk=next_node.pk as forward_url %}
 {% url 'classroom:classlesson:step' slug=es pk=previous_node.pk as backward_url %}
 {% url 'classroom:classlesson:publiclist' slug=es pk=lessonstep.pk as turnedin_url %}
+{% url 'classroom:classlesson:question' slug=es pk=lessonstep.pk as question_url %}
 
 <!-- forward -->
 {% if next_node %}
@@ -43,7 +44,12 @@
     <a class="ui orange label">interaktiv</a>
 
     {% endif %}
-    <!-- homework -->
+    {% if lessonstep.allow_questions %}
+
+    <a class="ui purple label">nachfragen!</a>
+
+    {% endif %}
+
     {% if lessonstep.is_homework and lessonstep.show_work_area %}
 
         <br>
@@ -88,6 +94,18 @@
         </object>
     {% endif %}
 
+{% endif %}
+
+{% if lessonstep.allow_questions %}
+    <h4 class="ui horizontal divider header">
+        <i class="write icon"></i>
+        Hast Du Fragen oder Anmerkungen?
+    </h4>
+
+    {% include 'classroom/classlesson/fragments/_comments_questions.html' %}
+<a class="ui button" href="{{ question_url }}">
+    Neuen Post schreiben
+</a>
 {% endif %}
 
 

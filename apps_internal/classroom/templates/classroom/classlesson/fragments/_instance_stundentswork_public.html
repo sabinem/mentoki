@@ -10,13 +10,22 @@
 
             <!-- title -->
             {{ studentswork.title }}
+<<<<<<< HEAD
             {% if request.user in studentswork.workers.all %}
             <!--update -->
+=======
+
+            {% if request.user in studentswork.workers.all %}
+>>>>>>> workarea
             <a href="{{ work_url }}">
                 bearbeiten
                 <i class="icon write"></i>
             </a>
             {% endif %}
+<<<<<<< HEAD
+=======
+
+>>>>>>> workarea
         </div>
 
         <div class="meta">

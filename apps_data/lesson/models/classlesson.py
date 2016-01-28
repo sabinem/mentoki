@@ -8,7 +8,9 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.core.validators import ValidationError
 from django.utils.functional import cached_property
+from django.conf import settings
 
+from model_utils.models import TimeStampedModel
 from model_utils.fields import MonitorField
 
 from apps_data.courseevent.models.courseevent import CourseEvent
@@ -337,3 +339,43 @@ class ClassLesson(BaseLesson):
         if self.is_homework:
             from apps_data.courseevent.models.homework import StudentsWork
             return StudentsWork.objects.filter(homework=self, published=True).count()
+
+
+class QuestionManager(models.Manager):
+
+    def question_to_lessonstep(self, classlessonstep):
+        return self.filter(classlessonstep=classlessonstep).order_by('-created')
+
+    def questioners_emails(self, classlessonstep):
+        return set(self.filter(classlessonstep=classlessonstep).select_related('author')\
+            .values_list('author__email', flat=True))
+
+    def create_question(self, courseevent, text, title, author, classlessonstep):
+        comment = Question(
+            courseevent=courseevent, classlessonstep=classlessonstep,
+            text=text, title=title, author=author)
+        comment.save()
+        return comment
+
+
+class Question(TimeStampedModel):
+
+    courseevent = models.ForeignKey(CourseEvent)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL,
+                               blank=True,
+                               null=True,
+                               related_name="question_author")
+    classlessonstep = models.ForeignKey(ClassLesson, related_name="question_to_lesson")
+
+    title = models.CharField(verbose_name="Titel", max_length=100)
+    problem_solved = models.BooleanField(default=False)
+    text = models.TextField(verbose_name="Text")
+
+    objects = QuestionManager()
+
+    class Meta:
+        verbose_name = _("Kommentar")
+        verbose_name_plural = _("Kommentare")
+
+    def __unicode__(self):
+        return self.title

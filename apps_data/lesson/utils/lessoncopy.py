@@ -124,6 +124,7 @@ def _copy_any_level_lesson(lesson, courseevent, parent):
     classlesson.material=lesson.material
     classlesson.is_homework=lesson.is_homework
     classlesson.show_work_area=lesson.show_work_area
+    classlesson.allow_questions=lesson.allow_questions
 
     # move or insert
     if not classlesson.pk:
