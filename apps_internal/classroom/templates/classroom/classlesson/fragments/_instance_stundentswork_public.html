@@ -11,11 +11,12 @@
             <!-- title -->
             {{ studentswork.title }}
 
-            <!--update -->
+            {% if request.user in studentswork.workers.all %}
             <a href="{{ work_url }}">
                 bearbeiten
                 <i class="icon write"></i>
             </a>
+            {% endif %}
 
         </div>
 

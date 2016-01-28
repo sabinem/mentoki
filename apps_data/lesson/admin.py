@@ -5,7 +5,7 @@ from __future__ import unicode_literals, absolute_import
 from django.contrib import admin
 
 from .models.lesson import Lesson
-from .models.classlesson import ClassLesson
+from .models.classlesson import ClassLesson, Questions
 
 
 @admin.register(Lesson)
@@ -32,3 +32,14 @@ class ClassLessonAdmin(admin.ModelAdmin):
                     'original_lesson_id', 'is_original_lesson', 'modified',
                     'created', 'lesson_type', 'level')
     list_filter = ('courseevent__course', 'course', 'courseevent', 'level', 'modified', 'is_original_lesson')
+
+
+@admin.register(Questions)
+class QuestionsAdmin(admin.ModelAdmin):
+    """
+    ClassLessons are copied into the courseevent from a lesson
+    They can be further adapted in the courseevent.
+    """
+    list_display = ('id', 'courseevent', 'classlessonstep', 'modified',
+                    'author', 'title')
+    list_filter = ('author', 'courseevent__course', 'courseevent')
