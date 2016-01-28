@@ -1,0 +1,40 @@
+
+
+    {% url 'classroom:classlesson:comment' slug=es pk=lessonstep.pk work_pk=studentswork.pk as comment_url %}
+
+
+
+    <div class="ui comments">
+
+        {% for question in questions %}
+
+            <div class="comment">
+
+                <a class="avatar">
+                     {% if question.author.profile_image %}
+                        <img src="{{ question.author.profile_image.url }}">
+                     {% endif %}
+
+                </a>
+
+                <div class="content">
+
+                    <a class="author">{{ question.author }}: {{ question.title }}</a>
+
+                    <div class="metadata">
+                        <span class="date">{{ question.created }}</span>
+                    </div>
+
+                    <div class="froala-view">
+                        {{ question.text | safe }}
+                    </div>
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+

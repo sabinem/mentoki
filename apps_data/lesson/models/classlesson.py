@@ -341,24 +341,24 @@ class ClassLesson(BaseLesson):
             return StudentsWork.objects.filter(homework=self, published=True).count()
 
 
-class CommentManager(models.Manager):
+class QuestionManager(models.Manager):
 
-    def comment_to_lessonstep(self, classlessonstep):
+    def question_to_lessonstep(self, classlessonstep):
         return self.filter(classlessonstep=classlessonstep).order_by('-created')
 
-    def commentors_emails(self, classlessonstep):
+    def questioners_emails(self, classlessonstep):
         return set(self.filter(classlessonstep=classlessonstep).select_related('author')\
             .values_list('author__email', flat=True))
 
-    def create_comment(self, courseevent, text, title, author, classlessonstep):
-        comment = Comment(
+    def create_question(self, courseevent, text, title, author, classlessonstep):
+        comment = Question(
             courseevent=courseevent, classlessonstep=classlessonstep,
             text=text, title=title, author=author)
         comment.save()
         return comment
 
 
-class Questions(TimeStampedModel):
+class Question(TimeStampedModel):
 
     courseevent = models.ForeignKey(CourseEvent)
     author = models.ForeignKey(settings.AUTH_USER_MODEL,
@@ -368,9 +368,10 @@ class Questions(TimeStampedModel):
     classlessonstep = models.ForeignKey(ClassLesson, related_name="question_to_lesson")
 
     title = models.CharField(verbose_name="Titel", max_length=100)
+    problem_solved = models.BooleanField(default=False)
     text = models.TextField(verbose_name="Text")
 
-    objects = CommentManager()
+    objects = QuestionManager()
 
     class Meta:
         verbose_name = _("Kommentar")

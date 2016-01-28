@@ -1,4 +1,5 @@
 {% load activelink %}
+{% load fontawesome %}
 
 {% if item.item_type == item.MENU_ITEM_TYPE.forum_item %}
     {% url 'classroom:forum:detail' slug=es pk=item.forum_id as item_url %}
