@@ -10,13 +10,13 @@
 
             <!-- title -->
             {{ studentswork.title }}
-
+            {% if request.user in studentswork.workers.all %}
             <!--update -->
             <a href="{{ work_url }}">
                 bearbeiten
                 <i class="icon write"></i>
             </a>
-
+            {% endif %}
         </div>
 
         <div class="meta">
