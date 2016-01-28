@@ -122,7 +122,7 @@ class StudentsWork(TimeStampedModel):
 class CommentManager(models.Manager):
 
     def comment_to_studentswork(self, studentswork):
-        return self.filter(studentswork=studentswork).order_by('-created')
+        return self.filter(studentswork=studentswork).order_by('created')
 
     def commentors_emails(self, studentswork):
         return set(self.filter(studentswork=studentswork).select_related('author')\
