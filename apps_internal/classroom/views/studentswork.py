@@ -2,19 +2,20 @@
 
 from __future__ import unicode_literals
 
-from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
-from django.views.generic import TemplateView, DetailView, UpdateView, FormView, DeleteView
+from django.views.generic import TemplateView, FormView
+
+import floppyforms.__future__ as forms
+from froala_editor.widgets import FroalaEditor
 
 from apps_data.courseevent.models.homework import StudentsWork
-from apps_core.email.utils.homework import send_work_published_notification
 from apps_data.courseevent.models.courseevent import CourseEvent
 from apps_internal.coursebackend.views.mixins.base import FormCourseEventKwargsMixin
+from apps_data.courseevent.models.menu import ClassroomMenuItem
 
 from .mixins.base import ClassroomMenuMixin
-from .classlessonstepwork import LessonStepContextMixin, StudentsWorkRedirectMixin
-from ..forms.studentswork import StudentWorkCreateForm
+from .classlessonstepwork import StudentsWorkRedirectMixin
 
 
 class StudentsWorkListPrivateView(
@@ -45,6 +46,24 @@ class StudentsWorkListPublicView(
                                                       user=self.request.user,
                                                       courseevent=context['courseevent'])
         return context
+
+
+class StudentWorkCreateForm(forms.ModelForm):
+    text = forms.CharField(widget=FroalaEditor)
+
+    class Meta:
+        model = StudentsWork
+        fields = ('homework', 'title', 'text', 'published')
+
+    def __init__(self, *args, **kwargs):
+        courseevent_slug = kwargs.pop('courseevent_slug', None)
+        self.courseevent = get_object_or_404(CourseEvent, slug=courseevent_slug)
+
+        super(StudentWorkCreateForm, self).__init__(*args, **kwargs)
+
+        self.fields["homework"].queryset = \
+            ClassroomMenuItem.objects.homeworks_published_in_class(courseevent=self.courseevent)
+        self.fields['homework'].empty_label = None
 
 
 class StudentsWorkCreateView(

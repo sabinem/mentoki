@@ -7,13 +7,24 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.views.generic import FormView
 
+import floppyforms.__future__ as forms
+from froala_editor.widgets import FroalaEditor
+
 from apps_data.courseevent.models.forum import Post, CourseEvent, Thread, \
     Forum
 from apps_core.email.utils.post import send_post_notification
 from apps_data.courseevent.models.courseevent import CourseEvent
+from apps_data.courseevent.models.forum import Post
 
-from ..forms.post import StudentPostForm
 from .mixins.base import ClassroomMenuMixin
+
+
+class StudentPostForm(forms.ModelForm):
+    text = forms.CharField(widget=FroalaEditor)
+
+    class Meta:
+        model = Post
+        fields = ('title', 'text')
 
 
 class PostCreateView(

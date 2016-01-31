@@ -7,13 +7,26 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.views.generic import FormView, UpdateView, DeleteView
 
+import floppyforms.__future__ as forms
+from froala_editor.widgets import FroalaEditor
+
 from apps_data.courseevent.models.forum import Thread, Forum
 from apps_data.courseevent.models.courseevent import CourseEvent
 from apps_core.email.utils.thread import send_thread_notification,\
     send_thread_delete_notification
 
-from ..forms.thread import StudentThreadForm
 from .mixins.base import ClassroomMenuMixin
+
+
+class StudentThreadForm(forms.ModelForm):
+    text = forms.CharField(widget=FroalaEditor)
+
+    class Meta:
+        model = Thread
+        fields = ('title', 'text')
+
+    def __init__(self, *args, **kwargs):
+        super(StudentThreadForm, self).__init__(*args, **kwargs)
 
 
 class ThreadCreateView(
