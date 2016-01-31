@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
 
+"""
+Urls für das Forum
+- list: Liste aller Ankündigungen
+- detail: Detailansicht einer Ankündigung
+"""
+
 from __future__ import unicode_literals
 
 from django.conf.urls import patterns, url
 
 from ..views.studentswork import StudentsWorkListPublicView, StudentsWorkListPrivateView, \
     StudentsWorkCreateView
-
 
 
 urlpatterns = patterns('',

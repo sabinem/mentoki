@@ -2,8 +2,7 @@
 
 """
 Choices for
- 1. orders status
- 2. transaction error codes
+ 1. notification settings
 """
 from __future__ import unicode_literals, absolute_import
 

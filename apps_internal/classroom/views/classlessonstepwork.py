@@ -19,8 +19,7 @@ from .classlessonstep import LessonStepContextMixin, StudentsWorkContextMixin
 from ..forms.studentswork import StudentWorkCommentForm
 from apps_internal.coursebackend.views.mixins.base import \
     FormCourseEventKwargsMixin
-
-from ..forms.studentswork import StudentWorkCreateForm, \
+from ..forms.studentswork import  \
     StudentWorkAddTeamForm, StudentWorkUpdatePublicForm, \
     StudentWorkUpdatePrivateForm
 import logging
