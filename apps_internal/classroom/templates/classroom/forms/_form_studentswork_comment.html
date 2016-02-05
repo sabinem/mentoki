@@ -1,6 +1,6 @@
 {{ form.media }}
-{% url 'classroom:homework:studentswork' slug=es pk=homework.pk work_pk=studentswork.pk as back_url %}
-<form class="ui form" method="post" action="" >{% csrf_token %}
+{% url 'classroom:classlesson:publicstudentswork' slug=es pk=studentswork.homework.pk work_pk=studentswork.pk as back_url %}
+<form class="ui form" method="post" action="" id="startwriting">{% csrf_token %}
 
     {% include 'classroom/forms/form_fields/_form_non_field_errors.html' %}
 
