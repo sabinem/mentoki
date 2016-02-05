@@ -1,5 +1,5 @@
 <div class="ui header medium">
-    Unabhängige Blöcke
+    Blöcke aus der Kursvorlage kopieren
 </div>
 <table class="ui table stackable">
     <thead>
@@ -13,7 +13,7 @@
 
         {% for block in independent_blocks %}
 
-            {% url 'coursebackend:lesson:lesson' pk=block.pk course_slug=cs as block_url%}
+            {% url 'coursebackend:classlesson:lesson' pk=block.pk course_slug=cs slug=es as block_url%}
             {% url 'lesson:copy_block' courseevent_pk=courseevent.pk block_pk=block.pk as copyall_url %}
             {% url 'coursebackend:classlesson:lessoncopy' slug=es course_slug=cs pk=lesson.pk as copypart_url %}
             {% url 'coursebackend:classlesson:lesson' slug=es course_slug=cs pk=lesson.classlesson.pk as class_url %}
@@ -31,7 +31,7 @@
                     <a
                             href="{{ block_url }}"
                     >
-                            <i class="icon cube"></i>(Kurs): {{ block.title }}
+                            <i class="icon green cube"></i>(Kurs): {{ block.title }}
                     </a>
                 </td>
                 <td>
@@ -59,8 +59,8 @@
                     <a
                             href="{{ block_url }}"
                     >
-                            <i class="icon cube"></i>(Vorlage/Kurs): {{ block.title }}
-                        <i class="icon lock purple"></i>
+                            <i class="icon purple cube"></i>(Vorlage): {{ block.title }}
+
                 <!-- meta -->
                 <p style="font-size: 0.9em; color:grey; font-weight:normal;">
                    {% if not block.original_lesson and not block.original_lesson_id %}
@@ -85,16 +85,16 @@
 
                 <td>
                     <p>
-                        <a class="ui button" href="{{ unlock_url }}">
-                            <i class="icon blue unlock"></i>abkoppeln?
-                        </a>
-                        <a class="ui button" href="{{ copy_url }}">
-                            <i class="icon blue copy"></i>neu übernehmen?
+
+
+                        <a href="{{ unhide_url }}">(Kurs): {{ block.title }}
+                            <i class="icon green cube"></i><i class="icon lock purple"></i>
                         </a>
 
-                        <a href="{{ unhide_url }}">
-                            <i class="icon blue unhide"></i>
+                        <a class="ui button" href="{{ copy_url }}">
+                            <i class="icon purple copy"></i>neu übernehmen?
                         </a>
+
                     </p>
                 </td>
 
@@ -111,7 +111,7 @@
                     <a
                             href="{{ block_url }}"
                     >
-                            <i class="icon cube"></i>(Vorlage): {{ block.title }}
+                            <i class="icon purple cube"></i>(Vorlage): {{ block.title }}
 
                     </a>
                 </td>
@@ -120,7 +120,7 @@
                     <p>
 
                         <a class="ui button" href="{{ copy_url }}">
-                            <i class="icon blue copy"></i>kopieren?
+                            <i class="icon purple copy"></i>kopieren?
                         </a>
 
                     </p>

@@ -1,4 +1,4 @@
-{% url 'coursebackend:lessontest:start' course_slug=cs as back_url %}
+{% url 'coursebackend:lesson:start' course_slug=cs as back_url %}
 
 {{ form.media }}
 
@@ -9,83 +9,73 @@
     {% include 'coursebackend/forms/fragments/_form_non_field_errors.html' %}
 
     <div class="ui dividing large header">Lektion</div>
+    <div class="ui blue message">
+        <ul>
+            <li>Lektionen sind die zentralen Elemente im Unterricht.</li>
+            <li>Es sind Lektionen, die im Klassenzimmer veröffentlicht werden!</li>
+            <li>Zwischen Lektionen im selben Block kann geblättert werden.</li>
+             <li>Die Lektionsnummer kann angezeigt werden oder auch nur zur internen Steuerung der
+             Reihenfolge dienen.</li>
+        </ul>
+    </div>
 
     <div class="fields inline">
-        <div class="field eight wide">
-            {{ form.parent.label_tag }}
-            <p>{{ form.parent.help_text }}</p>
-
+        <div class="field sixteen wide">
+            <label>Unterrichtsblock</label>
             {% if form.parent.errors %}
                 <div class="ui negative floating message">
                     {{ form.parent.errors }}
                 </div>
             {% endif %}
-            <br>
-
             {{ form.parent }}
-
         </div>
     </div>
-    <div class="fields inline">
 
-        <div class="field four wide">
-            {{ form.nr.label_tag }}
-            <p>{{ form.nr.help_text }}</p>
-
+    <div class="inline fields">
+        <div class="field eight wide">
+            <label>{{ form.nr.label_tag }}</label>
             {% if form.nr.errors %}
                 <div class="ui negative floating message">
                     {{ form.nr.errors }}
                 </div>
             {% endif %}
-            <br>
-
             {{ form.nr }}
-
         </div>
-
-        <div class="field four wide">
-            {{ form.show_number.label_tag }}
-            <p>{{ form.show_number.help_text }}</p>
-
+        <div class="field eight wide">
+            <label>{{ form.show_number.label_tag }}</label>
             {% if form.show_number.errors %}
                 <div class="ui negative floating message">
                     {{ form.show_number.errors }}
                 </div>
             {% endif %}
-            <br>
-
             {{ form.show_number }}
-
         </div>
+    </div>
 
-        <div class="field twelve wide">
-            <p>Lektions-Titel</p>
-
+    <div class="inline fields">
+        <div class="field sixteen wide">
+            <label>Überschrift</label>
             {% if form.title.errors %}
                 <div class="ui negative floating message">
                     {{ form.title.errors }}
                 </div>
             {% endif %}
-            <br>
-
             {{ form.title }}
-
         </div>
-
     </div>
 
-    <div class="field sixteen wide">
-        {{ form.description.label_tag }}
-        {{ form.description.help_text }}
-        {% if form.description.errors %}
-            <div class="ui negative floating message">
-                {{ form.description.errors }}
-            </div>
-        {% endif %}
-        <br>
-
-        {{ form.description }}
-
+    <div class="inline fields">
+        <div class="field sixteen wide">
+            <label>
+                {{ form.description.label_tag }}
+            </label>
+            {% if form.description.errors %}
+                <div class="ui negative floating message">
+                    {{ form.description.errors }}
+                </div>
+            {% endif %}
+            {{ form.description }}
+        </div>
     </div>
 
     <div class="field sixteen wide">
@@ -94,12 +84,8 @@
                 {{ form.text.errors }}
             </div>
         {% endif %}
-        <br>
-
         {{ form.text }}
-
     </div>
-
     <button type="submit" value="post" class="ui button" id="formsubmitonce">
         Speichern
     </button>

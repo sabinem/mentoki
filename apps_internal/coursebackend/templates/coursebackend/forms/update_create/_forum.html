@@ -15,7 +15,7 @@
     {% endif %}
 
     <div class="fields inline">
-        <div class="field twelve wide">
+        <div class="field sixteen wide">
             {{ form.parent.label_tag }}
             <p>{{ form.parent.help_text }}</p>
 
@@ -33,7 +33,7 @@
 
     <div class="fields inline">
 
-        <div class="field six wide">
+        <div class="field sixteen wide">
             {{ form.display_nr.label_tag }}
 
             {% if form.display_nr.errors %}
@@ -46,8 +46,9 @@
             {{ form.display_nr }}
 
         </div>
-
-        <div class="field ten wide">
+    </div>
+    <div class="fields inline">
+        <div class="field sixteen wide">
 
             {{ form.title.label_tag }}
 
@@ -63,6 +64,7 @@
         </div>
 
     </div>
+
 
     <div class="field sixteen wide">
         {{ form.description.label_tag }}

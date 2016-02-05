@@ -1,29 +1,26 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import unicode_literals
-
-from django.core.urlresolvers import reverse_lazy
-
-from django.views.generic import FormView
-from django.http import HttpResponseRedirect
-
-from apps_data.lesson.models.classlesson import ClassLesson, Question
-
-
-from .mixins.base import ClassroomMenuMixin
-from .classlessonstep import LessonStepContextMixin
-
 import floppyforms.__future__ as forms
 
+from django.core.urlresolvers import reverse_lazy
+from django.views.generic import FormView
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 
 from froala_editor.widgets import FroalaEditor
 
+from apps_data.lesson.models.classlesson import ClassLesson, Question
 from apps_data.courseevent.models.courseevent import CourseEvent
 
+from .mixins.base import ClassroomMenuMixin, AuthClassroomAccessMixin, \
+    ParticipationFormKwargsMixin, ParticipationCheckHiddenFormMixin
+from .classlessonstep import LessonStepContextMixin
 
 
-class QuestionForm(forms.ModelForm):
+class QuestionForm(
+    ParticipationCheckHiddenFormMixin,
+    forms.ModelForm):
     text = forms.CharField(widget=FroalaEditor)
 
     class Meta:
@@ -31,6 +28,8 @@ class QuestionForm(forms.ModelForm):
         fields = ('title', 'text')
 
 class QuestionsView(
+    AuthClassroomAccessMixin,
+    ParticipationFormKwargsMixin,
     ClassroomMenuMixin,
     LessonStepContextMixin,
     FormView):

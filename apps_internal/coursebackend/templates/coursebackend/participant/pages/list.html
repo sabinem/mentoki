@@ -1,12 +1,6 @@
 {% extends "coursebackend/base_courseevent.html" %}
 
-{% block courseevent_menu_items %}
-        {% url 'classroom:participant:list' slug=es as back_link %}
 
-        <a href="{{ back_link }}" class="item" >
-            <i class="student icon blue"></i>
-        </a>
-{% endblock %}
 
 {% block breadcrumbs %}
     {% include 'coursebackend/participant/fragments/_breadcrumbs.html' %}

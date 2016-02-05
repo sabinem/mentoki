@@ -1,32 +1,47 @@
 # coding: utf-8
 
 from __future__ import unicode_literals, absolute_import
+import floppyforms.__future__ as forms
 
 from django.core.urlresolvers import reverse_lazy
-from django.shortcuts import get_object_or_404
-from django.views.generic import TemplateView, DetailView, UpdateView, \
+from django.views.generic import UpdateView, \
     FormView, DeleteView
 from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404
 
-from apps_data.courseevent.models.homework import StudentsWork, Comment
-from apps_data.courseevent.models.courseevent import CourseEvent
+from froala_editor.widgets import FroalaEditor
+
 from apps_data.lesson.models.classlesson import ClassLesson
 from apps_core.email.utils.comment import send_work_comment_notification
 from apps_core.email.utils.homework import send_work_published_notification
+from apps_data.courseevent.models.courseevent import CourseEvent
+from apps_data.courseevent.models.homework import StudentsWork, Comment
 
-from .mixins.base import ClassroomMenuMixin
+from .mixins.base import ClassroomMenuMixin, AuthClassroomAccessMixin, \
+    ParticipationFormKwargsMixin, ParticipationCheckHiddenFormMixin
 from .classlessonstep import LessonStepContextMixin, StudentsWorkContextMixin
-from ..forms.studentswork import StudentWorkCommentForm
+
 from apps_internal.coursebackend.views.mixins.base import \
     FormCourseEventKwargsMixin
-from ..forms.studentswork import  \
-    StudentWorkAddTeamForm, StudentWorkUpdatePublicForm, \
-    StudentWorkUpdatePrivateForm
+
+
 import logging
 logger = logging.getLogger(__name__)
 
 
+class StudentWorkCommentForm(
+    ParticipationCheckHiddenFormMixin,
+    forms.ModelForm):
+    text = forms.CharField(widget=FroalaEditor)
+
+    class Meta:
+        model = Comment
+        fields = ('title', 'text')
+
+
 class StudentsWorkCommentView(
+    AuthClassroomAccessMixin,
+    ParticipationFormKwargsMixin,
     ClassroomMenuMixin,
     LessonStepContextMixin,
     FormView):
@@ -88,7 +103,19 @@ class StudentsWorkRedirectMixin(
                                        kwargs={'slug': self.kwargs['slug'],
                                                'pk': self.object.homework.id})
 
+
+class StudentWorkUpdatePublicForm(forms.ModelForm):
+    text = forms.CharField(widget=FroalaEditor)
+    republish = forms.BooleanField(required=False)
+
+    class Meta:
+        model = StudentsWork
+        fields = ('title', 'text')
+
+
 class StudentsWorkUpdatePublicView(
+    AuthClassroomAccessMixin,
+    ParticipationFormKwargsMixin,
     ClassroomMenuMixin,
     LessonStepContextMixin,
     StudentsWorkContextMixin,
@@ -115,7 +142,17 @@ class StudentsWorkUpdatePublicView(
         return super(StudentsWorkUpdatePublicView, self).form_valid(form)
 
 
+class StudentWorkUpdatePrivateForm(forms.ModelForm):
+    text = forms.CharField(widget=FroalaEditor)
+
+    class Meta:
+        model = StudentsWork
+        fields = ('title', 'text', 'published')
+
+
 class StudentsWorkUpdatePrivateView(
+    AuthClassroomAccessMixin,
+    ParticipationFormKwargsMixin,
     ClassroomMenuMixin,
     LessonStepContextMixin,
     StudentsWorkRedirectMixin,
@@ -141,6 +178,8 @@ class StudentsWorkUpdatePrivateView(
 
 
 class StudentsWorkDeleteView(
+    AuthClassroomAccessMixin,
+    ParticipationFormKwargsMixin,
     ClassroomMenuMixin,
     LessonStepContextMixin,
     StudentsWorkRedirectMixin,
@@ -154,6 +193,8 @@ class StudentsWorkDeleteView(
 
 
 class StudentsWorkCreateView(
+    AuthClassroomAccessMixin,
+    ParticipationFormKwargsMixin,
     ClassroomMenuMixin,
     LessonStepContextMixin,
     StudentsWorkRedirectMixin,
@@ -189,7 +230,23 @@ class StudentsWorkCreateView(
         return HttpResponseRedirect(self.get_success_url())
 
 
+class StudentWorkAddTeamForm(forms.ModelForm):
+
+    class Meta:
+        model = StudentsWork
+        fields = ('workers',)
+        widgets = {'workers': forms.CheckboxSelectMultiple}
+
+    def __init__(self, *args, **kwargs):
+        courseevent_slug = kwargs.pop('courseevent_slug', None)
+        self.courseevent = get_object_or_404(CourseEvent, slug=courseevent_slug)
+        super(StudentWorkAddTeamForm, self).__init__(*args, **kwargs)
+        self.fields['workers'].queryset = self.courseevent.workers()
+
+
 class StudentsWorkAddTeamView(
+    AuthClassroomAccessMixin,
+    ParticipationFormKwargsMixin,
     ClassroomMenuMixin,
     LessonStepContextMixin,
     FormCourseEventKwargsMixin,

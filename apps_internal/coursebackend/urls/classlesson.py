@@ -4,12 +4,18 @@ from __future__ import unicode_literals
 
 from django.conf.urls import patterns, url
 
-from ..views.classlesson import ClassBlockDetailView, ClassLessonStartView,\
+from ..views.classlesson.list import ClassLessonStartView
+from ..views.classlesson.detail import ClassBlockDetailView, \
     ClassLessonDetailView, ClassStepDetailView
-from ..views.classlessonupdate import ClassLessonStepUpdateView, \
-    ClassLessonUpdateView, ClassLessonDeleteView, ClassLessonBlockUpdateView, \
-    ClassLessonCreateView, ClassLessonStepCreateView, ClassLessonBlockCreateView
-from ..views.lesson_to_classlesson import ClassLessonBLockUnlockView, CopyBlockListView
+from ..views.classlesson.classlesson import \
+    ClassLessonUpdateView, ClassLessonCreateView
+from ..views.classlesson.delete import ClassLessonDeleteView
+from ..views.classlesson.classlessonblock import ClassLessonBlockUpdateView, \
+    ClassLessonBlockCreateView
+from ..views.classlesson.classlessonstep import ClassLessonStepUpdateView, \
+    ClassLessonStepCreateView
+from ..views.classlesson.lesson_to_classlesson import \
+    ClassLessonBLockUnlockView, CopyBlockListView
 
 
 urlpatterns = patterns('',

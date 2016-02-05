@@ -33,8 +33,10 @@ from model_utils.managers import QueryManager
 from model_utils.fields import MonitorField
 from model_utils import Choices
 
+from ..constants import NotificationSettings
+from django_enumfield import enum
+
 from apps_data.course.models.course import Course
-from ..constants import PARTICIPANT_STATUS_CHOICES
 
 import logging
 logger = logging.getLogger('data.courseevent')
@@ -267,12 +269,24 @@ class CourseEvent(TimeStampedModel):
         """
         return self.participation.all().prefetch_related('participation').order_by('username')
 
+    def active_students(self):
+        """
+        Returns all the accounts of users who are visible students in the courseevent
+        """
+        return self.participation.filter(hidden=True)
+
     def workers(self):
         workers =  self.participation.all() | self.course.owners.all()
         return workers.distinct()
 
     def is_student(self, user):
         if user in self.students():
+           return True
+        else:
+            return False
+
+    def is_active_student(self, user):
+        if user in self.active_students():
            return True
         else:
             return False
@@ -317,6 +331,9 @@ class ParticipationManager(models.Manager):
     def learning(self, user):
         return self.filter(user=user)
 
+    def active_learning(self, user):
+        return self.filter(user=user, hidden=False)
+
     def learners(self, courseevent):
         return self.filter(courseevent=courseevent).select_related('user')
 
@@ -325,7 +342,36 @@ class ParticipationManager(models.Manager):
         return self.filter(courseevent=courseevent, hidden=False).select_related('user')
 
     def learners_emails(self, courseevent):
-        return self.filter(courseevent=courseevent, hidden=False).select_related('user').\
+        return self.filter(courseevent=courseevent,
+                           hidden=False).\
+            values_list('user__email', flat=True)
+
+    def forum_notification_all_emails(self, courseevent):
+        return self.filter(courseevent=courseevent,
+                           hidden=False,
+                           notification_forum=NotificationSettings.ALL
+                           ).\
+            values_list('user__email', flat=True)
+
+    def forum_notification_none_emails(self, courseevent):
+        return self.filter(courseevent=courseevent,
+                           hidden=False,
+                           notification_forum=NotificationSettings.NONE
+                           ).\
+            values_list('user__email', flat=True)
+
+    def work_notification_all_emails(self, courseevent):
+        return self.filter(courseevent=courseevent,
+                           hidden=False,
+                           notification_work=NotificationSettings.ALL
+                           ).\
+            values_list('user__email', flat=True)
+
+    def work_notification_none_emails(self, courseevent):
+        return self.filter(courseevent=courseevent,
+                           hidden=False,
+                           notification_work=NotificationSettings.NONE
+                           ).\
             values_list('user__email', flat=True)
 
     def active(self,courseevent):
@@ -355,15 +401,15 @@ class CourseEventParticipation(TimeStampedModel):
         verbose_name=_('versteckt'),
         default=False)
     hidden_status_changed = MonitorField(monitor='hidden')
-    participation_type = models.CharField(
-        max_length=10,
-        choices=PARTICIPANT_STATUS_CHOICES,
-        default=PARTICIPANT_STATUS_CHOICES.preview)
+    notification_forum = enum.EnumField(NotificationSettings, default=NotificationSettings.ALL)
+    notification_work = enum.EnumField(NotificationSettings, default=NotificationSettings.ALL)
+
     objects = ParticipationManager()
 
     class Meta:
         verbose_name = _("Kurs-Teilnehmer")
         verbose_name_plural = _("Kurs-Teilnehmer")
+        unique_together = ('user', 'courseevent')
 
     def __unicode__(self):
         return u'%s / %s' % (self.courseevent, self.user)

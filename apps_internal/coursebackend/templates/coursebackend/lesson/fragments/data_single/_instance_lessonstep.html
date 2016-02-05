@@ -1,14 +1,11 @@
-{% url 'coursebackend:lessontest:stepupdate'  course_slug=cs pk=lessonstep.pk as stepupdate_url %}
-{% url 'coursebackend:lessontest:delete'  course_slug=cs pk=lessonstep.pk as delete_url %}
-{% url 'coursebackend:lessontest:step' course_slug=cs pk=next_node.pk as forward_url %}
-{% url 'coursebackend:lessontest:step' course_slug=cs pk=previous_node.pk as backward_url %}
+{% url 'coursebackend:lesson:stepupdate'  course_slug=cs pk=lessonstep.pk as stepupdate_url %}
+{% url 'coursebackend:lesson:delete'  course_slug=cs pk=lessonstep.pk as delete_url %}
+{% url 'coursebackend:lesson:step' course_slug=cs pk=next_node.pk as forward_url %}
+{% url 'coursebackend:lesson:step' course_slug=cs pk=previous_node.pk as backward_url %}
 
 <!-- forward -->
 {% if next_node %}
     <a href="{{ forward_url }}" class="ui button basic right floated">
-        {% if node.show_number %}
-        {{ next_node.lesson_nr }}.
-        {% endif %}
         <i class="right arrow icon"></i>
     </a>
 {% endif %}
@@ -17,9 +14,6 @@
 {% if previous_node %}
     <a href="{{ backward_url }}" class="ui button basic right floated">
         <i class="left arrow icon"></i>
-        {% if node.show_number %}
-        {{ previous_node.lesson_nr }}.
-        {% endif %}
     </a>
 {% endif %}
 
@@ -31,15 +25,19 @@
     <!-- title -->
     {{ lessonstep.lesson_nr }}. {{ lessonstep.title }}
     {% else %}
-    (LS{{ lessonstep.nr }}) {{ lessonstep.title }}
+    ({{ lessonstep.nr }}) {{ lessonstep.title }}
     {% endif %}
-
 
     <!-- homework -->
     {% if lessonstep.is_homework %}
        <a class="ui orange label">interaktiv</a>
     {% endif %}
-
+    {% if lessonstep.show_work_area %}
+       <i style="display:inline;" class="ui orange icon privacy"></i>
+    {% endif %}
+    {% if lessonstep.allow_questions %}
+       <a class="ui orange label">nachgefragt</a>
+    {% endif %}
     <!-- update -->
     <a href="{{ stepupdate_url }}">
        <i class="icon write"></i>
@@ -56,7 +54,7 @@
 
         <!-- link to file -->
         <a href="{{ lessonstep.material.file.url }}">
-            <i class="icon file"></i>
+            <i class="icon file pdf outline"></i>
         </a>
 
         <!-- download-link -->
@@ -67,6 +65,7 @@
         {% endif %}
 
     {% endif %}
+
 
 </div>
 

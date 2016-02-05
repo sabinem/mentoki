@@ -6,12 +6,15 @@ from django.views.generic import TemplateView
 
 from apps_data.courseevent.models.courseevent import CourseEventParticipation
 
-from .mixins.base import ClassroomMenuMixin
+from .mixins.base import ClassroomMenuMixin, AuthClassroomAccessMixin
 
 import logging
 logger = logging.getLogger('display.classroom')
 
-class CourseParticipantListView(ClassroomMenuMixin, TemplateView):
+class CourseParticipantListView(
+    AuthClassroomAccessMixin,
+    ClassroomMenuMixin,
+    TemplateView):
     """
     lists participants of the courseevent
     """

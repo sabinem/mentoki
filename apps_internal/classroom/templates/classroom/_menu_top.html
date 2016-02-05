@@ -1,4 +1,4 @@
-{% load activelink %}
+
 {% url 'coursebackend:classlesson:copy'  slug=es course_slug=cs as copy_url %}
 
 {% url 'coursebackend:courseevent:detail' course_slug=cs slug=es as courseevent_url %}
@@ -24,45 +24,38 @@
 
 <!-- work link in coursebackend -->
 <a href="{{ copy_url }}" class="item
-{% ifactive copy_url %} active{% endifactive %}
 ">
     <i class="icon copy  purple"></i>
 </a>
 
 <a href="{{ courseevent_url }}" class="item
-{% ifactive courseevent_url %} active{% endifactive %}
 " >
     <i class="rocket icon green"></i>
 </a>
 
 <a class="item
-{% ifactive menu_url %} active{% endifactive %}
 " href="{{ menu_url }}">
     <i class="sidebar icon blue"></i>
 </a>
 
 <a class="item
-{% ifactive classlesson_url %} active{% endifactive %}
 " href="{{ classlesson_url }}">
-    <i class="database icon blue"></i>
+    <i class="book icon blue"></i>
 </a>
 <a class="item
-{% ifactive announcements_url %} active{% endifactive %}
 " href="{{ announcements_url }}">
     <i class="announcement icon blue"></i>
 </a>
 <a class="item
-{% ifactive forum_url %} active{% endifactive %}
 " href="{{ forum_url }}">
     <i class="comments outline blue icon "></i>
 </a>
 <a class="item
-{% ifactive participants_url %} active{% endifactive %}
 " href="{{ participants_url }}">
     <i class="users icon blue"></i>
 </a>
 <a class="item
-{% ifactive classroom_url %} active{% endifactive %}
+ active
 " href="{{ classroom_url }}">
     <i class="student icon teal"></i>
 </a>

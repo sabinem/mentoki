@@ -9,8 +9,17 @@
 <form class="ui form" method="post" action="" enctype="multipart/form-data">
 
     {% csrf_token %}
+  <div class="ui dividing large header">Material</div>
+    <div class="ui blue message">
+        <ul>
+            <li>Derzeit können nur PDFs als Material hochgeladen werden.</li>
+            <li>PDFs können in Lernabschnitte eingebunden werden.</li>
+            <li>Der Link zum File wird immer angeboten, damit das Material auf allen Geräten
+            verfügbar ist.</li>
+            <li>Wahlweise kann ein PDF-Viewer angeboten werden, um das Material einzubinden.</li>
+        </ul>
+    </div>
 
-  <div class="ui dividing large header">Material-Info</div>
 
     {% if form.title.errors %}
         <div class="ui negative floating message">
@@ -37,26 +46,9 @@
     </div>
     </div>
 
-  <div class="ui dividing large header">Dateityp und wie soll die Datei verfügbar sein?</div>
+  <div class="ui dividing medium header">Dateityp und wie soll die Datei verfügbar sein?</div>
 
     {% include 'coursebackend/forms/fragments/_form_non_field_errors.html' %}
-    <div class="ui info floating message">
-    <div class="ui list">
-        <div class="item">
-            <i class="warning icon"></i>
-            <div class="content">
-            Derzeit wird nur der Dateityp pdf unterstützt.
-            </div>
-        </div>
-        <div class="item">
-            <i class="info icon"></i>
-            <div class="content">
-            Der Link zum File wird immer angeboten, damit das Material auf allen Geräten
-            verfügbar ist.
-            </div>
-        </div>
-    </div>
-    </div>
 
     {% if form.document_type.errors %}
         <div class="ui negative floating message">
@@ -88,7 +80,7 @@
       </div>
     </div>
 
-    <div class="ui dividing large header">Datei hochladen</div>
+    <div class="ui dividing medium header">Datei hochladen</div>
 
     {% if form.file.errors %}
         <div class="ui negative floating message">

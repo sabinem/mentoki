@@ -20,10 +20,8 @@ class BlockListView(
     :param course_slug: slug of course
     :return: nodes: all complete trees for course
     """
-
     def get_context_data(self, **kwargs):
         context = super(BlockListView, self).get_context_data(**kwargs)
-        context['nodes'] = Lesson.objects.start_tree_for_course(course=context['course'])
         context['blocks'] = Lesson.objects.blocks_for_course(course=context['course'])
         self.request.session['last_url'] = self.request.path
         return context
@@ -37,17 +35,15 @@ class BlockLessonsView(
     :param course_slug: slug of course
     :return: nodes: all complete trees for course
     """
-
     def get_context_data(self, **kwargs):
         context = super(BlockLessonsView, self).get_context_data(**kwargs)
-
         context['nodes'] = Lesson.objects.start_tree_for_course(course=context['course'])
         self.request.session['last_url'] = self.request.path
         return context
 
 
 
-class HomeworkListView(
+class BlocksCompleteView(
     CourseMenuMixin,
     TemplateView):
     """
@@ -55,10 +51,12 @@ class HomeworkListView(
     :param course_slug: slug of course
     :return: nodes: all complete trees for course
     """
-
     def get_context_data(self, **kwargs):
-        context = super(HomeworkListView, self).get_context_data(**kwargs)
+        context = super(BlocksCompleteView, self).get_context_data(**kwargs)
+        context['nodes'] = Lesson.objects.start_tree_for_course(course=context['course'])
+        for node in context['nodes']:
+            print node
         self.request.session['last_url'] = self.request.path
-        context['homeworks'] = Lesson.objects.homeworks(course=context['course'])
         return context
+
 

@@ -59,7 +59,6 @@ class BlockCreateView(
 
     def form_valid(self, form):
         course = get_object_or_404(Course, slug=self.kwargs['course_slug'])
-        print "==== HELLO ====="
         self.object = Lesson.objects.create_block(
             course=course,
             title=form.cleaned_data['title'],
@@ -67,6 +66,6 @@ class BlockCreateView(
             text=form.cleaned_data['text'],
             nr=form.cleaned_data['nr'],
         )
-        list_url = reverse('coursebackend:lessontest:blockswithlessons',
-                           kwargs={'course_slug': self.kwargs['course_slug'],})
-        return HttpResponseRedirect(list_url)
+        last_url = self.request.session['last_url']
+        return HttpResponseRedirect(last_url)
+

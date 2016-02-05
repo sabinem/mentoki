@@ -3,15 +3,16 @@
 from __future__ import unicode_literals
 
 from django.core.urlresolvers import reverse
-from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import RedirectView
 
 from apps_data.courseevent.models.menu import ClassroomMenuItem
 
-from .mixins.base import ClassroomMenuMixin
+from .mixins.base import ClassroomMenuMixin, AuthClassroomAccessMixin
 
 
 class ClassroomStartView(
+    AuthClassroomAccessMixin,
     ClassroomMenuMixin,
     RedirectView):
     """
@@ -33,19 +34,6 @@ class ClassroomStartView(
         elif startitem.item_type == ClassroomMenuItem.MENU_ITEM_TYPE.forum_item:
             kwargs['pk'] = startitem.forum_id
             url = reverse('classroom:forum:detail', args=args, kwargs=kwargs)
-            return url
-
-        elif startitem.item_type == ClassroomMenuItem.MENU_ITEM_TYPE.lessonstep_item:
-            kwargs['pk'] = startitem.classlesson_id
-            url = reverse('classroom:classlesson:step', args=args, kwargs=kwargs)
-            return url
-
-        elif startitem.item_type == ClassroomMenuItem.MENU_ITEM_TYPE.last_posts_item:
-            url = reverse('classroom:forum:newposts', args=args, kwargs=kwargs)
-            return url
-
-        elif startitem.item_type == ClassroomMenuItem.MENU_ITEM_TYPE.private_item:
-            url = reverse('classroom:studentswork:list', args=args, kwargs=kwargs)
             return url
 
         elif startitem.item_type == ClassroomMenuItem.MENU_ITEM_TYPE.lesson_item:

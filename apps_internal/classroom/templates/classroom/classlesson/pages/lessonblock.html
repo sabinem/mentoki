@@ -4,15 +4,6 @@
    {% include 'classroom/classlesson/fragments/_breadcrumbs.html' %}
 {% endblock %}
 
-{% block classroom_menu_items %}
-    {% if request.user in course.teachers or request.user.is_superuser %}
-        {% url 'coursebackend:forum:list' course_slug=cs slug=es as back_link %}
-
-        <a href="{{ back_link }}" class="item" >
-            <i class="wrench icon blue"></i>
-        </a>
-    {% endif %}
-{% endblock %}
 
 {% block page_content %}
 

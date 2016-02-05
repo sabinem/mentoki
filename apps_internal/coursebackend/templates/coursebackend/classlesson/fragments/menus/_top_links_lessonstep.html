@@ -1,14 +1,14 @@
 {% url 'coursebackend:classlesson:start'  slug=es course_slug=cs as start_url %}
 
 
-{% url 'coursebackend:classlesson:lessoncreate'  course_slug=cs slug=es  as createlesson_url %}
+{% url 'coursebackend:classlesson:lessonstepcreate'  course_slug=cs slug=es  as createlessonstep_url %}
 
 
 
 
 <!-- insert lesson -->
-<a href="{{ createlesson_url }}" class="item" >
-    <i class="plus icon blue"></i>Lektion
+<a href="{{ createlessonstep_url }}" class="item" >
+    <i class="plus icon blue"></i>Lernschritt
 </a>
 
 

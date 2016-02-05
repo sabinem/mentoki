@@ -151,7 +151,7 @@ class ClassLessonManager(LessonManager):
 
     def lessons_for_menu(self, courseevent):
         return self.filter(courseevent=courseevent,
-                           level__gt=1,
+                           level=2,
                            )
 
     def lessonsteps_for_courseevent(self, courseevent):
@@ -226,9 +226,9 @@ class ClassLesson(BaseLesson):
         if self.level == 0:
             return u'Wurzel: %s' % (self.courseevent)
         elif self.level == 1:
-            return u'Block: %s %s' % (self.courseevent, self.title)
+            return u'Block: %s' % (self.title)
         elif self.level == 2:
-            return u'%s: %s. %s %s' % (self.courseevent, self.parent.title, self.lesson_nr, self.title)
+            return u'Block: %s, Lektion: %s. %s' % (self.parent.title, self.lesson_nr, self.title)
         elif self.level == 3:
             return u'%s %s %s' % (self.courseevent, self.lesson_nr, self.title)
 

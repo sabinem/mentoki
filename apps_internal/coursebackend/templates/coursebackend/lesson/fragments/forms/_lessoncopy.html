@@ -1,4 +1,4 @@
-{% url 'coursebackend:lessontest:start' course_slug=cs as back_url %}
+{% url 'coursebackend:lesson:start' course_slug=cs as back_url %}
 
 {{ form.media }}
 
@@ -8,22 +8,19 @@
 
     {% include 'coursebackend/forms/fragments/_form_non_field_errors.html' %}
 
+    <div class="inline fields">
+        <div class="field sixteen wide">
 
+            {% if lessonblock_to.parent.errors %}
+                <div class="ui negative floating message">
+                    {{ lessonblock_to.parent.errors }}
+                </div>
+            {% endif %}
+            {{ form.lessonblock_to.label_tag }}
+            {{ form.lessonblock_to }}
 
-    <div class="field ">
-
-        {% if lessonblock_to.parent.errors %}
-            <div class="ui negative floating message">
-                {{ lessonblock_to.parent.errors }}
-            </div>
-        {% endif %}
-        <br>
-        {{ form.lessonblock_to.label_tag }}
-        {{ form.lessonblock_to }}
-
+        </div>
     </div>
-
-
     <button type="submit" value="post" class="ui button" id="formsubmitonce">
         Jetzt Kopieren!
     </button>

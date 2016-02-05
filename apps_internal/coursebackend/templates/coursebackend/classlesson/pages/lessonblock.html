@@ -1,8 +1,5 @@
 {% extends "coursebackend/base_courseevent.html" %}
 
-{% block courseevent_menu_items %}
-    {% include 'coursebackend/classlesson/fragments/_top_links.html' %}
-{% endblock %}
 
 {% block breadcrumbs %}
     {% include 'coursebackend/classlesson/fragments/_breadcrumbs.html' %}
@@ -17,8 +14,6 @@
             {% include 'base/fragments/_messages.html' %}
 
             <!-- classlessonblock -->
-            {% include 'coursebackend/classlesson/fragments/_instance_classlessonblock.html' %}
-
             <!-- nodetree -->
             {% include 'coursebackend/classlesson/fragments/_recursetree_nodes_work.html' %}
 

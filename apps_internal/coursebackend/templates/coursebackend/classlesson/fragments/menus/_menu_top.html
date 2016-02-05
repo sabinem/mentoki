@@ -1,10 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+{% url 'coursebackend:classlesson:copy'  slug=es course_slug=cs as copy_url %}
 
-</body>
-</html>
+{% url 'coursebackend:classlesson:start'  slug=es course_slug=cs as start_url %}
+
+<!-- copy lessons -->
+{% if url_name != 'copy' %}
+    <a href="{{ copy_url }}" class="item">
+        <i class="icon copy  purple"></i>Kopieren
+    </a>
+{% endif %}
+{% url 'coursebackend:courseevent:detail' course_slug=cs slug=es as checklist_url %}
+
+
+<!-- work link in coursebackend -->
+<a href="{{ checklist_url }}" class="item" >
+    <i class="rocket icon green"></i>Checkliste
+</a>
+
+    <a class="item" href="{{ menu_url }}">
+        <i class="list icon green"></i>Menu
+    </a>
+   {% if url_name != 'start' %}
+    <a class="item" href="{{ start_url }}">
+        <i class="database icon green"></i>Unterricht
+    </a>
+{% endif %}

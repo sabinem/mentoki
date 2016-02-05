@@ -9,8 +9,10 @@
     {% for thread in threads %}
 
         {% url 'classroom:forum:thread' slug=courseevent.slug pk=thread.pk as detail_url %}
+
         {% url 'classroom:forum:thread_update' slug=courseevent.slug pk=thread.pk as update_url %}
         {% url 'classroom:forum:thread_delete' slug=courseevent.slug pk=thread.pk as delete_url %}
+
 
     <div class="comment">
 

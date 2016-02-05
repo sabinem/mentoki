@@ -7,7 +7,7 @@
 
     {% if node.is_visible_in_classroom %}
         <a href="{{ class_url }}" class="published_in_class">
-            {{ node.title }} ({{ node.display_nr }}) <i class="icon student"></i>
+            {{ node.title }} ({{ node.display_nr }}) <i class="icon student teal"></i>
         </a>
     {% elif not node.is_root_node %}
        <a href="{{ detail_url }}">

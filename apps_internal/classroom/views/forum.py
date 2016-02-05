@@ -6,13 +6,13 @@ from django.shortcuts import get_object_or_404
 
 from django.views.generic import TemplateView
 
-from apps_data.courseevent.models.forum import Forum, Thread, CourseEvent
-from apps_data.courseevent.models.menu import ClassroomMenuItem
+from apps_data.courseevent.models.forum import Forum, Thread
 
-from .mixins.base import ClassroomMenuMixin
+from .mixins.base import ClassroomMenuMixin, AuthClassroomAccessMixin
 
 
 class ForumStartView(
+    AuthClassroomAccessMixin,
     ClassroomMenuMixin,
     TemplateView):
     """
@@ -28,6 +28,7 @@ class ForumStartView(
 
 
 class ForumDetailView(
+    AuthClassroomAccessMixin,
     ClassroomMenuMixin,
     TemplateView):
     """
@@ -48,6 +49,7 @@ class ForumDetailView(
 
 
 class ForumRecentView(
+    AuthClassroomAccessMixin,
     ClassroomMenuMixin,
     TemplateView):
     """

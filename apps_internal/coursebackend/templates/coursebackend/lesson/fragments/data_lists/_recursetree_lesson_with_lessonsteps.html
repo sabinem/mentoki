@@ -5,18 +5,18 @@
     {% recursetree nodes %}
 
         {% if node.is_lesson %}
-            {% url 'coursebackend:lessontest:lesson'  course_slug=cs pk=node.pk as detail_url%}
-            {% url 'coursebackend:lessontest:lessonupdate'  course_slug=cs pk=node.pk as update_url %}
+            {% url 'coursebackend:lesson:lesson'  course_slug=cs pk=node.pk as detail_url%}
+            {% url 'coursebackend:lesson:lessonupdate'  course_slug=cs pk=node.pk as update_url %}
         {% elif node.is_step %}
-            {% url 'coursebackend:lessontest:step'  course_slug=cs pk=node.pk as detail_url%}
-            {% url 'coursebackend:lessontest:stepupdate'  course_slug=cs pk=node.pk as update_url %}
+            {% url 'coursebackend:lesson:step'  course_slug=cs pk=node.pk as detail_url%}
+            {% url 'coursebackend:lesson:stepupdate'  course_slug=cs pk=node.pk as update_url %}
         {% endif %}
-        {% url 'coursebackend:lessontest:delete'  course_slug=cs pk=node.pk as delete_url %}
+        {% url 'coursebackend:lesson:delete'  course_slug=cs pk=node.pk as delete_url %}
 
         <div class="item">
 
             {% if not node.show_number %}
-                <i class="top aligned icon">(LS{{ node.nr }})</i>
+                <i class="top aligned icon">({{ node.nr }})</i>
             {% else %}
                 <i class="top aligned icon">{{ node.lesson_nr }}</i>
             {% endif %}
@@ -40,6 +40,12 @@
                         {% if node.is_homework %}
                              <a class="ui orange label">interaktiv</a>
                         {% endif %}
+                        {% if node.show_work_area %}
+                             <i class="icon orange privacy"></i>
+                        {% endif %}
+                        {% if node.allow_questions %}
+                             <a class="ui orange label">nachgefragt</a>
+                        {% endif %}
 
                     {% endif %}
 
@@ -47,7 +53,7 @@
                     {% if node.material %}
                         {% url 'coursebackend:material:update' course_slug=cs pk=node.material_id as material_url %}
                         <a href="{{ material_url }}">
-                            <i class="icon file outline"></i>
+                            <i class="icon file pdf outline"></i>
                         </a>
                     {% endif %}
                         <a href="{{ update_url }}">
@@ -58,18 +64,17 @@
                         <a href="{{ delete_url }}">
                            <i class="icon trash"></i>
                         </a>
-                <span style="font-size: 0.9em; color:grey; font-weight:normal;">
-                   {{ node.modified |date:'d.m.Y' }}
-                </span>
-
-
+                        <span style="font-size: 0.9em; color:grey; font-weight:normal;">
+                           {{ node.modified |date:'d.m.Y' }}
+                        </span>
                 </div>
                 {{ node.description }}
-
+                {% if node.is_block %}
                 {% if not is_leaf %}
                     <div class="list">
                         {{ children }}
                     </div>
+                {% endif %}
                 {% endif %}
 
             </div>

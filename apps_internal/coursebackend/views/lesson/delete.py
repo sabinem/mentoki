@@ -33,5 +33,5 @@ class LessonDeleteView(
         return context
 
     def get_success_url(self):
-        return reverse_lazy('coursebackend:lessontest:blockswithlessons',
+        return reverse_lazy('coursebackend:lesson:start',
                            kwargs={'course_slug': self.kwargs['course_slug'],})

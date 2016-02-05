@@ -9,10 +9,14 @@ from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.conf import settings
 
+from django_enumfield import enum
+
 from model_utils.models import TimeStampedModel
 from model_utils.fields import MonitorField
 
 from apps_data.courseevent.models.courseevent import CourseEvent
+from ..constants import FeedbackSpice
+
 
 
 class StudentsWorkManager(models.Manager):
@@ -70,7 +74,7 @@ class StudentsWork(TimeStampedModel):
     comments = models.TextField(
         verbose_name="Kommentare",
         blank=True)
-
+    feedback_spice = enum.EnumField(FeedbackSpice, default=FeedbackSpice.MEDIUM)
     published = models.BooleanField(verbose_name="veröffentlichen", default=False)
     published_at = MonitorField(monitor='published', when=[True])
 

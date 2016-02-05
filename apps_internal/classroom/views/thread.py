@@ -15,10 +15,13 @@ from apps_data.courseevent.models.courseevent import CourseEvent
 from apps_core.email.utils.thread import send_thread_notification,\
     send_thread_delete_notification
 
-from .mixins.base import ClassroomMenuMixin
+from .mixins.base import ClassroomMenuMixin, AuthClassroomAccessMixin, \
+    ParticipationFormKwargsMixin, ParticipationCheckHiddenFormMixin
 
 
-class StudentThreadForm(forms.ModelForm):
+class StudentThreadForm(
+    ParticipationCheckHiddenFormMixin,
+    forms.ModelForm):
     text = forms.CharField(widget=FroalaEditor)
 
     class Meta:
@@ -30,6 +33,8 @@ class StudentThreadForm(forms.ModelForm):
 
 
 class ThreadCreateView(
+    AuthClassroomAccessMixin,
+    ParticipationFormKwargsMixin,
     ClassroomMenuMixin,
     FormView):
     """
@@ -74,6 +79,8 @@ class ThreadCreateView(
 
 
 class ThreadUpdateView(
+    AuthClassroomAccessMixin,
+    ParticipationFormKwargsMixin,
     ClassroomMenuMixin,
     UpdateView):
     """
@@ -98,6 +105,7 @@ class ThreadUpdateView(
 
 
 class ThreadDeleteView(
+    AuthClassroomAccessMixin,
     ClassroomMenuMixin,
     DeleteView):
     """

@@ -19,6 +19,7 @@ from mailqueue.models import MailerMessage
 from apps_data.course.models.course import CourseOwner
 from apps_data.courseevent.models.forum import Post
 from apps_data.notification.models.classroomnotification import ClassroomNotification
+from apps_data.courseevent.models.courseevent import CourseEventParticipation
 from accounts.models import User
 
 import logging
@@ -43,10 +44,15 @@ def send_post_notification(post, thread, courseevent, module):
     thread_emails = \
         list(Post.objects.contributors_emails(thread=thread))
     thread_emails.append(thread.author.email)
+    notification_all_emails = \
+        list(CourseEventParticipation.objects.forum_notification_all_emails(courseevent=courseevent))
+    notification_none_emails = \
+        list(CourseEventParticipation.objects.forum_notification_none_emails(courseevent=courseevent))
     teachers_emails = \
         list(CourseOwner.objects.teachers_emails(course=course))
-    all_emails = set(thread_emails + teachers_emails)
-    send_all = (", ".join(all_emails))
+    all_emails = set(thread_emails + teachers_emails + notification_all_emails)
+    notifify_emails = all_emails - set(notification_none_emails)
+    send_all = (", ".join(notifify_emails))
 
     context = {
         'site': Site.objects.get_current(),

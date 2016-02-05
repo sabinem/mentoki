@@ -29,10 +29,15 @@ def send_work_comment_notification(studentswork, comment, courseevent, module):
         list(Comment.objects.commentors_emails(studentswork=studentswork))
     workers_emails = \
         list(studentswork.workers_emails())
+    notification_all_emails = \
+        list(CourseEventParticipation.objects.forum_notification_all_emails(courseevent=courseevent))
+    notification_none_emails = \
+        list(CourseEventParticipation.objects.forum_notification_none_emails(courseevent=courseevent))
     teachers_emails = \
         list(CourseOwner.objects.teachers_emails(course=courseevent.course))
-    all_emails = set(commenters_emails + workers_emails + teachers_emails)
-    send_all = ", ".join(all_emails)
+    all_emails = set(commenters_emails + workers_emails + teachers_emails + notification_all_emails)
+    notifify_emails = all_emails - set(notification_none_emails)
+    send_all = ", ".join(notifify_emails)
 
     context = {
         'site': Site.objects.get_current(),

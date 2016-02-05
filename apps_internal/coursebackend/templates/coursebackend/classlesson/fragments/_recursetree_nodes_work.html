@@ -27,13 +27,17 @@
         {% url 'coursebackend:material:update' course_slug=cs pk=node.material_id as material_url %}
 
         <div class="item">
-            <!-- icon -->
             {% if node.is_block %}
-                <i class="top aligned cube icon">{{ node.lesson_nr }}</i>
-            {% elif not node.is_root_node %}
+                <i class="top cube icon"
+                   {% if node.original_lesson %}
+                        style="padding-top:10px;"
+                   {% endif %}
+                        >({{ node.nr }})</i>
+            {% elif not node.show_number %}
+                <i class="top aligned icon">({{ node.nr }})</i>
+            {% else %}
                 <i class="top aligned icon">{{ node.lesson_nr }}</i>
             {% endif %}
-
             <div class="content">
 
                 <div class="header"
@@ -41,108 +45,92 @@
                          id="published_in_class"
                     {% endif %}
                     >
-
-                    <!-- root node -->
                     {% if node.is_root_node %}
-
                         <div class="ui header large">{{ node.title }}</div>
-
                     {% else %}
 
                         <!-- title with detail link -->
 
-                        <a href="{{ detail_url }}">
+                        <a href="{{ detail_url }}" {% if node.is_step %}style="
+                            font-weight:normal;
+                        "{% endif %}>
                             {{ node.title }}
                         </a>
 
 
                         <!-- homework icon -->
                         {% if node.is_homework %}
-                            <a class="ui orange label">interaktiv</a>
+                             <a class="ui orange label">interaktiv</a>
+                        {% endif %}
+                        {% if node.show_work_area %}
+                             <i class="icon orange privacy"></i>
+                        {% endif %}
+                        {% if node.allow_questions %}
+                             <a class="ui orange label">nachgefragt</a>
                         {% endif %}
 
+                    {% endif %}
+                    {% if not node.is_root_node %}
+                         {% if not  node.original_lesson %}
+                                <a href="{{ update_url }}">
+                                   <i class="icon write"></i>
+                                </a>
 
-                        <!-- material -->
-                        {% if node.material %}
-                            <a href="{{ material_url }}">
-                                <i class="icon file blue outline"></i>
-                            </a>
-                        {% endif %}
+                                <!-- delete -->
+                                <a href="{{ delete_url }}">
+                                   <i class="icon trash"></i>
+                                </a>
 
-                        <!-- class link -->
+                         {% endif %}
+
+                            <span style="font-size: 0.9em; font-weight:normal;
+                            {% if not node.modified == node.original_lesson.modified and node.is_original_lesson %}
+                                 color:purple;
+                            {% else %}
+                                 color:grey;
+                            {% endif %}
+                            ">
+                               {% if not node.modified == node.original_lesson.modified and node.is_original_lesson %}
+                                   (veraltet)
+                               {% endif %}
+                               {{ node.modified |date:'d.m.Y' }}
+                            </span>
+
+
                         {% if node.is_visible_in_classroom %}
                             <a href="{{ class_url }}">
-                                <i class="icon blue student"></i>
+                                <i class="icon teal student"></i>
                             </a>
                         {% endif %}
+                    {% endif %}
+                    {% if node.material %}
+                        <a href="{{ material_url }}">
+                            <i class="icon file pdf outline blue "></i>
+                        </a>
+                    {% endif %}
 
-                        <!-- class link -->
-                        {% if not  node.original_lesson %}
-                        <!-- update -->
-
-                            {% if not node.is_root_node %}
-
-                                <a href="{{ update_url }}">
-                                   <i class="icon blue write"></i>
-                                </a>
-                                {% if not node.is_visible_in_classroom  %}
-                                <a href="{{ delete_url }}">
-                                   <i class="icon blue trash"></i>
-                                </a>
-                                {% endif %}
+                    {% if node.original_lesson %}
+                        {% if node.is_block %}
+                            <i class="icon purple lock"></i>
+                            <a class="ui button" href="{{ copy_url }}">
+                                <i class="icon purple copy"></i>neu übernehmen?
+                            </a>
+                            {% if not node.is_visible_in_classroom  %}
+                            <a href="{{ delete_url }}">
+                               <i class="icon blue trash"></i>
+                            </a>
                             {% endif %}
-                        {% else %}
-                            {% if not node.is_root_node %}
-                                 <i class="icon purple lock"></i>
-                            {% endif %}
+
                         {% endif %}
-
+                        {% if not node.is_root_node %}
+                            <a href="{{ course_url }}">
+                                <i class="external purple icon"></i>
+                            </a>
+                        {% endif %}
                     {% endif %}
-
                 </div>
-                {% if node.original_lesson %}
-                    {% if node.is_block %}
-                        <a class="ui button" href="{{ unlock_url }}">
-                            <i class="icon blue unlock"></i>abkoppeln?
-                        </a>
-                        <a class="ui button" href="{{ copy_url }}">
-                            <i class="icon blue copy"></i>neu übernehmen?
-                        </a>
-                                {% if not node.is_visible_in_classroom  %}
-                                <a href="{{ delete_url }}">
-                                   <i class="icon blue trash"></i>
-                                </a>
-                                {% endif %}
-                    {% endif %}
-                {% endif %}
-                <!-- meta -->
-                <p style="font-size: 0.9em; color:grey; font-weight:normal;">
-                   {% if not node.original_lesson and not node.original_lesson_id %}
-                       angelegt: {{ node.created |date:'d.m.Y' }}, letzte Änderung: {{ node.modified |date:'d.m.Y' }}
 
-                   {% elif node.outdated %}
-                                 {%  if not node.original_lesson %}
-                                     Original wurde gelöscht!
-                                 {% endif %}
-                                 <span class="outdated" >
-                                     Original wurde aktualisert:
-                                     {{ node.original_lesson.modified |date:'d.m.Y'}},
-                                     {{ node.original_lesson.modified|time:"H:i" }}
-                                    <a href="{{ course_url }}">
-                                        <i class="icon blue external"></i>
-                                    </a>
-
-
-                                 </span>
-                   {% endif %}
-                </p>
-
-                <!-- description -->
-                {% if node.decription != "" %}
-                    {{ node.description }}
-                {% endif %}
-
-                {% if not is_leaf %}
+                {% if not node.is_step %}
                     <div class="list">
                         {{ children }}
                     </div>

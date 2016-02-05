@@ -1,10 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+{% load activelink %}
+{% url 'coursebackend:lesson:block' pk=lessonblock.pk course_slug=cs as lessonlist_url %}
+{% url 'coursebackend:lesson:blockcomplete' pk=lessonblock.pk course_slug=cs as complete_url %}
+<div class="ui secondary menu" >
+  <a class="item
+  {% ifactive lessonlist_url %}active{% endifactive %}"
+  href="{{ lessonlist_url }}">
+      mit Lektionen
+  </a>
+  <a class="item
+  {% ifactive complete_url %}active{% endifactive %}"
+  href="{{ complete_url }}">
+      mit Lernschritten
+  </a>
+</div>

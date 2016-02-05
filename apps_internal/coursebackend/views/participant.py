@@ -21,7 +21,7 @@ class CourseParticipantListView(
     """
     def get_context_data(self, **kwargs):
         context = super(CourseParticipantListView, self).get_context_data(**kwargs)
-
+        self.request.session['last_url'] = self.request.path
         context['participants'] = CourseEventParticipation.objects.learners(
             courseevent=context['courseevent'])
         return context

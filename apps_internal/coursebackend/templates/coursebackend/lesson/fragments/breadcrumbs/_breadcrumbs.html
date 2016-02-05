@@ -1,4 +1,4 @@
-{% url 'coursebackend:lessontest:blockswithlessons' course_slug=cs as start_url %}
+{% url 'coursebackend:lesson:start' course_slug=cs as start_url %}
 
 <div class="ui large breadcrumb" id ="page-breadcrumb">
 
@@ -31,11 +31,11 @@
 
             <!-- get links -->
             {% if breadcrumb.is_block %}
-                {% url 'coursebackend:lessontest:block'  course_slug=cs pk=breadcrumb.pk as detail_url %}
+                {% url 'coursebackend:lesson:block'  course_slug=cs pk=breadcrumb.pk as detail_url %}
             {% elif breadcrumb.is_lesson %}
-                {% url 'coursebackend:lessontest:lesson'  course_slug=cs pk=breadcrumb.pk as detail_url%}
+                {% url 'coursebackend:lesson:lesson'  course_slug=cs pk=breadcrumb.pk as detail_url%}
             {% elif breadcrumb.is_step %}
-                {% url 'coursebackend:lessontest:step'  course_slug=cs pk=breadcrumb.pk as detail_url%}
+                {% url 'coursebackend:lesson:step'  course_slug=cs pk=breadcrumb.pk as detail_url%}
             {% endif %}
 
                  <i class="right chevron icon divider"></i>

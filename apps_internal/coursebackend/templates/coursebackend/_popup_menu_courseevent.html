@@ -4,7 +4,6 @@
 {% url 'coursebackend:participant:list' course_slug=cs slug=es as participants_url %}
 {% url 'coursebackend:forum:list' course_slug=cs slug=es as forum_url %}
 {% url 'coursebackend:announcement:list' course_slug=cs slug=es as announcements_url %}
-{% url 'coursebackend:classhomework:list' course_slug=cs slug=es as homeworks_url %}
 {% url 'coursebackend:menu:preview' course_slug=cs slug=es as menu_url %}
 {% url "coursebackend:classlesson:start" course_slug=cs slug=es as lesson_url %}
 {% url "coursebackend:material:list" course_slug=cs slug=es as material_url %}
@@ -29,7 +28,7 @@
 
                 <a href="{{ courseevent_url }}" class="item
                     {% ifstartswith courseevent_url %}teal active{% endifstartswith %}">
-                    Kursbeschreibung
+                    Checkliste <i class="icon rocket"></i>
                 </a>
 
                 <a href="{{ announcements_url }}" class="item
@@ -47,10 +46,7 @@
                     {% ifstartswith classlesson_url %}teal active{% endifstartswith %}">
                     Unterricht
                 </a>
-                <a href="{{ homeworks_url }}" class="item
-                    {% ifstartswith homeworks_url %}teal active{% endifstartswith %}">
-                    Aufgaben
-                </a>
+
 
                 <a href="{{ forum_url }}" class="item
                     {% ifstartswith forum_url %}teal active{% endifstartswith %}">

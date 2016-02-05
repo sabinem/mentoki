@@ -10,8 +10,8 @@ from braces.views import FormValidMessageMixin, MessageMixin
 from apps_data.lesson.models.classlesson import ClassLesson
 from apps_data.lesson.models.lesson import Lesson
 
-from .mixins.base import CourseMenuMixin, FormCourseEventKwargsMixin, FormCourseKwargsMixin
-from .classlessonupdate import ClassLessonRedirectListMixin
+from ..mixins.base import CourseMenuMixin, FormCourseEventKwargsMixin, FormCourseKwargsMixin
+from .mixin import ClassLessonSuccessUpdateUrlMixin
 
 import logging
 
@@ -22,7 +22,7 @@ class ClassLessonBLockUnlockView(
     CourseMenuMixin,
     FormValidMessageMixin,
     FormCourseEventKwargsMixin,
-    ClassLessonRedirectListMixin,
+    ClassLessonSuccessUpdateUrlMixin,
     DeleteView):
     """
     Delete a classlesson

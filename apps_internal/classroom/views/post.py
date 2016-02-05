@@ -6,20 +6,24 @@ from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.views.generic import FormView
+from django.core.validators import ValidationError
 
 import floppyforms.__future__ as forms
 from froala_editor.widgets import FroalaEditor
 
-from apps_data.courseevent.models.forum import Post, CourseEvent, Thread, \
+from apps_data.courseevent.models.forum import Thread, \
     Forum
 from apps_core.email.utils.post import send_post_notification
-from apps_data.courseevent.models.courseevent import CourseEvent
+from apps_data.courseevent.models.courseevent import CourseEvent, \
+    CourseEventParticipation
 from apps_data.courseevent.models.forum import Post
 
-from .mixins.base import ClassroomMenuMixin
+from .mixins.base import ClassroomMenuMixin, AuthClassroomAccessMixin, \
+    ParticipationFormKwargsMixin, ParticipationCheckHiddenFormMixin
 
-
-class StudentPostForm(forms.ModelForm):
+class StudentPostForm(
+    ParticipationCheckHiddenFormMixin,
+    forms.ModelForm):
     text = forms.CharField(widget=FroalaEditor)
 
     class Meta:
@@ -28,6 +32,8 @@ class StudentPostForm(forms.ModelForm):
 
 
 class PostCreateView(
+    AuthClassroomAccessMixin,
+    ParticipationFormKwargsMixin,
     ClassroomMenuMixin,
     FormView):
     """

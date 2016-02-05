@@ -1,20 +1,21 @@
 {% load activelink %}
-{% url 'coursebackend:lessontest:blockswithlessons' course_slug=cs as blocklessons_url %}
-{% url 'coursebackend:lessontest:blocklist' course_slug=cs as blocklist_url %}
+{% url 'coursebackend:lesson:start' course_slug=cs as blocklessons_url %}
+{% url 'coursebackend:lesson:blocklist' course_slug=cs as blocklist_url %}
+{% url 'coursebackend:lesson:complete' course_slug=cs as complete_url %}
 <div class="ui secondary menu" >
   <a class="item
   {% ifactive blocklist_url %}active{% endifactive %}"
   href="{{ blocklist_url }}">
-      als Tabelle
+      nur Blöcke
   </a>
   <a class="item
   {% ifactive blocklessons_url %}active{% endifactive %}"
   href="{{ blocklessons_url }}">
       mit Lektionen
   </a>
-{% url 'coursebackend:lesson:start'  course_slug=cs  as test_url %}
-    <a class="item active"
-    href="{{ test_url }}">
-      Testversion stoppen
-    </a>
+  <a class="item
+  {% ifactive complete_url %}active{% endifactive %}"
+  href="{{ complete_url }}">
+      mit Lernschritten
+  </a>
 </div>

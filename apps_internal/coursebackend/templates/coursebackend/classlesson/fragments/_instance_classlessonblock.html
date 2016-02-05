@@ -3,68 +3,133 @@
 {% url 'coursebackend:classlesson:block' slug=es course_slug=cs pk=next_node.pk as forward_url %}
 {% url 'coursebackend:classlesson:block' slug=es course_slug=cs pk=previous_node.pk as backward_url %}
 
+{% url 'coursebackend:classlesson:unlock' slug=es course_slug=cs pk=classlessonblock.pk as unlock_url %}
+{% url 'lesson:copy_block' courseevent_pk=courseevent.pk block_pk=classlessonblock.original_lesson_id as copy_url %}
+
 <!-- forward -->
 {% if next_node %}
     <a href="{{ forward_url }}" class="ui button basic right floated">
-        {{ next_node.lesson_nr }}<i class="right arrow icon"></i>
+        <i class="right arrow icon"></i>
     </a>
 {% endif %}
 
 <!-- back -->
 {% if previous_node %}
     <a href="{{ backward_url }}" class="ui button basic right floated">
-        <i class="left arrow icon"></i>{{ previous_node.lesson_nr }}
+        <i class="left arrow icon"></i>
     </a>
 {% endif %}
-{% url 'coursebackend:classlesson:unlock' slug=es course_slug=cs pk=classlessonblock.pk as unlock_url %}
-{% url 'lesson:copy_block' courseevent_pk=courseevent.pk block_pk=classlessonblock.original_lesson_id as copy_url %}
+<div class="header ui medium"
+    {% if classlessonblock.is_visible_in_classroom %}
+         id="published_in_class"
+    {% endif %}
+    >
+    <i class="top cube icon"
+       {% if classlessonblock.original_lesson %}
+            style="padding-top:10px;"
+       {% endif %}
+            >({{ classlessonblock.nr }})</i>
+    <a href="{{ detail_url }}">
+        {{ classlessonblock.title }}
+    </a>
+             <span style="font-size: 0.9em; font-weight:normal;
+            {% if not classlessonblock.modified == classlessonblock.original_lesson.modified and classlessonblock.is_original_lesson %}
+                 color:purple;
+            {% else %}
+                 color:grey;
+            {% endif %}
+            ">
+               {% if not classlessonblock.modified == classlessonblock.original_lesson.modified and classlessonblock.is_original_lesson %}
+                   (veraltet)
+               {% endif %}
+               {{ classlessonblock.modified |date:'d.m.Y' }}
+            </span>
+    <i class="icon lock purple"></i>
 
-<div class="ui header medium">
 
-    <!-- icon -->
+            <a class="ui button" href="{{ copy_url }}">
+                <i class="icon purple copy"></i>neu übernehmen?
+            </a>
 
-
-    <div class="content">
-
-       <i class="cube icon"></i> {{ classlessonblock.lesson_nr }} {{ classlessonblock.title }}
-
-    <!-- class link -->
-    {% if classlessonblock.original_lesson %}
-<i class="icon lock purple"></i>
-<br>
-                        <a class="ui button" href="{{ unlock_url }}">
-                            <i class="icon blue unlock"></i>abkoppeln?
-                        </a>
-                        <a class="ui button" href="{{ copy_url }}">
-                            <i class="icon blue copy"></i>neu übernehmen?
-                        </a>
-                                        {% if not node.is_visible_in_classroom  %}
                                 <a href="{{ delete_url }}">
                                    <i class="icon blue trash"></i>
                                 </a>
-                                {% endif %}
+    <a href="{{ delete_url }}">
+       <i class="icon trash"></i>
+    </a>
+
+
+            <span style="font-size: 0.9em; font-weight:normal;
+            {% if not node.modified == node.original_lesson.modified and node.is_original_lesson %}
+                 color:purple;
+            {% else %}
+                 color:grey;
+            {% endif %}
+            ">
+               {% if not classlessonblock.modified == classlessonblock.original_lesson.modified and classlessonblock.is_original_lesson %}
+                   (veraltet)
+               {% endif %}
+               {{ node.modified |date:'d.m.Y' }}
+            </span>
+
+
+        {% if classelessonblock.is_visible_in_classroom %}
+            <a href="{{ class_url }}">
+                <i class="icon teal student"></i>
+            </a>
+        {% endif %}
+
+
+
+            <i class="icon purple lock"></i>
+            <a class="ui button" href="{{ copy_url }}">
+                <i class="icon purple copy"></i>neu übernehmen?
+            </a>
+            {% if not node.is_visible_in_classroom  %}
+            <a href="{{ delete_url }}">
+               <i class="icon blue trash"></i>
+            </a>
+            {% endif %}
+
+            <a href="{{ delete_url }}">
+               <i class="icon blue trash"></i>
+            </a>
+
+            <a href="{{ course_url }}">
+                <i class="external purple icon"></i>
+            </a>
+    {% endif %}
+</div>
+<div class="ui header medium">
+
+    <div class="content">
+
+        <i class="cube icon"></i> {{ classlessonblock.lesson_nr }} {{ classlessonblock.title }}
+
+        {% if classlessonblock.original_lesson %}
+             <i class="icon lock purple"></i>
+
+
+            <a class="ui button" href="{{ copy_url }}">
+                <i class="icon purple copy"></i>neu übernehmen?
+            </a>
+
+
 
                 <!-- meta -->
-                <p style="font-size: 0.9em; color:grey; font-weight:normal;">
-                   {% if not classlessonblock.original_lesson and not classlessonblock.original_lesson_id %}
-                       angelegt: {{ classlessonblock.created |date:'d.m.Y' }}, letzte Änderung: {{ classlessonblock.modified |date:'d.m.Y' }}
+            <span style="font-size: 0.9em; font-weight:normal;
+            {% if not classlessonblock.modified == classlessonblock.original_lesson.modified and classlessonblock.is_original_lesson %}
+                 color:purple;
+            {% else %}
+                 color:grey;
+            {% endif %}
+            ">
+               {% if not classlessonblock.modified == classlessonblock.original_lesson.modified and classlessonblock.is_original_lesson %}
+                   (veraltet)
+               {% endif %}
+               {{ classlessonblock.modified |date:'d.m.Y' }}
+            </span>
 
-                   {% elif classlessonblock.outdated %}
-                                 {%  if not classlessonblock.original_lesson %}
-                                     Original wurde gelöscht!
-                                 {% endif %}
-                                 <span class="outdated" >
-                                     Original wurde aktualisert:
-                                     {{ classlessonblock.original_lesson.modified |date:'d.m.Y'}},
-                                     {{ classlessonblock.original_lesson.modified|time:"H:i" }}
-                                    <a href="{{ course_url }}">
-                                        <i class="icon blue external"></i>
-                                    </a>
-
-
-                                 </span>
-                   {% endif %}
-                </p>
     {% else %}
     <!-- update -->
         <a href="{{ update_url }}">
@@ -76,6 +141,11 @@
         </a>
         {% endif %}
     {% endif %}
+                        {% if not classlessonblock.is_root_node %}
+                            <a href="{{ course_url }}">
+                                <i class="external purple icon"></i>
+                            </a>
+                        {% endif %}
     </div>
 </div>
 

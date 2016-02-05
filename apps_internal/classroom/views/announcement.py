@@ -14,10 +14,13 @@ from django.views.generic import TemplateView, DetailView
 
 from apps_data.courseevent.models.announcement import Announcement
 
-from .mixins.base import ClassroomMenuMixin
+from .mixins.base import ClassroomMenuMixin, AuthClassroomAccessMixin
 
 
-class AnnouncementListView(ClassroomMenuMixin, TemplateView):
+class AnnouncementListView(
+    AuthClassroomAccessMixin,
+    ClassroomMenuMixin,
+    TemplateView):
     """
     Announcements are listed in the classroom:
     announcements are chosen for a courseevent and only if they are published,
@@ -33,7 +36,10 @@ class AnnouncementListView(ClassroomMenuMixin, TemplateView):
         return context
 
 
-class AnnouncementDetailView(ClassroomMenuMixin, DetailView):
+class AnnouncementDetailView(
+    AuthClassroomAccessMixin,
+    ClassroomMenuMixin,
+    DetailView):
     """
     This shows a published not archived announcement in the
     classroom in detail.

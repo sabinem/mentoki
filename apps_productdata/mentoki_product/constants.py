@@ -1,13 +1,14 @@
 # coding: utf-8
 
-from enum import Enum
-
 """
 Choices for currency: so far there are CHF and EUR
 
 Choice for the reach of an offer: doese it apply to the whole course
     or just to an event or only to a product
 """
+
+from enum import Enum
+
 from django.utils.translation import ugettext_lazy as _
 from django_enumfield import enum
 

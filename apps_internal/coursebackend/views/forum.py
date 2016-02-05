@@ -23,7 +23,7 @@ class ForumListView(
     """
     def get_context_data(self, **kwargs):
         context = super(ForumListView, self).get_context_data(**kwargs)
-
+        self.request.session['last_url'] = self.request.path
         context['nodes'] = Forum.objects.forums_for_courseevent_without_root(
             courseevent=context['courseevent'])
 
@@ -40,7 +40,7 @@ class ForumDetailView(
         context = super(ForumDetailView, self).get_context_data(**kwargs)
 
         forum = get_object_or_404(Forum, pk=self.kwargs['pk'])
-
+        self.request.session['last_url'] = self.request.path
         context['forum'] = forum
         context['breadcrumbs'] = forum.get_breadcrumbs_with_self
         context['nodes'] = forum.get_descendants()

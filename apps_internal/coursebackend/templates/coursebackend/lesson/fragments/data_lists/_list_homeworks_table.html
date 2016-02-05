@@ -4,6 +4,7 @@
 
         <thead>
                 <tr>
+                    <th>Block</th>
                     <th>Lernabschnitt in Lektion</th>
                 </tr>
         </thead>
@@ -12,10 +13,14 @@
 
             {% for homework in homeworks %}
 
-                {% url 'coursebackend:lessontest:stepupdate' course_slug=cs pk=homework.pk as update_url %}
-                {% url 'coursebackend:lessontest:step' course_slug=cs pk=homework.pk as detail_url %}
+                {% url 'coursebackend:lesson:stepupdate' course_slug=cs pk=homework.pk as update_url %}
+                {% url 'coursebackend:lesson:step' course_slug=cs pk=homework.pk as detail_url %}
 
                 <tr>
+                    <td>
+                        {{ homework.parent.parent }}
+
+                    </td>
                     <td>
 
                         <!-- title -->

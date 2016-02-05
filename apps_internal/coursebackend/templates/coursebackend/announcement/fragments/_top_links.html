@@ -1,10 +1,6 @@
 <!-- create and list link -->
 {% url 'coursebackend:announcement:create' course_slug=cs slug=es as announcement_create_url %}
-{% url 'classroom:announcement:list' slug=es as announcement_class_url %}
 
 <a href="{{ announcement_create_url }}" class="item">
     <i class="plus icon blue"></i>Ankündigung
-</a>
-<a href="{{ announcement_class_url }}" class="item" >
-    <i class="student icon blue"></i>
 </a>

@@ -17,9 +17,7 @@
                 markiert, dass man direkt unter dem Lernabschnitt Fragen stellen kann.</li>
         </ul>
     </div>
-    <div class="ui info message">
-        Lernschritte sind Teil einer <strong>Lektion</strong>.
-    </div>
+
     <div class="fields inline">
         <div class="field sixteen wide">
             <label>Lektion</label>
@@ -31,11 +29,7 @@
             {{ form.parent }}
         </div>
     </div>
-    <div class="ui info message">
-        Du kannst entscheiden, ob <strong>Nr.</strong> nur intern zur Steuerung der
-        <strong>Anzeigenreihenfolge</strong> dienen soll, oder ob er sich um eine nach aussen sichtbare
-        <strong>Lernschrittnummer</strong> handelt:
-    </div>
+
     <div class="inline fields">
         <div class="field eight wide">
             <label>{{ form.nr.label_tag }}</label>
@@ -56,9 +50,7 @@
             {{ form.show_number }}
         </div>
     </div>
-    <div class="ui info message">
-        Die <strong>Überschrift</strong> der Lektion:
-    </div>
+
     <div class="inline fields">
         <div class="field sixteen wide">
             <label>Überschrift</label>
@@ -100,10 +92,7 @@
     </div>
 
     <div class="ui dividing large header">Zugeordnetes Lernmaterial</div>
-    <div class="ui info message">
-        Du kannst <strong>PDFs</strong> einbinden, die Du vorher hochgeladen haben musst.
-        Das Hochladen ist unter dem <strong>Menüpunkt "Material"</strong> möglich.
-    </div>
+
     <div class="inline fields">
     <div class="field sixteen wide">
         <label>Dateiname (Dateityp)</label>
@@ -117,9 +106,7 @@
     </div>
 
     <div class="ui dividing medium header">Interaktiv?</div>
-    <div class="ui info message">
-        <a class="ui orange label">interaktiv</a>Beinhaltet der Lernabschnitt eine Aufgabe?</li>
-    </div>
+
     {% if form.is_homework.errors %}
         <div class="ui negative floating message">
             {{ form.is_homework.errors }}
@@ -136,11 +123,7 @@
             {{ form.is_homework }}
         </div>
     </div>
-    <div class="ui info message">
-        <i class="icon orange privacy"></i>Bei privaten Aufgaben, wird eine Arbeitsumgebung mit angezeigt.
-        Aufgaben können dort geschützt vorbereitet und anschliessend veröffentlicht
-        und von den Kurs-Teilnehmern kommentiert werden.
-    </div>
+
     {% if form.show_work_area.errors %}
         <div class="ui negative floating message">
             {{ form.show_work_area.errors }}
@@ -157,9 +140,7 @@
             {{ form.show_work_area }}
         </div>
     </div>
-    <div class="ui info message">
-        <a class="ui purple label">nachgefragt</a>Soll es bei diesem Lernabschnitt möglich sein Fragen zu stellen?
-    </div>
+
     {% if form.allow_questions.errors %}
         <div class="ui negative floating message">
             {{ form.allow_questions.errors }}

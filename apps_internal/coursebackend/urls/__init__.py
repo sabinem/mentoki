@@ -25,12 +25,6 @@ urlpatterns = patterns('',
     url(r'^unterricht/',
         include('apps_internal.coursebackend.urls.lesson', namespace='lesson')),
 
-    url(r'^unterricht/test/',
-        include('apps_internal.coursebackend.urls.lessontest', namespace='lessontest')),
-
-    url(r'^aufgaben/',
-        include('apps_internal.coursebackend.urls.homework', namespace='homework')),
-
     url(r'^kurs/(?P<slug>[a-z0-9_-]+)/unterricht/',
         include('apps_internal.coursebackend.urls.classlesson', namespace='classlesson')),
 
@@ -42,9 +36,6 @@ urlpatterns = patterns('',
 
     url(r'^kurs/(?P<slug>[a-z0-9_-]+)/ankuendigungen/',
         include('apps_internal.coursebackend.urls.announcement', namespace='announcement')),
-
-    url(r'^kurs/(?P<slug>[a-z0-9_-]+)/aufgaben/',
-        include('apps_internal.coursebackend.urls.classhomework', namespace='classhomework')),
 
     url(r'^kurs/(?P<slug>[a-z0-9_-]+)/menu/',
         include('apps_internal.coursebackend.urls.menu', namespace='menu')),

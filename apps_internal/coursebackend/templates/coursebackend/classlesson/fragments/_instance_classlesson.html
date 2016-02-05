@@ -7,16 +7,107 @@
 <!-- forward -->
 {% if next_node %}
     <a href="{{ forward_url }}" class="ui button basic right floated">
-        {{ next_node.lesson_nr }}.<i class="right arrow icon"></i>
+       <i class="right arrow icon"></i>
     </a>
 {% endif %}
 
 <!-- back -->
 {% if previous_node %}
     <a href="{{ backward_url }}" class="ui button basic right floated">
-        <i class="left arrow icon"></i>{{ previous_node.lesson_nr }}.
+        <i class="left arrow icon"></i>
     </a>
 {% endif %}
+
+                <div class="header ui medium"
+                    {% if node.is_visible_in_classroom %}
+                         id="published_in_class"
+                    {% endif %}
+                    >
+                    {% if node.is_root_node %}
+                        <div class="ui header large">{{ node.title }}</div>
+                    {% else %}
+
+                        <!-- title with detail link -->
+
+                        <a href="{{ detail_url }}" {% if node.is_step %}style="
+                            font-weight:normal;
+                        "{% endif %}>
+                            {{ node.title }}
+                        </a>
+
+
+                        <!-- homework icon -->
+                        {% if node.is_homework %}
+                             <a class="ui orange label">interaktiv</a>
+                        {% endif %}
+                        {% if node.show_work_area %}
+                             <i class="icon orange privacy"></i>
+                        {% endif %}
+                        {% if node.allow_questions %}
+                             <a class="ui orange label">nachgefragt</a>
+                        {% endif %}
+
+                    {% endif %}
+                    {% if not node.is_root_node %}
+                         {% if not  node.original_lesson %}
+                                <a href="{{ update_url }}">
+                                   <i class="icon write"></i>
+                                </a>
+
+                                <!-- delete -->
+                                <a href="{{ delete_url }}">
+                                   <i class="icon trash"></i>
+                                </a>
+
+                         {% endif %}
+
+                            <span style="font-size: 0.9em; font-weight:normal;
+                            {% if not node.modified == node.original_lesson.modified and node.is_original_lesson %}
+                                 color:purple;
+                            {% else %}
+                                 color:grey;
+                            {% endif %}
+                            ">
+                               {% if not node.modified == node.original_lesson.modified and node.is_original_lesson %}
+                                   (veraltet)
+                               {% endif %}
+                               {{ node.modified |date:'d.m.Y' }}
+                            </span>
+
+
+                        {% if node.is_visible_in_classroom %}
+                            <a href="{{ class_url }}">
+                                <i class="icon teal student"></i>
+                            </a>
+                        {% endif %}
+                    {% endif %}
+                    {% if node.material %}
+                        <a href="{{ material_url }}">
+                            <i class="icon file blue outline"></i>
+                        </a>
+                    {% endif %}
+
+                    {% if node.original_lesson %}
+                        {% if node.is_block %}
+                            <i class="icon purple lock"></i>
+                            <a class="ui button" href="{{ copy_url }}">
+                                <i class="icon purple copy"></i>neu übernehmen?
+                            </a>
+                            {% if not node.is_visible_in_classroom  %}
+                            <a href="{{ delete_url }}">
+                               <i class="icon blue trash"></i>
+                            </a>
+                            {% endif %}
+
+                        {% endif %}
+                        {% if not node.is_root_node %}
+                            <a href="{{ course_url }}">
+                                <i class="external purple icon"></i>
+                            </a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+
 
 <div class="ui header medium"
     {% if classlesson.is_visible_in_classroom %}
@@ -25,7 +116,11 @@
     >
 
     <!-- title -->
-    {{ classlesson.lesson_nr }}. {{ classlesson.title }}
+    {% if classlesson.show_number %}
+       {{ classlesson.lesson_nr }}.
+    {% endif %}
+    {{ classlesson.title }}
+
 
     <!-- class link -->
     {% if classlesson.original_lesson %}
@@ -46,12 +141,23 @@
         </a>
         {% endif %}
     {% endif %}
-
+                            <span style="font-size: 0.9em; font-weight:normal;
+                            {% if not node.modified == node.original_lesson.modified and node.is_original_lesson %}
+                                 color:purple;
+                            {% else %}
+                                 color:grey;
+                            {% endif %}
+                            ">
+                               {% if not node.modified == node.original_lesson.modified and node.is_original_lesson %}
+                                   (veraltet)
+                               {% endif %}
+                               {{ node.modified |date:'d.m.Y' }}
+                            </span>
 
     <!-- class -->
     {% if classlesson.is_visible_in_classroom %}
         <a href="{{ class_url }}">
-           <i class="icon large student"></i>
+           <i class="icon teal student"></i>
         </a>
     {% endif %}
 

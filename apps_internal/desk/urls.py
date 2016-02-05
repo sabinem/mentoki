@@ -8,6 +8,7 @@ from .views.redirect import DeskRedirectView
 from .views.learn import DeskLearnView, DeskStartView
 from .views.mentor_admin import DeskTeachView
 from .views.pageadmin import PageAdminView
+from .views.notification import NotificationView, NotificationUpdateView
 from .views.courseadmin import CourseAdminView
 from .views.courseentry_admin import CourseEntryAdminView
 from .views.userprofile import UserProfileView
@@ -22,11 +23,15 @@ urlpatterns = patterns('',
 
     url(r'^benutzerprofil$', UserProfileView.as_view(), name='userprofile' ),
 
+    url(r'^benachrichtigungen$', NotificationView.as_view(), name='notifications' ),
+    url(r'^benachrichtigungen/(?P<pk>\d{1,4})/aendern$',
+        NotificationUpdateView.as_view(), name='notificationsupdate' ),
+
     url(r'^unterrichten$', DeskTeachView.as_view(), name='teach' ),
 
     url(r'^lernen$', DeskLearnView.as_view(), name='learn' ),
 
-    url(r'^start$', DeskStartView.as_view(), name='start' ),
+    #url(r'^start$', DeskStartView.as_view(), name='start' ),
 
     url(r'^webseite$', PageAdminView.as_view(), name='pageadmin' ),
 

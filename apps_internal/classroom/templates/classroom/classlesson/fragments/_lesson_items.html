@@ -6,8 +6,15 @@
         {% url "classroom:classlesson:lesson" slug=es pk=item.classlesson_id as lesson_url %}
 
         <div class="item">
-
+           {% if item.classlesson.show_number %}
             <i class="top aligned icon">{{ item.classlesson.lesson_nr }}.</i>
+            {% else %}
+             <i class="top aligned icon">
+                {% if item.icon %}
+                    {{ item.icon.as_html }}
+                {% endif %}
+             </i>
+            {% endif %}
 
             <div class="content">
 

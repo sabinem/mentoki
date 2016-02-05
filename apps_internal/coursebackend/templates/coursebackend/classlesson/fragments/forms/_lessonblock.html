@@ -1,4 +1,4 @@
-{% url 'coursebackend:lesson:start' course_slug=cs as back_url %}
+{% url 'coursebackend:classlesson:start' course_slug=cs slug=es as back_url %}
 
 {{ form.media }}
 
@@ -15,9 +15,7 @@
             <li>Im Unterrichtsraum werden nur Lektionen veröffentlicht, nicht Blöcke.</li>
         </ul>
     </div>
-    <div class="ui info message">
-        Die <strong>Nr.</strong> steuert die Anzeigenreihenfolge der Blöcke:
-    </div>
+
     <div class="inline fields">
         <div class="field six wide">
             <label>{{ form.nr.label_tag }}</label>
@@ -29,9 +27,7 @@
             {{ form.nr }}
         </div>
     </div>
-    <div class="ui info message">
-        Die <strong>Überschrift</strong> ist nur intern für Dich sichtbar:
-    </div>
+
     <div class="inline fields">
         <div class="field sixteen wide">
             <label>Überschrift</label>
@@ -43,10 +39,7 @@
             {{ form.title }}
         </div>
     </div>
-    <div class="ui info message">
-        Auch die <strong>Beschreibungen</strong> (oben kurz und unten ausführlich)
-        sind nur intern für Dich sichtbar:
-    </div>
+
     <div class="inline fields">
         <div class="field sixteen wide">
             <label>

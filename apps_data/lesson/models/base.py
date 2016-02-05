@@ -96,6 +96,7 @@ class BaseLesson(MPTTModel):
 
     nr = models.IntegerField(
         verbose_name=_('Nr.'),
+        help_text=_('steuert nur die Anzeigereihenfolge'),
         default=1)
     icon = IconField(
         verbose_name="Icon",
@@ -117,7 +118,7 @@ class BaseLesson(MPTTModel):
         help_text="Text der Lektion",
         blank=True)
     description = models.CharField(
-        verbose_name='kurze Beschreibung',
+        verbose_name='Beschreibung',
         help_text="diese Beschreibung erscheint nur in den Übersichten",
         max_length=200,
         blank=True)
@@ -129,7 +130,7 @@ class BaseLesson(MPTTModel):
         null=True)
     show_number = models.BooleanField(
         default=True,
-        verbose_name="Nummerierung anzeigen")
+        verbose_name="Nr. ist Lektionsnummer")
     is_homework = models.BooleanField(default=False)
     allow_questions = models.BooleanField(default=False)
     show_work_area = models.BooleanField(default=False)
@@ -260,6 +261,13 @@ class BaseLesson(MPTTModel):
 
     def get_breadcrumbs_with_self(self):
         return self.get_ancestors(include_self=True).exclude(level=0)
+
+    def get_tree_with_self_with_material(self):
+        """
+        gets real decendants and materials of a node
+        :return: real decendants with material
+        """
+        return self.get_descendants(include_self=True).select_related('material')
 
     def get_tree_without_self_with_material(self):
         """

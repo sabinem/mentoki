@@ -1,13 +1,6 @@
 {% extends "coursebackend/base_courseevent.html" %}
 
-{% block courseevent_menu_items %}
-    {% url 'coursebackend:classlesson:start'  slug=es course_slug=cs as start_url %}
 
-    <a href="{{ start_url }}" class="item">
-        <i class="icon sidebar blue"></i>Unterricht
-    </a>
-
-{% endblock %}
 
 {% block breadcrumbs %}
     {% include 'coursebackend/classlesson/fragments/_breadcrumbs.html' %}

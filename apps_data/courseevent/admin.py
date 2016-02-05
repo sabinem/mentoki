@@ -59,10 +59,9 @@ class ClassroomMenuItemAdmin(admin.ModelAdmin):
     """
     Teachers establish there own menu for the classroom.
     """
-    list_display = ('id', 'display_nr', 'display_title',
-                    'item_type', 'is_shortlink', 'forum', 'classlesson',
-                    'is_start_item', )
-    list_filter = ('courseevent__course', 'courseevent','modified' )
+    list_display = ('id', 'courseevent', 'display_title',
+                    'item_type', 'forum', 'classlesson' )
+    list_filter = ('courseevent__course', 'courseevent', 'item_type', 'modified' )
 
 
 @admin.register(StudentsWork)

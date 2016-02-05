@@ -14,11 +14,13 @@ from apps_data.courseevent.models.courseevent import CourseEvent
 from apps_internal.coursebackend.views.mixins.base import FormCourseEventKwargsMixin
 from apps_data.courseevent.models.menu import ClassroomMenuItem
 
-from .mixins.base import ClassroomMenuMixin
+from .mixins.base import ClassroomMenuMixin, AuthClassroomAccessMixin, \
+    ParticipationFormKwargsMixin, ParticipationCheckHiddenFormMixin
 from .classlessonstepwork import StudentsWorkRedirectMixin
 
 
 class StudentsWorkListPrivateView(
+    AuthClassroomAccessMixin,
     ClassroomMenuMixin,
     TemplateView):
     """
@@ -34,6 +36,7 @@ class StudentsWorkListPrivateView(
 
 
 class StudentsWorkListPublicView(
+    AuthClassroomAccessMixin,
     ClassroomMenuMixin,
     TemplateView):
     """
@@ -48,7 +51,9 @@ class StudentsWorkListPublicView(
         return context
 
 
-class StudentWorkCreateForm(forms.ModelForm):
+class StudentWorkCreateForm(
+    ParticipationCheckHiddenFormMixin,
+    forms.ModelForm):
     text = forms.CharField(widget=FroalaEditor)
 
     class Meta:
@@ -67,6 +72,8 @@ class StudentWorkCreateForm(forms.ModelForm):
 
 
 class StudentsWorkCreateView(
+    AuthClassroomAccessMixin,
+    ParticipationFormKwargsMixin,
     ClassroomMenuMixin,
     FormCourseEventKwargsMixin,
     StudentsWorkRedirectMixin,

@@ -1,79 +1,47 @@
 # coding: utf-8
 
 from __future__ import unicode_literals, absolute_import
+import floppyforms.__future__ as forms
 
-from django.core.urlresolvers import reverse_lazy
-from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.views.generic import UpdateView, \
-    DeleteView, FormView
+    FormView
+from django.shortcuts import get_object_or_404
+
+from mptt.forms import TreeNodeChoiceField
+
+from froala_editor.widgets import FroalaEditor
 
 from braces.views import FormValidMessageMixin
 
-from ..forms.classlesson import ClassLessonForm, ClassLessonStepForm,\
-     ClassLessonBlockForm
-
-from apps_data.lesson.models.classlesson import ClassLesson
 from apps_data.lesson.models.lesson import Lesson
+from apps_data.lesson.models.classlesson import ClassLesson
 from apps_data.courseevent.models.courseevent import CourseEvent
 
-from .mixins.base import CourseMenuMixin, FormCourseEventKwargsMixin, FormCourseKwargsMixin
+from ..mixins.base import CourseMenuMixin, FormCourseEventKwargsMixin
+from .mixin import ClassLessonBreadcrumbMixin, ClassLessonSuccessUpdateUrlMixin
 
 import logging
 logger = logging.getLogger(__name__)
 
-class ClassLessonRedirectDetailMixin(object):
-    def get_success_url(self):
-       if self.context_object_name == 'classlessonblock':
-           return reverse_lazy('coursebackend:classlesson:block',
-                               kwargs={'course_slug': self.kwargs['course_slug'],
-                                       'slug': self.kwargs['slug'],
-                                       'pk': self.object.pk})
-       elif self.context_object_name == 'classlesson':
-           return reverse_lazy('coursebackend:classlesson:lesson',
-                               kwargs={'course_slug': self.kwargs['course_slug'],
-                                       'slug': self.kwargs['slug'],
-                                       'pk': self.object.pk})
-       elif self.context_object_name == 'classlessonstep':
-           return reverse_lazy('coursebackend:classlesson:step',
-                               kwargs={'course_slug': self.kwargs['course_slug'],
-                                       'slug': self.kwargs['slug'],
-                                       'pk': self.object.pk})
 
+class ClassLessonForm(forms.ModelForm):
+    text = forms.CharField(widget=FroalaEditor, required=False)
 
-class ClassLessonRedirectListMixin(object):
-    def get_success_url(self):
-        return reverse_lazy('coursebackend:classlesson:start',
-                            kwargs={'course_slug': self.kwargs['course_slug'],
-                                    'slug': self.kwargs['slug']})
+    class Meta:
+        model = ClassLesson
+        fields = ('parent', 'nr', 'show_number', 'title', 'description', 'text' )
 
+    def __init__(self, *args, **kwargs):
 
-class ClassLessonBreadcrumbMixin(object):
-    """
-    get breadcrumbs for object
-    """
-    def get_context_data(self, **kwargs):
-        context = super(ClassLessonBreadcrumbMixin, self).get_context_data(
-            **kwargs)
-        if 'object' in context:
-            context['breadcrumbs'] = context[
-                'object'].get_breadcrumbs_with_self
-        return context
+        courseevent_slug = kwargs.pop('courseevent_slug', None)
+        self.courseevent = get_object_or_404(CourseEvent, slug=courseevent_slug)
 
+        super(ClassLessonForm, self).__init__(*args, **kwargs)
 
-class ClassLessonBlockUpdateView(
-    CourseMenuMixin,
-    ClassLessonBreadcrumbMixin,
-    FormValidMessageMixin,
-    ClassLessonRedirectDetailMixin,
-    UpdateView):
-    """
-    Update a classlesson step
-    """
-    model = ClassLesson
-    context_object_name = 'classlessonblock'
-    form_class = ClassLessonBlockForm
-    form_valid_message = "Der Unterrichtsblock wurde geändert!"
+        self.fields['parent'] = TreeNodeChoiceField(
+            queryset=ClassLesson.objects.blocks_for_courseevent(courseevent=self.courseevent))
+        self.fields['parent'].empty_label = None
 
 
 class ClassLessonUpdateView(
@@ -81,7 +49,7 @@ class ClassLessonUpdateView(
     ClassLessonBreadcrumbMixin,
     FormValidMessageMixin,
     FormCourseEventKwargsMixin,
-    ClassLessonRedirectDetailMixin,
+    ClassLessonSuccessUpdateUrlMixin,
     UpdateView):
     """
     Update a classlesson
@@ -92,72 +60,10 @@ class ClassLessonUpdateView(
     form_valid_message = "Die Lektion wurde geändert!"
 
 
-class ClassLessonStepUpdateView(
-    CourseMenuMixin,
-    ClassLessonBreadcrumbMixin,
-    FormValidMessageMixin,
-    FormCourseEventKwargsMixin,
-    ClassLessonRedirectDetailMixin,
-    UpdateView):
-    """
-    Update a classlesson step
-    """
-    model = ClassLesson
-    context_object_name = 'classlessonstep'
-    form_class = ClassLessonStepForm
-    form_valid_message = "Der Lernabschnitt wurde geändert!"
-
-
-class ClassLessonDeleteView(
-    CourseMenuMixin,
-    ClassLessonBreadcrumbMixin,
-    FormValidMessageMixin,
-    FormCourseEventKwargsMixin,
-    ClassLessonRedirectListMixin,
-    DeleteView):
-    """
-    Delete a classlesson
-    """
-    model = ClassLesson
-    context_object_name = 'classlesson'
-    form_valid_message = "Der Unterricht wurde gelöscht!"
-
-    def get_context_data(self, **kwargs):
-        context = super(ClassLessonDeleteView, self).get_context_data(**kwargs)
-        context['nodes'] = context['object'].get_delete_tree
-        return context
-
-
-class ClassLessonBlockCreateView(
-    CourseMenuMixin,
-    ClassLessonRedirectDetailMixin,
-    FormValidMessageMixin,
-    FormView):
-    """
-    create lesson
-    """
-    form_class = ClassLessonBlockForm
-    model = ClassLesson
-    context_object_name ='classlessonblock'
-    form_valid_message = "Der Block wurde angelegt!"
-
-    def form_valid(self, form):
-
-        courseevent = get_object_or_404(CourseEvent, slug=self.kwargs['slug'])
-        self.object = ClassLesson.objects.create_classlessonblock(
-            courseevent=courseevent,
-            title=form.cleaned_data['title'],
-            description=form.cleaned_data['description'],
-            text=form.cleaned_data['text'],
-            nr=form.cleaned_data['nr']
-        )
-        return HttpResponseRedirect(self.get_success_url())
-
-
 class ClassLessonCreateView(
     CourseMenuMixin,
     FormCourseEventKwargsMixin,
-    ClassLessonRedirectDetailMixin,
+    ClassLessonSuccessUpdateUrlMixin,
     FormValidMessageMixin,
     FormView):
     """
@@ -169,7 +75,7 @@ class ClassLessonCreateView(
     form_valid_message = "Die Lektion wurde angelegt!"
 
     def form_valid(self, form):
-        courseevent = get_object_or_404(CourseEvent, slug=self.kwargs['course_slug'])
+        courseevent = get_object_or_404(CourseEvent, slug=self.kwargs['slug'])
         self.object = ClassLesson.objects.create_classlesson(
             courseevent=courseevent,
             title=form.cleaned_data['title'],
@@ -179,35 +85,6 @@ class ClassLessonCreateView(
             nr=form.cleaned_data['nr'],
             show_number = form.cleaned_data['show_number'],
         )
-        return HttpResponseRedirect(self.get_success_url())
+        last_url = self.request.session['last_url']
+        return HttpResponseRedirect(last_url)
 
-
-class ClassLessonStepCreateView(
-    CourseMenuMixin,
-    FormCourseEventKwargsMixin,
-    ClassLessonRedirectListMixin,
-    FormValidMessageMixin,
-    FormView):
-    """
-    create lesson step, special: add materials if requested
-    """
-    form_class = ClassLessonStepForm
-    model = Lesson
-    context_object_name ='lessonstep'
-    form_valid_message = "Der Lernabschnitt wurde angelegt!"
-
-    def form_valid(self, form):
-        courseevent = get_object_or_404(CourseEvent, slug=self.kwargs['course_slug'])
-
-        self.object = ClassLesson.objects.create_classstep(
-            courseevent=courseevent,
-            title=form.cleaned_data['title'],
-            description=form.cleaned_data['description'],
-            text=form.cleaned_data['text'],
-            material=form.cleaned_data['material'],
-            nr=form.cleaned_data['nr'],
-            parent=form.cleaned_data['parent'],
-            is_homework = form.cleaned_data['is_homework'],
-            show_number = form.cleaned_data['show_number'],
-        )
-        return HttpResponseRedirect(self.get_success_url())

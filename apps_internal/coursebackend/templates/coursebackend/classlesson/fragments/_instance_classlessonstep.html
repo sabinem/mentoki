@@ -3,18 +3,18 @@
 {% url 'classroom:classlesson:step'  slug=es pk=classlessonstep.pk as class_url %}
 {% url 'coursebackend:classlesson:step' course_slug=cs slug=es pk=next_node.pk as forward_url %}
 {% url 'coursebackend:classlesson:step' course_slug=cs slug=es pk=previous_node.pk as backward_url %}
-
+  {% url 'coursebackend:lesson:step' course_slug=cs pk=classlessonstep.original_lesson_id as course_url %}
 <!-- forward -->
 {% if next_node %}
     <a href="{{ forward_url }}" class="ui button basic right floated">
-        {{ next_node.lesson_nr }}.<i class="right arrow icon"></i>
+        <i class="right arrow icon"></i>
     </a>
 {% endif %}
 
 <!-- back -->
 {% if previous_node %}
     <a href="{{ backward_url }}" class="ui button basic right floated">
-        <i class="left arrow icon"></i>{{ previous_node.lesson_nr }}.
+        <i class="left arrow icon"></i>
     </a>
 {% endif %}
 
@@ -23,42 +23,52 @@
          id="published_in_class"
     {% endif %}
     >
-
+    {% if classlessonstep.show_number %}
     <!-- title -->
-    {{ classlessonstep.lesson_nr }} {{ classlessonstep.title }}
+    {{ classlessonstep.lesson_nr }}. {{ classlessonstep.title }}
+    {% else %}
+    ({{ classlessonstep.nr }}) {{ classlessonstep.title }}
+    {% endif %}
+
+
+    <span style="font-size: 0.9em; font-weight:normal;
+    {% if not node.modified == node.original_lesson.modified and node.is_original_lesson %}
+         color:purple;
+    {% else %}
+         color:grey;
+    {% endif %}
+    ">
+       {% if not classlessonstep.modified == classlessonstep.original_lesson.modified and classlessonstep.is_original_lesson %}
+           (veraltet)
+       {% endif %}
+       {{ classlessonstep.modified |date:'d.m.Y' }}
+    </span>
 
     <!-- homework -->
     {% if classlessonstep.is_homework %}
          <a class="ui orange label">interaktiv</a>
     {% endif %}
+    {% if classlessonstep.show_work_area %}
+         <i style="display:inline;" class="icon orange privacy"></i>
+    {% endif %}
+    {% if classlessonstep.allow_questions %}
+         <a class="ui orange label">nachgefragt</a>
+    {% endif %}
 
     <!-- class link -->
     {% if classlessonstep.original_lesson %}
-        <a href="{{ copy_url }}">
-            <i class="icon blue copy"></i>
-        </a>
+
         <a href="{{ course_url }}">
-            <i class="icon blue external"></i>
+            <i class="icon purple external"></i>
         </a>
-    {% else %}
-    <!-- update -->
-        <a href="{{ update_url }}">
-           <i class="icon blue write"></i>
-        </a>
-        {% if not classlessonstep.is_visible_in_classroom  %}
-        <a href="{{ delete_url }}">
-           <i class="icon blue trash"></i>
-        </a>
-        {% endif %}
+
+
     {% endif %}
-
-
-    <!-- material links -->
     {% if classlessonstep.material %}
 
         <!-- link to file -->
         <a href="{{ classlessonstep.material.file.url }}">
-            <i class="icon file"></i>
+            <i class="icon file pdf outline"></i>
         </a>
 
         <!-- download-link -->
@@ -70,10 +80,12 @@
 
     {% endif %}
 
+
+
     <!-- class -->
     {% if classlessonstep.is_visible_in_classroom %}
         <a href="{{ class_url }}">
-           <i class="icon large student"></i>
+           <i class="icon teal student"></i>
         </a>
     {% endif %}
 
@@ -99,20 +111,5 @@
 
 {% endif %}
 
-<!-- homework -->
-{% if classlessonstep.is_homework %}
-
-<h4 class="ui horizontal divider header">
-     <i class="lab icon"></i>
-</h4>        
-
-    {% if classlessonstep.due_date %}
-        <p>
-            Abgabedatum: {{ classlessonstep.due_date | date:'d.m.Y' }}
-        </p>
-    {% endif %}
-
-    {{ classlessonstep.extra_text | safe }}
-{% endif %}
 
 

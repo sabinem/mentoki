@@ -148,14 +148,12 @@ $(document).ready(function(){
 /**
  * Prevent double form submission of forms
  * copied from the internet, which source?
- */
+ * see also http://www.the-art-of-web.com/javascript/doublesubmit/
 
-    $('#formsubmitonce').on('click', function(){
+      $('#formsubmitonce').on('click', function(){
+        alert('here in check form');
         this.disabled=true;
-        this.form.submit();
     });
-
-
-
+ */
 
 });

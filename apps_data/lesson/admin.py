@@ -31,7 +31,7 @@ class ClassLessonAdmin(admin.ModelAdmin):
     list_display = ('id', 'course', 'courseevent', 'parent', 'lesson_nr', 'title',
                     'original_lesson_id', 'is_original_lesson', 'modified',
                     'created', 'lesson_type', 'level')
-    list_filter = ('courseevent__course', 'course', 'courseevent', 'level', 'modified', 'is_original_lesson')
+    list_filter = ('course', 'courseevent', 'level', 'modified', 'is_original_lesson')
 
 
 @admin.register(Question)

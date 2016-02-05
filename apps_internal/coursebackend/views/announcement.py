@@ -68,6 +68,7 @@ class AnnouncementListView(
         context ['announcements_archived'] = \
             Announcement.objects.archived_announcements(
                 courseevent = context['courseevent'])
+        self.request.session['last_courseeventbackend_url'] = self.request.path
 
         return context
 

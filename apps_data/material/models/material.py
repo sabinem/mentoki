@@ -114,7 +114,7 @@ class Material(TimeStampedModel):
         verbose_name_plural=_("Materialien")
 
     def __unicode__(self):
-        return u'%s' % (self.title)
+        return u'%s (%s)' % (self.title, self.document_type)
 
     def is_used(self):
         if self.classlesson_set.all():

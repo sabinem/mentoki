@@ -1,6 +1,4 @@
-{% url 'coursebackend:lesson:start' course_slug=cs as back_url %}
-
-{{ form.media }}
+{% url 'desk:notifications' as back_url %}
 
 <form id="edit" class="ui form" method="post" action="#target" onsubmit="return checkForm(this);">
 
@@ -8,94 +6,36 @@
 
     {% include 'coursebackend/forms/fragments/_form_non_field_errors.html' %}
 
-    <div class="ui dividing large header">Lektion</div>
-    <div class="ui blue message">
-        <ul>
-            <li>Lektionen sind die zentralen Elemente im Unterricht.</li>
-            <li>Es sind Lektionen, die im Klassenzimmer veröffentlicht werden!</li>
-        </ul>
-    </div>
-    <div class="ui info message">
-        Du kannst Lektionen in <strong>Unterrichtsblöcken</strong> zusammenfasssen:
-        zwischen Lektionen im selben Block kann später geblättert werden.
+    <div class="ui dividing large header">Benachrichtigungseinstellungen anpassen</div>
+    <div class="fields inline">
+        <div class="field eight wide">
+            <label style="padding-right:10px;">Im Forum:</label>
+            Wann willst Du email-Nachrichten erhalten?
+        </div>
+        <div class="field eight wide">
+            {% if form.notification_forum.errors %}
+                <div class="ui negative floating message">
+                    {{ form.notification_forum.errors }}
+                </div>
+            {% endif %}
+            {{ form.notification_forum }}
+        </div>
     </div>
     <div class="fields inline">
-        <div class="field sixteen wide">
-            <label>Unterrichtsblock</label>
-            {% if form.parent.errors %}
-                <div class="ui negative floating message">
-                    {{ form.parent.errors }}
-                </div>
-            {% endif %}
-            {{ form.parent }}
-        </div>
-    </div>
-    <div class="ui info message">
-        Du kannst entscheiden, ob <strong>Nr.</strong> nur intern zur Steuerung der
-        <strong>Anzeigenreihenfolge</strong> dienen soll, oder ob er sich um eine nach aussen sichtbare
-        <strong>Lektionsnummer</strong> handelt:
-    </div>
-    <div class="inline fields">
         <div class="field eight wide">
-            <label>{{ form.nr.label_tag }}</label>
-            {% if form.nr.errors %}
-                <div class="ui negative floating message">
-                    {{ form.nr.errors }}
-                </div>
-            {% endif %}
-            {{ form.nr }}
+            <label style="padding-right:10px;">Bei Kurs-Arbeiten:</label>
+            Wann willst Du email-Nachrichten erhalten?
         </div>
         <div class="field eight wide">
-            <label>{{ form.show_number.label_tag }}</label>
-            {% if form.show_number.errors %}
+            {% if form.notification_work.errors %}
                 <div class="ui negative floating message">
-                    {{ form.show_number.errors }}
+                    {{ form.notification_work.errors }}
                 </div>
             {% endif %}
-            {{ form.show_number }}
+            {{ form.notification_work }}
         </div>
     </div>
-    <div class="ui info message">
-        Die <strong>Überschrift</strong> der Lektion:
-    </div>
-    <div class="inline fields">
-        <div class="field sixteen wide">
-            <label>Überschrift</label>
-            {% if form.title.errors %}
-                <div class="ui negative floating message">
-                    {{ form.title.errors }}
-                </div>
-            {% endif %}
-            {{ form.title }}
-        </div>
-    </div>
-    <div class="ui info message">
-        Die <strong>Kurz-Beschreibungen</strong> wird für die Listenansichten verwendet.
-    </div>
-    <div class="inline fields">
-        <div class="field sixteen wide">
-            <label>
-                {{ form.description.label_tag }}
-            </label>
-            {% if form.description.errors %}
-                <div class="ui negative floating message">
-                    {{ form.description.errors }}
-                </div>
-            {% endif %}
-            {{ form.description }}
-        </div>
-    </div>
-    <div class="ui info message">
-        Das ist der <strong>Lektionstext</strong>.
-    </div>
-    <div class="field sixteen wide">
-        {% if form.text.errors %}
-            <div class="ui negative floating message">
-                {{ form.text.errors }}
-            </div>
-        {% endif %}
-        {{ form.text }}
-    </div>
+
     <button type="submit" value="post" class="ui button" id="formsubmitonce">
         Speichern
     </button>

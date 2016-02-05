@@ -43,6 +43,36 @@ class BlockDetailView(
         return context
 
 
+class BlockCompleteView(
+    CourseMenuMixin,
+    DetailView):
+    """
+    gets tree underneath a block, get neighbouring blocks within the course and get breadcrumbs
+    :param pk: of lessonblock
+    :param course_slug: slug of course
+    :return: lessonblock: block instance
+    :return: previous_node: previous block within course
+    :return: next_node: next block within course
+    :return: breadcrumbs: ancestors including block instance
+    :return: nodes: tree underneath of block instance without material
+    """
+    model = Lesson
+    context_object_name ='lessonblock'
+
+    def get_context_data(self, **kwargs):
+        context = super(BlockCompleteView, self).get_context_data(**kwargs)
+        lessonblock = context['lessonblock']
+        self.request.session['last_url'] = self.request.path
+        self.request.session['last_lesson_type'] = LessonType.BLOCK
+        self.request.session['last_lesson_pk'] = lessonblock.pk
+        context['next_node'] = lessonblock.get_next_sibling()
+        context['previous_node'] = lessonblock.get_previous_sibling()
+        context['breadcrumbs'] = lessonblock.get_breadcrumbs_with_self()
+        context['nodes'] = lessonblock.get_tree_without_self_without_material
+        return context
+
+
+
 class LessonDetailView(
     CourseMenuMixin,
     DetailView):

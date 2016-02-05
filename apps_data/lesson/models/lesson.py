@@ -64,7 +64,7 @@ class LessonManager(BaseLessonManager):
         return lesson
 
     def create_step(self, nr, title, text, description,
-                    show_number,
+                    show_number, show_work_area, allow_questions,
                     course, parent, material, is_homework):
         """
         creates a step
@@ -82,6 +82,8 @@ class LessonManager(BaseLessonManager):
                        description=description,
                        text=text,
                        nr=nr,
+                       show_work_area=show_work_area,
+                       allow_questions=allow_questions,
                        show_number=show_number,
                        lesson_nr=lesson_nr_step(nr=nr, parent_nr=parent.nr),
                        material=material,

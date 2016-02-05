@@ -1,5 +1,5 @@
 {% extends "desk/pages/base.html" %}
-
+{% block desk_header %}Benachrichtungseinstellungen für Teilnehmer{% endblock %}
 {% block work %}
 
     <div class="ui grid">
@@ -7,8 +7,7 @@
         <div class="column sixteen wide">
 
             <div class="ui segment">
-                <h2 class="ui header">Benachrichtigungseinstellungen</h2>
-                {% include 'desk/fragments/_notification_table' %}
+                {% include 'desk/fragments/_notification_update_form.html' %}
 
             </div>
         </div>

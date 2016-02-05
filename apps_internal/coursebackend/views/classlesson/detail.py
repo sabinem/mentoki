@@ -2,49 +2,15 @@
 
 from __future__ import unicode_literals, absolute_import
 
-from django.core.urlresolvers import reverse_lazy
-from django.shortcuts import get_object_or_404
-from django.http import HttpResponseRedirect
-from django.views.generic import DetailView, TemplateView, UpdateView, \
-    DeleteView, FormView
-from django.core.validators import ValidationError
-
-from braces.views import FormValidMessageMixin
-
-from ..forms.classlesson import ClassLessonForm, ClassLessonStepForm,\
-     ClassLessonBlockForm
-from ..forms.lessoncopy import LessonCopyForm
+from django.views.generic import DetailView
 
 from apps_data.lesson.models.classlesson import ClassLesson
-from apps_data.lesson.models.lesson import Lesson
-from apps_data.courseevent.models.courseevent import CourseEvent
 
-from .mixins.base import CourseMenuMixin, FormCourseEventKwargsMixin, FormCourseKwargsMixin
-
+from ..mixins.base import CourseMenuMixin
 import logging
 
 logger = logging.getLogger('activity.lessonview')
 
-
-class ClassLessonStartView(
-    CourseMenuMixin,
-    TemplateView):
-    """
-    complete tree for courseevent:
-    :param slug: of courseevent
-    :param course_slug: slug of course
-    :return: nodes: complete tree for the courseevent including blocks and material
-    """
-
-    def get_context_data(self, **kwargs):
-        context = super(ClassLessonStartView, self).get_context_data(**kwargs)
-        courseevent = context['courseevent']
-        self.request.session['last_courseeventbackend_url'] = self.request.path
-        logger.info('Alle Kurslektionen werden gesucht zu Kurs [%s]' % courseevent)
-        context['nodes'] = \
-            ClassLesson.objects.complete_tree_for_courseevent(
-                courseevent=courseevent)
-        return context
 
 
 class ClassBlockDetailView(
@@ -68,14 +34,14 @@ class ClassBlockDetailView(
         context = super(ClassBlockDetailView, self).get_context_data(**kwargs)
 
         classlessonblock = context['classlessonblock']
-        self.request.session['last_courseeventbackend_url'] = self.request.path
+        self.request.session['last_url'] = self.request.path
 
         context['next_node'] = classlessonblock.get_next_sibling_in_courseevent
         context[
             'previous_node'] = classlessonblock.get_previous_sibling_in_courseevent
         context['breadcrumbs'] = classlessonblock.get_breadcrumbs_with_self
 
-        context['nodes'] = classlessonblock.get_tree_without_self_without_material
+        context['nodes'] = classlessonblock.get_tree_with_self_with_material
 
         return context
 
@@ -101,12 +67,12 @@ class ClassLessonDetailView(
         context = super(ClassLessonDetailView, self).get_context_data(**kwargs)
 
         classlesson = context['classlesson']
-        self.request.session['last_courseeventbackend_url'] = self.request.path
+        self.request.session['last_url'] = self.request.path
         context['next_node'] = classlesson.get_next_sibling_in_courseevent
         context['previous_node'] = classlesson.get_previous_sibling_in_courseevent
         context['breadcrumbs'] = classlesson.get_breadcrumbs_with_self
 
-        context['nodes'] = classlesson.get_tree_without_self_with_material
+        context['nodes'] = classlesson.get_tree_with_self_with_material
         print context
         return context
 
@@ -130,7 +96,7 @@ class ClassStepDetailView(
         context = super(ClassStepDetailView, self).get_context_data(**kwargs)
 
         classlessonstep = context['classlessonstep']
-        self.request.session['last_courseeventbackend_url'] = self.request.path
+        self.request.session['last_url'] = self.request.path
         context['next_node'] = classlessonstep.get_next_sibling()
         context['previous_node'] = classlessonstep.get_previous_sibling()
         context['breadcrumbs'] = classlessonstep.get_breadcrumbs_with_self

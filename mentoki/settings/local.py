@@ -20,7 +20,7 @@ INSTALLED_APPS += (
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'gitbranch_blocks_special',
+        'NAME': 'mentoki_25_9',
         'USER': os.environ.get('DATABASE_USER'),
 	    'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
 	    'HOST': os.environ.get('DATABASE_HOST'),
@@ -60,7 +60,7 @@ TEMPLATES = [
 
 
 # overwriting raven
-RAVEN_CONFIG = {'dsn': ''}
+#RAVEN_CONFIG = {'dsn': ''}
 
 import braintree
 BRAINTREE_ENVIRONMENT = braintree.Environment.Sandbox

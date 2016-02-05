@@ -62,7 +62,7 @@ class LessonCopyView(
         return super(LessonCopyView, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('coursebackend:lessontest:block',
+        return reverse_lazy('coursebackend:lesson:block',
                            kwargs={'course_slug': self.kwargs['course_slug'],
                                    'pk': self.object.parent_id})
 

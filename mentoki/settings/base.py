@@ -53,6 +53,7 @@ INSTALLED_APPS += (
     'model_utils',
     'mptt',
     'autoslug',
+    'dbbackup',
     'activelink',
     'floppyforms',
     'froala_editor',
@@ -532,6 +533,9 @@ BRAINTREE = {
     'public_key':os.environ.get('BRAINTREE_PUBLIC_KEY'),
     'private_key':os.environ.get('BRAINTREE_PRIVATE_KEY'),
 }
+
+DBBACKUP_STORAGE = 'dbbackup.storage.filesystem_storage'
+DBBACKUP_STORAGE_OPTIONS = {'location': os.path.join(BASE_DIR, 'dbbackups')}
 
 
 

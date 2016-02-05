@@ -7,7 +7,6 @@
 {% url "coursebackend:lessontest:blockswithlessons" course_slug=cs as lesson_new_url %}
 {% url "coursebackend:lesson:meta" course_slug=cs as lessonmeta_url %}
 {% url 'coursebackend:material:list' course_slug=course.slug as material_url %}
-{% url 'coursebackend:homework:list' course_slug=course.slug as homework_url %}
 {% url 'coursebackend:lessontest:homeworklist' course_slug=course.slug as homework_new_url %}
 
 <div class="ui popup bottom fluid left transition hidden" style="max-width:350px;">
@@ -43,12 +42,6 @@
                 <a href="{{ material_url }}" class="item
                     {% ifstartswith material_url %}active teal{% endifstartswith %}">
                     Materialien
-                </a>
-
-                <a class="item
-                    {% ifstartswith homework_url %}active teal{% endifstartswith %}
-                    " href="{{ homework_url }}" style="font-size:1.1em;">
-                    Aufgaben
                 </a>
 
                 <div class="ui divider"></div>

@@ -16,6 +16,7 @@ from django.conf import settings
 from mailqueue.models import MailerMessage
 
 from apps_data.course.models.course import CourseOwner
+from apps_data.courseevent.models.courseevent import CourseEventParticipation
 
 import logging
 logger = logging.getLogger(__name__)
@@ -27,8 +28,13 @@ def send_work_published_notification(studentswork, courseevent, module):
         list(studentswork.workers_emails())
     teachers_emails = \
         list(CourseOwner.objects.teachers_emails(course=courseevent.course))
-    all_emails = set(workers_emails + teachers_emails)
-    send_all = ", ".join(all_emails)
+    notification_all_emails = \
+        list(CourseEventParticipation.objects.forum_notification_all_emails(courseevent=courseevent))
+    notification_none_emails = \
+        list(CourseEventParticipation.objects.forum_notification_none_emails(courseevent=courseevent))
+    all_emails = set(workers_emails + teachers_emails + notification_all_emails)
+    notifify_emails = all_emails - set(notification_none_emails)
+    send_all = ", ".join(notifify_emails)
 
     context = {
         'site': Site.objects.get_current(),

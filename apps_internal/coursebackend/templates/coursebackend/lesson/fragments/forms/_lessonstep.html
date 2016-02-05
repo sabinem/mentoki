@@ -5,84 +5,79 @@
 <form class="ui form" method="post" action="#target" onsubmit="return checkForm(this);">
 
     {% csrf_token %}
+    {% include 'coursebackend/forms/fragments/_form_non_field_errors.html' %}
 
     <div class="ui dividing large header">Lernschritt</div>
+    <div class="ui blue message">
+        <ul>
+            <li>In den Lernschritte passiert das eigentliche Lernen. Sie können interaktiv sein.</li>
+            <li><a class="ui orange label">interaktiv</a>markiert eine Aufgabe</li>
+            <li><a class="ui orange label">interaktiv</a><i class="icon orange privacy"></i>
+                markiert eine Aufgabe mit privatem Arbeitsbereich</li>
+            <li><a class="ui orange label">nachgefragt</a></i>
+                markiert, dass man direkt unter dem Lernabschnitt Fragen stellen kann.</li>
+            <li><strong>Nr: </strong>Die Nummer kann als Abschnittsnummer angezeigt werden oder sie
+                dient nur intern zur Steuerung der Anezigenreihenfolge.</li>
+            <li><strong>Material: </strong>Es können PDFs eingebunden werden.</li>
+        </ul>
+    </div>
 
     <div class="fields inline">
-        <div class="field eight wide">
-            {{ form.parent.label_tag }}
-            <p>{{ form.parent.help_text }}</p>
-
+        <div class="field sixteen wide">
+            <label>Lektion</label>
             {% if form.parent.errors %}
                 <div class="ui negative floating message">
                     {{ form.parent.errors }}
                 </div>
             {% endif %}
-            <br>
-
             {{ form.parent }}
-
         </div>
     </div>
-    <div class="fields inline">
-
-        <div class="field four wide">
-            {{ form.nr.label_tag }}
-            <p>{{ form.nr.help_text }}</p>
-
+    <div class="inline fields">
+        <div class="field eight wide">
+            <label>{{ form.nr.label_tag }}</label>
             {% if form.nr.errors %}
                 <div class="ui negative floating message">
                     {{ form.nr.errors }}
                 </div>
             {% endif %}
-            <br>
-
             {{ form.nr }}
-
         </div>
-
-        <div class="field four wide">
-            {{ form.show_number.label_tag }}
-            <p>{{ form.show_number.help_text }}</p>
-
+        <div class="field eight wide">
+            <label>Nr. ist Lernschrittnummer</label>
             {% if form.show_number.errors %}
                 <div class="ui negative floating message">
                     {{ form.show_number.errors }}
                 </div>
             {% endif %}
-            <br>
-
             {{ form.show_number }}
-
         </div>
+    </div>
 
-        <div class="field twelve wide">
-            <p>Titel</p>
-
+    <div class="inline fields">
+        <div class="field sixteen wide">
+            <label>Überschrift</label>
             {% if form.title.errors %}
                 <div class="ui negative floating message">
                     {{ form.title.errors }}
                 </div>
             {% endif %}
-            <br>
-
             {{ form.title }}
-
         </div>
-
     </div>
 
-    <div class="field sixteen wide">
-        {{ form.description.label_tag }}
-        {{ form.description.help_text }}
-        {% if form.description.errors %}
-            <div class="ui negative floating message">
-                {{ form.description.errors }}
-            </div>
-        {% endif %}
-
-        {{ form.description }}
-
+    <div class="inline fields">
+        <div class="field sixteen wide">
+            <label>
+                {{ form.description.label_tag }}
+            </label>
+            {% if form.description.errors %}
+                <div class="ui negative floating message">
+                    {{ form.description.errors }}
+                </div>
+            {% endif %}
+            {{ form.description }}
+        </div>
     </div>
 
     <div class="field sixteen wide">
@@ -99,40 +94,72 @@
 
     <div class="ui dividing large header">Zugeordnetes Lernmaterial</div>
 
+    <div class="inline fields">
     <div class="field sixteen wide">
-        {{ form.material.label_tag }}
-        {{ form.material.help_text }}
+        <label>Dateiname (Dateityp)</label>
         {% if form.material.errors %}
             <div class="ui negative floating message">
                 {{ form.material.errors }}
             </div>
         {% endif %}
-        <br>
-
         {{ form.material }}
-
+    </div>
     </div>
 
-    <div class="ui dividing medium header">Aufgabe?</div>
+    <div class="ui dividing medium header">Interaktiv?</div>
 
     {% if form.is_homework.errors %}
         <div class="ui negative floating message">
             {{ form.is_homework.errors }}
         </div>
     {% endif %}
-     <p>{{ form.is_homework }} Beinhaltet dieser Lernabschnitt eine Aufgabe?
+    <div class="inline fields">
+        <div class="field five wide">
+            <label>Ja, es geht um eine Aufgabe.</label>
+            {% if form.is_homework.errors %}
+                <div class="ui negative floating message">
+                    {{ form.is_homework.errors }}
+                </div>
+            {% endif %}
+            {{ form.is_homework }}
+        </div>
 
-    </p>
     {% if form.show_work_area.errors %}
         <div class="ui negative floating message">
             {{ form.show_work_area.errors }}
         </div>
     {% endif %}
-    <p>{{ form.show_work_area }} Soll der private Arbeitsbereich benutzt werden?</p>
 
-    <button type="submit" value="post" class="ui button" id="formsubmitonce">
+        <div class="field five wide">
+            <label>Ja, eine Arbeitsumgebung wird benötigt.</label>
+            {% if form.show_work_area.errors %}
+                <div class="ui negative floating message">
+                    {{ form.show_work_area.errors }}
+                </div>
+            {% endif %}
+            {{ form.show_work_area }}
+        </div>
+
+    {% if form.allow_questions.errors %}
+        <div class="ui negative floating message">
+            {{ form.allow_questions.errors }}
+        </div>
+    {% endif %}
+
+        <div class="field five wide">
+            <label>Ja, es soll möglich sein Fragen zu stellen.</label>
+            {% if form.allow_questions.errors %}
+                <div class="ui negative floating message">
+                    {{ form.allow_questions.errors }}
+                </div>
+            {% endif %}
+            {{ form.allow_questions }}
+        </div>
+    </div>
+    <button type="submit" value="post"  class="ui button" id="formsubmitonce">
         Speichern
     </button>
+
     <a href="{{ request.session.last_url }}" class="ui button">
         Abbruch
     </a>

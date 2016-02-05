@@ -12,8 +12,8 @@
 
             {% for block in blocks %}
 
-                {% url 'coursebackend:lessontest:blockupdate' course_slug=cs pk=block.pk as update_url %}
-                {% url 'coursebackend:lessontest:block' course_slug=cs pk=block.pk as detail_url %}
+                {% url 'coursebackend:lesson:blockupdate' course_slug=cs pk=block.pk as update_url %}
+                {% url 'coursebackend:lesson:block' course_slug=cs pk=block.pk as detail_url %}
 
                 <tr>
                     <td>

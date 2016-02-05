@@ -1,39 +1,43 @@
+<p>Hier können Sie einstellen in welchen Fällen Sie als <strong>Teilnehmer</strong>
+    <strong>Email-Benachrichtigungen</strong> aus den Kursen
+   erhalten möchten:
+</p>
 <table class="ui table">
     <thead>
         <tr>
-            <th>Thema</th>
             <th>Kurs</th>
-            <th style="background: #8fb2b2; color:white; opacity:0.9;">Startdatum</th>
-            <th>Stückpreis</th>
-            <th>Total</th>
+            <th>Forum</th>
+            <th>Arbeiten</th>
+            <th>bearbeiten</th>
         </tr>
     </thead>
     <tbody>
-        {% for order in orders %}
-
+        {% for participation in participations %}
+            {% url 'desk:notificationsupdate' pk=participation.pk as update_url%}
             <tr>
-                <td>{{ order.courseproduct.course.title }}</td>
-                <td>{{ order.courseproduct.name }}
-                </td>
-                <td style="background: #8fb2b2; color:white; opacity:0.9;">
-                    {% if order.courseproduct.courseevent.start_date %}
-                    {{ order.courseproduct.courseevent.start_date | date:"SHORT_DATE_FORMAT" }}
-                    {% else %}
-                        jederzeit
-                    {% endif %}
-                </td>
-                <td>{{ order.amount_per_payment|floatformat:2}} {{ order.get_currency_display }}</td>
-
                 <td>
-                    {% if order.fully_paid %}
-                        {{ order.amount_paid|floatformat:2}} {{ order.get_currency_display }}
-                        vollständig bezahlt <i class="icon checkmark teal"></i>
-                    {% else %}
-                         {{ order.nr_parts_paid }} von
-                        {{ order.total_parts }} Etappen:
-                        {{ order.amount_paid|floatformat:2}} {{ order.get_currency_display }}
-                        <i class="icon checkmark teal"></i>
+                    {{ participation.courseevent.title }}
+                </td>
+                <td>
+                    {{ participation.get_notification_forum_display }}
+                    {% if participation.notification_forum == NotificationSettings.NONE %}
+                        <i class="icon remove"></i>
+                    {% elif participation.notification_forum == NotificationSettings.ALL  %}
+                         <i class="icon checkmark green"></i>
                     {% endif %}
+                </td>
+                <td>
+                    {{ participation.get_notification_work_display }}
+                    {% if participation.notification_work == NotificationSettings.NONE %}
+                        <i class="icon remove"></i>
+                    {% elif participation.notification_work == NotificationSettings.ALL  %}
+                         <i class="icon checkmark green"></i>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ update_url }}">
+                    bearbeiten <i class="icon write"></i>
+                    </a>
                 </td>
             </tr>
         {% endfor %}

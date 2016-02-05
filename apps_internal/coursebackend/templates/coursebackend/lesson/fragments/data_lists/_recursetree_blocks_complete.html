@@ -10,7 +10,10 @@
         {% elif node.is_lesson %}
             {% url 'coursebackend:lesson:lesson'  course_slug=cs pk=node.pk as detail_url%}
             {% url 'coursebackend:lesson:lessonupdate'  course_slug=cs pk=node.pk as update_url %}
-             {% url 'coursebackend:lesson:lessoncopy'  course_slug=cs pk=node.pk as copy_url %}
+            {% url 'coursebackend:lesson:lessoncopy'  course_slug=cs pk=node.pk as copy_url %}
+        {% elif node.is_step %}
+            {% url 'coursebackend:lesson:step'  course_slug=cs pk=node.pk as detail_url%}
+            {% url 'coursebackend:lesson:stepupdate'  course_slug=cs pk=node.pk as update_url %}
         {% endif %}
         {% url 'coursebackend:lesson:delete'  course_slug=cs pk=node.pk as delete_url %}
 
@@ -32,17 +35,26 @@
                     <!-- root node -->
                     {% if node.is_root_node %}
                         <div class="ui header large">{{ node.title }}</div>
-
                     {% else %}
 
                         <!-- node title -->
-                        <a href="{{ detail_url }}">
+                        <a href="{{ detail_url }}"
+                        {% if node.is_step %}style="
+                            font-weight:normal;
+                        "{% endif %}
+                                >
                              {{ node.title }}
                         </a>
 
                         <!-- homework -->
                         {% if node.is_homework %}
                              <a class="ui orange label">interaktiv</a>
+                        {% endif %}
+                        {% if node.show_work_area %}
+                             <i class="icon orange privacy"></i>
+                        {% endif %}
+                        {% if node.allow_questions %}
+                             <a class="ui orange label">nachgefragt</a>
                         {% endif %}
 
                     {% endif %}
@@ -64,30 +76,25 @@
                         </a>
                         {% endif %}
 
-                <span style="font-size: 0.9em; color:grey; font-weight:normal;">
-                   {{ node.modified |date:'d.m.Y' }}
-                </span>
+                        <span style="font-size: 0.9em; color:grey; font-weight:normal;">
+                           {{ node.modified |date:'d.m.Y' }}
+                        </span>
                     {% endif %}
 
                     <!-- material -->
                     {% if node.material %}
                         {% url 'coursebackend:material:update' course_slug=cs pk=node.material_id as material_url %}
                         <a href="{{ material_url }}">
-                            <i class="icon file outline"></i>
+                            <i class="icon file pdf outline"></i>
                         </a>
                     {% endif %}
 
                 </div>
-
-
-                        {{ node.description }}
-
-                {% if not node.is_lesson %}
-                    <div class="list">
-                        {{ children }}
-                    </div>
+                {% if not node.is_step %}
+                <div class="list">
+                    {{ children }}
+                </div>
                 {% endif %}
-
             </div>
         </div>
 

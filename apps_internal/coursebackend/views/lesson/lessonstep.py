@@ -7,6 +7,7 @@ from django.views.generic import UpdateView, FormView
 from django.http import HttpResponseRedirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404
+from django.core.validators import ValidationError
 
 from braces.views import FormValidMessageMixin
 from mptt.forms import TreeNodeChoiceField
@@ -21,19 +22,32 @@ from ..mixins.base import CourseMenuMixin, FormCourseKwargsMixin
 from .mixins import LessonContextMixin, LessonSuccessUpdateUrlMixin
 
 
-class LessonStepUpdateForm(forms.ModelForm):
+class LessonStepFormMixin(object):
+
+    def clean(self):
+        if self.cleaned_data['show_work_area'] and not self.cleaned_data['is_homework']:
+            raise ValidationError('Der Arbeitsbereich kann nur angezeigt werden, wenn es um eine Aufgabe'
+                                  ' geht.')
+        if self.cleaned_data['allow_questions'] and self.cleaned_data['is_homework']:
+            raise ValidationError('Es kann nur Aufgabe oder Fragen stellen ausgewählt werden. Nicht beides!'
+                                 )
+
+
+class LessonStepUpdateForm(
+    LessonStepFormMixin,
+    forms.ModelForm):
     text = forms.CharField(widget=FroalaEditor, required=False)
 
     class Meta:
         model = Lesson
-        fields = ('parent', 'nr', 'show_number', 'title', 'description', 'text', 'material', 'is_homework', 'show_work_area' )
+        fields = ('parent', 'nr', 'show_number', 'title', 'description',
+                  'text', 'material', 'is_homework', 'show_work_area',
+                  'allow_questions')
 
     def __init__(self, *args, **kwargs):
         course_slug = kwargs.pop('course_slug', None)
         self.course = get_object_or_404(Course, slug=course_slug)
-
         super(LessonStepUpdateForm, self).__init__(*args, **kwargs)
-
         self.fields['parent'] = TreeNodeChoiceField(
             queryset=Lesson.objects.lessons_for_course(course=self.course))
         self.fields['material'].queryset = Material.objects.materials_for_course(course=self.course)
@@ -55,12 +69,16 @@ class LessonStepUpdateView(
     form_valid_message = "Der Lernabschnitt wurde geändert!"
 
 
-class LessonStepCreateForm(forms.ModelForm):
+class LessonStepCreateForm(
+    LessonStepFormMixin,
+    forms.ModelForm):
     text = forms.CharField(widget=FroalaEditor, required=False)
 
     class Meta:
         model = Lesson
-        fields = ('parent', 'nr', 'show_number', 'title', 'description', 'text', 'material', 'is_homework', 'show_work_area' )
+        fields = ('parent', 'nr', 'show_number', 'title',
+                  'description', 'text', 'material', 'is_homework',
+                  'show_work_area', 'allow_questions' )
 
     def __init__(self, *args, **kwargs):
         course_slug = kwargs.pop('course_slug', None)
@@ -70,15 +88,14 @@ class LessonStepCreateForm(forms.ModelForm):
             self.lesson = Lesson.objects.get(pk=lesson_pk)
         except ObjectDoesNotExist:
             self.lesson = None
-
         super(LessonStepCreateForm, self).__init__(*args, **kwargs)
-
         self.fields['parent'] = TreeNodeChoiceField(
             queryset=Lesson.objects.lessons_for_course(course=self.course))
         if self.lesson:
             self.fields['parent'].initial = self.lesson
         self.fields['material'].queryset = Material.objects.materials_for_course(course=self.course)
         self.fields['parent'].empty_label = None
+
 
 
 class LessonStepCreateView(
@@ -107,6 +124,8 @@ class LessonStepCreateView(
             parent=form.cleaned_data['parent'],
             is_homework = form.cleaned_data['is_homework'],
             show_number = form.cleaned_data['show_number'],
+            show_work_area = form.cleaned_data['show_work_area'],
+            allow_questions = form.cleaned_data['allow_questions'],
         )
         last_url = self.request.session['last_url']
         return HttpResponseRedirect(last_url)

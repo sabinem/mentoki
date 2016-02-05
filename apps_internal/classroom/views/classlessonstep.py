@@ -2,19 +2,14 @@
 
 from __future__ import unicode_literals, absolute_import
 
-from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import get_object_or_404
-from django.views.generic import TemplateView, FormView, DetailView
-from django.http import HttpResponseRedirect
+from django.views.generic import TemplateView, DetailView
 
 from apps_data.courseevent.models.homework import StudentsWork,Comment
-from apps_data.courseevent.models.courseevent import CourseEvent
 from apps_data.lesson.models.classlesson import Question
 from apps_data.lesson.models.classlesson import ClassLesson
-from apps_core.email.utils.comment import send_work_comment_notification
 
-from .mixins.base import ClassroomMenuMixin
-from ..forms.studentswork import StudentWorkCommentForm
+from .mixins.base import ClassroomMenuMixin, AuthClassroomAccessMixin
 
 
 class LessonStepContextMixin(object):
@@ -34,6 +29,7 @@ class LessonStepContextMixin(object):
 
 
 class ClassLessonStepDetailView(
+    AuthClassroomAccessMixin,
     ClassroomMenuMixin,
     LessonStepContextMixin,
     TemplateView):
@@ -53,6 +49,7 @@ class ClassLessonStepDetailView(
 
 
 class StudentsWorkPublicListView(
+    AuthClassroomAccessMixin,
     ClassroomMenuMixin,
     LessonStepContextMixin,
     TemplateView):
@@ -70,6 +67,7 @@ class StudentsWorkPublicListView(
 
 
 class StudentsWorkPrivateListView(
+    AuthClassroomAccessMixin,
     ClassroomMenuMixin,
     LessonStepContextMixin,
     TemplateView):
@@ -101,6 +99,7 @@ class StudentsWorkContextMixin(object):
 
 
 class StudentsWorkDetailView(
+    AuthClassroomAccessMixin,
     ClassroomMenuMixin,
     LessonStepContextMixin,
     StudentsWorkContextMixin,

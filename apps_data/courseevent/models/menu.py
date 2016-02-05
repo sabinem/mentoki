@@ -31,6 +31,8 @@ from fontawesome.fields import IconField
 from .courseevent import CourseEvent
 from .forum import Forum
 from apps_data.lesson.models.classlesson import ClassLesson
+from ..constants import MenuItemType
+from django_enumfield import enum
 
 
 def switch_start_item(menuitem):
@@ -87,7 +89,7 @@ class ClassroomMenuItemManager(models.Manager):
         get flat list of lesson ids that are published in class
         """
         ids = self.filter(courseevent=courseevent,
-                           item_type__in=['lessonstep', 'lesson'],
+                           item_type='lesson',
                            ).values_list('classlesson_id', flat=True)
         return ClassLesson.objects.filter(id__in=ids).get_descendants(include_self=True).\
             filter(level=3, is_homework=True, show_work_area=True)
@@ -97,17 +99,9 @@ class ClassroomMenuItemManager(models.Manager):
         get flat list of forum ids that are published in class
         """
         return self.filter(courseevent=courseevent,
-                           item_type__in=['forum'],
+                           item_type='forum',
                            ).values_list('forum_id', flat=True)
 
-
-    def lessonsteps_for_courseevent(self, courseevent):
-        """
-        get all homeworks that are published in class
-        """
-        return self.filter(courseevent=courseevent,
-                           item_type='lessonstep'
-                           ).order_by('display_nr')
 
     def lessons_for_courseevent(self, courseevent):
         """
@@ -190,7 +184,6 @@ class ClassroomMenuItem(TimeStampedModel):
         ClassLesson,
         blank=True,
         null=True,
-        on_delete=models.PROTECT,
         related_name="lesson"
     )
     forum = models.ForeignKey(
@@ -201,14 +194,12 @@ class ClassroomMenuItem(TimeStampedModel):
     )
     icon = IconField(verbose_name="Icon",
                      help_text="Neben dem Menüeintrag kann ein Icon angezeigt werden.")
+    menuitemtype = enum.EnumField(MenuItemType, default=MenuItemType.LESSON)
     MENU_ITEM_TYPE = Choices(
                      ('header', 'header_item', _('Überschrift')),
                      ('lesson', 'lesson_item',  _('Lektion')),
-                     ('lessonstep', 'lessonstep_item', _('Lernschritt')),
                      ('forum', 'forum_item', _('Forum')),
-                     ('last_posts', 'last_posts_item', _('Forum: neueste Beiträge')),
                      ('announcements', 'announcements_item', _('Ankündigungsliste')),
-                     ('private', 'private_item', _('Privatbereich der Kursteilnehmer')),
                      ('participants', 'participants_item', _('Teilnehmerliste')),
                     )
     item_type = models.CharField(
@@ -285,16 +276,6 @@ class ClassroomMenuItem(TimeStampedModel):
                 raise ValidationError('''Bei diesem Eintragstyp
                 kann kein Forum angegeben werden.''')
 
-        # 3. lessonstep item: only relationship to lessonstep  is required
-        if self.item_type == self.MENU_ITEM_TYPE.lessonstep_item:
-            if self.classlesson:
-                if not self.classlesson.is_step():
-                    raise ValidationError('''Lernschritt-Eintrag muss zu einem
-                    Lernabschnitt verlinken.''', code='invalid_object'
-                    )
-            if self.forum:
-                raise ValidationError('''Bei diesem Eintragstyp
-                kann kein Forum angegeben werden.''')
 
         # 4. forum_item: only relationships forum, is required
         if self.item_type == self.MENU_ITEM_TYPE.forum_item:
