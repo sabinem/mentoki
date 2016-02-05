@@ -1,0 +1,17 @@
+{% extends "desk/pages/base.html" %}
+
+{% block work %}
+
+    <div class="ui grid">
+
+        <div class="column sixteen wide">
+
+            <div class="ui segment">
+                <h2 class="ui header">Benachrichtigungseinstellungen</h2>
+                {% include 'desk/fragments/_notification_table' %}
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

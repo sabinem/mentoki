@@ -1,0 +1,19 @@
+{% url 'coursebackend:classlesson:start'  slug=es course_slug=cs as start_url %}
+
+
+{% url 'coursebackend:classlesson:lessoncreate'  course_slug=cs slug=es  as createlesson_url %}
+
+
+
+
+<!-- insert lesson -->
+<a href="{{ createlesson_url }}" class="item" >
+    <i class="plus icon blue"></i>Lektion
+</a>
+
+
+
+
+
+
+
