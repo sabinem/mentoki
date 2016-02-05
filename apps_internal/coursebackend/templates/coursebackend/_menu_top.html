@@ -6,7 +6,7 @@
 {% url 'coursebackend:forum:list' course_slug=cs slug=es as forum_url %}
 {% url 'coursebackend:announcement:list' course_slug=cs slug=es as announcements_url %}
 {% url 'coursebackend:menu:preview' course_slug=cs slug=es as menu_url %}
-{% url "coursebackend:classlesson:start" course_slug=cs slug=es as lesson_url %}
+{% url "coursebackend:lesson:start" course_slug=cs  as lesson_url %}
 
 {% url 'coursebackend:classlesson:start' course_slug=cs slug=es as classlesson_url %}
 {% url 'coursebackend:classlesson:copy' course_slug=cs slug=es as lessoncopy_url %}
@@ -45,6 +45,10 @@
 {% ifactive classlesson_url %} active{% endifactive %}
 " href="{{ classlesson_url }}">
     <i class="book icon blue"></i>
+</a>
+<a class="item
+" href="{{ lesson_url }}">
+    <i class="book icon purple"></i>
 </a>
 <a class="item
 {% ifactive announcements_url %} active{% endifactive %}
