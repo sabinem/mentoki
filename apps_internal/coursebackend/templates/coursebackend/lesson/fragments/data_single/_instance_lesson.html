@@ -9,7 +9,12 @@
         <i class="right arrow icon"></i>
     </a>
 {% endif %}
+{% if lesson.show_number %}
+  <div class="ui right floated button">
 
+        {{ lesson.lesson_nr }}.
+</div>
+{% endif %}
 {% if previous_node %}
     <a href="{{ backward_url }}" class="ui button basic right floated">
         <i class="left arrow icon"></i>

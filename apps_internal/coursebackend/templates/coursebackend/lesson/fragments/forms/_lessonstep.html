@@ -79,33 +79,6 @@
             {{ form.description }}
         </div>
     </div>
-
-    <div class="field sixteen wide">
-        {% if form.text.errors %}
-            <div class="ui negative floating message">
-                {{ form.text.errors }}
-            </div>
-        {% endif %}
-
-        {{ form.text }}
-
-
-    </div>
-
-    <div class="ui dividing large header">Zugeordnetes Lernmaterial</div>
-
-    <div class="inline fields">
-    <div class="field sixteen wide">
-        <label>Dateiname (Dateityp)</label>
-        {% if form.material.errors %}
-            <div class="ui negative floating message">
-                {{ form.material.errors }}
-            </div>
-        {% endif %}
-        {{ form.material }}
-    </div>
-    </div>
-
     <div class="ui dividing medium header">Interaktiv?</div>
 
     {% if form.is_homework.errors %}
@@ -156,6 +129,33 @@
             {{ form.allow_questions }}
         </div>
     </div>
+    <div class="field sixteen wide">
+        {% if form.text.errors %}
+            <div class="ui negative floating message">
+                {{ form.text.errors }}
+            </div>
+        {% endif %}
+
+        {{ form.text }}
+
+
+    </div>
+
+    <div class="ui dividing medium header">Zugeordnetes Lernmaterial</div>
+
+    <div class="inline fields">
+    <div class="field sixteen wide">
+        <label>Dateiname (Dateityp)</label>
+        {% if form.material.errors %}
+            <div class="ui negative floating message">
+                {{ form.material.errors }}
+            </div>
+        {% endif %}
+        {{ form.material }}
+    </div>
+    </div>
+
+
     <button type="submit" value="post"  class="ui button" id="formsubmitonce">
         Speichern
     </button>
