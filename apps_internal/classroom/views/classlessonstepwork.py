@@ -104,7 +104,9 @@ class StudentsWorkRedirectMixin(
                                                'pk': self.object.homework.id})
 
 
-class StudentWorkUpdatePublicForm(forms.ModelForm):
+class StudentWorkUpdatePublicForm(
+    ParticipationCheckHiddenFormMixin,
+    forms.ModelForm):
     text = forms.CharField(widget=FroalaEditor)
     republish = forms.BooleanField(required=False)
 
@@ -142,7 +144,9 @@ class StudentsWorkUpdatePublicView(
         return super(StudentsWorkUpdatePublicView, self).form_valid(form)
 
 
-class StudentWorkUpdatePrivateForm(forms.ModelForm):
+class StudentWorkUpdatePrivateForm(
+    ParticipationCheckHiddenFormMixin,
+    forms.ModelForm):
     text = forms.CharField(widget=FroalaEditor)
 
     class Meta:
@@ -230,7 +234,9 @@ class StudentsWorkCreateView(
         return HttpResponseRedirect(self.get_success_url())
 
 
-class StudentWorkAddTeamForm(forms.ModelForm):
+class StudentWorkAddTeamForm(
+    ParticipationCheckHiddenFormMixin,
+    forms.ModelForm):
 
     class Meta:
         model = StudentsWork
@@ -239,9 +245,14 @@ class StudentWorkAddTeamForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         courseevent_slug = kwargs.pop('courseevent_slug', None)
+        print courseevent_slug
+        print "____________"
         self.courseevent = get_object_or_404(CourseEvent, slug=courseevent_slug)
+        print self.courseevent
         super(StudentWorkAddTeamForm, self).__init__(*args, **kwargs)
+        print "I am here"
         self.fields['workers'].queryset = self.courseevent.workers()
+        print "now load"
 
 
 class StudentsWorkAddTeamView(
