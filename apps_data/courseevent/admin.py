@@ -72,8 +72,8 @@ class StudentsWorkAdmin(admin.ModelAdmin):
     once they are ready.
     """
     list_display = ('id', 'courseevent', 'publish_count', 'republished_at',
-                    'published_at', 'published', 'title', 'homework')
-    list_filter = ('courseevent__course', 'courseevent', 'homework', 'published', 'modified')
+                    'published_at', 'published', 'title', 'homework',)
+    list_filter = ('courseevent__course', 'courseevent', 'homework', 'published', 'modified', 'workers')
 
 
 @admin.register(Forum)
