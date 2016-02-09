@@ -14,13 +14,15 @@
     {% else %}
         {% url 'classroom:classlesson:updateprivate' slug=es work_pk=studentswork.pk pk=lessonstep.pk as work_url %}
     {% endif %}
-    {% url 'classroom:classlesson:studentswork' slug=es work_pk=studentswork.pk pk=lessonstep.pk as detail_url %}
+    {% url 'classroom:classlesson:privatestudentswork' slug=es work_pk=studentswork.pk pk=lessonstep.pk as detail_url %}
     {% url 'classroom:classlesson:delete' slug=es work_pk=studentswork.pk pk=lessonstep.pk as delete_url %}
     {% url 'classroom:classlesson:addteam' slug=es work_pk=studentswork.pk pk=lessonstep.pk as addteam_url %}
 
     <div class="ui card fluid">
       <div class="content">
-        <a href="{{ detail_url }}" class="header">{{ studentswork.title }}</a>
+        <a href="{{ detail_url }}" class="header">{{ studentswork.title }}
+            {{ es }}{{ work_pk }}{{ pk }}
+            {{ detail_url }}</a>
         <div class="meta">
           {% if studentswork.publish_count != 0 %}
           <span class="right time">Erstabgabe am {{ studentswork.published_at | date:'d.m.Y' }}

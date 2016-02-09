@@ -33,7 +33,7 @@ urlpatterns += patterns('',
         {'template':'classroom/classlesson/pages/studentswork_public.html'},
         name='publicstudentswork'),
 
-    url(r'^abschnitt/(?P<pk>\d+)/arbeit/(?P<work_pk>\d{1,4})$',
+    url(r'^abschnitt/(?P<pk>\d+)/entwurf/(?P<work_pk>\d{1,4})$',
         StudentsWorkDetailView.as_view(),
         {'template':'classroom/classlesson/pages/studentswork_private.html'},
         name='privatestudentswork'),

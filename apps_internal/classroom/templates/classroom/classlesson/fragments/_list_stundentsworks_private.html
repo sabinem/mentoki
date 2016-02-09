@@ -5,7 +5,7 @@
     <!-- named urls -->
 
     {% url 'classroom:classlesson:updateprivate' slug=es work_pk=studentswork.pk pk=lessonstep.pk as work_url %}
-    {% url 'classroom:classlesson:studentswork' slug=es work_pk=studentswork.pk pk=lessonstep.pk as detail_url %}
+    {% url 'classroom:classlesson:privatestudentswork' slug=es work_pk=studentswork.pk pk=lessonstep.pk as detail_url %}
     {% url 'classroom:classlesson:delete' slug=es work_pk=studentswork.pk pk=lessonstep.pk as delete_url %}
     {% url 'classroom:classlesson:addteam' slug=es work_pk=studentswork.pk pk=lessonstep.pk as addteam_url %}
 

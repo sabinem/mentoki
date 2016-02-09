@@ -13,18 +13,6 @@
 
             {% include 'classroom/classlesson/fragments/_instance_stundentswork_work.html' %}
 
-            <h4 class="ui horizontal divider header">
-                <i class="comments outline icon"></i>
-                Kommentare
-            </h4>
-
-            {% if url_name != 'updatepublic' %}
-                <a href="{{ comment_url }}" class="ui button">
-                    <i class="write icon blue"></i>Kommentar anfügen?
-                </a>
-            {% endif %}
-
-            {% include 'classroom/classlesson/fragments/_instance_studentswork_comments.html' %}
 
         </div>
     </div>
