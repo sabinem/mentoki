@@ -84,13 +84,13 @@
                          {% endif %}
 
                             <span style="font-size: 0.9em; font-weight:normal;
-                            {% if not node.modified == node.original_lesson.modified and node.is_original_lesson %}
+                            {% if node.outdated and node.is_original_lesson %}
                                  color:purple;
                             {% else %}
                                  color:grey;
                             {% endif %}
                             ">
-                               {% if not node.modified == node.original_lesson.modified and node.is_original_lesson %}
+                               {% if node.outdated and node.is_original_lesson %}
                                    (veraltet)
                                {% endif %}
                                {{ node.modified |date:'d.m.Y' }}
