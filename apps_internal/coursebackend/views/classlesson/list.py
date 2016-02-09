@@ -5,6 +5,7 @@ from __future__ import unicode_literals, absolute_import
 from django.views.generic import TemplateView
 
 from apps_data.lesson.models.classlesson import ClassLesson
+from braces.views import MessageMixin
 
 from ..mixins.base import CourseMenuMixin
 
@@ -14,6 +15,7 @@ logger = logging.getLogger('activity.lessonview')
 
 
 class ClassLessonStartView(
+    MessageMixin,
     CourseMenuMixin,
     TemplateView):
     """

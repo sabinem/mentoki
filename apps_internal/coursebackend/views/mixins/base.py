@@ -32,7 +32,7 @@ class AuthMixin(LoginRequiredMixin, UserPassesTestMixin, TemplateMixin):
             if course.is_owner(user):
                 self.request.session['workon_course_id'] = course.id
                 return True
-        self.messages.warning(_('You are not allowed to change this data since you are not a teacher of this course.'))
+        self.messages.warning(_('Du bist kein Lehrer dieses Kurses!'))
         return None
 
 
