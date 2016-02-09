@@ -12,6 +12,9 @@
                   bearbeiten
                   <i class="icon write"></i>
               </a>
+                <a  href="{{ delete_url }}">
+                    <i class="trash blue icon"></i>
+                </a>
               {% endif %}
         </div>
         <div class="meta">
@@ -56,9 +59,7 @@
           {% if request.user in studentswork.workers.all and url_name != 'delete' and url_name != 'addteam' %}
 
             {% if studentswork.publish_count == 0  %}
-                <a class="ui button" href="{{ delete_url }}">
-                    <i class="trash blue icon"></i>
-                </a>
+
                 {% comment %}
                 <a class="ui button" href="{{ addteam_url }}">
                     <i class="add user icon blue"></i>
