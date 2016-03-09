@@ -42,17 +42,19 @@ class CourseAdminView(
 
         if user.is_superuser or user.is_lektor:
             productgroups = CourseProductGroup.objects.published()
-            context['productgroups'] = productgroups
+        else:
+            productgroups = CourseProductGroup.objects.published_by_mentor(user=user)
+        context['productgroups'] = productgroups
 
-            list=[]
-            for group in productgroups:
-                groupfields = {'group': group }
-                fields = CourseProductGroupField.objects.filter(courseproductgroup=group)
-                groupfields['field_list'] = fields
-                list.append(groupfields)
-            context['courselist'] = list
-            context['staticpublicpages'] = StaticPublicPages.objects.all()
-            context['mentors'] = MentorsProfile.objects.all()
+        list=[]
+        for group in productgroups:
+            groupfields = {'group': group }
+            fields = CourseProductGroupField.objects.filter(courseproductgroup=group)
+            groupfields['field_list'] = fields
+            list.append(groupfields)
+        context['courselist'] = list
+        context['staticpublicpages'] = StaticPublicPages.objects.all()
+        context['mentors'] = MentorsProfile.objects.all()
 
         return context
 
