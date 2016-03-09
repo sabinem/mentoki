@@ -57,7 +57,7 @@
 
     {% endfor %}
     </div>
-
+    {% if request.user.is_staff or resquest.user.is_lektor %}
     <div class="ui segment">
     <div class="ui header medium">Allgemeine Seiten
     </div>
@@ -98,5 +98,6 @@
     {% endfor %}
     </div>
     </div>
+    {% endif %}
 
 {% endblock %}
