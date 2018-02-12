@@ -23,15 +23,20 @@ Also generally data-handling and data-viewing are kept in seperate apps.
 ##Surface-Apps
 * apps_internal: (registered users) views for desk, classroom and coursebackend 
 * apps_public: (anonymous users) views for public pages and payment processing
+
 #Architecture(Apps)
+
 ###apps_data: 
 handles the data
+
 ###apps_internal:
 handles all views for registered teachers and learners and has two apps: one 
 for the classroom activity and one for the teachers managing and setting up 
 the classrooms.
+
 ###apps_public
 manages the public face of the website
+
 ###apps_core
 handles emails and central utilities
 
