@@ -1,1 +1,4 @@
 theme: jekyll-theme-leap-day
+index_url: 'https://sabinem.github.io/mentoki/' 
+base_url: 'https://sabinem.github.io/'
+description: Mein ehemaliges Startup
